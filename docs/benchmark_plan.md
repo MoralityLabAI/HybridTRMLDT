@@ -18,7 +18,7 @@ Start small and add task families only after the previous one is stable:
 3. ARC-2: implemented
 4. int-3 / INTELLECT-3 logic-env: integration inspected
 5. routing: implemented
-6. storyworld playing
+6. storyworld playing: implemented
 ```
 
 ## Current Sudoku Bench
@@ -120,4 +120,29 @@ data/benchmarks/routing_results.json
 reports/routing_bench.md
 experiments/routing_env_pointer/results.json
 experiments/routing_env_pointer/training_notes.md
+```
+
+## Current Storyworld Playing Bench
+
+The storyworld bench uses `CoupledStoryworldEnv` and exact transition mechanics.
+
+Run:
+
+```bash
+python -m research_gym.scripts.bench_storyworld --experiment-dir experiments/storyworld_playing
+```
+
+Current model definitions:
+
+- `ldt`: exact finite-horizon planner under the modeled rival policy.
+- `trm`: heuristic policy over heat, evidence, trust, and scene deficits.
+- `hybrid`: TRM proposes actions; LDT checks modeled reachability and overrides proposals that would lose reachability.
+
+Outputs:
+
+```text
+data/benchmarks/storyworld_results.json
+reports/storyworld_bench.md
+experiments/storyworld_playing/results.json
+experiments/storyworld_playing/training_notes.md
 ```
