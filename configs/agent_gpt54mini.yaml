@@ -1,0 +1,18 @@
+agent_profile: gpt-5.4-mini
+operating_mode: small_steps
+max_files_changed_per_pass: 3
+required_commands_before_handoff:
+  - python -m research_gym.scripts.generate_frames --out data/frames.jsonl --n 64 --horizon 6 --seed 1
+  - python -m research_gym.scripts.eval_symbolic --frames data/frames.jsonl
+stop_conditions:
+  - CHECKPOINT
+  - citation_missing_for_novelty_claim
+  - tests_fail_after_two_attempts
+forbidden_claims:
+  - VPD edits TRM weights directly
+  - LDT guarantees abstention
+preferred_terms:
+  - VPD-instrumented
+  - VPD-guided
+  - hybrid LDT/TRM
+  - typed conflict signal

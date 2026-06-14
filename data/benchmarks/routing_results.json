@@ -1,0 +1,156 @@
+{
+  "data_root": "D:\\Research_Engine\\tesseract_persistent\\data",
+  "envs": [
+    "alphabet_sort",
+    "arc_challenge",
+    "arc_easy",
+    "gsm8k",
+    "intellect_3_logic",
+    "intellect_3_math",
+    "mbpp",
+    "wiki_search"
+  ],
+  "max_per_env": 80,
+  "results": [
+    {
+      "abstained": 15,
+      "accuracy": 0.5375722543352601,
+      "avg_candidates": 0.0,
+      "confusion": {
+        "alphabet_sort": {
+          "alphabet_sort": 5
+        },
+        "arc_challenge": {
+          "arc_challenge": 5,
+          "arc_easy": 6,
+          "gsm8k": 3,
+          "intellect_3_logic": 8,
+          "intellect_3_math": 2
+        },
+        "arc_easy": {
+          "alphabet_sort": 1,
+          "arc_challenge": 4,
+          "arc_easy": 7,
+          "gsm8k": 2,
+          "intellect_3_logic": 8,
+          "intellect_3_math": 1,
+          "mbpp": 1
+        },
+        "gsm8k": {
+          "arc_easy": 1,
+          "gsm8k": 22,
+          "intellect_3_logic": 1
+        },
+        "intellect_3_logic": {
+          "intellect_3_logic": 24
+        },
+        "intellect_3_math": {
+          "gsm8k": 5,
+          "intellect_3_logic": 4,
+          "intellect_3_math": 15
+        },
+        "mbpp": {
+          "intellect_3_logic": 6,
+          "intellect_3_math": 4,
+          "mbpp": 14
+        },
+        "wiki_search": {
+          "<abstain>": 15,
+          "arc_easy": 2,
+          "intellect_3_logic": 6,
+          "wiki_search": 1
+        }
+      },
+      "correct": 93,
+      "router": "ldt",
+      "total": 173
+    },
+    {
+      "abstained": 0,
+      "accuracy": 0.815028901734104,
+      "avg_candidates": 0.0,
+      "confusion": {
+        "alphabet_sort": {
+          "alphabet_sort": 5
+        },
+        "arc_challenge": {
+          "arc_challenge": 16,
+          "arc_easy": 6,
+          "intellect_3_math": 2
+        },
+        "arc_easy": {
+          "arc_challenge": 15,
+          "arc_easy": 7,
+          "intellect_3_math": 2
+        },
+        "gsm8k": {
+          "gsm8k": 24
+        },
+        "intellect_3_logic": {
+          "intellect_3_logic": 24
+        },
+        "intellect_3_math": {
+          "gsm8k": 1,
+          "intellect_3_math": 23
+        },
+        "mbpp": {
+          "mbpp": 24
+        },
+        "wiki_search": {
+          "arc_challenge": 2,
+          "intellect_3_math": 2,
+          "mbpp": 2,
+          "wiki_search": 18
+        }
+      },
+      "correct": 141,
+      "router": "trm",
+      "total": 173
+    },
+    {
+      "abstained": 0,
+      "accuracy": 0.815028901734104,
+      "avg_candidates": 2.092485549132948,
+      "confusion": {
+        "alphabet_sort": {
+          "alphabet_sort": 5
+        },
+        "arc_challenge": {
+          "arc_challenge": 16,
+          "arc_easy": 6,
+          "intellect_3_math": 2
+        },
+        "arc_easy": {
+          "arc_challenge": 15,
+          "arc_easy": 7,
+          "intellect_3_math": 2
+        },
+        "gsm8k": {
+          "gsm8k": 24
+        },
+        "intellect_3_logic": {
+          "intellect_3_logic": 24
+        },
+        "intellect_3_math": {
+          "gsm8k": 1,
+          "intellect_3_math": 23
+        },
+        "mbpp": {
+          "mbpp": 24
+        },
+        "wiki_search": {
+          "arc_challenge": 2,
+          "intellect_3_math": 2,
+          "mbpp": 2,
+          "wiki_search": 18
+        }
+      },
+      "correct": 141,
+      "router": "hybrid",
+      "total": 173
+    }
+  ],
+  "seed": 7,
+  "test_size": 173,
+  "train_size": 402
+}

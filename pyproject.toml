@@ -1,0 +1,10 @@
+[project]
+name = "ldt-trm-research-gym"
+version = "0.0.1"
+description = "Starter auto-research gym for hybrid LDT/TRM typed-soundness experiments."
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

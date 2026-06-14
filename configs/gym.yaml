@@ -1,0 +1,14 @@
+# Small default config for starter runs.
+env: coupled_storyworld
+frame_generation:
+  n: 128
+  horizon: 6
+  seed: 7
+labels:
+  hard_elimination: env_sound_dead
+  soft_eliminations:
+    - model_sound_dead
+    - experience_sound_dead
+outputs:
+  frames: data/frames.jsonl
+  report: data/symbolic_report.md
