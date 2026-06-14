@@ -1,0 +1,32 @@
+\begin{tikzpicture}[
+  node distance=1.0cm and 1.2cm,
+  box/.style={draw, rounded corners, align=center, minimum width=2.7cm, minimum height=0.85cm, fill=gray!5},
+  ldt/.style={box, fill=green!8},
+  trm/.style={box, fill=blue!7},
+  hyb/.style={box, fill=orange!12},
+  arrow/.style={-Latex, thick}
+]
+\node[box] (sudoku) {Sudoku\\partial grid};
+\node[trm, right=of sudoku] (branch) {TRM\\branch};
+\node[ldt, right=of branch] (prop) {LDT\\propagate};
+\node[hyb, right=of prop] (solve) {fewer\\guesses};
+\draw[arrow] (sudoku) -- (branch);
+\draw[arrow] (branch) -- (prop);
+\draw[arrow] (prop) -- (solve);
+
+\node[box, below=1.0cm of sudoku] (routing) {Routing\\prompt};
+\node[ldt, right=of routing] (cand) {LDT\\soft candidates};
+\node[trm, right=of cand] (score) {TRM\\score};
+\node[hyb, right=of score] (route) {route\\decision};
+\draw[arrow] (routing) -- (cand);
+\draw[arrow] (cand) -- (score);
+\draw[arrow] (score) -- (route);
+
+\node[box, below=1.0cm of routing] (story) {Storyworld\\state};
+\node[trm, right=of story] (act) {TRM\\action};
+\node[ldt, right=of act] (reach) {LDT\\reachability};
+\node[hyb, right=of reach] (override) {override\\unsafe};
+\draw[arrow] (story) -- (act);
+\draw[arrow] (act) -- (reach);
+\draw[arrow] (reach) -- (override);
+\end{tikzpicture}

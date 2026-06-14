@@ -1,0 +1,25 @@
+\begin{tikzpicture}[
+  node distance=1.7cm and 1.7cm,
+  block/.style={draw, rounded corners, align=center, minimum width=2.7cm, minimum height=0.9cm, fill=blue!5},
+  state/.style={draw, rounded corners, align=center, minimum width=2.7cm, minimum height=0.9cm, fill=green!6},
+  warn/.style={draw, rounded corners, align=center, minimum width=2.7cm, minimum height=0.9cm, fill=orange!10},
+  arrow/.style={-Latex, thick}
+]
+\node[state] (task) {Task state\\or prompt};
+\node[state, right=of task] (latent) {TRM latent\\state $h_t$};
+\node[state, below=of task] (lattice) {Explicit lattice\\state $a_t$};
+\node[block, right=of lattice] (proposal) {Proposal\\$p_t$};
+\node[warn, right=of proposal] (membrane) {Typed\\membrane};
+\node[state, right=of membrane] (hard) {Hard update\\$a_{t+1}$};
+\node[block, above=of hard] (soft) {Soft store\\telemetry};
+\node[block, below=of hard] (reject) {Reject /\\abstain};
+
+\draw[arrow] (task) -- (latent);
+\draw[arrow] (task) -- (lattice);
+\draw[arrow] (latent) -- (proposal);
+\draw[arrow] (lattice) -- (membrane);
+\draw[arrow] (proposal) -- (membrane);
+\draw[arrow] (membrane) -- node[above, font=\scriptsize]{environment-sound} (hard);
+\draw[arrow] (membrane) -- node[right, font=\scriptsize]{model / experience} (soft);
+\draw[arrow] (membrane) -- node[right, font=\scriptsize]{unknown / non-monotone} (reject);
+\end{tikzpicture}

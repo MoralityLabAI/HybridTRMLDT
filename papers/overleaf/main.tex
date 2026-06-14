@@ -1,0 +1,258 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+\title{A Typed Membrane Between Latent Proposal and Explicit Deduction}
+\author{Hybrid LDT/TRM Research Gym}
+\date{\today}
+
+\newcommand{\envsound}{\textsc{environment-sound}}
+\newcommand{\modelsound}{\textsc{model-sound}}
+\newcommand{\expsound}{\textsc{experience-sound}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study a small hybrid reasoning architecture that combines a Tiny Recursive Model (TRM) style proposal mechanism with an explicit Lattice Deduction Transformer (LDT) style state. The central design is a typed membrane: the latent side proposes refinements, while the explicit lattice side certifies, rejects, or soft-stores them according to provenance. The goal is not to claim that a lattice guarantees correct abstention in all settings. The narrower claim is that an explicit lattice makes abstention, bottom, monotonicity, and provenance inspectable in domains where the relevant mechanics are checkable.
+
+We evaluate this design on five lightweight benchmarks: Sudoku, ARC-1, ARC-2, environment-pointer routing, and a coupled storyworld playing task. Across the saved runs, hybrid matches the best aggregate score in every task family. It improves proposal efficiency in Sudoku and aggregate ARC-2, repairs unsafe TRM actions in storyworld play, and avoids hard-eliminating routes when LDT evidence is only lexical and therefore not environment-sound. The main negative result is that hybrid is not automatically superior: in routing it only ties TRM when LDT candidate sets are treated as soft evidence, and in two ARC-2 instances its heuristic proposal order uses more proposals than raw TRM.
+\end{abstract}
+
+\section{Motivation}
+
+The motivating question is practical:
+\begin{quote}
+Can persistent latent recurrence improve explicit lattice deduction without destroying the interpretability and soundness benefits of an explicit abstract state?
+\end{quote}
+
+We separate two roles. TRM is private recurrent or heuristic workspace that proposes actions, refinements, routes, or candidate rules. LDT is explicit public lattice state that supports monotone refinement, bottom detection, serialization, and typed provenance. The hybrid architecture is useful only if these roles remain separated. If latent proposals can directly mutate durable state, the system loses the main benefit of explicit deduction. If the lattice is the only mechanism, the system struggles when local propagation is insufficient and search or heuristic proposal is needed.
+
+This paper intentionally excludes VPD. The benchmark argument is about hybrid reasoning behavior, typed state updates, and empirical task performance.
+
+\section{Architecture}
+
+At step $t$, the hybrid keeps two states:
+\[
+  a_t \quad \text{explicit abstract state}, \qquad
+  h_t \quad \text{private latent or heuristic state}.
+\]
+
+The public state $a_t$ is serializable and checkable. In the implementation, it is often a candidate-set lattice, but the same interface covers intervals, symbolic constraints, reachable regions, possible rules, and possible environment IDs. The private state $h_t$ ranks proposals and tracks search context. It does not directly mutate $a_t$.
+
+\begin{figure}[t]
+\centering
+\input{figures/architecture.tex}
+\caption{Hybrid LDT/TRM control loop. The TRM side proposes; the membrane decides whether the proposal can become a durable lattice update.}
+\label{fig:architecture}
+\end{figure}
+
+\section{Lattice Formulation}
+
+For the candidate-state implementation, let slots be indexed by $i \in I$. Each slot has finite universe $U_i$. A lattice state is
+\[
+  a = \{ C_i \subseteq U_i \}_{i \in I}.
+\]
+The top state is
+\[
+  \top = \{ U_i \}_{i \in I},
+\]
+and bottom is
+\[
+  \bot(a) \iff \exists i \in I : C_i = \emptyset.
+\]
+
+Meet is pointwise intersection:
+\[
+  (a \wedge b)_i = C_i^a \cap C_i^b.
+\]
+
+A proposal $p_t$ contains a proposed state $\hat a_{t+1}$. It is monotone only if
+\[
+  \forall i \in I,\quad \hat C_{i,t+1} \subseteq C_{i,t}.
+\]
+The implementation rejects non-monotone proposals before applying meet:
+\[
+  \operatorname{reject}(p_t) \quad \text{if} \quad \exists i:\hat C_{i,t+1} \nsubseteq C_{i,t}.
+\]
+This matters because otherwise a widening proposal could be hidden by a subsequent meet and appear harmless.
+
+\section{Typed Soundness and the Membrane}
+
+Each proposal carries provenance:
+\begin{itemize}
+  \item \envsound: derived from trusted environment mechanics.
+  \item \modelsound: derived from a model of another agent or learned predictor.
+  \item \expsound: derived from replay or discovered successes.
+  \item unknown: no usable provenance.
+\end{itemize}
+
+The default membrane policy is:
+\[
+\operatorname{hard}(p)=
+\begin{cases}
+1 & \text{if provenance}(p)=\envsound,\\
+0 & \text{otherwise.}
+\end{cases}
+\]
+
+The durable transition is
+\[
+a_{t+1} =
+\begin{cases}
+a_t \wedge \hat a_{t+1} &
+\text{if } \operatorname{hard}(p_t)\land \hat a_{t+1}\sqsubseteq a_t
+\land \neg\bot(a_t\wedge\hat a_{t+1}),\\
+a_t & \text{otherwise.}
+\end{cases}
+\]
+
+Bottom is allowed only in explicit abstain or conflict mode:
+\[
+  \bot(a_t \wedge \hat a_{t+1}) \Rightarrow
+  \text{accept only if mode}=\textsc{abstain}.
+\]
+
+\begin{figure}[t]
+\centering
+\input{figures/membrane_policy.tex}
+\caption{Default membrane policy. Only environment-sound monotone refinements become hard updates. Model-sound and experience-sound proposals can be retained as soft telemetry.}
+\label{fig:membrane}
+\end{figure}
+
+\section{Practical Hybrid Dynamics}
+
+The hybrid does not play the same role in every domain. Figure~\ref{fig:patterns} summarizes the main patterns.
+
+\begin{figure}[t]
+\centering
+\input{figures/domain_patterns.tex}
+\caption{Three practical hybrid patterns: branch then propagate, soft route telemetry, and action proposal plus reachability override.}
+\label{fig:patterns}
+\end{figure}
+
+\subsection{Sudoku}
+
+LDT performs naked-single propagation. TRM performs heuristic minimum-remaining-values search. Hybrid lets TRM propose a branch and then applies LDT propagation after the proposal. TRM is useful for escaping propagation plateaus; LDT is useful immediately after proposals because it collapses implied consequences.
+
+\subsection{ARC-1 and ARC-2}
+
+ARC-1 is a single-rule grid transformation benchmark. ARC-2 uses ordered two-rule compositions. LDT derives broad rule-family constraints from input/output invariants. TRM searches primitive rules or ordered pairs. Hybrid restricts proposals by LDT families and certifies them against training examples:
+\[
+  \operatorname{accept}(\hat r)
+  \iff
+  \forall (x_j,y_j)\in D_{\text{train}}:\hat r(x_j)=y_j.
+\]
+For ARC-2, $\hat r = r_b \circ r_a$ and the same certification applies.
+
+\subsection{Environment-Pointer Routing}
+
+Routing maps a prompt to an environment ID. The Tesseract router reference trains a TF-IDF plus MLP router. The dependency-light benchmark here uses a lexical TRM analogue. LDT builds token-derived candidate sets:
+\[
+  C_t = \bigcap_{w\in \operatorname{tokens}(x)} E_w,
+\]
+where $E_w$ is the set of environments associated with token $w$. This evidence is not environment-sound. It is model- or experience-derived. Therefore the final hybrid design uses it as soft guidance only:
+\[
+\operatorname{route}_{\text{hybrid}}(x)=
+\begin{cases}
+\arg\max_{e\in C_t}\operatorname{TRM}(e\mid x) &
+\text{if TRM top route is in } C_t,\\
+\arg\max_e \operatorname{TRM}(e\mid x) & \text{otherwise.}
+\end{cases}
+\]
+
+\subsection{Storyworld Playing}
+
+The storyworld has exact transitions and a modeled rival policy. LDT uses finite-horizon reachability. TRM uses a greedy local-deficit heuristic. Hybrid lets TRM propose an action, then checks whether the action preserves modeled reachability:
+\[
+  \operatorname{safe}(s,a,H)
+  =
+  \operatorname{Reachable}_{\text{model}}(T(s,a,\pi_{\text{rival}}(s)),H-1).
+\]
+Action selection is:
+\[
+a_t =
+\begin{cases}
+a^{\text{TRM}}_t & \text{if safe}(s_t,a^{\text{TRM}}_t,H-t),\\
+a^{\text{LDT}}_t & \text{if } a^{\text{LDT}}_t \text{ exists},\\
+a^{\text{TRM}}_t & \text{otherwise.}
+\end{cases}
+\]
+
+\section{Results}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Benchmark & LDT & TRM & Hybrid & Best \\
+\midrule
+Sudoku & 0.333 & 1.000 & 1.000 & TRM, Hybrid \\
+ARC-1 & 1.000 & 1.000 & 1.000 & All \\
+ARC-2 & 1.000 & 1.000 & 1.000 & All \\
+Routing & 0.538 & 0.815 & 0.815 & TRM, Hybrid \\
+Storyworld & 1.000 & 0.172 & 1.000 & LDT, Hybrid \\
+\bottomrule
+\end{tabular}
+\caption{Saved benchmark scores. Scores are solve rate or routing accuracy depending on the task family.}
+\label{tab:results}
+\end{table}
+
+The aggregate pattern is:
+\begin{itemize}
+  \item TRM helps when proposal, search, or lexical classification is needed.
+  \item LDT helps when mechanics are explicit and checkable.
+  \item Hybrid helps when proposal can be followed by checkable pruning, certification, or reachability checks.
+  \item Hybrid does not automatically improve learned routing if the LDT side has only soft lexical evidence.
+\end{itemize}
+
+In Sudoku, hybrid matches TRM's solve rate while reducing guesses from 31 to 6. In ARC-1, hybrid matches the best score and uses fewer steps than LDT and fewer proposals than TRM. In ARC-2, hybrid matches the best score and reduces aggregate proposals versus TRM, 32 versus 38, but is inferior to TRM on two individual task proposal counts because the current proposal ordering is heuristic. In routing, hybrid matches TRM accuracy only after treating LDT candidate sets as soft guidance. In storyworld play, hybrid matches LDT success and slightly reduces average steps, using 124 overrides to repair unsafe TRM proposals.
+
+\section{Design Decisions and Alternatives}
+
+\paragraph{Hard versus soft application.}
+We hard-apply only environment-sound refinements by default. An alternative is to allow model-sound or experience-sound hard updates. This would make routing and replay-derived pruning more aggressive, but it risks false eliminations. The routing benchmark demonstrates the risk: hard LDT filtering from token evidence underperformed TRM.
+
+\paragraph{Reject non-monotone proposals before meet.}
+We reject proposals that widen candidate sets before applying meet. An alternative is to apply meet regardless and accept the result if the final state does not widen. This hides proposal defects. Rejecting early gives a cleaner training signal.
+
+\paragraph{Bottom requires explicit abstain.}
+Bottom-producing proposals are rejected unless the proposal is in explicit abstain mode. An alternative is to treat bottom as an ordinary conflict result. We avoid this because bottom is semantically important and should become a visible conflict or abstention frame.
+
+\paragraph{LDT as certifier, planner, or telemetry.}
+We use LDT differently by domain: propagator in Sudoku, rule certifier in ARC, soft candidate telemetry in routing, and reachability planner in storyworld play. Forcing a single LDT role would be architecturally cleaner but less honest because checkability differs across domains.
+
+\paragraph{Hybrid override policy.}
+In storyworld play, the hybrid overrides TRM when its proposed action loses modeled reachability and a certified alternative exists. Always routing through LDT first would collapse the hybrid into LDT. Letting TRM override LDT for speed would lose the safety benefit on dynamic tasks.
+
+\paragraph{Proposal ordering.}
+Current ARC proposal ordering is simple and hand-coded. The ARC-2 efficiency regressions indicate that a learned TRM proposal ranker should be trained while retaining LDT certification.
+
+\section{Limitations}
+
+The benchmarks are small and synthetic. They test contracts, not scale. The TRM implementations in this repository are dependency-light analogues, not full recurrent neural models. The Tesseract router reference uses a TF-IDF plus MLP architecture, and the local routing benchmark mirrors the classification objective without importing its full PyTorch stack. The LDT side is symbolic and domain-specific. A learned LDT head is future work. The hybrid has no aggregate score regression in the saved benchmarks, but it does have efficiency regressions in ARC-2 subcases and no routing accuracy gain over TRM yet.
+
+\section{Next Experiments}
+
+\begin{enumerate}
+  \item Train ARC-2 proposal ordering and compare proposal counts against the static hybrid.
+  \item Add TRM confidence margins to routing so LDT soft candidates affect only low-confidence routes.
+  \item Convert membrane decisions into SFT records and train a small learned membrane policy.
+  \item Run the INTELLECT-3 \texttt{logic-env} under WSL or Linux. The Windows smoke command currently fails before environment loading due to a Unix-only \texttt{fcntl} import in \texttt{prime\_tunnel}.
+  \item Scale storyworld play to larger GPTStoryworld or SweepWeave tasks after this finite-state harness is stable.
+\end{enumerate}
+
+\section{Conclusion}
+
+The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

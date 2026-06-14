@@ -1,0 +1,29 @@
+\begin{tikzpicture}[
+  node distance=1.35cm,
+  box/.style={draw, rounded corners, align=center, minimum width=3.4cm, minimum height=0.8cm},
+  yes/.style={box, fill=green!8},
+  no/.style={box, fill=red!8},
+  mid/.style={box, fill=yellow!10},
+  arrow/.style={-Latex, thick}
+]
+\node[mid] (p) {Proposal $p_t=(\hat a, \tau, m)$};
+\node[mid, below=of p] (mono) {Is $\hat a \sqsubseteq a_t$?};
+\node[no, right=of mono] (reject1) {Reject\\non-monotone};
+\node[mid, below=of mono] (prov) {Provenance $\tau$};
+\node[yes, below left=1.2cm and 1.0cm of prov] (env) {environment-sound\\hard candidate};
+\node[mid, below=1.2cm of prov] (soft) {model/experience\\soft store};
+\node[no, below right=1.2cm and 1.0cm of prov] (unk) {unknown\\reject};
+\node[mid, below=1.4cm of env] (bottom) {Bottom?};
+\node[yes, below=of bottom] (apply) {Accept meet\\$a_{t+1}=a_t\wedge\hat a$};
+\node[no, right=of bottom] (abstain) {Accept only\\if abstain mode};
+
+\draw[arrow] (p) -- (mono);
+\draw[arrow] (mono) -- node[above, font=\scriptsize]{no} (reject1);
+\draw[arrow] (mono) -- node[right, font=\scriptsize]{yes} (prov);
+\draw[arrow] (prov) -- (env);
+\draw[arrow] (prov) -- (soft);
+\draw[arrow] (prov) -- (unk);
+\draw[arrow] (env) -- (bottom);
+\draw[arrow] (bottom) -- node[right, font=\scriptsize]{no} (apply);
+\draw[arrow] (bottom) -- node[above, font=\scriptsize]{yes} (abstain);
+\end{tikzpicture}
