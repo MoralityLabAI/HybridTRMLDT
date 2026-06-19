@@ -5,6 +5,7 @@ from research_gym.scripts.compare_benchmarks import (
     markdown_report,
     routing_ablation_rows,
     routing_architecture_rows,
+    storyworld_architecture_summary,
 )
 
 
@@ -39,6 +40,7 @@ def test_markdown_report_mentions_core_findings():
         routing_ablations=routing_ablation_rows(data_dir),
         routing_architectures=architecture_rows,
         confidence_gamma=confidence_gamma,
+        storyworld_architectures=storyworld_architecture_summary(data_dir),
     )
 
     assert "Where TRM Is Effective" in report
@@ -46,5 +48,6 @@ def test_markdown_report_mentions_core_findings():
     assert "ARC-2 Efficiency Regressions" in report
     assert "Routing Ablations" in report
     assert "Hybrid Architecture Variants" in report
+    assert "Storyworld Confidence vs Type Split" in report
     assert "typed_membrane" in report
     assert "routing" in report

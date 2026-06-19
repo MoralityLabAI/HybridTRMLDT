@@ -64,6 +64,15 @@ Confidence arbitration gamma: `0.00`
 | `hard_gate` | 0.584 | 101/173 | 2.09 | LDT candidates hard-filter TRM scoring. |
 | `confidence_arbitration` | 0.815 | 141/173 | 2.09 | TRM acts above margin; LDT constrains low-margin cases. |
 
+## Storyworld Confidence vs Type Split
+
+| Scenario | Policy | Success Rate | Avg Score | Interpretation |
+|---|---|---:|---:|---|
+| `secret_ending` | `typed_membrane` | 1.000 | 1.00 | exact reachability is environment-sound |
+| `secret_ending` | `confidence_arbitration` | 0.938 | 0.94 | high-confidence local morality can miss a secret gate |
+| `moral_optimization` | `typed_membrane` | 1.000 | 9.95 | safe but conservative under a soft preference surface |
+| `moral_optimization` | `confidence_arbitration` | 1.000 | 11.06 | best soft-score optimizer in this probe |
+
 ## Practical Map
 
 | Regime | Best Current Tool | Reason |

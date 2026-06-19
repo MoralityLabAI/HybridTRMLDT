@@ -96,6 +96,15 @@ def routing_architecture_rows(data_dir: Path) -> tuple[float, list[dict[str, Any
     return float(routing.get("confidence_gamma", 0.0)), list(routing.get("architecture_variants", []))
 
 
+def storyworld_architecture_summary(data_dir: Path) -> dict[str, dict[str, dict[str, Any]]]:
+    path = data_dir / "storyworld_architecture_results.json"
+    if not path.exists():
+        return {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    summary = payload.get("summary", {})
+    return summary if isinstance(summary, dict) else {}
+
+
 def best_by_score(summary: dict[str, dict[str, float]]) -> list[str]:
     best = max(metrics["score"] for metrics in summary.values())
     return sorted(name for name, metrics in summary.items() if metrics["score"] == best)
@@ -118,10 +127,12 @@ def markdown_report(
     routing_ablations: list[dict[str, Any]] | None = None,
     routing_architectures: list[dict[str, Any]] | None = None,
     confidence_gamma: float = 0.0,
+    storyworld_architectures: dict[str, dict[str, dict[str, Any]]] | None = None,
 ) -> str:
     arc2_rows = arc2_rows or []
     routing_ablations = routing_ablations or []
     routing_architectures = routing_architectures or []
+    storyworld_architectures = storyworld_architectures or {}
     lines = [
         "# LDT/TRM/Hybrid Benchmark Comparison",
         "",
@@ -240,6 +251,31 @@ def markdown_report(
     lines.extend(
         [
             "",
+            "## Storyworld Confidence vs Type Split",
+            "",
+            "| Scenario | Policy | Success Rate | Avg Score | Interpretation |",
+            "|---|---|---:|---:|---|",
+        ]
+    )
+    interpretation = {
+        ("secret_ending", "typed_membrane"): "exact reachability is environment-sound",
+        ("secret_ending", "confidence_arbitration"): "high-confidence local morality can miss a secret gate",
+        ("moral_optimization", "typed_membrane"): "safe but conservative under a soft preference surface",
+        ("moral_optimization", "confidence_arbitration"): "best soft-score optimizer in this probe",
+    }
+    if storyworld_architectures:
+        for scenario in ("secret_ending", "moral_optimization"):
+            for policy in ("typed_membrane", "confidence_arbitration"):
+                metrics = storyworld_architectures[scenario][policy]
+                lines.append(
+                    f"| `{scenario}` | `{policy}` | {float(metrics['success_rate']):.3f} | "
+                    f"{float(metrics['avg_score']):.2f} | {interpretation[(scenario, policy)]} |"
+                )
+    else:
+        lines.append("| n/a | n/a | 0.000 | 0.00 | no saved storyworld architecture rows |")
+    lines.extend(
+        [
+            "",
             "## Practical Map",
             "",
             "| Regime | Best Current Tool | Reason |",
@@ -274,6 +310,7 @@ def main() -> None:
         routing_ablations=routing_ablation_rows(args.data_dir),
         routing_architectures=architecture_rows,
         confidence_gamma=confidence_gamma,
+        storyworld_architectures=storyworld_architecture_summary(args.data_dir),
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(report, encoding="utf-8")

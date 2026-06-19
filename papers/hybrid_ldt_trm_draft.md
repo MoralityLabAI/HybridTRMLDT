@@ -310,6 +310,8 @@ a^\text{TRM}_t & \text{otherwise}
 \end{cases}
 ```
 
+This is also where the richer storyworld intuition enters the paper. Secret endings and morality optimization are not the same control problem. A secret ending is a typed gate: the system either preserves reachability to a specific latent ending predicate or it does not. A morality objective is a soft preference surface: it can reward trust, evidence, low heat, and scene progress without being an environment-sound proof obligation. This mirrors the difference between worlds such as medical triage or bioethics councils, where some constraints are hard safety gates while others are soft value tradeoffs.
+
 Observed result:
 
 ```text
@@ -344,6 +346,15 @@ Routing architecture variants:
 | Typed membrane | 0.815 | 141/173 | soft telemetry unless sound |
 | Hard gate | 0.584 | 101/173 | LDT candidates hard-filter TRM |
 | Confidence arbitration | 0.815 | 141/173 | train-selected `gamma=0.0` |
+
+Storyworld confidence/type split:
+
+| Scenario | Policy | Success Rate | Avg Score |
+|---|---|---:|---:|
+| Secret ending | Typed membrane | 1.000 | 1.00 |
+| Secret ending | Confidence arbitration | 0.938 | 0.94 |
+| Moral optimization | Typed membrane | 1.000 | 9.95 |
+| Moral optimization | Confidence arbitration | 1.000 | 11.06 |
 
 ## 8. Design Decisions and Alternatives
 
