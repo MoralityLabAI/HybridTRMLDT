@@ -64,6 +64,33 @@ def load_all(data_dir: Path) -> dict[str, dict[str, dict[str, float]]]:
     return out
 
 
+def arc2_efficiency_rows(data_dir: Path) -> list[dict[str, Any]]:
+    rows = read_jsonl(data_dir / "arc2_results.jsonl")
+    by_task: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
+    for row in rows:
+        by_task[row["task_id"]][row["solver"]] = row
+    out = []
+    for task_id, solvers in sorted(by_task.items()):
+        trm = solvers["trm"]
+        hybrid = solvers["hybrid"]
+        delta = int(hybrid["proposals"]) - int(trm["proposals"])
+        out.append(
+            {
+                "task_id": task_id,
+                "trm_proposals": int(trm["proposals"]),
+                "hybrid_proposals": int(hybrid["proposals"]),
+                "delta": delta,
+                "hybrid_inferior": delta > 0,
+            }
+        )
+    return out
+
+
+def routing_ablation_rows(data_dir: Path) -> list[dict[str, Any]]:
+    routing = json.loads((data_dir / "routing_results.json").read_text(encoding="utf-8"))
+    return list(routing.get("ablations", []))
+
+
 def best_by_score(summary: dict[str, dict[str, float]]) -> list[str]:
     best = max(metrics["score"] for metrics in summary.values())
     return sorted(name for name, metrics in summary.items() if metrics["score"] == best)
@@ -79,7 +106,14 @@ def inferior_hybrid_cases(all_results: dict[str, dict[str, dict[str, float]]]) -
     return cases
 
 
-def markdown_report(all_results: dict[str, dict[str, dict[str, float]]]) -> str:
+def markdown_report(
+    all_results: dict[str, dict[str, dict[str, float]]],
+    *,
+    arc2_rows: list[dict[str, Any]] | None = None,
+    routing_ablations: list[dict[str, Any]] | None = None,
+) -> str:
+    arc2_rows = arc2_rows or []
+    routing_ablations = routing_ablations or []
     lines = [
         "# LDT/TRM/Hybrid Benchmark Comparison",
         "",
@@ -102,7 +136,7 @@ def markdown_report(all_results: dict[str, dict[str, dict[str, float]]]) -> str:
             "## Where TRM Is Effective",
             "",
             "- `sudoku`: TRM solves search-heavy puzzles that LDT propagation cannot solve, but uses many more guesses than hybrid.",
-            "- `routing`: TRM is the strongest hard router. It reaches `0.815` accuracy while LDT reaches `0.538` because token-lattice evidence is not sound enough for hard elimination.",
+            "- `routing`: TRM is the strongest hard router. It reaches `0.815` accuracy while deterministic LDT reaches `0.474` because token-lattice evidence is not sound enough for hard elimination.",
             "- `arc1` and `arc2`: TRM solves all tasks, but it is less efficient than hybrid on aggregate because it searches a wider proposal space.",
             "- `storyworld`: TRM is weak as a standalone policy because greedy local deficits lose modeled reachability under the rival policy.",
             "",
@@ -117,7 +151,7 @@ def markdown_report(all_results: dict[str, dict[str, dict[str, float]]]) -> str:
             "- `sudoku`: hybrid matches TRM's solve rate and cuts guesses from `31` to `6` by using LDT propagation after proposals.",
             "- `arc1`: hybrid matches the best score and uses fewer steps than LDT and fewer proposals than TRM.",
             "- `arc2`: hybrid matches the best score and reduces aggregate proposals versus TRM (`32` vs `38`), but is inferior to TRM on two individual task proposal counts because the current proposal ordering is heuristic, not learned.",
-            "- `routing`: hybrid matches TRM accuracy only after treating LDT candidate sets as soft guidance. Hard LDT filtering was inferior in the first routing run.",
+            "- `routing`: hybrid matches TRM accuracy only after treating LDT candidate sets as soft guidance. The hard-filter ablation drops to `0.584` accuracy.",
             "- `storyworld`: hybrid matches LDT success and slightly reduces average steps, using `124` overrides to repair unsafe TRM proposals.",
             "",
             "## Inferior Hybrid Cases",
@@ -133,6 +167,44 @@ def markdown_report(all_results: dict[str, dict[str, dict[str, float]]]) -> str:
         [
             "- ARC-2 has individual efficiency regressions: hybrid uses more proposals than TRM on `arc2_flip_then_color` and `arc2_color_then_flip` due to non-learned pair ordering.",
             "- Routing has a design caveat: hybrid is not better than TRM on accuracy yet; LDT is useful only as soft candidate telemetry unless calibrated.",
+            "",
+            "## ARC-2 Efficiency Regressions",
+            "",
+            "| Task | TRM Proposals | Hybrid Proposals | Delta | Interpretation |",
+            "|---|---:|---:|---:|---|",
+        ]
+    )
+    if arc2_rows:
+        for row in arc2_rows:
+            interpretation = "hybrid worse" if row["hybrid_inferior"] else "hybrid better"
+            if row["delta"] == 0:
+                interpretation = "tie"
+            lines.append(
+                f"| `{row['task_id']}` | {row['trm_proposals']} | {row['hybrid_proposals']} | "
+                f"{row['delta']:+d} | {interpretation} |"
+            )
+    else:
+        lines.append("| n/a | 0 | 0 | +0 | no saved ARC-2 rows |")
+    lines.extend(
+        [
+            "",
+            "## Routing Ablations",
+            "",
+            "| Router | Accuracy | Correct | Abstained | Avg Candidates |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
+    if routing_ablations:
+        for row in routing_ablations:
+            lines.append(
+                f"| `{row['router']}` | {float(row['accuracy']):.3f} | "
+                f"{int(row['correct'])}/{int(row['total'])} | {int(row['abstained'])} | "
+                f"{float(row['avg_candidates']):.2f} |"
+            )
+    else:
+        lines.append("| n/a | 0.000 | 0/0 | 0 | 0.00 |")
+    lines.extend(
+        [
             "",
             "## Practical Map",
             "",
@@ -161,7 +233,11 @@ def main() -> None:
     args = parser.parse_args()
 
     results = load_all(args.data_dir)
-    report = markdown_report(results)
+    report = markdown_report(
+        results,
+        arc2_rows=arc2_efficiency_rows(args.data_dir),
+        routing_ablations=routing_ablation_rows(args.data_dir),
+    )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(report, encoding="utf-8")
     print(report)

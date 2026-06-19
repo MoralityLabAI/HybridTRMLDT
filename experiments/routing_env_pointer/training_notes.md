@@ -6,7 +6,8 @@ Models:
 
 - `ldt`: explicit token lattice router. Tokens refine candidate environment sets.
 - `trm`: dependency-light lexical TRM analogue, mirroring Tesseract's TF-IDF router objective.
-- `hybrid`: LDT candidate filtering followed by TRM scoring inside the surviving candidate set.
+- `hybrid`: soft LDT candidate telemetry plus TRM scoring.
+- `hybrid_hard_filter`: ablation that forces LDT candidates as hard filters before TRM scoring.
 
 Data:
 
@@ -18,6 +19,7 @@ Data:
 
 This run does not train QLoRA adapters or use VPD. It isolates router behavior.
 
-- `ldt` accuracy=0.538 correct=93/173 abstained=15 avg_candidates=0.00
+- `ldt` accuracy=0.474 correct=82/173 abstained=15 avg_candidates=0.00
 - `trm` accuracy=0.815 correct=141/173 abstained=0 avg_candidates=0.00
 - `hybrid` accuracy=0.815 correct=141/173 abstained=0 avg_candidates=2.09
+- `hybrid_hard_filter` accuracy=0.584 correct=101/173 abstained=0 avg_candidates=2.09

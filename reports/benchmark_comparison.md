@@ -9,13 +9,13 @@ This report compares the saved benchmark outputs. VPD is not part of this compar
 | `sudoku` | 0.333 | 1.000 | 1.000 | hybrid, trm |
 | `arc1` | 1.000 | 1.000 | 1.000 | hybrid, ldt, trm |
 | `arc2` | 1.000 | 1.000 | 1.000 | hybrid, ldt, trm |
-| `routing` | 0.538 | 0.815 | 0.815 | hybrid, trm |
+| `routing` | 0.474 | 0.815 | 0.815 | hybrid, trm |
 | `storyworld` | 1.000 | 0.172 | 1.000 | hybrid, ldt |
 
 ## Where TRM Is Effective
 
 - `sudoku`: TRM solves search-heavy puzzles that LDT propagation cannot solve, but uses many more guesses than hybrid.
-- `routing`: TRM is the strongest hard router. It reaches `0.815` accuracy while LDT reaches `0.538` because token-lattice evidence is not sound enough for hard elimination.
+- `routing`: TRM is the strongest hard router. It reaches `0.815` accuracy while deterministic LDT reaches `0.474` because token-lattice evidence is not sound enough for hard elimination.
 - `arc1` and `arc2`: TRM solves all tasks, but it is less efficient than hybrid on aggregate because it searches a wider proposal space.
 - `storyworld`: TRM is weak as a standalone policy because greedy local deficits lose modeled reachability under the rival policy.
 
@@ -30,7 +30,7 @@ This report compares the saved benchmark outputs. VPD is not part of this compar
 - `sudoku`: hybrid matches TRM's solve rate and cuts guesses from `31` to `6` by using LDT propagation after proposals.
 - `arc1`: hybrid matches the best score and uses fewer steps than LDT and fewer proposals than TRM.
 - `arc2`: hybrid matches the best score and reduces aggregate proposals versus TRM (`32` vs `38`), but is inferior to TRM on two individual task proposal counts because the current proposal ordering is heuristic, not learned.
-- `routing`: hybrid matches TRM accuracy only after treating LDT candidate sets as soft guidance. Hard LDT filtering was inferior in the first routing run.
+- `routing`: hybrid matches TRM accuracy only after treating LDT candidate sets as soft guidance. The hard-filter ablation drops to `0.584` accuracy.
 - `storyworld`: hybrid matches LDT success and slightly reduces average steps, using `124` overrides to repair unsafe TRM proposals.
 
 ## Inferior Hybrid Cases
@@ -38,6 +38,20 @@ This report compares the saved benchmark outputs. VPD is not part of this compar
 - No aggregate benchmark has hybrid below the best score.
 - ARC-2 has individual efficiency regressions: hybrid uses more proposals than TRM on `arc2_flip_then_color` and `arc2_color_then_flip` due to non-learned pair ordering.
 - Routing has a design caveat: hybrid is not better than TRM on accuracy yet; LDT is useful only as soft candidate telemetry unless calibrated.
+
+## ARC-2 Efficiency Regressions
+
+| Task | TRM Proposals | Hybrid Proposals | Delta | Interpretation |
+|---|---:|---:|---:|---|
+| `arc2_color_then_flip` | 12 | 14 | +2 | hybrid worse |
+| `arc2_fill_then_rotate` | 21 | 5 | -16 | hybrid better |
+| `arc2_flip_then_color` | 5 | 13 | +8 | hybrid worse |
+
+## Routing Ablations
+
+| Router | Accuracy | Correct | Abstained | Avg Candidates |
+|---|---:|---:|---:|---:|
+| `hybrid_hard_filter` | 0.584 | 101/173 | 0 | 2.09 |
 
 ## Practical Map
 

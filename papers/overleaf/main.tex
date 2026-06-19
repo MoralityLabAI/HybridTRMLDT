@@ -196,7 +196,7 @@ Benchmark & LDT & TRM & Hybrid & Best \\
 Sudoku & 0.333 & 1.000 & 1.000 & TRM, Hybrid \\
 ARC-1 & 1.000 & 1.000 & 1.000 & All \\
 ARC-2 & 1.000 & 1.000 & 1.000 & All \\
-Routing & 0.538 & 0.815 & 0.815 & TRM, Hybrid \\
+Routing & 0.474 & 0.815 & 0.815 & TRM, Hybrid \\
 Storyworld & 1.000 & 0.172 & 1.000 & LDT, Hybrid \\
 \bottomrule
 \end{tabular}
@@ -212,12 +212,27 @@ The aggregate pattern is:
   \item Hybrid does not automatically improve learned routing if the LDT side has only soft lexical evidence.
 \end{itemize}
 
-In Sudoku, hybrid matches TRM's solve rate while reducing guesses from 31 to 6. In ARC-1, hybrid matches the best score and uses fewer steps than LDT and fewer proposals than TRM. In ARC-2, hybrid matches the best score and reduces aggregate proposals versus TRM, 32 versus 38, but is inferior to TRM on two individual task proposal counts because the current proposal ordering is heuristic. In routing, hybrid matches TRM accuracy only after treating LDT candidate sets as soft guidance. In storyworld play, hybrid matches LDT success and slightly reduces average steps, using 124 overrides to repair unsafe TRM proposals.
+In Sudoku, hybrid matches TRM's solve rate while reducing guesses from 31 to 6. In ARC-1, hybrid matches the best score and uses fewer steps than LDT and fewer proposals than TRM. In ARC-2, hybrid matches the best score and reduces aggregate proposals versus TRM, 32 versus 38, but is inferior to TRM on two individual task proposal counts because the current proposal ordering is heuristic. In routing, hybrid matches TRM accuracy only after treating LDT candidate sets as soft guidance; forcing LDT candidates as hard filters drops accuracy to 0.584. In storyworld play, hybrid matches LDT success and slightly reduces average steps, using 124 overrides to repair unsafe TRM proposals.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Routing variant & Accuracy & Correct & Abstained & Avg. candidates \\
+\midrule
+TRM & 0.815 & 141/173 & 0 & 0.00 \\
+Soft hybrid & 0.815 & 141/173 & 0 & 2.09 \\
+Hard-filter hybrid & 0.584 & 101/173 & 0 & 2.09 \\
+\bottomrule
+\end{tabular}
+\caption{Routing ablation. Token-lattice candidate sets help as telemetry but are too noisy for hard elimination.}
+\label{tab:routing-ablation}
+\end{table}
 
 \section{Design Decisions and Alternatives}
 
 \paragraph{Hard versus soft application.}
-We hard-apply only environment-sound refinements by default. An alternative is to allow model-sound or experience-sound hard updates. This would make routing and replay-derived pruning more aggressive, but it risks false eliminations. The routing benchmark demonstrates the risk: hard LDT filtering from token evidence underperformed TRM.
+We hard-apply only environment-sound refinements by default. An alternative is to allow model-sound or experience-sound hard updates. This would make routing and replay-derived pruning more aggressive, but it risks false eliminations. The routing benchmark demonstrates the risk: hard LDT filtering from token evidence underperformed TRM, with the hard-filter hybrid ablation at 0.584 versus 0.815 for TRM and soft hybrid.
 
 \paragraph{Reject non-monotone proposals before meet.}
 We reject proposals that widen candidate sets before applying meet. An alternative is to apply meet regardless and accept the result if the final state does not widen. This hides proposal defects. Rejecting early gives a cleaner training signal.

@@ -85,7 +85,7 @@ class TokenLatticeRouter:
     def candidates(self, prompt: str) -> set[str]:
         candidates = set(self.envs)
         narrowed = False
-        for token in set(tokenize(prompt)):
+        for token in sorted(set(tokenize(prompt))):
             supported = self.token_to_envs.get(token)
             if not supported:
                 continue
@@ -102,7 +102,7 @@ class TokenLatticeRouter:
         tokens = set(tokenize(prompt))
         evidence = {
             env: sum(self.env_token_counts[env].get(token, 0) for token in tokens)
-            for env in candidates
+            for env in sorted(candidates)
         }
         if not evidence:
             return None
@@ -124,6 +124,18 @@ class HybridRoutingModel:
         # Token-derived routing is model/experience evidence, not hard soundness.
         # If the lattice proposal would eliminate the TRM top route, keep it soft.
         return trm_prediction, len(candidates)
+
+
+class HardHybridRoutingModel:
+    """Ablation: force LDT candidates as hard filters before TRM scoring."""
+
+    def __init__(self, ldt: TokenLatticeRouter, trm: LexicalTRMRouter) -> None:
+        self.ldt = ldt
+        self.trm = trm
+
+    def predict(self, prompt: str) -> tuple[str, int]:
+        candidates = self.ldt.candidates(prompt)
+        return self.trm.predict(prompt, candidates), len(candidates)
 
 
 def evaluate_router(name: str, examples: list[RoutingExample], predict_fn) -> RoutingRunResult:
@@ -160,16 +172,21 @@ def run_routing_benchmark(examples: list[RoutingExample], *, train_ratio: float 
     trm = LexicalTRMRouter().fit(train)
     ldt = TokenLatticeRouter().fit(train)
     hybrid = HybridRoutingModel(ldt, trm)
+    hard_hybrid = HardHybridRoutingModel(ldt, trm)
     results = [
         evaluate_router("ldt", test, ldt.predict),
         evaluate_router("trm", test, trm.predict),
         evaluate_router("hybrid", test, hybrid.predict),
+    ]
+    ablations = [
+        evaluate_router("hybrid_hard_filter", test, hard_hybrid.predict),
     ]
     return {
         "train_size": len(train),
         "test_size": len(test),
         "envs": sorted({example.env_id for example in examples}),
         "results": [result.to_jsonable() for result in results],
+        "ablations": [result.to_jsonable() for result in ablations],
     }
 
 
@@ -192,6 +209,16 @@ def summary_markdown(payload: dict[str, object]) -> str:
             f"{int(result['correct'])}/{int(result['total'])} | {int(result['abstained'])} | "
             f"{float(result['avg_candidates']):.2f} |"
         )
+    ablations = payload.get("ablations", [])
+    if ablations:
+        lines.extend(["", "## Ablations", "", "| Router | Accuracy | Correct | Abstained | Avg Candidates |", "|---|---:|---:|---:|---:|"])
+        for result in ablations:
+            assert isinstance(result, dict)
+            lines.append(
+                f"| `{result['router']}` | {float(result['accuracy']):.3f} | "
+                f"{int(result['correct'])}/{int(result['total'])} | {int(result['abstained'])} | "
+                f"{float(result['avg_candidates']):.2f} |"
+            )
     return "\n".join(lines) + "\n"
 
 

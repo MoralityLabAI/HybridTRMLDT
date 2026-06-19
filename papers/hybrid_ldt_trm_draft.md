@@ -235,12 +235,13 @@ This evidence is not environment-sound. It is model/experience-derived. Therefor
 Observed result:
 
 ```text
-LDT:    0.538
+LDT:    0.474
 TRM:    0.815
 Hybrid: 0.815
+Hybrid hard filter: 0.584
 ```
 
-Design lesson: when LDT evidence is lexical and learned from data, hard elimination is unsafe. The hybrid must distinguish soft route telemetry from environment-sound pruning.
+Design lesson: when LDT evidence is lexical and learned from data, hard elimination is unsafe. The hybrid must distinguish soft route telemetry from environment-sound pruning. In this deterministic run, forcing token-lattice candidates as hard filters reduces accuracy from `0.815` to `0.584`.
 
 ### 5.4 Storyworld Playing
 
@@ -279,7 +280,7 @@ Interpretation: TRM local heuristics often rush into terminal states that fail t
 | Sudoku | 0.333 | 1.000 | 1.000 | TRM, Hybrid |
 | ARC-1 | 1.000 | 1.000 | 1.000 | all |
 | ARC-2 | 1.000 | 1.000 | 1.000 | all |
-| Routing | 0.538 | 0.815 | 0.815 | TRM, Hybrid |
+| Routing | 0.474 | 0.815 | 0.815 | TRM, Hybrid |
 | Storyworld | 1.000 | 0.172 | 1.000 | LDT, Hybrid |
 
 The aggregate pattern is:
@@ -295,7 +296,7 @@ The aggregate pattern is:
 
 Decision: hard-apply only environment-sound refinements by default.
 
-Alternative: allow model-sound or experience-sound hard updates. This would make routing and replay-derived pruning more aggressive, but it risks false eliminations. The routing benchmark demonstrates the risk: hard LDT filtering from token evidence underperformed TRM.
+Alternative: allow model-sound or experience-sound hard updates. This would make routing and replay-derived pruning more aggressive, but it risks false eliminations. The routing benchmark demonstrates the risk: hard LDT filtering from token evidence underperformed TRM, with the hard-filter hybrid ablation at `0.584` versus `0.815` for TRM and soft hybrid.
 
 ### 7.2 Reject Non-Monotone Proposals Before Meet
 
@@ -353,4 +354,3 @@ The hybrid has no aggregate score regression in the saved benchmarks, but it doe
 ## 10. Conclusion
 
 The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft.
-

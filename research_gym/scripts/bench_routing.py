@@ -18,7 +18,8 @@ def training_notes(payload: dict[str, object], data_root: Path, max_per_env: int
         "",
         "- `ldt`: explicit token lattice router. Tokens refine candidate environment sets.",
         "- `trm`: dependency-light lexical TRM analogue, mirroring Tesseract's TF-IDF router objective.",
-        "- `hybrid`: LDT candidate filtering followed by TRM scoring inside the surviving candidate set.",
+        "- `hybrid`: soft LDT candidate telemetry plus TRM scoring.",
+        "- `hybrid_hard_filter`: ablation that forces LDT candidates as hard filters before TRM scoring.",
         "",
         "Data:",
         "",
@@ -32,6 +33,12 @@ def training_notes(payload: dict[str, object], data_root: Path, max_per_env: int
         "",
     ]
     for result in payload["results"]:
+        lines.append(
+            f"- `{result['router']}` accuracy={float(result['accuracy']):.3f} "
+            f"correct={result['correct']}/{result['total']} abstained={result['abstained']} "
+            f"avg_candidates={float(result['avg_candidates']):.2f}"
+        )
+    for result in payload.get("ablations", []):
         lines.append(
             f"- `{result['router']}` accuracy={float(result['accuracy']):.3f} "
             f"correct={result['correct']}/{result['total']} abstained={result['abstained']} "

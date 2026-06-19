@@ -49,5 +49,6 @@ def test_run_routing_benchmark_returns_three_models():
     results = {result["router"]: result for result in payload["results"]}
 
     assert set(results) == {"ldt", "trm", "hybrid"}
+    assert {result["router"] for result in payload["ablations"]} == {"hybrid_hard_filter"}
     assert results["trm"]["accuracy"] >= 0.8
     assert results["hybrid"]["accuracy"] >= 0.8

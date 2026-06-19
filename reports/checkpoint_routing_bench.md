@@ -48,7 +48,7 @@ experiments/routing_env_pointer/training_notes.md
 ```text
 train examples: 402
 test examples: 173
-ldt: 0.538 accuracy, 93/173 correct, 15 abstained
+ldt: 0.538 accuracy, 93/173 correct, 15 abstained (superseded by deterministic rerun in `checkpoint_routing_ablation.md`)
 trm: 0.815 accuracy, 141/173 correct
 hybrid: 0.815 accuracy, 141/173 correct, avg LDT candidate set 2.09
 ```
