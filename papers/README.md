@@ -1,6 +1,6 @@
 # Papers
 
-Current draft:
+Current draft: `Trade Offs between TRM/LDT Hybrids`
 
 ```text
 hybrid_ldt_trm_draft.md

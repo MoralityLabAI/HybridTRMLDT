@@ -1,5 +1,7 @@
 # Overleaf Bundle
 
+Paper: `Trade Offs between TRM/LDT Hybrids`
+
 Upload `hybrid_ldt_trm_overleaf.zip` to Overleaf, or upload this folder directly.
 
 Entry point:

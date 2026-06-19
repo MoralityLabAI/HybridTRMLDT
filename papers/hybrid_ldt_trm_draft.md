@@ -1,4 +1,4 @@
-# A Typed Membrane Between Latent Proposal and Explicit Deduction
+# Trade Offs between TRM/LDT Hybrids
 
 ## Abstract
 
@@ -347,6 +347,15 @@ Routing architecture variants:
 | Hard gate | 0.584 | 101/173 | LDT candidates hard-filter TRM |
 | Confidence arbitration | 0.815 | 141/173 | train-selected `gamma=0.0` |
 
+Policy-selection rule of thumb:
+
+| Regime | Preferred Policy | Reason |
+|---|---|---|
+| Environment-sound gate | Typed membrane or hard gate | Proof-like state should dominate confidence |
+| Soft preference objective | Confidence arbitration | Local score can optimize value tradeoffs |
+| Noisy lexical evidence | Typed membrane | Keep learned candidates soft |
+| Checkable search space | Typed membrane | Propose with TRM, certify with LDT |
+
 Storyworld confidence/type split:
 
 | Scenario | Policy | Success Rate | Avg Score |
@@ -355,6 +364,10 @@ Storyworld confidence/type split:
 | Secret ending | Confidence arbitration | 0.938 | 0.94 |
 | Moral optimization | Typed membrane | 1.000 | 9.95 |
 | Moral optimization | Confidence arbitration | 1.000 | 11.06 |
+
+Transcript slice:
+
+One secret-ending run starts at `(trust=3, evidence=1, heat=4, scene=1)`. Confidence arbitration sees high local margins and repeatedly selects `defuse`: `defuse, defuse, defuse, defuse`. It ends at `(trust=3, evidence=1, heat=0, scene=5)` and fails because evidence never reaches the secret gate. The typed membrane instead accepts the need to preserve reachability and follows `defuse, wait, wait, investigate, defuse, investigate`, ending at `(trust=1, evidence=3, heat=2, scene=5)` and satisfying the secret-ending predicate.
 
 ## 8. Design Decisions and Alternatives
 
