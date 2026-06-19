@@ -34,6 +34,8 @@ Can persistent latent recurrence improve explicit lattice deduction without dest
 
 We separate two roles. TRM is private recurrent or heuristic workspace that proposes actions, refinements, routes, or candidate rules. LDT is explicit public lattice state that supports monotone refinement, bottom detection, serialization, and typed provenance. The hybrid architecture is useful only if these roles remain separated. If latent proposals can directly mutate durable state, the system loses the main benefit of explicit deduction. If the lattice is the only mechanism, the system struggles when local propagation is insufficient and search or heuristic proposal is needed.
 
+The terminology is motivated by recent compact recurrent reasoners, especially HRM and TRM~\cite{wang2025hrm,jolicoeurmartineau2025trm}, and by LDT's explicit lattice-state view~\cite{davis2026ldt}. The control-flow question is also adjacent to neurosymbolic architecture taxonomies and systems that combine neural proposal with symbolic, logical, or executable structure~\cite{kautz2022third,garcez2020neurosymbolic,manhaeve2018deepproblog,dong2019nlm,yao2022react}. Our contribution is narrower than that literature: we study when a typed membrane should convert a proposal into a durable lattice update, keep it as soft telemetry, or reject it.
+
 This paper intentionally excludes VPD. The benchmark argument is about hybrid reasoning behavior, typed state updates, and empirical task performance.
 
 \section{Architecture}
@@ -55,7 +57,7 @@ The public state $a_t$ is serializable and checkable. In the implementation, it 
 
 \section{Lattice Formulation}
 
-For the candidate-state implementation, let slots be indexed by $i \in I$. Each slot has finite universe $U_i$. A lattice state is
+For the candidate-state implementation, following the lattice view used in abstract interpretation~\cite{cousot1977abstract}, let slots be indexed by $i \in I$. Each slot has finite universe $U_i$. A lattice state is
 \[
   a = \{ C_i \subseteq U_i \}_{i \in I}.
 \]
@@ -196,7 +198,7 @@ LDT performs naked-single propagation. TRM performs heuristic minimum-remaining-
 
 \subsection{ARC-1 and ARC-2}
 
-ARC-1 is a single-rule grid transformation benchmark. ARC-2 uses ordered two-rule compositions. LDT derives broad rule-family constraints from input/output invariants. TRM searches primitive rules or ordered pairs. Hybrid restricts proposals by LDT families and certifies them against training examples:
+ARC-1 is a single-rule grid transformation benchmark inspired by the Abstraction and Reasoning Corpus framing~\cite{chollet2019measure}. ARC-2 uses ordered two-rule compositions. LDT derives broad rule-family constraints from input/output invariants. TRM searches primitive rules or ordered pairs. Hybrid restricts proposals by LDT families and certifies them against training examples:
 \[
   \operatorname{accept}(\hat r)
   \iff
@@ -206,7 +208,7 @@ For ARC-2, $\hat r = r_b \circ r_a$ and the same certification applies.
 
 \subsection{Environment-Pointer Routing}
 
-Routing maps a prompt to an environment ID. The Tesseract router reference trains a TF-IDF plus MLP router. The dependency-light benchmark here uses a lexical TRM analogue. LDT builds token-derived candidate sets:
+Routing maps a prompt to an environment ID. The Tesseract router reference trains a TF-IDF plus MLP router~\cite{tesseract2026router}. The dependency-light benchmark here uses a lexical TRM analogue. LDT builds token-derived candidate sets:
 \[
   C_t = \bigcap_{w\in \operatorname{tokens}(x)} E_w,
 \]
@@ -356,7 +358,7 @@ Current ARC proposal ordering is simple and hand-coded. The ARC-2 efficiency reg
 
 \section{Limitations}
 
-The benchmarks are small and synthetic. They test contracts, not scale. The TRM implementations in this repository are dependency-light analogues, not full recurrent neural models. The Tesseract router reference uses a TF-IDF plus MLP architecture, and the local routing benchmark mirrors the classification objective without importing its full PyTorch stack. The LDT side is symbolic and domain-specific. A learned LDT head is future work. The hybrid has no aggregate score regression in the saved benchmarks, but it does have efficiency regressions in ARC-2 subcases and no routing accuracy gain over TRM yet.
+The benchmarks are small and synthetic. They test contracts, not scale. The TRM implementations in this repository are dependency-light analogues, not full recurrent neural models~\cite{wang2025hrm,jolicoeurmartineau2025trm}. The Tesseract router reference uses a TF-IDF plus MLP architecture, and the local routing benchmark mirrors the classification objective without importing its full PyTorch stack~\cite{tesseract2026router}. The LDT side is symbolic and domain-specific rather than a learned lattice transformer~\cite{davis2026ldt}. A learned LDT head is future work. The hybrid has no aggregate score regression in the saved benchmarks, but it does have efficiency regressions in ARC-2 subcases and no routing accuracy gain over TRM yet.
 
 \section{Next Experiments}
 
@@ -364,7 +366,7 @@ The benchmarks are small and synthetic. They test contracts, not scale. The TRM 
   \item Train ARC-2 proposal ordering and compare proposal counts against the static hybrid.
   \item Replace the routing confidence grid with a richer calibration signal; the current trained threshold degenerates to TRM on this slice.
   \item Convert membrane decisions into SFT records and train a small learned membrane policy.
-  \item Run the INTELLECT-3 \texttt{logic-env} under WSL or Linux. The Windows smoke command currently fails before environment loading due to a Unix-only \texttt{fcntl} import in \texttt{prime\_tunnel}.
+  \item Run the INTELLECT-3 \texttt{logic-env} under WSL or Linux~\cite{primeintellect2026logic}. The Windows smoke command currently fails before environment loading due to a Unix-only \texttt{fcntl} import in \texttt{prime\_tunnel}.
   \item Scale storyworld play to larger GPTStoryworld or SweepWeave tasks after this finite-state harness is stable.
 \end{enumerate}
 
