@@ -52,6 +52,17 @@ This report compares the saved benchmark outputs. VPD is not part of this compar
 | Router | Accuracy | Correct | Abstained | Avg Candidates |
 |---|---:|---:|---:|---:|
 | `hybrid_hard_filter` | 0.584 | 101/173 | 0 | 2.09 |
+| `hybrid_confidence_arbitration` | 0.815 | 141/173 | 0 | 2.09 |
+
+## Hybrid Architecture Variants
+
+Confidence arbitration gamma: `0.00`
+
+| Architecture | Accuracy | Correct | Avg Candidates | Control Policy |
+|---|---:|---:|---:|---|
+| `typed_membrane` | 0.815 | 141/173 | 2.09 | TRM proposes; LDT evidence stays soft unless sound. |
+| `hard_gate` | 0.584 | 101/173 | 2.09 | LDT candidates hard-filter TRM scoring. |
+| `confidence_arbitration` | 0.815 | 141/173 | 2.09 | TRM acts above margin; LDT constrains low-margin cases. |
 
 ## Practical Map
 
@@ -66,5 +77,5 @@ This report compares the saved benchmark outputs. VPD is not part of this compar
 ## Next Fixes
 
 - Train ARC-2 hybrid proposal ordering rather than using the current static order.
-- Add TRM confidence margins to routing so LDT soft candidates can improve low-confidence cases without suppressing correct TRM routes.
+- Replace the routing confidence grid with a richer calibration signal; the current trained threshold degenerates to TRM on this slice.
 - Add per-instance comparison tables for hybrid regressions, especially ARC-2 proposal counts and routing confusions.

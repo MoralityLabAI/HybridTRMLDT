@@ -48,6 +48,12 @@ class LexicalTRMRouter:
         scores = self.scores(prompt, candidates)
         return max(scores.items(), key=lambda item: (item[1], item[0]))[0]
 
+    def margin(self, prompt: str) -> float:
+        scores = sorted(self.scores(prompt).values(), reverse=True)
+        if len(scores) < 2:
+            return math.inf
+        return scores[0] - scores[1]
+
 
 class TokenLatticeRouter:
     """LDT router: prompt tokens monotonically refine candidate env IDs."""
@@ -138,6 +144,38 @@ class HardHybridRoutingModel:
         return self.trm.predict(prompt, candidates), len(candidates)
 
 
+class ConfidenceArbitrationRoutingModel:
+    """Use TRM directly when confidence is high; otherwise constrain with LDT."""
+
+    def __init__(self, ldt: TokenLatticeRouter, trm: LexicalTRMRouter, *, gamma: float) -> None:
+        self.ldt = ldt
+        self.trm = trm
+        self.gamma = gamma
+
+    def predict(self, prompt: str) -> tuple[str, int]:
+        candidates = self.ldt.candidates(prompt)
+        trm_prediction = self.trm.predict(prompt)
+        if self.trm.margin(prompt) >= self.gamma:
+            return trm_prediction, len(candidates)
+        return self.trm.predict(prompt, candidates), len(candidates)
+
+
+def tune_confidence_gamma(
+    examples: list[RoutingExample],
+    ldt: TokenLatticeRouter,
+    trm: LexicalTRMRouter,
+    *,
+    grid: tuple[float, ...] = (0.0, 0.5, 1.0, 2.0, 4.0),
+) -> float:
+    scored: list[tuple[float, float]] = []
+    for gamma in grid:
+        model = ConfidenceArbitrationRoutingModel(ldt, trm, gamma=gamma)
+        result = evaluate_router("confidence_arbitration", examples, model.predict)
+        scored.append((result.accuracy, -gamma))
+    _, neg_gamma = max(scored)
+    return -neg_gamma
+
+
 def evaluate_router(name: str, examples: list[RoutingExample], predict_fn) -> RoutingRunResult:
     correct = 0
     abstained = 0
@@ -173,6 +211,8 @@ def run_routing_benchmark(examples: list[RoutingExample], *, train_ratio: float 
     ldt = TokenLatticeRouter().fit(train)
     hybrid = HybridRoutingModel(ldt, trm)
     hard_hybrid = HardHybridRoutingModel(ldt, trm)
+    gamma = tune_confidence_gamma(train, ldt, trm)
+    confidence_hybrid = ConfidenceArbitrationRoutingModel(ldt, trm, gamma=gamma)
     results = [
         evaluate_router("ldt", test, ldt.predict),
         evaluate_router("trm", test, trm.predict),
@@ -180,13 +220,21 @@ def run_routing_benchmark(examples: list[RoutingExample], *, train_ratio: float 
     ]
     ablations = [
         evaluate_router("hybrid_hard_filter", test, hard_hybrid.predict),
+        evaluate_router("hybrid_confidence_arbitration", test, confidence_hybrid.predict),
+    ]
+    architecture_variants = [
+        evaluate_router("typed_membrane", test, hybrid.predict),
+        evaluate_router("hard_gate", test, hard_hybrid.predict),
+        evaluate_router("confidence_arbitration", test, confidence_hybrid.predict),
     ]
     return {
         "train_size": len(train),
         "test_size": len(test),
         "envs": sorted({example.env_id for example in examples}),
+        "confidence_gamma": gamma,
         "results": [result.to_jsonable() for result in results],
         "ablations": [result.to_jsonable() for result in ablations],
+        "architecture_variants": [result.to_jsonable() for result in architecture_variants],
     }
 
 
@@ -213,6 +261,26 @@ def summary_markdown(payload: dict[str, object]) -> str:
     if ablations:
         lines.extend(["", "## Ablations", "", "| Router | Accuracy | Correct | Abstained | Avg Candidates |", "|---|---:|---:|---:|---:|"])
         for result in ablations:
+            assert isinstance(result, dict)
+            lines.append(
+                f"| `{result['router']}` | {float(result['accuracy']):.3f} | "
+                f"{int(result['correct'])}/{int(result['total'])} | {int(result['abstained'])} | "
+                f"{float(result['avg_candidates']):.2f} |"
+            )
+    architecture_variants = payload.get("architecture_variants", [])
+    if architecture_variants:
+        lines.extend(
+            [
+                "",
+                "## Architecture Variants",
+                "",
+                f"Confidence arbitration gamma: `{float(payload.get('confidence_gamma', 0.0)):.2f}`",
+                "",
+                "| Variant | Accuracy | Correct | Abstained | Avg Candidates |",
+                "|---|---:|---:|---:|---:|",
+            ]
+        )
+        for result in architecture_variants:
             assert isinstance(result, dict)
             lines.append(
                 f"| `{result['router']}` | {float(result['accuracy']):.3f} | "

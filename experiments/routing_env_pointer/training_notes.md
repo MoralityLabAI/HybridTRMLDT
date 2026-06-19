@@ -8,6 +8,7 @@ Models:
 - `trm`: dependency-light lexical TRM analogue, mirroring Tesseract's TF-IDF router objective.
 - `hybrid`: soft LDT candidate telemetry plus TRM scoring.
 - `hybrid_hard_filter`: ablation that forces LDT candidates as hard filters before TRM scoring.
+- `hybrid_confidence_arbitration`: ablation that applies LDT candidates only when the TRM score margin is below a tuned threshold.
 
 Data:
 
@@ -16,6 +17,7 @@ Data:
 - train examples: `402`
 - test examples: `173`
 - envs: `alphabet_sort, arc_challenge, arc_easy, gsm8k, intellect_3_logic, intellect_3_math, mbpp, wiki_search`
+- confidence arbitration gamma: `0.00`
 
 This run does not train QLoRA adapters or use VPD. It isolates router behavior.
 
@@ -23,3 +25,9 @@ This run does not train QLoRA adapters or use VPD. It isolates router behavior.
 - `trm` accuracy=0.815 correct=141/173 abstained=0 avg_candidates=0.00
 - `hybrid` accuracy=0.815 correct=141/173 abstained=0 avg_candidates=2.09
 - `hybrid_hard_filter` accuracy=0.584 correct=101/173 abstained=0 avg_candidates=2.09
+- `hybrid_confidence_arbitration` accuracy=0.815 correct=141/173 abstained=0 avg_candidates=2.09
+
+Architecture variants:
+- `typed_membrane` accuracy=0.815 correct=141/173 abstained=0 avg_candidates=2.09
+- `hard_gate` accuracy=0.584 correct=101/173 abstained=0 avg_candidates=2.09
+- `confidence_arbitration` accuracy=0.815 correct=141/173 abstained=0 avg_candidates=2.09

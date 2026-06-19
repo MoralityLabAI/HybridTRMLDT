@@ -4,6 +4,7 @@ from research_gym.scripts.compare_benchmarks import (
     load_all,
     markdown_report,
     routing_ablation_rows,
+    routing_architecture_rows,
 )
 
 
@@ -31,14 +32,19 @@ def test_inferior_hybrid_cases_detects_score_regression():
 def test_markdown_report_mentions_core_findings():
     results = load_all(__import__("pathlib").Path("data/benchmarks"))
     data_dir = __import__("pathlib").Path("data/benchmarks")
+    confidence_gamma, architecture_rows = routing_architecture_rows(data_dir)
     report = markdown_report(
         results,
         arc2_rows=arc2_efficiency_rows(data_dir),
         routing_ablations=routing_ablation_rows(data_dir),
+        routing_architectures=architecture_rows,
+        confidence_gamma=confidence_gamma,
     )
 
     assert "Where TRM Is Effective" in report
     assert "No aggregate benchmark has hybrid below the best score" in report
     assert "ARC-2 Efficiency Regressions" in report
     assert "Routing Ablations" in report
+    assert "Hybrid Architecture Variants" in report
+    assert "typed_membrane" in report
     assert "routing" in report

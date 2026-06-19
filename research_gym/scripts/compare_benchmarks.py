@@ -91,6 +91,11 @@ def routing_ablation_rows(data_dir: Path) -> list[dict[str, Any]]:
     return list(routing.get("ablations", []))
 
 
+def routing_architecture_rows(data_dir: Path) -> tuple[float, list[dict[str, Any]]]:
+    routing = json.loads((data_dir / "routing_results.json").read_text(encoding="utf-8"))
+    return float(routing.get("confidence_gamma", 0.0)), list(routing.get("architecture_variants", []))
+
+
 def best_by_score(summary: dict[str, dict[str, float]]) -> list[str]:
     best = max(metrics["score"] for metrics in summary.values())
     return sorted(name for name, metrics in summary.items() if metrics["score"] == best)
@@ -111,9 +116,12 @@ def markdown_report(
     *,
     arc2_rows: list[dict[str, Any]] | None = None,
     routing_ablations: list[dict[str, Any]] | None = None,
+    routing_architectures: list[dict[str, Any]] | None = None,
+    confidence_gamma: float = 0.0,
 ) -> str:
     arc2_rows = arc2_rows or []
     routing_ablations = routing_ablations or []
+    routing_architectures = routing_architectures or []
     lines = [
         "# LDT/TRM/Hybrid Benchmark Comparison",
         "",
@@ -206,6 +214,32 @@ def markdown_report(
     lines.extend(
         [
             "",
+            "## Hybrid Architecture Variants",
+            "",
+            f"Confidence arbitration gamma: `{confidence_gamma:.2f}`",
+            "",
+            "| Architecture | Accuracy | Correct | Avg Candidates | Control Policy |",
+            "|---|---:|---:|---:|---|",
+        ]
+    )
+    policy_notes = {
+        "typed_membrane": "TRM proposes; LDT evidence stays soft unless sound.",
+        "hard_gate": "LDT candidates hard-filter TRM scoring.",
+        "confidence_arbitration": "TRM acts above margin; LDT constrains low-margin cases.",
+    }
+    if routing_architectures:
+        for row in routing_architectures:
+            name = str(row["router"])
+            lines.append(
+                f"| `{name}` | {float(row['accuracy']):.3f} | "
+                f"{int(row['correct'])}/{int(row['total'])} | {float(row['avg_candidates']):.2f} | "
+                f"{policy_notes.get(name, 'architecture variant')} |"
+            )
+    else:
+        lines.append("| n/a | 0.000 | 0/0 | 0.00 | no saved architecture rows |")
+    lines.extend(
+        [
+            "",
             "## Practical Map",
             "",
             "| Regime | Best Current Tool | Reason |",
@@ -219,7 +253,7 @@ def markdown_report(
             "## Next Fixes",
             "",
             "- Train ARC-2 hybrid proposal ordering rather than using the current static order.",
-            "- Add TRM confidence margins to routing so LDT soft candidates can improve low-confidence cases without suppressing correct TRM routes.",
+            "- Replace the routing confidence grid with a richer calibration signal; the current trained threshold degenerates to TRM on this slice.",
             "- Add per-instance comparison tables for hybrid regressions, especially ARC-2 proposal counts and routing confusions.",
         ]
     )
@@ -233,10 +267,13 @@ def main() -> None:
     args = parser.parse_args()
 
     results = load_all(args.data_dir)
+    confidence_gamma, architecture_rows = routing_architecture_rows(args.data_dir)
     report = markdown_report(
         results,
         arc2_rows=arc2_efficiency_rows(args.data_dir),
         routing_ablations=routing_ablation_rows(args.data_dir),
+        routing_architectures=architecture_rows,
+        confidence_gamma=confidence_gamma,
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(report, encoding="utf-8")

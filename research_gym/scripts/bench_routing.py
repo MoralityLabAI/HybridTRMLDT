@@ -20,6 +20,7 @@ def training_notes(payload: dict[str, object], data_root: Path, max_per_env: int
         "- `trm`: dependency-light lexical TRM analogue, mirroring Tesseract's TF-IDF router objective.",
         "- `hybrid`: soft LDT candidate telemetry plus TRM scoring.",
         "- `hybrid_hard_filter`: ablation that forces LDT candidates as hard filters before TRM scoring.",
+        "- `hybrid_confidence_arbitration`: ablation that applies LDT candidates only when the TRM score margin is below a tuned threshold.",
         "",
         "Data:",
         "",
@@ -28,6 +29,7 @@ def training_notes(payload: dict[str, object], data_root: Path, max_per_env: int
         f"- train examples: `{payload['train_size']}`",
         f"- test examples: `{payload['test_size']}`",
         f"- envs: `{', '.join(payload['envs'])}`",
+        f"- confidence arbitration gamma: `{float(payload.get('confidence_gamma', 0.0)):.2f}`",
         "",
         "This run does not train QLoRA adapters or use VPD. It isolates router behavior.",
         "",
@@ -39,6 +41,13 @@ def training_notes(payload: dict[str, object], data_root: Path, max_per_env: int
             f"avg_candidates={float(result['avg_candidates']):.2f}"
         )
     for result in payload.get("ablations", []):
+        lines.append(
+            f"- `{result['router']}` accuracy={float(result['accuracy']):.3f} "
+            f"correct={result['correct']}/{result['total']} abstained={result['abstained']} "
+            f"avg_candidates={float(result['avg_candidates']):.2f}"
+        )
+    lines.extend(["", "Architecture variants:"])
+    for result in payload.get("architecture_variants", []):
         lines.append(
             f"- `{result['router']}` accuracy={float(result['accuracy']):.3f} "
             f"correct={result['correct']}/{result['total']} abstained={result['abstained']} "

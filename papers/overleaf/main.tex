@@ -126,6 +126,59 @@ Bottom is allowed only in explicit abstain or conflict mode:
 \label{fig:membrane}
 \end{figure}
 
+\section{Control Dynamics and Alternative Architectures}
+
+The typed membrane is one point in a larger design space. We compare it with two implementable alternatives in order to separate the value of hybridization from the risks introduced by the control policy.
+
+\begin{figure}[t]
+\centering
+\input{figures/control_dynamics.tex}
+\caption{Control dynamic for the typed membrane. TRM proposes; the membrane decides whether the proposal becomes a hard meet, soft telemetry, or a rejection.}
+\label{fig:control-dynamics}
+\end{figure}
+
+Let $q_\theta$ denote the TRM proposal or scoring mechanism. In the typed membrane,
+\[
+  p_t = q_\theta(h_t,a_t,x_t), \qquad
+  p_t = (\hat a_{t+1},\tau_t,m_t),
+\]
+and durable state changes only through the membrane:
+\[
+a_{t+1} =
+\begin{cases}
+a_t \wedge \hat a_{t+1} & \tau_t=\envsound,\ \hat a_{t+1}\sqsubseteq a_t,\ \neg\bot(a_t\wedge\hat a_{t+1}),\\
+a_t & \text{otherwise.}
+\end{cases}
+\]
+
+The first alternative is a hard-gated cascade. The LDT state is treated as a mandatory candidate filter:
+\[
+  C_t = \operatorname{LDT}(x_t), \qquad
+  y_t = \arg\max_{y\in C_t} q_\theta(y\mid x_t).
+\]
+This is attractive when $C_t$ is environment-sound, but unsafe when $C_t$ is lexical or learned. The routing ablation below is exactly this failure mode.
+
+The second alternative is confidence arbitration. Let $s_1(x_t)$ and $s_2(x_t)$ be the top two TRM scores and let
+\[
+  \Delta_t=s_1(x_t)-s_2(x_t).
+\]
+Then
+\[
+y_t =
+\begin{cases}
+\arg\max_y q_\theta(y\mid x_t) & \Delta_t\ge\gamma,\\
+\arg\max_{y\in C_t} q_\theta(y\mid x_t) & \Delta_t<\gamma.
+\end{cases}
+\]
+The threshold $\gamma$ is selected on the training split from a small deterministic grid. On the saved routing run the selected value is $\gamma=0$, meaning that any positive use of noisy LDT routing candidates reduces training accuracy; the arbitration architecture therefore degenerates to TRM on this slice.
+
+\begin{figure}[t]
+\centering
+\input{figures/architecture_comparison.tex}
+\caption{Three benchmarked hybrid control policies: typed membrane, hard-gated cascade, and confidence arbitration.}
+\label{fig:architecture-comparison}
+\end{figure}
+
 \section{Practical Hybrid Dynamics}
 
 The hybrid does not play the same role in every domain. Figure~\ref{fig:patterns} summarizes the main patterns.
@@ -229,6 +282,21 @@ Hard-filter hybrid & 0.584 & 101/173 & 0 & 2.09 \\
 \label{tab:routing-ablation}
 \end{table}
 
+\begin{table}[t]
+\centering
+\begin{tabular}{lrrl}
+\toprule
+Architecture & Accuracy & Correct & Control policy \\
+\midrule
+Typed membrane & 0.815 & 141/173 & soft telemetry unless sound \\
+Hard gate & 0.584 & 101/173 & LDT candidates hard-filter TRM \\
+Confidence arbitration & 0.815 & 141/173 & train-selected $\gamma=0$ \\
+\bottomrule
+\end{tabular}
+\caption{Implemented routing architecture variants. Hard gating is inferior; confidence arbitration selects the TRM-only boundary on this data.}
+\label{tab:architecture-variants}
+\end{table}
+
 \section{Design Decisions and Alternatives}
 
 \paragraph{Hard versus soft application.}
@@ -257,7 +325,7 @@ The benchmarks are small and synthetic. They test contracts, not scale. The TRM 
 
 \begin{enumerate}
   \item Train ARC-2 proposal ordering and compare proposal counts against the static hybrid.
-  \item Add TRM confidence margins to routing so LDT soft candidates affect only low-confidence routes.
+  \item Replace the routing confidence grid with a richer calibration signal; the current trained threshold degenerates to TRM on this slice.
   \item Convert membrane decisions into SFT records and train a small learned membrane policy.
   \item Run the INTELLECT-3 \texttt{logic-env} under WSL or Linux. The Windows smoke command currently fails before environment loading due to a Unix-only \texttt{fcntl} import in \texttt{prime\_tunnel}.
   \item Scale storyworld play to larger GPTStoryworld or SweepWeave tasks after this finite-state harness is stable.

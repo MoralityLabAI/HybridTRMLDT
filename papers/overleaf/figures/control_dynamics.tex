@@ -1,0 +1,28 @@
+\begin{tikzpicture}[
+  node distance=1.0cm and 1.0cm,
+  box/.style={draw, rounded corners, align=center, minimum width=2.55cm, minimum height=0.75cm, font=\scriptsize},
+  state/.style={box, fill=green!7},
+  latent/.style={box, fill=blue!7},
+  gate/.style={box, fill=orange!12},
+  stop/.style={box, fill=red!8},
+  arrow/.style={-Latex, thick}
+]
+\node[state] (a) {explicit state\\$a_t$};
+\node[latent, right=of a] (h) {latent state\\$h_t$};
+\node[gate, right=of h] (p) {proposal\\$p_t=(\hat a,\tau,m)$};
+\node[gate, below=of p] (check) {monotone?\\soundness?};
+\node[state, below left=of check] (hard) {hard meet\\$a_t \wedge \hat a$};
+\node[gate, below=of check] (soft) {soft store\\$S_{t+1}$};
+\node[stop, below right=of check] (reject) {reject / abstain};
+\node[state, below=of soft] (act) {action / answer\\$y_t$};
+
+\draw[arrow] (a) -- (h);
+\draw[arrow] (h) -- (p);
+\draw[arrow] (p) -- (check);
+\draw[arrow] (check) -- node[left, font=\tiny]{env-sound} (hard);
+\draw[arrow] (check) -- node[right, font=\tiny]{model / replay} (soft);
+\draw[arrow] (check) -- node[right, font=\tiny]{unsafe} (reject);
+\draw[arrow] (hard) -- (act);
+\draw[arrow] (soft) -- (act);
+\draw[arrow] (reject) -- (act);
+\end{tikzpicture}

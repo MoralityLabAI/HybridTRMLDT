@@ -14,3 +14,14 @@ Test examples: 173
 | Router | Accuracy | Correct | Abstained | Avg Candidates |
 |---|---:|---:|---:|---:|
 | `hybrid_hard_filter` | 0.584 | 101/173 | 0 | 2.09 |
+| `hybrid_confidence_arbitration` | 0.815 | 141/173 | 0 | 2.09 |
+
+## Architecture Variants
+
+Confidence arbitration gamma: `0.00`
+
+| Variant | Accuracy | Correct | Abstained | Avg Candidates |
+|---|---:|---:|---:|---:|
+| `typed_membrane` | 0.815 | 141/173 | 0 | 2.09 |
+| `hard_gate` | 0.584 | 101/173 | 0 | 2.09 |
+| `confidence_arbitration` | 0.815 | 141/173 | 0 | 2.09 |

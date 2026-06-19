@@ -54,8 +54,192 @@
       "correct": 101,
       "router": "hybrid_hard_filter",
       "total": 173
+    },
+    {
+      "abstained": 0,
+      "accuracy": 0.815028901734104,
+      "avg_candidates": 2.092485549132948,
+      "confusion": {
+        "alphabet_sort": {
+          "alphabet_sort": 5
+        },
+        "arc_challenge": {
+          "arc_challenge": 16,
+          "arc_easy": 6,
+          "intellect_3_math": 2
+        },
+        "arc_easy": {
+          "arc_challenge": 15,
+          "arc_easy": 7,
+          "intellect_3_math": 2
+        },
+        "gsm8k": {
+          "gsm8k": 24
+        },
+        "intellect_3_logic": {
+          "intellect_3_logic": 24
+        },
+        "intellect_3_math": {
+          "gsm8k": 1,
+          "intellect_3_math": 23
+        },
+        "mbpp": {
+          "mbpp": 24
+        },
+        "wiki_search": {
+          "arc_challenge": 2,
+          "intellect_3_math": 2,
+          "mbpp": 2,
+          "wiki_search": 18
+        }
+      },
+      "correct": 141,
+      "router": "hybrid_confidence_arbitration",
+      "total": 173
     }
   ],
+  "architecture_variants": [
+    {
+      "abstained": 0,
+      "accuracy": 0.815028901734104,
+      "avg_candidates": 2.092485549132948,
+      "confusion": {
+        "alphabet_sort": {
+          "alphabet_sort": 5
+        },
+        "arc_challenge": {
+          "arc_challenge": 16,
+          "arc_easy": 6,
+          "intellect_3_math": 2
+        },
+        "arc_easy": {
+          "arc_challenge": 15,
+          "arc_easy": 7,
+          "intellect_3_math": 2
+        },
+        "gsm8k": {
+          "gsm8k": 24
+        },
+        "intellect_3_logic": {
+          "intellect_3_logic": 24
+        },
+        "intellect_3_math": {
+          "gsm8k": 1,
+          "intellect_3_math": 23
+        },
+        "mbpp": {
+          "mbpp": 24
+        },
+        "wiki_search": {
+          "arc_challenge": 2,
+          "intellect_3_math": 2,
+          "mbpp": 2,
+          "wiki_search": 18
+        }
+      },
+      "correct": 141,
+      "router": "typed_membrane",
+      "total": 173
+    },
+    {
+      "abstained": 0,
+      "accuracy": 0.5838150289017341,
+      "avg_candidates": 2.092485549132948,
+      "confusion": {
+        "alphabet_sort": {
+          "alphabet_sort": 5
+        },
+        "arc_challenge": {
+          "arc_challenge": 7,
+          "arc_easy": 9,
+          "gsm8k": 3,
+          "intellect_3_logic": 4,
+          "intellect_3_math": 1
+        },
+        "arc_easy": {
+          "alphabet_sort": 1,
+          "arc_challenge": 2,
+          "arc_easy": 9,
+          "gsm8k": 3,
+          "intellect_3_logic": 7,
+          "intellect_3_math": 1,
+          "mbpp": 1
+        },
+        "gsm8k": {
+          "gsm8k": 16,
+          "intellect_3_logic": 5,
+          "intellect_3_math": 3
+        },
+        "intellect_3_logic": {
+          "intellect_3_logic": 24
+        },
+        "intellect_3_math": {
+          "arc_challenge": 1,
+          "gsm8k": 3,
+          "intellect_3_logic": 13,
+          "intellect_3_math": 7
+        },
+        "mbpp": {
+          "gsm8k": 1,
+          "intellect_3_logic": 5,
+          "intellect_3_math": 3,
+          "mbpp": 15
+        },
+        "wiki_search": {
+          "arc_challenge": 2,
+          "intellect_3_logic": 2,
+          "intellect_3_math": 2,
+          "wiki_search": 18
+        }
+      },
+      "correct": 101,
+      "router": "hard_gate",
+      "total": 173
+    },
+    {
+      "abstained": 0,
+      "accuracy": 0.815028901734104,
+      "avg_candidates": 2.092485549132948,
+      "confusion": {
+        "alphabet_sort": {
+          "alphabet_sort": 5
+        },
+        "arc_challenge": {
+          "arc_challenge": 16,
+          "arc_easy": 6,
+          "intellect_3_math": 2
+        },
+        "arc_easy": {
+          "arc_challenge": 15,
+          "arc_easy": 7,
+          "intellect_3_math": 2
+        },
+        "gsm8k": {
+          "gsm8k": 24
+        },
+        "intellect_3_logic": {
+          "intellect_3_logic": 24
+        },
+        "intellect_3_math": {
+          "gsm8k": 1,
+          "intellect_3_math": 23
+        },
+        "mbpp": {
+          "mbpp": 24
+        },
+        "wiki_search": {
+          "arc_challenge": 2,
+          "intellect_3_math": 2,
+          "mbpp": 2,
+          "wiki_search": 18
+        }
+      },
+      "correct": 141,
+      "router": "confidence_arbitration",
+      "total": 173
+    }
+  ],
+  "confidence_gamma": 0.0,
   "data_root": "D:\\Research_Engine\\tesseract_persistent\\data",
   "envs": [
     "alphabet_sort",

@@ -1,0 +1,32 @@
+\begin{tikzpicture}[
+  node distance=0.7cm and 0.55cm,
+  box/.style={draw, rounded corners, align=center, minimum width=2.25cm, minimum height=0.65cm, font=\scriptsize},
+  ldt/.style={box, fill=green!8},
+  trm/.style={box, fill=blue!7},
+  hyb/.style={box, fill=orange!12},
+  warn/.style={box, fill=red!8},
+  arrow/.style={-Latex, thick}
+]
+\node[hyb] (tm-title) {Typed membrane};
+\node[trm, below=of tm-title] (tm-trm) {TRM proposes};
+\node[ldt, below=of tm-trm] (tm-ldt) {LDT certifies};
+\node[hyb, below=of tm-ldt] (tm-out) {hard / soft / reject};
+\draw[arrow] (tm-trm) -- (tm-ldt);
+\draw[arrow] (tm-ldt) -- (tm-out);
+
+\node[hyb, right=1.25cm of tm-title] (hg-title) {Hard gate};
+\node[ldt, below=of hg-title] (hg-ldt) {LDT candidates};
+\node[trm, below=of hg-ldt] (hg-trm) {TRM inside gate};
+\node[warn, below=of hg-trm] (hg-out) {false elimination risk};
+\draw[arrow] (hg-ldt) -- (hg-trm);
+\draw[arrow] (hg-trm) -- (hg-out);
+
+\node[hyb, right=1.25cm of hg-title] (ca-title) {Confidence arbitration};
+\node[trm, below=of ca-title] (ca-trm) {TRM margin $\Delta$};
+\node[hyb, below=of ca-trm] (ca-switch) {$\Delta \ge \gamma$?};
+\node[ldt, below left=0.7cm and 0.1cm of ca-switch] (ca-ldt) {low margin:\\use LDT};
+\node[trm, below right=0.7cm and 0.1cm of ca-switch] (ca-direct) {high margin:\\use TRM};
+\draw[arrow] (ca-trm) -- (ca-switch);
+\draw[arrow] (ca-switch) -- (ca-ldt);
+\draw[arrow] (ca-switch) -- (ca-direct);
+\end{tikzpicture}

@@ -142,9 +142,56 @@ s_{t+1} = s_t \cup \{p_t\}
 
 but this does not change the durable lattice state.
 
-## 5. Practical Hybrid Dynamics
+## 5. Control Dynamics and Alternative Architectures
 
-### 5.1 Sudoku
+The typed membrane is one point in a larger design space. We compare it with two implementable alternatives to separate the value of hybridization from the risks introduced by the control policy.
+
+Let `q_theta` denote the TRM proposal or scoring mechanism. In the typed membrane:
+
+```math
+p_t = q_\theta(h_t,a_t,x_t), \qquad p_t=(\hat a_{t+1},\tau_t,m_t)
+```
+
+Durable state changes only through the membrane:
+
+```math
+a_{t+1} =
+\begin{cases}
+a_t \wedge \hat a_{t+1} & \tau_t=\text{environment-sound},\ \hat a_{t+1}\sqsubseteq a_t,\ \neg\bot(a_t\wedge\hat a_{t+1})\\
+a_t & \text{otherwise}
+\end{cases}
+```
+
+Alternative 1 is a hard-gated cascade:
+
+```math
+C_t = \operatorname{LDT}(x_t), \qquad
+y_t = \arg\max_{y\in C_t} q_\theta(y\mid x_t)
+```
+
+This is attractive when `C_t` is environment-sound, but unsafe when `C_t` is lexical or learned.
+
+Alternative 2 is confidence arbitration. Let `s_1(x_t)` and `s_2(x_t)` be the top two TRM scores:
+
+```math
+\Delta_t=s_1(x_t)-s_2(x_t)
+```
+
+Then:
+
+```math
+y_t =
+\begin{cases}
+\arg\max_y q_\theta(y\mid x_t) & \Delta_t\ge\gamma\\
+\arg\max_{y\in C_t} q_\theta(y\mid x_t) & \Delta_t<\gamma
+\end{cases}
+```
+
+The threshold `gamma` is selected on the training split from `[0.0, 0.5, 1.0, 2.0, 4.0]`. On the saved routing run, `gamma=0.0`, meaning any positive use of noisy LDT routing candidates reduces training accuracy; confidence arbitration degenerates to TRM on this slice.
+
+## 6. Practical Hybrid Dynamics
+
+### 6.1 Sudoku
 
 LDT performs naked-single propagation. TRM performs heuristic MRV search. Hybrid lets TRM propose a branch and then applies LDT propagation after the proposal.
 
@@ -169,7 +216,7 @@ Hybrid: 3/3 solved, 6 guesses
 
 Interpretation: TRM is useful for escaping propagation plateaus. LDT is useful immediately after proposals because it collapses implied consequences and reduces further guessing.
 
-### 5.2 ARC-1 and ARC-2
+### 6.2 ARC-1 and ARC-2
 
 ARC-1 is a single-rule grid transformation benchmark. ARC-2 uses ordered two-rule compositions.
 
@@ -210,7 +257,7 @@ ARC-2: hybrid 32 proposals, TRM 38 proposals
 
 Negative subcase: on two ARC-2 tasks, hybrid uses more proposals than TRM because the current pair ordering is heuristic. This is not a soundness failure. It is a proposal-ranking failure.
 
-### 5.3 Environment-Pointer Routing
+### 6.3 Environment-Pointer Routing
 
 Routing maps a prompt to an environment ID. The Tesseract TRM reference trains a TF-IDF plus MLP router. The dependency-light benchmark here uses a lexical TRM analogue.
 
@@ -243,7 +290,7 @@ Hybrid hard filter: 0.584
 
 Design lesson: when LDT evidence is lexical and learned from data, hard elimination is unsafe. The hybrid must distinguish soft route telemetry from environment-sound pruning. In this deterministic run, forcing token-lattice candidates as hard filters reduces accuracy from `0.815` to `0.584`.
 
-### 5.4 Storyworld Playing
+### 6.4 Storyworld Playing
 
 The storyworld has exact transitions and a modeled rival policy. LDT uses finite-horizon reachability. TRM uses a greedy local-deficit heuristic. Hybrid lets TRM propose an action, then checks whether the action preserves modeled reachability.
 
@@ -273,7 +320,7 @@ Hybrid: 64/64 solved, 124 overrides
 
 Interpretation: TRM local heuristics often rush into terminal states that fail the secret-ending predicate. LDT reachability prevents those traps. Hybrid preserves the proposal interface while repairing unsafe choices.
 
-## 6. Benchmark Summary
+## 7. Benchmark Summary
 
 | Benchmark | LDT | TRM | Hybrid | Best |
 |---|---:|---:|---:|---|
@@ -290,27 +337,35 @@ The aggregate pattern is:
 - Hybrid helps when proposal can be followed by checkable pruning or safety checks.
 - Hybrid does not automatically improve learned routing if the LDT side has only soft lexical evidence.
 
-## 7. Design Decisions and Alternatives
+Routing architecture variants:
 
-### 7.1 Hard vs Soft Application
+| Architecture | Accuracy | Correct | Control Policy |
+|---|---:|---:|---|
+| Typed membrane | 0.815 | 141/173 | soft telemetry unless sound |
+| Hard gate | 0.584 | 101/173 | LDT candidates hard-filter TRM |
+| Confidence arbitration | 0.815 | 141/173 | train-selected `gamma=0.0` |
+
+## 8. Design Decisions and Alternatives
+
+### 8.1 Hard vs Soft Application
 
 Decision: hard-apply only environment-sound refinements by default.
 
 Alternative: allow model-sound or experience-sound hard updates. This would make routing and replay-derived pruning more aggressive, but it risks false eliminations. The routing benchmark demonstrates the risk: hard LDT filtering from token evidence underperformed TRM, with the hard-filter hybrid ablation at `0.584` versus `0.815` for TRM and soft hybrid.
 
-### 7.2 Reject Non-Monotone Proposals Before Meet
+### 8.2 Reject Non-Monotone Proposals Before Meet
 
 Decision: reject proposals that widen candidate sets before applying meet.
 
 Alternative: apply meet regardless and accept the result if the final state does not widen. This hides proposal defects. Rejecting early gives a cleaner training signal: the proposal itself violated the membrane contract.
 
-### 7.3 Bottom Requires Explicit Abstain
+### 8.3 Bottom Requires Explicit Abstain
 
 Decision: bottom-producing proposals are rejected unless the proposal is in explicit abstain mode.
 
 Alternative: treat bottom as an ordinary conflict result. We avoid this because bottom is semantically important. It should become a visible conflict/abstention frame, not an accidental deduction.
 
-### 7.4 LDT as Certifier vs LDT as Planner
+### 8.4 LDT as Certifier vs LDT as Planner
 
 Decision: use LDT differently by domain.
 
@@ -321,19 +376,19 @@ Decision: use LDT differently by domain.
 
 Alternative: force a single LDT role across all benchmarks. This would be cleaner architecturally but less honest: the meaning of checkability differs across domains.
 
-### 7.5 Hybrid Override Policy
+### 8.5 Hybrid Override Policy
 
 Decision: in storyworld play, override TRM when its proposed action loses modeled reachability and a certified alternative exists.
 
 Alternative: always route through LDT first. That collapses the hybrid into LDT and removes the proposal role. Another alternative is to let TRM override LDT for speed, but then the system loses the safety benefit on dynamic tasks.
 
-### 7.6 Proposal Ordering
+### 8.6 Proposal Ordering
 
 Decision: current ARC proposal ordering is simple and hand-coded.
 
 Alternative: train the proposal order. The ARC-2 regressions are evidence that this matters. A learned TRM proposal ranker should reduce individual proposal-count failures while retaining LDT certification.
 
-## 8. Limitations
+## 9. Limitations
 
 The benchmarks are small and synthetic. They test contracts, not scale.
 
@@ -343,14 +398,14 @@ The LDT side is symbolic and domain-specific. A learned LDT head is future work.
 
 The hybrid has no aggregate score regression in the saved benchmarks, but it does have efficiency regressions in ARC-2 subcases and no routing accuracy gain over TRM yet.
 
-## 9. Next Experiments
+## 10. Next Experiments
 
 1. Train ARC-2 proposal ordering and compare proposal counts against the static hybrid.
-2. Add TRM confidence margins to routing so LDT soft candidates affect only low-confidence routes.
+2. Replace the routing confidence grid with a richer calibration signal; the current trained threshold degenerates to TRM on this slice.
 3. Convert membrane decisions into SFT records and train a small learned membrane policy.
 4. Run the INTELLECT-3 `logic-env` under WSL/Linux, since the Windows smoke command currently fails before environment loading due to a Unix-only `fcntl` import in `prime_tunnel`.
 5. Scale storyworld play to larger GPTStoryworld/SweepWeave tasks after this finite-state harness is stable.
 
-## 10. Conclusion
+## 11. Conclusion
 
 The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft.

@@ -1,4 +1,10 @@
-from research_gym.benchmarks.routing_bench import LexicalTRMRouter, TokenLatticeRouter, run_routing_benchmark
+from research_gym.benchmarks.routing_bench import (
+    ConfidenceArbitrationRoutingModel,
+    LexicalTRMRouter,
+    TokenLatticeRouter,
+    run_routing_benchmark,
+    tune_confidence_gamma,
+)
 from research_gym.envs.routing import RoutingExample, split_examples, tokenize
 
 
@@ -32,6 +38,7 @@ def test_lexical_trm_router_predicts_prompt_family():
 
     assert router.predict("solve row column digit") == "sudoku"
     assert router.predict("rotate colored grid") == "arc"
+    assert router.margin("solve row column digit") > 0.0
 
 
 def test_token_lattice_router_narrows_candidates():
@@ -49,6 +56,34 @@ def test_run_routing_benchmark_returns_three_models():
     results = {result["router"]: result for result in payload["results"]}
 
     assert set(results) == {"ldt", "trm", "hybrid"}
-    assert {result["router"] for result in payload["ablations"]} == {"hybrid_hard_filter"}
+    assert {result["router"] for result in payload["ablations"]} == {
+        "hybrid_confidence_arbitration",
+        "hybrid_hard_filter",
+    }
+    assert {result["router"] for result in payload["architecture_variants"]} == {
+        "confidence_arbitration",
+        "hard_gate",
+        "typed_membrane",
+    }
     assert results["trm"]["accuracy"] >= 0.8
     assert results["hybrid"]["accuracy"] >= 0.8
+
+
+def test_confidence_arbitration_uses_gamma_threshold():
+    train, _ = split_examples(synthetic_examples(), train_ratio=0.8, seed=2)
+    trm = LexicalTRMRouter().fit(train)
+    ldt = TokenLatticeRouter(min_token_count=1, dominance=0.6).fit(train)
+    model = ConfidenceArbitrationRoutingModel(ldt, trm, gamma=100.0)
+
+    predicted, candidates = model.predict("rotate colored grid")
+
+    assert predicted == "arc"
+    assert candidates == 1
+
+
+def test_confidence_gamma_tuning_is_deterministic():
+    train, _ = split_examples(synthetic_examples(), train_ratio=0.8, seed=2)
+    trm = LexicalTRMRouter().fit(train)
+    ldt = TokenLatticeRouter(min_token_count=1, dominance=0.6).fit(train)
+
+    assert tune_confidence_gamma(train, ldt, trm) == tune_confidence_gamma(train, ldt, trm)
