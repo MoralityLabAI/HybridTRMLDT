@@ -1,0 +1,244 @@
+{
+  "benchmark": "rsi_topology_hrm_training_review",
+  "claim_boundary": "Deterministic contract exercise over synthetic sealed receipts; no neural model was trained, promoted, or edited by this benchmark.",
+  "policy": {
+    "delta": 0.05,
+    "maximum_realized_kl": 0.05,
+    "minimum_occupancy_margin": 0.05,
+    "minimum_replicates": 3,
+    "minimum_worst_direction_retention": 0.8,
+    "resource_preset": {
+      "cpu_cap_pct": 50.0,
+      "io_cap_mb_s": 50.0,
+      "ram_cap_mb": 2048
+    },
+    "signed_error_budget": 0.5
+  },
+  "results": [
+    {
+      "authorized": true,
+      "candidate_id": "clean-signed",
+      "claim_boundary": "The topology gate bounds false authorization for registered signed coordinates only. Model promotion additionally requires grouped held-out utility, damage, provenance, and resource receipts.",
+      "failures": [],
+      "identity_level": "holonomy_clean",
+      "information_coefficient": 4.0,
+      "mechanism": "signed_global_control",
+      "next_modules": [
+        "authorization_receipt_signer",
+        "promotion_registry"
+      ],
+      "receipt_sha256": "49ac0bb9e3f35e62be7e2bd4b79bd4c009258683faa22cf987493818781a3d8c",
+      "requested_use": "model_promotion",
+      "required_identity_level": "holonomy_clean",
+      "risk_budget_margin": 0.40523288733328844,
+      "route": "authorize",
+      "scenario": "clean_signed",
+      "worst_signed_control_loss_upper_bound": 0.09476711266671158
+    },
+    {
+      "authorized": false,
+      "candidate_id": "high-holonomy",
+      "claim_boundary": "The topology gate bounds false authorization for registered signed coordinates only. Model promotion additionally requires grouped held-out utility, damage, provenance, and resource receipts.",
+      "failures": [
+        "signed_error_budget_exceeded:context-a/checkpoint-0-1",
+        "requires_holonomy_clean"
+      ],
+      "identity_level": "lineage_certified",
+      "information_coefficient": 4.0,
+      "mechanism": "signed_global_control",
+      "next_modules": [
+        "topology_sectioner",
+        "patch_attestor",
+        "utility_evaluator"
+      ],
+      "receipt_sha256": "554f2894758b21e34d1cee5e914c7a15a6e307861112d3baff455c8ca2d3592a",
+      "requested_use": "signed_control",
+      "required_identity_level": "holonomy_clean",
+      "risk_budget_margin": -0.2567415247678636,
+      "route": "section",
+      "scenario": "high_holonomy",
+      "worst_signed_control_loss_upper_bound": 0.7567415247678636
+    },
+    {
+      "authorized": false,
+      "candidate_id": "orientation-reversal",
+      "claim_boundary": "The topology gate bounds false authorization for registered signed coordinates only. Model promotion additionally requires grouped held-out utility, damage, provenance, and resource receipts.",
+      "failures": [
+        "orientation_reversal:context-a/checkpoint-0-1",
+        "signed_error_budget_exceeded:context-a/checkpoint-0-1",
+        "requires_holonomy_clean"
+      ],
+      "identity_level": "lineage_certified",
+      "information_coefficient": 4.0,
+      "mechanism": "signed_global_control",
+      "next_modules": [
+        "topology_sectioner",
+        "patch_attestor",
+        "utility_evaluator"
+      ],
+      "receipt_sha256": "cefa607545eab233e6b05dca7bfbea9b69a6ff332c0b6c2a05123e4d86b1ee99",
+      "requested_use": "signed_control",
+      "required_identity_level": "holonomy_clean",
+      "risk_budget_margin": -1.5,
+      "route": "section",
+      "scenario": "orientation_reversal",
+      "worst_signed_control_loss_upper_bound": 2.0
+    },
+    {
+      "authorized": false,
+      "candidate_id": "unmeasured-loop",
+      "claim_boundary": "The topology gate bounds false authorization for registered signed coordinates only. Model promotion additionally requires grouped held-out utility, damage, provenance, and resource receipts.",
+      "failures": [
+        "loop_unmeasured:context-a/checkpoint-0-1",
+        "signed_error_budget_exceeded:context-a/checkpoint-0-1",
+        "requires_holonomy_clean"
+      ],
+      "identity_level": "lineage_certified",
+      "information_coefficient": 4.0,
+      "mechanism": "signed_global_control",
+      "next_modules": [
+        "holonomy_auditor"
+      ],
+      "receipt_sha256": "4a69d0137f28823c1b7d4d602bcb11a9b6dca6e6dc425ae97a555c32e0fe96a3",
+      "requested_use": "signed_control",
+      "required_identity_level": "holonomy_clean",
+      "risk_budget_margin": -1.5,
+      "route": "audit",
+      "scenario": "unmeasured_loop",
+      "worst_signed_control_loss_upper_bound": 2.0
+    },
+    {
+      "authorized": false,
+      "candidate_id": "long-high-retention-path",
+      "claim_boundary": "The topology gate bounds false authorization for registered signed coordinates only. Model promotion additionally requires grouped held-out utility, damage, provenance, and resource receipts.",
+      "failures": [
+        "signed_error_budget_exceeded:six-edge-checkpoint-path",
+        "requires_holonomy_clean"
+      ],
+      "identity_level": "lineage_certified",
+      "information_coefficient": 4.0,
+      "mechanism": "signed_global_control",
+      "next_modules": [
+        "topology_sectioner",
+        "patch_attestor",
+        "utility_evaluator"
+      ],
+      "receipt_sha256": "ba55d85286d4b2b0efdd50fdd73ed79ddf2c968a40370fdbc9ffe430ef5d12de",
+      "requested_use": "signed_control",
+      "required_identity_level": "holonomy_clean",
+      "risk_budget_margin": -0.030080526434266064,
+      "route": "section",
+      "scenario": "long_high_retention_path",
+      "worst_signed_control_loss_upper_bound": 0.5300805264342661
+    },
+    {
+      "authorized": false,
+      "candidate_id": "utility-failure",
+      "claim_boundary": "The topology gate bounds false authorization for registered signed coordinates only. Model promotion additionally requires grouped held-out utility, damage, provenance, and resource receipts.",
+      "failures": [
+        "grouped_held_out_gain_not_positive"
+      ],
+      "identity_level": "holonomy_clean",
+      "information_coefficient": 4.0,
+      "mechanism": "signed_global_control",
+      "next_modules": [
+        "retain_base"
+      ],
+      "receipt_sha256": "b6a576eb028063476697ad74e4a6b1bb3734ac60c3c279353e124e359930293a",
+      "requested_use": "model_promotion",
+      "required_identity_level": "holonomy_clean",
+      "risk_budget_margin": 0.40523288733328844,
+      "route": "reject",
+      "scenario": "utility_failure",
+      "worst_signed_control_loss_upper_bound": 0.09476711266671158
+    },
+    {
+      "authorized": true,
+      "candidate_id": "ordinary-high-holonomy",
+      "claim_boundary": "The topology gate bounds false authorization for registered signed coordinates only. Model promotion additionally requires grouped held-out utility, damage, provenance, and resource receipts.",
+      "failures": [
+        "signed_error_budget_exceeded:context-a/checkpoint-0-1"
+      ],
+      "identity_level": "lineage_certified",
+      "information_coefficient": 4.0,
+      "mechanism": "ordinary_optimizer",
+      "next_modules": [
+        "authorization_receipt_signer",
+        "promotion_registry"
+      ],
+      "receipt_sha256": "b6b8445052a90eac21de64e2a55d3a12745213bf211abf7e47d2ace8a65cd5f9",
+      "requested_use": "model_promotion",
+      "required_identity_level": "engineering_evidence",
+      "risk_budget_margin": -0.2567415247678636,
+      "route": "authorize",
+      "scenario": "ordinary_high_holonomy",
+      "worst_signed_control_loss_upper_bound": 0.7567415247678636
+    },
+    {
+      "authorized": true,
+      "candidate_id": "bundle-high-holonomy",
+      "claim_boundary": "The topology gate bounds false authorization for registered signed coordinates only. Model promotion additionally requires grouped held-out utility, damage, provenance, and resource receipts.",
+      "failures": [
+        "signed_error_budget_exceeded:context-a/checkpoint-0-1"
+      ],
+      "identity_level": "lineage_certified",
+      "information_coefficient": 4.0,
+      "mechanism": "bundle_allocation",
+      "next_modules": [
+        "authorization_receipt_signer",
+        "promotion_registry"
+      ],
+      "receipt_sha256": "8ef65b401b6a1391888925f09fe9be9016a579c2b510f22e3c5f8762edd9fdcd",
+      "requested_use": "model_promotion",
+      "required_identity_level": "lineage_certified",
+      "risk_budget_margin": -0.2567415247678636,
+      "route": "authorize",
+      "scenario": "bundle_high_holonomy",
+      "worst_signed_control_loss_upper_bound": 0.7567415247678636
+    },
+    {
+      "authorized": false,
+      "candidate_id": "resource-incomplete",
+      "claim_boundary": "The topology gate bounds false authorization for registered signed coordinates only. Model promotion additionally requires grouped held-out utility, damage, provenance, and resource receipts.",
+      "failures": [
+        "checkpoint_receipt_missing",
+        "cleanup_receipt_missing"
+      ],
+      "identity_level": "holonomy_clean",
+      "information_coefficient": 4.0,
+      "mechanism": "signed_global_control",
+      "next_modules": [
+        "resource_receipt_auditor"
+      ],
+      "receipt_sha256": "ef699357ff4bb11fbbe1c2b61c078cda7a43a04451bfa9d6ba60ff61ab1a5b2e",
+      "requested_use": "model_promotion",
+      "required_identity_level": "holonomy_clean",
+      "risk_budget_margin": 0.40523288733328844,
+      "route": "audit",
+      "scenario": "resource_incomplete",
+      "worst_signed_control_loss_upper_bound": 0.09476711266671158
+    },
+    {
+      "authorized": false,
+      "candidate_id": "aborted-run",
+      "claim_boundary": "The topology gate bounds false authorization for registered signed coordinates only. Model promotion additionally requires grouped held-out utility, damage, provenance, and resource receipts.",
+      "failures": [
+        "training_run_aborted"
+      ],
+      "identity_level": "holonomy_clean",
+      "information_coefficient": 4.0,
+      "mechanism": "signed_global_control",
+      "next_modules": [
+        "retain_base"
+      ],
+      "receipt_sha256": "57897d03cb2deecef20bc50cf3d5e6cd8ed58d56de78636827faf67ce6f1c95c",
+      "requested_use": "model_promotion",
+      "required_identity_level": "holonomy_clean",
+      "risk_budget_margin": 0.40523288733328844,
+      "route": "reject",
+      "scenario": "aborted_run",
+      "worst_signed_control_loss_upper_bound": 0.09476711266671158
+    }
+  ],
+  "schema_version": "1.0.0"
+}

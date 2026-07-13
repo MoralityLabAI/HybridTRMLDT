@@ -6,6 +6,8 @@ We study a small hybrid reasoning architecture that combines a Tiny Recursive Mo
 
 We evaluate this design on five lightweight benchmarks: Sudoku, ARC-1, ARC-2, environment-pointer routing, and a coupled storyworld playing task. Across the saved runs, hybrid matches the best aggregate score in every task family. It improves proposal efficiency in Sudoku and aggregate ARC-2, repairs unsafe TRM actions in storyworld play, and avoids hard-eliminating routes when LDT evidence is only lexical and therefore not environment-sound. The main negative result is that hybrid is not automatically superior: in routing it only ties TRM when LDT candidate sets are treated as soft evidence, and in two ARC-2 instances its heuristic proposal order uses more proposals than raw TRM.
 
+We also specify a Conductor-HRM layer for review of newly trained checkpoints. It combines target-blind spectral bundles, lineage, holonomy, and a conservative signed-control bound with independent held-out utility, damage, provenance, and resource gates. The saved receipt-contract matrix tests review flow only; it is not neural training performance.
+
 ## 1. Motivation
 
 The motivating question is practical:
@@ -369,27 +371,106 @@ Transcript slice:
 
 One secret-ending run starts at `(trust=3, evidence=1, heat=4, scene=1)`. Confidence arbitration sees high local margins and repeatedly selects `defuse`: `defuse, defuse, defuse, defuse`. It ends at `(trust=3, evidence=1, heat=0, scene=5)` and fails because evidence never reaches the secret gate. The typed membrane instead accepts the need to preserve reachability and follows `defuse, wait, wait, investigate, defuse, investigate`, ending at `(trust=1, evidence=3, heat=2, scene=5)` and satisfying the secret-ending predicate.
 
-## 8. Design Decisions and Alternatives
+## 8. HRM Review of New Model Training
 
-### 8.1 Hard vs Soft Application
+Conductor-HRM reviews training as a graph of typed modules. The slow HRM selects an ordinary, invariant-bundle, global-signed, or sectioned-signed review regime. The fast HRM schedules spectral geometry, checkpoint lineage, loop holonomy, grouped utility, damage, and resource audits. A typed join routes the candidate to `authorize`, `section`, `audit`, or `reject`. The manager never writes weights or upgrades a source receipt.
+
+For context stratum $p$, define the normalized reliability-weighted Laplacian
+
+$$
+\widetilde L_p = \frac{\delta_p^\top W_p\delta_p}{\lambda_{\max}(\delta_p^\top W_p\delta_p)}.
+$$
+
+For frozen band $I_b$, let $P_b(p)=\mathbf 1_{I_b}(\widetilde L_p)$ and infer a consensus bundle from occupancy:
+
+$$
+\overline P_b=\frac{1}{|\mathcal P|}\sum_pP_b(p),
+\qquad
+U_b=\operatorname{im}\mathbf 1_{[\rho,1]}(\overline P_b).
+$$
+
+Jacobians must register sites into a common edit space before cross-site projectors are compared. The geometry, rank, band, thresholds, model hash, dataset hash, and operator hash are sealed before outcome reveal.
+
+Adjacent orthonormal frames satisfy
+
+$$
+U_b^\top U_a=Q_{b\leftarrow a}S_{ba}.
+$$
+
+$S_{ba}$ measures local retention and $Q_{b\leftarrow a}$ transports signed coordinates. Around a context-by-checkpoint loop,
+
+$$
+H_{\square}=Q_{00\leftarrow01}Q_{01\leftarrow11}Q_{11\leftarrow10}Q_{10\leftarrow00},
+\qquad
+\kappa_{\square}=1-\frac{\operatorname{tr}(H_{\square})}{r}.
+$$
+
+For edge worst-direction squared retention $W_e$ and net polar transport $H$, the signed-coordinate error obeys
+
+$$
+\|M-I\|_2\leq\sum_e(1-\sqrt{W_e})+\|H-I\|_2.
+$$
+
+If orientation is preserved, $\|H-I\|_2=2\sin(\alpha_{\max}/2)$. Orientation reversal or an unmeasured loop forces the conservative value 2. With simultaneous one-sided coverage at least $1-\delta$, signed control is authorized only if the uncertainty-adjusted bound $\widehat R\leq\epsilon$. This limits false authorization for registered signed coordinates; it does not certify behavioral safety.
+
+Invariant bundle energy
+
+$$
+e_b(x)=\frac{\|U_b^\top x\|_2^2}{\|x\|_2^2}
+$$
+
+can guide allocation without choosing a signed direction. Its exponential tilt remains inside a frozen KL budget:
+
+$$
+\pi_\eta(i\mid s)\propto\pi_0(i\mid s)\exp(\eta\widehat\Delta_{u,i}),
+\qquad
+D_{\mathrm{KL}}(\pi_\eta\|\pi_0)\leq K_{\max}.
+$$
+
+Certificate requirements are mechanism-specific:
+
+| Mechanism | Required identity | High-holonomy response |
+|---|---|---|
+| Ordinary optimizer | engineering evidence | behavioral review can proceed; signed authority is withheld |
+| Bundle allocation | lineage certified | proceed only under utility and KL gates |
+| Global signed control | holonomy clean | section or reject global signed use |
+| Sectioned signed control | lineage plus clean patches | audit or rebuild incomplete patches |
+
+Model promotion always separately requires grouped held-out gain, matched-rank Haar controls, held-out damage, independent replicates, OS-enforced RAM/CPU/I/O caps, chunk and checkpoint policy, structured resource logs, abort status, process-owned cleanup, and hash-bound provenance.
+
+Representative frozen-policy contract outcomes under $\epsilon=0.5$ and $\delta=0.05$:
+
+| Receipt case | Request | Route | Bound |
+|---|---|---|---:|
+| Clean signed candidate | promotion | authorize | 0.095 |
+| High measured holonomy | signed control | section | 0.757 |
+| Orientation reversal | signed control | section | 2.000 |
+| Unmeasured loop | signed control | audit | 2.000 |
+| Failed grouped utility | promotion | reject | 0.095 |
+
+These are deterministic synthetic receipt cases. No neural model was trained, promoted, or edited.
+
+## 9. Design Decisions and Alternatives
+
+### 9.1 Hard vs Soft Application
 
 Decision: hard-apply only environment-sound refinements by default.
 
 Alternative: allow model-sound or experience-sound hard updates. This would make routing and replay-derived pruning more aggressive, but it risks false eliminations. The routing benchmark demonstrates the risk: hard LDT filtering from token evidence underperformed TRM, with the hard-filter hybrid ablation at `0.584` versus `0.815` for TRM and soft hybrid.
 
-### 8.2 Reject Non-Monotone Proposals Before Meet
+### 9.2 Reject Non-Monotone Proposals Before Meet
 
 Decision: reject proposals that widen candidate sets before applying meet.
 
 Alternative: apply meet regardless and accept the result if the final state does not widen. This hides proposal defects. Rejecting early gives a cleaner training signal: the proposal itself violated the membrane contract.
 
-### 8.3 Bottom Requires Explicit Abstain
+### 9.3 Bottom Requires Explicit Abstain
 
 Decision: bottom-producing proposals are rejected unless the proposal is in explicit abstain mode.
 
 Alternative: treat bottom as an ordinary conflict result. We avoid this because bottom is semantically important. It should become a visible conflict/abstention frame, not an accidental deduction.
 
-### 8.4 LDT as Certifier vs LDT as Planner
+### 9.4 LDT as Certifier vs LDT as Planner
 
 Decision: use LDT differently by domain.
 
@@ -400,19 +481,25 @@ Decision: use LDT differently by domain.
 
 Alternative: force a single LDT role across all benchmarks. This would be cleaner architecturally but less honest: the meaning of checkability differs across domains.
 
-### 8.5 Hybrid Override Policy
+### 9.5 Hybrid Override Policy
 
 Decision: in storyworld play, override TRM when its proposed action loses modeled reachability and a certified alternative exists.
 
 Alternative: always route through LDT first. That collapses the hybrid into LDT and removes the proposal role. Another alternative is to let TRM override LDT for speed, but then the system loses the safety benefit on dynamic tasks.
 
-### 8.6 Proposal Ordering
+### 9.6 Proposal Ordering
 
 Decision: current ARC proposal ordering is simple and hand-coded.
 
 Alternative: train the proposal order. The ARC-2 regressions are evidence that this matters. A learned TRM proposal ranker should reduce individual proposal-count failures while retaining LDT certification.
 
-## 9. Limitations
+### 9.7 Topology as Typed Authority
+
+Decision: keep identity geometry outside the scalar HRM objective. Low holonomy cannot substitute for held-out model quality, and high utility cannot purchase an unauthorized signed operation.
+
+Alternative: reject every high-holonomy candidate. We instead withhold global signed authority and permit local sectioning, with each patch subject to its own identity, utility, damage, and trust-radius receipts.
+
+## 10. Limitations
 
 The benchmarks are small and synthetic. They test contracts, not scale.
 
@@ -422,14 +509,17 @@ The LDT side is symbolic and domain-specific. A learned LDT head is future work.
 
 The hybrid has no aggregate score regression in the saved benchmarks, but it does have efficiency regressions in ARC-2 subcases and no routing accuracy gain over TRM yet.
 
-## 10. Next Experiments
+The HRM training-review matrix uses synthetic sealed receipts and supplies no evidence of neural training gains. The signed-control theorem applies only to registered coordinate error under its simultaneous-coverage assumptions. It does not establish general behavioral safety or self-improvement.
+
+## 11. Next Experiments
 
 1. Train ARC-2 proposal ordering and compare proposal counts against the static hybrid.
 2. Replace the routing confidence grid with a richer calibration signal; the current trained threshold degenerates to TRM on this slice.
 3. Convert membrane decisions into SFT records and train a small learned membrane policy.
 4. Run the INTELLECT-3 `logic-env` under WSL/Linux, since the Windows smoke command currently fails before environment loading due to a Unix-only `fcntl` import in `prime_tunnel`.
 5. Scale storyworld play to larger GPTStoryworld/SweepWeave tasks after this finite-state harness is stable.
+6. Wrap a capped HRM/TRM checkpoint run as a preregistered receipt producer, then evaluate context-by-checkpoint lineage, matched loop nulls, grouped held-out utility, and local section persistence.
 
-## 11. Conclusion
+## 12. Conclusion
 
-The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft.
+The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft. At the multi-module level, Conductor-HRM applies the same discipline to training review: topology bounds internal-coordinate authority, while held-out utility, damage, provenance, and resources independently govern model promotion.

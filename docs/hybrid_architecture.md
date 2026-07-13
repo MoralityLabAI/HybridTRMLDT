@@ -51,3 +51,7 @@ VPD is an instrumentation layer until proven otherwise. It may label weights, ad
 `docs/hrm_conductor_architecture.md` defines Conductor-HRM, a hierarchical typed module-flow architecture in
 which an HRM schedules and joins multiple hybrid modules. The HRM controls execution flow but cannot bypass a
 module membrane, mutate module-owned lattice state, or upgrade receipt provenance.
+
+`docs/rsi_hrm_training_review.md` applies RSITopology bundle, lineage, holonomy, and signed-control mathematics
+to Conductor-HRM review of newly trained checkpoints. Geometry controls which internal-coordinate operations are
+identifiable; grouped held-out utility, damage, and capped-run receipts separately control model promotion.

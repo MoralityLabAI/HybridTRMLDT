@@ -57,6 +57,16 @@ python -m research_gym.scripts.bench_theysing_native --repo-root C:\projects\The
 This launches the compiled TheySing headless harness and compares matched `soft`, `hard`, and `graduated`
 enforcement sessions. Native traces are retained as compressed JSONL under the experiment directory.
 
+RSITopology-aware HRM review contract:
+
+```bash
+python -m research_gym.scripts.review_model_training
+```
+
+This exercises target-blind geometry, lineage, holonomy, utility, damage, and resource receipt joins over a
+deterministic candidate matrix. It emits authorize, section, audit, or reject routes. It does not train or mutate
+a neural model.
+
 ## Repo map
 
 ```text

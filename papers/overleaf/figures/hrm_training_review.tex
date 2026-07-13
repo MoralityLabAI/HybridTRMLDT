@@ -1,0 +1,42 @@
+\begin{tikzpicture}[
+  node distance=0.62cm and 0.55cm,
+  box/.style={draw, rounded corners, align=center, minimum width=2.1cm, minimum height=0.62cm, font=\scriptsize},
+  manager/.style={box, fill=blue!8},
+  geometry/.style={box, fill=green!9},
+  evidence/.style={box, fill=orange!12},
+  decision/.style={draw, diamond, aspect=2.1, align=center, fill=yellow!12, font=\scriptsize},
+  accept/.style={box, fill=green!16},
+  defer/.style={box, fill=yellow!14},
+  reject/.style={box, fill=red!10},
+  arrow/.style={-Latex, thick}
+]
+\node[box] (candidate) {sealed checkpoint\\and run receipts};
+\node[manager, right=of candidate] (slow) {slow HRM\\review regime};
+\node[manager, right=of slow] (fast) {fast HRM\\audit dispatch};
+
+\node[geometry, below left=0.75cm and 1.2cm of fast] (spectral) {spectral bundle\\and occupancy};
+\node[geometry, right=of spectral] (lineage) {edge lineage\\and transport};
+\node[geometry, right=of lineage] (holonomy) {loop holonomy,\\orientation, null};
+\node[evidence, right=of holonomy] (utility) {grouped utility,\\KL, damage, caps};
+
+\node[decision, below=1.0cm of lineage, xshift=1.35cm] (join) {typed receipt join};
+\node[accept, below left=0.8cm and 2.1cm of join] (authorize) {authorize\\hash-bound use};
+\node[defer, right=of authorize] (section) {section\\local patches};
+\node[defer, right=of section] (audit) {audit\\missing evidence};
+\node[reject, right=of audit] (reject) {reject\\retain base};
+
+\draw[arrow] (candidate) -- (slow);
+\draw[arrow] (slow) -- (fast);
+\draw[arrow] (fast) -- (spectral);
+\draw[arrow] (fast) -- (lineage);
+\draw[arrow] (fast) -- (holonomy);
+\draw[arrow] (fast) -- (utility);
+\draw[arrow] (spectral) -- (join);
+\draw[arrow] (lineage) -- (join);
+\draw[arrow] (holonomy) -- (join);
+\draw[arrow] (utility) -- (join);
+\draw[arrow] (join) -- (authorize);
+\draw[arrow] (join) -- (section);
+\draw[arrow] (join) -- (audit);
+\draw[arrow] (join) -- (reject);
+\end{tikzpicture}

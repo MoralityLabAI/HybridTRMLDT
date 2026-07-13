@@ -21,6 +21,11 @@ The defining invariant is:
 
 This makes the architecture hierarchical without creating an untyped super-controller.
 
+For new-model training review, `docs/rsi_hrm_training_review.md` adds target-blind spectral bundles, registered
+checkpoint lineage, holonomy audits, conservative signed-control bounds, local sectioning, and separate utility,
+damage, provenance, and resource joins. The HRM schedules those reviews but cannot turn topology into a
+behavioral certificate or use training outcomes to revise prereveal geometry.
+
 The formal name is Hierarchical Typed Module Flow (HTMF). `Conductor-HRM` is the shorter architecture name.
 
 ## Why another hierarchy
@@ -284,6 +289,23 @@ Suggested training order:
 4. Apply imitation or DAgger to recover from bad module-flow states.
 5. Optimize cost and outcome with constrained RL while membranes remain frozen.
 6. Fine-tune module proposal heads only after conductor behavior is stable.
+
+## Review of newly trained models
+
+The conductor treats model training as an external, capped producer of checkpoint receipts. Its slow state
+selects an ordinary, invariant-bundle, global-signed, or sectioned-signed review regime. Its fast state schedules
+spectral geometry, lineage, holonomy, grouped utility, damage, and resource modules.
+
+Identity authority is typed:
+
+- `engineering_evidence` supports observation and ordinary optimizer review;
+- `lineage_certified` supports invariant bundle-energy allocation under a frozen KL budget;
+- `holonomy_clean` supports signed cross-checkpoint rewards or control.
+
+Model promotion always requires independent grouped held-out utility and damage evidence. High measured
+holonomy routes signed control to local sectioning. Missing loops or low simultaneous coverage route to audit.
+Failed held-out gain, matched controls, damage, timeout, or provenance route to rejection. The resulting
+authorization receipt is bound to model, dataset, operator, run, and policy hashes.
 
 ## Worked game flow
 

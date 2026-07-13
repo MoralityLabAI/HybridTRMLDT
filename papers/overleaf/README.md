@@ -17,3 +17,6 @@ figures/
 ```
 
 The paper intentionally excludes VPD from the benchmark argument.
+
+The RSITopology-aware HRM training-review section includes a synthetic receipt-contract matrix. It does not
+claim that a neural model was trained or promoted.

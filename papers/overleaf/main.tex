@@ -3,6 +3,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
+\usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage{tikz}
@@ -23,6 +24,8 @@
 We study a small hybrid reasoning architecture that combines a Tiny Recursive Model (TRM) style proposal mechanism with an explicit Lattice Deduction Transformer (LDT) style state. The central design is a typed membrane: the latent side proposes refinements, while the explicit lattice side certifies, rejects, or soft-stores them according to provenance. The goal is not to claim that a lattice guarantees correct abstention in all settings. The narrower claim is that an explicit lattice makes abstention, bottom, monotonicity, and provenance inspectable in domains where the relevant mechanics are checkable.
 
 We evaluate this design on five lightweight benchmarks: Sudoku, ARC-1, ARC-2, environment-pointer routing, and a coupled storyworld playing task. Across the saved runs, hybrid matches the best aggregate score in every task family. It improves proposal efficiency in Sudoku and aggregate ARC-2, repairs unsafe TRM actions in storyworld play, and avoids hard-eliminating routes when LDT evidence is only lexical and therefore not environment-sound. The main negative result is that hybrid is not automatically superior: in routing it only ties TRM when LDT candidate sets are treated as soft evidence, and in two ARC-2 instances its heuristic proposal order uses more proposals than raw TRM.
+
+We also specify a Conductor-HRM review layer for newly trained models. It combines target-blind spectral bundles, checkpoint lineage, loop holonomy, and a conservative signed-control bound with separate held-out utility, damage, provenance, and resource gates. A deterministic receipt-contract exercise validates authorize, section, audit, and reject control flow; it is not reported as neural model-training performance.
 \end{abstract}
 
 \section{Motivation}
@@ -336,6 +339,99 @@ Moral optimization & Confidence arbitration & 1.000 & 11.06 \\
 \paragraph{Transcript slice.}
 One secret-ending run starts at $(\text{trust}=3,\text{evidence}=1,\text{heat}=4,\text{scene}=1)$. Confidence arbitration sees high local margins and repeatedly selects \texttt{defuse}: \texttt{defuse, defuse, defuse, defuse}. It ends at $(3,1,0,5)$ and fails because evidence never reaches the secret gate. The typed membrane instead accepts the need to preserve reachability and follows \texttt{defuse, wait, wait, investigate, defuse, investigate}, ending at $(1,3,2,5)$ and satisfying the secret-ending predicate.
 
+\section{HRM Review of New Model Training}
+
+The multi-module extension uses a Conductor-HRM to schedule review modules rather than directly control model
+weights. The slow HRM chooses the review regime and active audit graph. The fast HRM requests spectral,
+lineage, holonomy, utility, damage, and resource receipts. A typed join emits one of four routes: authorize,
+section into local patches, audit missing evidence, or reject and retain the base model. Figure~\ref{fig:hrm-review}
+shows this control flow.
+
+\begin{figure}[t]
+\centering
+\resizebox{\linewidth}{!}{\input{figures/hrm_training_review.tex}}
+\caption{RSITopology-aware Conductor-HRM review. Geometry limits the authority of internal-coordinate operations;
+behavioral and operational receipts separately control model promotion.}
+\label{fig:hrm-review}
+\end{figure}
+
+For context stratum $p$, let the normalized reliability-weighted Laplacian be
+\[
+\widetilde L_p=\frac{\delta_p^\top W_p\delta_p}
+{\lambda_{\max}(\delta_p^\top W_p\delta_p)}.
+\]
+For a frozen spectral interval $I_b$, form $P_b(p)=\mathbf 1_{I_b}(\widetilde L_p)$ and infer a consensus bundle
+from projector occupancy:
+\[
+\overline P_b=\frac{1}{|\mathcal P|}\sum_pP_b(p),\qquad
+U_b=\operatorname{im}\mathbf 1_{[\rho,1]}(\overline P_b).
+\]
+This replaces a guessed rank with an occupancy-derived rank. Cross-site projectors are admitted only after
+Jacobians register them into a common edit space. Bundle discovery and all thresholds are sealed before outcome
+reveal.
+
+For adjacent orthonormal frames, the overlap decomposes as
+\[
+U_b^\top U_a=Q_{b\leftarrow a}S_{ba},
+\]
+where $S_{ba}$ measures principal-angle retention and $Q_{b\leftarrow a}$ transports signed coordinates. Around
+a registered context-by-checkpoint loop,
+\[
+H_{\square}=Q_{00\leftarrow01}Q_{01\leftarrow11}
+Q_{11\leftarrow10}Q_{10\leftarrow00},\qquad
+\kappa_{\square}=1-\frac{\operatorname{tr}(H_{\square})}{r}.
+\]
+Good local edge retention does not imply a globally stable signed frame. Loop audits therefore include
+orientation and a matched noise null conditioned on rank, perimeter, edge retention, uncertainty, and visibility.
+
+Let $W_e$ be a one-sided lower bound on worst-direction squared retention. For a path with net polar transport
+$H$, the signed-coordinate error obeys
+\[
+\|M-I\|_2\leq\sum_e(1-\sqrt{W_e})+\|H-I\|_2.
+\]
+For orientation-preserving $H$, $\|H-I\|_2=2\sin(\alpha_{\max}/2)$; orientation reversal or an unmeasured loop
+forces the conservative value 2. With simultaneous coverage at least $1-\delta$, global signed control is
+authorized only when the uncertainty-adjusted bound $\widehat R\leq\epsilon$. This controls false authorization
+for registered signed coordinates. It does not establish behavioral safety.
+
+Invariant bundle energy
+\[
+e_b(x)=\frac{\|U_b^\top x\|_2^2}{\|x\|_2^2}
+\]
+needs lineage but not a globally fixed signed basis. It may tilt allocation by
+\[
+\pi_\eta(i\mid s)\propto\pi_0(i\mid s)\exp(\eta\widehat\Delta_{u,i}),
+\qquad D_{\mathrm{KL}}(\pi_\eta\|\pi_0)\leq K_{\max}.
+\]
+Positive grouped held-out gain, standardized uplift, independent replicates, and matched-rank Haar controls remain
+required. Model promotion additionally requires held-out damage, OS-enforced RAM/CPU/I/O caps, chunk and
+checkpoint policy, structured resource logs, abort status, process-owned cleanup, and hash-bound provenance.
+
+This yields three identity levels: \texttt{engineering\_evidence}, \texttt{lineage\_certified}, and
+\texttt{holonomy\_clean}. Ordinary optimizer promotion needs behavioral and engineering evidence but no signed
+coordinate claim. Bundle allocation needs lineage certification. Global signed rewards or control need clean
+holonomy. High measured holonomy invokes sectioning into maximal local flat patches; each patch must be certified
+again before use.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lllr}
+\toprule
+Receipt case & Request & HRM route & Bound \\
+\midrule
+Clean signed candidate & promotion & authorize & 0.095 \\
+High measured holonomy & signed control & section & 0.757 \\
+Orientation reversal & signed control & section & 2.000 \\
+Unmeasured loop & signed control & audit & 2.000 \\
+Failed grouped utility & promotion & reject & 0.095 \\
+\bottomrule
+\end{tabular}
+\caption{Representative deterministic receipt-contract outcomes under $\epsilon=0.5$ and $\delta=0.05$.
+These are control-flow tests, not trained-model results.}
+\label{tab:hrm-review}
+\end{table}
+
 \section{Design Decisions and Alternatives}
 
 \paragraph{Hard versus soft application.}
@@ -356,9 +452,20 @@ In storyworld play, the hybrid overrides TRM when its proposed action loses mode
 \paragraph{Proposal ordering.}
 Current ARC proposal ordering is simple and hand-coded. The ARC-2 efficiency regressions indicate that a learned TRM proposal ranker should be trained while retaining LDT certification.
 
+\paragraph{Topology as authority rather than score.}
+We keep identity geometry outside the scalar HRM objective. An alternative is to reward low holonomy and let
+utility trade against it. That permits high utility to purchase an unauthorized signed operation. Another
+alternative is to promote every holonomy-clean candidate; this is also invalid because coordinate identity does
+not imply held-out behavioral gain.
+
+\paragraph{Global rejection versus local sectioning.}
+A conservative design could reject every high-holonomy candidate. We instead withhold global signed authority
+and permit the HRM to propose local flat sections. This preserves potentially useful local control while keeping
+each patch subject to its own identity, utility, damage, and trust-radius receipts.
+
 \section{Limitations}
 
-The benchmarks are small and synthetic. They test contracts, not scale. The TRM implementations in this repository are dependency-light analogues, not full recurrent neural models~\cite{wang2025hrm,jolicoeurmartineau2025trm}. The Tesseract router reference uses a TF-IDF plus MLP architecture, and the local routing benchmark mirrors the classification objective without importing its full PyTorch stack~\cite{tesseract2026router}. The LDT side is symbolic and domain-specific rather than a learned lattice transformer~\cite{davis2026ldt}. A learned LDT head is future work. The hybrid has no aggregate score regression in the saved benchmarks, but it does have efficiency regressions in ARC-2 subcases and no routing accuracy gain over TRM yet.
+The benchmarks are small and synthetic. They test contracts, not scale. The TRM implementations in this repository are dependency-light analogues, not full recurrent neural models~\cite{wang2025hrm,jolicoeurmartineau2025trm}. The Tesseract router reference uses a TF-IDF plus MLP architecture, and the local routing benchmark mirrors the classification objective without importing its full PyTorch stack~\cite{tesseract2026router}. The LDT side is symbolic and domain-specific rather than a learned lattice transformer~\cite{davis2026ldt}. A learned LDT head is future work. The hybrid has no aggregate score regression in the saved benchmarks, but it does have efficiency regressions in ARC-2 subcases and no routing accuracy gain over TRM yet. The HRM training-review matrix uses synthetic sealed receipts; it validates fail-closed routing but supplies no evidence about neural training gains. The signed-control theorem is limited to registered coordinate error under its coverage assumptions and cannot establish general behavioral safety.
 
 \section{Next Experiments}
 
@@ -368,11 +475,13 @@ The benchmarks are small and synthetic. They test contracts, not scale. The TRM 
   \item Convert membrane decisions into SFT records and train a small learned membrane policy.
   \item Run the INTELLECT-3 \texttt{logic-env} under WSL or Linux~\cite{primeintellect2026logic}. The Windows smoke command currently fails before environment loading due to a Unix-only \texttt{fcntl} import in \texttt{prime\_tunnel}.
   \item Scale storyworld play to larger GPTStoryworld or SweepWeave tasks after this finite-state harness is stable.
+  \item Wrap a capped HRM/TRM checkpoint run as a preregistered receipt producer and evaluate context-by-checkpoint
+  lineage, matched loop nulls, grouped held-out utility, and local section persistence.
 \end{enumerate}
 
 \section{Conclusion}
 
-The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft.
+The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft. At the multi-module level, Conductor-HRM can apply the same discipline to training review: topology bounds the authority of internal-coordinate operations, while held-out utility, damage, provenance, and resources independently govern model promotion.
 
 \bibliographystyle{plain}
 \bibliography{references}
