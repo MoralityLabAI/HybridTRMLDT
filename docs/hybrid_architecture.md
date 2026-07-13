@@ -45,3 +45,9 @@ Only environment-sound judgments should become hard eliminations by default.
 ## VPD position
 
 VPD is an instrumentation layer until proven otherwise. It may label weights, adapters, or components by skill/deduction behavior. The first bridge to training should be data routing, adapter specialization, loss weighting, or regularization. Direct weight-edit hill climbing is not assumed.
+
+## Multi-module extension
+
+`docs/hrm_conductor_architecture.md` defines Conductor-HRM, a hierarchical typed module-flow architecture in
+which an HRM schedules and joins multiple hybrid modules. The HRM controls execution flow but cannot bypass a
+module membrane, mutate module-owned lattice state, or upgrade receipt provenance.
