@@ -8,6 +8,8 @@ We evaluate this design on five lightweight benchmarks: Sudoku, ARC-1, ARC-2, en
 
 We also specify a Conductor-HRM layer for review of newly trained checkpoints. It combines target-blind spectral bundles, lineage, holonomy, and a conservative signed-control bound with independent held-out utility, damage, provenance, and resource gates. The saved receipt-contract matrix tests review flow only; it is not neural training performance.
 
+We then apply the same control mathematics directly to fixed hybrid skill sequencers in a registered 667-episode replay. Relative to global signed sequencing, topology-controlled localization improves family-macro utility by `0.0069` (95% context-clustered bootstrap interval `[0.0049,0.0092]`, Holm-adjusted `p=0.0006`) with unchanged accuracy and lower cost. Its `0.0003` advantage over lineage-only control is not significant (`p=0.5023`). This measures sequencer control over deterministic skills, not neural weight infusion or official leaderboard performance.
+
 ## 1. Motivation
 
 The motivating question is practical:
@@ -371,6 +373,62 @@ Transcript slice:
 
 One secret-ending run starts at `(trust=3, evidence=1, heat=4, scene=1)`. Confidence arbitration sees high local margins and repeatedly selects `defuse`: `defuse, defuse, defuse, defuse`. It ends at `(trust=3, evidence=1, heat=0, scene=5)` and fails because evidence never reaches the secret gate. The typed membrane instead accepts the need to preserve reachability and follows `defuse, wait, wait, investigate, defuse, investigate`, ending at `(trust=1, evidence=3, heat=2, scene=5)` and satisfying the secret-ending predicate.
 
+### 7.1 Topology-Controlled Skill Sequencing
+
+This experiment isolates the control policy while holding the skill implementations fixed. Every context exposes
+the same proposal-only TRM, deduction-only LDT, and typed propose/certify hybrid sequences. Sequence utilities are
+fitted on calibration data only. Two calibration folds produce transport estimates `T_c^(1)` and `T_c^(2)` over
+the preference vector `(u_typed - u_TRM, u_typed - u_LDT)`. Lineage contraction `lambda_c`, loop disagreement
+`h_c`, and orientation reversal `o_c` define
+
+```math
+\widehat R_c = \min\{2, \lambda_c + h_c\},
+\qquad
+\operatorname{global}(c) \iff o_c=0 \land \widehat R_c \leq \epsilon,
+```
+
+after simultaneous-coverage and matched-noise checks. An orientation reversal forces `R_hat_c=2`. Unauthorized
+contexts invoke the best calibration-fitted local section.
+
+The frozen evaluation contains 667 paired episodes: 96 Sudoku, 168 procedural ARC-1, 160 procedural ARC-2, 115
+held-out local Tesseract routing trajectories, and 128 storyworld starts split evenly between secret and moral
+objectives. Families receive equal macro weight. Inference uses 5,000 paired family-stratified hierarchical
+context-cluster bootstrap samples, 10,000 context-cluster sign flips, Holm correction over three registered
+comparisons, family-balanced cluster Cohen's `d_z`, and exact McNemar accuracy tests. ARC instances are retained
+only when all candidate sequences solve them, isolating sequencer efficiency rather than solver coverage.
+
+| Sequencer | Macro Utility | Accuracy | Macro Cost | Violations |
+|---|---:|---:|---:|---:|
+| Global signed | 0.8931 | 0.9667 | 7.674 | 0.0000 |
+| Lineage only | 0.8998 | 0.9667 | 6.453 | 0.0000 |
+| Fixed typed | 0.8931 | 0.9667 | 7.674 | 0.0000 |
+| Control math | **0.9001** | **0.9667** | **6.436** | **0.0000** |
+
+Against global signed control, paired macro utility improves by `+0.006943` (clustered 95% CI
+`[+0.004909,+0.009232]`, Holm-adjusted `p=0.000600`, family-balanced cluster `d_z=0.876`). Accuracy is unchanged
+(exact McNemar `p=1`), while macro cost falls by `1.238`. Against lineage-only control, utility improves by only
+`+0.000310` (95% CI `[0,+0.000864]`, clustered `p=0.502350`, `d_z=0.209`) and macro cost falls by `0.017`. This
+slice does not establish incremental utility from holonomy/orientation checks beyond lineage localization.
+
+The registered controller invokes a local section for 100% of contexts and matches the local-calibrated
+reference. The positive result is therefore conservative localization, not broad evidence that global signed
+transport is safe. Orientation reversal is detected in 14.3% of contexts.
+
+Post-registration sensitivity:
+
+| Error Budget | Local-Section Rate | Macro Utility | Macro Cost |
+|---:|---:|---:|---:|
+| 0.25 | 1.000 | 0.9001 | 6.436 |
+| 0.50 | 1.000 | 0.9001 | 6.436 |
+| 0.75 | 0.821 | 0.9001 | 6.436 |
+| 1.00 | 0.714 | 0.8967 | 6.737 |
+| 1.50 | 0.214 | 0.8949 | 6.885 |
+| 2.00 | 0.143 | 0.8943 | 7.223 |
+
+Relaxing authorization reduces local sectioning but erodes utility and raises cost. The 667 immutable replay
+tasks are also exported as a Verifiers `0.1.14` v1 Taskset/Harness package. Taskset owns tasks and scoring;
+Harness owns sequencer rollout. This is an LLM-free portability artifact, not an additional model result.
+
 ## 8. HRM Review of New Model Training
 
 Conductor-HRM reviews training as a graph of typed modules. The slow HRM selects an ordinary, invariant-bundle, global-signed, or sectioned-signed review regime. The fast HRM schedules spectral geometry, checkpoint lineage, loop holonomy, grouped utility, damage, and resource audits. A typed join routes the candidate to `authorize`, `section`, `audit`, or `reject`. The manager never writes weights or upgrades a source receipt.
@@ -509,6 +567,11 @@ The LDT side is symbolic and domain-specific. A learned LDT head is future work.
 
 The hybrid has no aggregate score regression in the saved benchmarks, but it does have efficiency regressions in ARC-2 subcases and no routing accuracy gain over TRM yet.
 
+The sequencer benchmark replays deterministic known-task skills. Its significant gain over global control is
+mainly lower cost and better preference selection, not higher accuracy, and it shows no significant advantage
+over lineage-only control. ARC tasks are filtered for common solver success. It is not evidence of neural weight
+infusion, official ARC performance, or official INTELLECT-3 performance.
+
 The HRM training-review matrix uses synthetic sealed receipts and supplies no evidence of neural training gains. The signed-control theorem applies only to registered coordinate error under its simultaneous-coverage assumptions. It does not establish general behavioral safety or self-improvement.
 
 ## 11. Next Experiments
@@ -518,8 +581,9 @@ The HRM training-review matrix uses synthetic sealed receipts and supplies no ev
 3. Convert membrane decisions into SFT records and train a small learned membrane policy.
 4. Run the INTELLECT-3 `logic-env` under WSL/Linux, since the Windows smoke command currently fails before environment loading due to a Unix-only `fcntl` import in `prime_tunnel`.
 5. Scale storyworld play to larger GPTStoryworld/SweepWeave tasks after this finite-state harness is stable.
-6. Wrap a capped HRM/TRM checkpoint run as a preregistered receipt producer, then evaluate context-by-checkpoint lineage, matched loop nulls, grouped held-out utility, and local section persistence.
+6. Replace deterministic sequencer candidates with frozen learned TRM/LDT checkpoints while retaining the registered partitions and paired control-policy ablations.
+7. Wrap a capped HRM/TRM checkpoint run as a preregistered receipt producer, then evaluate context-by-checkpoint lineage, matched loop nulls, grouped held-out utility, and local section persistence.
 
 ## 12. Conclusion
 
-The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft. At the multi-module level, Conductor-HRM applies the same discipline to training review: topology bounds internal-coordinate authority, while held-out utility, damage, provenance, and resources independently govern model promotion.
+The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft. Applied to fixed sequencers, topology-controlled localization outperforms global signed transfer, but this slice does not distinguish full holonomy/orientation control from lineage-only localization. At the multi-module level, Conductor-HRM applies the same discipline to training review: topology bounds internal-coordinate authority, while held-out utility, damage, provenance, and resources independently govern model promotion.

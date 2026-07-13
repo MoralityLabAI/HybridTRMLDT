@@ -20,3 +20,6 @@ The paper intentionally excludes VPD from the benchmark argument.
 
 The RSITopology-aware HRM training-review section includes a synthetic receipt-contract matrix. It does not
 claim that a neural model was trained or promoted.
+
+The sequencer-control section reports a registered 667-episode deterministic replay with paired inference and an
+error-budget sensitivity table. It measures controller selection over fixed skills, not neural weight infusion.

@@ -22,6 +22,9 @@ The first included environment is a coupled-objective storyworld because it give
 - Includes a dependency-free hybrid LDT/TRM membrane stub: latent proposals must be projected into typed lattice refinements.
 - Provides agent workorders for literature clearance, formalization, experiment specs, and starter implementation.
 - Keeps VPD as instrumentation and decomposition, not as an assumed edit loop.
+- Benchmarks RSITopology-aware authorization over matched TRM, LDT, and typed-hybrid skill sequences with paired
+  statistics and raw receipts.
+- Exports the frozen evaluation as a Verifiers `0.1.14` v1 Taskset/Harness replay package.
 
 ## Quickstart
 
@@ -66,6 +69,27 @@ python -m research_gym.scripts.review_model_training
 This exercises target-blind geometry, lineage, holonomy, utility, damage, and resource receipt joins over a
 deterministic candidate matrix. It emits authorize, section, audit, or reject routes. It does not train or mutate
 a neural model.
+
+Registered sequencer-control benchmark:
+
+```bash
+python -m research_gym.scripts.bench_sequencer_control
+```
+
+This compares global signed, lineage-only, fixed-typed, full control-math, and local-calibrated sequencing on 667
+paired known-task episodes. The benchmark uses calibration-only fitting, equal-family macro weighting,
+context-clustered hierarchical bootstrap intervals, clustered sign-flip tests, Holm correction, effect sizes, and exact McNemar audits. It measures control
+over fixed deterministic skills, not neural weight infusion or official leaderboard performance.
+
+Verifiers v1 replay contract:
+
+```bash
+python scripts/smoke_verifiers_v1.py
+prime eval run hybrid-sequencer-v1 -c configs/eval/hybrid_sequencer_v1.toml
+```
+
+The smoke requires `verifiers==0.1.14`; use current Linux/WSL Prime tooling for the CLI path. See
+`docs/verifiers_v1_harness.md` for local platform status.
 
 ## Repo map
 

@@ -1,0 +1,29 @@
+\begin{tikzpicture}[
+  node distance=0.68cm and 0.62cm,
+  box/.style={draw, rounded corners, align=center, minimum width=2.15cm, minimum height=0.68cm, font=\scriptsize},
+  skill/.style={box, fill=blue!8},
+  fit/.style={box, fill=orange!11},
+  geometry/.style={box, fill=green!9},
+  decision/.style={draw, diamond, aspect=2.0, align=center, fill=yellow!13, font=\scriptsize},
+  route/.style={box, fill=green!15},
+  local/.style={box, fill=red!7},
+  arrow/.style={-Latex, thick}
+]
+\node[skill] (skills) {shared skill library\\TRM, LDT, typed hybrid};
+\node[fit, right=of skills] (cal) {calibration-only fit\\global and local scores};
+\node[geometry, right=of cal] (paths) {two fold transports\\$T_c^{(1)},T_c^{(2)}$};
+\node[geometry, below=of paths] (receipt) {receipt $(\lambda_c,h_c,o_c)$\\coverage and noise null};
+\node[decision, left=1.05cm of receipt] (gate) {$\widehat R_c\leq\epsilon$?\\orientation clean?};
+\node[route, below left=0.75cm and 0.65cm of gate] (global) {global signed\\sequence};
+\node[local, below right=0.75cm and 0.65cm of gate] (section) {calibrated local\\section};
+\node[box, below=1.15cm of receipt] (eval) {frozen paired evaluation\\utility, accuracy, cost};
+
+\draw[arrow] (skills) -- (cal);
+\draw[arrow] (cal) -- (paths);
+\draw[arrow] (paths) -- (receipt);
+\draw[arrow] (receipt) -- (gate);
+\draw[arrow] (gate) -- node[left, font=\tiny]{yes} (global);
+\draw[arrow] (gate) -- node[right, font=\tiny]{no} (section);
+\draw[arrow] (global) -- (eval);
+\draw[arrow] (section) -- (eval);
+\end{tikzpicture}

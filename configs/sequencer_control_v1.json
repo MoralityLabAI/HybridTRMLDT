@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "registered_on": "2026-07-13",
+  "primary_endpoint": "macro_utility_delta_control_math_vs_global_signed",
+  "benchmark": {
+    "seed": 20260713,
+    "signed_error_budget": 0.5,
+    "delta": 0.05,
+    "sudoku_calibration_per_base": 16,
+    "sudoku_eval_per_base": 32,
+    "arc1_calibration_per_rule": 12,
+    "arc1_eval_per_rule": 24,
+    "arc2_calibration_per_rule": 10,
+    "arc2_eval_per_rule": 20,
+    "story_calibration_per_scenario": 64,
+    "story_eval_per_scenario": 64,
+    "routing_max_per_env": 80,
+    "bootstrap_iterations": 5000,
+    "permutation_iterations": 10000,
+    "inference_unit": "family_context_cluster"
+  },
+  "controls": [
+    "global_signed",
+    "lineage_only",
+    "fixed_typed",
+    "local_calibrated"
+  ],
+  "claim_boundary": "Policy-level skill sequencing only; no neural weights are trained or edited."
+}
