@@ -1,0 +1,1507 @@
+{
+  "candidate_count": 67,
+  "candidates": [
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        "Storyforge/package.json",
+        "Storyforge/README.md",
+        "storyforge-experiments/SKILL.md",
+        "Storyforge/data/storyworld_catalog.json",
+        "Storyforge/examples/prisoner-dilemma-storyworld.json",
+        "Storyforge/tests/diplomacy_goodstart.export.test.ts",
+        "Storyforge/tests/diplomacy_goodstart.ingest.test.ts",
+        "Storyforge/tests/diplomacy_goodstart.schemas.test.ts"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "diplomacy",
+        "env",
+        "environment",
+        "game",
+        "harness",
+        "simulation",
+        "skill",
+        "storyworld"
+      ],
+      "name": "StoryForge",
+      "path": "D:\\projects\\StoryForge",
+      "relevance_score": 24
+    },
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        "package.json",
+        "README.md",
+        "saves/agent-policy-check.json",
+        "saves/compare-policy-701.json",
+        "saves/compare-policy-702.json",
+        "saves/compare-policy-703.json",
+        "saves/compare-policy-704.json",
+        "saves/compare-policy-801.json"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "diplomacy",
+        "game",
+        "harness",
+        "policy",
+        "reward",
+        "simulation",
+        "skill",
+        "storyworld"
+      ],
+      "name": "AIpha CentaurAI",
+      "path": "C:\\projects\\AIpha CentaurAI",
+      "relevance_score": 23
+    },
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        "AGENTS.md",
+        "kimiStoryworldIdea.txt",
+        "package.json",
+        "raw_storyworld.json",
+        "README.md",
+        "storyworld-env (2).zip",
+        "storyworld-env.zip",
+        "storyworld-frontend.zip"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "diplomacy",
+        "env",
+        "environment",
+        "harness",
+        "skill",
+        "storyworld",
+        "verifier"
+      ],
+      "name": "GPTStoryworld",
+      "path": "D:\\projects\\GPTStoryworld",
+      "relevance_score": 21
+    },
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        "PuppetMaster/AGENTS.md",
+        "PuppetMaster/AGENTS.v2.md",
+        "PuppetMaster/AGENTS.v3.md",
+        "PuppetMaster/AGENTS.v4.md",
+        "PuppetMaster/package.json",
+        "PuppetMaster/README.md",
+        "PuppetMaster/SKILL.md",
+        "PuppetMaster/runs/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "diplomacy",
+        "env",
+        "environment",
+        "harness",
+        "policy",
+        "skill",
+        "storyworld"
+      ],
+      "name": "PuppetMaster",
+      "path": "C:\\projects\\PuppetMaster",
+      "relevance_score": 20
+    },
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        ".env.example",
+        "DIPLOMACY_ANALYSIS_DOCUMENTATION.md",
+        "diplomacy_unified_analysis_final.py",
+        "lm_game.py",
+        "pyproject.toml",
+        "README.md",
+        "ai_animation/.env.example",
+        "ai_animation/package.json"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "diplomacy",
+        "env",
+        "environment",
+        "game",
+        "reward",
+        "router",
+        "simulation",
+        "skill"
+      ],
+      "name": "AI_Diplomacy",
+      "path": "C:\\projects\\AI_Diplomacy",
+      "relevance_score": 19
+    },
+    {
+      "application": "trusted/untrusted control flow and provenance-aware intervention",
+      "evidence_files": [
+        ".venv-tinyqlora/pyvenv.cfg",
+        "IACDojo/README.md",
+        "paper_submission_bundle/controller_comparison_table.md",
+        "paper_submission_bundle/CONTROLLER_SUMMARY.md",
+        "rsi_gym/README.md",
+        ".venv-tinyqlora/Scripts/tiny-agents.exe",
+        "latent_response_protocol_starter/control_api/README.md",
+        "latent_response_protocol_starter/latent_response_protocol_starter/.env.example"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "arena",
+        "control",
+        "env",
+        "environment",
+        "harness",
+        "policy",
+        "reward",
+        "router",
+        "skill",
+        "verifier"
+      ],
+      "name": "BlueBeam",
+      "path": "C:\\projects\\ApartHackathon\\ApartHackathonMarch26",
+      "relevance_score": 19
+    },
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        "AI_Diplomacy/.env.example",
+        "AI_Diplomacy/DIPLOMACY_ANALYSIS_DOCUMENTATION.md",
+        "AI_Diplomacy/diplomacy_unified_analysis_final.py",
+        "AI_Diplomacy/lm_game.py",
+        "AI_Diplomacy/pyproject.toml",
+        "AI_Diplomacy/README.md",
+        "arkade-wallet/.env",
+        "arkade-wallet/.env.regtest"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "diplomacy",
+        "env",
+        "environment",
+        "game",
+        "reward",
+        "router",
+        "simulation"
+      ],
+      "name": "_external",
+      "path": "C:\\projects\\_external",
+      "relevance_score": 18
+    },
+    {
+      "application": "trusted/untrusted control flow and provenance-aware intervention",
+      "evidence_files": [
+        "ApartHackathonMarch26/.venv-tinyqlora/pyvenv.cfg",
+        "ApartHackathonMarch26/IACDojo/README.md",
+        "ApartHackathonMarch26/paper_submission_bundle/controller_comparison_table.md",
+        "ApartHackathonMarch26/paper_submission_bundle/CONTROLLER_SUMMARY.md",
+        "ApartHackathonMarch26/rsi_gym/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "arena",
+        "control",
+        "env",
+        "environment",
+        "harness",
+        "policy",
+        "reward",
+        "router",
+        "skill",
+        "verifier"
+      ],
+      "name": "ApartHackathon",
+      "path": "C:\\projects\\ApartHackathon",
+      "relevance_score": 18
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "SelfModels/README.md",
+        "SelfModels/smtk_starter_repo/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "env",
+        "environment",
+        "harness",
+        "policy",
+        "router",
+        "simulation",
+        "storyworld"
+      ],
+      "name": "SelfModel",
+      "path": "C:\\projects\\SelfModel",
+      "relevance_score": 18
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "AGENTS(1).md",
+        "ldt_trm_research_gym_v0_0_2/ldt_trm_research_gym/pyproject.toml",
+        "ldt_trm_research_gym_v0_0_2/ldt_trm_research_gym/README.md"
+      ],
+      "matched_signals": [
+        "agent",
+        "control",
+        "env",
+        "environment",
+        "game",
+        "harness",
+        "skill",
+        "storyworld"
+      ],
+      "name": "HybridTRMLDT",
+      "path": "C:\\projects\\HybridTRMLDT",
+      "relevance_score": 17
+    },
+    {
+      "application": "game action selection and safety-constrained search",
+      "evidence_files": [
+        "README.md"
+      ],
+      "matched_signals": [
+        "agent",
+        "control",
+        "env",
+        "environment",
+        "game",
+        "harness",
+        "policy",
+        "reward",
+        "simulation"
+      ],
+      "name": "ALife",
+      "path": "C:\\projects\\ALife",
+      "relevance_score": 16
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "pyproject.toml",
+        "README.md",
+        "tests/test_storyworld_export.py",
+        "src/heartbreak_bench/storyworld_export.py"
+      ],
+      "matched_signals": [
+        "action",
+        "control",
+        "env",
+        "environment",
+        "harness",
+        "policy",
+        "reward",
+        "skill",
+        "storyworld"
+      ],
+      "name": "OliviaRodrigoBench",
+      "path": "C:\\projects\\OliviaRodrigoBench",
+      "relevance_score": 16
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "MuslimTrader/controls-check.png",
+        "MuslimTrader/package.json",
+        "MuslimTrader/README.md",
+        "campaigns/nordic-sea-dawah-trade-campaign/storyworld_nordic_sea_campaign.json",
+        "campaigns/nordic-sea-dawah-trade-campaign/storyworld_nordic_sea_campaign.md",
+        "MuslimTrader/docs/combat-multi-agent-playtest-2026-07-12.md",
+        "MuslimTrader/docs/playtest-mounted-controls-2026-07-10.md",
+        "MuslimTrader/src/gameData.js"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "game",
+        "harness",
+        "skill",
+        "storyworld"
+      ],
+      "name": "MuslimTrader",
+      "path": "C:\\projects\\MuslimTrader",
+      "relevance_score": 15
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "qwen_jspace_reality_check/README.md",
+        "storyworld-whitebox-control-starter/storyworld-whitebox-control-starter/pyproject.toml",
+        "storyworld-whitebox-control-starter/storyworld-whitebox-control-starter/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "arena",
+        "control",
+        "harness",
+        "policy",
+        "storyworld"
+      ],
+      "name": "SmallControlHarness",
+      "path": "C:\\projects\\SmallControlHarness",
+      "relevance_score": 15
+    },
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        "TheySing/package.json",
+        "TheySing/tsconfig.harness.json",
+        "TheySing/.vercel/README.txt",
+        "TheySing/designdocs/ASI2_ASI3_DIPLOMACY_QUESTION_STAGING.md",
+        "TheySing/designdocs/ASI_FACTION_TECH_PREFERENCE_MATRIX.md",
+        "TheySing/designdocs/HARNESS_MATH_MODEL_AUDIT.md",
+        "TheySing/designdocs/HEADLESS_PLAYTEST_HARNESS.md",
+        "TheySing/designdocs/NEGOTIATION_STORYWORLD_COUNTERFACTUALS.md"
+      ],
+      "matched_signals": [
+        "action",
+        "diplomacy",
+        "game",
+        "harness",
+        "storyworld"
+      ],
+      "name": "TheySing",
+      "path": "C:\\projects\\TheySing",
+      "relevance_score": 15
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "README.md",
+        "codex-chat-sessions/2026-03-21-trm-observability-harness-handoff.md",
+        "codex-chat-sessions/2026-03-29-trm-observability-harness-hermes-packaging.md",
+        "configs/local_qwen25_3b_intellect3_math_generic_guard_router_smoke.yaml",
+        "configs/local_qwen25_3b_intellect3_math_optimized_trm_router_smoke.yaml",
+        "configs/metta_storyworld_external_smoke.yaml",
+        "configs/openai_o3mini_full_harness.yaml",
+        "configs/openai_o3mini_full_harness_rerun.yaml"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "env",
+        "environment",
+        "harness",
+        "reward",
+        "router",
+        "skill",
+        "storyworld"
+      ],
+      "name": "trm_observability_harness",
+      "path": "C:\\projects\\trm_observability_harness",
+      "relevance_score": 15
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        ".env.example",
+        "agent_task_meso_patch_optimizer.md",
+        "agent_task_vpd_labeled_sft_pivot.md",
+        "pyproject.toml",
+        "README.md",
+        "JSpace/README.md",
+        "reports/hrm_storyworld_learning_curve_report.md",
+        "reports/hrm_storyworld_learning_curve_result.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "env",
+        "environment",
+        "router",
+        "simulation",
+        "skill",
+        "storyworld"
+      ],
+      "name": "VPD",
+      "path": "D:\\projects\\VDP",
+      "relevance_score": 15
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "ConstitutionalAlignment/constitutional-harness/package.json",
+        "ConstitutionalAlignment/constitutional-harness/README.md",
+        "ConstitutionalAlignment/papers/const_align_storyworlds_research_summary_2026-03-08.md",
+        "ConstitutionalAlignment/papers/sufi_jannah_storyworld_harness_note.md",
+        "ConstitutionalAlignment/schemas/constitution_control_record_v1.schema.json",
+        "ConstitutionalAlignment/scripts/adapter_constellation_sources.punk_femme_v3_storyworld.example.json",
+        "ConstitutionalAlignment/scripts/adapter_constellation_sources.sufi_jannah_storyworld.example.json",
+        "ConstitutionalAlignment/scripts/build_storyworld_option_prompts.py"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "harness",
+        "policy",
+        "storyworld",
+        "verifier"
+      ],
+      "name": "ConstitutionalAlignment",
+      "path": "C:\\projects\\ConstitutionalAlignment",
+      "relevance_score": 14
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "Last Batallion/AGENTS.md",
+        "Last Batallion/LB Game Design - Gaza Israel Campaign Revision.docx",
+        "Last Batallion/package.json",
+        "Last Batallion/README.md",
+        "Last Batallion-publish-v9/LB Game Design.docx",
+        "Last Batallion-publish-v9/package.json",
+        "Last Batallion-publish-v9/README.md",
+        "Last Batallion/artifacts/gaza_storyworld_sync_rebuild.log"
+      ],
+      "matched_signals": [
+        "agent",
+        "control",
+        "game",
+        "harness",
+        "skill",
+        "storyworld"
+      ],
+      "name": "Last Battalion",
+      "path": "C:\\projects\\Last Battalion",
+      "relevance_score": 14
+    },
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        "morality-lab-site/storyworld-deployment-plan.md",
+        "morality-lab-site/.vercel/README.txt",
+        "morality-lab-site/papers/Confinement_Width__Interface_Limits_for_Evaluator_Relative_Control_.pdf",
+        "morality-lab-site/papers/MeTTa_Scaffolded_Repair_Curricula_for_TRM_Infused_Hermes_Skills__1_.pdf",
+        "morality-lab-site/papers/pvalue_mas_diplomacy_form_fit_draft_2026-02-06.md",
+        "morality-lab-site/papers/SAE_Storyworlds.pdf",
+        "morality-lab-site/papers/Storyworld_Environments.pdf",
+        "morality-lab-site/storyworld-app/.env.local"
+      ],
+      "matched_signals": [
+        "control",
+        "diplomacy",
+        "env",
+        "environment",
+        "skill",
+        "storyworld"
+      ],
+      "name": "morality-lab-site",
+      "path": "C:\\projects\\morality-lab-site",
+      "relevance_score": 14
+    },
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        "README_QCTX.md",
+        "tmp_run_qwen9b_storyworld_wide_remote.sh",
+        ".venv-qiskit-clean/pyvenv.cfg",
+        "qctx/probe_diplomacy_band1_ibm_fez_rep1_5q_256_counts.json",
+        "qctx/probe_diplomacy_band1_ibm_fez_rep2_5q_256_counts.json",
+        "qctx/probe_diplomacy_band1_ibm_fez_rep3_5q_256_counts.json",
+        "qctx/probe_diplomacy_band1_ibm_marrakesh_5q_128_counts.json",
+        "qctx/probe_diplomacy_band1_q6_ibm_fez_rep1_6q_512_counts.json"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "diplomacy",
+        "env",
+        "simulation",
+        "skill",
+        "storyworld"
+      ],
+      "name": "QuantumBlot",
+      "path": "C:\\projects\\QuantumBlot",
+      "relevance_score": 14
+    },
+    {
+      "application": "trusted/untrusted control flow and provenance-aware intervention",
+      "evidence_files": [
+        "AGENTS.md",
+        "controller_comparison_table.md",
+        "CONTROLLER_SUMMARY.md",
+        "IACDojo/README.md",
+        "basharena_latent_control_repo/basharena_latent_control_repo/README.md",
+        "latent_response_protocol_starter/control_api/README.md",
+        "latent_response_protocol_starter/latent_response_protocol_starter/.env.example",
+        "latent_response_protocol_starter/latent_response_protocol_starter/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "arena",
+        "control",
+        "env",
+        "harness",
+        "policy",
+        "skill"
+      ],
+      "name": "BlueBeam_commit",
+      "path": "C:\\projects\\BlueBeam_commit",
+      "relevance_score": 13
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "files-from-web/harnessdojo.zip",
+        "metta-etc/pyproject.toml",
+        "metta-etc/README.md",
+        "metta-storyworld/metta-storyworld_remote_sync.zip",
+        "metta-etc/bonsai-desktop/package.json",
+        "metta-etc/bonsai-desktop/README.md",
+        "metta-etc/research_notes/diary_policy_v2.md",
+        "metta-storyworld/metta-storyworld/pyproject.toml"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "harness",
+        "policy",
+        "skill",
+        "storyworld"
+      ],
+      "name": "metta-storyworld",
+      "path": "D:\\projects\\metta-storyworld",
+      "relevance_score": 13
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "environments/sweepweave_prime_env/pyproject.toml",
+        "environments/sweepweave_prime_env/README.md"
+      ],
+      "matched_signals": [
+        "control",
+        "env",
+        "environment",
+        "policy",
+        "reward",
+        "storyworld",
+        "verifier"
+      ],
+      "name": "prime-environments",
+      "path": "D:\\projects\\prime-environments",
+      "relevance_score": 13
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "Soul Torch/package.json",
+        "Soul Torch/README.md",
+        "Soul Torch/reference/README.md",
+        "Soul Torch/src/storyworld_hook.ts",
+        "Soul Torch/tools/bizhawk-window-control.ps1",
+        "Soul Torch/web/storyworld_overlay.json"
+      ],
+      "matched_signals": [
+        "action",
+        "control",
+        "game",
+        "harness",
+        "storyworld"
+      ],
+      "name": "SoulTorch",
+      "path": "C:\\projects\\SoulTorch",
+      "relevance_score": 13
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "TRMStoryworld/AGENTS.md",
+        "TRMStoryworld/mechinterp/README.md",
+        "TRMStoryworld/trm_hidden_buffer_mcp_probe/pyproject.toml",
+        "TRMStoryworld/trm_hidden_buffer_mcp_probe/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "env",
+        "harness",
+        "skill",
+        "storyworld"
+      ],
+      "name": "StoryworldTRM",
+      "path": "C:\\projects\\StoryworldTRM",
+      "relevance_score": 13
+    },
+    {
+      "application": "game action selection and safety-constrained search",
+      "evidence_files": [
+        "package.json",
+        "README.md",
+        "docs/Blighted Galaxy Game Design Treatment.docx",
+        "rust-core/README.md",
+        "scripts/smoke-game.cjs",
+        "src/benchmarkHarness.ts"
+      ],
+      "matched_signals": [
+        "control",
+        "game",
+        "harness",
+        "policy",
+        "simulation",
+        "skill"
+      ],
+      "name": "Blighted Galaxy",
+      "path": "C:\\projects\\Blighted Galaxy",
+      "relevance_score": 12
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        ".env.example",
+        "pyproject.toml",
+        "README.md",
+        "demo/README.md",
+        "docs/AGENTS.md",
+        "docs/MULTI_AGENT_DESIGN.md",
+        "docs/SKILL_API_DESIGN.md",
+        "docs/ultra_lean_trm_skills.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "env",
+        "harness",
+        "policy",
+        "skill",
+        "storyworld"
+      ],
+      "name": "hermes-lite",
+      "path": "C:\\projects\\hermes-lite",
+      "relevance_score": 12
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "README.md",
+        "godot/AGENTS.md",
+        "godot/default_env.tres",
+        "godot/Reaction.gd",
+        "godot/Storyworld.gd",
+        "godot/StoryworldMergingScreen.gd",
+        "godot/StoryworldMergingScreen.tscn",
+        "godot/io/StoryworldIO.gd"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "env",
+        "environment",
+        "game",
+        "storyworld"
+      ],
+      "name": "Sweep_Weave",
+      "path": "C:\\projects\\Sweep_Weave",
+      "relevance_score": 12
+    },
+    {
+      "application": "trusted/untrusted control flow and provenance-aware intervention",
+      "evidence_files": [
+        "pyproject.toml",
+        "README.md",
+        "docs/shinigami_zk_arena.md",
+        "scripts/run_shinigami_zk_arena.py",
+        "data/generated/bitvm_arena_attack.jsonl",
+        "data/generated/bitvm_arena_honest.jsonl"
+      ],
+      "matched_signals": [
+        "agent",
+        "arena",
+        "control",
+        "env",
+        "reward",
+        "router",
+        "verifier"
+      ],
+      "name": "BitVMArena",
+      "path": "C:\\projects\\BitVMArena",
+      "relevance_score": 11
+    },
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        "DMT/dmt_starter/pyproject.toml",
+        "DMT/dmt_starter/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "env",
+        "game",
+        "skill",
+        "storyworld"
+      ],
+      "name": "DMT",
+      "path": "C:\\projects\\DMT",
+      "relevance_score": 11
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "Tesseract/HTG_harness_wire.md",
+        "Tesseract/PRIME_ENV_TOOLCHAIN.md",
+        "Tesseract/pyproject.toml",
+        "Tesseract/tesseract_control_runtime.zip",
+        "Tesseract/Bonsai-Tesseract/README.md",
+        "Tesseract/data/multi_env_benchmark.json",
+        "Tesseract/data/openai_o3mini_full_harness_rerun.jsonl",
+        "Tesseract/data/storyworld_native_reference.log.jsonl"
+      ],
+      "matched_signals": [
+        "control",
+        "env",
+        "harness",
+        "skill",
+        "storyworld"
+      ],
+      "name": "Tesseract",
+      "path": "C:\\projects\\Tesseract",
+      "relevance_score": 11
+    },
+    {
+      "application": "environment action validation and typed transition control",
+      "evidence_files": [
+        "AGENTS.md",
+        "pyproject.toml",
+        "README.md",
+        "tests/test_envs.py",
+        ".github/workflows/publish-envs.yaml",
+        "environments/aime2024/pyproject.toml",
+        "environments/aime2024/README.md",
+        "environments/aime2025/pyproject.toml"
+      ],
+      "matched_signals": [
+        "agent",
+        "env",
+        "environment",
+        "harness",
+        "reward",
+        "verifier"
+      ],
+      "name": "_tmp_research_environments",
+      "path": "C:\\projects\\_tmp_research_environments",
+      "relevance_score": 10
+    },
+    {
+      "application": "skill routing and architecture selection",
+      "evidence_files": [
+        ".env.example",
+        "AGENTS.md",
+        "README.ja.md",
+        "README.ko.md",
+        "README.md",
+        "README.ru.md",
+        "README.zh-CN.md",
+        "deploy/env.example"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "env",
+        "environment",
+        "policy",
+        "router",
+        "skill"
+      ],
+      "name": "ironclaw",
+      "path": "C:\\projects\\ironclaw",
+      "relevance_score": 10
+    },
+    {
+      "application": "environment action validation and typed transition control",
+      "evidence_files": [
+        "AGENTS.md",
+        "pyproject.toml",
+        "README.md",
+        "tests/test_envs.py",
+        ".github/workflows/publish-envs.yaml",
+        "environments/aime2024/pyproject.toml",
+        "environments/aime2024/README.md",
+        "environments/aime2025/pyproject.toml"
+      ],
+      "matched_signals": [
+        "agent",
+        "env",
+        "environment",
+        "harness",
+        "reward",
+        "verifier"
+      ],
+      "name": "prime_intellect_research_environments",
+      "path": "C:\\projects\\prime_intellect_research_environments",
+      "relevance_score": 10
+    },
+    {
+      "application": "environment action validation and typed transition control",
+      "evidence_files": [
+        "pyproject.toml",
+        "README.md",
+        "RSITopology_control_risk_redteam_v0_1_20260712.zip",
+        "RSITopology_control_risk_redteam_v0_1_20260712.zip.sha256",
+        "RSITopology_spectral_bundle_v0_2_2_lineage_control_20260711.zip",
+        "RSITopology_spectral_bundle_v0_2_2_lineage_control_20260711.zip.sha256",
+        "artifacts/lineage_identity_control_unit.json",
+        "artifacts/monitor_holonomy_control.json"
+      ],
+      "matched_signals": [
+        "control",
+        "env",
+        "environment",
+        "harness",
+        "policy",
+        "reward"
+      ],
+      "name": "RSITopology",
+      "path": "C:\\projects\\RSITopology",
+      "relevance_score": 10
+    },
+    {
+      "application": "trusted/untrusted control flow and provenance-aware intervention",
+      "evidence_files": [
+        "README.md",
+        "bark-pr/AGENTS.md",
+        "bark-pr/README.md",
+        "scripts/prover-env.ps1",
+        ".agents/bark_arch/AGENTS.md",
+        ".agents/bark_arch/README.md",
+        "bark-pr/bark/README.md",
+        "bark-pr/bark-rest-client/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "env",
+        "environment",
+        "verifier"
+      ],
+      "name": "ark-shinigami",
+      "path": "C:\\projects\\ark-shinigami",
+      "relevance_score": 9
+    },
+    {
+      "application": "game action selection and safety-constrained search",
+      "evidence_files": [
+        "README.md",
+        "CCGS Skill Testing Framework/README.md",
+        ".claude/agents/game-designer.md",
+        ".claude/agents/gameplay-programmer.md",
+        ".claude/docs/agent-coordination-map.md",
+        ".claude/docs/agent-roster.md",
+        ".claude/docs/skills-reference.md",
+        ".claude/hooks/log-agent-stop.sh"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "env",
+        "game",
+        "skill"
+      ],
+      "name": "CodexGameStudio",
+      "path": "C:\\projects\\CodexGameStudio",
+      "relevance_score": 9
+    },
+    {
+      "application": "skill routing and architecture selection",
+      "evidence_files": [
+        ".env.example",
+        "AGENTS.md",
+        "minisweagent_path.py",
+        "package.json",
+        "pyproject.toml",
+        "README.md",
+        "run_agent.py",
+        "acp_registry/agent.json"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "control",
+        "env",
+        "environment",
+        "router",
+        "skill"
+      ],
+      "name": "hermes-agent",
+      "path": "C:\\projects\\hermes-agent",
+      "relevance_score": 9
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "Hermes Skills/MIGRATED_TO_HERMES-SKILLS.txt",
+        "Hermes Skills/README.md",
+        "Hermes Skills/bonsai-hermes/SKILL.md",
+        "Hermes Skills/data/primehub_env_manifest.json",
+        "Hermes Skills/hermes-bluebeam-research/SKILL.md",
+        "Hermes Skills/intellect3-logic-hermes/SKILL.md",
+        "Hermes Skills/intellect3-math-hermes/SKILL.md",
+        "Hermes Skills/mcp-trm-retrieval-optimization/SKILL.md"
+      ],
+      "matched_signals": [
+        "action",
+        "env",
+        "environment",
+        "skill",
+        "storyworld"
+      ],
+      "name": "Hermes-Skills",
+      "path": "D:\\projects\\Hermes-Skills",
+      "relevance_score": 9
+    },
+    {
+      "application": "environment action validation and typed transition control",
+      "evidence_files": [
+        "jurassic-bitcoin/README.md",
+        "jurassic-bitcoin/scripts/build_policy_envelope_mapping.py"
+      ],
+      "matched_signals": [
+        "action",
+        "env",
+        "environment",
+        "harness",
+        "policy"
+      ],
+      "name": "BitcoinConsensusObservatory",
+      "path": "D:\\projects\\BitcoinConsensusObservatory",
+      "relevance_score": 8
+    },
+    {
+      "application": "agent control and policy arbitration",
+      "evidence_files": [
+        "README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "control",
+        "harness",
+        "policy",
+        "reward"
+      ],
+      "name": "DoctorManhattanProject",
+      "path": "C:\\projects\\DoctorManhattanProject",
+      "relevance_score": 8
+    },
+    {
+      "application": "skill routing and architecture selection",
+      "evidence_files": [
+        "pyproject.toml",
+        "README.md",
+        "docs/semantic_router_freeze_protocol.md",
+        "reports/adaptive_flow_controller_readiness.md",
+        "reports/qwen08b_self_mode_all_turn_controls.md",
+        "reports/semantic_router_freeze_readiness.md",
+        "schemas/recruitment_semantic_router.schema.json",
+        "scripts/check_verifiers_environment.py"
+      ],
+      "matched_signals": [
+        "control",
+        "env",
+        "environment",
+        "router",
+        "verifier"
+      ],
+      "name": "FurlingExperiments",
+      "path": "C:\\projects\\FurlingExperiments",
+      "relevance_score": 8
+    },
+    {
+      "application": "environment action validation and typed transition control",
+      "evidence_files": [
+        "pyproject.toml",
+        "README.md"
+      ],
+      "matched_signals": [
+        "control",
+        "env",
+        "environment",
+        "reward",
+        "verifier"
+      ],
+      "name": "mcp_v_rag_decide",
+      "path": "C:\\projects\\mcp_v_rag_decide",
+      "relevance_score": 8
+    },
+    {
+      "application": "coalition planning and model-sound opponent reasoning",
+      "evidence_files": [
+        "research-site/papers/pvalue_mas_diplomacy_form_fit_draft_2026-02-06.md",
+        "research-site/papers/SAE_Storyworlds.pdf"
+      ],
+      "matched_signals": [
+        "diplomacy",
+        "storyworld"
+      ],
+      "name": "quantumthot-site",
+      "path": "C:\\projects\\quantumthot-site",
+      "relevance_score": 8
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "first_and_last_men_storyworld.json",
+        "first_and_last_men_storyworldv3.json",
+        "first_and_last_men_storyworldv5.json",
+        "storyworld_demo_min.json",
+        "storyworld_template_v1_canonical_full_normalized.json",
+        "storyworld-meta-agent/.env",
+        "storyworld-meta-agent/controller.js",
+        "storyworld-meta-agent/package.json"
+      ],
+      "matched_signals": [
+        "agent",
+        "control",
+        "env",
+        "storyworld"
+      ],
+      "name": "SweepWeave_Win_0_1_9",
+      "path": "C:\\projects\\SweepWeave_Win_0_1_9",
+      "relevance_score": 8
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "envs/storyworld_external.py",
+        "envs/storyworld_native.py",
+        "scripts/fetch_storyworld_repo.py"
+      ],
+      "matched_signals": [
+        "env",
+        "harness",
+        "storyworld"
+      ],
+      "name": "trm_stage",
+      "path": "C:\\projects\\trm_stage",
+      "relevance_score": 8
+    },
+    {
+      "application": "skill routing and architecture selection",
+      "evidence_files": [
+        "MIGRATED_TO_HERMES-SKILLS.txt",
+        "README.md",
+        "data/primehub_env_manifest.json",
+        "hermes-bluebeam-research/SKILL.md",
+        "intellect3-logic-hermes/SKILL.md",
+        "intellect3-math-hermes/SKILL.md",
+        "metta-composition-hermes/SKILL.md",
+        "metta-eval-optimizer-hermes/SKILL.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "env",
+        "environment",
+        "policy",
+        "skill"
+      ],
+      "name": "Hermes Skills",
+      "path": "D:\\projects\\Hermes Skills",
+      "relevance_score": 7
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "AGENTS.md",
+        "prompt_storyworld_selfplay.txt",
+        "pyproject.toml",
+        "README.md",
+        "subagent_prompt_localonly.txt",
+        "experiments/storyworld_secret_ending.zip",
+        "tests/test_hermes_skill_gym.py",
+        "experiments/hermes_skill_gym/gym_config_pruned_cycle13_action_family_compare.json"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "skill",
+        "storyworld"
+      ],
+      "name": "HRM-re",
+      "path": "C:\\projects\\HRM-re",
+      "relevance_score": 7
+    },
+    {
+      "application": "game action selection and safety-constrained search",
+      "evidence_files": [
+        "README.md",
+        "catalog/designer_game_seeds.json",
+        "demo/afterglow-orchard/game.js",
+        "demo/afterglow-orchard/README.md",
+        "demo/lint-saints/game.js",
+        "demo/lint-saints/README.md",
+        "demo/quiet-mountain-ledger/game.js",
+        "demo/quiet-mountain-ledger/README.md"
+      ],
+      "matched_signals": [
+        "game",
+        "harness",
+        "skill"
+      ],
+      "name": "Rohrertron",
+      "path": "C:\\projects\\Rohrertron",
+      "relevance_score": 7
+    },
+    {
+      "application": "agent control and policy arbitration",
+      "evidence_files": [
+        "README.md",
+        "bitcoin/README.md",
+        "ethereum/README.md",
+        "bots/executor/.env.example",
+        "ethereum/contracts/SukukProtocolController.sol",
+        "ethereum/deployments/README.md",
+        "ethereum/test/SukukEthControls.t.sol"
+      ],
+      "matched_signals": [
+        "action",
+        "control",
+        "env",
+        "policy",
+        "simulation"
+      ],
+      "name": "SukukCoin",
+      "path": "D:\\projects\\SukukCoin",
+      "relevance_score": 7
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "sweepweave-ts/AGENTS.md",
+        "sweepweave-ts/package.json",
+        "sweepweave-ts/public/storyworld_reader.html",
+        "sweepweave-ts/src/Reaction.ts",
+        "sweepweave-ts/src/Storyworld.ts",
+        "sweepweave-ts/src/storyworld_reader.html",
+        "sweepweave-ts/src/StoryworldIO.ts",
+        "sweepweave-ts/src/storyworldReaderApp.ts"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "router",
+        "storyworld"
+      ],
+      "name": "sweepweave-ts",
+      "path": "C:\\projects\\sweepweave-ts",
+      "relevance_score": 7
+    },
+    {
+      "application": "trusted/untrusted control flow and provenance-aware intervention",
+      "evidence_files": [
+        "vtxo-loan-system/.env.example",
+        "vtxo-loan-system/package.json",
+        "vtxo-loan-system/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "control",
+        "env",
+        "environment"
+      ],
+      "name": "Ark-TradeLayer",
+      "path": "C:\\projects\\Ark-TradeLayer",
+      "relevance_score": 6
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "paper/README.md",
+        "Pixieology/build_faebench_env.py",
+        "Pixieology/build_pixie_fae_loop_env.py",
+        "Pixieology/build_pixie_moral_recursion_sft_env.py",
+        "Pixieology/build_pixie_skill_sheet.py",
+        "Pixieology/build_pixie_storyworld_sft_env.py",
+        "Pixieology/build_pixue_soul_env.py",
+        "Pixieology/GPTStoryworld.zip"
+      ],
+      "matched_signals": [
+        "env",
+        "skill",
+        "storyworld"
+      ],
+      "name": "Pixieology",
+      "path": "C:\\projects\\Pixieology",
+      "relevance_score": 6
+    },
+    {
+      "application": "choice routing, reachability certification, and moral optimization",
+      "evidence_files": [
+        "package.json",
+        "README.md"
+      ],
+      "matched_signals": [
+        "control",
+        "game",
+        "reward"
+      ],
+      "name": "PlonkWar",
+      "path": "C:\\projects\\PlonkWar",
+      "relevance_score": 6
+    },
+    {
+      "application": "environment action validation and typed transition control",
+      "evidence_files": [
+        "README.md",
+        "raito-landing/package.json",
+        "raito-landing/README.md",
+        "raito-spv-verify-sdk/package.json",
+        "raito-spv-verify-sdk/README.md",
+        ".github/linter/readme_style.rb",
+        "crates/raito-assumevalid/README.md",
+        "crates/raito-bridge-node/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "env",
+        "environment",
+        "verifier"
+      ],
+      "name": "raito",
+      "path": "C:\\projects\\raito",
+      "relevance_score": 6
+    },
+    {
+      "application": "environment action validation and typed transition control",
+      "evidence_files": [
+        "README.md",
+        "devenv/README.md",
+        "sbtc-cli/README.md",
+        "sbtc-core/README.md",
+        "stacks-core/README.md",
+        "romeo/asset-contract/package.json",
+        "romeo/asset-contract/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "control",
+        "env",
+        "environment"
+      ],
+      "name": "sBTC",
+      "path": "C:\\projects\\sBTC",
+      "relevance_score": 6
+    },
+    {
+      "application": "skill routing and architecture selection",
+      "evidence_files": [
+        "package.json",
+        "README.md",
+        "data/router-18878.log",
+        "docs/AGENT_MANDATE_V1.md",
+        "scripts/verify-public-rpc-policy.cjs",
+        "spec/order-envelope-signing.md",
+        "src/agentMandate.ts",
+        "src/orderEnvelope.ts"
+      ],
+      "matched_signals": [
+        "agent",
+        "env",
+        "environment",
+        "policy",
+        "router"
+      ],
+      "name": "tl-collator",
+      "path": "C:\\projects\\tl-collator",
+      "relevance_score": 6
+    },
+    {
+      "application": "skill routing and architecture selection",
+      "evidence_files": [
+        "package.json",
+        "packages/algo-runner/README.md",
+        "packages/web-ui/package.json"
+      ],
+      "matched_signals": [
+        "agent",
+        "env",
+        "harness",
+        "router"
+      ],
+      "name": "TL-Web-main",
+      "path": "C:\\projects\\TL-Web-main",
+      "relevance_score": 6
+    },
+    {
+      "application": "environment action validation and typed transition control",
+      "evidence_files": [
+        "TLNPM/.env.example",
+        "TLNPM/AGENT.md",
+        "TLNPM/AGENTS.md",
+        "TLNPM/package.json",
+        "TLNPM/README.md",
+        "TLNPM/projectsTLNPMTLNPM/package.json",
+        "TLNPM/tradelayer.js/package.json",
+        "TLNPM/tradelayer.js/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "env",
+        "environment",
+        "policy"
+      ],
+      "name": "TLNPM",
+      "path": "C:\\projects\\TLNPM",
+      "relevance_score": 6
+    },
+    {
+      "application": "environment action validation and typed transition control",
+      "evidence_files": [
+        ".env.example",
+        "package.json",
+        "README.md",
+        ".vercel/README.txt",
+        "apps/api/package.json",
+        "apps/ingest-worker/package.json",
+        "apps/notify-worker/package.json",
+        "apps/ops/package.json"
+      ],
+      "matched_signals": [
+        "action",
+        "control",
+        "env",
+        "policy"
+      ],
+      "name": "Entregatopia",
+      "path": "C:\\projects\\Entregatopia",
+      "relevance_score": 5
+    },
+    {
+      "application": "skill routing and architecture selection",
+      "evidence_files": [
+        "ProofPal/README.md",
+        "ProofPal/backend/.env.example",
+        "ProofPal/bot/README.md",
+        "ProofPal/dashboard/package.json"
+      ],
+      "matched_signals": [
+        "action",
+        "env",
+        "environment",
+        "skill"
+      ],
+      "name": "ETF+",
+      "path": "C:\\projects\\ETF+",
+      "relevance_score": 5
+    },
+    {
+      "application": "agent control and policy arbitration",
+      "evidence_files": [
+        "btcWithdrawalVerifier.sol",
+        "controller.sol",
+        "SublimeEthereum-master/SublimeEthereum-master/README.md"
+      ],
+      "matched_signals": [
+        "action",
+        "control",
+        "verifier"
+      ],
+      "name": "frxBTC",
+      "path": "C:\\projects\\frxBTC",
+      "relevance_score": 5
+    },
+    {
+      "application": "game action selection and safety-constrained search",
+      "evidence_files": [
+        "game.js",
+        "README.md"
+      ],
+      "matched_signals": [
+        "control",
+        "game"
+      ],
+      "name": "Game of the Day",
+      "path": "C:\\projects\\Game of the Day",
+      "relevance_score": 5
+    },
+    {
+      "application": "environment action validation and typed transition control",
+      "evidence_files": [
+        "agents.md",
+        "package.json",
+        "README.md",
+        "environments/example.env.expl",
+        "src/config/env.config.ts"
+      ],
+      "matched_signals": [
+        "action",
+        "agent",
+        "env",
+        "environment"
+      ],
+      "name": "tl-relayer",
+      "path": "C:\\projects\\tl-relayer",
+      "relevance_score": 5
+    },
+    {
+      "application": "trusted/untrusted control flow and provenance-aware intervention",
+      "evidence_files": [
+        "README.md",
+        "zkTL/package.json",
+        "zkTL/README.md",
+        "zkTL/docs/ZK_CONSENSUS_ENVELOPE.md",
+        "zkTL/src/zk_consensus_envelope.js"
+      ],
+      "matched_signals": [
+        "action",
+        "env",
+        "policy",
+        "verifier"
+      ],
+      "name": "TLZK",
+      "path": "C:\\projects\\TLZK",
+      "relevance_score": 5
+    },
+    {
+      "application": "skill routing and architecture selection",
+      "evidence_files": [
+        "package.json",
+        "README.md",
+        "scripts/runZkVerifierRejectionDemo.js",
+        "scripts/serveZkEnvelopeDa.js",
+        "src/pnlRouteRegistry.js",
+        "src/zkConsensusEnvelope.js",
+        "src/zkEnvelopeResolver.js",
+        "src/zkStwoProofVerifier.js"
+      ],
+      "matched_signals": [
+        "env",
+        "policy",
+        "router",
+        "verifier"
+      ],
+      "name": "tradelayer.js",
+      "path": "C:\\projects\\tradelayer.js",
+      "relevance_score": 5
+    }
+  ],
+  "minimum_score": 5,
+  "root": "C:\\projects",
+  "scanned_project_count": 130
+}

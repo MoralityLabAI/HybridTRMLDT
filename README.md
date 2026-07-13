@@ -38,6 +38,16 @@ Optional tests:
 python -m pytest tests
 ```
 
+Cross-project game/control application scan and hybrid-structure benchmark:
+
+```bash
+python -m research_gym.scripts.bench_control_harnesses --projects-root C:\projects
+```
+
+This scans local repositories for candidate game/environment interfaces, then evaluates source-inspired
+held-out proxy tasks for TRM, LDT, hard gate, confidence, typed, beam, and skill-routed hybrids. The proxy
+results are not reported as native performance for the neighboring repositories.
+
 ## Repo map
 
 ```text
