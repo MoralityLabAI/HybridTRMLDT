@@ -7,7 +7,7 @@ APPLICATION_SHORTLIST = (
         "priority": "A",
         "native_surface": "storyworld/env/diplomacy_env.py; verifier symbolic routes and turn traces",
         "hybrid_application": "certify legal/reachable choices while keeping morality and opponent forecasts soft",
-        "status": "proxy benchmarked; native adapter next",
+        "status": "native adapter and matched enforcement benchmark complete",
     },
     {
         "project": "TheySing",

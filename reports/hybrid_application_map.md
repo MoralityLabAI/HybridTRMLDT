@@ -7,7 +7,7 @@ Priority B means the application is useful but is either routing-oriented or nee
 | Priority | Project | Native surface | Hybrid application | Current status |
 |---|---|---|---|---|
 | A | `GPTStoryworld` | storyworld/env/diplomacy_env.py; verifier symbolic routes and turn traces | certify legal/reachable choices while keeping morality and opponent forecasts soft | proxy benchmarked; native adapter next |
-| A | `TheySing` | src/harness policies, bridge policy, campaign clock, tournaments, replay traces | typed channel permissions plus confidence/beam arbitration under treaty pressure | proxy benchmarked; native adapter next |
+| A | `TheySing` | src/harness policies, bridge policy, campaign clock, tournaments, replay traces | typed channel permissions plus confidence/beam arbitration under treaty pressure | native adapter and matched enforcement benchmark complete |
 | A | `StoryworldTRM` | SWMD PICK traces, latent traces, rollout commitments, controller eval | train skill-conditioned membranes from real proposal traces and certified transitions | inventory mapped; direct training-data follow-up |
 | A | `SmallControlHarness` | oracle-control attestation gates, registry memory, intervention receipts | typed provenance membrane around untrusted high-confidence proposals | proxy benchmarked; native controller adapter next |
 | A | `AI_Diplomacy` | possible-order context, relationship memory, negotiations, phase summaries | hard order legality with soft coalition/betrayal forecasts and recurrent memory | proxy benchmarked; native order wrapper next |

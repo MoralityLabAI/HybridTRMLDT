@@ -48,6 +48,15 @@ This scans local repositories for candidate game/environment interfaces, then ev
 held-out proxy tasks for TRM, LDT, hard gate, confidence, typed, beam, and skill-routed hybrids. The proxy
 results are not reported as native performance for the neighboring repositories.
 
+Native TheySing enforcement benchmark:
+
+```bash
+python -m research_gym.scripts.bench_theysing_native --repo-root C:\projects\TheySing\TheySing
+```
+
+This launches the compiled TheySing headless harness and compares matched `soft`, `hard`, and `graduated`
+enforcement sessions. Native traces are retained as compressed JSONL under the experiment directory.
+
 ## Repo map
 
 ```text
