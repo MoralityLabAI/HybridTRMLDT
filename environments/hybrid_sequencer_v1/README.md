@@ -12,13 +12,14 @@ a hashable control receipt. It does not train a model or claim native model perf
 
 - `HybridSequencerTaskset`: owns saved tasks, utility reward, correctness, cost, violation, and control-bound metrics.
 - `HybridSequencerHarness`: owns `global_signed`, `lineage_only`, `fixed_typed`, `control_math`, or
-  `local_calibrated` replay behavior.
+  `local_calibrated` replay behavior, plus sealed `airis_das` proposals authorized by the topology membrane.
 - `load_environment(EnvConfig)`: composes the typed package loaders through `vf.Env`.
 
 Regenerate the taskset from the repository root:
 
 ```powershell
 python -m research_gym.scripts.bench_sequencer_control
+python -m research_gym.scripts.bench_airis_das_bridge
 ```
 
 Install and evaluate through a Prime Lab workspace:
@@ -26,6 +27,7 @@ Install and evaluate through a Prime Lab workspace:
 ```bash
 prime env install hybrid-sequencer-v1
 prime eval run hybrid-sequencer-v1 -c configs/eval/hybrid_sequencer_v1.toml
+prime eval run hybrid-sequencer-v1 -c configs/eval/hybrid_sequencer_airis_v1.toml
 ```
 
 On this Windows checkout, the installed legacy `prime_tunnel` imports Unix-only `fcntl`. Use WSL/Linux for the Prime
@@ -34,3 +36,7 @@ an inference endpoint.
 
 The Verifiers `0.1.14` source requires `uv>=0.11.1`. The repository adapter reports both the Verifiers and `uv`
 compatibility state before attempting the exact-release smoke.
+
+`airis_das` is deterministic replay, not a network call during evaluation. The generated AIRIS-compatible rules
+and per-task DAS forecast/topology receipts are sealed into the package. Use `scripts/smoke_airis_das_bridge.py`
+to test the same rules against the local metta-storyworld DAS-shaped HTTP implementation.

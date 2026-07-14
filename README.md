@@ -25,6 +25,8 @@ The first included environment is a coupled-objective storyworld because it give
 - Benchmarks RSITopology-aware authorization over matched TRM, LDT, and typed-hybrid skill sequences with paired
   statistics and raw receipts.
 - Exports the frozen evaluation as a Verifiers `0.1.14` v1 Taskset/Harness replay package.
+- Exports calibration-derived skill rules through the metta-storyworld AIRIS/DAS service contract, with the
+  RSITopology membrane retaining final execution authority.
 
 ## Quickstart
 
@@ -90,6 +92,18 @@ prime eval run hybrid-sequencer-v1 -c configs/eval/hybrid_sequencer_v1.toml
 
 The smoke requires `verifiers==0.1.14`; use current Linux/WSL Prime tooling for the CLI path. See
 `docs/verifiers_v1_harness.md` for local platform status.
+
+AIRIS/DAS bridge and live local-service conformance:
+
+```bash
+python -m research_gym.scripts.bench_airis_das_bridge
+python scripts/smoke_airis_das_bridge.py
+prime eval run hybrid-sequencer-v1 -c configs/eval/hybrid_sequencer_airis_v1.toml
+```
+
+The benchmark seals AIRIS forecasts and topology decisions into the Verifiers taskset. The smoke separately
+starts the implementation under `C:\projects\metta-storyworld\metta-etc`, verifies HTTP forecast parity, and
+tests stale-protocol rejection. See `docs/airis_das_integration.md`.
 
 ## Repo map
 

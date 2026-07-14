@@ -13,6 +13,7 @@ SequencerName = Literal[
     "fixed_typed",
     "control_math",
     "local_calibrated",
+    "airis_das",
 ]
 
 
@@ -98,6 +99,11 @@ def _program(sequencer: SequencerName):
             "topology": task["topology"],
             "selected_sequence": sequence,
         }
+        if sequencer == "airis_das":
+            receipt = task.get("airis_das")
+            if not isinstance(receipt, Mapping):
+                raise ValueError("AIRIS/DAS replay requires a sealed bridge receipt")
+            state["control_receipt"]["airis_das"] = receipt
         state.stop("sequencer_replayed")
         return state
 

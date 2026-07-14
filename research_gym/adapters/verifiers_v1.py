@@ -57,7 +57,13 @@ class VerifiersV1Integration:
     def package_complete(self) -> bool:
         return all(
             (self.env_path / name).exists()
-            for name in ("hybrid_sequencer_v1.py", "pyproject.toml", "README.md", "data/replay_tasks.jsonl")
+            for name in (
+                "hybrid_sequencer_v1.py",
+                "pyproject.toml",
+                "README.md",
+                "data/replay_tasks.jsonl",
+                "data/airis_rules.json",
+            )
         )
 
     @property

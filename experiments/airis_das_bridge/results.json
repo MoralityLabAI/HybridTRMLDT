@@ -1,0 +1,43 @@
+{
+  "artifacts": {
+    "bridge_rows_sha256": "8ff0fab5f1a161d29c21ccf191f34be40f59e857b053ff7246d7ff3d87661975",
+    "rules_sha256": "da97517dbd893619e0de6b9d2fe506c8a90153fd5eb29a1ed542bbc76716bf4f"
+  },
+  "schema": "hybrid_airis_das_bridge_result_v1",
+  "service_contract": {
+    "backend_mode": "in_memory_das_shaped",
+    "forecast_endpoint": "POST /api/forecast",
+    "forecast_schema": "airis_das_forecast_v1",
+    "summary_schema": "airis_das_service_v1"
+  },
+  "source": {
+    "benchmark": "data\\benchmarks\\sequencer_control_results.json",
+    "episodes": "data\\benchmarks\\sequencer_control_episodes.jsonl",
+    "eval_sha256": "d27f92280afe80a46718b934ff01d7c451d24c9ba2d792a4c8afe6d81d9f3db5",
+    "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8"
+  },
+  "summary": {
+    "airis_das": {
+      "macro_accuracy": 0.9666666666666667,
+      "macro_cost": 6.436011904761905,
+      "macro_utility": 0.9000845474950022
+    },
+    "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+    "changed_from_control_rate": 0.0,
+    "claim_boundary": "Conformance and replay benchmark for calibration-derived AIRIS rules in a DAS-shaped index. It does not measure independent AIRIS causal learning or native distributed DAS performance.",
+    "control_math": {
+      "macro_accuracy": 0.9666666666666667,
+      "macro_cost": 6.436011904761905,
+      "macro_utility": 0.9000845474950022
+    },
+    "control_parity_rate": 1.0,
+    "episode_count": 667,
+    "fallback_rate": 0.0,
+    "forecast_coverage": 1.0,
+    "macro_utility_delta": 0.0,
+    "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+    "rule_count": 28,
+    "schema": "hybrid_airis_das_bridge_v1",
+    "topology_acceptance_rate": 1.0
+  }
+}

@@ -29,3 +29,5 @@ def test_environment_source_uses_v1_taskset_harness_shape():
     assert "def load_harness(" in source
     assert "def load_environment(config: vf.EnvConfig)" in source
     assert '"verifiers>=0.1.14,<0.2"' in metadata
+    assert '"airis_das"' in source
+    assert '"data/airis_rules.json"' in metadata

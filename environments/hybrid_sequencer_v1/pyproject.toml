@@ -1,12 +1,12 @@
 [project]
 name = "hybrid-sequencer-v1"
 description = "Verifiers v1 replay harness for topology-controlled TRM/LDT skill sequencers"
-version = "0.1.0"
+version = "0.2.0"
 requires-python = ">=3.11"
 dependencies = [
     "verifiers>=0.1.14,<0.2",
 ]
-tags = ["harness", "eval", "reasoning", "replay"]
+tags = ["harness", "eval", "reasoning", "replay", "airis", "das"]
 
 [build-system]
 requires = ["hatchling"]
@@ -16,6 +16,7 @@ build-backend = "hatchling.build"
 include = [
     "hybrid_sequencer_v1.py",
     "data/replay_tasks.jsonl",
+    "data/airis_rules.json",
     "pyproject.toml",
     "README.md",
 ]

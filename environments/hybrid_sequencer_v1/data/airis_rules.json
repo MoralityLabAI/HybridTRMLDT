@@ -1,0 +1,937 @@
+{
+  "rules": [
+    {
+      "confidence": 0.5,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:fill_zero_with_1",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc1",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.0,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc1:fill_zero_with_1",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "neutral"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_39596245526a",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 0.5085714285714286,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:fill_zero_with_2",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc1",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.008571428571428563,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc1:fill_zero_with_2",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=true",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=blocked",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=deduction_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_7564f370e2cc",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 0.5228571428571428,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:flip_h",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc1",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.022857142857142798,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc1:flip_h",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_c3583b570d48",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 0.5085714285714286,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:flip_v",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc1",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.008571428571428563,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc1:flip_v",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_dc4959b49a26",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 0.5,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:map_1_to_2",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc1",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.0,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc1:map_1_to_2",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "neutral"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_1600f32d1d63",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 0.5,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:map_2_to_3",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc1",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.0,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc1:map_2_to_3",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "neutral"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_5c9f3e915d10",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 0.5057142857142858,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:rotate_180",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc1",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.005714285714285783,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc1:rotate_180",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=deduction_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_465cfd09494e",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 0.5326530612244897,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:fill_zero_with_1+rotate_180",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc2",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.03265306122448974,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc2:fill_zero_with_1+rotate_180",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_7746dc3e0650",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 0.5408163265306123,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:fill_zero_with_2+flip_v",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc2",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.04081632653061229,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc2:fill_zero_with_2+flip_v",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_af333fbec460",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 0.5408163265306122,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:flip_h+fill_zero_with_2",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc2",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.04081632653061218,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc2:flip_h+fill_zero_with_2",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_eac3aa52e484",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 0.5163265306122449,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:flip_h+map_1_to_2",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc2",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.01632653061224487,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc2:flip_h+map_1_to_2",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_ff59182b5bf7",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 0.5102040816326531,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:flip_v+map_2_to_3",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc2",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.010204081632653073,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc2:flip_v+map_2_to_3",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_37182c294b29",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 0.5326530612244899,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:map_1_to_2+rotate_180",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc2",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.032653061224489854,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc2:map_1_to_2+rotate_180",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=true",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=blocked",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_f2e8c9947f58",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 0.5040816326530613,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:map_2_to_3+flip_h",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc2",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.004081632653061273,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc2:map_2_to_3+flip_h",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_75c9f2164080",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 0.5326530612244897,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:rotate_180+fill_zero_with_1",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "arc2",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.03265306122448974,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=arc2:rotate_180+fill_zero_with_1",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_e633b58a673f",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 0.5037499999999999,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:alphabet_sort",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "routing",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.00374999999999992,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=routing:alphabet_sort",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=true",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=blocked",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_908061158790",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 3
+    },
+    {
+      "confidence": 0.51125,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:arc_challenge",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "routing",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.011250000000000038,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=routing:arc_challenge",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_d7d68008f084",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 0.51125,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:arc_easy",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "routing",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.011249999999999982,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=routing:arc_easy",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_c404c67c25c9",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 0.51125,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:gsm8k",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "routing",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.011249999999999982,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=routing:gsm8k",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_6bffb09b196f",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 0.5037499999999999,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:intellect_3_logic",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "routing",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.00374999999999992,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=routing:intellect_3_logic",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=true",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=blocked",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_02af565bd8aa",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 0.51125,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:intellect_3_math",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "routing",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.011249999999999982,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=routing:intellect_3_math",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_64cbf3c849ed",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 0.51125,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:mbpp",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "routing",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.011249999999999982,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=routing:mbpp",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_2f8f58d2fa03",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 0.51125,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:wiki_search",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "routing",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.011249999999999982,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=routing:wiki_search",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_39050c40d930",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 0.5128045718816068,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "story:moral_optimization",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "story_moral",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.012804571881606774,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=story:moral_optimization",
+        "family=story_moral",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=deduction_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_7589caf21c18",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 64
+    },
+    {
+      "confidence": 0.5019034090909091,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "story:secret_ending",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "story_secret",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.0019034090909091361,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=story:secret_ending",
+        "family=story_secret",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=deduction_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_7f40bb89511a",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 64
+    },
+    {
+      "confidence": 0.5583333333333335,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "sudoku:s4_requires_search",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "sudoku",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.05833333333333346,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=sudoku:s4_requires_search",
+        "family=sudoku",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_4976a8879891",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 0.5,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "sudoku:s4_single_chain",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "sudoku",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.0,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=sudoku:s4_single_chain",
+        "family=sudoku",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "neutral"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_466948fd539d",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 0.5478125,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "sudoku:s4_sparse",
+        "counterexample_status": "not_available_from_aggregate_plan",
+        "family": "sudoku",
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "score_margin": 0.047812500000000036,
+        "source": "hybrid_calibration_context_plan"
+      },
+      "preconditions": [
+        "context=sudoku:s4_sparse",
+        "family=sudoku",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_margin": "positive"
+        }
+      },
+      "rule_id": "hybrid_airis_rule_f75c2e496d90",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    }
+  ],
+  "schema": "airis_storyworld_ruleset_v1",
+  "summary": {
+    "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+    "claim_boundary": "AIRIS-compatible retrieval rules over frozen hybrid sequencer plans; not AIRIS causal-learning performance.",
+    "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+    "rule_count": 28,
+    "schema": "hybrid_airis_das_bridge_v1",
+    "source": "calibration_context_plans_only"
+  }
+}

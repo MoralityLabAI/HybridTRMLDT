@@ -1,0 +1,44 @@
+{
+  "decision": {
+    "accepted": true,
+    "changed_from_control": false,
+    "fallback_sequence": "typed_propose_certify",
+    "proposed_sequence": "typed_propose_certify",
+    "reasons": [],
+    "rule_id": "hybrid_airis_rule_466948fd539d",
+    "selected_sequence": "typed_propose_certify"
+  },
+  "embedded_best_rule_id": "hybrid_airis_rule_466948fd539d",
+  "episode_id": "sudoku-s4_single_chain-eval-0000",
+  "forecast_parity": true,
+  "http_best_rule_id": "hybrid_airis_rule_466948fd539d",
+  "passed": true,
+  "schema": "hybrid_airis_das_live_smoke_v1",
+  "service_summary": {
+    "backend_mode": "in_memory_das_shaped",
+    "fact_count": 392,
+    "optional_backend_status": {
+      "das": false,
+      "das_agent": false,
+      "hyperon": false,
+      "hyperon_das": false
+    },
+    "prompt_mode_counts": {},
+    "rule_count": 28,
+    "rules_path": "data\\airis_das\\sequencer_rules.json",
+    "scenario_counts": {},
+    "schema": "airis_das_service_v1"
+  },
+  "stale_protocol_decision": {
+    "accepted": false,
+    "changed_from_control": false,
+    "fallback_sequence": "typed_propose_certify",
+    "proposed_sequence": "typed_propose_certify",
+    "reasons": [
+      "partial_airis_match",
+      "protocol_not_bound"
+    ],
+    "rule_id": "hybrid_airis_rule_466948fd539d",
+    "selected_sequence": "typed_propose_certify"
+  }
+}

@@ -1064,21 +1064,22 @@ def summary_markdown(payload: Mapping[str, object]) -> str:
 def v1_replay_rows(rows: Iterable[Mapping[str, object]]) -> list[dict[str, object]]:
     output = []
     for row in rows:
-        output.append(
-            {
-                "example_id": row["episode_id"],
-                "system_prompt": (
-                    "Execute the configured hybrid skill sequencer from its sealed topology receipt. "
-                    "Do not replace typed authority with confidence."
-                ),
-                "prompt": [{"role": "user", "content": row["prompt"]}],
-                "answer": row["expected_answer"],
-                "family": row["family"],
-                "context": row["context"],
-                "candidate_outcomes": row["candidate_outcomes"],
-                "selections": row["selections"],
-                "topology": row["topology"],
-                "max_turns": 1,
-            }
-        )
+        replay_row = {
+            "example_id": row["episode_id"],
+            "system_prompt": (
+                "Execute the configured hybrid skill sequencer from its sealed topology receipt. "
+                "Do not replace typed authority with confidence."
+            ),
+            "prompt": [{"role": "user", "content": row["prompt"]}],
+            "answer": row["expected_answer"],
+            "family": row["family"],
+            "context": row["context"],
+            "candidate_outcomes": row["candidate_outcomes"],
+            "selections": row["selections"],
+            "topology": row["topology"],
+            "max_turns": 1,
+        }
+        if "airis_das" in row:
+            replay_row["airis_das"] = row["airis_das"]
+        output.append(replay_row)
     return output

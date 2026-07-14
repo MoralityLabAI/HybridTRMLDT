@@ -168,3 +168,21 @@ def test_evaluation_ids_and_hash_are_deterministic():
 
     assert first["eval_sha256"] == second["eval_sha256"]
     assert first_rows == second_rows
+
+
+def test_v1_rows_preserve_optional_airis_receipt():
+    row = {
+        "episode_id": "episode-1",
+        "prompt": "task",
+        "expected_answer": "answer",
+        "family": "story_secret",
+        "context": "story:secret_ending",
+        "candidate_outcomes": {},
+        "selections": {},
+        "topology": {},
+        "airis_das": {"decision": {"accepted": True}},
+    }
+
+    replay = v1_replay_rows([row])
+
+    assert replay[0]["airis_das"] == row["airis_das"]

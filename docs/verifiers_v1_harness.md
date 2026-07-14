@@ -12,7 +12,7 @@ The package at `environments/hybrid_sequencer_v1/` follows the v1 composition mo
 - `HybridSequencerTaskset` owns immutable replay tasks, utility reward, and correctness/cost/violation/control-bound
   metrics.
 - `HybridSequencerHarness` owns the `global_signed`, `lineage_only`, `fixed_typed`, `control_math`, and
-  `local_calibrated` rollout programs.
+  `local_calibrated` rollout programs, plus sealed `airis_das` proposals authorized by the topology membrane.
 - `load_taskset`, `load_harness`, and `load_environment(vf.EnvConfig)` provide strict typed loaders.
 - `vf.Env` composes the taskset and harness so one task definition can be evaluated under multiple sequencers.
 
@@ -25,6 +25,9 @@ the v1 package a harness-integration test and portable replay artifact, not a mo
 `environments/hybrid_sequencer_v1/data/replay_tasks.jsonl`. Every row includes the candidate outcomes, frozen
 sequencer choices, context topology receipt, and expected answer for one evaluation episode.
 
+`python -m research_gym.scripts.bench_airis_das_bridge` augments those rows with calibration-derived AIRIS rules,
+DAS forecast receipts, and fail-closed topology decisions. No HTTP request occurs inside Verifiers replay.
+
 ## Prime Evaluation
 
 Use Linux or WSL with current Prime tooling:
@@ -32,10 +35,11 @@ Use Linux or WSL with current Prime tooling:
 ```bash
 prime env install hybrid-sequencer-v1
 prime eval run hybrid-sequencer-v1 -c configs/eval/hybrid_sequencer_v1.toml
+prime eval run hybrid-sequencer-v1 -c configs/eval/hybrid_sequencer_airis_v1.toml
 ```
 
-The checked-in config runs 50 `story_secret` examples under `control_math`. Change only `eval.harness.sequencer`
-to compare policies over the same taskset.
+The checked-in configs run 50 `story_secret` examples under either `control_math` or `airis_das`. Change only
+`eval.harness.sequencer` to compare policies over the same taskset.
 
 ## Local Validation Status
 
