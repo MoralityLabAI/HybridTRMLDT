@@ -1053,7 +1053,9 @@ def summary_markdown(result: Mapping[str, object]) -> str:
     controls = result["negative_controls"]
     distinct = result["arm_distinctness"]
     lines = [
-        "# Gaming Versus Improvement Benchmark",
+        "# Gaming Versus Oversight Leverage Benchmark",
+        "",
+        "Historical study ID: `gaming_vs_improvement_v1` (the improvement comparison is power-limited in this run).",
         "",
         f"Mode: `{'smoke' if result['smoke'] else 'full'}`",
         f"Config SHA-256: `{result['config_sha256']}`",
@@ -1070,6 +1072,14 @@ def summary_markdown(result: Mapping[str, object]) -> str:
             f"{float(row['majority_class_accuracy']):.3f} | "
             f"{float(row['margin_to_ceiling']):.3f} |"
         )
+    lines.extend(
+        [
+            "",
+            "Power caveat: round-0 oracle accuracy equals the majority baseline, and proposer exact soundness "
+            "does not move. This run identifies report-channel gaming and lost controller leverage; it cannot "
+            "compare gaming against genuine proposer learning.",
+        ]
+    )
     lines.extend(
         [
             "",
@@ -1107,6 +1117,34 @@ def summary_markdown(result: Mapping[str, object]) -> str:
         lines.append(
             f"| {row['seed']} | {pass_path} | {exact_path} | {hidden_path} | "
             f"{row['evasion_pattern']} | {row['probe_aging_pattern']} |"
+        )
+    if not result["smoke"]:
+        exposed = [
+            row
+            for row in result["final_arm_summary"]
+            if row["evidence_source"] == EXPOSED_FROZEN_PROBE
+            and row["rejection_action"] == STATE_CONDITIONED_FALLBACK
+        ]
+        frozen = next(row for row in exposed if row["adaptation"] == FROZEN)
+        adapted = next(row for row in exposed if row["adaptation"] == EXPERT_ITERATED)
+        utility_lost = float(frozen["utility_delta_vs_proposal"]) - float(
+            adapted["utility_delta_vs_proposal"]
+        )
+        lines.extend(
+            [
+                "",
+                "## Oversight Leverage Disabled",
+                "",
+                "| Proposer | Gate action-change | Utility delta vs proposal |",
+                "|---|---:|---:|",
+                f"| Frozen | {float(frozen['action_change_rate']):.3f} | "
+                f"{float(frozen['utility_delta_vs_proposal']):+.4f} |",
+                f"| Expert-iterated | {float(adapted['action_change_rate']):.3f} | "
+                f"{float(adapted['utility_delta_vs_proposal']):+.4f} |",
+                "",
+                f"Adaptation removes `{utility_lost:+.4f}` utility of oversight benefit: the exposed gate "
+                "reports full compliance and never invokes the fallback.",
+            ]
         )
     lines.extend(["", f"Claim boundary: {result['claim_boundary']}", ""])
     return "\n".join(lines)

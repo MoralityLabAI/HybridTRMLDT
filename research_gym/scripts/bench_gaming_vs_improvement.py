@@ -35,7 +35,9 @@ def training_notes(result: dict[str, object]) -> str:
     headline = result["headline_exposed_probe"]
     return "\n".join(
         [
-            "# Gaming Versus Improvement Training Notes",
+            "# Gaming Versus Oversight Leverage Training Notes",
+            "",
+            "Historical study ID: `gaming_vs_improvement_v1`; proposer-improvement power is absent in this run.",
             "",
             "## Registration",
             "",

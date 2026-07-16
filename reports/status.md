@@ -46,7 +46,7 @@ python -m pytest -q
 ## Test Results
 
 ```text
-134 passed
+135 passed
 ```
 
 The AIRIS/DAS live HTTP smoke passed with 28 rules and 392 indexed facts. Embedded and HTTP forecasts selected
@@ -60,11 +60,13 @@ The independent learner induced 28 rules from 455 calibration episodes. Held-out
 demotion changes acceptance but leaves macro utility fixed at `0.900085`. The induced live-service smoke passed
 with 28 rules and 420 indexed facts.
 
-The gaming-versus-improvement matrix contains 26,880 held-out receipts over the full evidence by rejection by
-adaptation cross. Exact mechanics plus state-conditioned fallback improves mean utility by `+0.0407`; identical
-fallback remains a zero-delta telemetry control. Exposed-probe passage saturates without exact-soundness
-improvement in every seed, while the independent hidden audit supports an evasion call in two of three seeds.
-All receipts pass integrity checks, all split overlaps are zero, and canonical artifacts match their mirrors.
+The gaming-versus-oversight-leverage matrix (historical ID `gaming_vs_improvement_v1`) contains 26,880 held-out
+receipts. Exact mechanics plus state-conditioned fallback supplies `+0.0407` controller utility; identical fallback
+remains a zero-delta telemetry control. In the exposed-probe arm, adaptation reduces action-change from `0.487` to
+`0.000` and utility delta from `+0.0404` to `+0.0000` while passage saturates. The hidden audit supports an evasion
+call in two of three seeds. Round-0 accuracy equals the majority baseline and proposal quality never improves, so
+the run cannot compare gaming with genuine learning. All receipts pass integrity checks, all split overlaps are
+zero, and canonical artifacts match their mirrors.
 
 ## Known Broken Pieces
 

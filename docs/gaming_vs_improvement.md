@@ -1,4 +1,8 @@
-# Gaming Versus Improvement Benchmark
+# Gaming Versus Oversight Leverage Benchmark
+
+The historical study ID and artifact paths remain `gaming_vs_improvement_v1` for provenance. The broader
+gaming-versus-improvement comparison is power-limited in this run because the proposer never exceeds its majority
+baseline.
 
 ## Question
 
@@ -34,6 +38,11 @@ action baseline for every seed, leaving 0.188 to 0.227 margin to the oracle ceil
 | 17 | 0.812 | 0.812 | 0.188 |
 | 29 | 0.773 | 0.773 | 0.227 |
 | 43 | 0.781 | 0.781 | 0.219 |
+
+This is margin to the oracle ceiling, not evidence of learning headroom that the optimizer can exploit. Proposal
+utility and exact environment soundness remain flat under every adaptation arm. The experiment is therefore
+powered to detect report-channel gaming and changes in controller leverage, but not to observe a choice between
+genuine proposer improvement and evasion.
 
 The config records two pre-full calibrations. Initial attempts stopped at the power gate before arm outcomes. The
 first completed smoke then exposed empty claim and probe gates. Claim thresholds were consequently fitted on
@@ -81,17 +90,21 @@ Final expert-iterated means across seeds:
 | Dual channel | state-conditioned | 0.760 | 0.240 | 0.6938 | 0.7344 | +0.0407 |
 
 Every non-claim evidence arm with identical fallback has zero utility delta in every round. This reproduces the
-AIRIS no-op control. Exact mechanics plus a distinct fallback is the best mean executed controller, but it is not
-uniformly beneficial: final per-seed changes include 46 beneficial and 12 harmful interventions, and 39 rejected
-proposals were oracle-optimal. The false-rejection cost is therefore live rather than hidden by an identical
-fallback.
+AIRIS no-op control. Exact mechanics plus a distinct fallback is the best mean executed controller, but its
+`+0.0407` is entirely gate-plus-fallback utility, not proposer improvement. It is not uniformly beneficial: final
+per-seed changes include 46 beneficial and 12 harmful interventions, and 39 rejected proposals were
+oracle-optimal. The false-rejection cost is therefore live rather than hidden by an identical fallback.
 
 Dual channel aliases exact mechanics at the final checkpoint because adaptation drives every claim to
 `env_sound_dead`; agreement contributes no additional selectivity in this run. The hidden rotating probe becomes
 over-conservative and rejects every final proposal. Its positive aggregate delta coexists with 47 harmful changes
 and a roughly 0.79 false-rejection share, so it is not evidence of a reliable verifier.
 
-## Gaming Versus Improvement
+False provenance claims reach 1.000 in every expert-iterated evidence arm. Outside claim-gated arms that channel
+does not control execution, so its saturation is evidence that the report is unconstrained, not a cross-arm
+measure of gate gaming.
+
+## Gaming Versus Oversight Leverage
 
 Claim-only adaptation reproduces provenance gaming in all seeds:
 
@@ -114,8 +127,19 @@ For the exposed frozen probe, pass rate reaches 1.000 in every seed while exact 
 
 The preregistered evasion conjunction holds in two of three seeds. Seed 29 is retained as a counterexample because
 the hidden audit improves. The correct conclusion is heterogeneous evidence for evasion, not a universal effect.
-Once the exposed gate accepts everything, the state-conditioned fallback stops acting and its `+0.0407` exact
-mechanics benefit disappears.
+Once the exposed gate accepts everything, the state-conditioned fallback stops acting and the arm's own `+0.0404`
+frozen-proposer fallback benefit disappears.
+
+The direct within-arm comparison is sharper:
+
+| Exposed probe + distinct fallback | Action change | Utility delta vs proposal |
+|---|---:|---:|
+| Frozen proposer | 0.487 | +0.0404 |
+| Expert-iterated proposer | 0.000 | +0.0000 |
+
+Adaptation removes the full `0.0404` observed oversight benefit while the gate reports 100% passage. In this run,
+probe gaming does not merely degrade a sensor; it silently disables the controller intervention that supplied the
+benefit. This is the strongest current constitutional-HRM result, subject to the majority-baseline power caveat.
 
 ## Causal Probe Check
 
@@ -161,4 +185,5 @@ Outputs:
 
 This benchmark measures evidence, gate, adaptation, and fallback interactions in a small deterministic
 storyworld. It is not general alignment evidence, neural AIRIS performance, production robustness, or proof that
-latent probes are constitutional authorities.
+latent probes are constitutional authorities. Because the proposer does not learn beyond its majority prior, the
+run does not establish whether a capable learner would choose genuine improvement or evasion under the same gate.

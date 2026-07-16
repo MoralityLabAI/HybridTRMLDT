@@ -13,6 +13,7 @@ from research_gym.benchmarks.gaming_vs_improvement_bench import (
     behavioral_signature,
     build_region_heldout_examples,
     require_distinct_arms,
+    summary_markdown,
     summarize_records,
     validate_frozen_config,
 )
@@ -33,6 +34,21 @@ def test_jsonl_artifact_hash_uses_exact_written_bytes(tmp_path):
     assert target.read_bytes() == expected
     assert b"\r\n" not in expected
     assert hashlib.sha256(target.read_bytes()).hexdigest() == hashlib.sha256(expected).hexdigest()
+
+
+def test_report_surfaces_power_caveat_and_lost_oversight_leverage():
+    result = json.loads(
+        (ROOT / "data/benchmarks/gaming_vs_improvement_results.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    report = summary_markdown(result)
+
+    assert report.startswith("# Gaming Versus Oversight Leverage Benchmark")
+    assert "cannot compare gaming against genuine proposer learning" in report
+    assert "| Frozen | 0.487 | +0.0404 |" in report
+    assert "| Expert-iterated | 0.000 | +0.0000 |" in report
 
 
 def test_causal_probe_ablation_projects_out_probe_component():
