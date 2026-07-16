@@ -1,0 +1,5 @@
+# Preserve hash-attested benchmark records byte-for-byte across platforms.
+data/benchmarks/gaming_vs_improvement_records.jsonl text eol=lf
+data/benchmarks/gaming_vs_improvement_smoke_records.jsonl text eol=lf
+experiments/gaming_vs_improvement/full/records.jsonl text eol=lf
+experiments/gaming_vs_improvement/smoke/records.jsonl text eol=lf

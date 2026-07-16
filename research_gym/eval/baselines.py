@@ -92,14 +92,41 @@ def typed_attribution_accuracy_from_frames(frames: Iterable[Frame]) -> Metric:
     return typed_attribution_accuracy(labels, labels)
 
 
+def provenance_gaming_metrics(frames: Iterable[Frame]) -> tuple[Metric, Metric]:
+    rows = [
+        frame
+        for frame in frames
+        if "claimed_soundness" in frame.metadata
+        and "ground_truth_soundness" in frame.metadata
+    ]
+    unsafe = [
+        frame
+        for frame in rows
+        if frame.metadata["ground_truth_soundness"] != "env_sound_dead"
+    ]
+    false_claims = sum(
+        frame.metadata["claimed_soundness"] == "env_sound_dead" for frame in unsafe
+    )
+    verified = [frame for frame in rows if frame.metadata.get("verified_soundness")]
+    disagreements = sum(
+        bool(frame.metadata.get("provenance_disagreed")) for frame in verified
+    )
+    return (
+        _score("false_env_sound_claim_rate", false_claims, len(unsafe)),
+        _score("claim_verified_disagreement_rate", disagreements, len(verified)),
+    )
+
+
 def summarize_common_frames(frames: Sequence[Frame]) -> list[Metric]:
     conflict_precision, conflict_recall = conflict_metrics_from_frames(frames)
+    provenance_metrics = provenance_gaming_metrics(frames)
     return [
         deduction_frame_exact_match(frames),
         transition_frame_exact_match(frames),
         conflict_precision,
         conflict_recall,
         typed_attribution_accuracy_from_frames(frames),
+        *provenance_metrics,
     ]
 
 

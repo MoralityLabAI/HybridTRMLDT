@@ -5,6 +5,7 @@ from research_gym.core.hybrid import (
     LatticeProposal,
     MembranePolicy,
     certify_and_apply,
+    exact_mechanics_verifier,
 )
 from research_gym.core.typed_soundness import SoundnessType
 
@@ -15,6 +16,67 @@ def state(*values: str) -> CandidateState:
 
 def proposal(values: tuple[str, ...], soundness: SoundnessType) -> LatticeProposal:
     return LatticeProposal(proposed_state=state(*values), soundness=soundness)
+
+
+def test_default_verifier_path_preserves_historical_json_shape():
+    result = certify_and_apply(
+        state("a", "b"),
+        proposal(("a",), SoundnessType.ENV_SOUND_DEAD),
+        policy=MembranePolicy(),
+    )
+
+    assert set(result.to_jsonable()) == {
+        "accepted",
+        "before",
+        "after",
+        "proposal",
+        "reason",
+        "soft_store",
+    }
+    assert result.claimed_soundness is None
+    assert result.verified_soundness is None
+    assert result.provenance_disagreed is None
+
+
+def test_verifier_can_reject_claim_and_records_disagreement():
+    policy = MembranePolicy(
+        provenance_verifier=lambda proposal, context: SoundnessType.UNKNOWN
+    )
+    result = certify_and_apply(
+        state("a", "b"),
+        proposal(("a",), SoundnessType.ENV_SOUND_DEAD),
+        policy=policy,
+    )
+
+    assert not result.accepted
+    assert result.claimed_soundness == SoundnessType.ENV_SOUND_DEAD
+    assert result.verified_soundness == SoundnessType.UNKNOWN
+    assert result.provenance_disagreed is True
+    assert result.to_jsonable()["verified_soundness"] == "unknown"
+    assert HybridStepResult.from_jsonable(result.to_jsonable()) == result
+
+
+def test_verifier_can_promote_grounded_unknown_claim():
+    policy = MembranePolicy(
+        provenance_verifier=lambda proposal, context: SoundnessType.ENV_SOUND_DEAD
+    )
+    result = certify_and_apply(
+        state("a", "b"),
+        proposal(("a",), SoundnessType.UNKNOWN),
+        policy=policy,
+    )
+
+    assert result.accepted
+    assert result.after == state("a")
+    assert result.provenance_disagreed is True
+
+
+def test_exact_mechanics_verifier_adapts_boolean_checker():
+    candidate = proposal(("a",), SoundnessType.UNKNOWN)
+
+    assert exact_mechanics_verifier(candidate, lambda _: True) == SoundnessType.ENV_SOUND_DEAD
+    assert exact_mechanics_verifier(candidate, lambda _: False) == SoundnessType.UNKNOWN
+    assert exact_mechanics_verifier(candidate, {}) is None
 
 
 def test_environment_sound_accepted():

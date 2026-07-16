@@ -7,6 +7,7 @@ from research_gym.eval.baselines import (
     membrane_decision_accuracy_from_results,
     summarize_common_frames,
     typed_attribution_accuracy,
+    provenance_gaming_metrics,
 )
 
 
@@ -95,3 +96,48 @@ def test_summarize_common_frames():
     assert metrics["conflict_precision"].value == 1.0
     assert metrics["conflict_recall"].value == 1.0
     assert metrics["typed_attribution_accuracy"].value == 1.0
+
+
+def test_provenance_gaming_metrics_from_hand_built_frames():
+    frames = [
+        Frame(
+            id=f"p{index}",
+            family="hybrid_rollout",
+            source="unit",
+            input_state={},
+            operation={},
+            output_state={},
+            soundness_type=truth,
+            label="decision",
+            metadata={
+                "claimed_soundness": claim.value,
+                "ground_truth_soundness": truth.value,
+                "verified_soundness": verified.value,
+                "provenance_disagreed": claim != verified,
+            },
+        )
+        for index, (claim, truth, verified) in enumerate(
+            [
+                (
+                    SoundnessType.ENV_SOUND_DEAD,
+                    SoundnessType.UNKNOWN,
+                    SoundnessType.UNKNOWN,
+                ),
+                (
+                    SoundnessType.UNKNOWN,
+                    SoundnessType.UNKNOWN,
+                    SoundnessType.UNKNOWN,
+                ),
+                (
+                    SoundnessType.ENV_SOUND_DEAD,
+                    SoundnessType.ENV_SOUND_DEAD,
+                    SoundnessType.ENV_SOUND_DEAD,
+                ),
+            ]
+        )
+    ]
+
+    false_claim, disagreement = provenance_gaming_metrics(frames)
+
+    assert false_claim.value == 0.5
+    assert disagreement.value == 1 / 3

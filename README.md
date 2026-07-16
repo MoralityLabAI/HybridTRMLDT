@@ -120,6 +120,18 @@ This learns 28 context rules from 455 calibration episodes and evaluates them on
 negative-result baseline: rule-label accuracy is 94.0%, but every proposal equals `control_math`, so confidence
 fallback has zero utility effect. See `docs/airis_induction.md`.
 
+Gaming-versus-improvement benchmark:
+
+```bash
+python -m research_gym.scripts.bench_gaming_vs_improvement --smoke
+python -m research_gym.scripts.bench_gaming_vs_improvement
+```
+
+This runs the registered evidence-source by rejection-action by proposer-adaptation cross. Exact mechanics with a
+state-conditioned fallback improves mean executed utility by `0.0407`; the exposed frozen probe reaches full
+acceptance without improving exact soundness, satisfying the evasion conjunction in two of three seeds. PyTorch
+is optional and isolated under the `neural` extra. See `docs/gaming_vs_improvement.md`.
+
 ## Repo map
 
 ```text

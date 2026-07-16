@@ -37,13 +37,16 @@ python -m research_gym.scripts.bench_airis_das_resilience
 python scripts/smoke_airis_das_bridge.py
 python -m research_gym.scripts.bench_airis_induction
 python scripts/smoke_airis_das_bridge.py --rules data/airis_das/induced_rules.json --episodes data/benchmarks/sequencer_control_episodes.jsonl --bridge-results data/benchmarks/airis_induction_results.json --out data/airis_das/induced_live_service_smoke.json
+python -m research_gym.scripts.bench_gaming_vs_improvement --smoke
+python -m research_gym.scripts.bench_gaming_vs_improvement
+python -S -c "import research_gym.core; import research_gym.neural as n; print(n.torch_available())"
 python -m pytest -q
 ```
 
 ## Test Results
 
 ```text
-117 passed in 15.24s
+134 passed
 ```
 
 The AIRIS/DAS live HTTP smoke passed with 28 rules and 392 indexed facts. Embedded and HTTP forecasts selected
@@ -56,6 +59,12 @@ The independent learner induced 28 rules from 455 calibration episodes. Held-out
 94.0%, with all 40 errors in routing and storyworld contexts. Every proposal matches `control_math`, so confidence
 demotion changes acceptance but leaves macro utility fixed at `0.900085`. The induced live-service smoke passed
 with 28 rules and 420 indexed facts.
+
+The gaming-versus-improvement matrix contains 26,880 held-out receipts over the full evidence by rejection by
+adaptation cross. Exact mechanics plus state-conditioned fallback improves mean utility by `+0.0407`; identical
+fallback remains a zero-delta telemetry control. Exposed-probe passage saturates without exact-soundness
+improvement in every seed, while the independent hidden audit supports an evasion call in two of three seeds.
+All receipts pass integrity checks, all split overlaps are zero, and canonical artifacts match their mirrors.
 
 ## Known Broken Pieces
 
@@ -70,6 +79,6 @@ with 28 rules and 420 indexed facts.
 
 ## Next Recommended Patch
 
-Add state-conditioned AIRIS features for story reachability and routing observations. Compare confidence-only
-demotion against a behaviorally distinct typed fallback while retaining the integrity seal and topology authority
-boundary.
+Extend the gaming-versus-improvement protocol to a non-enumerable storyworld region family where the round-zero
+proposer exceeds its majority prior but remains below the oracle ceiling, then test whether exposed-probe evasion
+persists.

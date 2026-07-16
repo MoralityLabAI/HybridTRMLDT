@@ -5,6 +5,9 @@ description = "Starter auto-research gym for hybrid LDT/TRM typed-soundness expe
 requires-python = ">=3.10"
 dependencies = []
 
+[project.optional-dependencies]
+neural = ["torch>=2.1"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]

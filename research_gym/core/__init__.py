@@ -7,7 +7,9 @@ from .hybrid import (
     HybridStepResult,
     LatticeProposal,
     MembranePolicy,
+    ProvenanceVerifier,
     certify_and_apply,
+    exact_mechanics_verifier,
 )
 from .metta_frames import (
     DeductionFrame,
@@ -33,7 +35,9 @@ __all__ = [
     "HybridStepResult",
     "LatticeProposal",
     "MembranePolicy",
+    "ProvenanceVerifier",
     "certify_and_apply",
+    "exact_mechanics_verifier",
     "DeductionFrame",
     "ExecutionFrame",
     "MettaFrameKind",

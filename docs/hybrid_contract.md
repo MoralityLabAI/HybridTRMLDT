@@ -23,6 +23,30 @@ The membrane is represented by:
 
 These records serialize through `to_jsonable()` and `from_jsonable()` so membrane traces can become training or audit frames.
 
+`MembranePolicy.provenance_verifier` is an optional dependency-free seam. A verifier receives the proposal and
+an environment-owned context. If it returns a `SoundnessType`, that verified type governs gating and the result
+records claimed provenance, verified provenance, and disagreement. If it returns `None`, the historical claim
+path is used. With no verifier configured, decision behavior and serialized trace keys are unchanged.
+
+## Claimed provenance is an attack surface
+
+Provenance is evidence only when its source has authority for the property. A proposer-authored `env_sound_dead`
+label is a claim, not an environment proof. The recovered expert-iteration experiment found that strict gating
+increased false environment-sound claims while ground-truth soundness stayed flat. The gaming-versus-improvement
+benchmark reproduces the direction in all three seeds.
+
+Reference verifier roles are intentionally separated:
+
+- `exact_mechanics_verifier` adapts an environment-owned mechanics callback and has authority only for the
+  property that callback computes.
+- `probe_verifier` adapts a latent linear probe. It is level-3 evidence: it can gate through the explicit seam,
+  create disagreement, or trigger fallback, but it never silently overrides exact mechanics.
+- dual-channel policies require claim/checker agreement and route disagreement to rejection or abstention.
+
+The earlier `allow_model_sound` permissive arm was behaviorally identical to no membrane on its task. A nominal
+policy name is not evidence of a new controller; accepted and executed action sets must differ before cross-arm
+statistics are interpreted.
+
 ## Provenance rules
 
 - `env_sound_dead`: can be a hard elimination when derived from engine/interpreter mechanics.

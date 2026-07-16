@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, FrozenSet, Mapping
+from typing import Any, Callable, Dict, FrozenSet, Mapping
 
 from .typed_soundness import SoundnessType, is_hard
 
@@ -105,6 +105,8 @@ class LatticeProposal:
 
 HybridProposal = LatticeProposal
 
+ProvenanceVerifier = Callable[[LatticeProposal, Any], SoundnessType | None]
+
 
 @dataclass(frozen=True)
 class MembranePolicy:
@@ -113,6 +115,11 @@ class MembranePolicy:
     allow_model_sound: bool = False
     allow_experience_sound: bool = False
     store_soft_proposals: bool = True
+    provenance_verifier: ProvenanceVerifier | None = field(
+        default=None,
+        compare=False,
+        repr=False,
+    )
 
     def can_hard_apply(self, soundness: SoundnessType) -> bool:
         if is_hard(soundness):
@@ -149,9 +156,12 @@ class HybridStepResult:
     proposal: LatticeProposal
     reason: str
     soft_store: LatticeProposal | None = None
+    claimed_soundness: SoundnessType | None = None
+    verified_soundness: SoundnessType | None = None
+    provenance_disagreed: bool | None = None
 
     def to_jsonable(self) -> Dict[str, Any]:
-        return {
+        data = {
             "accepted": self.accepted,
             "before": self.before.to_jsonable(),
             "after": self.after.to_jsonable(),
@@ -159,6 +169,18 @@ class HybridStepResult:
             "reason": self.reason,
             "soft_store": self.soft_store.to_jsonable() if self.soft_store else None,
         }
+        # Keep historical traces byte-compatible when no verifier supplied a verdict.
+        if self.verified_soundness is not None:
+            data.update(
+                {
+                    "claimed_soundness": self.claimed_soundness.value
+                    if self.claimed_soundness
+                    else None,
+                    "verified_soundness": self.verified_soundness.value,
+                    "provenance_disagreed": bool(self.provenance_disagreed),
+                }
+            )
+        return data
 
     @classmethod
     def from_jsonable(cls, data: Mapping[str, Any]) -> "HybridStepResult":
@@ -170,17 +192,66 @@ class HybridStepResult:
             proposal=LatticeProposal.from_jsonable(data["proposal"]),
             reason=str(data["reason"]),
             soft_store=LatticeProposal.from_jsonable(soft_store) if soft_store else None,
+            claimed_soundness=(
+                SoundnessType(data["claimed_soundness"])
+                if data.get("claimed_soundness")
+                else None
+            ),
+            verified_soundness=(
+                SoundnessType(data["verified_soundness"])
+                if data.get("verified_soundness")
+                else None
+            ),
+            provenance_disagreed=(
+                bool(data["provenance_disagreed"])
+                if "provenance_disagreed" in data
+                else None
+            ),
         )
 
 
 HybridDecision = HybridStepResult
 
 
-def _soft_store_for(policy: MembranePolicy, proposal: LatticeProposal) -> LatticeProposal | None:
+def _soft_store_for(
+    policy: MembranePolicy,
+    proposal: LatticeProposal,
+    effective_soundness: SoundnessType | None = None,
+) -> LatticeProposal | None:
     soft_soundness = {SoundnessType.MODEL_SOUND_DEAD, SoundnessType.EXPERIENCE_SOUND_DEAD}
-    if policy.store_soft_proposals and proposal.soft_store and proposal.soundness in soft_soundness:
+    soundness = effective_soundness or proposal.soundness
+    if policy.store_soft_proposals and proposal.soft_store and soundness in soft_soundness:
         return proposal
     return None
+
+
+def exact_mechanics_verifier(
+    proposal: LatticeProposal,
+    context: Any,
+) -> SoundnessType | None:
+    """Resolve provenance through an environment-owned mechanics callback.
+
+    The core remains environment-agnostic. A context can be a callable, expose a
+    ``verify_provenance`` method, or provide ``mechanics_checker`` in a mapping.
+    Checkers may return a SoundnessType, bool, or None. A false boolean is typed
+    UNKNOWN rather than promoted to a model-derived claim.
+    """
+
+    checker: Any = None
+    if callable(context):
+        checker = context
+    elif isinstance(context, Mapping):
+        checker = context.get("mechanics_checker")
+    elif context is not None:
+        checker = getattr(context, "verify_provenance", None)
+    if not callable(checker):
+        return None
+    verdict = checker(proposal)
+    if verdict is None or isinstance(verdict, SoundnessType):
+        return verdict
+    if isinstance(verdict, bool):
+        return SoundnessType.ENV_SOUND_DEAD if verdict else SoundnessType.UNKNOWN
+    raise TypeError("mechanics checker must return SoundnessType, bool, or None")
 
 
 def certify_and_apply(
@@ -189,6 +260,7 @@ def certify_and_apply(
     *,
     allow_soft: bool = False,
     policy: MembranePolicy | None = None,
+    verifier_context: Any = None,
 ) -> HybridStepResult:
     """Apply a proposal only if its provenance permits the requested update.
 
@@ -199,6 +271,22 @@ def certify_and_apply(
     if policy is None:
         policy = MembranePolicy(allow_model_sound=allow_soft, allow_experience_sound=allow_soft)
 
+    verified_soundness = (
+        policy.provenance_verifier(proposal, verifier_context)
+        if policy.provenance_verifier is not None
+        else None
+    )
+    effective_soundness = verified_soundness or proposal.soundness
+    verification_fields = (
+        {
+            "claimed_soundness": proposal.soundness,
+            "verified_soundness": verified_soundness,
+            "provenance_disagreed": verified_soundness != proposal.soundness,
+        }
+        if verified_soundness is not None
+        else {}
+    )
+
     if proposal.mode in {HybridMode.EXPLORE, HybridMode.EXPAND_ABSTRACTION}:
         return HybridStepResult(
             False,
@@ -206,7 +294,8 @@ def certify_and_apply(
             current,
             proposal,
             "rejected: exploratory proposal is not a certified deduction",
-            _soft_store_for(policy, proposal),
+            _soft_store_for(policy, proposal, effective_soundness),
+            **verification_fields,
         )
 
     if not proposal.proposed_state.is_refinement_of(current):
@@ -216,22 +305,31 @@ def certify_and_apply(
             current,
             proposal,
             "rejected: non-monotone proposal widens the lattice state",
-            _soft_store_for(policy, proposal),
+            _soft_store_for(policy, proposal, effective_soundness),
+            **verification_fields,
         )
 
-    if not policy.can_hard_apply(proposal.soundness):
+    if not policy.can_hard_apply(effective_soundness):
         return HybridStepResult(
             False,
             current,
             current,
             proposal,
-            f"rejected: {proposal.soundness.value} provenance is not hard-applicable by policy",
-            _soft_store_for(policy, proposal),
+            f"rejected: {effective_soundness.value} provenance is not hard-applicable by policy",
+            _soft_store_for(policy, proposal, effective_soundness),
+            **verification_fields,
         )
 
     refined = current.meet(proposal.proposed_state)
     if refined == current:
-        return HybridStepResult(True, current, refined, proposal, "accepted: no-op monotone refinement")
+        return HybridStepResult(
+            True,
+            current,
+            refined,
+            proposal,
+            "accepted: no-op monotone refinement",
+            **verification_fields,
+        )
     if refined.is_bottom and proposal.mode != HybridMode.ABSTAIN:
         return HybridStepResult(
             False,
@@ -239,6 +337,14 @@ def certify_and_apply(
             current,
             proposal,
             "rejected: proposal collapses lattice to bottom without abstain mode",
-            _soft_store_for(policy, proposal),
+            _soft_store_for(policy, proposal, effective_soundness),
+            **verification_fields,
         )
-    return HybridStepResult(True, current, refined, proposal, "accepted: certified monotone refinement")
+    return HybridStepResult(
+        True,
+        current,
+        refined,
+        proposal,
+        "accepted: certified monotone refinement",
+        **verification_fields,
+    )
