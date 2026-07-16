@@ -1,7 +1,7 @@
 {
   "artifacts": {
-    "bridge_rows_sha256": "8ff0fab5f1a161d29c21ccf191f34be40f59e857b053ff7246d7ff3d87661975",
-    "rules_sha256": "da97517dbd893619e0de6b9d2fe506c8a90153fd5eb29a1ed542bbc76716bf4f"
+    "bridge_rows_sha256": "190d686c2e81bf6650efe7f60a8964e4824074ee4d0f3a212943436dd3a5c89e",
+    "rules_sha256": "ced6b181a6b26a4de7b61dca8f5a0e8946fcb400d243f0d30c66101d782696e7"
   },
   "schema": "hybrid_airis_das_bridge_result_v1",
   "service_contract": {

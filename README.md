@@ -97,13 +97,15 @@ AIRIS/DAS bridge and live local-service conformance:
 
 ```bash
 python -m research_gym.scripts.bench_airis_das_bridge
+python -m research_gym.scripts.bench_airis_das_resilience
 python scripts/smoke_airis_das_bridge.py
 prime eval run hybrid-sequencer-v1 -c configs/eval/hybrid_sequencer_airis_v1.toml
 ```
 
 The benchmark seals AIRIS forecasts and topology decisions into the Verifiers taskset. The smoke separately
 starts the implementation under `C:\projects\metta-storyworld\metta-etc`, verifies HTTP forecast parity, and
-tests stale-protocol rejection. See `docs/airis_das_integration.md`.
+tests stale-protocol and altered-rule rejection. The resilience benchmark compares topology-only and
+integrity-sealed arbitration over 6,670 paired clean/fault trials. See `docs/airis_das_integration.md`.
 
 ## Repo map
 

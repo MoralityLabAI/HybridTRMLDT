@@ -23,3 +23,6 @@ claim that a neural model was trained or promoted.
 
 The sequencer-control section reports a registered 667-episode deterministic replay with paired inference and an
 error-budget sensitivity table. It measures controller selection over fixed skills, not neural weight infusion.
+
+The AIRIS/DAS section reports paired deterministic receipt fault injection and includes a TikZ integrity-flow
+figure. It does not report training or adversarial robustness of an AIRIS learner.

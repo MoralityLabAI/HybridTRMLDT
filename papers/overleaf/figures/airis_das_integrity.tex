@@ -1,0 +1,27 @@
+\begin{tikzpicture}[
+  node distance=0.75cm and 0.75cm,
+  box/.style={draw, rounded corners, align=center, minimum width=2.25cm, minimum height=0.72cm, font=\scriptsize},
+  input/.style={box, fill=blue!8},
+  store/.style={box, fill=orange!11},
+  proof/.style={box, fill=green!10},
+  decision/.style={draw, diamond, aspect=2.1, align=center, fill=yellow!13, font=\scriptsize},
+  accept/.style={box, fill=green!16},
+  reject/.style={box, fill=red!8},
+  arrow/.style={-Latex, thick}
+]
+\node[input] (context) {evaluation context\and topology receipt};
+\node[store, right=of context] (das) {DAS-shaped index\AIRIS rule retrieval};
+\node[input, right=of das] (forecast) {forecast $r$\sequence proposal $q_A$};
+\node[proof, below=of das] (registry) {frozen calibration registry\$D_{\mathrm{id}}=\mathrm{SHA256}(m(r))$};
+\node[decision, right=1.15cm of registry] (gate) {$G(c,r)$?\$I(r)$?};
+\node[accept, above right=0.55cm and 0.8cm of gate] (accepted) {authorized\sequence};
+\node[reject, below right=0.55cm and 0.8cm of gate] (fallback) {fail closed\$q_T(c)$};
+
+\draw[arrow] (context) -- (das);
+\draw[arrow] (das) -- (forecast);
+\draw[arrow] (forecast) -- (gate);
+\draw[arrow] (context) |- (gate);
+\draw[arrow] (registry) -- (gate);
+\draw[arrow] (gate) -- node[above left, font=\tiny]{both pass} (accepted);
+\draw[arrow] (gate) -- node[below left, font=\tiny]{either fails} (fallback);
+\end{tikzpicture}

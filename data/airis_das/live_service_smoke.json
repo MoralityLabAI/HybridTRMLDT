@@ -6,13 +6,17 @@
     "proposed_sequence": "typed_propose_certify",
     "reasons": [],
     "rule_id": "hybrid_airis_rule_466948fd539d",
+    "rule_sha256": "2b11686abb90b6e06ac714927dc13acf38f645ea6bd62baada00c6c06b8404bc",
     "selected_sequence": "typed_propose_certify"
   },
   "embedded_best_rule_id": "hybrid_airis_rule_466948fd539d",
   "episode_id": "sudoku-s4_single_chain-eval-0000",
+  "expected_ruleset_sha256": "ced6b181a6b26a4de7b61dca8f5a0e8946fcb400d243f0d30c66101d782696e7",
   "forecast_parity": true,
   "http_best_rule_id": "hybrid_airis_rule_466948fd539d",
   "passed": true,
+  "ruleset_integrity": true,
+  "ruleset_sha256": "ced6b181a6b26a4de7b61dca8f5a0e8946fcb400d243f0d30c66101d782696e7",
   "schema": "hybrid_airis_das_live_smoke_v1",
   "service_summary": {
     "backend_mode": "in_memory_das_shaped",
@@ -39,6 +43,19 @@
       "protocol_not_bound"
     ],
     "rule_id": "hybrid_airis_rule_466948fd539d",
+    "rule_sha256": "2b11686abb90b6e06ac714927dc13acf38f645ea6bd62baada00c6c06b8404bc",
+    "selected_sequence": "typed_propose_certify"
+  },
+  "tampered_rule_decision": {
+    "accepted": false,
+    "changed_from_control": false,
+    "fallback_sequence": "typed_propose_certify",
+    "proposed_sequence": "deduction_only",
+    "reasons": [
+      "rule_integrity_mismatch"
+    ],
+    "rule_id": "hybrid_airis_rule_466948fd539d",
+    "rule_sha256": "a76fade5cece988033dae7d557cb4eded6755bf40c18ae959c2e6155cf2265dd",
     "selected_sequence": "typed_propose_certify"
   }
 }

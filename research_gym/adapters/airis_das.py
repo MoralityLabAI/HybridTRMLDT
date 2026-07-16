@@ -54,6 +54,32 @@ def _parse_outcome(value: object) -> dict[str, str]:
     return fields
 
 
+def airis_rule_sha256(rule: Mapping[str, object]) -> str:
+    predicts = rule.get("predicts") if isinstance(rule.get("predicts"), Mapping) else {}
+    material = {
+        "rule_id": str(rule.get("rule_id") or ""),
+        "confidence": float(rule.get("confidence") or 0.0),
+        "support": int(rule.get("support") or 0),
+        "counterexample_count": int(rule.get("counterexample_count") or 0),
+        "preconditions": sorted(str(value) for value in rule.get("preconditions", [])),
+        "predicts": dict(predicts),
+    }
+    encoded = json.dumps(material, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return sha256(encoded).hexdigest()
+
+
+def trusted_rule_sha256(rules: Sequence[Mapping[str, object]]) -> dict[str, str]:
+    registry: dict[str, str] = {}
+    for rule in rules:
+        rule_id = str(rule.get("rule_id") or "")
+        if not rule_id:
+            raise ValueError("AIRIS rule is missing rule_id")
+        if rule_id in registry:
+            raise ValueError(f"duplicate AIRIS rule_id: {rule_id}")
+        registry[rule_id] = airis_rule_sha256(rule)
+    return registry
+
+
 def _condition_features(
     *,
     protocol_sha256: str,
@@ -149,6 +175,7 @@ def build_airis_ruleset(payload: Mapping[str, object]) -> dict[str, object]:
             }
         )
 
+    registry = trusted_rule_sha256(rules)
     return {
         "schema": AIRIS_RULESET_SCHEMA,
         "summary": {
@@ -162,6 +189,7 @@ def build_airis_ruleset(payload: Mapping[str, object]) -> dict[str, object]:
                 "not AIRIS causal-learning performance."
             ),
         },
+        "trusted_rule_sha256": registry,
         "rules": rules,
     }
 
@@ -273,6 +301,7 @@ class AirisTopologyDecision:
     accepted: bool
     changed_from_control: bool
     rule_id: str | None
+    rule_sha256: str | None
     reasons: tuple[str, ...]
 
     def to_jsonable(self) -> dict[str, object]:
@@ -284,6 +313,7 @@ def resolve_airis_decision(
     forecast: Mapping[str, object],
     *,
     expected_protocol_sha256: str,
+    trusted_rules: Mapping[str, str] | None = None,
     min_confidence: float = 0.5,
     min_support: int = 2,
 ) -> AirisTopologyDecision:
@@ -300,14 +330,25 @@ def resolve_airis_decision(
     reasons = []
     proposed: str | None = None
     rule_id: str | None = None
+    rule_sha256: str | None = None
     if top is None:
         reasons.append("no_airis_match")
     else:
         rule_id = str(top.get("rule_id") or "") or None
-        outcome_fields = top.get("outcome_fields")
-        if not isinstance(outcome_fields, Mapping):
-            predicts = top.get("predicts") if isinstance(top.get("predicts"), Mapping) else {}
-            outcome_fields = _parse_outcome(predicts.get("outcome"))
+        predicts = top.get("predicts") if isinstance(top.get("predicts"), Mapping) else {}
+        outcome_fields = _parse_outcome(predicts.get("outcome"))
+        supplied_outcome_fields = top.get("outcome_fields")
+        if isinstance(supplied_outcome_fields, Mapping):
+            supplied = {str(key): str(value) for key, value in supplied_outcome_fields.items()}
+            if supplied != outcome_fields:
+                reasons.append("forecast_outcome_mismatch")
+        rule_sha256 = airis_rule_sha256(top)
+        if trusted_rules is not None:
+            expected_rule_sha256 = trusted_rules.get(rule_id or "")
+            if expected_rule_sha256 is None:
+                reasons.append("untrusted_rule")
+            elif rule_sha256 != expected_rule_sha256:
+                reasons.append("rule_integrity_mismatch")
         proposed = str(outcome_fields.get("selected_sequence") or "") or None
         rule_route = str(outcome_fields.get("control_route") or "")
         authority = str(outcome_fields.get("authority") or "")
@@ -347,6 +388,7 @@ def resolve_airis_decision(
         accepted=accepted,
         changed_from_control=selected != fallback,
         rule_id=rule_id,
+        rule_sha256=rule_sha256,
         reasons=tuple(reasons),
     )
 
@@ -386,6 +428,10 @@ def apply_airis_bridge(
     if not isinstance(rules, list):
         raise ValueError("AIRIS ruleset must contain rules")
     protocol_sha256 = str(payload.get("protocol_sha256") or "")
+    registry = trusted_rule_sha256(rules)
+    declared_registry = ruleset.get("trusted_rule_sha256")
+    if isinstance(declared_registry, Mapping) and dict(declared_registry) != registry:
+        raise ValueError("AIRIS ruleset integrity registry does not match its rules")
     bridged_rows = []
     receipts = []
     for raw_row in rows:
@@ -393,7 +439,10 @@ def apply_airis_bridge(
         observation = airis_observation(row, protocol_sha256)
         forecast = embedded_forecast(observation, rules, limit=3)
         decision = resolve_airis_decision(
-            row, forecast, expected_protocol_sha256=protocol_sha256
+            row,
+            forecast,
+            expected_protocol_sha256=protocol_sha256,
+            trusted_rules=registry,
         )
         selections = row["selections"]
         selected_outcomes = row["selected_outcomes"]
@@ -405,6 +454,7 @@ def apply_airis_bridge(
             "observation": observation,
             "forecast": forecast,
             "decision": decision.to_jsonable(),
+            "trusted_rule_sha256": registry.get(decision.rule_id or ""),
         }
         row["airis_das"] = receipt
         receipts.append(receipt)

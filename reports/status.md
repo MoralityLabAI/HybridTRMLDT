@@ -1,86 +1,68 @@
 # Status
 
+Date: `2026-07-16`
+
 ## Repo Tree
 
 ```text
-.
-├── configs/
-├── data/
-│   ├── frames.jsonl
-│   ├── metta_frames.jsonl
-│   └── symbolic_report.md
-├── docs/
-├── examples/
-│   └── metta_rules/
-├── research_gym/
-│   ├── core/
-│   ├── envs/
-│   └── scripts/
-├── tasks/
-│   ├── agent_cards/
-│   ├── generated/
-│   └── workorders/
-├── tests/
-├── Makefile
-├── README.md
-└── pyproject.toml
+configs/                       benchmark and Verifiers eval configs
+data/
+  airis_das/                   generated AIRIS rules and live service receipt
+  benchmarks/                  aggregate and per-trial benchmark artifacts
+docs/                          architecture and integration contracts
+environments/hybrid_sequencer_v1/
+experiments/                   mirrored results and training notes
+papers/
+  overleaf/                    TeX, bibliography, and TikZ figures
+reports/                       benchmark summaries and checkpoints
+research_gym/
+  adapters/                    MeTTa, Intellect, Verifiers, and AIRIS/DAS adapters
+  benchmarks/                  task, architecture, sequencer, and resilience studies
+  core/                        lattice, membrane, frames, and training review
+  envs/                        synthetic and local task environments
+  scripts/                     reproducible artifact entry points
+scripts/                       integration smoke tests
+tests/                         dependency-light regression suite
 ```
 
 ## Commands Run
 
 ```text
-make all
-pytest -q
-python --version
 python -m research_gym.scripts.generate_frames --out data/frames.jsonl --n 128 --horizon 6 --seed 7
 python -m research_gym.scripts.generate_metta_frames --out data/metta_frames.jsonl --source examples/metta_rules/toy_skills.metta
 python -m research_gym.scripts.eval_symbolic --frames data/frames.jsonl
 python -m research_gym.scripts.write_agent_tasks --out tasks/generated
-python -m pytest tests -q
+python -m research_gym.scripts.bench_airis_das_bridge
+python -m research_gym.scripts.bench_airis_das_resilience
+python scripts/smoke_airis_das_bridge.py
+python -m pytest -q
 ```
 
 ## Test Results
 
 ```text
-python -m pytest tests -q
-8 passed in 6.02s
+114 passed in 11.12s
 ```
 
-The Makefile target bodies also passed when run directly through Python.
+The AIRIS/DAS live HTTP smoke passed with 28 rules and 392 indexed facts. Embedded and HTTP forecasts selected
+the same rule. Stale protocol and altered rule material both fell back to `control_math`.
+
+The resilience benchmark contains 6,670 paired trials. Integrity sealing retained 100% clean acceptance and
+rejected all 6,003 negative controls. Topology-only arbitration accepted 44.4% of negative controls.
 
 ## Known Broken Pieces
 
-```text
-make all
-```
-
-failed because `make` is not installed or not on PATH in the current Windows shell.
-
-```text
-pytest -q
-```
-
-failed because `pytest` is not available as a direct shell executable. The module form works:
-
-```text
-python -m pytest tests -q
-```
-
-This appears to be an environment/tooling gap, not a project test failure.
+- GNU Make is not installed on this Windows host, so `make all` cannot be invoked directly. Every target body was
+  run through its Python command and passed.
+- No local `pdflatex` or `latexmk` executable is installed. TeX citations and figure inputs are mechanically
+  complete, but local PDF compilation is not verified.
+- The metta-storyworld service reports `in_memory_das_shaped`; native `das`, `das_agent`, `hyperon`, and
+  `hyperon_das` packages are absent.
+- AIRIS rules are exported from frozen calibration context plans. The current results do not measure independent
+  AIRIS causal learning or native distributed DAS.
 
 ## Next Recommended Patch
 
-Proceed to Task 2 from the repo instructions:
-
-```text
-Strengthen the hybrid membrane in research_gym/core/hybrid.py,
-research_gym/core/typed_soundness.py, and research_gym/core/lattice.py.
-```
-
-Required deliverables:
-
-```text
-tests/test_hybrid_membrane.py
-docs/hybrid_contract.md update
-reports/checkpoint_2.md
-```
+Induce AIRIS-style rules from calibration transition rows rather than exporting the topology controller's final
+choice. Evaluate held-out rule precision, accepted-proposal utility, fallback coverage, intact-but-wrong rules,
+and counterexample-aware demotion while retaining the integrity seal and topology authority boundary.

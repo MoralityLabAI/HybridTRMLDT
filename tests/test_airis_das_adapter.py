@@ -11,6 +11,7 @@ from research_gym.adapters.airis_das import (
     build_airis_ruleset,
     embedded_forecast,
     resolve_airis_decision,
+    trusted_rule_sha256,
 )
 
 
@@ -142,6 +143,10 @@ def test_route_tampering_is_rejected():
     observation = airis_observation(row, payload["protocol_sha256"])
     forecast = embedded_forecast(observation, rules)
     tampered = deepcopy(forecast)
+    tampered["matches"][0]["predicts"]["outcome"] = (
+        "selected_sequence=proposal_only;control_route=global_signed;"
+        "authority=topology_membrane"
+    )
     tampered["matches"][0]["outcome_fields"]["control_route"] = "global_signed"
 
     decision = resolve_airis_decision(
@@ -168,6 +173,9 @@ def test_forecast_cannot_claim_execution_authority():
     forecast = embedded_forecast(
         airis_observation(row, payload["protocol_sha256"]), rules
     )
+    forecast["matches"][0]["predicts"]["outcome"] = (
+        "selected_sequence=proposal_only;control_route=local_section;authority=airis"
+    )
     forecast["matches"][0]["outcome_fields"]["authority"] = "airis"
 
     decision = resolve_airis_decision(
@@ -176,6 +184,36 @@ def test_forecast_cannot_claim_execution_authority():
 
     assert not decision.accepted
     assert "invalid_authority_claim" in decision.reasons
+
+
+def test_integrity_registry_rejects_rule_prediction_substitution():
+    payload = _payload()
+    row = _row()
+    rules = build_airis_ruleset(payload)["rules"]
+    registry = trusted_rule_sha256(rules)
+    forecast = embedded_forecast(
+        airis_observation(row, payload["protocol_sha256"]), rules
+    )
+    forecast["matches"][0]["predicts"]["outcome"] = (
+        "selected_sequence=deduction_only;control_route=local_section;"
+        "authority=topology_membrane"
+    )
+    forecast["matches"][0]["outcome_fields"]["selected_sequence"] = "deduction_only"
+
+    topology_only = resolve_airis_decision(
+        row, forecast, expected_protocol_sha256=payload["protocol_sha256"]
+    )
+    integrity_sealed = resolve_airis_decision(
+        row,
+        forecast,
+        expected_protocol_sha256=payload["protocol_sha256"],
+        trusted_rules=registry,
+    )
+
+    assert topology_only.accepted
+    assert topology_only.changed_from_control
+    assert not integrity_sealed.accepted
+    assert "rule_integrity_mismatch" in integrity_sealed.reasons
 
 
 def test_bridge_adds_sequencer_metrics_and_sealed_receipt():

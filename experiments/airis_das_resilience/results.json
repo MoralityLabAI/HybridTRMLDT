@@ -1,0 +1,327 @@
+{
+  "artifacts": {
+    "rules_sha256": "ced6b181a6b26a4de7b61dca8f5a0e8946fcb400d243f0d30c66101d782696e7",
+    "trials_sha256": "812d604c317eea2fc93db928d9b65c6ce10843c8301bc86f7edeb0b020630a50"
+  },
+  "attack_trial_count": 6003,
+  "claim_boundary": "Deterministic paired fault-injection over sealed AIRIS/DAS replay receipts. It measures authorization resilience, not adversarial robustness of a learned AIRIS model or native distributed DAS.",
+  "controllers": {
+    "integrity_sealed": {
+      "attack_acceptance_rate": 0.0,
+      "attack_changed_from_control_rate": 0.0,
+      "attack_control_parity_rate": 1.0,
+      "attack_fallback_rate": 1.0,
+      "attack_rejection_rate": 1.0,
+      "attack_trials": 6003,
+      "clean_acceptance_rate": 1.0,
+      "clean_trials": 667,
+      "max_attack_regret_vs_control": 0.0,
+      "mean_attack_regret_vs_control": 0.0
+    },
+    "topology_only": {
+      "attack_acceptance_rate": 0.4444444444444444,
+      "attack_changed_from_control_rate": 0.1111111111111111,
+      "attack_control_parity_rate": 0.8888888888888888,
+      "attack_fallback_rate": 0.5555555555555556,
+      "attack_rejection_rate": 0.5555555555555556,
+      "attack_trials": 6003,
+      "clean_acceptance_rate": 1.0,
+      "clean_trials": 667,
+      "max_attack_regret_vs_control": 1.00375,
+      "mean_attack_regret_vs_control": 0.02770668882083482
+    }
+  },
+  "episode_count": 667,
+  "families": {
+    "arc1": {
+      "attack_trials": 1512,
+      "integrity_sealed_acceptance_rate": 0.0,
+      "integrity_sealed_fallback_rate": 1.0,
+      "topology_only_acceptance_rate": 0.4444444444444444
+    },
+    "arc2": {
+      "attack_trials": 1440,
+      "integrity_sealed_acceptance_rate": 0.0,
+      "integrity_sealed_fallback_rate": 1.0,
+      "topology_only_acceptance_rate": 0.4444444444444444
+    },
+    "routing": {
+      "attack_trials": 1035,
+      "integrity_sealed_acceptance_rate": 0.0,
+      "integrity_sealed_fallback_rate": 1.0,
+      "topology_only_acceptance_rate": 0.4444444444444444
+    },
+    "story_moral": {
+      "attack_trials": 576,
+      "integrity_sealed_acceptance_rate": 0.0,
+      "integrity_sealed_fallback_rate": 1.0,
+      "topology_only_acceptance_rate": 0.4444444444444444
+    },
+    "story_secret": {
+      "attack_trials": 576,
+      "integrity_sealed_acceptance_rate": 0.0,
+      "integrity_sealed_fallback_rate": 1.0,
+      "topology_only_acceptance_rate": 0.4444444444444444
+    },
+    "sudoku": {
+      "attack_trials": 864,
+      "integrity_sealed_acceptance_rate": 0.0,
+      "integrity_sealed_fallback_rate": 1.0,
+      "topology_only_acceptance_rate": 0.4444444444444444
+    }
+  },
+  "integrity_effect": {
+    "attack_acceptance_rate_delta": -0.4444444444444444,
+    "attack_changed_from_control_rate_delta": -0.1111111111111111
+  },
+  "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+  "scenario_count": 10,
+  "scenarios": {
+    "authority_override": {
+      "expected_accept": false,
+      "integrity_sealed": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "invalid_authority_claim": 667,
+          "rule_integrity_mismatch": 667
+        }
+      },
+      "topology_only": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "invalid_authority_claim": 667
+        }
+      },
+      "trials": 667
+    },
+    "clean": {
+      "expected_accept": true,
+      "integrity_sealed": {
+        "acceptance_rate": 1.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 0.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {}
+      },
+      "topology_only": {
+        "acceptance_rate": 1.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 0.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {}
+      },
+      "trials": 667
+    },
+    "confidence_inflation": {
+      "expected_accept": false,
+      "integrity_sealed": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "rule_integrity_mismatch": 667
+        }
+      },
+      "topology_only": {
+        "acceptance_rate": 1.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 0.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {}
+      },
+      "trials": 667
+    },
+    "protocol_shift": {
+      "expected_accept": false,
+      "integrity_sealed": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "context_not_bound": 3,
+          "partial_airis_match": 667,
+          "protocol_not_bound": 667
+        }
+      },
+      "topology_only": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "context_not_bound": 3,
+          "partial_airis_match": 667,
+          "protocol_not_bound": 667
+        }
+      },
+      "trials": 667
+    },
+    "retrieval_outage": {
+      "expected_accept": false,
+      "integrity_sealed": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "no_airis_match": 667
+        }
+      },
+      "topology_only": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "no_airis_match": 667
+        }
+      },
+      "trials": 667
+    },
+    "route_override": {
+      "expected_accept": false,
+      "integrity_sealed": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "orientation_requires_local_section": 63,
+          "rule_integrity_mismatch": 667,
+          "topology_route_mismatch": 667
+        }
+      },
+      "topology_only": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "orientation_requires_local_section": 63,
+          "topology_route_mismatch": 667
+        }
+      },
+      "trials": 667
+    },
+    "sequence_substitution": {
+      "expected_accept": false,
+      "integrity_sealed": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "rule_integrity_mismatch": 667
+        }
+      },
+      "topology_only": {
+        "acceptance_rate": 1.0,
+        "changed_from_control_rate": 1.0,
+        "control_parity_rate": 0.0,
+        "fallback_rate": 0.0,
+        "mean_regret_vs_control": 0.2493601993875134,
+        "reasons": {}
+      },
+      "trials": 667
+    },
+    "support_inflation": {
+      "expected_accept": false,
+      "integrity_sealed": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "rule_integrity_mismatch": 667
+        }
+      },
+      "topology_only": {
+        "acceptance_rate": 1.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 0.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {}
+      },
+      "trials": 667
+    },
+    "unknown_rule_id": {
+      "expected_accept": false,
+      "integrity_sealed": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "untrusted_rule": 667
+        }
+      },
+      "topology_only": {
+        "acceptance_rate": 1.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 0.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {}
+      },
+      "trials": 667
+    },
+    "unseen_context": {
+      "expected_accept": false,
+      "integrity_sealed": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "context_not_bound": 667,
+          "partial_airis_match": 667
+        }
+      },
+      "topology_only": {
+        "acceptance_rate": 0.0,
+        "changed_from_control_rate": 0.0,
+        "control_parity_rate": 1.0,
+        "fallback_rate": 1.0,
+        "mean_regret_vs_control": 0.0,
+        "reasons": {
+          "context_not_bound": 667,
+          "partial_airis_match": 667
+        }
+      },
+      "trials": 667
+    }
+  },
+  "schema": "hybrid_airis_das_resilience_v1",
+  "source": {
+    "benchmark": "data\\benchmarks\\sequencer_control_results.json",
+    "episodes": "data\\benchmarks\\sequencer_control_episodes.jsonl",
+    "eval_sha256": "d27f92280afe80a46718b934ff01d7c451d24c9ba2d792a4c8afe6d81d9f3db5",
+    "rules": "data\\airis_das\\sequencer_rules.json"
+  },
+  "trial_count": 6670
+}

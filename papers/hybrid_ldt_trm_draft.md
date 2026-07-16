@@ -10,6 +10,11 @@ We also specify a Conductor-HRM layer for review of newly trained checkpoints. I
 
 We then apply the same control mathematics directly to fixed hybrid skill sequencers in a registered 667-episode replay. Relative to global signed sequencing, topology-controlled localization improves family-macro utility by `0.0069` (95% context-clustered bootstrap interval `[0.0049,0.0092]`, Holm-adjusted `p=0.0006`) with unchanged accuracy and lower cost. Its `0.0003` advantage over lineage-only control is not significant (`p=0.5023`). This measures sequencer control over deterministic skills, not neural weight infusion or official leaderboard performance.
 
+Finally, we pass calibration-derived sequence rules through an AIRIS/DAS-shaped retrieval service and isolate
+forecast transport integrity. Across 6,670 paired clean and fault-injection trials, digest sealing preserves
+100% clean acceptance while reducing negative-control acceptance from 44.4% under topology-only arbitration to
+zero. This is a deterministic authorization result, not evidence for learned AIRIS robustness.
+
 ## 1. Motivation
 
 The motivating question is practical:
@@ -429,6 +434,47 @@ Relaxing authorization reduces local sectioning but erodes utility and raises co
 tasks are also exported as a Verifiers `0.1.14` v1 Taskset/Harness package. Taskset owns tasks and scoring;
 Harness owns sequencer rollout. This is an LLM-free portability artifact, not an additional model result.
 
+### 7.2 AIRIS/DAS Forecast Integrity
+
+The calibration-derived context plans can be exported as AIRIS-compatible symbolic rules and retrieved through
+the local DAS-shaped service. AIRIS/DAS proposes a sequence; the topology membrane retains execution authority.
+For canonical rule material
+
+```math
+m(r)=(\mathrm{id},\mathrm{confidence},\mathrm{support},\mathrm{counterexample\ count},
+\mathrm{preconditions},\mathrm{prediction}),
+\qquad
+I(r)=\mathbf 1[\operatorname{SHA256}(m(r))=D_{\mathrm{id}(r)}],
+```
+
+where `D` is frozen from calibration-exported rules. If `G(c,r)` is the exact-match, protocol, context, support,
+route, and orientation gate, execution becomes
+
+```math
+q(c)=
+\begin{cases}
+q_A(c), & G(c,r)\land I(r),\\
+q_T(c), & \text{otherwise}.
+\end{cases}
+```
+
+We apply ten paired conditions to every one of the 667 evaluation episodes: one clean positive control and nine
+protocol, unseen-context, sequence-substitution, confidence/support inflation, route/authority override,
+unknown-rule, and outage negative controls. Candidate outcomes remain fixed.
+
+| Controller | Clean Accept | Fault Accept | Fault Fallback | Changed | Max Regret |
+|---|---:|---:|---:|---:|---:|
+| Topology only | 1.000 | 0.444 | 0.556 | 0.111 | 1.0037 |
+| Integrity sealed | 1.000 | 0.000 | 1.000 | 0.000 | 0.0000 |
+
+Topology checks reject stale protocols, unseen contexts, route and authority overrides, and outages, but they
+cannot identify a syntactically valid forecast whose selected sequence, confidence, support, or identifier
+changed in transit. Integrity sealing rejects all 6,003 negative controls while accepting all 667 clean
+controls. This validates deterministic transport integrity. It does not show that an intact learned rule is
+correct or evaluate adversarial robustness of an AIRIS learner or native distributed DAS. The live client checks
+the ruleset against the independently saved bridge-result SHA-256 before constructing the registry; a deployment
+must keep that trust anchor outside the mutable rule store.
+
 ## 8. HRM Review of New Model Training
 
 Conductor-HRM reviews training as a graph of typed modules. The slow HRM selects an ordinary, invariant-bundle, global-signed, or sectioned-signed review regime. The fast HRM schedules spectral geometry, checkpoint lineage, loop holonomy, grouped utility, damage, and resource audits. A typed join routes the candidate to `authorize`, `section`, `audit`, or `reject`. The manager never writes weights or upgrades a source receipt.
@@ -572,6 +618,11 @@ mainly lower cost and better preference selection, not higher accuracy, and it s
 over lineage-only control. ARC tasks are filtered for common solver success. It is not evidence of neural weight
 infusion, official ARC performance, or official INTELLECT-3 performance.
 
+The AIRIS/DAS benchmark injects specified deterministic faults into calibration-exported rules. It does not
+train AIRIS or exercise native distributed DAS. Integrity prevents changed rule material from executing but
+cannot establish behavioral correctness of an intact rule. The registry also requires a separately protected
+trust anchor.
+
 The HRM training-review matrix uses synthetic sealed receipts and supplies no evidence of neural training gains. The signed-control theorem applies only to registered coordinate error under its simultaneous-coverage assumptions. It does not establish general behavioral safety or self-improvement.
 
 ## 11. Next Experiments
@@ -582,8 +633,9 @@ The HRM training-review matrix uses synthetic sealed receipts and supplies no ev
 4. Run the INTELLECT-3 `logic-env` under WSL/Linux, since the Windows smoke command currently fails before environment loading due to a Unix-only `fcntl` import in `prime_tunnel`.
 5. Scale storyworld play to larger GPTStoryworld/SweepWeave tasks after this finite-state harness is stable.
 6. Replace deterministic sequencer candidates with frozen learned TRM/LDT checkpoints while retaining the registered partitions and paired control-policy ablations.
-7. Wrap a capped HRM/TRM checkpoint run as a preregistered receipt producer, then evaluate context-by-checkpoint lineage, matched loop nulls, grouped held-out utility, and local section persistence.
+7. Induce AIRIS rules from calibration transitions rather than exporting topology plans, then evaluate intact-but-wrong rules, accepted-proposal utility, and fallback coverage on held-out contexts.
+8. Wrap a capped HRM/TRM checkpoint run as a preregistered receipt producer, then evaluate context-by-checkpoint lineage, matched loop nulls, grouped held-out utility, and local section persistence.
 
 ## 12. Conclusion
 
-The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft. Applied to fixed sequencers, topology-controlled localization outperforms global signed transfer, but this slice does not distinguish full holonomy/orientation control from lineage-only localization. At the multi-module level, Conductor-HRM applies the same discipline to training review: topology bounds internal-coordinate authority, while held-out utility, damage, provenance, and resources independently govern model promotion.
+The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft. Applied to fixed sequencers, topology-controlled localization outperforms global signed transfer, but this slice does not distinguish full holonomy/orientation control from lineage-only localization. AIRIS/DAS retrieval adds a second distinction: semantic authorization does not imply receipt integrity, so retrieved rule material must remain bound to its frozen calibration registry. At the multi-module level, Conductor-HRM applies the same discipline to training review: topology bounds internal-coordinate authority, while held-out utility, damage, provenance, and resources independently govern model promotion.
