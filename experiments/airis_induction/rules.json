@@ -1,0 +1,1670 @@
+{
+  "rules": [
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 12,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:fill_zero_with_1",
+        "family": "arc1",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 12
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9542857142857143,
+          "proposal_only": 0.96,
+          "typed_propose_certify": 0.96
+        },
+        "mean_utility_margin": 0.0,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc1:fill_zero_with_1",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "non_positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_9c05a1fdbb49",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 12,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:fill_zero_with_2",
+        "family": "arc1",
+        "label_counts": {
+          "deduction_only": 12,
+          "proposal_only": 0,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9542857142857143,
+          "proposal_only": 0.9457142857142857,
+          "typed_propose_certify": 0.9457142857142857
+        },
+        "mean_utility_margin": 0.008571428571428563,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc1:fill_zero_with_2",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=true",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=blocked",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=deduction_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_c07833a6f917",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 12,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:flip_h",
+        "family": "arc1",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 12
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9657142857142857,
+          "proposal_only": 0.9314285714285714,
+          "typed_propose_certify": 0.9885714285714285
+        },
+        "mean_utility_margin": 0.022857142857142798,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc1:flip_h",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_df15e5720b0f",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 12,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:flip_v",
+        "family": "arc1",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 12
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9657142857142857,
+          "proposal_only": 0.9171428571428571,
+          "typed_propose_certify": 0.9742857142857143
+        },
+        "mean_utility_margin": 0.008571428571428563,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc1:flip_v",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_bb15f20cf4e7",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 12,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:map_1_to_2",
+        "family": "arc1",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 12
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9542857142857143,
+          "proposal_only": 0.9885714285714285,
+          "typed_propose_certify": 0.9885714285714285
+        },
+        "mean_utility_margin": 0.0,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc1:map_1_to_2",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "non_positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_b60a924649b0",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 12,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:map_2_to_3",
+        "family": "arc1",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 12
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9542857142857143,
+          "proposal_only": 0.9742857142857143,
+          "typed_propose_certify": 0.9742857142857143
+        },
+        "mean_utility_margin": 0.0,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc1:map_2_to_3",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "non_positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_74e4403fb98b",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 12,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc1:rotate_180",
+        "family": "arc1",
+        "label_counts": {
+          "deduction_only": 12,
+          "proposal_only": 0,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9657142857142857,
+          "proposal_only": 0.9028571428571428,
+          "typed_propose_certify": 0.96
+        },
+        "mean_utility_margin": 0.005714285714285783,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc1:rotate_180",
+        "family=arc1",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=deduction_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_b4c618183722",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 12
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 10,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:fill_zero_with_1+rotate_180",
+        "family": "arc2",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 10
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9346938775510204,
+          "proposal_only": 0.9575510204081633,
+          "typed_propose_certify": 0.990204081632653
+        },
+        "mean_utility_margin": 0.03265306122448974,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc2:fill_zero_with_1+rotate_180",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_59b735d9ccfa",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 10,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:fill_zero_with_2+flip_v",
+        "family": "arc2",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 10
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9346938775510204,
+          "proposal_only": 0.9453061224489796,
+          "typed_propose_certify": 0.9861224489795919
+        },
+        "mean_utility_margin": 0.04081632653061229,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc2:fill_zero_with_2+flip_v",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_ef8c7cc94480",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 10,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:flip_h+fill_zero_with_2",
+        "family": "arc2",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 10
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9346938775510204,
+          "proposal_only": 0.9473469387755102,
+          "typed_propose_certify": 0.9881632653061224
+        },
+        "mean_utility_margin": 0.04081632653061218,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc2:flip_h+fill_zero_with_2",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_2a02edcc5961",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 10,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:flip_h+map_1_to_2",
+        "family": "arc2",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 10,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9346938775510204,
+          "proposal_only": 0.990204081632653,
+          "typed_propose_certify": 0.9738775510204082
+        },
+        "mean_utility_margin": 0.01632653061224487,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc2:flip_h+map_1_to_2",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_a0eeac702e61",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 10,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:flip_v+map_2_to_3",
+        "family": "arc2",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 10,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9346938775510204,
+          "proposal_only": 0.9738775510204082,
+          "typed_propose_certify": 0.9636734693877551
+        },
+        "mean_utility_margin": 0.010204081632653073,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc2:flip_v+map_2_to_3",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_0397d7e61266",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 10,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:map_1_to_2+rotate_180",
+        "family": "arc2",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 10,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9346938775510204,
+          "proposal_only": 0.9861224489795919,
+          "typed_propose_certify": 0.953469387755102
+        },
+        "mean_utility_margin": 0.032653061224489854,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc2:map_1_to_2+rotate_180",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=true",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=blocked",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_6c288fccee18",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 10,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:map_2_to_3+flip_h",
+        "family": "arc2",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 10,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9346938775510204,
+          "proposal_only": 0.9759183673469388,
+          "typed_propose_certify": 0.9718367346938775
+        },
+        "mean_utility_margin": 0.004081632653061273,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc2:map_2_to_3+flip_h",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_fa75efffc42b",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 10,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "arc2:rotate_180+fill_zero_with_1",
+        "family": "arc2",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 10
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9346938775510204,
+          "proposal_only": 0.9575510204081633,
+          "typed_propose_certify": 0.990204081632653
+        },
+        "mean_utility_margin": 0.03265306122448974,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=arc2:rotate_180+fill_zero_with_1",
+        "family=arc2",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_814e2b32d780",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 10
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 3,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:alphabet_sort",
+        "family": "routing",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 3,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9775,
+          "proposal_only": 0.98125,
+          "typed_propose_certify": 0.97
+        },
+        "mean_utility_margin": 0.00374999999999992,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=routing:alphabet_sort",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=true",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=blocked",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_a05db05d8ceb",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 3
+    },
+    {
+      "confidence": 0.9375,
+      "counterexample_count": 1,
+      "counterexamples": [
+        {
+          "action": "proposal_only",
+          "context": "routing:arc_challenge",
+          "observed": {
+            "outcome": "selected_sequence=deduction_only;predicted_utility=-0.01875000;winner_utility=0.97750000",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "routing-arc_challenge-calibration-0010-784368"
+        }
+      ],
+      "metadata": {
+        "calibration_episode_count": 16,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:arc_challenge",
+        "family": "routing",
+        "label_counts": {
+          "deduction_only": 1,
+          "proposal_only": 15,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.10250000000000001,
+          "proposal_only": 0.35625,
+          "typed_propose_certify": 0.345
+        },
+        "mean_utility_margin": 0.011250000000000038,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=routing:arc_challenge",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_24f13c99c7f6",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 15
+    },
+    {
+      "confidence": 0.9375,
+      "counterexample_count": 1,
+      "counterexamples": [
+        {
+          "action": "proposal_only",
+          "context": "routing:arc_easy",
+          "observed": {
+            "outcome": "selected_sequence=deduction_only;predicted_utility=-0.01875000;winner_utility=0.97750000",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "routing-arc_easy-calibration-0019-270956"
+        }
+      ],
+      "metadata": {
+        "calibration_episode_count": 16,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:arc_easy",
+        "family": "routing",
+        "label_counts": {
+          "deduction_only": 1,
+          "proposal_only": 15,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.29000000000000004,
+          "proposal_only": 0.48124999999999996,
+          "typed_propose_certify": 0.47
+        },
+        "mean_utility_margin": 0.011249999999999982,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=routing:arc_easy",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_93d50298b277",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 15
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 16,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:gsm8k",
+        "family": "routing",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 16,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.7275,
+          "proposal_only": 0.98125,
+          "typed_propose_certify": 0.97
+        },
+        "mean_utility_margin": 0.011249999999999982,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=routing:gsm8k",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_b7b27482ef4a",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 16,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:intellect_3_logic",
+        "family": "routing",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 16,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9775,
+          "proposal_only": 0.98125,
+          "typed_propose_certify": 0.97
+        },
+        "mean_utility_margin": 0.00374999999999992,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=routing:intellect_3_logic",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=true",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=blocked",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_eb5ee3d40983",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 16,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:intellect_3_math",
+        "family": "routing",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 16,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.41500000000000004,
+          "proposal_only": 0.98125,
+          "typed_propose_certify": 0.97
+        },
+        "mean_utility_margin": 0.011249999999999982,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=routing:intellect_3_math",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_bedf47587048",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 16,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:mbpp",
+        "family": "routing",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 16,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.6025,
+          "proposal_only": 0.98125,
+          "typed_propose_certify": 0.97
+        },
+        "mean_utility_margin": 0.011249999999999982,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=routing:mbpp",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_496bf945a3d2",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 16,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "routing:wiki_search",
+        "family": "routing",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 16,
+          "typed_propose_certify": 0
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.04000000000000001,
+          "proposal_only": 0.91875,
+          "typed_propose_certify": 0.9075
+        },
+        "mean_utility_margin": 0.011249999999999982,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=routing:wiki_search",
+        "family=routing",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=proposal_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_2a7f5aa57074",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 0.84375,
+      "counterexample_count": 10,
+      "counterexamples": [
+        {
+          "action": "deduction_only",
+          "context": "story:moral_optimization",
+          "observed": {
+            "outcome": "selected_sequence=typed_propose_certify;predicted_utility=0.77024313;winner_utility=0.77069767",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-moral_optimization-calibration-0010"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:moral_optimization",
+          "observed": {
+            "outcome": "selected_sequence=typed_propose_certify;predicted_utility=0.77024313;winner_utility=0.77069767",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-moral_optimization-calibration-0015"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:moral_optimization",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.67032770;winner_utility=0.67214588",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-moral_optimization-calibration-0021"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:moral_optimization",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.78660677;winner_utility=0.78842495",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-moral_optimization-calibration-0022"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:moral_optimization",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.74009514;winner_utility=0.74191332",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-moral_optimization-calibration-0024"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:moral_optimization",
+          "observed": {
+            "outcome": "selected_sequence=typed_propose_certify;predicted_utility=0.72373150;winner_utility=0.72418605",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-moral_optimization-calibration-0026"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:moral_optimization",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.85637421;winner_utility=0.85819239",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-moral_optimization-calibration-0031"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:moral_optimization",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.66623679;winner_utility=0.66987315",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-moral_optimization-calibration-0034"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:moral_optimization",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.80986258;winner_utility=0.81168076",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-moral_optimization-calibration-0038"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:moral_optimization",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.77842495;winner_utility=0.78615222",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-moral_optimization-calibration-0054"
+        }
+      ],
+      "metadata": {
+        "calibration_episode_count": 64,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "story:moral_optimization",
+        "family": "story_moral",
+        "label_counts": {
+          "deduction_only": 54,
+          "proposal_only": 7,
+          "typed_propose_certify": 3
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.7317417085095137,
+          "proposal_only": 0.5793745044926004,
+          "typed_propose_certify": 0.7189371366279069
+        },
+        "mean_utility_margin": 0.012804571881606774,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=story:moral_optimization",
+        "family=story_moral",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=deduction_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_22262a2f1dc6",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 54
+    },
+    {
+      "confidence": 0.71875,
+      "counterexample_count": 18,
+      "counterexamples": [
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.99590909;winner_utility=0.99772727",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0007"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=typed_propose_certify;predicted_utility=0.97954545;winner_utility=0.98000000",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0008"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=typed_propose_certify;predicted_utility=0.97954545;winner_utility=0.98000000",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0010"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=typed_propose_certify;predicted_utility=0.97954545;winner_utility=0.98000000",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0015"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=typed_propose_certify;predicted_utility=0.97954545;winner_utility=0.98000000",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0019"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.99590909;winner_utility=0.99772727",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0021"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.99590909;winner_utility=0.99772727",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0022"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.99590909;winner_utility=0.99772727",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0024"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=typed_propose_certify;predicted_utility=0.97954545;winner_utility=0.98000000",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0026"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.99590909;winner_utility=0.99772727",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0031"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.99181818;winner_utility=0.99545455",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0034"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.98363636;winner_utility=0.99318182",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0035"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=typed_propose_certify;predicted_utility=0.98363636;winner_utility=0.98500000",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0037"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.99590909;winner_utility=0.99772727",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0038"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.99590909;winner_utility=0.99772727",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0045"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.98772727;winner_utility=0.99545455",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0054"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=typed_propose_certify;predicted_utility=0.98772727;winner_utility=0.99000000",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0055"
+        },
+        {
+          "action": "deduction_only",
+          "context": "story:secret_ending",
+          "observed": {
+            "outcome": "selected_sequence=proposal_only;predicted_utility=0.98772727;winner_utility=0.99545455",
+            "value_signs": {
+              "rule_match": "false",
+              "utility_regret": "positive"
+            }
+          },
+          "row_id": "story-secret_ending-calibration-0062"
+        }
+      ],
+      "metadata": {
+        "calibration_episode_count": 64,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "story:secret_ending",
+        "family": "story_secret",
+        "label_counts": {
+          "deduction_only": 46,
+          "proposal_only": 11,
+          "typed_propose_certify": 7
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9879190340909091,
+          "proposal_only": 0.1665838068181818,
+          "typed_propose_certify": 0.986015625
+        },
+        "mean_utility_margin": 0.0019034090909091361,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=story:secret_ending",
+        "family=story_secret",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=review",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=deduction_only;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_92a3456ea9c6",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 46
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 16,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "sudoku:s4_requires_search",
+        "family": "sudoku",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 16
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.0,
+          "proposal_only": 0.8666666666666666,
+          "typed_propose_certify": 0.925
+        },
+        "mean_utility_margin": 0.05833333333333346,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=sudoku:s4_requires_search",
+        "family=sudoku",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_dd99ba5ce7e9",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 16,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "sudoku:s4_single_chain",
+        "family": "sudoku",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 16
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.9766666666666667,
+          "proposal_only": 0.9533333333333334,
+          "typed_propose_certify": 0.9766666666666667
+        },
+        "mean_utility_margin": 0.0,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=sudoku:s4_single_chain",
+        "family=sudoku",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "non_positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_f3cc58f20c89",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    },
+    {
+      "confidence": 1.0,
+      "counterexample_count": 0,
+      "counterexamples": [],
+      "metadata": {
+        "calibration_episode_count": 16,
+        "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+        "context": "sudoku:s4_sparse",
+        "family": "sudoku",
+        "label_counts": {
+          "deduction_only": 0,
+          "proposal_only": 0,
+          "typed_propose_certify": 16
+        },
+        "label_target": "episode_utility_winner",
+        "mean_utilities": {
+          "deduction_only": 0.0,
+          "proposal_only": 0.9020833333333333,
+          "typed_propose_certify": 0.9498958333333334
+        },
+        "mean_utility_margin": 0.047812500000000036,
+        "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "source": "calibration_episode_outcome_induction"
+      },
+      "preconditions": [
+        "context=sudoku:s4_sparse",
+        "family=sudoku",
+        "global_sequence=typed_propose_certify",
+        "observation_kind=hybrid_sequencer_choice",
+        "orientation_reversal=false",
+        "protocol_sha256=a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+        "signed_control_risk=section",
+        "topology_route=local_section"
+      ],
+      "predicts": {
+        "outcome": "selected_sequence=typed_propose_certify;control_route=local_section;authority=topology_membrane",
+        "value_signs": {
+          "calibration_majority": "positive",
+          "mean_utility_margin": "positive"
+        }
+      },
+      "rule_id": "induced_airis_rule_69bdf01d2400",
+      "schema": "airis_storyworld_rule_v1",
+      "support": 16
+    }
+  ],
+  "schema": "airis_storyworld_ruleset_v1",
+  "summary": {
+    "calibration_episode_count": 455,
+    "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+    "claim_boundary": "AIRIS-style empirical context-rule induction from deterministic calibration outcomes; not causal identification, neural AIRIS training, or native distributed DAS performance.",
+    "primary_confidence_threshold": 0.5,
+    "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+    "rule_count": 28,
+    "schema": "hybrid_airis_das_bridge_v1",
+    "source": "calibration_episode_outcome_induction",
+    "study_id": "airis_calibration_transition_induction"
+  },
+  "trusted_rule_sha256": {
+    "induced_airis_rule_0397d7e61266": "87c0e57783f6f56426d8b04d5b2228dc3445b87eaca67d76127f05f81d19a3d2",
+    "induced_airis_rule_22262a2f1dc6": "141127dc357485ede3db6917807404d9d5cc0b9d81d3b3d27f15659e92f02670",
+    "induced_airis_rule_24f13c99c7f6": "23f2b243dab40ed603cf299cb88c4d51463677399613a195a74cf2e235f7ee7b",
+    "induced_airis_rule_2a02edcc5961": "9c58c120c144262e7ea886b998929af7a8e9fba53ff3774fbe460528ec05a9ee",
+    "induced_airis_rule_2a7f5aa57074": "02262791721f1809f5926edb3b8c328caeca81a5aa823c806e81e7b049ad93f3",
+    "induced_airis_rule_496bf945a3d2": "95a74d1527e753490f0c1e3a48131db275f9f5c88102319101dc01309f1b8707",
+    "induced_airis_rule_59b735d9ccfa": "e8c0c15f035d478d12e65fc3d684a6837c544cd95590f1a09cdfa68db26d9aa5",
+    "induced_airis_rule_69bdf01d2400": "c33db866e6d5d678a78cb0a09772ef2214d558e60b15b94751e29be960c87a1e",
+    "induced_airis_rule_6c288fccee18": "1c92a2c1f53d847f7e90c01d92a2f0c69cc1533bd655ad40e09fa59de60a0371",
+    "induced_airis_rule_74e4403fb98b": "89a34c0817e7b11afd7798ce854f583318d08a64c492d332a40b62e91bd09099",
+    "induced_airis_rule_814e2b32d780": "52d35a059889b43180e91ee0474a1eed05e8824fb8edbec08400abb04e825356",
+    "induced_airis_rule_92a3456ea9c6": "95d84a323689ed32ebf2df629468416a921abd160076267732f85adc1c220182",
+    "induced_airis_rule_93d50298b277": "173ecd4ab9a5cff56cac0084afcb21ce48b5405e2a1e8d7ec91a3ff76e0de06d",
+    "induced_airis_rule_9c05a1fdbb49": "c46bf0f4878abe3463f4faabc437fe10d70e73f8160d6cbfa18453e3b611cdca",
+    "induced_airis_rule_a05db05d8ceb": "709fe4ccd462e36d46ee104f42236a208ff49b539db772131cdc0bcfa5feef76",
+    "induced_airis_rule_a0eeac702e61": "7d8eb82b4ca476894bbb490e2e84d71e6da0c42e2a385478adcc0046b6f631d0",
+    "induced_airis_rule_b4c618183722": "052b474999348857ab61b6ea5c3e7343c78b45e802d4ba5f5ab6de787ce6b43e",
+    "induced_airis_rule_b60a924649b0": "d34bd4f299b9317a974d1315357f5dde814dc737f24fffcac4326b089e514298",
+    "induced_airis_rule_b7b27482ef4a": "51b7b214b414731fea8dd0af51f7c93af47a4fd264bc83660d3ff3c409285140",
+    "induced_airis_rule_bb15f20cf4e7": "48b0273cb25698bafb3095067864972a74d1179dc99a9400af429872232e1152",
+    "induced_airis_rule_bedf47587048": "cece3b9c520707e7166a61a87b5580afe7fc1ad46f6fdd8e93916ab427585c54",
+    "induced_airis_rule_c07833a6f917": "5b892be416a4b342a1ddf829e95ed2d62e1d47279da521f7632e104cb75d4c60",
+    "induced_airis_rule_dd99ba5ce7e9": "010c78173ab56bca69cec45a8853e485be4817136e551b3bae2046dc76c7aba9",
+    "induced_airis_rule_df15e5720b0f": "cd4f7d455938271051d7e81d0bebe93b4699ab27e87ac1f80797847690a32a13",
+    "induced_airis_rule_eb5ee3d40983": "03e1d2d67c0fb1501d411d3468271b0d6600a7efa2707956df287d09201ce916",
+    "induced_airis_rule_ef8c7cc94480": "b79d8e25b096d868bb8993dff27790a327012a6dc907c6abe5cc11f9bde41e6c",
+    "induced_airis_rule_f3cc58f20c89": "719115c9b8be132563c92d72b3e88ef59b673f7bc0f4cb568a9a8832ff6d0d7c",
+    "induced_airis_rule_fa75efffc42b": "7cc9c46e8b5e6dbf14b62a2bc118fbd88627e4da7da4a3bb08b84b61f1e4aa91"
+  }
+}

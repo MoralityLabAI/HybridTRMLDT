@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "frozen_on": "2026-07-16",
+  "study_id": "airis_calibration_transition_induction",
+  "primary_confidence_threshold": 0.5,
+  "minimum_support": 2,
+  "sensitivity_thresholds": [0.0, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+  "rule_target": "episode_utility_winner",
+  "tie_break_order": [
+    "typed_propose_certify",
+    "deduction_only",
+    "proposal_only"
+  ],
+  "primary_endpoint": "family_macro_utility_delta_guarded_airis_vs_control_math",
+  "secondary_endpoints": [
+    "raw_oracle_label_accuracy",
+    "guarded_acceptance_rate",
+    "guarded_accepted_oracle_label_accuracy",
+    "guarded_harmful_change_rate",
+    "fallback_save_rate"
+  ],
+  "claim_boundary": "AIRIS-style empirical context-rule induction from deterministic calibration outcomes; not causal identification, neural AIRIS training, or native distributed DAS performance."
+}

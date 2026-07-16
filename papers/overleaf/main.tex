@@ -30,6 +30,9 @@ We also specify a Conductor-HRM review layer for newly trained models. It combin
 We then apply the same control mathematics directly to fixed hybrid skill sequencers in a registered 667-episode replay. Relative to global signed sequencing, topology-controlled localization improves family-macro utility by $0.0069$ (95\% context-clustered bootstrap interval $[0.0049,0.0092]$, Holm-adjusted $p=0.0006$) with unchanged accuracy and lower cost. Its $0.0003$ advantage over lineage-only control is not significant ($p=0.5023$). This measures sequencer control over deterministic skills, not neural weight infusion or official leaderboard performance.
 
 Finally, we pass calibration-derived sequence rules through an AIRIS/DAS-shaped retrieval service and isolate forecast transport integrity. Across 6,670 paired clean and fault-injection trials, digest sealing preserves 100\% clean acceptance while reducing negative-control acceptance from 44.4\% under topology-only arbitration to zero. This is a deterministic authorization result, not evidence for learned AIRIS robustness.
+Independently induced context rules achieve 94.0\% held-out episode-winner precision, but exactly reproduce the
+frozen controller; confidence demotion therefore changes acceptance without changing behavior. Storyworld
+precision falls to 65.6\%--78.1\%, motivating state-conditioned typed fallback rather than context confidence alone.
 \end{abstract}
 
 \section{Motivation}
@@ -486,6 +489,59 @@ that an intact learned rule is correct, nor does it evaluate adversarial robustn
 registry itself requires an external trust anchor; the live client checks the ruleset against the independently
 saved bridge-result SHA-256 before constructing the registry.
 
+\subsection{Calibration-Outcome Rule Induction}
+
+Transport integrity does not answer whether an intact rule is useful. We therefore freeze a second protocol
+that induces one empirical AIRIS-style rule per context from 455 calibration episodes, without reading held-out
+outcomes or copying the topology controller's sequence label. For calibration episodes $\mathcal C_c$ in context
+$c$, let
+\[
+  y_e=\underset{q\in\mathcal Q}{\arg\max}\;u_e(q),\qquad
+  q_A(c)=\underset{q\in\mathcal Q}{\arg\max}\sum_{e\in\mathcal C_c}\mathbf 1[y_e=q],
+\]
+with a preregistered tie order. The rule's support, confidence, and counterexample set are
+\[
+  s_c=\sum_{e\in\mathcal C_c}\mathbf 1[y_e=q_A(c)],\qquad
+  \gamma_c=\frac{s_c}{|\mathcal C_c|},\qquad
+  K_c=\{e\in\mathcal C_c:y_e\ne q_A(c)\}.
+\]
+Topology contributes only protocol, route, orientation, and risk features used by the authorization membrane.
+The selected sequence and confidence are learned from calibration utility winners. This is empirical
+context-rule induction, not causal identification or neural AIRIS training.
+
+The 28 induced rules are evaluated on the same 667 held-out episodes. Raw held-out winner-label accuracy is
+94.0\%, but the errors are concentrated in heterogeneous contexts: all Sudoku and ARC labels are correct,
+routing has four errors in 115 episodes, secret-ending play has 22 in 64, and moral-optimization play has 14 in
+64 (Table~\ref{tab:airis-induction}).
+
+\begin{table}[t]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Family & Episodes & Rule precision & Wrong rules \\
+\midrule
+Sudoku & 96 & 1.000 & 0 \\
+ARC-1 & 168 & 1.000 & 0 \\
+ARC-2 & 160 & 1.000 & 0 \\
+Routing & 115 & 0.965 & 4 \\
+Secret ending & 64 & 0.656 & 22 \\
+Moral optimization & 64 & 0.781 & 14 \\
+\bottomrule
+\end{tabular}
+\caption{Held-out episode-winner precision of calibration-induced context rules. Story contexts contain
+state-dependent tradeoffs that a single context-level confidence cannot represent.}
+\label{tab:airis-induction}
+\end{table}
+
+This result is deliberately negative at the control level. Every induced proposal equals the frozen
+\texttt{control\_math} context choice, so raw proposal/control parity is 1.000, macro utility is 0.9001 for both,
+and guarded utility delta is zero. Raising the confidence threshold from 0.5 to 1.0 lowers acceptance from 1.000
+to 0.760 and lowers intact-wrong-rule acceptance from 1.000 to zero, but rejected rules fall back to the same
+context choice. Consequently utility, accuracy, and cost do not change. Confidence here identifies uncertain
+contexts but cannot produce a better action without a behaviorally distinct fallback. A state-conditioned rule
+or typed reachability certificate is required to split secret-ending and moral-optimization episodes within the
+same storyworld context.
+
 \section{HRM Review of New Model Training}
 
 The multi-module extension uses a Conductor-HRM to schedule review modules rather than directly control model
@@ -612,7 +668,7 @@ each patch subject to its own identity, utility, damage, and trust-radius receip
 
 \section{Limitations}
 
-The benchmarks are small and synthetic. They test contracts, not scale. The TRM implementations in this repository are dependency-light analogues, not full recurrent neural models~\cite{wang2025hrm,jolicoeurmartineau2025trm}. The Tesseract router reference uses a TF-IDF plus MLP architecture, and the local routing benchmark mirrors the classification objective without importing its full PyTorch stack~\cite{tesseract2026router}. The LDT side is symbolic and domain-specific rather than a learned lattice transformer~\cite{davis2026ldt}. A learned LDT head is future work. The hybrid has no aggregate score regression in the saved benchmarks, but it does have efficiency regressions in ARC-2 subcases and no routing accuracy gain over TRM yet. The sequencer study replays deterministic known-task skills; its significant gain over global control is mainly cost and preference selection, not higher accuracy, and it shows no significant advantage over lineage-only control. ARC tasks are filtered for common solver success. The AIRIS/DAS study injects specified deterministic receipt faults into calibration-exported rules; it does not train AIRIS or exercise native distributed DAS, and integrity cannot establish behavioral correctness of an intact rule. The rule registry requires a trust anchor outside the mutable rule store. These results cannot be interpreted as neural weight infusion or official ARC/INTELLECT-3 performance. The HRM training-review matrix uses synthetic sealed receipts; it validates fail-closed routing but supplies no evidence about neural training gains. The signed-control theorem is limited to registered coordinate error under its coverage assumptions and cannot establish general behavioral safety.
+The benchmarks are small and synthetic. They test contracts, not scale. The TRM implementations in this repository are dependency-light analogues, not full recurrent neural models~\cite{wang2025hrm,jolicoeurmartineau2025trm}. The Tesseract router reference uses a TF-IDF plus MLP architecture, and the local routing benchmark mirrors the classification objective without importing its full PyTorch stack~\cite{tesseract2026router}. The LDT side is symbolic and domain-specific rather than a learned lattice transformer~\cite{davis2026ldt}. A learned LDT head is future work. The hybrid has no aggregate score regression in the saved benchmarks, but it does have efficiency regressions in ARC-2 subcases and no routing accuracy gain over TRM yet. The sequencer study replays deterministic known-task skills; its significant gain over global control is mainly cost and preference selection, not higher accuracy, and it shows no significant advantage over lineage-only control. ARC tasks are filtered for common solver success. The AIRIS/DAS integrity study injects specified deterministic receipt faults and does not exercise native distributed DAS. The induction study learns empirical context rules, not causal rules or a neural AIRIS model; its fallback is behaviorally identical to its proposals, so confidence demotion cannot demonstrate utility protection. The rule registry requires a trust anchor outside the mutable rule store. These results cannot be interpreted as neural weight infusion or official ARC/INTELLECT-3 performance. The HRM training-review matrix uses synthetic sealed receipts; it validates fail-closed routing but supplies no evidence about neural training gains. The signed-control theorem is limited to registered coordinate error under its coverage assumptions and cannot establish general behavioral safety.
 
 \section{Next Experiments}
 
@@ -624,15 +680,15 @@ The benchmarks are small and synthetic. They test contracts, not scale. The TRM 
   \item Scale storyworld play to larger GPTStoryworld or SweepWeave tasks after this finite-state harness is stable.
   \item Replace deterministic sequencer candidates with frozen learned TRM/LDT checkpoints while retaining the
   registered partitioning and paired control-policy ablations.
-  \item Induce AIRIS rules from calibration transitions rather than exporting topology plans, then evaluate
-  intact-but-wrong rules, accepted-proposal utility, and fallback coverage on held-out contexts.
+  \item Add state-conditioned AIRIS features for story reachability and routing observations, then compare a
+  behaviorally distinct typed fallback against confidence-only demotion under frozen calibration partitions.
   \item Wrap a capped HRM/TRM checkpoint run as a preregistered receipt producer and evaluate context-by-checkpoint
   lineage, matched loop nulls, grouped held-out utility, and local section persistence.
 \end{enumerate}
 
 \section{Conclusion}
 
-The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft. Applied to fixed sequencers, topology-controlled localization outperforms global signed transfer, but this slice does not distinguish full holonomy/orientation control from lineage-only localization. AIRIS/DAS retrieval adds a second distinction: semantic authorization does not imply receipt integrity, so retrieved rule material must remain bound to its frozen calibration registry. At the multi-module level, Conductor-HRM can apply the same discipline to training review: topology bounds the authority of internal-coordinate operations, while held-out utility, damage, provenance, and resources independently govern model promotion.
+The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft. Applied to fixed sequencers, topology-controlled localization outperforms global signed transfer, but this slice does not distinguish full holonomy/orientation control from lineage-only localization. AIRIS/DAS retrieval adds two distinctions: semantic authorization does not imply receipt integrity, and calibrated confidence does not improve behavior when proposal and fallback are identical. Storyworld errors show why state-conditioned typed evidence is needed beneath context-level confidence. At the multi-module level, Conductor-HRM can apply the same discipline to training review: topology bounds the authority of internal-coordinate operations, while held-out utility, damage, provenance, and resources independently govern model promotion.
 
 \bibliographystyle{plain}
 \bibliography{references}

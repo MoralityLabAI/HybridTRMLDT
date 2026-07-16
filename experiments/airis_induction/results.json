@@ -1,0 +1,1049 @@
+{
+  "artifacts": {
+    "protocol_sha256": "76eb507708305664fa913ffb174be58f5547082566ef60321eaef51ef42fffaa",
+    "records_sha256": "e8dd03ac5fa5b2c14468e5f6495870f5cc9b7a9fd96b660399d4de095a8e14d8",
+    "rules_sha256": "1b2acede8f2064a5f4a6972db61746be36c6c2f08fef365f7a52094b0576dbb8"
+  },
+  "calibration_confidence_brier": 0.04422788605697151,
+  "calibration_sha256": "815eec35d4910b70c6492cd468e9762d7f18f860ab56f13799ed70ad427f5758",
+  "claim_boundary": "AIRIS-style empirical context-rule induction from deterministic calibration outcomes; not causal identification, neural AIRIS training, or native distributed DAS performance.",
+  "context_generalization": [
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc1:fill_zero_with_1",
+      "counterexample_count": 0,
+      "eval_count": 24,
+      "family": "arc1",
+      "heldout_rule_precision": 1,
+      "support": 12
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc1:fill_zero_with_2",
+      "counterexample_count": 0,
+      "eval_count": 24,
+      "family": "arc1",
+      "heldout_rule_precision": 1,
+      "support": 12
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc1:flip_h",
+      "counterexample_count": 0,
+      "eval_count": 24,
+      "family": "arc1",
+      "heldout_rule_precision": 1,
+      "support": 12
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc1:flip_v",
+      "counterexample_count": 0,
+      "eval_count": 24,
+      "family": "arc1",
+      "heldout_rule_precision": 1,
+      "support": 12
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc1:map_1_to_2",
+      "counterexample_count": 0,
+      "eval_count": 24,
+      "family": "arc1",
+      "heldout_rule_precision": 1,
+      "support": 12
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc1:map_2_to_3",
+      "counterexample_count": 0,
+      "eval_count": 24,
+      "family": "arc1",
+      "heldout_rule_precision": 1,
+      "support": 12
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc1:rotate_180",
+      "counterexample_count": 0,
+      "eval_count": 24,
+      "family": "arc1",
+      "heldout_rule_precision": 1,
+      "support": 12
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc2:fill_zero_with_1+rotate_180",
+      "counterexample_count": 0,
+      "eval_count": 20,
+      "family": "arc2",
+      "heldout_rule_precision": 1,
+      "support": 10
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc2:fill_zero_with_2+flip_v",
+      "counterexample_count": 0,
+      "eval_count": 20,
+      "family": "arc2",
+      "heldout_rule_precision": 1,
+      "support": 10
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc2:flip_h+fill_zero_with_2",
+      "counterexample_count": 0,
+      "eval_count": 20,
+      "family": "arc2",
+      "heldout_rule_precision": 1,
+      "support": 10
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc2:flip_h+map_1_to_2",
+      "counterexample_count": 0,
+      "eval_count": 20,
+      "family": "arc2",
+      "heldout_rule_precision": 1,
+      "support": 10
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc2:flip_v+map_2_to_3",
+      "counterexample_count": 0,
+      "eval_count": 20,
+      "family": "arc2",
+      "heldout_rule_precision": 1,
+      "support": 10
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc2:map_1_to_2+rotate_180",
+      "counterexample_count": 0,
+      "eval_count": 20,
+      "family": "arc2",
+      "heldout_rule_precision": 1,
+      "support": 10
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc2:map_2_to_3+flip_h",
+      "counterexample_count": 0,
+      "eval_count": 20,
+      "family": "arc2",
+      "heldout_rule_precision": 1,
+      "support": 10
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "arc2:rotate_180+fill_zero_with_1",
+      "counterexample_count": 0,
+      "eval_count": 20,
+      "family": "arc2",
+      "heldout_rule_precision": 1,
+      "support": 10
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "routing:alphabet_sort",
+      "counterexample_count": 0,
+      "eval_count": 3,
+      "family": "routing",
+      "heldout_rule_precision": 1,
+      "support": 3
+    },
+    {
+      "calibration_confidence": 0.9375,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "routing:arc_challenge",
+      "counterexample_count": 1,
+      "eval_count": 16,
+      "family": "routing",
+      "heldout_rule_precision": 0.9375,
+      "support": 15
+    },
+    {
+      "calibration_confidence": 0.9375,
+      "calibration_minus_heldout_gap": 0.125,
+      "context": "routing:arc_easy",
+      "counterexample_count": 1,
+      "eval_count": 16,
+      "family": "routing",
+      "heldout_rule_precision": 0.8125,
+      "support": 15
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "routing:gsm8k",
+      "counterexample_count": 0,
+      "eval_count": 16,
+      "family": "routing",
+      "heldout_rule_precision": 1,
+      "support": 16
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "routing:intellect_3_logic",
+      "counterexample_count": 0,
+      "eval_count": 16,
+      "family": "routing",
+      "heldout_rule_precision": 1,
+      "support": 16
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "routing:intellect_3_math",
+      "counterexample_count": 0,
+      "eval_count": 16,
+      "family": "routing",
+      "heldout_rule_precision": 1,
+      "support": 16
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "routing:mbpp",
+      "counterexample_count": 0,
+      "eval_count": 16,
+      "family": "routing",
+      "heldout_rule_precision": 1,
+      "support": 16
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "routing:wiki_search",
+      "counterexample_count": 0,
+      "eval_count": 16,
+      "family": "routing",
+      "heldout_rule_precision": 1,
+      "support": 16
+    },
+    {
+      "calibration_confidence": 0.84375,
+      "calibration_minus_heldout_gap": 0.0625,
+      "context": "story:moral_optimization",
+      "counterexample_count": 10,
+      "eval_count": 64,
+      "family": "story_moral",
+      "heldout_rule_precision": 0.78125,
+      "support": 54
+    },
+    {
+      "calibration_confidence": 0.71875,
+      "calibration_minus_heldout_gap": 0.0625,
+      "context": "story:secret_ending",
+      "counterexample_count": 18,
+      "eval_count": 64,
+      "family": "story_secret",
+      "heldout_rule_precision": 0.65625,
+      "support": 46
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "sudoku:s4_requires_search",
+      "counterexample_count": 0,
+      "eval_count": 32,
+      "family": "sudoku",
+      "heldout_rule_precision": 1,
+      "support": 16
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "sudoku:s4_single_chain",
+      "counterexample_count": 0,
+      "eval_count": 32,
+      "family": "sudoku",
+      "heldout_rule_precision": 1,
+      "support": 16
+    },
+    {
+      "calibration_confidence": 1.0,
+      "calibration_minus_heldout_gap": 0.0,
+      "context": "sudoku:s4_sparse",
+      "counterexample_count": 0,
+      "eval_count": 32,
+      "family": "sudoku",
+      "heldout_rule_precision": 1,
+      "support": 16
+    }
+  ],
+  "control_math": {
+    "families": {
+      "arc1": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 168,
+        "mean_cost": 2.4285714285714284,
+        "mean_utility": 0.9722448979591837
+      },
+      "arc2": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 160,
+        "mean_cost": 9.125,
+        "mean_utility": 0.9851020408163266
+      },
+      "routing": {
+        "accuracy": 0.8,
+        "constraint_violation_rate": 0.0,
+        "episodes": 115,
+        "mean_cost": 1.0,
+        "mean_utility": 0.78125
+      },
+      "story_moral": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 64,
+        "mean_cost": 5.765625,
+        "mean_utility": 0.7234515393763213
+      },
+      "story_secret": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 64,
+        "mean_cost": 5.765625,
+        "mean_utility": 0.9868963068181817
+      },
+      "sudoku": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 96,
+        "mean_cost": 14.53125,
+        "mean_utility": 0.9515625
+      }
+    },
+    "macro_accuracy": 0.9666666666666667,
+    "macro_constraint_violation_rate": 0.0,
+    "macro_cost": 6.436011904761905,
+    "macro_utility": 0.9000845474950022
+  },
+  "episode_oracle": {
+    "families": {
+      "arc1": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 168,
+        "mean_cost": 2.4285714285714284,
+        "mean_utility": 0.9722448979591837
+      },
+      "arc2": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 160,
+        "mean_cost": 9.125,
+        "mean_utility": 0.9851020408163266
+      },
+      "routing": {
+        "accuracy": 0.8347826086956521,
+        "constraint_violation_rate": 0.0,
+        "episodes": 115,
+        "mean_cost": 1.0069565217391305,
+        "mean_utility": 0.8159021739130434
+      },
+      "story_moral": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 64,
+        "mean_cost": 5.5531250000000005,
+        "mean_utility": 0.7261147264799154
+      },
+      "story_secret": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 64,
+        "mean_cost": 5.3,
+        "mean_utility": 0.9879545454545454
+      },
+      "sudoku": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 96,
+        "mean_cost": 14.53125,
+        "mean_utility": 0.9515625
+      }
+    },
+    "macro_accuracy": 0.972463768115942,
+    "macro_constraint_violation_rate": 0.0,
+    "macro_cost": 6.324150491718426,
+    "macro_utility": 0.9064801474371691
+  },
+  "eval_episode_count": 667,
+  "eval_sha256": "d27f92280afe80a46718b934ff01d7c451d24c9ba2d792a4c8afe6d81d9f3db5",
+  "guarded_airis": {
+    "acceptance_rate": 1.0,
+    "accepted_change_count": 0,
+    "accepted_oracle_label_accuracy": 0.9400299850074962,
+    "beneficial_change_count": 0,
+    "confidence_threshold": 0.5,
+    "control_parity_rate": 1,
+    "fallback_rate": 0.0,
+    "fallback_save_rate": 0.0,
+    "families": {
+      "arc1": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 168,
+        "mean_cost": 2.4285714285714284,
+        "mean_utility": 0.9722448979591837
+      },
+      "arc2": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 160,
+        "mean_cost": 9.125,
+        "mean_utility": 0.9851020408163266
+      },
+      "routing": {
+        "accuracy": 0.8,
+        "constraint_violation_rate": 0.0,
+        "episodes": 115,
+        "mean_cost": 1.0,
+        "mean_utility": 0.78125
+      },
+      "story_moral": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 64,
+        "mean_cost": 5.765625,
+        "mean_utility": 0.7234515393763213
+      },
+      "story_secret": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 64,
+        "mean_cost": 5.765625,
+        "mean_utility": 0.9868963068181817
+      },
+      "sudoku": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 96,
+        "mean_cost": 14.53125,
+        "mean_utility": 0.9515625
+      }
+    },
+    "harmful_change_count": 0,
+    "harmful_change_episode_rate": 0.0,
+    "intact_wrong_rule_acceptance_rate": 1,
+    "intact_wrong_rule_count": 40,
+    "macro_accuracy": 0.9666666666666667,
+    "macro_constraint_violation_rate": 0.0,
+    "macro_cost": 6.436011904761905,
+    "macro_utility": 0.9000845474950022,
+    "neutral_change_count": 0,
+    "raw_below_control_count": 0
+  },
+  "mean_absolute_context_calibration_gap": 0.008928571428571428,
+  "primary_confidence_threshold": 0.5,
+  "primary_macro_utility_delta_vs_control": 0.0,
+  "protocol": {
+    "claim_boundary": "AIRIS-style empirical context-rule induction from deterministic calibration outcomes; not causal identification, neural AIRIS training, or native distributed DAS performance.",
+    "frozen_on": "2026-07-16",
+    "minimum_support": 2,
+    "primary_confidence_threshold": 0.5,
+    "primary_endpoint": "family_macro_utility_delta_guarded_airis_vs_control_math",
+    "rule_target": "episode_utility_winner",
+    "schema_version": "1.0.0",
+    "secondary_endpoints": [
+      "raw_oracle_label_accuracy",
+      "guarded_acceptance_rate",
+      "guarded_accepted_oracle_label_accuracy",
+      "guarded_harmful_change_rate",
+      "fallback_save_rate"
+    ],
+    "sensitivity_thresholds": [
+      0.0,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0
+    ],
+    "study_id": "airis_calibration_transition_induction",
+    "tie_break_order": [
+      "typed_propose_certify",
+      "deduction_only",
+      "proposal_only"
+    ]
+  },
+  "protocol_sha256": "a80d6c729c0005d26f0eccac24e27f564c21cfad4b97417c2bcbc66f6f1007b8",
+  "raw_airis": {
+    "control_parity_rate": 1,
+    "families": {
+      "arc1": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 168,
+        "mean_cost": 2.4285714285714284,
+        "mean_utility": 0.9722448979591837
+      },
+      "arc2": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 160,
+        "mean_cost": 9.125,
+        "mean_utility": 0.9851020408163266
+      },
+      "routing": {
+        "accuracy": 0.8,
+        "constraint_violation_rate": 0.0,
+        "episodes": 115,
+        "mean_cost": 1.0,
+        "mean_utility": 0.78125
+      },
+      "story_moral": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 64,
+        "mean_cost": 5.765625,
+        "mean_utility": 0.7234515393763213
+      },
+      "story_secret": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 64,
+        "mean_cost": 5.765625,
+        "mean_utility": 0.9868963068181817
+      },
+      "sudoku": {
+        "accuracy": 1.0,
+        "constraint_violation_rate": 0.0,
+        "episodes": 96,
+        "mean_cost": 14.53125,
+        "mean_utility": 0.9515625
+      }
+    },
+    "label_precision_by_family": {
+      "arc1": {
+        "eval_count": 168,
+        "heldout_rule_precision": 1,
+        "wrong_rule_count": 0
+      },
+      "arc2": {
+        "eval_count": 160,
+        "heldout_rule_precision": 1,
+        "wrong_rule_count": 0
+      },
+      "routing": {
+        "eval_count": 115,
+        "heldout_rule_precision": 0.9652173913043478,
+        "wrong_rule_count": 4
+      },
+      "story_moral": {
+        "eval_count": 64,
+        "heldout_rule_precision": 0.78125,
+        "wrong_rule_count": 14
+      },
+      "story_secret": {
+        "eval_count": 64,
+        "heldout_rule_precision": 0.65625,
+        "wrong_rule_count": 22
+      },
+      "sudoku": {
+        "eval_count": 96,
+        "heldout_rule_precision": 1,
+        "wrong_rule_count": 0
+      }
+    },
+    "macro_accuracy": 0.9666666666666667,
+    "macro_constraint_violation_rate": 0.0,
+    "macro_cost": 6.436011904761905,
+    "macro_utility": 0.9000845474950022,
+    "oracle_label_accuracy": 0.9400299850074962
+  },
+  "rule_count": 28,
+  "schema": "hybrid_airis_induction_benchmark_v1",
+  "source": {
+    "benchmark": "data\\benchmarks\\sequencer_control_results.json",
+    "calibration_episode_count": 455,
+    "eval_episodes": "data\\benchmarks\\sequencer_control_episodes.jsonl",
+    "protocol": "configs\\airis_induction_v1.json",
+    "routing_environments": [
+      "alphabet_sort",
+      "arc_challenge",
+      "arc_easy",
+      "gsm8k",
+      "intellect_3_logic",
+      "intellect_3_math",
+      "mbpp",
+      "wiki_search"
+    ],
+    "routing_example_count": 575,
+    "routing_root": "D:\\Research_Engine\\tesseract_persistent\\data",
+    "sequencer_config": "configs\\sequencer_control_v1.json"
+  },
+  "study_id": "airis_calibration_transition_induction",
+  "threshold_sensitivity": [
+    {
+      "acceptance_rate": 1.0,
+      "accepted_change_count": 0,
+      "accepted_oracle_label_accuracy": 0.9400299850074962,
+      "beneficial_change_count": 0,
+      "confidence_threshold": 0.0,
+      "control_parity_rate": 1,
+      "fallback_rate": 0.0,
+      "fallback_save_rate": 0.0,
+      "families": {
+        "arc1": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 168,
+          "mean_cost": 2.4285714285714284,
+          "mean_utility": 0.9722448979591837
+        },
+        "arc2": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 160,
+          "mean_cost": 9.125,
+          "mean_utility": 0.9851020408163266
+        },
+        "routing": {
+          "accuracy": 0.8,
+          "constraint_violation_rate": 0.0,
+          "episodes": 115,
+          "mean_cost": 1.0,
+          "mean_utility": 0.78125
+        },
+        "story_moral": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.7234515393763213
+        },
+        "story_secret": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.9868963068181817
+        },
+        "sudoku": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 96,
+          "mean_cost": 14.53125,
+          "mean_utility": 0.9515625
+        }
+      },
+      "harmful_change_count": 0,
+      "harmful_change_episode_rate": 0.0,
+      "intact_wrong_rule_acceptance_rate": 1,
+      "intact_wrong_rule_count": 40,
+      "macro_accuracy": 0.9666666666666667,
+      "macro_constraint_violation_rate": 0.0,
+      "macro_cost": 6.436011904761905,
+      "macro_utility": 0.9000845474950022,
+      "neutral_change_count": 0,
+      "raw_below_control_count": 0
+    },
+    {
+      "acceptance_rate": 1.0,
+      "accepted_change_count": 0,
+      "accepted_oracle_label_accuracy": 0.9400299850074962,
+      "beneficial_change_count": 0,
+      "confidence_threshold": 0.5,
+      "control_parity_rate": 1,
+      "fallback_rate": 0.0,
+      "fallback_save_rate": 0.0,
+      "families": {
+        "arc1": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 168,
+          "mean_cost": 2.4285714285714284,
+          "mean_utility": 0.9722448979591837
+        },
+        "arc2": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 160,
+          "mean_cost": 9.125,
+          "mean_utility": 0.9851020408163266
+        },
+        "routing": {
+          "accuracy": 0.8,
+          "constraint_violation_rate": 0.0,
+          "episodes": 115,
+          "mean_cost": 1.0,
+          "mean_utility": 0.78125
+        },
+        "story_moral": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.7234515393763213
+        },
+        "story_secret": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.9868963068181817
+        },
+        "sudoku": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 96,
+          "mean_cost": 14.53125,
+          "mean_utility": 0.9515625
+        }
+      },
+      "harmful_change_count": 0,
+      "harmful_change_episode_rate": 0.0,
+      "intact_wrong_rule_acceptance_rate": 1,
+      "intact_wrong_rule_count": 40,
+      "macro_accuracy": 0.9666666666666667,
+      "macro_constraint_violation_rate": 0.0,
+      "macro_cost": 6.436011904761905,
+      "macro_utility": 0.9000845474950022,
+      "neutral_change_count": 0,
+      "raw_below_control_count": 0
+    },
+    {
+      "acceptance_rate": 1.0,
+      "accepted_change_count": 0,
+      "accepted_oracle_label_accuracy": 0.9400299850074962,
+      "beneficial_change_count": 0,
+      "confidence_threshold": 0.6,
+      "control_parity_rate": 1,
+      "fallback_rate": 0.0,
+      "fallback_save_rate": 0.0,
+      "families": {
+        "arc1": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 168,
+          "mean_cost": 2.4285714285714284,
+          "mean_utility": 0.9722448979591837
+        },
+        "arc2": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 160,
+          "mean_cost": 9.125,
+          "mean_utility": 0.9851020408163266
+        },
+        "routing": {
+          "accuracy": 0.8,
+          "constraint_violation_rate": 0.0,
+          "episodes": 115,
+          "mean_cost": 1.0,
+          "mean_utility": 0.78125
+        },
+        "story_moral": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.7234515393763213
+        },
+        "story_secret": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.9868963068181817
+        },
+        "sudoku": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 96,
+          "mean_cost": 14.53125,
+          "mean_utility": 0.9515625
+        }
+      },
+      "harmful_change_count": 0,
+      "harmful_change_episode_rate": 0.0,
+      "intact_wrong_rule_acceptance_rate": 1,
+      "intact_wrong_rule_count": 40,
+      "macro_accuracy": 0.9666666666666667,
+      "macro_constraint_violation_rate": 0.0,
+      "macro_cost": 6.436011904761905,
+      "macro_utility": 0.9000845474950022,
+      "neutral_change_count": 0,
+      "raw_below_control_count": 0
+    },
+    {
+      "acceptance_rate": 1.0,
+      "accepted_change_count": 0,
+      "accepted_oracle_label_accuracy": 0.9400299850074962,
+      "beneficial_change_count": 0,
+      "confidence_threshold": 0.7,
+      "control_parity_rate": 1,
+      "fallback_rate": 0.0,
+      "fallback_save_rate": 0.0,
+      "families": {
+        "arc1": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 168,
+          "mean_cost": 2.4285714285714284,
+          "mean_utility": 0.9722448979591837
+        },
+        "arc2": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 160,
+          "mean_cost": 9.125,
+          "mean_utility": 0.9851020408163266
+        },
+        "routing": {
+          "accuracy": 0.8,
+          "constraint_violation_rate": 0.0,
+          "episodes": 115,
+          "mean_cost": 1.0,
+          "mean_utility": 0.78125
+        },
+        "story_moral": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.7234515393763213
+        },
+        "story_secret": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.9868963068181817
+        },
+        "sudoku": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 96,
+          "mean_cost": 14.53125,
+          "mean_utility": 0.9515625
+        }
+      },
+      "harmful_change_count": 0,
+      "harmful_change_episode_rate": 0.0,
+      "intact_wrong_rule_acceptance_rate": 1,
+      "intact_wrong_rule_count": 40,
+      "macro_accuracy": 0.9666666666666667,
+      "macro_constraint_violation_rate": 0.0,
+      "macro_cost": 6.436011904761905,
+      "macro_utility": 0.9000845474950022,
+      "neutral_change_count": 0,
+      "raw_below_control_count": 0
+    },
+    {
+      "acceptance_rate": 0.904047976011994,
+      "accepted_change_count": 0,
+      "accepted_oracle_label_accuracy": 0.9701492537313433,
+      "beneficial_change_count": 0,
+      "confidence_threshold": 0.8,
+      "control_parity_rate": 1,
+      "fallback_rate": 0.095952023988006,
+      "fallback_save_rate": 0.0,
+      "families": {
+        "arc1": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 168,
+          "mean_cost": 2.4285714285714284,
+          "mean_utility": 0.9722448979591837
+        },
+        "arc2": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 160,
+          "mean_cost": 9.125,
+          "mean_utility": 0.9851020408163266
+        },
+        "routing": {
+          "accuracy": 0.8,
+          "constraint_violation_rate": 0.0,
+          "episodes": 115,
+          "mean_cost": 1.0,
+          "mean_utility": 0.78125
+        },
+        "story_moral": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.7234515393763213
+        },
+        "story_secret": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.9868963068181817
+        },
+        "sudoku": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 96,
+          "mean_cost": 14.53125,
+          "mean_utility": 0.9515625
+        }
+      },
+      "harmful_change_count": 0,
+      "harmful_change_episode_rate": 0.0,
+      "intact_wrong_rule_acceptance_rate": 0.45,
+      "intact_wrong_rule_count": 40,
+      "macro_accuracy": 0.9666666666666667,
+      "macro_constraint_violation_rate": 0.0,
+      "macro_cost": 6.436011904761905,
+      "macro_utility": 0.9000845474950022,
+      "neutral_change_count": 0,
+      "raw_below_control_count": 0
+    },
+    {
+      "acceptance_rate": 0.808095952023988,
+      "accepted_change_count": 0,
+      "accepted_oracle_label_accuracy": 0.9925788497217068,
+      "beneficial_change_count": 0,
+      "confidence_threshold": 0.9,
+      "control_parity_rate": 1,
+      "fallback_rate": 0.191904047976012,
+      "fallback_save_rate": 0.0,
+      "families": {
+        "arc1": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 168,
+          "mean_cost": 2.4285714285714284,
+          "mean_utility": 0.9722448979591837
+        },
+        "arc2": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 160,
+          "mean_cost": 9.125,
+          "mean_utility": 0.9851020408163266
+        },
+        "routing": {
+          "accuracy": 0.8,
+          "constraint_violation_rate": 0.0,
+          "episodes": 115,
+          "mean_cost": 1.0,
+          "mean_utility": 0.78125
+        },
+        "story_moral": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.7234515393763213
+        },
+        "story_secret": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.9868963068181817
+        },
+        "sudoku": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 96,
+          "mean_cost": 14.53125,
+          "mean_utility": 0.9515625
+        }
+      },
+      "harmful_change_count": 0,
+      "harmful_change_episode_rate": 0.0,
+      "intact_wrong_rule_acceptance_rate": 0.1,
+      "intact_wrong_rule_count": 40,
+      "macro_accuracy": 0.9666666666666667,
+      "macro_constraint_violation_rate": 0.0,
+      "macro_cost": 6.436011904761905,
+      "macro_utility": 0.9000845474950022,
+      "neutral_change_count": 0,
+      "raw_below_control_count": 0
+    },
+    {
+      "acceptance_rate": 0.760119940029985,
+      "accepted_change_count": 0,
+      "accepted_oracle_label_accuracy": 1,
+      "beneficial_change_count": 0,
+      "confidence_threshold": 1.0,
+      "control_parity_rate": 1,
+      "fallback_rate": 0.239880059970015,
+      "fallback_save_rate": 0.0,
+      "families": {
+        "arc1": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 168,
+          "mean_cost": 2.4285714285714284,
+          "mean_utility": 0.9722448979591837
+        },
+        "arc2": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 160,
+          "mean_cost": 9.125,
+          "mean_utility": 0.9851020408163266
+        },
+        "routing": {
+          "accuracy": 0.8,
+          "constraint_violation_rate": 0.0,
+          "episodes": 115,
+          "mean_cost": 1.0,
+          "mean_utility": 0.78125
+        },
+        "story_moral": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.7234515393763213
+        },
+        "story_secret": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 64,
+          "mean_cost": 5.765625,
+          "mean_utility": 0.9868963068181817
+        },
+        "sudoku": {
+          "accuracy": 1.0,
+          "constraint_violation_rate": 0.0,
+          "episodes": 96,
+          "mean_cost": 14.53125,
+          "mean_utility": 0.9515625
+        }
+      },
+      "harmful_change_count": 0,
+      "harmful_change_episode_rate": 0.0,
+      "intact_wrong_rule_acceptance_rate": 0,
+      "intact_wrong_rule_count": 40,
+      "macro_accuracy": 0.9666666666666667,
+      "macro_constraint_violation_rate": 0.0,
+      "macro_cost": 6.436011904761905,
+      "macro_utility": 0.9000845474950022,
+      "neutral_change_count": 0,
+      "raw_below_control_count": 0
+    }
+  ]
+}

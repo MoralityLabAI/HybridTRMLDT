@@ -104,6 +104,27 @@ def _condition_features(
     )
 
 
+def airis_condition_features(
+    *,
+    protocol_sha256: str,
+    family: str,
+    context: str,
+    global_sequence: str,
+    topology_route: str,
+    orientation_reversal: bool,
+    signed_control_loss_upper_bound: object,
+) -> list[str]:
+    return _condition_features(
+        protocol_sha256=protocol_sha256,
+        family=family,
+        context=context,
+        global_sequence=global_sequence,
+        topology_route=topology_route,
+        orientation_reversal=orientation_reversal,
+        signed_control_loss_upper_bound=signed_control_loss_upper_bound,
+    )
+
+
 def build_airis_ruleset(payload: Mapping[str, object]) -> dict[str, object]:
     contexts = payload.get("contexts")
     fit = payload.get("fit_receipt")

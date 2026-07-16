@@ -35,13 +35,15 @@ python -m research_gym.scripts.write_agent_tasks --out tasks/generated
 python -m research_gym.scripts.bench_airis_das_bridge
 python -m research_gym.scripts.bench_airis_das_resilience
 python scripts/smoke_airis_das_bridge.py
+python -m research_gym.scripts.bench_airis_induction
+python scripts/smoke_airis_das_bridge.py --rules data/airis_das/induced_rules.json --episodes data/benchmarks/sequencer_control_episodes.jsonl --bridge-results data/benchmarks/airis_induction_results.json --out data/airis_das/induced_live_service_smoke.json
 python -m pytest -q
 ```
 
 ## Test Results
 
 ```text
-114 passed in 11.12s
+117 passed in 15.24s
 ```
 
 The AIRIS/DAS live HTTP smoke passed with 28 rules and 392 indexed facts. Embedded and HTTP forecasts selected
@@ -49,6 +51,11 @@ the same rule. Stale protocol and altered rule material both fell back to `contr
 
 The resilience benchmark contains 6,670 paired trials. Integrity sealing retained 100% clean acceptance and
 rejected all 6,003 negative controls. Topology-only arbitration accepted 44.4% of negative controls.
+
+The independent learner induced 28 rules from 455 calibration episodes. Held-out episode-winner precision is
+94.0%, with all 40 errors in routing and storyworld contexts. Every proposal matches `control_math`, so confidence
+demotion changes acceptance but leaves macro utility fixed at `0.900085`. The induced live-service smoke passed
+with 28 rules and 420 indexed facts.
 
 ## Known Broken Pieces
 
@@ -58,11 +65,11 @@ rejected all 6,003 negative controls. Topology-only arbitration accepted 44.4% o
   complete, but local PDF compilation is not verified.
 - The metta-storyworld service reports `in_memory_das_shaped`; native `das`, `das_agent`, `hyperon`, and
   `hyperon_das` packages are absent.
-- AIRIS rules are exported from frozen calibration context plans. The current results do not measure independent
-  AIRIS causal learning or native distributed DAS.
+- AIRIS induction is context-majority learning from deterministic calibration utilities. It does not measure
+  causal identification, neural AIRIS training, or native distributed DAS.
 
 ## Next Recommended Patch
 
-Induce AIRIS-style rules from calibration transition rows rather than exporting the topology controller's final
-choice. Evaluate held-out rule precision, accepted-proposal utility, fallback coverage, intact-but-wrong rules,
-and counterexample-aware demotion while retaining the integrity seal and topology authority boundary.
+Add state-conditioned AIRIS features for story reachability and routing observations. Compare confidence-only
+demotion against a behaviorally distinct typed fallback while retaining the integrity seal and topology authority
+boundary.

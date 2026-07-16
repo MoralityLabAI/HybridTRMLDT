@@ -14,6 +14,9 @@ Finally, we pass calibration-derived sequence rules through an AIRIS/DAS-shaped 
 forecast transport integrity. Across 6,670 paired clean and fault-injection trials, digest sealing preserves
 100% clean acceptance while reducing negative-control acceptance from 44.4% under topology-only arbitration to
 zero. This is a deterministic authorization result, not evidence for learned AIRIS robustness.
+Independently induced context rules achieve 94.0% held-out episode-winner precision but exactly reproduce the
+frozen controller, so confidence demotion changes acceptance without changing behavior. Storyworld precision
+falls to 65.6%--78.1%, motivating state-conditioned typed fallback rather than context confidence alone.
 
 ## 1. Motivation
 
@@ -475,6 +478,54 @@ correct or evaluate adversarial robustness of an AIRIS learner or native distrib
 the ruleset against the independently saved bridge-result SHA-256 before constructing the registry; a deployment
 must keep that trust anchor outside the mutable rule store.
 
+### 7.3 Calibration-Outcome Rule Induction
+
+Transport integrity does not establish that an intact rule is useful. A second frozen protocol therefore induces
+one empirical AIRIS-style rule per context from 455 calibration episodes. It does not read held-out outcomes or
+copy the topology controller's selected sequence. For calibration episodes $\mathcal C_c$ in context $c$,
+
+```math
+y_e=\underset{q\in\mathcal Q}{\arg\max}\;u_e(q),
+\qquad
+q_A(c)=\underset{q\in\mathcal Q}{\arg\max}
+\sum_{e\in\mathcal C_c}\mathbf 1[y_e=q].
+```
+
+The preregistered tie order is typed, deduction, then proposal. Rule support, confidence, and counterexamples are
+
+```math
+s_c=\sum_{e\in\mathcal C_c}\mathbf 1[y_e=q_A(c)],
+\qquad
+\gamma_c=s_c/|\mathcal C_c|,
+\qquad
+K_c=\{e\in\mathcal C_c:y_e\ne q_A(c)\}.
+```
+
+Topology contributes protocol, route, orientation, and risk features only to the authorization membrane. The
+selected sequence and confidence come from calibration utility winners. This is empirical context-rule
+induction, not causal identification or neural AIRIS training.
+
+The 28 induced rules are evaluated on the same 667 held-out episodes:
+
+| Family | Episodes | Rule Precision | Wrong Rules |
+|---|---:|---:|---:|
+| Sudoku | 96 | 1.000 | 0 |
+| ARC-1 | 168 | 1.000 | 0 |
+| ARC-2 | 160 | 1.000 | 0 |
+| Routing | 115 | 0.965 | 4 |
+| Secret ending | 64 | 0.656 | 22 |
+| Moral optimization | 64 | 0.781 | 14 |
+
+Raw winner-label accuracy is 94.0%, but all 40 errors occur in routing and heterogeneous story contexts. Every
+induced proposal also equals the frozen `control_math` context choice. Proposal/control parity is therefore
+1.000, both macro utilities are 0.9001, and guarded utility delta is zero. Raising the confidence threshold from
+0.5 to 1.0 lowers acceptance from 1.000 to 0.760 and intact-wrong-rule acceptance from 1.000 to zero, but every
+rejection falls back to the same context choice. Utility, accuracy, and cost are unchanged.
+
+Confidence identifies uncertain contexts here but cannot improve action selection without a behaviorally
+distinct fallback. Secret-ending and moral-optimization episodes require state-conditioned rules or typed
+reachability evidence to separate tradeoffs hidden inside a single context label.
+
 ## 8. HRM Review of New Model Training
 
 Conductor-HRM reviews training as a graph of typed modules. The slow HRM selects an ordinary, invariant-bundle, global-signed, or sectioned-signed review regime. The fast HRM schedules spectral geometry, checkpoint lineage, loop holonomy, grouped utility, damage, and resource audits. A typed join routes the candidate to `authorize`, `section`, `audit`, or `reject`. The manager never writes weights or upgrades a source receipt.
@@ -618,10 +669,10 @@ mainly lower cost and better preference selection, not higher accuracy, and it s
 over lineage-only control. ARC tasks are filtered for common solver success. It is not evidence of neural weight
 infusion, official ARC performance, or official INTELLECT-3 performance.
 
-The AIRIS/DAS benchmark injects specified deterministic faults into calibration-exported rules. It does not
-train AIRIS or exercise native distributed DAS. Integrity prevents changed rule material from executing but
-cannot establish behavioral correctness of an intact rule. The registry also requires a separately protected
-trust anchor.
+The AIRIS/DAS integrity benchmark injects specified deterministic faults and does not exercise native
+distributed DAS. The induction benchmark learns empirical context rules, not causal rules or a neural AIRIS
+model. Its proposals and fallback are behaviorally identical, so confidence demotion cannot establish utility
+protection. The registry also requires a separately protected trust anchor.
 
 The HRM training-review matrix uses synthetic sealed receipts and supplies no evidence of neural training gains. The signed-control theorem applies only to registered coordinate error under its simultaneous-coverage assumptions. It does not establish general behavioral safety or self-improvement.
 
@@ -633,9 +684,9 @@ The HRM training-review matrix uses synthetic sealed receipts and supplies no ev
 4. Run the INTELLECT-3 `logic-env` under WSL/Linux, since the Windows smoke command currently fails before environment loading due to a Unix-only `fcntl` import in `prime_tunnel`.
 5. Scale storyworld play to larger GPTStoryworld/SweepWeave tasks after this finite-state harness is stable.
 6. Replace deterministic sequencer candidates with frozen learned TRM/LDT checkpoints while retaining the registered partitions and paired control-policy ablations.
-7. Induce AIRIS rules from calibration transitions rather than exporting topology plans, then evaluate intact-but-wrong rules, accepted-proposal utility, and fallback coverage on held-out contexts.
+7. Add state-conditioned AIRIS features for story reachability and routing observations, then compare a behaviorally distinct typed fallback against confidence-only demotion under frozen calibration partitions.
 8. Wrap a capped HRM/TRM checkpoint run as a preregistered receipt producer, then evaluate context-by-checkpoint lineage, matched loop nulls, grouped held-out utility, and local section persistence.
 
 ## 12. Conclusion
 
-The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft. Applied to fixed sequencers, topology-controlled localization outperforms global signed transfer, but this slice does not distinguish full holonomy/orientation control from lineage-only localization. AIRIS/DAS retrieval adds a second distinction: semantic authorization does not imply receipt integrity, so retrieved rule material must remain bound to its frozen calibration registry. At the multi-module level, Conductor-HRM applies the same discipline to training review: topology bounds internal-coordinate authority, while held-out utility, damage, provenance, and resources independently govern model promotion.
+The core result is not that hybrid reasoning is always better. The result is more specific: a typed membrane lets latent proposal and explicit deduction cooperate without conflating their evidence types. TRM-style proposal is effective for search and routing. LDT-style explicit state is effective when mechanics are checkable. Hybrid works best when proposals can be followed by monotone refinement, certification, or reachability checks. When the LDT side has only learned or lexical evidence, it should remain soft. Applied to fixed sequencers, topology-controlled localization outperforms global signed transfer, but this slice does not distinguish full holonomy/orientation control from lineage-only localization. AIRIS/DAS retrieval adds two distinctions: semantic authorization does not imply receipt integrity, and calibrated confidence does not improve behavior when proposal and fallback are identical. Storyworld errors show why state-conditioned typed evidence is needed beneath context-level confidence. At the multi-module level, Conductor-HRM applies the same discipline to training review: topology bounds internal-coordinate authority, while held-out utility, damage, provenance, and resources independently govern model promotion.

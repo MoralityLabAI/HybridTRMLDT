@@ -27,6 +27,8 @@ The first included environment is a coupled-objective storyworld because it give
 - Exports the frozen evaluation as a Verifiers `0.1.14` v1 Taskset/Harness replay package.
 - Exports calibration-derived skill rules through the metta-storyworld AIRIS/DAS service contract, with the
   RSITopology membrane retaining final execution authority.
+- Induces AIRIS-style rules independently from calibration utility winners and audits intact-rule precision,
+  confidence demotion, and typed fallback behavior on held-out episodes.
 
 ## Quickstart
 
@@ -106,6 +108,17 @@ The benchmark seals AIRIS forecasts and topology decisions into the Verifiers ta
 starts the implementation under `C:\projects\metta-storyworld\metta-etc`, verifies HTTP forecast parity, and
 tests stale-protocol and altered-rule rejection. The resilience benchmark compares topology-only and
 integrity-sealed arbitration over 6,670 paired clean/fault trials. See `docs/airis_das_integration.md`.
+
+Independent calibration-outcome induction:
+
+```bash
+python -m research_gym.scripts.bench_airis_induction
+python scripts/smoke_airis_das_bridge.py --rules data/airis_das/induced_rules.json --episodes data/benchmarks/sequencer_control_episodes.jsonl --bridge-results data/benchmarks/airis_induction_results.json --out data/airis_das/induced_live_service_smoke.json
+```
+
+This learns 28 context rules from 455 calibration episodes and evaluates them on 667 held-out episodes. It is a
+negative-result baseline: rule-label accuracy is 94.0%, but every proposal equals `control_math`, so confidence
+fallback has zero utility effect. See `docs/airis_induction.md`.
 
 ## Repo map
 
