@@ -14,3 +14,9 @@ Read in this order:
 The transcripts are readable exports containing visible user and assistant messages only. Hidden reasoning,
 tool calls, tool outputs, and authentication material are excluded by the recovery process. The source manifest
 records both readable-export and raw-session hashes; the ZIP contains only readable exports.
+
+`REVIEW_RESPONSE.md` (this directory, not in the ZIP) records the post-package review chain: Fable's
+synthesis, the external GPT Pro audit, and the reconciled position, including the corrected
+false-rejection arithmetic and the four-condition decomposition. The ZIP is intentionally left
+byte-identical to preserve its recorded SHA-256
+(`c4c220fea7cf800a1813696b36078a8755233d80642d4e12568b10a74cf96ef1`).
