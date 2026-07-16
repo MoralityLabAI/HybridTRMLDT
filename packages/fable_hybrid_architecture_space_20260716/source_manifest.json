@@ -1,0 +1,39 @@
+{
+  "schema": "hybrid_architecture_transcript_package_v1",
+  "created_on": "2026-07-16",
+  "source_corpus": "D:\\Research_Engine\\recovered_silico_sessions_20260716",
+  "transcripts_unmodified": true,
+  "scope": "Visible user and assistant content only; hidden reasoning, tool calls, tool outputs, and authentication material excluded by source recovery.",
+  "sessions": [
+    {
+      "role": "hybrid_design_space_thread",
+      "session_id": "019f6879-2ec3-71da-bdb7-fed709776803",
+      "timestamp_utc": "2026-07-16T01:10:00.131Z",
+      "original_cwd": "/mnt/data/shared/silico/workspaces/ws_01kxh6ggmje619g5vgwyy3ak0j",
+      "package_path": "chats/01_hybrid_design_space_thread.md",
+      "source_readable_path": "remote_pi_sessions_readable_all/2026-07-16T01-10-00-131Z_019f6879-2ec3-71da-bdb7-fed709776803.md",
+      "readable_sha256": "7f48befedc3199f94f39f5e8e252541d8db6e587f3b6249db96484607c8f1b84",
+      "raw_sha256": "a00d2e8376ab68b9f57e194f1aae1edb0aae1442d4831de19b84974c7924fb97"
+    },
+    {
+      "role": "membrane_internalization_experiment",
+      "session_id": "019f688b-b45e-70dc-af9f-3d2ebd8aa106",
+      "timestamp_utc": "2026-07-16T01:30:13.982Z",
+      "original_cwd": "/mnt/data/shared/silico/experiments/exp_01kxm8pz75fbe9e2a4vx27crr6/worktree",
+      "package_path": "chats/02_membrane_internalization_experiment.md",
+      "source_readable_path": "remote_pi_sessions_readable_all/2026-07-16T01-30-13-982Z_019f688b-b45e-70dc-af9f-3d2ebd8aa106.md",
+      "readable_sha256": "faebb325546a499f54a5c5ac35f185c8078b96b06cc4b550dfbaa392a2900738",
+      "raw_sha256": "2c128ed59f478c8d532cb9cfa1e3317f3dc11da30d732549a5302fcdb52012d2"
+    },
+    {
+      "role": "membrane_internalization_review",
+      "session_id": "019f693d-4d9c-7c7b-8bed-99938974de8d",
+      "timestamp_utc": "2026-07-16T04:44:13.085Z",
+      "original_cwd": "/mnt/data/shared/silico/experiments/exp_01kxm8pz75fbe9e2a4vx27crr6/worktree",
+      "package_path": "chats/03_membrane_internalization_review.md",
+      "source_readable_path": "remote_pi_sessions_readable_all/2026-07-16T04-44-13-085Z_019f693d-4d9c-7c7b-8bed-99938974de8d.md",
+      "readable_sha256": "93071cc9de666be0845e6e3bbdc8baf35351e5bfbc806f66e2f1a4325d846484",
+      "raw_sha256": "b620999ffae8f8ccb85e37d9e19f6bc10da2f81ba03d08ae52f3ebbfc0187849"
+    }
+  ]
+}
