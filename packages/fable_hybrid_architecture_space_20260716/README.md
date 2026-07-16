@@ -14,4 +14,3 @@ Read in this order:
 The transcripts are readable exports containing visible user and assistant messages only. Hidden reasoning,
 tool calls, tool outputs, and authentication material are excluded by the recovery process. The source manifest
 records both readable-export and raw-session hashes; the ZIP contains only readable exports.
-

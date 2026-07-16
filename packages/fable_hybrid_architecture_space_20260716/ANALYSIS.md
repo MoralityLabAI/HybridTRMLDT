@@ -147,4 +147,3 @@ behaviorally capable of improving on the rejected proposal.
    expert iteration?
 4. Can the low-width veto membrane be given a useful control-capacity bound when its fallback policy has its own
    state-conditioned action space?
-
