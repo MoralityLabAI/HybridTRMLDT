@@ -1,0 +1,401 @@
+{
+  "activation_chunks": {
+    "bytes": 18878784,
+    "chunks": [
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "base--model__layers__23--shard-00--construction",
+        "context_shard": "shard-00",
+        "dtype": "float32",
+        "half": "construction",
+        "path": "chunks/base/model__layers__23/shard-00--construction.npz",
+        "row_count": 288,
+        "sha256": "c39b542b5cce55e79b11a4c4f684e4cd2e8796692b585914b0a605940f3ca7cf",
+        "site_id": "model.layers.23",
+        "state_id": "base"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "base--model__layers__23--shard-00--geometry_validation",
+        "context_shard": "shard-00",
+        "dtype": "float32",
+        "half": "geometry_validation",
+        "path": "chunks/base/model__layers__23/shard-00--geometry_validation.npz",
+        "row_count": 288,
+        "sha256": "850ecf6ca30476f3674fbcd450a51a9c4ad4989a802bccabc90ee271d30bbd87",
+        "site_id": "model.layers.23",
+        "state_id": "base"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "base--model__layers__23--shard-01--construction",
+        "context_shard": "shard-01",
+        "dtype": "float32",
+        "half": "construction",
+        "path": "chunks/base/model__layers__23/shard-01--construction.npz",
+        "row_count": 288,
+        "sha256": "7f6c95f5c8d778c8b5fa7a3b75036988359f5a51839a80ff712c898ed15349f9",
+        "site_id": "model.layers.23",
+        "state_id": "base"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "base--model__layers__23--shard-01--geometry_validation",
+        "context_shard": "shard-01",
+        "dtype": "float32",
+        "half": "geometry_validation",
+        "path": "chunks/base/model__layers__23/shard-01--geometry_validation.npz",
+        "row_count": 288,
+        "sha256": "694859a0febb40a826f4d1af2321730da7e727f7b5cd2897bd7d033af0bdc67b",
+        "site_id": "model.layers.23",
+        "state_id": "base"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "base--model__layers__23--shard-02--construction",
+        "context_shard": "shard-02",
+        "dtype": "float32",
+        "half": "construction",
+        "path": "chunks/base/model__layers__23/shard-02--construction.npz",
+        "row_count": 288,
+        "sha256": "1c5946ea161f4178c60e321b08d324e4a4c46f2befb769038394b0e13f33f81e",
+        "site_id": "model.layers.23",
+        "state_id": "base"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "base--model__layers__23--shard-02--geometry_validation",
+        "context_shard": "shard-02",
+        "dtype": "float32",
+        "half": "geometry_validation",
+        "path": "chunks/base/model__layers__23/shard-02--geometry_validation.npz",
+        "row_count": 288,
+        "sha256": "32714353eeb9c9c245ee79b8e836137a21436b3dd556bb8a85f9757eaf59d1dd",
+        "site_id": "model.layers.23",
+        "state_id": "base"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "base--model__layers__23--shard-03--construction",
+        "context_shard": "shard-03",
+        "dtype": "float32",
+        "half": "construction",
+        "path": "chunks/base/model__layers__23/shard-03--construction.npz",
+        "row_count": 288,
+        "sha256": "9724d3914c2e3049b2d38b6f6657ced40499ba9823a8f4ab2af55364d46d7bee",
+        "site_id": "model.layers.23",
+        "state_id": "base"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "base--model__layers__23--shard-03--geometry_validation",
+        "context_shard": "shard-03",
+        "dtype": "float32",
+        "half": "geometry_validation",
+        "path": "chunks/base/model__layers__23/shard-03--geometry_validation.npz",
+        "row_count": 288,
+        "sha256": "a17075f16113909ea51686018616f618cd5b2c2ed3ba232425045b3cfbb631f1",
+        "site_id": "model.layers.23",
+        "state_id": "base"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "naive_qlora--model__layers__23--shard-00--construction",
+        "context_shard": "shard-00",
+        "dtype": "float32",
+        "half": "construction",
+        "path": "chunks/naive_qlora/model__layers__23/shard-00--construction.npz",
+        "row_count": 288,
+        "sha256": "01718c2c1e97e085ac409798b2b762bc56f5e0c0ad436fc1f243e6e374a7adee",
+        "site_id": "model.layers.23",
+        "state_id": "naive_qlora"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "naive_qlora--model__layers__23--shard-00--geometry_validation",
+        "context_shard": "shard-00",
+        "dtype": "float32",
+        "half": "geometry_validation",
+        "path": "chunks/naive_qlora/model__layers__23/shard-00--geometry_validation.npz",
+        "row_count": 288,
+        "sha256": "0ec84a6e8c7e5301929a4a186a9ee4bf5cc58ab01da6060663d58ea3edc673be",
+        "site_id": "model.layers.23",
+        "state_id": "naive_qlora"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "naive_qlora--model__layers__23--shard-01--construction",
+        "context_shard": "shard-01",
+        "dtype": "float32",
+        "half": "construction",
+        "path": "chunks/naive_qlora/model__layers__23/shard-01--construction.npz",
+        "row_count": 288,
+        "sha256": "cb3349b5c57bcdad6ff223d212df11b11866ab32475624d21b5296a3acec12e7",
+        "site_id": "model.layers.23",
+        "state_id": "naive_qlora"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "naive_qlora--model__layers__23--shard-01--geometry_validation",
+        "context_shard": "shard-01",
+        "dtype": "float32",
+        "half": "geometry_validation",
+        "path": "chunks/naive_qlora/model__layers__23/shard-01--geometry_validation.npz",
+        "row_count": 288,
+        "sha256": "9e7b15cb9fa70e3f704cbf1f5ce7222837052f2bc8ddaf961d3cdbb57506561c",
+        "site_id": "model.layers.23",
+        "state_id": "naive_qlora"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "naive_qlora--model__layers__23--shard-02--construction",
+        "context_shard": "shard-02",
+        "dtype": "float32",
+        "half": "construction",
+        "path": "chunks/naive_qlora/model__layers__23/shard-02--construction.npz",
+        "row_count": 288,
+        "sha256": "e7db7e9776b78203899d6f92e1f7ae5bb8378cf332b772230321b8fbcf1f96a0",
+        "site_id": "model.layers.23",
+        "state_id": "naive_qlora"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "naive_qlora--model__layers__23--shard-02--geometry_validation",
+        "context_shard": "shard-02",
+        "dtype": "float32",
+        "half": "geometry_validation",
+        "path": "chunks/naive_qlora/model__layers__23/shard-02--geometry_validation.npz",
+        "row_count": 288,
+        "sha256": "c41ef5ef6fa68de2b9f6e3a9f74f58ae03710016db00a71791edd4bff4b79d4f",
+        "site_id": "model.layers.23",
+        "state_id": "naive_qlora"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "naive_qlora--model__layers__23--shard-03--construction",
+        "context_shard": "shard-03",
+        "dtype": "float32",
+        "half": "construction",
+        "path": "chunks/naive_qlora/model__layers__23/shard-03--construction.npz",
+        "row_count": 288,
+        "sha256": "fd800739fa9cdd397cb8ddbcf45ae159e5789fde82931b9312769bd3ce397cb9",
+        "site_id": "model.layers.23",
+        "state_id": "naive_qlora"
+      },
+      {
+        "ambient_dimension": 1024,
+        "chunk_id": "naive_qlora--model__layers__23--shard-03--geometry_validation",
+        "context_shard": "shard-03",
+        "dtype": "float32",
+        "half": "geometry_validation",
+        "path": "chunks/naive_qlora/model__layers__23/shard-03--geometry_validation.npz",
+        "row_count": 288,
+        "sha256": "bceed9b1c132bd54e4c386fd76d5bf34c3b823ee098da189020a036985c8fa8d",
+        "site_id": "model.layers.23",
+        "state_id": "naive_qlora"
+      }
+    ],
+    "count": 16,
+    "manifest_sha256": "629dd83e0dd61057964814bb2f15be1a423c7d7bad1f80c0f48bbc06a3507f0a"
+  },
+  "claim_boundary": "Outcome-free measured layer-23 rank-one restrictions only. This receipt does not establish semantic identity, causal edit value, controller utility, VPD efficacy, or recursive improvement.",
+  "generation": false,
+  "gradients": false,
+  "model_id": "Qwen/Qwen3.5-0.8B-Base",
+  "outcomes_consumed": false,
+  "rank": 1,
+  "restriction_edges": [
+    {
+      "construction_lineage": 0.9614928196907059,
+      "construction_transport_det": 1.0,
+      "edge_id": "model.layers.23:graph_reachability:r1:base:shard-00-01",
+      "edge_type": "context",
+      "rank": 1,
+      "restriction_sign": 1,
+      "restriction_weight": 0.9614928196907059,
+      "source_node": "base/L23/graph_reachability/shard-00/rank-1",
+      "target_node": "base/L23/graph_reachability/shard-01/rank-1",
+      "transport_hash": "0bc56df2ebca7168b0864c6458be11a7b0c8cf5a6a00663bccb3654b96d3aa2e",
+      "validation_lineage": 0.9637533385857463,
+      "validation_transport_det": 1.0
+    },
+    {
+      "construction_lineage": 0.9488447695369201,
+      "construction_transport_det": 1.0,
+      "edge_id": "model.layers.23:graph_reachability:r1:base:shard-01-02",
+      "edge_type": "context",
+      "rank": 1,
+      "restriction_sign": 1,
+      "restriction_weight": 0.9288438918254537,
+      "source_node": "base/L23/graph_reachability/shard-01/rank-1",
+      "target_node": "base/L23/graph_reachability/shard-02/rank-1",
+      "transport_hash": "0bc56df2ebca7168b0864c6458be11a7b0c8cf5a6a00663bccb3654b96d3aa2e",
+      "validation_lineage": 0.9288438918254537,
+      "validation_transport_det": 1.0
+    },
+    {
+      "construction_lineage": 0.9428944094011611,
+      "construction_transport_det": 1.0,
+      "edge_id": "model.layers.23:graph_reachability:r1:base:shard-02-03",
+      "edge_type": "context",
+      "rank": 1,
+      "restriction_sign": 1,
+      "restriction_weight": 0.912869571639184,
+      "source_node": "base/L23/graph_reachability/shard-02/rank-1",
+      "target_node": "base/L23/graph_reachability/shard-03/rank-1",
+      "transport_hash": "0bc56df2ebca7168b0864c6458be11a7b0c8cf5a6a00663bccb3654b96d3aa2e",
+      "validation_lineage": 0.912869571639184,
+      "validation_transport_det": 1.0
+    },
+    {
+      "construction_lineage": 0.9596850660901078,
+      "construction_transport_det": 1.0,
+      "edge_id": "model.layers.23:graph_reachability:r1:naive_qlora:shard-00-01",
+      "edge_type": "context",
+      "rank": 1,
+      "restriction_sign": 1,
+      "restriction_weight": 0.9596850660901078,
+      "source_node": "naive_qlora/L23/graph_reachability/shard-00/rank-1",
+      "target_node": "naive_qlora/L23/graph_reachability/shard-01/rank-1",
+      "transport_hash": "0bc56df2ebca7168b0864c6458be11a7b0c8cf5a6a00663bccb3654b96d3aa2e",
+      "validation_lineage": 0.9640213175414856,
+      "validation_transport_det": 1.0
+    },
+    {
+      "construction_lineage": 0.9460849522055794,
+      "construction_transport_det": 1.0,
+      "edge_id": "model.layers.23:graph_reachability:r1:naive_qlora:shard-01-02",
+      "edge_type": "context",
+      "rank": 1,
+      "restriction_sign": 1,
+      "restriction_weight": 0.9272625728769001,
+      "source_node": "naive_qlora/L23/graph_reachability/shard-01/rank-1",
+      "target_node": "naive_qlora/L23/graph_reachability/shard-02/rank-1",
+      "transport_hash": "0bc56df2ebca7168b0864c6458be11a7b0c8cf5a6a00663bccb3654b96d3aa2e",
+      "validation_lineage": 0.9272625728769001,
+      "validation_transport_det": 1.0
+    },
+    {
+      "construction_lineage": 0.9432868892346916,
+      "construction_transport_det": 1.0,
+      "edge_id": "model.layers.23:graph_reachability:r1:naive_qlora:shard-02-03",
+      "edge_type": "context",
+      "rank": 1,
+      "restriction_sign": 1,
+      "restriction_weight": 0.9102648772939276,
+      "source_node": "naive_qlora/L23/graph_reachability/shard-02/rank-1",
+      "target_node": "naive_qlora/L23/graph_reachability/shard-03/rank-1",
+      "transport_hash": "0bc56df2ebca7168b0864c6458be11a7b0c8cf5a6a00663bccb3654b96d3aa2e",
+      "validation_lineage": 0.9102648772939276,
+      "validation_transport_det": 1.0
+    },
+    {
+      "construction_lineage": 0.997100692122218,
+      "construction_transport_det": 1.0,
+      "edge_id": "model.layers.23:graph_reachability:r1:precision:00",
+      "edge_type": "checkpoint",
+      "rank": 1,
+      "restriction_sign": 1,
+      "restriction_weight": 0.9968362047449689,
+      "source_node": "base/L23/graph_reachability/shard-00/rank-1",
+      "target_node": "naive_qlora/L23/graph_reachability/shard-00/rank-1",
+      "transport_hash": "0bc56df2ebca7168b0864c6458be11a7b0c8cf5a6a00663bccb3654b96d3aa2e",
+      "validation_lineage": 0.9968362047449689,
+      "validation_transport_det": 1.0
+    },
+    {
+      "construction_lineage": 0.9967787622276673,
+      "construction_transport_det": 1.0,
+      "edge_id": "model.layers.23:graph_reachability:r1:precision:01",
+      "edge_type": "checkpoint",
+      "rank": 1,
+      "restriction_sign": 1,
+      "restriction_weight": 0.996732127749807,
+      "source_node": "base/L23/graph_reachability/shard-01/rank-1",
+      "target_node": "naive_qlora/L23/graph_reachability/shard-01/rank-1",
+      "transport_hash": "0bc56df2ebca7168b0864c6458be11a7b0c8cf5a6a00663bccb3654b96d3aa2e",
+      "validation_lineage": 0.996732127749807,
+      "validation_transport_det": 1.0
+    },
+    {
+      "construction_lineage": 0.9967810160491607,
+      "construction_transport_det": 1.0,
+      "edge_id": "model.layers.23:graph_reachability:r1:precision:02",
+      "edge_type": "checkpoint",
+      "rank": 1,
+      "restriction_sign": 1,
+      "restriction_weight": 0.9967810160491607,
+      "source_node": "base/L23/graph_reachability/shard-02/rank-1",
+      "target_node": "naive_qlora/L23/graph_reachability/shard-02/rank-1",
+      "transport_hash": "0bc56df2ebca7168b0864c6458be11a7b0c8cf5a6a00663bccb3654b96d3aa2e",
+      "validation_lineage": 0.9968336875709815,
+      "validation_transport_det": 1.0
+    },
+    {
+      "construction_lineage": 0.9961891726376257,
+      "construction_transport_det": 1.0,
+      "edge_id": "model.layers.23:graph_reachability:r1:precision:03",
+      "edge_type": "checkpoint",
+      "rank": 1,
+      "restriction_sign": 1,
+      "restriction_weight": 0.9961891726376257,
+      "source_node": "base/L23/graph_reachability/shard-03/rank-1",
+      "target_node": "naive_qlora/L23/graph_reachability/shard-03/rank-1",
+      "transport_hash": "0bc56df2ebca7168b0864c6458be11a7b0c8cf5a6a00663bccb3654b96d3aa2e",
+      "validation_lineage": 0.9967575804798955,
+      "validation_transport_det": 1.0
+    }
+  ],
+  "schema": "qwen08_l23_measured_stalk_v1",
+  "site": "model.layers.23",
+  "source_config_sha256": "5697d9acdc98e3238f81f29ab4378642bbc58ad9477019db7d71a19e2e0af22d",
+  "source_files": {
+    "base_index": {
+      "path": "runs/qwen08_context_stageb_main_base_v0_1/state_capture_index.json",
+      "root": "research_engine",
+      "sha256": "227a8fb890dbdb25d65c02afcd3dacb64c0f610045e04f81dbd456216d827061"
+    },
+    "edge_receipts": {
+      "path": "runs/qwen08_context_stageb_analysis_v0_1/main_4bit/edge_receipts.jsonl",
+      "root": "research_engine",
+      "sha256": "3769d26e93b8d0e06c9cd60e83029c57d77748caa5470de7d2b049b3a85107e5"
+    },
+    "naive_index": {
+      "path": "runs/qwen08_context_stageb_main_naive_v0_1/state_capture_index.json",
+      "root": "research_engine",
+      "sha256": "aea5aabcdc274ef5ad03d59d04015d7c158d901e2b510d8ef6b1ceaef2b583c3"
+    },
+    "repository_receipt": {
+      "path": "artifacts/qwen08_context_stageb_v0_1/result_receipt.json",
+      "root": "rsi_topology",
+      "sha256": "daed69fa7f7f3e5fe3a71833a251069932f061f95768759946c4a091e253e00e"
+    },
+    "stage_result": {
+      "path": "runs/qwen08_context_stageb_analysis_v0_1/stage_b_result.json",
+      "root": "research_engine",
+      "sha256": "01d3a29f0916a1df044a1b48fd540c8d11cba1bc3f2ee47c35571b54c8ab22ba"
+    }
+  },
+  "source_gate": {
+    "admitted_generator_count": 3,
+    "beta_1": 3,
+    "checks": {
+      "outcomes_not_consumed": true,
+      "phase": true,
+      "rank": true,
+      "repository_main_gate_passed": true,
+      "stage_main_gate_passed": true,
+      "w1_trivial": true,
+      "weight_mutation_absent": true
+    },
+    "syndrome": [
+      0,
+      0,
+      0
+    ],
+    "w1_gate_passed": true
+  },
+  "source_id": "qwen08_l23_measured_stalk_source_v1",
+  "source_receipt_sha256": "61bf8342937b6e83d221aad86874af5f40028aac5ed7925ab1885e3047cb18d0",
+  "weight_mutation": false
+}

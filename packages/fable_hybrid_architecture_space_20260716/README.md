@@ -16,6 +16,7 @@ Read in this order:
 9. `SHEAF_RETRODICTION_V1.md` (spectral retrodiction and failed kernel-migration test; independent audit pending)
 10. `SHEAF_FORWARD_V1.md` (staged forward genome prediction; independent audit pending)
 11. `SHEAF_FORWARD_REPLICATION_V2.md` (whole-family incremental replication; independent audit pending)
+12. `MEASURED_STALK_BRIDGE_V1.md` (measured-Qwen external-product bridge; independent audit pending)
 
 The transcripts are readable exports containing visible user and assistant messages only. Hidden reasoning,
 tool calls, tool outputs, and authentication material are excluded by the recovery process. The source manifest
@@ -48,3 +49,7 @@ ZIP.
 but fail every incremental check against the categorical co-primary baseline, so the acquisition-function claim
 is rejected without tuning. It is a generated result note, not yet an independent external audit, and remains
 outside the ZIP.
+
+`MEASURED_STALK_BRIDGE_V1.md` records the target-blind Qwen layer-23 external-product bridge. The product feature
+map improves global ranking, but exact measured restrictions fail against typed weight shuffles and top-set
+acquisition. It is a generated result note, not yet an independent external audit, and remains outside the ZIP.

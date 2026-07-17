@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "source_id": "qwen08_l23_measured_stalk_source_v1",
+  "frozen_on": "2026-07-17",
+  "frozen_config_sha256": "5697d9acdc98e3238f81f29ab4378642bbc58ad9477019db7d71a19e2e0af22d",
+  "source_roots": {
+    "rsi_topology": "C:/projects/RSITopology",
+    "research_engine": "D:/Research_Engine"
+  },
+  "files": {
+    "repository_receipt": {
+      "root": "rsi_topology",
+      "path": "artifacts/qwen08_context_stageb_v0_1/result_receipt.json",
+      "sha256": "daed69fa7f7f3e5fe3a71833a251069932f061f95768759946c4a091e253e00e"
+    },
+    "stage_result": {
+      "root": "research_engine",
+      "path": "runs/qwen08_context_stageb_analysis_v0_1/stage_b_result.json",
+      "sha256": "01d3a29f0916a1df044a1b48fd540c8d11cba1bc3f2ee47c35571b54c8ab22ba"
+    },
+    "edge_receipts": {
+      "root": "research_engine",
+      "path": "runs/qwen08_context_stageb_analysis_v0_1/main_4bit/edge_receipts.jsonl",
+      "sha256": "3769d26e93b8d0e06c9cd60e83029c57d77748caa5470de7d2b049b3a85107e5"
+    },
+    "base_index": {
+      "root": "research_engine",
+      "path": "runs/qwen08_context_stageb_main_base_v0_1/state_capture_index.json",
+      "sha256": "227a8fb890dbdb25d65c02afcd3dacb64c0f610045e04f81dbd456216d827061"
+    },
+    "naive_index": {
+      "root": "research_engine",
+      "path": "runs/qwen08_context_stageb_main_naive_v0_1/state_capture_index.json",
+      "sha256": "aea5aabcdc274ef5ad03d59d04015d7c158d901e2b510d8ef6b1ceaef2b583c3"
+    }
+  },
+  "selection": {
+    "model_id": "Qwen/Qwen3.5-0.8B-Base",
+    "site": "model.layers.23",
+    "states": ["base", "naive_qlora"],
+    "halves": ["construction", "geometry_validation"],
+    "context_shards": ["shard-00", "shard-01", "shard-02", "shard-03"],
+    "rank": 1,
+    "expected_chunk_count": 16,
+    "expected_chunk_manifest_sha256": "629dd83e0dd61057964814bb2f15be1a423c7d7bad1f80c0f48bbc06a3507f0a",
+    "expected_edge_count": 10,
+    "expected_edge_payload_sha256": "f7ff4121c13d0302b7a2ca4d06577659c7e8797633aa2bdec0fb909d18f79820"
+  },
+  "restriction_weight": "minimum construction and geometry-validation worst-direction retention",
+  "required_gates": {
+    "repository_main_gate_passed": true,
+    "stage_main_gate_passed": true,
+    "rank": 1,
+    "phase": "coherent",
+    "w1_trivial": true,
+    "outcomes_consumed": false,
+    "weight_mutation": false
+  },
+  "claim_boundary": "Outcome-free measured layer-23 rank-one restrictions only. This receipt does not establish semantic identity, causal edit value, controller utility, VPD efficacy, or recursive improvement."
+}

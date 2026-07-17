@@ -181,6 +181,18 @@ co-primary comparator. Spectra retain absolute signal (`rho=+0.568`, N0 `p=0.007
 baseline (`rho=+0.598`); the paired delta is `-0.030` and the incremental gate fails. The result is retained as a
 negative replication rather than tuned away. See `docs/controller_mesh_sheaf_forward_replication.md`.
 
+Measured Qwen stalk bridge:
+
+```bash
+python -m research_gym.scripts.extract_measured_qwen_stalk
+python -m research_gym.scripts.bench_controller_mesh_stalk_bridge
+```
+
+A sealed Qwen0.8B layer-23 rank-one graph is joined to controller stability sheaves through an external product.
+The combined predictor reaches `rho=+0.752`, but typed measured-weight shuffles are equally strong (`N0 p=0.938`)
+and top-16 acquisition is worse than the categorical baseline. The product transform helps; source-specific Qwen
+value is not established. See `docs/controller_mesh_measured_stalk_bridge.md`.
+
 ## Repo map
 
 ```text

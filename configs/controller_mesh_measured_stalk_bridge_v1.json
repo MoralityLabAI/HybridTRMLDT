@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "study_id": "controller_mesh_measured_stalk_bridge_v1",
+  "frozen_on": "2026-07-17",
+  "frozen_config_sha256": "bbdeeb3fbdcd13cba087c4fb26d9d39488096743973416010615ff85444ac8b1",
+  "measured_stalk": {
+    "path": "data/bridge/qwen08_l23_measured_stalk_v1.json",
+    "file_sha256": "8efbee2ef00b2c2424df474a4e7f5336bc680b1d5e91db998e697f781956da9b",
+    "source_receipt_sha256": "61bf8342937b6e83d221aad86874af5f40028aac5ed7925ab1885e3047cb18d0",
+    "source_config_sha256": "5697d9acdc98e3238f81f29ab4378642bbc58ad9477019db7d71a19e2e0af22d",
+    "required_site": "model.layers.23",
+    "required_rank": 1
+  },
+  "benchmark": {
+    "seed": 20260917,
+    "calibration_per_application": 64,
+    "evaluation_per_application": 64
+  },
+  "genome_grid": {
+    "evidence_modes": ["none", "soft", "exact", "dual"],
+    "confidence_thresholds": [0.0, 0.05, 0.1, 0.2, 0.35, 0.5, 0.75, 1.0],
+    "fallback_modes": ["identical", "ldt", "safe_ldt", "correction_infused"],
+    "expected_genomes": 128
+  },
+  "genome_split": {
+    "method": "complete fallback-family holdout",
+    "discovery_fallback_families": ["identical", "ldt"],
+    "heldout_fallback_families": ["safe_ldt", "correction_infused"],
+    "expected_discovery": 64,
+    "expected_heldout": 64
+  },
+  "correction_infused": {
+    "candidate_alphas": [0.0, 0.25, 0.5, 0.75, 1.0],
+    "oracle_caveat": "Synthetic exact calibration utility is available only to the correction fallback."
+  },
+  "controller_construction": {
+    "intervention_edges": [["evidence", "gate"], ["gate", "fallback"], ["fallback", "executor"]],
+    "stability_edges": [["proposer", "evidence"], ["evidence", "gate"], ["gate", "executor"], ["proposer", "executor"]],
+    "centered_energy_fraction": 0.95,
+    "max_centered_rank_per_stalk": 8,
+    "singular_tolerance": 1e-09,
+    "zero_tolerance": 1e-08,
+    "low_band_max": 0.1,
+    "slow_band_max": 0.25
+  },
+  "bridge_construction": {
+    "kind": "external_product_kronecker_sum",
+    "controller_factor": "calibration-only stability sheaf",
+    "measured_factor": "signed weighted Qwen layer-23 restriction graph",
+    "restriction_weight": "minimum construction and validation lineage",
+    "coupling": 1.0,
+    "normalize_by_maximum_eigenvalue": true,
+    "heat_times": [1.0, 4.0, 16.0],
+    "features": ["bridge_spectral_gap", "bridge_low_band_fraction", "bridge_slow_mode_fraction", "bridge_heat_trace_t1", "bridge_heat_trace_t4", "bridge_heat_trace_t16"]
+  },
+  "predictors": {
+    "controller_features": ["intervention_spectral_gap", "intervention_low_band_rank", "intervention_slow_mode_rank", "stability_spectral_gap", "stability_low_band_rank", "stability_slow_mode_rank"],
+    "combined_features": ["intervention_spectral_gap", "intervention_low_band_rank", "intervention_slow_mode_rank", "stability_spectral_gap", "stability_low_band_rank", "stability_slow_mode_rank", "bridge_spectral_gap", "bridge_low_band_fraction", "bridge_slow_mode_fraction", "bridge_heat_trace_t1", "bridge_heat_trace_t4", "bridge_heat_trace_t16"],
+    "categorical_features": "evidence and fallback one-hot plus confidence threshold and square",
+    "model": "separately standardized ridge regressions with intercept",
+    "ridge": 0.01,
+    "fit_target": "discovery-genome evaluation selection_objective"
+  },
+  "matched_null": {
+    "name": "N0_within_type_Qwen_restriction_weight_shuffle",
+    "replicates": 128,
+    "base_seed": 19072026
+  },
+  "paired_bootstrap": {
+    "iterations": 2000,
+    "categorical_seed": 9172026,
+    "controller_seed": 9172027,
+    "interval": "paired percentile 95% over heldout genomes"
+  },
+  "incremental_gate": {
+    "minimum_combined_rho": 0.4,
+    "minimum_rho_delta_vs_each_baseline": 0.05,
+    "minimum_bootstrap_lower_delta": 0.0,
+    "maximum_matched_null_p": 0.05,
+    "top_k": 16,
+    "minimum_top_k_uplift_delta_vs_best_baseline": 0.02,
+    "all_conditions_required": true
+  },
+  "claim_boundary": "Fresh-seed proxy-task test of whether one fixed, target-blind measured Qwen restriction graph improves controller ranking beyond controller-only spectra and categorical labels. A pass would support this external-product feature construction only; failure must be retained without tuning and cannot be repaired by changing source rank, site, edge weights, or heat times."
+}

@@ -45,6 +45,8 @@ python -m research_gym.scripts.bench_gaming_vs_improvement_v2
 python -m research_gym.scripts.retrodict_controller_mesh_sheaf
 python -m research_gym.scripts.bench_controller_mesh_sheaf_forward
 python -m research_gym.scripts.bench_controller_mesh_sheaf_replication
+python -m research_gym.scripts.extract_measured_qwen_stalk
+python -m research_gym.scripts.bench_controller_mesh_stalk_bridge
 python -S -c "import research_gym.core; import research_gym.neural as n; print(n.torch_available())"
 python -m compileall -q research_gym
 python -m pytest -q
@@ -53,10 +55,10 @@ python -m pytest -q
 ## Test Results
 
 ```text
-157 passed
+162 passed
 ```
 
-The simulated install without the neural extra passes `122` tests and skips `5` neural modules. The dependency-free
+The simulated install without the neural extra passes `122` tests and skips `6` neural modules. The dependency-free
 core import reports `torch_available=False`.
 
 The AIRIS/DAS live HTTP smoke passed with 28 rules and 392 indexed facts. Embedded and HTTP forecasts selected
@@ -104,6 +106,12 @@ inferior to the categorical co-primary baseline (`rho=+0.598`). The paired rho d
 `[-0.317, +0.246]`; spectral top-16 uplift is also lower by `0.0234`. The incremental gate fails and is retained
 without tuning. Correction infusion transfers strongly but remains an oracle-backed synthetic control arm.
 
+The measured-stalk bridge verifies 16 Qwen0.8B layer-23 activation chunks and binds 10 target-blind rank-one
+restrictions through an external-product sheaf. Combined rank prediction reaches `rho=+0.7523`, versus `+0.5688`
+for controller spectra and `+0.6402` for categorical labels. The registered gate fails: categorical uncertainty
+crosses zero, top-16 uplift is lower, and typed Qwen-weight shuffles average `rho=+0.7582` (`p=0.9380`). The
+nonlinear product transform helps, but source-specific Qwen value is not established.
+
 ## Known Broken Pieces
 
 - GNU Make is not installed on this Windows host, so `make all` cannot be invoked directly. Every target body was
@@ -119,9 +127,11 @@ without tuning. Correction infusion transfers strongly but remains an oracle-bac
 - The replication tests a new task seed and whole fallback-family transfer, but it remains inside one deterministic
   proxy-task generator. Its failed incremental gate does not validate spectral architecture acquisition, and its
   correction arm uses synthetic oracle targets during calibration.
+- The measured stalk is a fixed graph-reachability geometry from one development model/site and is not semantically
+  aligned to the controller applications. Its typed-null failure blocks attribution to neural source geometry.
 
 ## Next Recommended Patch
 
-Do not tune the failed six-feature spectral panel. If the program continues, freeze a mechanistic bridge study in
-which a measured model stalk or independently typed restriction-map residual must add held-out value beyond the
-same categorical baseline. Retain a null result as evidence against that proposed mechanism.
+Do not tune either failed feature panel. A successor bridge requires multiple task-aligned measured stalks,
+source-identity holdout, and discrimination against typed shuffles and matched synthetic spectra before any
+neural-source attribution claim.
