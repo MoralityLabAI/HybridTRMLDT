@@ -44,15 +44,20 @@ python -m research_gym.scripts.bench_gaming_vs_improvement_v2 --smoke
 python -m research_gym.scripts.bench_gaming_vs_improvement_v2
 python -m research_gym.scripts.retrodict_controller_mesh_sheaf
 python -m research_gym.scripts.bench_controller_mesh_sheaf_forward
+python -m research_gym.scripts.bench_controller_mesh_sheaf_replication
 python -S -c "import research_gym.core; import research_gym.neural as n; print(n.torch_available())"
+python -m compileall -q research_gym
 python -m pytest -q
 ```
 
 ## Test Results
 
 ```text
-153 passed
+157 passed
 ```
+
+The simulated install without the neural extra passes `122` tests and skips `5` neural modules. The dependency-free
+core import reports `torch_available=False`.
 
 The AIRIS/DAS live HTTP smoke passed with 28 rules and 392 indexed facts. Embedded and HTTP forecasts selected
 the same rule. Stale protocol and altered rule material both fell back to `control_math`.
@@ -93,6 +98,12 @@ the registered gate with `rho=+0.705`, N0 `p=0.0078`, and `+0.1476` predicted to
 categorical baseline reaches `rho=+0.673`, so the current panel supports forward prediction but not a claim of
 unique spectral information. Intervention-only spectra are weak; stability plus intervention is strongest.
 
+The preregistered independent replication uses a new seed and 128 genomes, with complete fallback families split
+64/64 between discovery and heldout. Spectral prediction remains nonrandom (`rho=+0.568`, N0 `p=0.0078`) but is
+inferior to the categorical co-primary baseline (`rho=+0.598`). The paired rho delta is `-0.030` with 95% interval
+`[-0.317, +0.246]`; spectral top-16 uplift is also lower by `0.0234`. The incremental gate fails and is retained
+without tuning. Correction infusion transfers strongly but remains an oracle-backed synthetic control arm.
+
 ## Known Broken Pieces
 
 - GNU Make is not installed on this Windows host, so `make all` cannot be invoked directly. Every target body was
@@ -105,12 +116,12 @@ unique spectral information. Intervention-only spectra are weak; stability plus 
   causal identification, neural AIRIS training, or native distributed DAS.
 - The controller-mesh spectra use final executor messages and only three proposer seeds. Their matched-null
   p-values are conditional retrodiction, not population inference or a pre-run architecture acquisition function.
-- The forward genome panel holds out threshold combinations inside known evidence/fallback families. It does not
-  test new task generators or whole-family architecture transfer, and its correction arm uses synthetic oracle
-  targets during calibration.
+- The replication tests a new task seed and whole fallback-family transfer, but it remains inside one deterministic
+  proxy-task generator. Its failed incremental gate does not validate spectral architecture acquisition, and its
+  correction arm uses synthetic oracle targets during calibration.
 
 ## Next Recommended Patch
 
-Run an independently seeded forward replication with at least 64 held-out genomes, whole-family holdouts, and the
-categorical architecture baseline preregistered as a co-primary comparator. Require positive spectral incremental
-value before bridging a measured Qwen/JSpace stalk into the controller graph.
+Do not tune the failed six-feature spectral panel. If the program continues, freeze a mechanistic bridge study in
+which a measured model stalk or independently typed restriction-map residual must add held-out value beyond the
+same categorical baseline. Retain a null result as evidence against that proposed mechanism.

@@ -15,6 +15,7 @@ Read in this order:
 8. `V2_ABOVE_MAJORITY_RESULT.md` (powered follow-up result; independent audit pending)
 9. `SHEAF_RETRODICTION_V1.md` (spectral retrodiction and failed kernel-migration test; independent audit pending)
 10. `SHEAF_FORWARD_V1.md` (staged forward genome prediction; independent audit pending)
+11. `SHEAF_FORWARD_REPLICATION_V2.md` (whole-family incremental replication; independent audit pending)
 
 The transcripts are readable exports containing visible user and assistant messages only. Hidden reasoning,
 tool calls, tool outputs, and authentication material are excluded by the recovery process. The source manifest
@@ -42,3 +43,8 @@ outside the ZIP.
 registered gate passes, while a close post-hoc categorical baseline limits the claim to predictive value within
 the current panel. It is a generated result note, not yet an independent external audit, and remains outside the
 ZIP.
+
+`SHEAF_FORWARD_REPLICATION_V2.md` records the preregistered whole-family successor. Spectra retain absolute signal
+but fail every incremental check against the categorical co-primary baseline, so the acquisition-function claim
+is rejected without tuning. It is a generated result note, not yet an independent external audit, and remains
+outside the ZIP.

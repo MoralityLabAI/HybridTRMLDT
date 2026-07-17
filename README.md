@@ -170,6 +170,17 @@ with matched N0 `p=0.0078`; the predicted top four improve objective by `+0.1476
 baseline reaches `rho=+0.673`, so unique spectral information is not yet established. See
 `docs/controller_mesh_sheaf_forward.md`.
 
+Independent whole-family replication:
+
+```bash
+python -m research_gym.scripts.bench_controller_mesh_sheaf_replication
+```
+
+The preregistered 128-genome successor holds out complete fallback families and seals a categorical baseline as a
+co-primary comparator. Spectra retain absolute signal (`rho=+0.568`, N0 `p=0.0078`) but lose to the categorical
+baseline (`rho=+0.598`); the paired delta is `-0.030` and the incremental gate fails. The result is retained as a
+negative replication rather than tuned away. See `docs/controller_mesh_sheaf_forward_replication.md`.
+
 ## Repo map
 
 ```text

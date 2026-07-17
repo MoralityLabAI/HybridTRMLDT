@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0.0",
+  "frozen_on": "2026-07-17",
+  "study_id": "controller_mesh_sheaf_forward_replication_v2",
+  "frozen_config_sha256": "6728719cdccf2f1dc425eca234e554230ed9abd8db2720356f58dfba159083ec",
+  "benchmark": {
+    "seed": 20260817,
+    "calibration_per_application": 64,
+    "evaluation_per_application": 64
+  },
+  "genome_grid": {
+    "evidence_modes": ["none", "soft", "exact", "dual"],
+    "confidence_thresholds": [0.0, 0.05, 0.1, 0.2, 0.35, 0.5, 0.75, 1.0],
+    "fallback_modes": ["identical", "ldt", "safe_ldt", "correction_infused"],
+    "expected_genomes": 128
+  },
+  "genome_split": {
+    "method": "complete fallback-family holdout",
+    "discovery_fallback_families": ["identical", "ldt"],
+    "heldout_fallback_families": ["safe_ldt", "correction_infused"],
+    "expected_discovery": 64,
+    "expected_heldout": 64
+  },
+  "correction_infused": {
+    "candidate_alphas": [0.0, 0.25, 0.5, 0.75, 1.0],
+    "fit_cases": "calibration tasks where the TRM proposal is unsafe or non-optimal",
+    "target": "independently scored safe action utility",
+    "oracle_caveat": "Synthetic exact calibration utility is available only to the correction fallback."
+  },
+  "construction": {
+    "message_source": "independent-seed calibration decision traces only",
+    "intervention_edges": [["evidence", "gate"], ["gate", "fallback"], ["fallback", "executor"]],
+    "stability_edges": [["proposer", "evidence"], ["evidence", "gate"], ["gate", "executor"], ["proposer", "executor"]],
+    "centered_energy_fraction": 0.95,
+    "max_centered_rank_per_stalk": 8,
+    "singular_tolerance": 1e-09,
+    "zero_tolerance": 1e-08,
+    "low_band_max": 0.1,
+    "slow_band_max": 0.25,
+    "forbidden_spectral_inputs": ["utilities", "optimal_action", "evaluation_outcomes"]
+  },
+  "predictors": {
+    "spectral_features": ["intervention_spectral_gap", "intervention_low_band_rank", "intervention_slow_mode_rank", "stability_spectral_gap", "stability_low_band_rank", "stability_slow_mode_rank"],
+    "categorical_features": "evidence and fallback one-hot plus confidence threshold and square",
+    "model": "separately standardized ridge regressions with intercept",
+    "ridge": 0.01,
+    "fit_target": "discovery-genome evaluation selection_objective"
+  },
+  "matched_null": {
+    "name": "N0_independent_module_transport_shuffle",
+    "replicates": 128,
+    "base_seed": 17082026
+  },
+  "paired_bootstrap": {
+    "iterations": 2000,
+    "seed": 8172026,
+    "interval": "paired percentile 95% over heldout genomes"
+  },
+  "incremental_gate": {
+    "minimum_spectral_rho": 0.4,
+    "minimum_rho_delta": 0.05,
+    "minimum_bootstrap_lower_delta": 0.0,
+    "maximum_matched_null_p": 0.05,
+    "top_k": 16,
+    "minimum_top_k_uplift_delta": 0.02,
+    "all_conditions_required": true
+  },
+  "claim_boundary": "Independent-seed whole-fallback-family replication in deterministic proxy tasks. Passing would support incremental spectral prediction within this generator; failing any gate is a publishable negative and must not be tuned away."
+}
