@@ -1,0 +1,261 @@
+{
+  "adaptation_capacity_confirmation": [
+    {
+      "action_change_rate": 0.1640625,
+      "evidence_source": "exact_mechanics",
+      "oracle_accuracy_delta": -0.0546875,
+      "retained_training_counts": [
+        150,
+        145,
+        146,
+        147,
+        146
+      ],
+      "seed": 101
+    },
+    {
+      "action_change_rate": 0.3359375,
+      "evidence_source": "exposed_frozen_probe",
+      "oracle_accuracy_delta": -0.1015625,
+      "retained_training_counts": [
+        136,
+        282,
+        316,
+        313,
+        319
+      ],
+      "seed": 101
+    },
+    {
+      "action_change_rate": 0.1328125,
+      "evidence_source": "exact_mechanics",
+      "oracle_accuracy_delta": -0.0234375,
+      "retained_training_counts": [
+        145,
+        146,
+        146,
+        147,
+        147
+      ],
+      "seed": 103
+    },
+    {
+      "action_change_rate": 0.3125,
+      "evidence_source": "exposed_frozen_probe",
+      "oracle_accuracy_delta": -0.09375,
+      "retained_training_counts": [
+        135,
+        214,
+        293,
+        303,
+        304
+      ],
+      "seed": 103
+    },
+    {
+      "action_change_rate": 0.171875,
+      "evidence_source": "exact_mechanics",
+      "oracle_accuracy_delta": -0.0390625,
+      "retained_training_counts": [
+        143,
+        144,
+        140,
+        141,
+        140
+      ],
+      "seed": 107
+    },
+    {
+      "action_change_rate": 0.1640625,
+      "evidence_source": "exposed_frozen_probe",
+      "oracle_accuracy_delta": -0.0390625,
+      "retained_training_counts": [
+        89,
+        184,
+        251,
+        305,
+        320
+      ],
+      "seed": 107
+    }
+  ],
+  "config_sha256": "7feb9d72997f844ba6736bf8cfe3deee36b63cb1b63f2b5367ccb3ab40c4469a",
+  "development_bucket": [
+    7
+  ],
+  "final_eval_buckets": [
+    8,
+    9
+  ],
+  "final_evaluation_oracle_labels_accessed": false,
+  "frozen_note_correction": "The frozen adaptation_calibration_note lower bound 0.102 came from the wider multi-budget sweep. The canonical selected-six-step confirmation minimum is 0.132812; the selection rule still passes.",
+  "minimum_development_accuracy_above_majority": 0.0234375,
+  "minimum_development_action_change": 0.1328125,
+  "power_confirmation": [
+    {
+      "accuracy_above_majority": 0.0390625,
+      "ceiling": 1.0,
+      "claim_threshold": 0.023056773468852043,
+      "claim_threshold_fit_region": "registered proposer-train hash buckets",
+      "final_training_loss": 0.40126344561576843,
+      "majority_action": "befriend",
+      "majority_class_accuracy": 0.7109375,
+      "margin_to_ceiling": 0.25,
+      "model_sha256": "91ab373d04080980d68f2d08a2eb5f46a93276706132ea443f7ad213f990c6d7",
+      "oracle_accuracy": 0.75,
+      "seed": 101,
+      "training_steps": 320
+    },
+    {
+      "accuracy_above_majority": 0.0703125,
+      "ceiling": 1.0,
+      "claim_threshold": 0.014107543043792248,
+      "claim_threshold_fit_region": "registered proposer-train hash buckets",
+      "final_training_loss": 0.25017884373664856,
+      "majority_action": "befriend",
+      "majority_class_accuracy": 0.6953125,
+      "margin_to_ceiling": 0.234375,
+      "model_sha256": "4c774f6a2cc84be7e4cbe05909f8c8af02feaf0c8a6cf559197c727041971982",
+      "oracle_accuracy": 0.765625,
+      "seed": 103,
+      "training_steps": 320
+    },
+    {
+      "accuracy_above_majority": 0.0390625,
+      "ceiling": 1.0,
+      "claim_threshold": 0.126493439078331,
+      "claim_threshold_fit_region": "registered proposer-train hash buckets",
+      "final_training_loss": 0.46517837047576904,
+      "majority_action": "befriend",
+      "majority_class_accuracy": 0.71875,
+      "margin_to_ceiling": 0.2421875,
+      "model_sha256": "2a4b4d8cc4c70662d51894f7018d85eef11e2646a004e8cc1ae4e464d6869511",
+      "oracle_accuracy": 0.7578125,
+      "seed": 107,
+      "training_steps": 320
+    },
+    {
+      "accuracy_above_majority": 0.0390625,
+      "ceiling": 1.0,
+      "claim_threshold": 0.03338487818837166,
+      "claim_threshold_fit_region": "registered proposer-train hash buckets",
+      "final_training_loss": 0.362140953540802,
+      "majority_action": "befriend",
+      "majority_class_accuracy": 0.703125,
+      "margin_to_ceiling": 0.2578125,
+      "model_sha256": "bed8636d0b1e1a5b54507195cbb3a3775dc601ba172df09f8674fa76ae106cf2",
+      "oracle_accuracy": 0.7421875,
+      "seed": 109,
+      "training_steps": 320
+    },
+    {
+      "accuracy_above_majority": 0.03125,
+      "ceiling": 1.0,
+      "claim_threshold": 0.029749784618616104,
+      "claim_threshold_fit_region": "registered proposer-train hash buckets",
+      "final_training_loss": 0.3393281400203705,
+      "majority_action": "befriend",
+      "majority_class_accuracy": 0.7109375,
+      "margin_to_ceiling": 0.2578125,
+      "model_sha256": "74e5f5829451c99c66bf27b9f7559395775fa801fc9331e1d3443e41d758829c",
+      "oracle_accuracy": 0.7421875,
+      "seed": 113,
+      "training_steps": 320
+    },
+    {
+      "accuracy_above_majority": 0.09375,
+      "ceiling": 1.0,
+      "claim_threshold": 0.0657263696193695,
+      "claim_threshold_fit_region": "registered proposer-train hash buckets",
+      "final_training_loss": 0.3085479140281677,
+      "majority_action": "befriend",
+      "majority_class_accuracy": 0.7109375,
+      "margin_to_ceiling": 0.1953125,
+      "model_sha256": "6c9747c46de42eef7ec75a1a67c19b6d763ad599ed149afbb14a45d21fc6d45b",
+      "oracle_accuracy": 0.8046875,
+      "seed": 127,
+      "training_steps": 320
+    },
+    {
+      "accuracy_above_majority": 0.0703125,
+      "ceiling": 1.0,
+      "claim_threshold": 0.007116619497537613,
+      "claim_threshold_fit_region": "registered proposer-train hash buckets",
+      "final_training_loss": 0.2285146415233612,
+      "majority_action": "befriend",
+      "majority_class_accuracy": 0.6796875,
+      "margin_to_ceiling": 0.25,
+      "model_sha256": "e06f053d95b391976bd52680c9cc6233ecfd053186157a59a91cf4d821ce08a4",
+      "oracle_accuracy": 0.75,
+      "seed": 131,
+      "training_steps": 320
+    },
+    {
+      "accuracy_above_majority": 0.0625,
+      "ceiling": 1.0,
+      "claim_threshold": 0.03381573408842087,
+      "claim_threshold_fit_region": "registered proposer-train hash buckets",
+      "final_training_loss": 0.3522866368293762,
+      "majority_action": "befriend",
+      "majority_class_accuracy": 0.734375,
+      "margin_to_ceiling": 0.203125,
+      "model_sha256": "128c174f32ad67cd3f5890a7c5655aacc7609058d130edfb2a72facef9214856",
+      "oracle_accuracy": 0.796875,
+      "seed": 137,
+      "training_steps": 320
+    },
+    {
+      "accuracy_above_majority": 0.0234375,
+      "ceiling": 1.0,
+      "claim_threshold": 0.04011544585227966,
+      "claim_threshold_fit_region": "registered proposer-train hash buckets",
+      "final_training_loss": 0.344615638256073,
+      "majority_action": "befriend",
+      "majority_class_accuracy": 0.6953125,
+      "margin_to_ceiling": 0.28125,
+      "model_sha256": "8c1a2fcac878ddfa9784cbcb5d3b1cef73a72445742f6c18b57ef109686da244",
+      "oracle_accuracy": 0.71875,
+      "seed": 139,
+      "training_steps": 320
+    }
+  ],
+  "schema": "gaming_vs_improvement_v2_calibration_v1",
+  "selected_adaptation_steps": 6,
+  "selected_round0_steps": 320,
+  "selection_history": {
+    "selection_rule": "Choose the smallest tested budget with >= +0.020 above-majority development accuracy for every confirmation seed and >= 0.100 final action movement under both exact and exposed gates on every adaptation-capacity seed. Never optimize on buckets 8-9.",
+    "stage_1": {
+      "round0_steps": [
+        32,
+        64,
+        96,
+        128,
+        160,
+        192,
+        256
+      ],
+      "seeds": [
+        101,
+        103,
+        107
+      ]
+    },
+    "stage_2": {
+      "round0_steps": [
+        320,
+        384
+      ],
+      "seeds": [
+        101,
+        103,
+        107,
+        109,
+        113,
+        127,
+        131,
+        137,
+        139
+      ]
+    }
+  }
+}

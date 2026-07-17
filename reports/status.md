@@ -39,6 +39,9 @@ python -m research_gym.scripts.bench_airis_induction
 python scripts/smoke_airis_das_bridge.py --rules data/airis_das/induced_rules.json --episodes data/benchmarks/sequencer_control_episodes.jsonl --bridge-results data/benchmarks/airis_induction_results.json --out data/airis_das/induced_live_service_smoke.json
 python -m research_gym.scripts.bench_gaming_vs_improvement --smoke
 python -m research_gym.scripts.bench_gaming_vs_improvement
+python -m research_gym.scripts.calibrate_gaming_vs_improvement_v2
+python -m research_gym.scripts.bench_gaming_vs_improvement_v2 --smoke
+python -m research_gym.scripts.bench_gaming_vs_improvement_v2
 python -S -c "import research_gym.core; import research_gym.neural as n; print(n.torch_available())"
 python -m pytest -q
 ```
@@ -46,7 +49,7 @@ python -m pytest -q
 ## Test Results
 
 ```text
-135 passed
+141 passed
 ```
 
 The AIRIS/DAS live HTTP smoke passed with 28 rules and 392 indexed facts. Embedded and HTTP forecasts selected
@@ -68,6 +71,13 @@ call in two of three seeds. Round-0 accuracy equals the majority baseline and pr
 the run cannot compare gaming with genuine learning. All receipts pass integrity checks, all split overlaps are
 zero, and canonical artifacts match their mirrors.
 
+The powered v2 follow-up uses disjoint state-hash regions and round-zero proposers `+0.062` to `+0.117` above
+majority. All 30 adaptive trajectories degrade proposal utility or oracle-optimal rate; there are zero genuine
+improvement classifications. Exposed-probe training produces strict evasion in two seeds and mixed degradation in
+one. Exact mechanics plus distinct fallback remains the strongest controller at `+0.0242`, but this is correction
+of a degraded proposer rather than learning. The result motivates a correction-infused training arm that teaches
+independently verified fallback actions on rejected states.
+
 ## Known Broken Pieces
 
 - GNU Make is not installed on this Windows host, so `make all` cannot be invoked directly. Every target body was
@@ -81,6 +91,6 @@ zero, and canonical artifacts match their mirrors.
 
 ## Next Recommended Patch
 
-Extend the gaming-versus-improvement protocol to a non-enumerable storyworld region family where the round-zero
-proposer exceeds its majority prior but remains below the oracle ceiling, then test whether exposed-probe evasion
-persists.
+Add a correction-infused adaptation arm that trains on independently verified fallback or oracle actions for
+rejected states. Ablate it against accepted-only self-imitation while preserving exact authorization, hidden audit,
+and the v2 hash-held-out power gate.

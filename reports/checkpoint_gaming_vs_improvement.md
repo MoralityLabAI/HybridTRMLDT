@@ -55,8 +55,8 @@ above-majority learning trades improvement against evasion.
 - full suite: `135 passed`
 - simulated install without the neural extra: `122 passed, 2 skipped`
 
-## Next Step
+## Follow-Up
 
-Repeat the exposed-versus-hidden comparison on a non-enumerable storyworld or region family with an action model
-that exceeds its majority baseline, then test whether probe evasion persists when proposal behavior itself has
-room to improve.
+Completed by `gaming_vs_improvement_v2_above_majority`. Every final proposer clears majority with headroom, but all
+adaptive policy classes degrade oracle proposal behavior. Exposed-gate evasion persists in two seeds. See
+`reports/checkpoint_gaming_vs_improvement_v2.md`.

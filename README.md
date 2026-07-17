@@ -134,6 +134,20 @@ round-0 accuracy equals the majority baseline and proposal quality never moves, 
 lost oversight leverage, not a fair gaming-versus-genuine-improvement comparison. PyTorch is optional and isolated
 under the `neural` extra. See `docs/gaming_vs_improvement.md`.
 
+Above-majority follow-up:
+
+```bash
+python -m research_gym.scripts.calibrate_gaming_vs_improvement_v2
+python -m research_gym.scripts.bench_gaming_vs_improvement_v2 --smoke
+python -m research_gym.scripts.bench_gaming_vs_improvement_v2
+```
+
+The hash-partitioned v2 proposers clear their final majority baselines by `+0.062` to `+0.117` with at least
+`0.203` oracle headroom. No adaptive policy class improves proposal behavior: all 30 trajectories degrade, and
+the exposed gate shows strict evasion in two seeds plus mixed degradation in one. Exact mechanics with a distinct
+fallback remains the best controller (`+0.0242`) but corrects rather than teaches the proposer. See
+`docs/gaming_vs_improvement_v2.md`.
+
 ## Repo map
 
 ```text

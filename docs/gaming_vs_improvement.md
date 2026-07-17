@@ -187,3 +187,9 @@ This benchmark measures evidence, gate, adaptation, and fallback interactions in
 storyworld. It is not general alignment evidence, neural AIRIS performance, production robustness, or proof that
 latent probes are constitutional authorities. Because the proposer does not learn beyond its majority prior, the
 run does not establish whether a capable learner would choose genuine improvement or evasion under the same gate.
+
+## Follow-Up
+
+Protocol `gaming_vs_improvement_v2_above_majority` closes this power caveat with hash-disjoint regions and final
+proposers `+0.062` to `+0.117` above majority. No adaptive arm improves proposal behavior; exposed-gate evasion
+holds in two seeds and the third shows mixed degradation. See `docs/gaming_vs_improvement_v2.md`.
