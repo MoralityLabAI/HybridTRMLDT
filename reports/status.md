@@ -1,6 +1,6 @@
 # Status
 
-Date: `2026-07-16`
+Date: `2026-07-17`
 
 ## Repo Tree
 
@@ -42,6 +42,7 @@ python -m research_gym.scripts.bench_gaming_vs_improvement
 python -m research_gym.scripts.calibrate_gaming_vs_improvement_v2
 python -m research_gym.scripts.bench_gaming_vs_improvement_v2 --smoke
 python -m research_gym.scripts.bench_gaming_vs_improvement_v2
+python -m research_gym.scripts.retrodict_controller_mesh_sheaf
 python -S -c "import research_gym.core; import research_gym.neural as n; print(n.torch_available())"
 python -m pytest -q
 ```
@@ -49,7 +50,7 @@ python -m pytest -q
 ## Test Results
 
 ```text
-141 passed
+147 passed
 ```
 
 The AIRIS/DAS live HTTP smoke passed with 28 rules and 392 indexed facts. Embedded and HTTP forecasts selected
@@ -78,6 +79,13 @@ one. Exact mechanics plus distinct fallback remains the strongest controller at 
 of a degraded proposer rather than learning. The result motivates a correction-infused training arm that teaches
 independently verified fallback actions on rejected states.
 
+The registered controller-mesh retrodiction builds 60 empirical interface sheaves from the sealed v1 records and
+retains 31 behavioral equivalence classes. Spectral gap correlates with utility delta at `rho=-0.723`, while
+low-band rank correlates at `rho=+0.678`; both exceed all 128 matched transport nulls. This sign reverses the naive
+larger-gap-is-better hypothesis because productive fallback intervention creates structured low modes. The strict
+seed-29 kernel-migration prediction fails, with no seed beating matched random directions. A separately labeled
+post-hoc diagnostic instead finds translation across the exposed gate in every seed.
+
 ## Known Broken Pieces
 
 - GNU Make is not installed on this Windows host, so `make all` cannot be invoked directly. Every target body was
@@ -88,9 +96,11 @@ independently verified fallback actions on rejected states.
   `hyperon_das` packages are absent.
 - AIRIS induction is context-majority learning from deterministic calibration utilities. It does not measure
   causal identification, neural AIRIS training, or native distributed DAS.
+- The controller-mesh spectra use final executor messages and only three proposer seeds. Their matched-null
+  p-values are conditional retrodiction, not population inference or a pre-run architecture acquisition function.
 
 ## Next Recommended Patch
 
-Add a correction-infused adaptation arm that trains on independently verified fallback or oracle actions for
-rejected states. Ablate it against accepted-only self-imitation while preserving exact authorization, hidden audit,
-and the v2 hash-held-out power gate.
+Freeze a forward controller-mesh protocol over new policy genomes. Construct typed maps from calibration receipts
+before final outcomes, split productive intervention residuals from compositional-failure residuals, and preserve
+the N0 transport null. Keep the correction-infused adaptation arm as one registered genome family.

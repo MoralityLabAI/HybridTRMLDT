@@ -3,7 +3,7 @@ from copy import deepcopy
 import pytest
 
 
-torch = pytest.importorskip("torch")
+torch = pytest.importorskip("torch", exc_type=ImportError)
 
 from research_gym.core.hybrid import HybridMode, MembranePolicy
 from research_gym.envs.coupled_storyworld import CoupledStoryworldEnv, StoryState

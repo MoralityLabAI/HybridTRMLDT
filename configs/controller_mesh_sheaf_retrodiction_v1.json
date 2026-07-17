@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0.0",
+  "frozen_on": "2026-07-17",
+  "study_id": "controller_mesh_sheaf_retrodiction_v1",
+  "frozen_config_sha256": "dde1a2fdadcce980c5000d392972367a9445c3ae4c80303972c7615430f6b3cd",
+  "source": {
+    "benchmark_config": "configs/gaming_vs_improvement_v1.json",
+    "result": "data/benchmarks/gaming_vs_improvement_results.json",
+    "result_sha256": "92894ee80266434e12e629fface8abc16971637ed58d9b1eeca7dce6d7eb05cf",
+    "records": "data/benchmarks/gaming_vs_improvement_records.jsonl",
+    "records_sha256": "e587b8456fda8e2183694f7b6c1e40660b2cfe06e5e048b319f0a040f5f3cc9d",
+    "expected_record_count": 26880,
+    "expected_policy_instances": 60,
+    "expected_behavioral_classes": 31
+  },
+  "construction": {
+    "analysis_round": "final_per_arm",
+    "analysis_unit": "arm_seed_policy_instance",
+    "behavioral_equivalence_role": "blocking_only",
+    "nodes": [
+      "proposer",
+      "evidence",
+      "gate",
+      "fallback",
+      "executor"
+    ],
+    "authority_edges": [
+      ["proposer", "evidence"],
+      ["evidence", "gate"],
+      ["gate", "executor"],
+      ["proposer", "executor"],
+      ["gate", "fallback"],
+      ["fallback", "executor"]
+    ],
+    "shared_edge_stalk": "episode_indexed_response_space",
+    "constant_section": true,
+    "centered_energy_fraction": 0.95,
+    "max_centered_rank_per_stalk": 8,
+    "singular_tolerance": 1e-09,
+    "laplacian_normalization": "divide_by_lambda_max",
+    "zero_tolerance": 1e-08,
+    "low_band_max": 0.1,
+    "slow_band_max": 0.25,
+    "forbidden_spectral_inputs": [
+      "proposal_utility",
+      "selected_utility",
+      "proposal_oracle_optimal",
+      "proposal_environment_sound"
+    ]
+  },
+  "matched_null": {
+    "name": "N0_independent_module_transport_shuffle",
+    "description": "Independently permute episode rows for each module basis while preserving topology, stalk ranks, singular spectra, and the constant section.",
+    "replicates": 128,
+    "base_seed": 731071
+  },
+  "retrodiction": {
+    "features": [
+      "spectral_gap",
+      "low_band_rank",
+      "slow_mode_rank"
+    ],
+    "outcomes": [
+      "utility_delta_vs_proposal",
+      "action_change_rate"
+    ],
+    "statistic": "spearman_rho",
+    "matched_null_two_sided_alpha": 0.05,
+    "multiplicity": "all six feature-outcome tests are reported; no familywise discovery claim"
+  },
+  "kernel_migration": {
+    "arm": "exposed_frozen_probe__state_conditioned_fallback__expert_iterated",
+    "round0": 0,
+    "final_round": 5,
+    "property_subspace": "top scenario-balanced environment-sound mean-difference direction",
+    "property_rank": 1,
+    "matched_random_directions": 512,
+    "base_seed": 912071,
+    "preregistered_seed_29_prediction": "kernel_occupancy_delta(seed29) < min(kernel_occupancy_delta(seed17), kernel_occupancy_delta(seed43))"
+  },
+  "claim_boundary": "Retrodictive association in one deterministic toy-storyworld benchmark. Spectra are observational predictors, not causal guarantees of oversight, adaptive independence, compositional stability, neural safety, or deployment performance."
+}

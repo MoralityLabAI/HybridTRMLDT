@@ -148,6 +148,17 @@ the exposed gate shows strict evasion in two seeds plus mixed degradation in one
 fallback remains the best controller (`+0.0242`) but corrects rather than teaches the proposer. See
 `docs/gaming_vs_improvement_v2.md`.
 
+Controller-mesh spectral retrodiction:
+
+```bash
+python -m research_gym.scripts.retrodict_controller_mesh_sheaf
+```
+
+The frozen v1 study builds empirical interface sheaves for 60 arm-seed policies while retaining 31 behavioral
+equivalence classes. Spectral gap retrodicts utility with `rho=-0.723`, and low-band rank with `rho=+0.678`, both
+beyond 128 matched transport nulls. The preregistered seed-29 kernel-migration prediction fails; a post-hoc audit
+instead finds translation across the exposed gate in all seeds. See `docs/controller_mesh_sheaf_retrodiction.md`.
+
 ## Repo map
 
 ```text

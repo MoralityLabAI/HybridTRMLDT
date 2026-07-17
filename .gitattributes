@@ -8,3 +8,6 @@ experiments/gaming_vs_improvement/full/records.jsonl text eol=lf
 experiments/gaming_vs_improvement/smoke/records.jsonl text eol=lf
 experiments/gaming_vs_improvement/above_majority/full/records.jsonl text eol=lf
 experiments/gaming_vs_improvement/above_majority/smoke/records.jsonl text eol=lf
+configs/controller_mesh_sheaf_retrodiction_v1.json text eol=lf
+data/benchmarks/controller_mesh_sheaf_retrodiction_v1.json text eol=lf
+experiments/controller_mesh_sheaf_retrodiction_v1/results.json text eol=lf

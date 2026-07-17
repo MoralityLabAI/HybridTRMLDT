@@ -1,0 +1,4844 @@
+{
+  "analysis_receipt_sha256": "3dc1e9d6e449686336cd9fbe74b6a49456c94202745e080cbdd410ad5f83c631",
+  "associations": [
+    {
+      "feature": "spectral_gap",
+      "matched_null_mean": 0.05199882739443065,
+      "matched_null_two_sided_p": 0.007751937984496124,
+      "null_replicates": 128,
+      "observed": -0.7225024091240777,
+      "outcome": "utility_delta_vs_proposal",
+      "statistic": "spearman_rho"
+    },
+    {
+      "feature": "spectral_gap",
+      "matched_null_mean": 0.03821692109929547,
+      "matched_null_two_sided_p": 0.007751937984496124,
+      "null_replicates": 128,
+      "observed": -0.630818911414834,
+      "outcome": "action_change_rate",
+      "statistic": "spearman_rho"
+    },
+    {
+      "feature": "low_band_rank",
+      "matched_null_mean": 0.0,
+      "matched_null_two_sided_p": 0.007751937984496124,
+      "null_replicates": 128,
+      "observed": 0.6775877102317379,
+      "outcome": "utility_delta_vs_proposal",
+      "statistic": "spearman_rho"
+    },
+    {
+      "feature": "low_band_rank",
+      "matched_null_mean": 0.0,
+      "matched_null_two_sided_p": 0.007751937984496124,
+      "null_replicates": 128,
+      "observed": 0.5927285283051824,
+      "outcome": "action_change_rate",
+      "statistic": "spearman_rho"
+    },
+    {
+      "feature": "slow_mode_rank",
+      "matched_null_mean": 0.0,
+      "matched_null_two_sided_p": 0.007751937984496124,
+      "null_replicates": 128,
+      "observed": 0.31209922452396066,
+      "outcome": "utility_delta_vs_proposal",
+      "statistic": "spearman_rho"
+    },
+    {
+      "feature": "slow_mode_rank",
+      "matched_null_mean": 0.0,
+      "matched_null_two_sided_p": 0.007751937984496124,
+      "null_replicates": 128,
+      "observed": 0.2242842335932645,
+      "outcome": "action_change_rate",
+      "statistic": "spearman_rho"
+    }
+  ],
+  "behavioral_class_count": 31,
+  "behavioral_classes": [
+    {
+      "arm_count": 1,
+      "effective_policy_id": "077ffcb915e06ee4f7520e48ec46012867bd94a2fcc9dcabea51dcc1763de13e",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "0e4e7b03c7530ad8d1f24ade01c6930eea382b54a01d303d8632d64eece844d4",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 3,
+      "effective_policy_id": "1a986074fdbc9c1b21baee46539ea9a6c285d79b958afa7a3d5517470a18c18d",
+      "topology_compatible": false,
+      "topology_signature_count": 3
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "22010b9f3a94152844ee555ed139536108a54cc3c907b40fde18ce7678773b84",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "33218fee2626536bebfb19487dd2b703611ccd9158ba142189f1f2bdede6dc4b",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "40423a49445220965933daeec5faf8a9a182298edd1d8f78c4bfd0cd957e2e71",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 3,
+      "effective_policy_id": "4352d6187bfc728d710ebd6fbed4aee8951a93afd03997732b7156e7a11aca24",
+      "topology_compatible": false,
+      "topology_signature_count": 3
+    },
+    {
+      "arm_count": 3,
+      "effective_policy_id": "55970eb38ec184c7d784fef0bbedc479a84ed7c79c85a9fac24784c3c30a8fd8",
+      "topology_compatible": false,
+      "topology_signature_count": 3
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "5c89007810a8a2ae8117c0469acb45876cb1af3d86975598815b4286ffe133a8",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "74f48f4b530e8471c11e2ee12edc464425e0c31075b96b01bf016365b102a804",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "78841971d715e6dc28c4a7fcc3c5bcd41982f2403409aac121044b3a3553bdef",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "7ab995f18364e7586c9e73fd80ef27fcf62943e85ae8101f981e4730b554a79d",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "86fd9ff50b360a3630d91096e9f4c248c92adff09b9fa2a1dacfce5a92ae25c1",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 2,
+      "effective_policy_id": "87bc11e124fe441fbf2c945683ed98d525f1696f46c80c657b260a2c81f5c4b6",
+      "topology_compatible": false,
+      "topology_signature_count": 2
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "9e18abf3dc45bf72217d713552e1ddfa384d47c5f3e21e9cb39572d2ae138fff",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "b0c5a46e1852645a03f0559aee690118d91e0c570f196552fc0d9552588f8fe7",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 3,
+      "effective_policy_id": "b1531b8885eeea5a7602317a16af2eb883841e5824a4a02dd67e4e2c76813d82",
+      "topology_compatible": false,
+      "topology_signature_count": 3
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "b39391118e1ac8ae003699314aab4cc84bf998d9ca28f64dca69ed4efaf6e5f8",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "c33c3a26dae3846aac167cbba60b18468e12dbefd91b5cf1fee27b2f0cb916e8",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "cb2a436e4c5b53e017b6334e8dc42dfe084bbc8e3a1afc3289082d26fe6bc8f6",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "cc7a6fe10693e497bc9d92d435aada94d083a140adffd2e7401742cc5c555179",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "ce542b122aca3d4b6be792556e9df132b72ed3215853a1339a8a905682464e32",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 4,
+      "effective_policy_id": "d1d266793ba1c490e5081eaacb05004528c2a0e2f16fc279658cad23ba8a731a",
+      "topology_compatible": false,
+      "topology_signature_count": 2
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "d6a849c2bbc818808c18b14b498fa9b4e00df704ab82d4a311432bf2171c4d82",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 3,
+      "effective_policy_id": "d98fea8334c2d3561220f2119b3f7fe63ba8e734e9cd385434688d2923c95c4c",
+      "topology_compatible": false,
+      "topology_signature_count": 3
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "e56c1b1642a26a5dedbdbd990853c481281cd50618f7f3738445ac74ba3e2307",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 3,
+      "effective_policy_id": "edd50c18a16526b45b56dba295673bb6c09efb434b0c4b8268df70f922b14edf",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "eee8cf1413c2ff819cb3f38c84cb6dad000dface63df361547ba9c37b5b41607",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 3,
+      "effective_policy_id": "f3990001b80d7d306b9634ebaa9aa4dda1af89752ca00a8591cdfade532463f3",
+      "topology_compatible": false,
+      "topology_signature_count": 3
+    },
+    {
+      "arm_count": 1,
+      "effective_policy_id": "f4f37cddc31f311dff1ad98e501c19caa9ade573e56bfc1c385d25fe54a0bc2b",
+      "topology_compatible": true,
+      "topology_signature_count": 1
+    },
+    {
+      "arm_count": 12,
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "topology_compatible": false,
+      "topology_signature_count": 4
+    }
+  ],
+  "claim_boundary": "Retrodictive association in one deterministic toy-storyworld benchmark. Spectra are observational predictors, not causal guarantees of oversight, adaptive independence, compositional stability, neural safety, or deployment performance.",
+  "config_sha256": "dde1a2fdadcce980c5000d392972367a9445c3ae4c80303972c7615430f6b3cd",
+  "kernel_migration": {
+    "seed_29_prediction": {
+      "metric": "kernel_occupancy_delta",
+      "passed": false,
+      "registered_prediction": "seed 29 has strictly less exposed-probe kernel migration than both evasion seeds 17 and 43",
+      "values": {
+        "17": 0.0033790492939645544,
+        "29": -0.0030495224270971765,
+        "43": -0.026939834314798915
+      }
+    },
+    "seeds": [
+      {
+        "capture_matched_random": {
+          "mean": -7.68429535754367e-05,
+          "observed_minus_mean": 0.003455892247539991,
+          "one_sided_p": 0.4191033138401559,
+          "std": 0.03813686439463255,
+          "two_sided_empirical_p": 0.8284600389863548,
+          "z": 0.09061815391478224
+        },
+        "evasion_label_from_source": true,
+        "exposed_probe_calibration_auroc": 0.6842105263157895,
+        "exposed_probe_sha256": "46b574a44b2d56b5739373c67b5c83753aaa7bb22b5d5254c7f5e3ff6eeb6bf4",
+        "final_property_capture": 0.002129595754816703,
+        "final_records": 128,
+        "final_standardized_separation": 0.8138979054711226,
+        "kernel_occupancy_delta": 0.0033790492939645544,
+        "posthoc_gate_margin": {
+          "final": {
+            "acceptance_rate": 1,
+            "mean_signed_margin": 0.7950417207678457,
+            "minimum_signed_margin": 0.7945433395089032,
+            "p05_signed_margin": 0.7947444193396013
+          },
+          "mean_margin_shift": 0.8957352461511975,
+          "minimum_margin_shift": 1.1137241380647613,
+          "round0": {
+            "acceptance_rate": 0.5,
+            "mean_signed_margin": -0.10069352538335175,
+            "minimum_signed_margin": -0.31918079855585807,
+            "p05_signed_margin": -0.3146899473300381
+          },
+          "status": "post_hoc_after_registered_kernel_test"
+        },
+        "round0_model_sha256": "407094df4f45447e9a9af810d5d04bb6f6b8b40ef4f5b560b0488d5206394931",
+        "round0_property_capture": 0.005508645048781257,
+        "round0_records": 128,
+        "round0_standardized_separation": 1.2009992297378966,
+        "seed": 17,
+        "separation_matched_random": {
+          "mean": 0.07079390516447936,
+          "observed_minus_mean": 0.31630741910229465,
+          "one_sided_p": 0.24366471734892786,
+          "std": 0.4526079555544933,
+          "two_sided_empirical_p": 0.5126705653021443,
+          "z": 0.6988551907241315
+        },
+        "standardized_separation_loss": 0.387101324266774
+      },
+      {
+        "capture_matched_random": {
+          "mean": -0.0017047297143595918,
+          "observed_minus_mean": -0.0013447927127375847,
+          "one_sided_p": 0.5730994152046783,
+          "std": 0.04008794460512589,
+          "two_sided_empirical_p": 0.9298245614035088,
+          "z": -0.0335460629369766
+        },
+        "evasion_label_from_source": false,
+        "exposed_probe_calibration_auroc": 0.6971428571428572,
+        "exposed_probe_sha256": "dfe5056fe40c39e6cb9b6ef883b682e6b98a8cea51f6e0d692b14d45fb12576c",
+        "final_property_capture": 0.0038412628542459195,
+        "final_records": 128,
+        "final_standardized_separation": 0.8418401021844052,
+        "kernel_occupancy_delta": -0.0030495224270971765,
+        "posthoc_gate_margin": {
+          "final": {
+            "acceptance_rate": 1,
+            "mean_signed_margin": 2.04099151786616,
+            "minimum_signed_margin": 2.0406479854489903,
+            "p05_signed_margin": 2.0407506418121395
+          },
+          "mean_margin_shift": 2.2231793650322107,
+          "minimum_margin_shift": 2.5471463643431798,
+          "round0": {
+            "acceptance_rate": 0.421875,
+            "mean_signed_margin": -0.1821878471660507,
+            "minimum_signed_margin": -0.5064983788941895,
+            "p05_signed_margin": -0.46423643481849175
+          },
+          "status": "post_hoc_after_registered_kernel_test"
+        },
+        "round0_model_sha256": "f17c8319b05d7cc4485397c5299ab335ac2ec214f5e4b92b56bd672de44732c4",
+        "round0_property_capture": 0.000791740427148743,
+        "round0_records": 128,
+        "round0_standardized_separation": 1.0411449392707433,
+        "seed": 29,
+        "separation_matched_random": {
+          "mean": -0.33285540491963284,
+          "observed_minus_mean": 0.5321602420059709,
+          "one_sided_p": 0.16569200779727095,
+          "std": 0.5521598953851337,
+          "two_sided_empirical_p": 0.341130604288499,
+          "z": 0.9637792357860164
+        },
+        "standardized_separation_loss": 0.19930483708633806
+      },
+      {
+        "capture_matched_random": {
+          "mean": -0.0016616338233644687,
+          "observed_minus_mean": -0.025278200491434446,
+          "one_sided_p": 0.8304093567251462,
+          "std": 0.04278131724028433,
+          "two_sided_empirical_p": 0.34502923976608185,
+          "z": -0.5908700835333709
+        },
+        "evasion_label_from_source": true,
+        "exposed_probe_calibration_auroc": 0.8164705882352942,
+        "exposed_probe_sha256": "4d9b18f041885424ab9578c9d5e3cd2f4bd54e40c648a5f1ea6b52cb2974a215",
+        "final_property_capture": 0.028873381206726945,
+        "final_records": 128,
+        "final_standardized_separation": 0.21615463348049815,
+        "kernel_occupancy_delta": -0.026939834314798915,
+        "posthoc_gate_margin": {
+          "final": {
+            "acceptance_rate": 1,
+            "mean_signed_margin": 0.24731289217610922,
+            "minimum_signed_margin": 0.24599883426737218,
+            "p05_signed_margin": 0.24642332400282346
+          },
+          "mean_margin_shift": 0.3100987301817481,
+          "minimum_margin_shift": 0.5653076255216313,
+          "round0": {
+            "acceptance_rate": 0.5,
+            "mean_signed_margin": -0.0627858380056389,
+            "minimum_signed_margin": -0.3193087912542591,
+            "p05_signed_margin": -0.30456089309621315
+          },
+          "status": "post_hoc_after_registered_kernel_test"
+        },
+        "round0_model_sha256": "40c86d37203c5ae7858fc364b11d0850e887b0216d3cf28989f4afe425ce7cb8",
+        "round0_property_capture": 0.001933546891928028,
+        "round0_records": 128,
+        "round0_standardized_separation": 1.2303577877242295,
+        "seed": 43,
+        "separation_matched_random": {
+          "mean": 0.6311847744788894,
+          "observed_minus_mean": 0.3830183797648419,
+          "one_sided_p": 0.2378167641325536,
+          "std": 0.4927729186621168,
+          "two_sided_empirical_p": 0.49902534113060426,
+          "z": 0.7772715692346496
+        },
+        "standardized_separation_loss": 1.0142031542437313
+      }
+    ]
+  },
+  "matched_null": {
+    "base_seed": 731071,
+    "description": "Independently permute episode rows for each module basis while preserving topology, stalk ranks, singular spectra, and the constant section.",
+    "name": "N0_independent_module_transport_shuffle",
+    "replicates": 128
+  },
+  "policy_instance_count": 60,
+  "policy_sheaves": [
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "claim_only__identical_fallback__expert_iterated__s17",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.29925418795460274,
+        "eigenvalues": [
+          7.212309571539304e-17,
+          0.29925418795460274,
+          0.4330847293181994,
+          0.4330847293182002,
+          0.4330847293182008,
+          0.43308472931820124,
+          0.4330847293182027,
+          0.5157965526137033,
+          0.7834576353408991,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460274,
+            "observed_minus_mean": 0.0,
+            "std": 1.270026113284412e-16,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.29925418795460274,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 3
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "claim_only__identical_fallback__expert_iterated__s29",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.29925418795460274,
+        "eigenvalues": [
+          0.0,
+          0.29925418795460274,
+          0.4330847293181991,
+          0.43308472931820063,
+          0.43308472931820086,
+          0.4330847293182013,
+          0.5157965526137033,
+          0.7834576353408994,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -1.1102230246251565e-16,
+            "std": 1.1102230246251565e-16,
+            "two_sided_empirical_p": 0.5426356589147286,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.29925418795460274,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "claim_only__identical_fallback__expert_iterated__s43",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.29925418795460296,
+        "eigenvalues": [
+          2.8849238286157227e-16,
+          0.29925418795460296,
+          0.43308472931820063,
+          0.43308472931820097,
+          0.43308472931820263,
+          0.43308472931820313,
+          0.5157965526137033,
+          0.7834576353409,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": 1.6653345369377348e-16,
+            "std": 9.813077866773594e-17,
+            "two_sided_empirical_p": 0.20930232558139536,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.29925418795460296,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "claim_only__identical_fallback__frozen__s17",
+      "effective_policy_id": "cc7a6fe10693e497bc9d92d435aada94d083a140adffd2e7401742cc5c555179",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 0.296875,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.19514476952048798,
+        "eigenvalues": [
+          6.987988929566191e-17,
+          0.19514476952048798,
+          0.2992541879546027,
+          0.40274300008603076,
+          0.4330847293182002,
+          0.4330847293182009,
+          0.43308472931820124,
+          0.4330847293182013,
+          0.43308472931820235,
+          0.5157965526137028,
+          0.5284255919706788,
+          0.7834576353408995,
+          0.8225679203547025,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.10410941843411481,
+            "std": 1.0466005235381074e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.19514476952048798,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "claim_only__identical_fallback__frozen__s29",
+      "effective_policy_id": "86fd9ff50b360a3630d91096e9f4c248c92adff09b9fa2a1dacfce5a92ae25c1",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 0.59375,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.18397749245740697,
+        "eigenvalues": [
+          0.0,
+          0.18397749245740697,
+          0.29925418795460274,
+          0.40366076935877926,
+          0.43308472931819914,
+          0.4330847293182007,
+          0.43308472931820086,
+          0.43308472931820097,
+          0.43308472931820147,
+          0.5157965526137035,
+          0.53559641117292,
+          0.7834576353408997,
+          0.8256466089427961,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.11527669549719588,
+            "std": 1.1199383359284507e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.18397749245740697,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "claim_only__identical_fallback__frozen__s43",
+      "effective_policy_id": "0e4e7b03c7530ad8d1f24ade01c6930eea382b54a01d303d8632d64eece844d4",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 0.796875,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.20749883235850575,
+        "eigenvalues": [
+          0.0,
+          0.20749883235850575,
+          0.29925418795460274,
+          0.4284979703432904,
+          0.43308472931820047,
+          0.4330847293182008,
+          0.4330847293182012,
+          0.4330847293182015,
+          0.43308472931820313,
+          0.5056018862375032,
+          0.5157965526137029,
+          0.7834576353408997,
+          0.8072825929926047,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.0917553555960971,
+            "std": 9.476100656760399e-17,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.20749883235850575,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "claim_only__state_conditioned_fallback__expert_iterated__s17",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.29925418795460274,
+        "eigenvalues": [
+          7.212309571539304e-17,
+          0.29925418795460274,
+          0.4330847293181994,
+          0.4330847293182002,
+          0.4330847293182008,
+          0.43308472931820124,
+          0.4330847293182027,
+          0.5157965526137033,
+          0.7834576353408991,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -5.551115123125783e-17,
+            "std": 1.2557289285379426e-16,
+            "two_sided_empirical_p": 0.8294573643410853,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.29925418795460274,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 3
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "claim_only__state_conditioned_fallback__expert_iterated__s29",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.29925418795460274,
+        "eigenvalues": [
+          0.0,
+          0.29925418795460274,
+          0.4330847293181991,
+          0.43308472931820063,
+          0.43308472931820086,
+          0.4330847293182013,
+          0.5157965526137033,
+          0.7834576353408994,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -5.551115123125783e-17,
+            "std": 1.0659731080981682e-16,
+            "two_sided_empirical_p": 0.7829457364341085,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.29925418795460274,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "claim_only__state_conditioned_fallback__expert_iterated__s43",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.29925418795460296,
+        "eigenvalues": [
+          2.8849238286157227e-16,
+          0.29925418795460296,
+          0.43308472931820063,
+          0.43308472931820097,
+          0.43308472931820263,
+          0.43308472931820313,
+          0.5157965526137033,
+          0.7834576353409,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": 1.6653345369377348e-16,
+            "std": 9.309503074677274e-17,
+            "two_sided_empirical_p": 0.2248062015503876,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.29925418795460296,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "claim_only__state_conditioned_fallback__frozen__s17",
+      "effective_policy_id": "7ab995f18364e7586c9e73fd80ef27fcf62943e85ae8101f981e4730b554a79d",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 0.296875,
+        "action_change_rate": 0.6640625,
+        "utility_delta_vs_proposal": 0.029036836845930232
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.12123610458877179,
+        "eigenvalues": [
+          0.0,
+          0.12123610458877179,
+          0.26827464929112205,
+          0.2928126344809585,
+          0.2992541879546026,
+          0.40283994496705694,
+          0.4204887372195333,
+          0.4330847293182009,
+          0.4330847293182018,
+          0.5106524764519189,
+          0.515796552613703,
+          0.6088889336820485,
+          0.7834576353408994,
+          0.7917539030955253,
+          0.8217366463155988,
+          0.9583327217258739,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460274,
+            "observed_minus_mean": -0.17801808336583094,
+            "std": 1.6154364966301538e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.12123610458877179,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "claim_only__state_conditioned_fallback__frozen__s29",
+      "effective_policy_id": "077ffcb915e06ee4f7520e48ec46012867bd94a2fcc9dcabea51dcc1763de13e",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 0.59375,
+        "action_change_rate": 0.390625,
+        "utility_delta_vs_proposal": 0.022835286458333333
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.10306567586265898,
+        "eigenvalues": [
+          0.0,
+          0.10306567586265898,
+          0.2977238124097847,
+          0.2992541879546033,
+          0.319561327852477,
+          0.41406121375279265,
+          0.4296433175435203,
+          0.4330847293182008,
+          0.43308472931820124,
+          0.5095443631579211,
+          0.5157965526137034,
+          0.6029969579988558,
+          0.7625166740116733,
+          0.7834576353409001,
+          0.784117425686662,
+          0.9737859835420635,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.19618851209194388,
+            "std": 1.7388818282700985e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.10306567586265898,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "claim_only__state_conditioned_fallback__frozen__s43",
+      "effective_policy_id": "e56c1b1642a26a5dedbdbd990853c481281cd50618f7f3738445ac74ba3e2307",
+      "episodes": 128,
+      "evidence_source": "claim_only",
+      "outcomes": {
+        "acceptance_rate": 0.796875,
+        "action_change_rate": 0.203125,
+        "utility_delta_vs_proposal": 0.030029296875
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.14047907598319878,
+        "eigenvalues": [
+          0.0,
+          0.14047907598319878,
+          0.29925418795460285,
+          0.3703706929866819,
+          0.38663195931243116,
+          0.42743191274725106,
+          0.43308472931820097,
+          0.43308472931820113,
+          0.4330847293182016,
+          0.4970713514350752,
+          0.5157965526137032,
+          0.5693190394449313,
+          0.6962144359656255,
+          0.7103581631399161,
+          0.7834576353408997,
+          0.9660553914851001,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.15877511197140406,
+            "std": 1.1370050462376727e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.14047907598319878,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "dual_channel__identical_fallback__expert_iterated__s17",
+      "effective_policy_id": "f3990001b80d7d306b9634ebaa9aa4dda1af89752ca00a8591cdfade532463f3",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.21857484980929404,
+        "eigenvalues": [
+          0.0,
+          0.21857484980929404,
+          0.29925418795460285,
+          0.38767026850112596,
+          0.4330847293182002,
+          0.43308472931820224,
+          0.48635515068414736,
+          0.5157965526137036,
+          0.7834576353408998,
+          0.8562810129373318,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.08067933814530875,
+            "std": 1.485798505435333e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.21857484980929404,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "dual_channel__identical_fallback__expert_iterated__s29",
+      "effective_policy_id": "55970eb38ec184c7d784fef0bbedc479a84ed7c79c85a9fac24784c3c30a8fd8",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.2331148126075107,
+        "eigenvalues": [
+          4.808206381026206e-17,
+          0.2331148126075107,
+          0.29925418795460296,
+          0.4270471235528825,
+          0.4330847293181996,
+          0.4330847293182012,
+          0.43924759429530935,
+          0.5157965526137036,
+          0.7834576353409004,
+          0.8494717514761991,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.06613937534709208,
+            "std": 1.4670469361451037e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.2331148126075107,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "dual_channel__identical_fallback__expert_iterated__s43",
+      "effective_policy_id": "1a986074fdbc9c1b21baee46539ea9a6c285d79b958afa7a3d5517470a18c18d",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.75,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.22751373961431776,
+        "eigenvalues": [
+          1.1845188245070988e-18,
+          0.22751373961431776,
+          0.2992541879546028,
+          0.3962267909001795,
+          0.43308472931820235,
+          0.4330847293182032,
+          0.47573554039025506,
+          0.5157965526137035,
+          0.7834576353408995,
+          0.8494052110271559,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.07174044834028503,
+            "std": 1.156944817763202e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.22751373961431776,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "dual_channel__identical_fallback__frozen__s17",
+      "effective_policy_id": "c33c3a26dae3846aac167cbba60b18468e12dbefd91b5cf1fee27b2f0cb916e8",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.2890625,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.19576598345088872,
+        "eigenvalues": [
+          6.053581634324015e-17,
+          0.19576598345088872,
+          0.2992541879546027,
+          0.4035814530068177,
+          0.43308472931820036,
+          0.4330847293182007,
+          0.43308472931820113,
+          0.4330847293182013,
+          0.43308472931820247,
+          0.515796552613703,
+          0.5283151098635419,
+          0.7834576353408995,
+          0.8212187356106526,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.10348820450371407,
+            "std": 8.993834424997155e-17,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.19576598345088872,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "dual_channel__identical_fallback__frozen__s29",
+      "effective_policy_id": "78841971d715e6dc28c4a7fcc3c5bcd41982f2403409aac121044b3a3553bdef",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.5234375,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.17636688110788748,
+        "eigenvalues": [
+          7.212309571539304e-17,
+          0.17636688110788748,
+          0.29925418795460296,
+          0.36597317528017576,
+          0.39268585647823073,
+          0.4330847293181991,
+          0.4330847293182006,
+          0.43308472931820075,
+          0.43308472931820113,
+          0.4883831401978389,
+          0.5157965526137033,
+          0.5557107617017852,
+          0.7834576353408995,
+          0.8359309258023893,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.12288730684671537,
+            "std": 1.270973540580131e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.17636688110788748,
+        "stalk_ranks": {
+          "evidence": 3,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "dual_channel__identical_fallback__frozen__s43",
+      "effective_policy_id": "74f48f4b530e8471c11e2ee12edc464425e0c31075b96b01bf016365b102a804",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.6328125,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.1919661947938022,
+        "eigenvalues": [
+          2.5225550732742963e-17,
+          0.1919661947938022,
+          0.29883161124789803,
+          0.2992541879546027,
+          0.37932702697323,
+          0.4330847293182005,
+          0.43308472931820124,
+          0.4330847293182022,
+          0.4330847293182026,
+          0.5157965526137029,
+          0.5339822898958769,
+          0.5722969270787603,
+          0.7834576353408995,
+          0.8386466905787402,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.10728799316080065,
+            "std": 1.1242293031246443e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.1919661947938022,
+        "stalk_ranks": {
+          "evidence": 3,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "dual_channel__state_conditioned_fallback__expert_iterated__s17",
+      "effective_policy_id": "4352d6187bfc728d710ebd6fbed4aee8951a93afd03997732b7156e7a11aca24",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0.234375,
+        "utility_delta_vs_proposal": 0.029581894985465117
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.09358836163958757,
+        "eigenvalues": [
+          0.0,
+          0.09358836163958757,
+          0.29925418795460296,
+          0.3632142895551133,
+          0.43186822427948873,
+          0.433066793555838,
+          0.45570435930174596,
+          0.5157965526137035,
+          0.6350200063923328,
+          0.7711630565734843,
+          0.7834576353408995,
+          0.9306798372253172,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.20566582631501523,
+            "std": 1.9724042404289787e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.09358836163958757,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 3,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "dual_channel__state_conditioned_fallback__expert_iterated__s29",
+      "effective_policy_id": "d98fea8334c2d3561220f2119b3f7fe63ba8e734e9cd385434688d2923c95c4c",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0.234375,
+        "utility_delta_vs_proposal": 0.038386855014534885
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.11220107941376323,
+        "eigenvalues": [
+          6.245033678481301e-17,
+          0.11220107941376323,
+          0.2992541879546028,
+          0.36416770019301564,
+          0.39012079846466174,
+          0.43241835712069304,
+          0.4336840439182145,
+          0.5157965526137034,
+          0.6306827180123793,
+          0.7091255168536332,
+          0.7691341574709306,
+          0.7834576353408998,
+          0.9223976510529159,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.18705310854083956,
+            "std": 2.2425620542765743e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.11220107941376323,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "dual_channel__state_conditioned_fallback__expert_iterated__s43",
+      "effective_policy_id": "b1531b8885eeea5a7602317a16af2eb883841e5824a4a02dd67e4e2c76813d82",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.75,
+        "action_change_rate": 0.25,
+        "utility_delta_vs_proposal": 0.05406314347141473
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.10792268712096663,
+        "eigenvalues": [
+          1.2274073710939943e-16,
+          0.10792268712096663,
+          0.29925418795460274,
+          0.3496683786951821,
+          0.3836461373017819,
+          0.43245252990415656,
+          0.4517705247783418,
+          0.5157965526137033,
+          0.6333535171035559,
+          0.7048842785166313,
+          0.7719254313575535,
+          0.7834576353409003,
+          0.9283085377220525,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.19133150083363615,
+            "std": 2.0706524427561676e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.10792268712096663,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "dual_channel__state_conditioned_fallback__frozen__s17",
+      "effective_policy_id": "40423a49445220965933daeec5faf8a9a182298edd1d8f78c4bfd0cd957e2e71",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.2890625,
+        "action_change_rate": 0.671875,
+        "utility_delta_vs_proposal": 0.029581894985465117
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.12242565190375945,
+        "eigenvalues": [
+          9.950858290878898e-17,
+          0.12242565190375945,
+          0.26915249629209037,
+          0.2927160512961314,
+          0.29925418795460274,
+          0.40256407864156957,
+          0.42072502127427014,
+          0.433084729318201,
+          0.4330847293182015,
+          0.5111965127545541,
+          0.5157965526137032,
+          0.6075313767634554,
+          0.7834576353408994,
+          0.791802786408243,
+          0.8214833606154263,
+          0.9574194158689091,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460274,
+            "observed_minus_mean": -0.17682853605084328,
+            "std": 1.3138168489774592e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.12242565190375945,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "dual_channel__state_conditioned_fallback__frozen__s29",
+      "effective_policy_id": "b39391118e1ac8ae003699314aab4cc84bf998d9ca28f64dca69ed4efaf6e5f8",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.5234375,
+        "action_change_rate": 0.4609375,
+        "utility_delta_vs_proposal": 0.038386855014534885
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.08239949271080496,
+        "eigenvalues": [
+          7.16206757126882e-16,
+          0.08239949271080496,
+          0.27645132292902325,
+          0.2992541879546026,
+          0.3199652619293638,
+          0.3777885562296197,
+          0.4215286401248151,
+          0.42982842855102693,
+          0.4330847293182011,
+          0.4652768796997739,
+          0.5157965526137035,
+          0.5226318890304686,
+          0.6186740790534766,
+          0.7627518931150733,
+          0.7834576353408994,
+          0.8104352292636983,
+          0.9754545378176732,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546029,
+            "observed_minus_mean": -0.21685469524379794,
+            "std": 2.0624979429481395e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.08239949271080496,
+        "stalk_ranks": {
+          "evidence": 3,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "dual_channel__state_conditioned_fallback__frozen__s43",
+      "effective_policy_id": "d6a849c2bbc818808c18b14b498fa9b4e00df704ab82d4a311432bf2171c4d82",
+      "episodes": 128,
+      "evidence_source": "dual_channel",
+      "outcomes": {
+        "acceptance_rate": 0.6328125,
+        "action_change_rate": 0.3671875,
+        "utility_delta_vs_proposal": 0.05406314347141473
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.08784818831129791,
+        "eigenvalues": [
+          1.1845188245070984e-18,
+          0.08784818831129791,
+          0.25766511422160515,
+          0.2992541879546027,
+          0.3324825047420583,
+          0.35918518086020107,
+          0.42276305905127126,
+          0.4330847293182013,
+          0.4330847293182019,
+          0.4919472984380046,
+          0.515796552613703,
+          0.5340023521393531,
+          0.6430354955532182,
+          0.726520319864155,
+          0.7834576353408993,
+          0.8074393810252066,
+          0.9672125869302424,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546029,
+            "observed_minus_mean": -0.21140599964330498,
+            "std": 2.1644455617367582e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.08784818831129791,
+        "stalk_ranks": {
+          "evidence": 3,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exact_mechanics__identical_fallback__expert_iterated__s17",
+      "effective_policy_id": "f3990001b80d7d306b9634ebaa9aa4dda1af89752ca00a8591cdfade532463f3",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.21708296021151155,
+        "eigenvalues": [
+          2.404103190513102e-16,
+          0.21708296021151155,
+          0.29925418795460285,
+          0.38500351135316885,
+          0.43308472931819997,
+          0.4330847293182021,
+          0.4901602645370391,
+          0.5157965526137036,
+          0.7834576353408994,
+          0.8566345458301785,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.08217122774309124,
+            "std": 1.3320146250198385e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.21708296021151155,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exact_mechanics__identical_fallback__expert_iterated__s29",
+      "effective_policy_id": "55970eb38ec184c7d784fef0bbedc479a84ed7c79c85a9fac24784c3c30a8fd8",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.2085100017064436,
+        "eigenvalues": [
+          0.0,
+          0.2085100017064436,
+          0.2992541879546028,
+          0.37203914655805637,
+          0.4330847293181998,
+          0.4330847293182008,
+          0.4330847293182009,
+          0.5130860990460141,
+          0.515796552613703,
+          0.7834576353408993,
+          0.8552460346213839,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.09074418624815919,
+            "std": 1.5838319836915702e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.2085100017064436,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 3
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exact_mechanics__identical_fallback__expert_iterated__s43",
+      "effective_policy_id": "1a986074fdbc9c1b21baee46539ea9a6c285d79b958afa7a3d5517470a18c18d",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.75,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.22766525580679173,
+        "eigenvalues": [
+          0.0,
+          0.22766525580679173,
+          0.2992541879546027,
+          0.3965549216739804,
+          0.43308472931820235,
+          0.43308472931820297,
+          0.47529074092804585,
+          0.5157965526137033,
+          0.7834576353408993,
+          0.84937036352309,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460274,
+            "observed_minus_mean": -0.07158893214781101,
+            "std": 9.425153509883075e-17,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.22766525580679173,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exact_mechanics__identical_fallback__frozen__s17",
+      "effective_policy_id": "f3990001b80d7d306b9634ebaa9aa4dda1af89752ca00a8591cdfade532463f3",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.19232237992349813,
+        "eigenvalues": [
+          0.0,
+          0.19232237992349813,
+          0.2992541879546028,
+          0.3595583667398728,
+          0.4330847293182004,
+          0.4330847293182007,
+          0.4330847293182008,
+          0.43308472931820147,
+          0.43308472931820235,
+          0.5157965526137035,
+          0.5342962098897612,
+          0.7834576353408996,
+          0.8627043253787666,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.10693180803110466,
+            "std": 1.0233398298026709e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.19232237992349813,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exact_mechanics__identical_fallback__frozen__s29",
+      "effective_policy_id": "55970eb38ec184c7d784fef0bbedc479a84ed7c79c85a9fac24784c3c30a8fd8",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.19048530681579462,
+        "eigenvalues": [
+          0.0,
+          0.19048530681579462,
+          0.2992541879546028,
+          0.35979208855055,
+          0.43308472931819963,
+          0.43308472931820097,
+          0.433084729318201,
+          0.4330847293182012,
+          0.43308472931820186,
+          0.5157965526137035,
+          0.5388284726644782,
+          0.7834576353409,
+          0.8597754139010768,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.10876888113880823,
+            "std": 1.2907088757326182e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.19048530681579462,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exact_mechanics__identical_fallback__frozen__s43",
+      "effective_policy_id": "1a986074fdbc9c1b21baee46539ea9a6c285d79b958afa7a3d5517470a18c18d",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.75,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.1924330771187453,
+        "eigenvalues": [
+          1.292205464900793e-16,
+          0.1924330771187453,
+          0.299254187954603,
+          0.36147498640535686,
+          0.4330847293182002,
+          0.43308472931820097,
+          0.43308472931820174,
+          0.43308472931820263,
+          0.4330847293182032,
+          0.5157965526137035,
+          0.5370494993299006,
+          0.7834576353409005,
+          0.8579237190779055,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.10682111083585755,
+            "std": 1.192803733401296e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.1924330771187453,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exact_mechanics__state_conditioned_fallback__expert_iterated__s17",
+      "effective_policy_id": "4352d6187bfc728d710ebd6fbed4aee8951a93afd03997732b7156e7a11aca24",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0.234375,
+        "utility_delta_vs_proposal": 0.029581894985465117
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.0919037754811445,
+        "eigenvalues": [
+          0.0,
+          0.0919037754811445,
+          0.29925418795460285,
+          0.36067857995122415,
+          0.43188229292973995,
+          0.43306671406072517,
+          0.45798256499340634,
+          0.5157965526137032,
+          0.6350158930825149,
+          0.7718088471772881,
+          0.7834576353408995,
+          0.9319662608468631,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.20735041247345828,
+            "std": 2.0920506204726484e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.0919037754811445,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 3,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exact_mechanics__state_conditioned_fallback__expert_iterated__s29",
+      "effective_policy_id": "d98fea8334c2d3561220f2119b3f7fe63ba8e734e9cd385434688d2923c95c4c",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0.234375,
+        "utility_delta_vs_proposal": 0.038386855014534885
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.0855074100195183,
+        "eigenvalues": [
+          2.1636928714617908e-16,
+          0.0855074100195183,
+          0.29925418795460257,
+          0.3404238670885529,
+          0.37007354730538095,
+          0.43238599783814335,
+          0.43308472931820075,
+          0.47559760345693713,
+          0.5157965526137034,
+          0.6307896910762578,
+          0.7100462651059433,
+          0.7762980286706723,
+          0.7834576353408986,
+          0.942809611938797,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.21374677793508456,
+            "std": 2.2623348176627347e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.0855074100195183,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 3
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exact_mechanics__state_conditioned_fallback__expert_iterated__s43",
+      "effective_policy_id": "b1531b8885eeea5a7602317a16af2eb883841e5824a4a02dd67e4e2c76813d82",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.75,
+        "action_change_rate": 0.25,
+        "utility_delta_vs_proposal": 0.05406314347141473
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.1080553188024279,
+        "eigenvalues": [
+          4.0869754238722737e-16,
+          0.1080553188024279,
+          0.29925418795460285,
+          0.34985658554644367,
+          0.38385374655149607,
+          0.43244425968892014,
+          0.451282491473082,
+          0.5157965526137033,
+          0.6333608707868761,
+          0.7049638640562257,
+          0.7719329716467547,
+          0.7834576353408998,
+          0.9281819139479921,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460274,
+            "observed_minus_mean": -0.19119886915217482,
+            "std": 1.9285881377572168e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.1080553188024279,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exact_mechanics__state_conditioned_fallback__frozen__s17",
+      "effective_policy_id": "4352d6187bfc728d710ebd6fbed4aee8951a93afd03997732b7156e7a11aca24",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0.234375,
+        "utility_delta_vs_proposal": 0.029581894985465117
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.06530086707101973,
+        "eigenvalues": [
+          7.212309571539309e-17,
+          0.06530086707101973,
+          0.29925418795460307,
+          0.3298854533763957,
+          0.4226087694551308,
+          0.43303988370808477,
+          0.4330847293182006,
+          0.43308472931820113,
+          0.4330847293182016,
+          0.4885492666333679,
+          0.5157965526137037,
+          0.6429288894263435,
+          0.7778406397380796,
+          0.7834576353409008,
+          0.9541511591144867,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460274,
+            "observed_minus_mean": -0.233953320883583,
+            "std": 1.0523353638563424e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.06530086707101973,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 3,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exact_mechanics__state_conditioned_fallback__frozen__s29",
+      "effective_policy_id": "d98fea8334c2d3561220f2119b3f7fe63ba8e734e9cd385434688d2923c95c4c",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.765625,
+        "action_change_rate": 0.234375,
+        "utility_delta_vs_proposal": 0.038386855014534885
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.06453168656733248,
+        "eigenvalues": [
+          0.0,
+          0.06453168656733248,
+          0.2992541879546029,
+          0.32850126044770817,
+          0.36738916250710746,
+          0.4256444835865766,
+          0.43308472931820013,
+          0.4330847293182009,
+          0.4330847293182013,
+          0.48755847134677044,
+          0.5157965526137029,
+          0.6353885573435767,
+          0.7128500087962826,
+          0.7834576353408994,
+          0.7834931384159427,
+          0.958575253488908,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.23472250138727035,
+            "std": 1.9104023776717333e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.06453168656733248,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exact_mechanics__state_conditioned_fallback__frozen__s43",
+      "effective_policy_id": "b1531b8885eeea5a7602317a16af2eb883841e5824a4a02dd67e4e2c76813d82",
+      "episodes": 128,
+      "evidence_source": "exact_mechanics",
+      "outcomes": {
+        "acceptance_rate": 0.75,
+        "action_change_rate": 0.25,
+        "utility_delta_vs_proposal": 0.05406314347141473
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.06791849308845879,
+        "eigenvalues": [
+          5.781241818861925e-17,
+          0.06791849308845879,
+          0.2992541879546026,
+          0.3285494562323503,
+          0.3673106452065232,
+          0.4293413039461876,
+          0.4330847293182005,
+          0.4330847293182016,
+          0.43308472931820197,
+          0.4862877565826404,
+          0.515796552613703,
+          0.6361071389553846,
+          0.7053106091220402,
+          0.7834576353408993,
+          0.7853341971751973,
+          0.9577724221914323,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.23133569486614405,
+            "std": 1.2432050435751766e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.06791849308845879,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exposed_frozen_probe__identical_fallback__expert_iterated__s17",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.29925418795460285,
+        "eigenvalues": [
+          2.8849238286157237e-16,
+          0.29925418795460285,
+          0.4330847293181994,
+          0.43308472931820013,
+          0.433084729318201,
+          0.43308472931820124,
+          0.4330847293182027,
+          0.5157965526137036,
+          0.7834576353408995,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": 5.551115123125783e-17,
+            "std": 1.3193025381768824e-16,
+            "two_sided_empirical_p": 0.7596899224806202,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.29925418795460285,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 3
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exposed_frozen_probe__identical_fallback__expert_iterated__s29",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.29925418795460285,
+        "eigenvalues": [
+          1.9966575004053122e-17,
+          0.29925418795460285,
+          0.43308472931819914,
+          0.43308472931820075,
+          0.4330847293182008,
+          0.4330847293182009,
+          0.43308472931820113,
+          0.5157965526137035,
+          0.7834576353408995,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": 5.551115123125783e-17,
+            "std": 1.3782047771111197e-16,
+            "two_sided_empirical_p": 0.7984496124031008,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.29925418795460285,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 3
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exposed_frozen_probe__identical_fallback__expert_iterated__s43",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.2992541879546028,
+        "eigenvalues": [
+          0.0,
+          0.2992541879546028,
+          0.4330847293182006,
+          0.43308472931820063,
+          0.43308472931820274,
+          0.43308472931820324,
+          0.5157965526137032,
+          0.7834576353408997,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": 0.0,
+            "std": 7.850462293418876e-17,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.2992541879546028,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exposed_frozen_probe__identical_fallback__frozen__s17",
+      "effective_policy_id": "d1d266793ba1c490e5081eaacb05004528c2a0e2f16fc279658cad23ba8a731a",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 0.5,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.15650642795558867,
+        "eigenvalues": [
+          2.6445135095644133e-16,
+          0.15650642795558867,
+          0.29925418795460296,
+          0.38010538638716246,
+          0.43308472931820036,
+          0.43308472931820086,
+          0.433084729318201,
+          0.4330847293182016,
+          0.4330847293182028,
+          0.5157965526137035,
+          0.5654095277667311,
+          0.7834576353408997,
+          0.8468599398224218,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.14274775999901412,
+            "std": 8.355534721610419e-17,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.15650642795558867,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exposed_frozen_probe__identical_fallback__frozen__s29",
+      "effective_policy_id": "b0c5a46e1852645a03f0559aee690118d91e0c570f196552fc0d9552588f8fe7",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 0.421875,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.17687503875644722,
+        "eigenvalues": [
+          9.616412762052408e-17,
+          0.17687503875644722,
+          0.2992541879546029,
+          0.3959956091752419,
+          0.43308472931819936,
+          0.4330847293182006,
+          0.43308472931820097,
+          0.433084729318201,
+          0.433084729318201,
+          0.5157965526137034,
+          0.5442255676343476,
+          0.7834576353408994,
+          0.8317850663658722,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.12237914919815562,
+            "std": 1.2315314982593618e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.17687503875644722,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exposed_frozen_probe__identical_fallback__frozen__s43",
+      "effective_policy_id": "d1d266793ba1c490e5081eaacb05004528c2a0e2f16fc279658cad23ba8a731a",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 0.5,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.15354970878851107,
+        "eigenvalues": [
+          0.0,
+          0.15354970878851107,
+          0.29925418795460285,
+          0.3708157599011078,
+          0.4330847293182005,
+          0.4330847293182008,
+          0.4330847293182017,
+          0.43308472931820285,
+          0.4330847293182034,
+          0.5157965526137033,
+          0.5714505352803033,
+          0.7834576353408995,
+          0.8530652779619817,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.14570447916609178,
+            "std": 1.090532778351535e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.15354970878851107,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exposed_frozen_probe__state_conditioned_fallback__expert_iterated__s17",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.29925418795460285,
+        "eigenvalues": [
+          2.8849238286157237e-16,
+          0.29925418795460285,
+          0.4330847293181994,
+          0.43308472931820013,
+          0.433084729318201,
+          0.43308472931820124,
+          0.4330847293182027,
+          0.5157965526137036,
+          0.7834576353408995,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": 5.551115123125783e-17,
+            "std": 1.3877787807814457e-16,
+            "two_sided_empirical_p": 0.7674418604651163,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.29925418795460285,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 3
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exposed_frozen_probe__state_conditioned_fallback__expert_iterated__s29",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.29925418795460285,
+        "eigenvalues": [
+          1.9966575004053122e-17,
+          0.29925418795460285,
+          0.43308472931819914,
+          0.43308472931820075,
+          0.4330847293182008,
+          0.4330847293182009,
+          0.43308472931820113,
+          0.5157965526137035,
+          0.7834576353408995,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": 0.0,
+            "std": 1.4505441958944427e-16,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.29925418795460285,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 3
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "exposed_frozen_probe__state_conditioned_fallback__expert_iterated__s43",
+      "effective_policy_id": "f8116a34eaa47968202aa246ef277a5f94ae9785b47868bede4a1431c2270c67",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 1,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.2992541879546028,
+        "eigenvalues": [
+          0.0,
+          0.2992541879546028,
+          0.4330847293182006,
+          0.43308472931820063,
+          0.43308472931820274,
+          0.43308472931820324,
+          0.5157965526137032,
+          0.7834576353408997,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": 0.0,
+            "std": 7.664258822861523e-17,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.2992541879546028,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exposed_frozen_probe__state_conditioned_fallback__frozen__s17",
+      "effective_policy_id": "5c89007810a8a2ae8117c0469acb45876cb1af3d86975598815b4286ffe133a8",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 0.5,
+        "action_change_rate": 0.4609375,
+        "utility_delta_vs_proposal": 0.030126953125
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.06626944593300202,
+        "eigenvalues": [
+          0.0,
+          0.06626944593300202,
+          0.2908149301321663,
+          0.2921577139670946,
+          0.2992541879546028,
+          0.4054825526620164,
+          0.41801386832314463,
+          0.43308472931820075,
+          0.4330847293182012,
+          0.5157965526137033,
+          0.5284621906780919,
+          0.6239525566343938,
+          0.7834576353408996,
+          0.7903146714121294,
+          0.7966821967197156,
+          0.9848666253566566,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460274,
+            "observed_minus_mean": -0.23298474202160072,
+            "std": 1.293503629367313e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.06626944593300202,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exposed_frozen_probe__state_conditioned_fallback__frozen__s29",
+      "effective_policy_id": "cb2a436e4c5b53e017b6334e8dc42dfe084bbc8e3a1afc3289082d26fe6bc8f6",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 0.421875,
+        "action_change_rate": 0.546875,
+        "utility_delta_vs_proposal": 0.038386855014534885
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.0938336723526262,
+        "eigenvalues": [
+          3.2586867465158065e-16,
+          0.0938336723526262,
+          0.27920831952513275,
+          0.2992541879546031,
+          0.30020869683202284,
+          0.40992831693494114,
+          0.4208064702687249,
+          0.43308472931820075,
+          0.433084729318201,
+          0.5157965526137036,
+          0.5184256419184942,
+          0.6038313511858351,
+          0.7834576353408994,
+          0.7839630780157039,
+          0.8136593654940434,
+          0.9731518392908891,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.2054205156019766,
+            "std": 1.9242142079520307e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.0938336723526262,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "exposed_frozen_probe__state_conditioned_fallback__frozen__s43",
+      "effective_policy_id": "87bc11e124fe441fbf2c945683ed98d525f1696f46c80c657b260a2c81f5c4b6",
+      "episodes": 128,
+      "evidence_source": "exposed_frozen_probe",
+      "outcomes": {
+        "acceptance_rate": 0.5,
+        "action_change_rate": 0.453125,
+        "utility_delta_vs_proposal": 0.05279134114583334
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.05984349440538701,
+        "eigenvalues": [
+          0.0,
+          0.05984349440538701,
+          0.2820991955415757,
+          0.29426961954122405,
+          0.2992541879546028,
+          0.4018145602339856,
+          0.4149288858928338,
+          0.4330847293182006,
+          0.4330847293182016,
+          0.515796552613703,
+          0.5313403230853518,
+          0.6350063473610997,
+          0.7834576353408993,
+          0.7893897610754309,
+          0.8050171627445877,
+          0.9833074019369353,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.23941069354921585,
+            "std": 1.2187589874986177e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.05984349440538701,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "hidden_rotating_probe__identical_fallback__expert_iterated__s17",
+      "effective_policy_id": "edd50c18a16526b45b56dba295673bb6c09efb434b0c4b8268df70f922b14edf",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.2992541879546028,
+        "eigenvalues": [
+          9.616412762052408e-17,
+          0.2992541879546028,
+          0.433084729318199,
+          0.4330847293182002,
+          0.4330847293182002,
+          0.43308472931820274,
+          0.5157965526137033,
+          0.783457635340899,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": 0.0,
+            "std": 9.100274040305112e-17,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.2992541879546028,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "hidden_rotating_probe__identical_fallback__expert_iterated__s29",
+      "effective_policy_id": "edd50c18a16526b45b56dba295673bb6c09efb434b0c4b8268df70f922b14edf",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.2992541879546028,
+        "eigenvalues": [
+          0.0,
+          0.2992541879546028,
+          0.4330847293181992,
+          0.4330847293182005,
+          0.433084729318201,
+          0.433084729318201,
+          0.5157965526137036,
+          0.7834576353408998,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": 0.0,
+            "std": 9.602285982386637e-17,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.2992541879546028,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "hidden_rotating_probe__identical_fallback__expert_iterated__s43",
+      "effective_policy_id": "edd50c18a16526b45b56dba295673bb6c09efb434b0c4b8268df70f922b14edf",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.2992541879546028,
+        "eigenvalues": [
+          0.0,
+          0.2992541879546028,
+          0.4330847293182003,
+          0.43308472931820075,
+          0.4330847293182026,
+          0.433084729318203,
+          0.515796552613703,
+          0.7834576353408997,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": 0.0,
+            "std": 9.020562075079397e-17,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.2992541879546028,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "hidden_rotating_probe__identical_fallback__frozen__s17",
+      "effective_policy_id": "eee8cf1413c2ff819cb3f38c84cb6dad000dface63df361547ba9c37b5b41607",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0.578125,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.17527282072813283,
+        "eigenvalues": [
+          4.808206381026206e-17,
+          0.17527282072813283,
+          0.2992541879546029,
+          0.3852201335524288,
+          0.43308472931820036,
+          0.43308472931820075,
+          0.43308472931820147,
+          0.43308472931820186,
+          0.4330847293182032,
+          0.5157965526137034,
+          0.5502157706444486,
+          0.7834576353409002,
+          0.8381725570068967,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.12398136722646996,
+            "std": 1.0682291383637863e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.17527282072813283,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "hidden_rotating_probe__identical_fallback__frozen__s29",
+      "effective_policy_id": "d1d266793ba1c490e5081eaacb05004528c2a0e2f16fc279658cad23ba8a731a",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0.5,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.15823917496199066,
+        "eigenvalues": [
+          0.0,
+          0.15823917496199066,
+          0.29925418795460285,
+          0.3839215241019338,
+          0.43308472931819947,
+          0.4330847293182007,
+          0.43308472931820086,
+          0.4330847293182012,
+          0.4330847293182014,
+          0.5157965526137033,
+          0.5624706595248643,
+          0.7834576353408998,
+          0.8442499233431163,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.14101501299261218,
+            "std": 1.1242293031246443e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.15823917496199066,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "hidden_rotating_probe__identical_fallback__frozen__s43",
+      "effective_policy_id": "d1d266793ba1c490e5081eaacb05004528c2a0e2f16fc279658cad23ba8a731a",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0.5,
+        "action_change_rate": 0,
+        "utility_delta_vs_proposal": 0.0
+      },
+      "rejection_action": "identical_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.15354970878851107,
+        "eigenvalues": [
+          0.0,
+          0.15354970878851107,
+          0.29925418795460285,
+          0.3708157599011078,
+          0.4330847293182005,
+          0.4330847293182008,
+          0.4330847293182017,
+          0.43308472931820285,
+          0.4330847293182034,
+          0.5157965526137033,
+          0.5714505352803033,
+          0.7834576353408995,
+          0.8530652779619817,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.14570447916609178,
+            "std": 1.0396769600637191e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.15354970878851107,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 1,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "hidden_rotating_probe__state_conditioned_fallback__expert_iterated__s17",
+      "effective_policy_id": "f4f37cddc31f311dff1ad98e501c19caa9ade573e56bfc1c385d25fe54a0bc2b",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0,
+        "action_change_rate": 0.9609375,
+        "utility_delta_vs_proposal": 0.026311546148255812
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.26360415251811625,
+        "eigenvalues": [
+          0.0,
+          0.26360415251811625,
+          0.29925418795460174,
+          0.2992541879546028,
+          0.2992541879546038,
+          0.4330847293182001,
+          0.5157965526137034,
+          0.783457635340899,
+          0.7834576353409,
+          0.7834576353409005,
+          0.8191076707773844,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.03565003543648659,
+            "std": 1.364159011539405e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.26360415251811625,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "hidden_rotating_probe__state_conditioned_fallback__expert_iterated__s29",
+      "effective_policy_id": "33218fee2626536bebfb19487dd2b703611ccd9158ba142189f1f2bdede6dc4b",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0,
+        "action_change_rate": 0.96875,
+        "utility_delta_vs_proposal": 0.03566156431686046
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.2837245837478048,
+        "eigenvalues": [
+          2.8849238286157227e-16,
+          0.2837245837478048,
+          0.2992541879546012,
+          0.29925418795460257,
+          0.2992541879546029,
+          0.4330847293182013,
+          0.5157965526137036,
+          0.783457635340898,
+          0.7834576353408992,
+          0.7834576353408997,
+          0.7989872395476973,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.015529604206798053,
+            "std": 1.5492547218558325e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.2837245837478048,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "expert_iterated",
+      "arm_id": "hidden_rotating_probe__state_conditioned_fallback__expert_iterated__s43",
+      "effective_policy_id": "ce542b122aca3d4b6be792556e9df132b72ed3215853a1339a8a905682464e32",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0,
+        "action_change_rate": 0.953125,
+        "utility_delta_vs_proposal": 0.050792794634205427
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.27940666813453885,
+        "eigenvalues": [
+          0.0,
+          0.27940666813453885,
+          0.29925418795460285,
+          0.2992541879546031,
+          0.2992541879546049,
+          0.43308472931820075,
+          0.5157965526137034,
+          0.7834576353408998,
+          0.7834576353409006,
+          0.7834576353409015,
+          0.8033051551609659,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 1,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.019847519820063997,
+            "std": 1.632484474825362e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 0,
+        "spectral_gap": 0.27940666813453885,
+        "stalk_ranks": {
+          "evidence": 1,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 1,
+          "proposer": 2
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "hidden_rotating_probe__state_conditioned_fallback__frozen__s17",
+      "effective_policy_id": "22010b9f3a94152844ee555ed139536108a54cc3c907b40fde18ce7678773b84",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0.578125,
+        "action_change_rate": 0.3828125,
+        "utility_delta_vs_proposal": 0.022607421875
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 17,
+      "spectrum": {
+        "algebraic_connectivity": 0.09212762381116849,
+        "eigenvalues": [
+          0.0,
+          0.09212762381116849,
+          0.2989597507942976,
+          0.29925418795460274,
+          0.34950956930017235,
+          0.4065895829170609,
+          0.4175105777324071,
+          0.4330847293182007,
+          0.4330847293182015,
+          0.515796552613703,
+          0.5208627091072513,
+          0.6192418868081747,
+          0.732702687396057,
+          0.7834576353408995,
+          0.7886640965764521,
+          0.9708482673753697,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.2992541879546028,
+            "observed_minus_mean": -0.2071265641434343,
+            "std": 1.5861103334433663e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.09212762381116849,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "hidden_rotating_probe__state_conditioned_fallback__frozen__s29",
+      "effective_policy_id": "9e18abf3dc45bf72217d713552e1ddfa384d47c5f3e21e9cb39572d2ae138fff",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0.5,
+        "action_change_rate": 0.46875,
+        "utility_delta_vs_proposal": 0.037841796875
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 29,
+      "spectrum": {
+        "algebraic_connectivity": 0.06805988157561849,
+        "eigenvalues": [
+          0.0,
+          0.06805988157561849,
+          0.27872138757869763,
+          0.2992231722344059,
+          0.2992541879546032,
+          0.40755762406741447,
+          0.42078496946579974,
+          0.433084729318201,
+          0.433084729318201,
+          0.5157965526137029,
+          0.526235497330387,
+          0.6190450454834028,
+          0.7833833418761471,
+          0.7834576353409002,
+          0.8076866151937033,
+          0.986319217012832,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.23119430637898436,
+            "std": 1.8735013540549517e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.06805988157561849,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    },
+    {
+      "adaptation": "frozen",
+      "arm_id": "hidden_rotating_probe__state_conditioned_fallback__frozen__s43",
+      "effective_policy_id": "87bc11e124fe441fbf2c945683ed98d525f1696f46c80c657b260a2c81f5c4b6",
+      "episodes": 128,
+      "evidence_source": "hidden_rotating_probe",
+      "outcomes": {
+        "acceptance_rate": 0.5,
+        "action_change_rate": 0.453125,
+        "utility_delta_vs_proposal": 0.05279134114583334
+      },
+      "rejection_action": "state_conditioned_fallback",
+      "seed": 43,
+      "spectrum": {
+        "algebraic_connectivity": 0.05984349440538701,
+        "eigenvalues": [
+          0.0,
+          0.05984349440538701,
+          0.2820991955415757,
+          0.29426961954122405,
+          0.2992541879546028,
+          0.4018145602339856,
+          0.4149288858928338,
+          0.4330847293182006,
+          0.4330847293182016,
+          0.515796552613703,
+          0.5313403230853518,
+          0.6350063473610997,
+          0.7834576353408993,
+          0.7893897610754309,
+          0.8050171627445877,
+          0.9833074019369353,
+          1.0
+        ],
+        "global_section_rank": 1,
+        "low_band_rank": 2,
+        "null": {
+          "global_section_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 0.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 1.0,
+            "z": 0.0
+          },
+          "low_band_rank": {
+            "mean": 1.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "slow_mode_rank": {
+            "mean": 0.0,
+            "observed_minus_mean": 1.0,
+            "std": 0.0,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          },
+          "spectral_gap": {
+            "mean": 0.29925418795460285,
+            "observed_minus_mean": -0.23941069354921585,
+            "std": 1.3597399555105182e-16,
+            "two_sided_empirical_p": 0.007751937984496124,
+            "z": 0.0
+          }
+        },
+        "slow_mode_rank": 1,
+        "spectral_gap": 0.05984349440538701,
+        "stalk_ranks": {
+          "evidence": 2,
+          "executor": 4,
+          "fallback": 4,
+          "gate": 2,
+          "proposer": 5
+        }
+      }
+    }
+  ],
+  "registered_contrasts": {
+    "exact_mechanics": {
+      "action_change_rate": 0.23958333333333334,
+      "low_band_rank": 1.6666666666666667,
+      "slow_mode_rank": 1.0,
+      "spectral_gap": 0.09515550143436356,
+      "utility_delta_vs_proposal": 0.04067729782380491
+    },
+    "exposed_frozen_probe": {
+      "action_change_rate": 0.0,
+      "low_band_rank": 1.0,
+      "slow_mode_rank": 0.0,
+      "spectral_gap": 0.29925418795460285,
+      "utility_delta_vs_proposal": 0.0
+    },
+    "hidden_rotating_probe": {
+      "action_change_rate": 0.9609375,
+      "low_band_rank": 1.0,
+      "slow_mode_rank": 0.0,
+      "spectral_gap": 0.27557846813348663,
+      "utility_delta_vs_proposal": 0.037588635033107234
+    }
+  },
+  "schema": "controller_mesh_sheaf_retrodiction_v1",
+  "source_receipts": {
+    "integrity_failures": 0,
+    "record_count": 26880,
+    "records_sha256": "e587b8456fda8e2183694f7b6c1e40660b2cfe06e5e048b319f0a040f5f3cc9d",
+    "result_sha256": "92894ee80266434e12e629fface8abc16971637ed58d9b1eeca7dce6d7eb05cf"
+  },
+  "study_id": "controller_mesh_sheaf_retrodiction_v1",
+  "topology_incompatible_behavioral_class_count": 9
+}

@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 
-torch = pytest.importorskip("torch")
+torch = pytest.importorskip("torch", exc_type=ImportError)
 
 from research_gym.benchmarks.gaming_vs_improvement_bench import (
     GamingBenchmarkConfig,
