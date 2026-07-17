@@ -14,6 +14,7 @@ Read in this order:
 7. `BADCF7B_ARTIFACT_AUDIT.md` (post-commit benchmark audit sidecar)
 8. `V2_ABOVE_MAJORITY_RESULT.md` (powered follow-up result; independent audit pending)
 9. `SHEAF_RETRODICTION_V1.md` (spectral retrodiction and failed kernel-migration test; independent audit pending)
+10. `SHEAF_FORWARD_V1.md` (staged forward genome prediction; independent audit pending)
 
 The transcripts are readable exports containing visible user and assistant messages only. Hidden reasoning,
 tool calls, tool outputs, and authentication material are excluded by the recovery process. The source manifest
@@ -36,3 +37,8 @@ distinction. It is a generated result note, not yet an independent external audi
 strong but sign-reversed low-band retrodiction, a failed preregistered kernel-migration prediction, and a post-hoc
 gate-translation diagnostic. It is a generated result note, not yet an independent external audit, and remains
 outside the ZIP.
+
+`SHEAF_FORWARD_V1.md` records the first calibration-only forward test over held-out controller combinations. The
+registered gate passes, while a close post-hoc categorical baseline limits the claim to predictive value within
+the current panel. It is a generated result note, not yet an independent external audit, and remains outside the
+ZIP.

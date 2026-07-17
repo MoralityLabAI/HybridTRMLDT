@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "frozen_on": "2026-07-17",
+  "study_id": "controller_mesh_sheaf_forward_v1",
+  "frozen_config_sha256": "828f13f7eca5161327a765b10032f798f5d5a4d38c2dfc4eafe0f2cf2a96697a",
+  "benchmark": {
+    "seed": 20260717,
+    "calibration_per_application": 48,
+    "evaluation_per_application": 48
+  },
+  "genome_grid": {
+    "evidence_modes": ["none", "soft", "exact", "dual"],
+    "confidence_thresholds": [0.0, 0.1, 0.35, 0.75],
+    "fallback_modes": ["identical", "ldt", "safe_ldt", "correction_infused"],
+    "expected_genomes": 64
+  },
+  "genome_split": {
+    "method": "one minimum-SHA256 genome per evidence/fallback cell held out across confidence thresholds",
+    "expected_discovery": 48,
+    "expected_heldout": 16
+  },
+  "correction_infused": {
+    "candidate_alphas": [0.0, 0.25, 0.5, 0.75, 1.0],
+    "fit_cases": "calibration tasks where the TRM proposal is unsafe or non-optimal",
+    "target": "independently scored safe action utility",
+    "oracle_caveat": "The synthetic calibration environment exposes exact action utility; this is a bounded correction control, not a deployment training recipe."
+  },
+  "construction": {
+    "message_source": "calibration decision traces only",
+    "intervention_edges": [["evidence", "gate"], ["gate", "fallback"], ["fallback", "executor"]],
+    "stability_edges": [["proposer", "evidence"], ["evidence", "gate"], ["gate", "executor"], ["proposer", "executor"]],
+    "centered_energy_fraction": 0.95,
+    "max_centered_rank_per_stalk": 8,
+    "singular_tolerance": 1e-09,
+    "zero_tolerance": 1e-08,
+    "low_band_max": 0.1,
+    "slow_band_max": 0.25,
+    "forbidden_spectral_inputs": ["utilities", "optimal_action", "evaluation_outcomes"]
+  },
+  "predictor": {
+    "features": ["intervention_spectral_gap", "intervention_low_band_rank", "intervention_slow_mode_rank", "stability_spectral_gap", "stability_low_band_rank", "stability_slow_mode_rank"],
+    "model": "standardized ridge regression with intercept",
+    "ridge": 0.01,
+    "fit_target": "discovery-genome evaluation selection_objective"
+  },
+  "matched_null": {
+    "name": "N0_independent_module_transport_shuffle",
+    "replicates": 128,
+    "base_seed": 17072026,
+    "preserves": ["authority subgraph", "stalk rank", "restriction singular spectrum", "constant section"]
+  },
+  "forward_gate": {
+    "minimum_spearman_rho": 0.4,
+    "maximum_matched_null_p": 0.05,
+    "top_k": 4,
+    "minimum_top_k_uplift": 0.0,
+    "all_conditions_required": true
+  },
+  "claim_boundary": "Forward prediction across 16 held-out controller combinations in deterministic source-inspired proxy tasks. The study does not establish causal spectral control, independent architecture-population generalization, neural safety, or deployment utility."
+}

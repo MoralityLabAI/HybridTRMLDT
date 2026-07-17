@@ -43,6 +43,7 @@ python -m research_gym.scripts.calibrate_gaming_vs_improvement_v2
 python -m research_gym.scripts.bench_gaming_vs_improvement_v2 --smoke
 python -m research_gym.scripts.bench_gaming_vs_improvement_v2
 python -m research_gym.scripts.retrodict_controller_mesh_sheaf
+python -m research_gym.scripts.bench_controller_mesh_sheaf_forward
 python -S -c "import research_gym.core; import research_gym.neural as n; print(n.torch_available())"
 python -m pytest -q
 ```
@@ -50,7 +51,7 @@ python -m pytest -q
 ## Test Results
 
 ```text
-147 passed
+153 passed
 ```
 
 The AIRIS/DAS live HTTP smoke passed with 28 rules and 392 indexed facts. Embedded and HTTP forecasts selected
@@ -86,6 +87,12 @@ larger-gap-is-better hypothesis because productive fallback intervention creates
 seed-29 kernel-migration prediction fails, with no seed beating matched random directions. A separately labeled
 post-hoc diagnostic instead finds translation across the exposed gate in every seed.
 
+The staged forward study seals calibration-only intervention and stability spectra for 64 controller genomes,
+fits on 48 discovery outcomes, and predicts 16 held-out combinations before revealing their utilities. It passes
+the registered gate with `rho=+0.705`, N0 `p=0.0078`, and `+0.1476` predicted top-four uplift. The post-hoc
+categorical baseline reaches `rho=+0.673`, so the current panel supports forward prediction but not a claim of
+unique spectral information. Intervention-only spectra are weak; stability plus intervention is strongest.
+
 ## Known Broken Pieces
 
 - GNU Make is not installed on this Windows host, so `make all` cannot be invoked directly. Every target body was
@@ -98,9 +105,12 @@ post-hoc diagnostic instead finds translation across the exposed gate in every s
   causal identification, neural AIRIS training, or native distributed DAS.
 - The controller-mesh spectra use final executor messages and only three proposer seeds. Their matched-null
   p-values are conditional retrodiction, not population inference or a pre-run architecture acquisition function.
+- The forward genome panel holds out threshold combinations inside known evidence/fallback families. It does not
+  test new task generators or whole-family architecture transfer, and its correction arm uses synthetic oracle
+  targets during calibration.
 
 ## Next Recommended Patch
 
-Freeze a forward controller-mesh protocol over new policy genomes. Construct typed maps from calibration receipts
-before final outcomes, split productive intervention residuals from compositional-failure residuals, and preserve
-the N0 transport null. Keep the correction-infused adaptation arm as one registered genome family.
+Run an independently seeded forward replication with at least 64 held-out genomes, whole-family holdouts, and the
+categorical architecture baseline preregistered as a co-primary comparator. Require positive spectral incremental
+value before bridging a measured Qwen/JSpace stalk into the controller graph.

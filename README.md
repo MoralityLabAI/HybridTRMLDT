@@ -159,6 +159,17 @@ equivalence classes. Spectral gap retrodicts utility with `rho=-0.723`, and low-
 beyond 128 matched transport nulls. The preregistered seed-29 kernel-migration prediction fails; a post-hoc audit
 instead finds translation across the exposed gate in all seeds. See `docs/controller_mesh_sheaf_retrodiction.md`.
 
+Forward controller-genome prediction:
+
+```bash
+python -m research_gym.scripts.bench_controller_mesh_sheaf_forward
+```
+
+Calibration-only intervention and stability spectra predict 16 held-out controller combinations at `rho=+0.705`
+with matched N0 `p=0.0078`; the predicted top four improve objective by `+0.1476`. A post-hoc categorical genome
+baseline reaches `rho=+0.673`, so unique spectral information is not yet established. See
+`docs/controller_mesh_sheaf_forward.md`.
+
 ## Repo map
 
 ```text
