@@ -1,0 +1,30 @@
+{
+  "protocol_id": "loop_schedule_prognostic_gym_v0",
+  "status": "frozen_before_proposals_and_outcomes",
+  "implementation_commit": "f1ce7e7a60a69d45ef1276c449cdf66832ea59c0",
+  "inputs": {
+    "scale_ladder": {
+      "path": "configs/lsa/scale_ladder_v0.json",
+      "sha256": "ac23bc6137f81cc764640e51f4763b7d02de92313638222f39bf8a84fb814a36"
+    },
+    "mutation_space": {
+      "path": "configs/lsa/mutation_space_v0.json",
+      "sha256": "931a125582a47193d1feab48c0a22bd9b393eb702c58b805f2d0ee207e7ced2d"
+    },
+    "resource_profile": {
+      "path": "configs/lsa/local_resource_profile.json",
+      "sha256": "62aad30e1c812d2e4df7cc13a8fe6c005774582512157a7a4834d1307ac53036"
+    },
+    "promotion_policy": {
+      "path": "configs/lsa/promotion_policy_v0.json",
+      "sha256": "748ec452764bfb0e230752e69e2a8f082407f398a83a842deef25e84f3cf65d3"
+    },
+    "base_receipt": {
+      "path": "data/benchmarks/lsa_v0_receipt.json",
+      "sha256": "73c9959d14187b96b18f039d775a07d2396f832cb9c983cd5bbdc72da81ebdfb"
+    }
+  },
+  "execution_scope": "S0_local_screening_only",
+  "larger_scales": "materialize_and_cost_only",
+  "claim_scope": "trainability-boundary and schedule-cost measurement only"
+}
