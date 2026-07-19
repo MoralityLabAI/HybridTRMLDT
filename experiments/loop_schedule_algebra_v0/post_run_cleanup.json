@@ -1,0 +1,363 @@
+﻿{
+    "run_id":  "lsa-v0",
+    "ts_utc":  "2026-07-19T20:22:46.7337574Z",
+    "stop_owned_processes":  false,
+    "owned_pids":  [
+
+                   ],
+    "owned_process_tree":  [
+
+                           ],
+    "stopped":  [
+
+                ],
+    "wsl_action":  "skipped",
+    "standby_action":  "skipped",
+    "memory_before":  {
+                          "total_gb":  23.784,
+                          "free_gb":  10.555,
+                          "used_gb":  13.23,
+                          "pct_used":  55.6,
+                          "available_mb":  10733,
+                          "committed_gb":  17.138,
+                          "commit_limit_gb":  68.784,
+                          "cache_gb":  0.342,
+                          "standby_gb":  8.481,
+                          "modified_page_list_gb":  0.157,
+                          "pool_nonpaged_gb":  0.894,
+                          "pool_paged_gb":  0.784,
+                          "page_reads_per_sec":  3,
+                          "pages_input_per_sec":  3
+                      },
+    "memory_after":  {
+                         "total_gb":  23.784,
+                         "free_gb":  10.504,
+                         "used_gb":  13.281,
+                         "pct_used":  55.8,
+                         "available_mb":  10747,
+                         "committed_gb":  17.134,
+                         "commit_limit_gb":  68.784,
+                         "cache_gb":  0.341,
+                         "standby_gb":  8.49,
+                         "modified_page_list_gb":  0.149,
+                         "pool_nonpaged_gb":  0.894,
+                         "pool_paged_gb":  0.784,
+                         "page_reads_per_sec":  0,
+                         "pages_input_per_sec":  0
+                     },
+    "gpu_before":  {
+                       "available":  true,
+                       "gpu":  [
+                                   "NVIDIA GeForce RTX 3050 Laptop GPU, 0, 0, 3964"
+                               ],
+                       "compute_apps":  [
+
+                                        ]
+                   },
+    "gpu_after":  {
+                      "available":  true,
+                      "gpu":  [
+                                  "NVIDIA GeForce RTX 3050 Laptop GPU, 0, 0, 3964"
+                              ],
+                      "compute_apps":  [
+
+                                       ]
+                  },
+    "lingering_owned_pids":  [
+
+                             ],
+    "suspect_training_processes":  [
+
+                                   ],
+    "process_memory":  {
+                           "totals":  {
+                                          "working_set_gb":  16.461,
+                                          "private_commit_gb":  12.909
+                                      },
+                           "top_by_private_commit":  [
+                                                         {
+                                                             "Id":  14436,
+                                                             "ProcessName":  "firefox",
+                                                             "private_gb":  0.875,
+                                                             "working_set_gb":  0.841,
+                                                             "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                         },
+                                                         {
+                                                             "Id":  9400,
+                                                             "ProcessName":  "firefox",
+                                                             "private_gb":  0.623,
+                                                             "working_set_gb":  0.496,
+                                                             "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                         },
+                                                         {
+                                                             "Id":  19412,
+                                                             "ProcessName":  "firefox",
+                                                             "private_gb":  0.606,
+                                                             "working_set_gb":  0.463,
+                                                             "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                         },
+                                                         {
+                                                             "Id":  4456,
+                                                             "ProcessName":  "MsMpEng",
+                                                             "private_gb":  0.438,
+                                                             "working_set_gb":  0.325,
+                                                             "Path":  null
+                                                         },
+                                                         {
+                                                             "Id":  8948,
+                                                             "ProcessName":  "firefox",
+                                                             "private_gb":  0.407,
+                                                             "working_set_gb":  0.33,
+                                                             "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                         },
+                                                         {
+                                                             "Id":  18308,
+                                                             "ProcessName":  "steamwebhelper",
+                                                             "private_gb":  0.4,
+                                                             "working_set_gb":  0.247,
+                                                             "Path":  "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe"
+                                                         },
+                                                         {
+                                                             "Id":  17584,
+                                                             "ProcessName":  "firefox",
+                                                             "private_gb":  0.368,
+                                                             "working_set_gb":  0.391,
+                                                             "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                         },
+                                                         {
+                                                             "Id":  19092,
+                                                             "ProcessName":  "firefox",
+                                                             "private_gb":  0.328,
+                                                             "working_set_gb":  0.332,
+                                                             "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                         },
+                                                         {
+                                                             "Id":  16188,
+                                                             "ProcessName":  "Discord",
+                                                             "private_gb":  0.323,
+                                                             "working_set_gb":  0.334,
+                                                             "Path":  "C:\\Users\\patri\\AppData\\Local\\Discord\\app-1.0.9248\\Discord.exe"
+                                                         },
+                                                         {
+                                                             "Id":  24640,
+                                                             "ProcessName":  "firefox",
+                                                             "private_gb":  0.264,
+                                                             "working_set_gb":  0.297,
+                                                             "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                         },
+                                                         {
+                                                             "Id":  10524,
+                                                             "ProcessName":  "explorer",
+                                                             "private_gb":  0.243,
+                                                             "working_set_gb":  0.404,
+                                                             "Path":  "C:\\WINDOWS\\Explorer.EXE"
+                                                         },
+                                                         {
+                                                             "Id":  15468,
+                                                             "ProcessName":  "Discord",
+                                                             "private_gb":  0.201,
+                                                             "working_set_gb":  0.107,
+                                                             "Path":  "C:\\Users\\patri\\AppData\\Local\\Discord\\app-1.0.9248\\Discord.exe"
+                                                         },
+                                                         {
+                                                             "Id":  8460,
+                                                             "ProcessName":  "WindowsTerminal",
+                                                             "private_gb":  0.198,
+                                                             "working_set_gb":  0.173,
+                                                             "Path":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsTerminal_1.24.11911.0_x64__8wekyb3d8bbwe\\WindowsTerminal.exe"
+                                                         },
+                                                         {
+                                                             "Id":  10496,
+                                                             "ProcessName":  "GalaxyClient",
+                                                             "private_gb":  0.192,
+                                                             "working_set_gb":  0.197,
+                                                             "Path":  "C:\\Program Files (x86)\\GOG Galaxy\\GalaxyClient.exe"
+                                                         },
+                                                         {
+                                                             "Id":  18448,
+                                                             "ProcessName":  "firefox",
+                                                             "private_gb":  0.188,
+                                                             "working_set_gb":  0.255,
+                                                             "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                         },
+                                                         {
+                                                             "Id":  20756,
+                                                             "ProcessName":  "msedgewebview2",
+                                                             "private_gb":  0.169,
+                                                             "working_set_gb":  0.078,
+                                                             "Path":  "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\150.0.4078.65\\msedgewebview2.exe"
+                                                         },
+                                                         {
+                                                             "Id":  16924,
+                                                             "ProcessName":  "codex",
+                                                             "private_gb":  0.163,
+                                                             "working_set_gb":  0.176,
+                                                             "Path":  "C:\\Users\\patri\\AppData\\Roaming\\npm\\node_modules\\@openai\\codex\\node_modules\\@openai\\codex-win32-x64\\vendor\\x86_64-pc-windows-msvc\\bin\\codex.exe"
+                                                         },
+                                                         {
+                                                             "Id":  12360,
+                                                             "ProcessName":  "msedgewebview2",
+                                                             "private_gb":  0.161,
+                                                             "working_set_gb":  0.008,
+                                                             "Path":  "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\150.0.4078.65\\msedgewebview2.exe"
+                                                         },
+                                                         {
+                                                             "Id":  1168,
+                                                             "ProcessName":  "codex",
+                                                             "private_gb":  0.157,
+                                                             "working_set_gb":  0.186,
+                                                             "Path":  "C:\\Users\\patri\\AppData\\Roaming\\npm\\node_modules\\@openai\\codex\\node_modules\\@openai\\codex-win32-x64\\vendor\\x86_64-pc-windows-msvc\\bin\\codex.exe"
+                                                         },
+                                                         {
+                                                             "Id":  19336,
+                                                             "ProcessName":  "codex",
+                                                             "private_gb":  0.153,
+                                                             "working_set_gb":  0.18,
+                                                             "Path":  "C:\\Users\\patri\\AppData\\Roaming\\npm\\node_modules\\@openai\\codex\\node_modules\\@openai\\codex-win32-x64\\vendor\\x86_64-pc-windows-msvc\\bin\\codex.exe"
+                                                         }
+                                                     ],
+                           "top_by_working_set":  [
+                                                      {
+                                                          "Id":  2992,
+                                                          "ProcessName":  "Memory Compression",
+                                                          "working_set_gb":  0.864,
+                                                          "private_gb":  0.002,
+                                                          "Path":  null
+                                                      },
+                                                      {
+                                                          "Id":  14436,
+                                                          "ProcessName":  "firefox",
+                                                          "working_set_gb":  0.841,
+                                                          "private_gb":  0.875,
+                                                          "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                      },
+                                                      {
+                                                          "Id":  9400,
+                                                          "ProcessName":  "firefox",
+                                                          "working_set_gb":  0.496,
+                                                          "private_gb":  0.623,
+                                                          "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                      },
+                                                      {
+                                                          "Id":  19412,
+                                                          "ProcessName":  "firefox",
+                                                          "working_set_gb":  0.463,
+                                                          "private_gb":  0.606,
+                                                          "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                      },
+                                                      {
+                                                          "Id":  10524,
+                                                          "ProcessName":  "explorer",
+                                                          "working_set_gb":  0.404,
+                                                          "private_gb":  0.243,
+                                                          "Path":  "C:\\WINDOWS\\Explorer.EXE"
+                                                      },
+                                                      {
+                                                          "Id":  17584,
+                                                          "ProcessName":  "firefox",
+                                                          "working_set_gb":  0.391,
+                                                          "private_gb":  0.368,
+                                                          "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                      },
+                                                      {
+                                                          "Id":  16188,
+                                                          "ProcessName":  "Discord",
+                                                          "working_set_gb":  0.334,
+                                                          "private_gb":  0.323,
+                                                          "Path":  "C:\\Users\\patri\\AppData\\Local\\Discord\\app-1.0.9248\\Discord.exe"
+                                                      },
+                                                      {
+                                                          "Id":  19092,
+                                                          "ProcessName":  "firefox",
+                                                          "working_set_gb":  0.332,
+                                                          "private_gb":  0.328,
+                                                          "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                      },
+                                                      {
+                                                          "Id":  8948,
+                                                          "ProcessName":  "firefox",
+                                                          "working_set_gb":  0.33,
+                                                          "private_gb":  0.407,
+                                                          "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                      },
+                                                      {
+                                                          "Id":  4456,
+                                                          "ProcessName":  "MsMpEng",
+                                                          "working_set_gb":  0.325,
+                                                          "private_gb":  0.438,
+                                                          "Path":  null
+                                                      },
+                                                      {
+                                                          "Id":  24640,
+                                                          "ProcessName":  "firefox",
+                                                          "working_set_gb":  0.297,
+                                                          "private_gb":  0.264,
+                                                          "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                      },
+                                                      {
+                                                          "Id":  18448,
+                                                          "ProcessName":  "firefox",
+                                                          "working_set_gb":  0.255,
+                                                          "private_gb":  0.188,
+                                                          "Path":  "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+                                                      },
+                                                      {
+                                                          "Id":  18308,
+                                                          "ProcessName":  "steamwebhelper",
+                                                          "working_set_gb":  0.247,
+                                                          "private_gb":  0.4,
+                                                          "Path":  "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe"
+                                                      },
+                                                      {
+                                                          "Id":  13728,
+                                                          "ProcessName":  "codex",
+                                                          "working_set_gb":  0.198,
+                                                          "private_gb":  0.132,
+                                                          "Path":  "C:\\Users\\patri\\AppData\\Roaming\\npm\\node_modules\\@openai\\codex\\node_modules\\@openai\\codex-win32-x64\\vendor\\x86_64-pc-windows-msvc\\bin\\codex.exe"
+                                                      },
+                                                      {
+                                                          "Id":  10496,
+                                                          "ProcessName":  "GalaxyClient",
+                                                          "working_set_gb":  0.197,
+                                                          "private_gb":  0.192,
+                                                          "Path":  "C:\\Program Files (x86)\\GOG Galaxy\\GalaxyClient.exe"
+                                                      },
+                                                      {
+                                                          "Id":  2748,
+                                                          "ProcessName":  "WhatsApp.Root",
+                                                          "working_set_gb":  0.191,
+                                                          "private_gb":  0.072,
+                                                          "Path":  "C:\\Program Files\\WindowsApps\\5319275A.WhatsAppDesktop_2.2627.101.0_x64__cv1g1gvanyjgm\\WhatsApp.Root.exe"
+                                                      },
+                                                      {
+                                                          "Id":  1168,
+                                                          "ProcessName":  "codex",
+                                                          "working_set_gb":  0.186,
+                                                          "private_gb":  0.157,
+                                                          "Path":  "C:\\Users\\patri\\AppData\\Roaming\\npm\\node_modules\\@openai\\codex\\node_modules\\@openai\\codex-win32-x64\\vendor\\x86_64-pc-windows-msvc\\bin\\codex.exe"
+                                                      },
+                                                      {
+                                                          "Id":  19336,
+                                                          "ProcessName":  "codex",
+                                                          "working_set_gb":  0.18,
+                                                          "private_gb":  0.153,
+                                                          "Path":  "C:\\Users\\patri\\AppData\\Roaming\\npm\\node_modules\\@openai\\codex\\node_modules\\@openai\\codex-win32-x64\\vendor\\x86_64-pc-windows-msvc\\bin\\codex.exe"
+                                                      },
+                                                      {
+                                                          "Id":  16924,
+                                                          "ProcessName":  "codex",
+                                                          "working_set_gb":  0.176,
+                                                          "private_gb":  0.163,
+                                                          "Path":  "C:\\Users\\patri\\AppData\\Roaming\\npm\\node_modules\\@openai\\codex\\node_modules\\@openai\\codex-win32-x64\\vendor\\x86_64-pc-windows-msvc\\bin\\codex.exe"
+                                                      },
+                                                      {
+                                                          "Id":  8460,
+                                                          "ProcessName":  "WindowsTerminal",
+                                                          "working_set_gb":  0.173,
+                                                          "private_gb":  0.198,
+                                                          "Path":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsTerminal_1.24.11911.0_x64__8wekyb3d8bbwe\\WindowsTerminal.exe"
+                                                      }
+                                                  ]
+                       },
+    "cleanup_passed":  true
+}

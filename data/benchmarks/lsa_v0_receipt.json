@@ -1,0 +1,134 @@
+{
+  "protocol_id": "loop_schedule_algebra_v0",
+  "status": "complete_with_registered_boundary_nontransfer",
+  "claim_scope": "trainability-boundary and schedule-cost measurement only",
+  "config": {
+    "path": "configs/loop_schedule_algebra_v0.json",
+    "sha256": "86bc4bf4e7c1480722c8b377e0ec028958010225d331a748e8917b8d433ff7f1",
+    "registration_commit": "c4163e653330e63041635a6d18c0515bc9ea60b6"
+  },
+  "implementation": {
+    "kappa_correction_commit": "d5f93e9a88eb6617510a99253d3cd8c416a34c0c",
+    "invalid_attempt_retained": "experiments/loop_schedule_algebra_v0_invalid_double_normalization",
+    "invalid_attempt_used_for_predictions": false,
+    "directional_kappa_range": "0<=kappa<=R_g",
+    "residual_scale_applied_once_in": "B(A)"
+  },
+  "source_pins": {
+    "deeploop": "arXiv:2607.13491",
+    "hrm_official_commit": "ac15626f8db096a63c775b84c9dc868776a6feda",
+    "hrm_official_source_sha256": "756631b3c825acc97bae655876d4acdc8416b7bc8cc17531c44b6265a4474e92",
+    "hrm_text_commit": "01ef01cab5b746c8419c602424ba2d49f477ab21",
+    "hrm_text_schedule_sha256": "db73f328451eeed9132de8c5689f7dee53b85526faf559355dc66b1aab248a19",
+    "hrm_text_transformer_sha256": "6515d23bf533625b77ec88e0d192b2ed63110cc6283757fc127ef8a4a0c79f4a",
+    "trm_official_commit": "c01103738605ba39d1430519b1ee0c62f4c707f8",
+    "trm_official_source_sha256": "05d37524062ac6b7d958dbd7a173f3f7c99eaaa0b60cf78c57638a82ad185b46",
+    "gym_base_commit": "89a1f69"
+  },
+  "gamma_phase": {
+    "execution_git_head": "d5f93e9a88eb6617510a99253d3cd8c416a34c0c",
+    "artifact_commit": "19748fbdc8695ad7a4ca28f33bf64923c3df63c7",
+    "records_path": "experiments/loop_schedule_algebra_v0/gamma_records.jsonl",
+    "record_count": 27,
+    "records_sha256": "d614837dff4dc7fab220c69fb49d5ccc05b19da9a33f26be9247217fa9c3482d",
+    "result_sha256": "fc32c99c829e6a99b53bce3a24be6aa24ba9fb2cff0ed14cc380696cb8d3de4a",
+    "range_violations": 0,
+    "max_seed_spread": 1.0923151107646971,
+    "stop_branch": "none",
+    "fits": {
+      "tied": {
+        "gamma": 0.4229090878632265,
+        "r_squared": 0.994025211094853,
+        "p1_confirmed": false
+      },
+      "untied": {
+        "gamma": 0.0261185912523148,
+        "r_squared": 0.9025713885228864,
+        "p1_confirmed": true
+      }
+    },
+    "p3": {
+      "confirmed_all_seeds": true,
+      "one_step": [1.0, 1.0, 1.0],
+      "last_k": [1.9068374555691334, 1.9049432622588998, 1.8889917763997222],
+      "full": [2.3370315726883932, 2.331818851309535, 2.3520844206927434]
+    }
+  },
+  "prediction": {
+    "seal_commit": "0febbd4b4accddf40f11e42ca0b7e58647ccde9a",
+    "path": "experiments/loop_schedule_algebra_v0/p2_predictions.json",
+    "sha256": "fa8f23350a357a4b4a0ebe7d0c381147214755183465256dc82011c336613f28",
+    "gamma_binding": 0.4229090878632265,
+    "predicted_p_star": 0.3557272719658066,
+    "outcomes_observed_at_seal": false
+  },
+  "boundary_phase": {
+    "execution_git_head": "0febbd4b4accddf40f11e42ca0b7e58647ccde9a",
+    "records_path": "experiments/loop_schedule_algebra_v0/boundary_records.jsonl",
+    "record_count": 66,
+    "records_sha256": "043bdc4963a8dd7d92d5f66c8ba72cacf4b52d594c1baae37acaa43a2333aef6",
+    "result_sha256": "d58cce750a1168e8e92e500de81852eb630d733b5a06fa476c15a77ffb37ad69",
+    "all_registered_runs_stable": true,
+    "outcomes": [
+      {
+        "rounds": 6,
+        "predicted_boundary": 0.3557272719658066,
+        "machine_boundary": 0.15,
+        "scientific_boundary": "<=0.15 (left-censored)",
+        "confirmed": false
+      },
+      {
+        "rounds": 12,
+        "predicted_boundary": 0.3557272719658066,
+        "machine_boundary": 0.15,
+        "scientific_boundary": "<=0.15 (left-censored)",
+        "confirmed": false
+      }
+    ],
+    "p2_confirmed": false,
+    "headline": "boundary_nontransfer"
+  },
+  "resources": {
+    "caps": {
+      "ram_mb": 2048,
+      "cpu_pct": 50,
+      "io_abort_mb_s": 50,
+      "io_sustained_samples": 3,
+      "timeout_seconds": 1800
+    },
+    "gamma": {
+      "status": "completed",
+      "peak_ram_mb": 890.016,
+      "peak_io_mb_s": 10.456,
+      "receipt_sha256": "8e2ac260af80c3ec83b7c6e06ee7ad1dca25ada0a27e23c09109185ed6675e6f",
+      "cleanup_passed": true
+    },
+    "boundary": {
+      "status": "completed",
+      "peak_ram_mb": 778.133,
+      "peak_io_mb_s": 12.553,
+      "receipt_sha256": "384f33216b400954dbfcc178939e5f1282495689d1f88b4bc519cac9e132439d",
+      "cleanup_passed": true
+    },
+    "post_run_cleanup": {
+      "sha256": "1ea79051f1f38ead83d83be2355a6942628c436fb363f64f3f6b0d8e57a4cf80",
+      "cleanup_passed": true,
+      "lingering_owned_pids": 0,
+      "suspect_training_processes": 0,
+      "gpu_compute_apps": 0
+    }
+  },
+  "verification": {
+    "full_test_suite": "190 passed in 59.00s",
+    "records_rehashed": true,
+    "prediction_preceded_boundary_run": true,
+    "unrelated_worktree_files_staged": false
+  },
+  "report": {
+    "path": "reports/looped_transformer_algebra_v0.md",
+    "sha256": "1d0caf8a4b46b82beb4b309b30d41924c800acae8a06312b112d07d71a213448",
+    "figure_path": "reports/figures/lsa_v0_gamma.svg",
+    "figure_sha256": "5a4b57554c72acdfbe9f7d780502743afe8e497201586d78d5cd2bb8e41166c7"
+  },
+  "nonclaim": "no prediction about task accuracy, sample efficiency, or reasoning quality anywhere in the campaign; the algebra prognosticates trainability boundaries and cost only."
+}

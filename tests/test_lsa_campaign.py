@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 
 from research_gym.scripts.bench_loop_schedule_algebra import (
@@ -75,3 +76,23 @@ def test_stability_rule_rejects_gradient_and_loss_explosions() -> None:
     assert _is_stable(config, base)
     assert not _is_stable(config, {**base, "max_gradient_norm": 101.0})
     assert not _is_stable(config, {**base, "final_loss": 11.0})
+
+
+def test_sealed_receipt_rehashes_records_and_prediction() -> None:
+    receipt = json.loads((ROOT / "data" / "benchmarks" / "lsa_v0_receipt.json").read_text())
+
+    for section, key in (
+        ("gamma_phase", "records_path"),
+        ("boundary_phase", "records_path"),
+        ("prediction", "path"),
+    ):
+        path = ROOT / receipt[section][key]
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == receipt[section]["sha256" if section == "prediction" else "records_sha256"]
+
+    boundary_rows = [
+        json.loads(line)
+        for line in (ROOT / receipt["boundary_phase"]["records_path"]).read_text().splitlines()
+    ]
+    assert len(boundary_rows) == receipt["boundary_phase"]["record_count"] == 66
+    assert all(row["stable"] for row in boundary_rows)
+    assert not receipt["boundary_phase"]["p2_confirmed"]

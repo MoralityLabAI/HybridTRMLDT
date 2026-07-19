@@ -1,0 +1,27 @@
+﻿{
+    "phase":  "boundary",
+    "status":  "completed",
+    "abort_reason":  null,
+    "started_utc":  "2026-07-19T20:20:40.6763453Z",
+    "finished_utc":  "2026-07-19T20:21:58.2521135Z",
+    "elapsed_seconds":  77.576,
+    "caps":  {
+                 "ram_mb":  2048,
+                 "cpu_pct":  50,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "timeout_seconds":  1800
+             },
+    "hard_caps":  {
+                      "process_memory":  true,
+                      "cpu_rate":  true,
+                      "io":  false
+                  },
+    "io_enforcement":  "abort after three consecutive one-second telemetry samples above threshold",
+    "peak_ram_mb":  778.133,
+    "peak_io_mb_s":  12.553,
+    "samples":  64,
+    "owned_pid":  25400,
+    "lingering_owned_process":  false,
+    "cleanup_passed":  true
+}
