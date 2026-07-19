@@ -1,0 +1,39 @@
+{
+  "claim_boundary": "toy storyworld benchmark certifies claim/evidence channels, not neural feature identity; no general-alignment or oversight-sufficiency claim.",
+  "config_sha256": "21c2455a627742bc88481ed9047d59d3d1e4381d294d2c1ec20390bcb1799761",
+  "conformance_path": "data\\benchmarks\\attested_provenance_gate_v1_conformance.json",
+  "conformance_sha256": "bdef2bd43472dc47c760123d0c9cf177b5cba0c7e325b0e6314a659438059f6a",
+  "decision_receipt_failure_count": 0,
+  "records_path": "data\\benchmarks\\attested_provenance_gate_v1_records.jsonl",
+  "records_reverified": true,
+  "records_sha256": "c0e294883af1a4e4258ee6b96cc8b74a26614358b885f101d5a086e419fc8c9c",
+  "registry_receipts": [
+    {
+      "file_sha256": "f3a46bdc265e39b454a2de2a03e23f6b95b4f9eb52799e97d40f025a46b66fb6",
+      "path": "data\\benchmarks\\attested_provenance_gate_v1_registries\\seed_17_registry.json",
+      "record_count": 550,
+      "registry_sha256": "8cff363203e616c0d99801c1f6f9fbb62943562a90792c29d1ba0e5e51cff5b5",
+      "seed": 17
+    },
+    {
+      "file_sha256": "86262228fd6b188fd5dc96ef7ed802871a0c06b0d8567f13dcedbe8aa26580a8",
+      "path": "data\\benchmarks\\attested_provenance_gate_v1_registries\\seed_29_registry.json",
+      "record_count": 579,
+      "registry_sha256": "a55e664a1f92647ab72595f1a89e2318ab3cd3b77483fae801cdca0b45180a7c",
+      "seed": 29
+    },
+    {
+      "file_sha256": "0870cc66b6fe4c827da8fb457433fabd7e6f509b49805764411993d1d0f55496",
+      "path": "data\\benchmarks\\attested_provenance_gate_v1_registries\\seed_43_registry.json",
+      "record_count": 523,
+      "registry_sha256": "a43e92b1e165eaa6616f7f193b9d4b840bf2af4f868af0e1f6a90b6a0867f7b0",
+      "seed": 43
+    }
+  ],
+  "report_path": "reports\\attested_provenance_gate_v1.md",
+  "report_sha256": "1bcb8460a572339e3ff9986d34e861e5e844c2a1ee6430eda8d128e89a2dde16",
+  "results_path": "data\\benchmarks\\attested_provenance_gate_v1_results.json",
+  "results_sha256": "8b1ddcbc49c9d26b68e210389039e2297128c03552b1a240295b82990d5feb72",
+  "schema": "attested_provenance_gate_result_receipt_v1",
+  "split_overlap": 0
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "attested_provenance_gate_execution_receipt_v1",
+  "study_id": "attested_provenance_gate_v1",
+  "producer_commit": "562da23",
+  "frozen_protocol_commit": "71e13d5",
+  "conformance_commit": "ceda86d",
+  "smoke_commit": "1260a7e",
+  "post_seal_cache_commit": "e9b6705",
+  "config_sha256": "21c2455a627742bc88481ed9047d59d3d1e4381d294d2c1ec20390bcb1799761",
+  "attempts": [
+    {
+      "attempt": 1,
+      "producer_commit": "1260a7e",
+      "wrapper_exit_code": 124,
+      "wrapper_timeout_seconds": 3600,
+      "sealed_result_present": false,
+      "classification": "construction_runtime_failure",
+      "diagnosis": "Semantically unused probe audits were refit for every arm-round."
+    },
+    {
+      "attempt": 2,
+      "producer_commit": "562da23",
+      "wrapper_exit_code": 124,
+      "wrapper_timeout_seconds": 3600,
+      "sealed_result_present": true,
+      "process_completion_observed": false,
+      "classification": "atomic_seal_completed_before_output_collection_timeout",
+      "note": "The result, records, report, receipt, registries, experiment copy, and Control-Harness mirror share the same pre-timeout write time. The shell wrapper killed output collection after the atomic seal, so scientific acceptance depends on post-seal artifact recomputation rather than an observed zero process exit."
+    }
+  ],
+  "sealed_artifacts": {
+    "result_sha256": "8b1ddcbc49c9d26b68e210389039e2297128c03552b1a240295b82990d5feb72",
+    "records_sha256": "c0e294883af1a4e4258ee6b96cc8b74a26614358b885f101d5a086e419fc8c9c",
+    "report_sha256": "1bcb8460a572339e3ff9986d34e861e5e844c2a1ee6430eda8d128e89a2dde16",
+    "conformance_sha256": "bdef2bd43472dc47c760123d0c9cf177b5cba0c7e325b0e6314a659438059f6a",
+    "record_count": 10752
+  },
+  "post_seal_recomputation": {
+    "result_hash_matches": true,
+    "records_hash_matches": true,
+    "report_hash_matches": true,
+    "all_registry_file_hashes_match": true,
+    "embedded_records_hash_matches": true,
+    "decision_receipt_failure_count": 0,
+    "attestation_decision_receipt_failure_count": 0,
+    "split_overlap": 0,
+    "v1_replay_canonical_match": true,
+    "registered_tampers_detected": 3,
+    "registered_tamper_count": 3,
+    "attestation_tests_passed": 5,
+    "full_repository_tests_passed": 175,
+    "full_repository_test_failures": 0
+  },
+  "claim_boundary": "toy storyworld benchmark certifies claim/evidence channels, not neural feature identity; no general-alignment or oversight-sufficiency claim."
+}
