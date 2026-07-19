@@ -15,7 +15,34 @@ def visits(instance: ArchitectureInstance) -> tuple[ExpandedVisit, ...]:
 
 
 def gradient_visible_visits(instance: ArchitectureInstance) -> tuple[ExpandedVisit, ...]:
-    return selected_visits(instance.word, instance.gradient_mask)
+    visits_ = instance.word.expand()
+    selected = instance.effective_gradient_policy.parameter_positions(visits_)
+    return tuple(visit for visit in visits_ if visit.position in selected)
+
+
+def retained_state_edges(instance: ArchitectureInstance) -> frozenset[int]:
+    visits_ = instance.word.expand()
+    return instance.effective_gradient_policy.state_edge_positions(visits_)
+
+
+def applied_parameter_count(instance: ArchitectureInstance) -> int | None:
+    total = 0
+    for visit in visits(instance):
+        count = instance.modules[visit.symbol.module].parameter_count
+        if count is None:
+            return None
+        total += count
+    return total
+
+
+def gradient_applied_parameter_count(instance: ArchitectureInstance) -> int | None:
+    total = 0
+    for visit in gradient_visible_visits(instance):
+        count = instance.modules[visit.symbol.module].parameter_count
+        if count is None:
+            return None
+        total += count
+    return total
 
 
 def gradient_visible_labels(instance: ArchitectureInstance) -> tuple[str, ...]:

@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Mapping
 
+from .gradient_policy import GradientPolicy
 from .schedule import GradientMask, Word
 
 
@@ -83,6 +84,7 @@ class ArchitectureInstance:
     word: Word
     gradient_mask: GradientMask
     supervision: tuple[SupervisionPoint, ...]
+    gradient_policy: GradientPolicy | None = None
     carry: CarrySpec = CarrySpec()
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
@@ -94,6 +96,10 @@ class ArchitectureInstance:
         visit_count = len(self.word.expand())
         if any(point.visit_position not in range(visit_count) for point in self.supervision):
             raise ValueError("supervision point is outside the schedule")
+
+    @property
+    def effective_gradient_policy(self) -> GradientPolicy:
+        return self.gradient_policy or GradientPolicy.from_legacy(self.gradient_mask)
 
 
 def _verified(source: str, locator: str, sha256: str, note: str = "") -> Provenance:
