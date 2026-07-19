@@ -1,0 +1,17 @@
+{
+  "config_path": "configs/loop_schedule_algebra_v0.json",
+  "config_sha256": "86bc4bf4e7c1480722c8b377e0ec028958010225d331a748e8917b8d433ff7f1",
+  "registered_utc": "2026-07-19T00:00:00Z",
+  "registration_status": "frozen_before_outcomes",
+  "source_pins": {
+    "deeploop": "arXiv:2607.13491",
+    "hrm_official_commit": "ac15626f8db096a63c775b84c9dc868776a6feda",
+    "hrm_official_source_sha256": "756631b3c825acc97bae655876d4acdc8416b7bc8cc17531c44b6265a4474e92",
+    "hrm_text_commit": "01ef01cab5b746c8419c602424ba2d49f477ab21",
+    "hrm_text_schedule_sha256": "db73f328451eeed9132de8c5689f7dee53b85526faf559355dc66b1aab248a19",
+    "hrm_text_transformer_sha256": "6515d23bf533625b77ec88e0d192b2ed63110cc6283757fc127ef8a4a0c79f4a",
+    "trm_official_commit": "c01103738605ba39d1430519b1ee0c62f4c707f8",
+    "trm_official_source_sha256": "05d37524062ac6b7d958dbd7a173f3f7c99eaaa0b60cf78c57638a82ad185b46",
+    "gym_base_commit": "89a1f69"
+  }
+}

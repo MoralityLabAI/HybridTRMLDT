@@ -1,0 +1,65 @@
+{
+  "protocol_id": "loop_schedule_algebra_v0",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-19T00:00:00Z",
+  "claim_scope": "trainability-boundary and schedule-cost measurement only",
+  "toy": {
+    "task": "deterministic_signed_permutation_regression",
+    "hidden_size": 128,
+    "block_linear_layers": 2,
+    "batch_size": 8,
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "progress_unit": "state_visit_exposures",
+    "progress_target": 4096,
+    "checkpoint_every_steps": 64,
+    "measurement_batch_size": 8
+  },
+  "kappa_probe": {
+    "rounds": [2, 4, 8],
+    "seeds": [101, 103, 107],
+    "power_iterations": 5,
+    "alpha": 1.0,
+    "beta": 0.25,
+    "regimes": ["tied", "untied"]
+  },
+  "p1": {
+    "tied_gamma_interval": [0.7, 1.0],
+    "untied_gamma_interval": [0.0, 0.3]
+  },
+  "p2": {
+    "heldout_rounds": [6, 12],
+    "p_grid": [0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65],
+    "grid_step": 0.05,
+    "scaling": "alpha=1,beta=R^(-2p)",
+    "stable_seed_rule": "finite and max_gradient_norm<=100 and final_loss/initial_loss<=10",
+    "stable_cell_rule": "at least two of three seeds stable",
+    "boundary_rule": "lowest p for which the cell and every larger p-grid cell are stable",
+    "confirmation_tolerance": 0.05
+  },
+  "p3": {
+    "rounds": 8,
+    "masks": {
+      "one_step": 1,
+      "last_k": 4,
+      "full": 8
+    },
+    "prediction": "kappa is nondecreasing as visible rounds increase"
+  },
+  "stop_branches": {
+    "max_across_seed_kappa_spread": 10.0,
+    "minimum_power_law_r_squared": 0.8,
+    "on_estimator_instability": "stop_without_gamma_fits_and_publish_raw_traces",
+    "on_poor_power_law": "stop_before_p2_and_publish_kappa_curves",
+    "on_any_p2_miss": "report_nontransfer_as_headline"
+  },
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "timeout_seconds": 1800,
+    "device": "cuda_if_available_else_cpu"
+  }
+}
