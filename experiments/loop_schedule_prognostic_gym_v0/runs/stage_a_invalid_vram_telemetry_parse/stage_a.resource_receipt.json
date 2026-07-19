@@ -1,0 +1,32 @@
+﻿{
+    "stage":  "A",
+    "status":  "construction_failure",
+    "abort_reason":  "No se puede convertir el valor \"[N/A]\" al tipo \"System.Double\". Error: \"La cadena de entrada no tiene el formato correcto.\"",
+    "started_utc":  "2026-07-19T23:25:35.0660504Z",
+    "finished_utc":  "2026-07-19T23:25:42.9513044Z",
+    "elapsed_seconds":  7.885,
+    "caps":  {
+                 "ram_mb":  2048,
+                 "cpu_pct":  50,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_mb":  1500,
+                 "timeout_seconds":  1800
+             },
+    "hard_caps":  {
+                      "process_memory":  true,
+                      "cpu_rate":  true,
+                      "io":  false,
+                      "vram":  false
+                  },
+    "telemetry_enforcement":  "abort on sustained IO or sampled VRAM threshold",
+    "peak_ram_mb":  356.605,
+    "avg_ram_mb":  305.674,
+    "peak_io_mb_s":  4.928,
+    "peak_vram_mb":  0,
+    "avg_cpu_pct":  7.096,
+    "samples":  5,
+    "owned_pid":  29916,
+    "lingering_owned_process":  false,
+    "cleanup_passed":  true
+}

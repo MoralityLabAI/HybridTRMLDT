@@ -120,7 +120,11 @@ try {
             $apps = & nvidia-smi --query-compute-apps=pid,used_gpu_memory --format=csv,noheader,nounits 2>$null
             foreach ($line in @($apps)) {
                 $parts = $line -split ","
-                if ($parts.Count -ge 2 -and $parts[0].Trim() -eq [string]$proc.Id) {
+                if (
+                    $parts.Count -ge 2 -and
+                    $parts[0].Trim() -eq [string]$proc.Id -and
+                    $parts[1].Trim() -match "^[0-9]+(?:\.[0-9]+)?$"
+                ) {
                     $used = [double]$parts[1].Trim()
                     $peakVramMb = [Math]::Max($peakVramMb, $used)
                 }
