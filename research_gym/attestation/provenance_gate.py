@@ -86,6 +86,29 @@ class RSIAttestationBackend:
         module_path = Path(self.attestation.__file__).resolve()
         if self.root not in module_path.parents:
             raise ImportError(f"loaded attestation module outside frozen root: {module_path}")
+        self._registry_sha256: dict[int, str] = {}
+        self._certificates: dict[tuple[int, str], Any | None] = {}
+
+    def registry_sha256(self, registry: Any) -> str:
+        """Cache the canonical root of an immutable, write-once registry."""
+
+        key = id(registry)
+        if key not in self._registry_sha256:
+            self._registry_sha256[key] = registry.sha256
+        return self._registry_sha256[key]
+
+    def certificate(self, registry: Any, site_id: str) -> Any | None:
+        """Cache stable positive and negative certification lookups."""
+
+        key = (id(registry), site_id)
+        if key not in self._certificates:
+            try:
+                self._certificates[key] = registry.certify(
+                    site_id, requested_use=REQUESTED_USE
+                )
+            except KeyError:
+                self._certificates[key] = None
+        return self._certificates[key]
 
     @staticmethod
     def mechanics_identity(config: Mapping[str, object]) -> str:
@@ -229,14 +252,12 @@ class RSIAttestationBackend:
         payload = self.claim_payload(example, action, mechanics_sha256)
         payload_sha256 = canonical_sha256(payload)
         site_id = self.site_id(payload)
-        try:
-            certificate = registry.certify(site_id, requested_use=REQUESTED_USE)
-        except KeyError:
-            certificate = None
+        certificate = self.certificate(registry, site_id)
+        registry_sha256 = self.registry_sha256(registry)
         material: dict[str, object] = {
             "schema": "attested_storyworld_claim_envelope_v1",
             "site_id": site_id,
-            "registry_sha256": registry.sha256,
+            "registry_sha256": registry_sha256,
             "payload": payload,
             "payload_sha256": payload_sha256,
             "anchor_record_sha256": (
@@ -260,6 +281,7 @@ class RSIAttestationBackend:
         expected_payload = self.claim_payload(example, action, mechanics_sha256)
         expected_payload_sha256 = canonical_sha256(expected_payload)
         expected_site_id = self.site_id(expected_payload)
+        registry_sha256 = self.registry_sha256(registry)
         certificate = None
         if claimed_soundness != "env_sound_dead":
             failures.append("claim:not_env_sound_dead")
@@ -271,7 +293,7 @@ class RSIAttestationBackend:
                 failures.append("envelope:hash_mismatch")
             if envelope.get("issuer_status") != "issued":
                 failures.append("envelope:not_issued")
-            if envelope.get("registry_sha256") != registry.sha256:
+            if envelope.get("registry_sha256") != registry_sha256:
                 failures.append("registry:root_mismatch")
             if envelope.get("payload") != expected_payload:
                 failures.append("payload:binding_mismatch")
@@ -281,7 +303,7 @@ class RSIAttestationBackend:
                 failures.append("anchor:site_mismatch")
             try:
                 record = registry.get(str(envelope.get("site_id", "")))
-                certificate = registry.certify(record.site_id, requested_use=REQUESTED_USE)
+                certificate = self.certificate(registry, record.site_id)
             except KeyError:
                 failures.append("anchor:not_registered")
             else:
@@ -290,15 +312,17 @@ class RSIAttestationBackend:
                     failures.append("anchor:binding_mismatch")
                 if record.selected_band != SELECTED_BAND:
                     failures.append("anchor:band_failover")
-                if envelope.get("anchor_record_sha256") != certificate.record_sha256:
+                if certificate is None:
+                    failures.append("anchor:not_certified")
+                elif envelope.get("anchor_record_sha256") != certificate.record_sha256:
                     failures.append("anchor:record_hash_mismatch")
-                if not certificate.authorized:
+                if certificate is not None and not certificate.authorized:
                     failures.extend(f"certificate:{item}" for item in certificate.failures)
         failures = sorted(set(failures))
         decision_material = {
             "schema": "attested_storyworld_gate_decision_v1",
             "site_id": expected_site_id,
-            "registry_sha256": registry.sha256,
+            "registry_sha256": registry_sha256,
             "payload_sha256": expected_payload_sha256,
             "authorized": not failures,
             "failures": failures,
@@ -396,4 +420,3 @@ def run_rsi_conformance(
         "fixture_authorized": fixture_certificate.authorized,
         "passed": not failures,
     }
-

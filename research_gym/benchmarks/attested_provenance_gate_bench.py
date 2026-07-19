@@ -167,7 +167,7 @@ def _attested_rollout(
                 "attestation_failures": gate_decision["failures"],
                 "attestation_decision_sha256": gate_decision["decision_sha256"],
                 "attestation_decision_receipt": gate_decision,
-                "registry_sha256": registry.sha256,
+                "registry_sha256": backend.registry_sha256(registry),
             }
         )
     return records
@@ -500,7 +500,7 @@ def run_attested_provenance_benchmark(
             {
                 "seed": seed,
                 "path": str(registry_path.relative_to(root)),
-                "registry_sha256": registry.sha256,
+                "registry_sha256": backend.registry_sha256(registry),
                 "file_sha256": file_digest,
                 "record_count": len(registry.to_dict()["records"]),
             }
