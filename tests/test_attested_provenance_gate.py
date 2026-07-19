@@ -43,23 +43,24 @@ def _backend():
 
 def _examples():
     env = CoupledStoryworldEnv()
-    rows = []
     for state in env.all_states():
         if env.terminal(state) or env.target(state):
             continue
-        rows.append(
-            StoryExample(
-                episode_id=f"fixture-{len(rows)}",
-                scenario="secret_ending",
-                state=state,
-                horizon=6,
-                split="test",
-                region="fixture",
-            )
+        example = StoryExample(
+            episode_id="fixture-0",
+            scenario="secret_ending",
+            state=state,
+            horizon=6,
+            split="test",
+            region="fixture",
         )
-        if len(rows) >= 16:
-            break
-    return rows
+        sound_count = sum(
+            action_environment_sound(env, example, action)
+            for action in env.self_actions
+        )
+        if 2 <= sound_count < len(env.self_actions):
+            return [example]
+    raise AssertionError("fixture search found no mixed-soundness state")
 
 
 def test_frozen_attestation_registration_and_local_sources():
@@ -167,4 +168,3 @@ def test_sealed_result_receipt_when_present():
     assert receipt["records_reverified"]
     assert receipt["split_overlap"] == 0
     assert receipt["decision_receipt_failure_count"] == 0
-
