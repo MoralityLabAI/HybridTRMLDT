@@ -1,0 +1,15 @@
+{
+  "attestation_source_sha256": "fb89d96267e6ca4286d1440706cc413d7b6c81c101250ed55e0126681c98030e",
+  "config_sha256": "21c2455a627742bc88481ed9047d59d3d1e4381d294d2c1ec20390bcb1799761",
+  "failures": [],
+  "fixture_authorized": true,
+  "fixture_certification_level": "holonomy_clean",
+  "fixture_record_sha256": "b1da9cd6f11152cfce8e136cfd627402a2d66cb416533499cc92a21fe0e1e2fa",
+  "fixture_registry_sha256": "d30eed00f219c6930e2a4bd63ec24bbb6b612e89a487d948c05b4514941759b2",
+  "golden_vector_count": 255,
+  "golden_vector_failure_count": 0,
+  "golden_vectors_sha256": "e0157ed7959a1203f19399064edcd22ec0e87848629cbb686f47a2d8a4cbb6bd",
+  "passed": true,
+  "rsi_topology_commit": "70c26cca2b6fd6566eab6a40db93180b71bc7a2c",
+  "schema": "rsi_attestation_conformance_receipt_v1"
+}

@@ -370,6 +370,7 @@ def _tamper_controls(
 def _primary_endpoints(
     summaries: Sequence[Mapping[str, object]],
     seeds: Sequence[int],
+    final_round: int,
 ) -> list[dict[str, object]]:
     rows = []
     for seed in seeds:
@@ -379,7 +380,7 @@ def _primary_endpoints(
             if int(row["seed"]) == seed
             and row["rejection_action"] == STATE_CONDITIONED_FALLBACK
             and row["adaptation"] == EXPERT_ITERATED
-            and int(row["round"]) == 5
+            and int(row["round"]) == final_round
         }
         baseline = matches[CLAIM_ONLY]
         attested = matches[ATTESTED_CLAIM]
@@ -422,11 +423,12 @@ def run_attested_provenance_benchmark(
     rsi_root: Path,
     registry_dir: Path,
     smoke: bool = False,
+    conformance_receipt: Mapping[str, object] | None = None,
 ) -> tuple[dict[str, object], list[dict[str, object]], dict[str, object]]:
     config_sha256 = validate_registration(registration)
     verify_local_sources(root, registration)
     backend = RSIAttestationBackend(rsi_root, registration["source_integrity"])
-    conformance = run_rsi_conformance(backend, registration["source_integrity"])
+    conformance = dict(conformance_receipt or run_rsi_conformance(backend, registration["source_integrity"]))
     if not conformance["passed"]:
         raise AssertionError("RSITopology conformance failed before benchmark execution")
     config = GamingBenchmarkConfig.from_registration(registration, smoke=smoke)
@@ -583,13 +585,21 @@ def run_attested_provenance_benchmark(
     ]
     if identical_failures:
         raise AssertionError("identical fallback changed a proposal or utility")
-    replay = _v1_replay_receipt(
-        root,
-        records,
-        str(registration["source_integrity"]["v1_config_sha256"]),
-    )
-    if not replay["byte_semantics_reproduced"] or not replay["final_summary_reproduced"]:
-        raise AssertionError("no-attestation v1 replay failed")
+    if smoke:
+        replay = {
+            "schema": "gaming_v1_no_attestation_replay_receipt_v1",
+            "executed": False,
+            "reason": "full-v1 replay is a mandatory full-run control, not a smoke endpoint",
+        }
+    else:
+        replay = _v1_replay_receipt(
+            root,
+            records,
+            str(registration["source_integrity"]["v1_config_sha256"]),
+        )
+        replay["executed"] = True
+        if not replay["byte_semantics_reproduced"] or not replay["final_summary_reproduced"]:
+            raise AssertionError("no-attestation v1 replay failed")
     tamper = _tamper_controls(
         backend,
         registry_by_seed[config.seeds[0]],
@@ -624,7 +634,9 @@ def run_attested_provenance_benchmark(
         "split_receipts": split_receipts,
         "registries": registries,
         "arm_round_summaries": summaries,
-        "primary_endpoints_per_seed": _primary_endpoints(summaries, config.seeds),
+        "primary_endpoints_per_seed": _primary_endpoints(
+            summaries, config.seeds, config.expert_iteration_rounds
+        ),
         "negative_controls": {
             "identical_fallback_zero_delta": not identical_failures,
             "identical_fallback_row_count": len(identical),

@@ -1,0 +1,25 @@
+{
+  "claim_boundary": "toy storyworld benchmark certifies claim/evidence channels, not neural feature identity; no general-alignment or oversight-sufficiency claim.",
+  "config_sha256": "21c2455a627742bc88481ed9047d59d3d1e4381d294d2c1ec20390bcb1799761",
+  "conformance_path": "data\\benchmarks\\attested_provenance_gate_v1_conformance.json",
+  "conformance_sha256": "bdef2bd43472dc47c760123d0c9cf177b5cba0c7e325b0e6314a659438059f6a",
+  "decision_receipt_failure_count": 0,
+  "records_path": "data\\benchmarks\\attested_provenance_gate_v1_smoke_records.jsonl",
+  "records_reverified": true,
+  "records_sha256": "05c4c532cca1e34e64e34143029991f1ff31a274ec8419a5db9e93c3d548cd2b",
+  "registry_receipts": [
+    {
+      "file_sha256": "41c06b52b243404d1f702ad3d99940a738273081391d5feda0c30f3e375efab1",
+      "path": "data\\benchmarks\\attested_provenance_gate_v1_smoke_registries\\seed_17_registry.json",
+      "record_count": 209,
+      "registry_sha256": "a40958e4d6a54d6cd0cc06895ccdc59807862be47dd68f4d93f0671d12c37c1c",
+      "seed": 17
+    }
+  ],
+  "report_path": "reports\\attested_provenance_gate_v1_smoke.md",
+  "report_sha256": "1bc547199b88424bb4ef390f80c4bd5f25927da3a04c3adb95436c619df1d627",
+  "results_path": "data\\benchmarks\\attested_provenance_gate_v1_smoke_results.json",
+  "results_sha256": "05b66189fb10bd179b55f399950e521d0202eb7c03fd83b5e7b1a42201a70c0f",
+  "schema": "attested_provenance_gate_result_receipt_v1",
+  "split_overlap": 0
+}

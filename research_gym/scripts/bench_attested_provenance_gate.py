@@ -81,6 +81,13 @@ def month1_summary(result: Mapping[str, object]) -> str:
 
 
 def report_markdown(result: Mapping[str, object]) -> str:
+    replay = result["negative_controls"]["no_attestation_v1_replay"]
+    replay_text = (
+        f"`{replay['byte_semantics_reproduced']}`; final summary reproduced: "
+        f"`{replay['final_summary_reproduced']}`"
+        if replay.get("executed", True)
+        else f"not executed in smoke (`{replay['reason']}`)"
+    )
     lines = [
         "# Attested Provenance Gate x Gaming Benchmark",
         "",
@@ -125,7 +132,7 @@ def report_markdown(result: Mapping[str, object]) -> str:
             "## Controls",
             "",
             f"- RSITopology golden-vector conformance: `{result['conformance']['golden_vector_count']}` replayed, `{result['conformance']['golden_vector_failure_count']}` failures.",
-            f"- No-attestation v1 cell replay: `{result['negative_controls']['no_attestation_v1_replay']['byte_semantics_reproduced']}`; final summary reproduced: `{result['negative_controls']['no_attestation_v1_replay']['final_summary_reproduced']}`.",
+            f"- No-attestation v1 cell replay: {replay_text}.",
             f"- Identical fallback zero proposal/utility delta: `{result['negative_controls']['identical_fallback_zero_delta']}` over `{result['negative_controls']['identical_fallback_row_count']}` decisions.",
             f"- Split group overlap: `{sum(row['group_overlap'] for row in result['split_receipts'])}`.",
             "",
@@ -197,6 +204,7 @@ def main() -> None:
         rsi_root=args.rsi_root,
         registry_dir=registry_dir,
         smoke=args.smoke,
+        conformance_receipt=preflight_conformance,
     )
     records_payload = _jsonl_bytes(records)
     records_sha256 = sha256(records_payload).hexdigest()
