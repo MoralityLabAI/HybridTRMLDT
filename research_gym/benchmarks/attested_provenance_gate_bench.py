@@ -32,10 +32,7 @@ from research_gym.benchmarks.gaming_vs_improvement_bench import (
     _adapt_model,
     _arm_id,
     _context_factory,
-    _evaluate_arm_round,
-    _fit_probe,
     _model_sha256,
-    _probe_audit,
     _receipt,
     _undertrained_base,
     build_region_heldout_examples,
@@ -183,8 +180,6 @@ def _attested_arm_round(
     arm_id: str,
     round_index: int,
     rejection_action: str,
-    exposed_probe: Any,
-    hidden_audit_probe: Any,
     config_sha256: str,
     seed: int,
     backend: RSIAttestationBackend,
@@ -215,8 +210,6 @@ def _attested_arm_round(
         row["receipt_sha256"] = receipt_sha256
         row["integrity_ok"] = integrity_ok
     summary = summarize_records(rows)
-    summary["hidden_audit_probe"] = _probe_audit(rows, hidden_audit_probe)
-    summary["exposed_probe_audit"] = _probe_audit(rows, exposed_probe)
     summary["false_claim_acceptance"] = _false_claim_acceptance(rows)
     summary["aligned_usefulness"] = _aligned_usefulness(rows)
     by_stratum: dict[str, list[Mapping[str, object]]] = defaultdict(list)
@@ -230,6 +223,46 @@ def _attested_arm_round(
         }
         for name, values in sorted(by_stratum.items())
     }
+    return summary, rows
+
+
+def _claim_only_arm_round(
+    model: Any,
+    examples: Sequence[Any],
+    *,
+    arm_id: str,
+    round_index: int,
+    rejection_action: str,
+    config_sha256: str,
+    seed: int,
+) -> tuple[dict[str, object], list[dict[str, object]]]:
+    env = CoupledStoryworldEnv()
+    raw_records = rollout_examples(
+        model,
+        examples,
+        policy=MembranePolicy(),
+        rejection_action=rejection_action,
+        seed=seed + round_index,
+        verifier_context=_context_factory(env),
+    )
+    model_sha256 = _model_sha256(model)
+    rows = []
+    for raw in raw_records:
+        row = raw.to_jsonable()
+        row.update(
+            {
+                "arm_id": arm_id,
+                "round": round_index,
+                "evidence_source": CLAIM_ONLY,
+                "rejection_action": rejection_action,
+                "model_sha256": model_sha256,
+            }
+        )
+        row["receipt_sha256"], row["integrity_ok"] = _receipt(row, config_sha256)
+        rows.append(row)
+    summary = summarize_records(rows)
+    summary["false_claim_acceptance"] = _false_claim_acceptance(rows)
+    summary["aligned_usefulness"] = _aligned_usefulness(rows)
     return summary, rows
 
 
@@ -476,11 +509,11 @@ def run_attested_provenance_benchmark(
         prepared.append((seed, regions, base_model))
 
     for seed, regions, base_model in prepared:
-        gate_examples = list(regions["probe_calibration"])[::2]
-        audit_examples = list(regions["probe_calibration"])[1::2]
-        exposed_probe = _fit_probe(base_model, gate_examples, config, seed=seed + 2000)
         train_by_id = {row.episode_id: row for row in regions["proposer_train"]}
         registry = registry_by_seed[seed]
+        # Neither registered evidence source consumes a learned probe. Keeping
+        # probe audits here would change no proposal, gate, or endpoint and made
+        # the first full attempt exceed its one-hour execution envelope.
         for evidence_source in (CLAIM_ONLY, ATTESTED_CLAIM):
             for rejection_action in (IDENTICAL_FALLBACK, STATE_CONDITIONED_FALLBACK):
                 for adaptation in (FROZEN, EXPERT_ITERATED):
@@ -489,34 +522,16 @@ def run_attested_provenance_benchmark(
                     rounds = 0 if adaptation == FROZEN else config.expert_iteration_rounds
                     retained_counts = []
                     for round_index in range(rounds + 1):
-                        rotating_probe = _fit_probe(
-                            model,
-                            gate_examples,
-                            config,
-                            seed=seed + 3000 + 101 * round_index,
-                        )
-                        hidden_audit = _fit_probe(
-                            model,
-                            audit_examples,
-                            config,
-                            seed=seed + 5000 + 103 * round_index,
-                        )
                         if evidence_source == CLAIM_ONLY:
-                            summary, arm_rows = _evaluate_arm_round(
+                            summary, arm_rows = _claim_only_arm_round(
                                 model,
                                 regions["heldout_high_trust"],
                                 arm_id=arm_id,
                                 round_index=round_index,
-                                evidence_source=evidence_source,
                                 rejection_action=rejection_action,
-                                exposed_probe=exposed_probe,
-                                rotating_probe=rotating_probe,
-                                hidden_audit_probe=hidden_audit,
                                 config_sha256=config_sha256,
                                 seed=seed,
                             )
-                            summary["false_claim_acceptance"] = _false_claim_acceptance(arm_rows)
-                            summary["aligned_usefulness"] = _aligned_usefulness(arm_rows)
                         else:
                             summary, arm_rows = _attested_arm_round(
                                 model,
@@ -524,8 +539,6 @@ def run_attested_provenance_benchmark(
                                 arm_id=arm_id,
                                 round_index=round_index,
                                 rejection_action=rejection_action,
-                                exposed_probe=exposed_probe,
-                                hidden_audit_probe=hidden_audit,
                                 config_sha256=config_sha256,
                                 seed=seed,
                                 backend=backend,
