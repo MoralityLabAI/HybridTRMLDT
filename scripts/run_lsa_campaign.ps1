@@ -17,6 +17,22 @@ $CpuRate = 5000
 $IoLimitBytesPerSecond = 50MB
 $IoViolationLimit = 3
 $TimeoutSeconds = 1800
+$started = Get-Date
+
+trap {
+    $failure = [ordered]@{
+        phase = $Phase
+        status = "construction_failure"
+        abort_reason = $_.Exception.Message
+        started_utc = $started.ToUniversalTime().ToString("o")
+        finished_utc = (Get-Date).ToUniversalTime().ToString("o")
+        caps = [ordered]@{ ram_mb = 2048; cpu_pct = 50; io_abort_mb_s = 50; io_sustained_samples = 3; timeout_seconds = 1800 }
+        owned_pid = $null
+        cleanup_passed = $true
+    }
+    $failure | ConvertTo-Json -Depth 5 | Set-Content -Encoding utf8 $Receipt
+    exit 1
+}
 
 Add-Type -TypeDefinition @'
 using System;
@@ -42,7 +58,7 @@ public static class LsaJobObject {
 $job = [LsaJobObject]::CreateJobObject([IntPtr]::Zero, "lsa-$PID-$Phase")
 $limit = New-Object LsaJobObject+ExtendedInfo
 $limit.basic.flags = [LsaJobObject]::ProcessMemory -bor [LsaJobObject]::KillOnClose
-$limit.processMemory = [UIntPtr]$MemoryLimitBytes
+$limit.processMemory = [UIntPtr]::new([UInt64]$MemoryLimitBytes)
 $size = [Runtime.InteropServices.Marshal]::SizeOf($limit)
 $ptr = [Runtime.InteropServices.Marshal]::AllocHGlobal($size)
 [Runtime.InteropServices.Marshal]::StructureToPtr($limit, $ptr, $false)
@@ -57,7 +73,6 @@ $ptr = [Runtime.InteropServices.Marshal]::AllocHGlobal($size)
 if (-not [LsaJobObject]::SetInformationJobObject($job, [LsaJobObject]::Cpu, $ptr, $size)) { throw "CPU cap setup failed" }
 [Runtime.InteropServices.Marshal]::FreeHGlobal($ptr)
 
-$started = Get-Date
 $status = "running"
 $abortReason = $null
 $peakRamMb = 0.0
