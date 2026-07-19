@@ -19,12 +19,17 @@ def test_alignment_coefficient_separates_orthogonal_and_aligned_visits() -> None
     orthogonal = tuple(torch.eye(rounds)[index] for index in range(rounds))
     aligned = tuple(torch.tensor([1.0, 0.0, 0.0, 0.0]) for _ in range(rounds))
 
-    assert alignment_coefficient(
-        orthogonal, orthogonal, beta_alpha_ratio_sq=1.0
-    ) == pytest.approx(1.0)
-    assert alignment_coefficient(aligned, aligned, beta_alpha_ratio_sq=1.0) == pytest.approx(
-        rounds
-    )
+    assert alignment_coefficient(orthogonal, orthogonal) == pytest.approx(1.0)
+    assert alignment_coefficient(aligned, aligned) == pytest.approx(rounds)
+
+
+def test_single_visit_kappa_is_one_independent_of_residual_scale() -> None:
+    torch.manual_seed(3)
+    model = ToyLoop(hidden_size=8, rounds=1, tied=True, beta=0.25)
+    inputs = torch.randn(2, 8)
+    estimate = estimate_kappa(model, inputs, torch.zeros_like(inputs), power_iterations=2)
+
+    assert estimate.kappa == pytest.approx(1.0)
 
 
 def test_kappa_probe_is_deterministic_and_visit_bounded() -> None:

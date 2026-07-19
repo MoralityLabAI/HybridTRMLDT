@@ -128,28 +128,32 @@ def _flatten(tensors: Iterable[Tensor]) -> Tensor:
 def alignment_coefficient(
     sensitivities: Sequence[Tensor],
     gradients: Sequence[Tensor],
-    *,
-    beta_alpha_ratio_sq: float,
 ) -> float:
-    """Compute the normalized joint alignment coefficient from visit vectors."""
+    """Compute directional visit alignment in the required interval ``[0, R]``.
+
+    Residual scale is deliberately excluded here and applied once by the
+    stability functional. Including it both in kappa and in B double-counts
+    scaling and makes even a one-visit coefficient exceed one.
+    """
 
     if len(sensitivities) != len(gradients) or not sensitivities:
         raise ValueError("U and G must be non-empty and have the same visit count")
-    if beta_alpha_ratio_sq <= 0:
-        raise ValueError("beta/alpha squared must be positive")
     u_norms = torch.stack([value.norm() for value in sensitivities])
     g_norms = torch.stack([value.norm() for value in gradients])
     denominator = (
         len(sensitivities)
         * float(u_norms.max().item())
         * float(g_norms.max().item())
-        * beta_alpha_ratio_sq
     )
     if denominator == 0:
         raise ValueError("kappa is undefined when a visit sensitivity or gradient scale is zero")
     numerator = float(torch.stack(tuple(sensitivities)).sum(dim=0).norm().item())
     numerator *= float(torch.stack(tuple(gradients)).sum(dim=0).norm().item())
-    return numerator / denominator
+    kappa = numerator / denominator
+    rounds = len(sensitivities)
+    if kappa < -1e-6 or kappa > rounds + 1e-5:
+        raise RuntimeError(f"kappa range invariant failed: {kappa} not in [0,{rounds}]")
+    return max(0.0, min(float(rounds), kappa))
 
 
 def _suffix_sensitivity(
@@ -249,11 +253,7 @@ def estimate_kappa(
     gradients = tuple(
         _visit_gradient(model, inputs, targets, position) for position in positions
     )
-    kappa = alignment_coefficient(
-        sensitivities,
-        gradients,
-        beta_alpha_ratio_sq=ratio_sq,
-    )
+    kappa = alignment_coefficient(sensitivities, gradients)
     u_norms = tuple(float(value.norm().item()) for value in sensitivities)
     g_norms = tuple(float(value.norm().item()) for value in gradients)
     return KappaEstimate(

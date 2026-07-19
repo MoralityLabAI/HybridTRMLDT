@@ -1,0 +1,27 @@
+﻿{
+    "phase":  "gamma",
+    "status":  "completed",
+    "abort_reason":  null,
+    "started_utc":  "2026-07-19T20:14:40.5183438Z",
+    "finished_utc":  "2026-07-19T20:15:47.6477029Z",
+    "elapsed_seconds":  67.129,
+    "caps":  {
+                 "ram_mb":  2048,
+                 "cpu_pct":  50,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "timeout_seconds":  1800
+             },
+    "hard_caps":  {
+                      "process_memory":  true,
+                      "cpu_rate":  true,
+                      "io":  false
+                  },
+    "io_enforcement":  "abort after three consecutive one-second telemetry samples above threshold",
+    "peak_ram_mb":  890.273,
+    "peak_io_mb_s":  11.132,
+    "samples":  53,
+    "owned_pid":  25312,
+    "lingering_owned_process":  false,
+    "cleanup_passed":  true
+}
