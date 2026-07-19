@@ -1,0 +1,21 @@
+{
+  "family": "looped_decoder_iso_shape_v0",
+  "shape_policy": {
+    "physical_module_graph": "fixed",
+    "unique_block_count": 2,
+    "scale_dimension": "width",
+    "solve_width_to_parameter_target": true,
+    "target_tolerance": 0.03,
+    "report_core_and_embedding_params_separately": true,
+    "vocab_size": 2048,
+    "head_dim": 16
+  },
+  "rungs": [
+    {"name": "S0", "target_unique_parameters": 5000000, "role": "local_screening"},
+    {"name": "S1", "target_unique_parameters": 12000000, "role": "local_replication"},
+    {"name": "S2", "target_unique_parameters": 30000000, "role": "hypothesis_discrimination"},
+    {"name": "S3", "target_unique_parameters": 72000000, "role": "intermediate_scaling_fit"},
+    {"name": "S4", "target_unique_parameters": 170000000, "role": "pre_confirmatory"},
+    {"name": "S5", "target_unique_parameters": 400000000, "role": "confirmatory_only"}
+  ]
+}

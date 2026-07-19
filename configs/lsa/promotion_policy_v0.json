@@ -1,0 +1,32 @@
+{
+  "policy_id": "lspg_promotion_v0",
+  "checkpoints_pct": [1, 3, 10, 30, 100],
+  "stage_a": {
+    "scale": "S0",
+    "seed": 311,
+    "proposal_count": 12,
+    "exposure_budget": 8192,
+    "purpose": ["execution_validation", "resource_calibration", "immediate_divergence", "variable_discrimination"]
+  },
+  "promotion_requires": [
+    "integrity_passed",
+    "stable_sign_or_ordering",
+    "useful_posterior_contraction",
+    "no_unresolved_grid_edge_censoring",
+    "nonredundant_candidate"
+  ],
+  "stopping_rules": [
+    "stop_on_integrity_failure",
+    "stop_on_nonfinite_loss",
+    "stop_on_gradient_norm_above_100",
+    "stop_on_final_over_initial_loss_above_10",
+    "stop_scale_promotion_while_boundary_is_edge_censored",
+    "never_promote_known_invalid_control"
+  ],
+  "stage_e": {
+    "scale": "S5",
+    "allowed_now": false,
+    "requires_preregistered_baseline_challenger": true,
+    "seeds": 3
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "profile_id": "local_rtx3050_safe_v0",
+  "profile": {
+    "ram_bytes": 2147483648,
+    "vram_bytes": 1572864000,
+    "cpu_pct": 50,
+    "io_bytes_per_second": 52428800,
+    "timeout_seconds": 1800,
+    "max_stage_a_proposals": 12
+  },
+  "enforcement": {
+    "ram": "windows_job_object_process_memory",
+    "cpu": "windows_job_object_hard_cap",
+    "io": "abort_after_three_consecutive_one_second_samples",
+    "vram": "telemetry_abort",
+    "owned_process_cleanup": true
+  }
+}
