@@ -149,6 +149,9 @@ class LoopSchedulePlanner:
                 "num_heads": shape.num_heads,
                 "physical_blocks": shape.physical_blocks,
                 "vocab_size": shape.vocab_size,
+                "unique_parameters": shape.unique_parameters,
+                "embedding_parameters": shape.embedding_parameters,
+                "core_parameters": shape.core_parameters,
                 "candidate": candidate,
             }
             model_identity = digest(
