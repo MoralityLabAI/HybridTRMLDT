@@ -1,0 +1,57 @@
+{
+  "protocol_id": "loop_schedule_architecture_discovery_v1",
+  "status": "frozen_before_proposals_and_outcomes",
+  "registered_on": "2026-07-19",
+  "implementation_commit": "c1e01073e1f33a9b18176ec21d06b11412e13816",
+  "inputs": {
+    "search_space": {
+      "path": "configs/lsa/architecture_search_space_v1.json",
+      "sha256": "77de571a2c350131c2bf379debfec42e6d176427147b8aa1822696a1d505eda7"
+    },
+    "task_config": {
+      "path": "configs/lsa/architecture_task_bundle_v1.json",
+      "sha256": "36c5b0bba9c4ba881d680a23bf4f14d0e0eacdd513c7d2d987e8ed60bad6f522"
+    },
+    "task_manifest": {
+      "path": "experiments/loop_schedule_architecture_discovery_v1/datasets/manifest.json",
+      "sha256": "41e78a191ba3a71e73bee6595208b33d299c2cb69f9b753df90b6ccbcbc01d4d"
+    },
+    "scale_ladder": {
+      "path": "configs/lsa/architecture_scale_ladder_v1.json",
+      "sha256": "e51d44bb26613e677bef50b9f991d7be6cbfb6bb3b5af53bb1ffc8e3e5bd7b4e"
+    },
+    "resource_profile": {
+      "path": "configs/lsa/architecture_resource_profile_v1.json",
+      "sha256": "27f9eb187d85e7ab098c91642a1e7fee65f31678de5e10ff38ac4b344d8a918a"
+    },
+    "promotion_policy": {
+      "path": "configs/lsa/architecture_promotion_policy_v1.json",
+      "sha256": "830418aa9354d9459252b2b97df863212c0f784cc8dfee1e0fb2f9825d21b316"
+    },
+    "literature_registry": {
+      "path": "configs/lsa/architecture_literature_registry_v1.json",
+      "sha256": "8282d63c5626ebd0a0cdfc5e08a9e27d4af91f19ac334945c45e087b07e7b07b"
+    },
+    "base_lsa_receipt": {
+      "path": "data/benchmarks/lsa_v0_receipt.json",
+      "sha256": "73c9959d14187b96b18f039d775a07d2396f832cb9c983cd5bbdc72da81ebdfb"
+    },
+    "base_lspg_receipt": {
+      "path": "data/benchmarks/lspg_v0_receipt.json",
+      "sha256": "9c2f85bbeadacf137f0bb3291984fd25c171f177c5f7947897b8e407b7d4950a"
+    }
+  },
+  "execution_scope": {
+    "trainable_scales": ["S0", "S1", "S2"],
+    "cost_only_scales": ["S3", "S4", "S5"],
+    "first_batch_candidates": 12,
+    "maximum_reserve_batches": 1,
+    "maximum_finalists": 2,
+    "calibration_before_task_outcomes": true,
+    "locked_evaluation_stage": "D"
+  },
+  "claim_scope": "architecture discovery and held-out task transfer; novelty is limited to non-equivalence within the audited schedule grammar",
+  "valid_null_result": "zero or one qualifying architectures",
+  "frozen_config_hash_rule": "SHA-256 of canonical JSON after removing frozen_config_sha256",
+  "frozen_config_sha256": "5656cba3be6b92ee19840efe2881332064571821e9fed2f261727e17a3edf3d2"
+}

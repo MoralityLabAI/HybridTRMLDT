@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
 import pytest
 
+from lsa.canonical import digest
 from research_gym.architecture_discovery.planner import (
     generate_architecture_proposals,
     read_proposals,
@@ -116,6 +118,17 @@ def test_proposal_bundle_round_trips_and_rejects_tampering(tmp_path: Path) -> No
     prediction_path.write_text("{}\n", encoding="utf-8")
     with pytest.raises(ValueError, match="derived proposal artifact hash mismatch"):
         read_proposals(tmp_path)
+
+
+def test_architecture_registration_hashes_all_frozen_inputs() -> None:
+    registration = _load("configs/lsa/architecture_discovery_v1_registration.json")
+    claimed_hash = registration.pop("frozen_config_sha256")
+
+    assert registration["status"] == "frozen_before_proposals_and_outcomes"
+    assert digest(registration) == claimed_hash
+    for receipt in registration["inputs"].values():
+        path = ROOT / receipt["path"]
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == receipt["sha256"]
 
 
 def test_extension_runs_at_most_once() -> None:
