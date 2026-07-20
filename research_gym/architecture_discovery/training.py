@@ -91,6 +91,7 @@ class TrainingCellResult:
     peak_memory_bytes: int
     unique_parameters: int
     estimated_flops: int
+    train_visits: int
     macro_exact: float | None
     by_family: Mapping[str, float]
     depth_metrics: Mapping[str, Mapping[str, Any]]
@@ -221,7 +222,10 @@ def evaluate_model(
 
 
 def write_prediction_artifact(
-    path: Path, rows: Sequence[Mapping[str, Any]]
+    path: Path,
+    rows: Sequence[Mapping[str, Any]],
+    *,
+    display_root: Path | None = None,
 ) -> dict[str, Any]:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="\n") as handle:
@@ -230,8 +234,14 @@ def write_prediction_artifact(
                 json.dumps(row, sort_keys=True, separators=(",", ":"), allow_nan=False)
             )
             handle.write("\n")
+    display_path = path
+    if display_root is not None:
+        try:
+            display_path = path.resolve().relative_to(display_root.resolve())
+        except ValueError:
+            pass
     return {
-        "path": str(path).replace("\\", "/"),
+        "path": str(display_path).replace("\\", "/"),
         "rows": len(rows),
         "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
     }
@@ -460,6 +470,7 @@ def run_training_cell(
                 prediction_artifacts[str(depth)] = write_prediction_artifact(
                     cell_dir / "predictions" / f"depth_{depth}.jsonl",
                     prediction_rows,
+                    display_root=Path.cwd(),
                 )
             primary = depth_metrics[str(topology.train_visits)]
             macro_exact = float(primary["macro_exact"])
@@ -502,6 +513,7 @@ def run_training_cell(
             peak_memory_bytes=peak_memory,
             unique_parameters=model.parameter_breakdown()["unique_parameters"],
             estimated_flops=resource.estimated_flops_per_example,
+            train_visits=topology.train_visits,
             macro_exact=macro_exact,
             by_family=by_family,
             depth_metrics=depth_metrics,
@@ -525,12 +537,18 @@ def run_training_cell(
     return result
 
 
-def result_receipt(result_path: Path) -> dict[str, Any]:
+def result_receipt(result_path: Path, *, display_root: Path | None = None) -> dict[str, Any]:
     result = json.loads(result_path.read_text(encoding="utf-8"))
+    display_path = result_path
+    if display_root is not None:
+        try:
+            display_path = result_path.resolve().relative_to(display_root.resolve())
+        except ValueError:
+            pass
     return {
         "cell_id": result["cell_id"],
         "cell_hash": result["cell_hash"],
-        "result_path": str(result_path).replace("\\", "/"),
+        "result_path": str(display_path).replace("\\", "/"),
         "result_sha256": hashlib.sha256(result_path.read_bytes()).hexdigest(),
         "status": result["status"],
         "integrity_passed": result["integrity_passed"],

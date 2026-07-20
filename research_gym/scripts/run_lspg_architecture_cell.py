@@ -55,7 +55,7 @@ def main() -> None:
     )
     result = run_training_cell(proposals[args.proposal_id], bundle, config, output_dir=args.out)
     result_path = args.out / result.cell_id / "result.json"
-    receipt = result_receipt(result_path)
+    receipt = result_receipt(result_path, display_root=Path.cwd())
     receipt_path = args.out / result.cell_id / "result_receipt.json"
     receipt_path.write_text(
         json.dumps(receipt, indent=2, sort_keys=True) + "\n",
