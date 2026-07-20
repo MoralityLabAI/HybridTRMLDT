@@ -59,7 +59,7 @@ def load_calibration_measurement(
         raise ValueError("calibration exposed a task-outcome cell")
     if any(result[field] is not None for field in ("macro_exact", "initial_loss", "final_loss")):
         raise ValueError("resource-only calibration leaked task outcomes")
-    if result["by_family"] or result["depth_metrics"]:
+    if result["by_family"] or result["depth_metrics"] or result["prediction_artifacts"]:
         raise ValueError("resource-only calibration leaked evaluation metrics")
     if int(result["measurement_warmup_steps"]) != expected_warmup_steps:
         raise ValueError("calibration warm-up count mismatch")

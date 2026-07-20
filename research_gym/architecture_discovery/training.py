@@ -94,6 +94,7 @@ class TrainingCellResult:
     macro_exact: float | None
     by_family: Mapping[str, float]
     depth_metrics: Mapping[str, Mapping[str, Any]]
+    prediction_artifacts: Mapping[str, Mapping[str, Any]]
     checkpoints: tuple[Mapping[str, Any], ...]
 
     def to_dict(self) -> dict[str, Any]:
@@ -184,7 +185,7 @@ def evaluate_model(
     depth_visits: int,
     batch_size: int,
     device: torch.device,
-) -> TaskMetrics:
+) -> tuple[TaskMetrics, tuple[Mapping[str, Any], ...]]:
     predictions: dict[str, int] = {}
     model.eval()
     amp = device.type == "cuda"
@@ -198,7 +199,42 @@ def evaluate_model(
             predictions.update(
                 {example.example_id: int(value) for example, value in zip(batch, values)}
             )
-    return evaluate_predictions(examples, predictions)
+    rows = tuple(
+        {
+            "example_id": example.example_id,
+            "fingerprint": example.fingerprint,
+            "family": example.family,
+            "split": example.split,
+            "difficulty": example.difficulty,
+            "target_token": example.target_token,
+            "prediction_token": predictions[example.example_id],
+            "exact": int(predictions[example.example_id] == example.target_token),
+            "group": {
+                key: example.metadata[key]
+                for key in ("puzzle_id", "env_id")
+                if key in example.metadata
+            },
+        }
+        for example in examples
+    )
+    return evaluate_predictions(examples, predictions), rows
+
+
+def write_prediction_artifact(
+    path: Path, rows: Sequence[Mapping[str, Any]]
+) -> dict[str, Any]:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        for row in rows:
+            handle.write(
+                json.dumps(row, sort_keys=True, separators=(",", ":"), allow_nan=False)
+            )
+            handle.write("\n")
+    return {
+        "path": str(path).replace("\\", "/"),
+        "rows": len(rows),
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+    }
 
 
 def _scheduler_factor(step: int, total_steps: int, warmup_fraction: float) -> float:
@@ -400,6 +436,7 @@ def run_training_cell(
             stop_reason = "final_over_initial_loss_above_10"
         status = "completed" if stop_reason is None and state["step"] == target_steps else "stopped"
         depth_metrics: dict[str, Mapping[str, Any]] = {}
+        prediction_artifacts: dict[str, Mapping[str, Any]] = {}
         macro_exact: float | None = None
         by_family: Mapping[str, float] = {}
         if status == "completed" and not config.resource_only:
@@ -412,7 +449,7 @@ def run_training_cell(
                 config.evaluation_limit_per_family,
             )
             for depth in topology.inference_visits:
-                metrics = evaluate_model(
+                metrics, prediction_rows = evaluate_model(
                     model,
                     evaluation,
                     depth_visits=depth,
@@ -420,6 +457,10 @@ def run_training_cell(
                     device=device,
                 )
                 depth_metrics[str(depth)] = asdict(metrics)
+                prediction_artifacts[str(depth)] = write_prediction_artifact(
+                    cell_dir / "predictions" / f"depth_{depth}.jsonl",
+                    prediction_rows,
+                )
             primary = depth_metrics[str(topology.train_visits)]
             macro_exact = float(primary["macro_exact"])
             by_family = dict(primary["by_family"])
@@ -464,6 +505,7 @@ def run_training_cell(
             macro_exact=macro_exact,
             by_family=by_family,
             depth_metrics=depth_metrics,
+            prediction_artifacts=prediction_artifacts,
             checkpoints=tuple(state["checkpoints"]),
         )
     finally:

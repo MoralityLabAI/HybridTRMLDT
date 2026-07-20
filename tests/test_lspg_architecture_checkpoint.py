@@ -12,7 +12,10 @@ from research_gym.architecture_discovery.checkpoint import (  # noqa: E402
     load_verified_checkpoint,
     save_paced_checkpoint,
 )
-from research_gym.architecture_discovery.training import measured_step_times  # noqa: E402
+from research_gym.architecture_discovery.training import (  # noqa: E402
+    measured_step_times,
+    write_prediction_artifact,
+)
 
 
 def test_paced_writer_preserves_bytes(tmp_path: Path) -> None:
@@ -44,3 +47,19 @@ def test_resource_calibration_discards_warmup_timings() -> None:
     assert measured_step_times((9.0, 8.0, 1.0, 1.2), 2) == (1.0, 1.2)
     with pytest.raises(ValueError, match="non-negative"):
         measured_step_times((1.0,), -1)
+
+
+def test_prediction_artifact_is_canonical_and_hash_attested(tmp_path: Path) -> None:
+    path = tmp_path / "predictions.jsonl"
+    rows = (
+        {"example_id": "b", "target_token": 3, "prediction_token": 2},
+        {"example_id": "a", "target_token": 1, "prediction_token": 1},
+    )
+
+    first = write_prediction_artifact(path, rows)
+    payload = path.read_bytes()
+    second = write_prediction_artifact(path, rows)
+
+    assert first == second
+    assert path.read_bytes() == payload
+    assert first["rows"] == 2
