@@ -1,0 +1,12 @@
+{
+  "protocol_id": "loop_schedule_kappa_surface_v1_recovery2",
+  "config_path": "configs/loop_schedule_kappa_surface_v1_recovery2.json",
+  "config_sha256": "167182d2476249df5abf25701d0de9c49cd1610612d4aceaffcd9de18254a43e",
+  "registered_utc": "2026-07-20T20:28:38.4013959Z",
+  "registration_status": "pacing_only_recovery_registered_before_paced_untied_outcomes",
+  "parent_commit": "2e3f953fada6136a020e681671b133058aa2cab1",
+  "debit_before_recovery2_seconds": 1909.626,
+  "new_outcomes_observed": false,
+  "scientific_change": "none",
+  "checkpoint_pacing_seconds": 2.0
+}

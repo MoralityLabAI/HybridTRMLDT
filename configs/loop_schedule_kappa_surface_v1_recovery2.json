@@ -1,0 +1,103 @@
+{
+  "protocol_id": "loop_schedule_kappa_surface_v1_recovery2",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-20T20:28:38.4013959Z",
+  "registration_timing": "after recovery-1 tied R64 completion and untied-gradient I/O abort, before any paced untied-gradient outcome",
+  "status_label": "pacing-only recovery of the recovery-1 untied resource abort",
+  "claim_scope": "post-partial reduced kappa surface and matched gradient stress in the frozen small-scale residual-loop family",
+  "parent_recovery": {
+    "config_path": "configs/loop_schedule_kappa_surface_v1_recovery1.json",
+    "config_sha256": "436e3ad58e473d533192527c419f868388b37d20afc7eac9be21fb54cd3012b5",
+    "r64_result_path": "experiments/loop_schedule_kappa_surface_v1_recovery1/r64_tied_result.json",
+    "r64_result_sha256": "b07edb25339a5f7a4ca6f5099c50116c018da6da1ec644a7d19ff3fa1fab5ff2",
+    "r64_records_path": "experiments/loop_schedule_kappa_surface_v1_recovery1/r64_tied_records.jsonl",
+    "r64_records_sha256": "be1d78147fc5abc9c1844c3d534e4b13665bbca97807d0c6b7c42e578e808a43",
+    "r64_resource_path": "experiments/loop_schedule_kappa_surface_v1_recovery1/r64_tied.resource_receipt.json",
+    "r64_resource_sha256": "0cb43347e85364039f54891526d614e04afcb8236d037fc0b1a7be6131e3c4f5"
+  },
+  "failed_untied_attempt": {
+    "event_path": "experiments/loop_schedule_kappa_surface_v1_recovery1/untied_gradients_events.jsonl",
+    "event_sha256": "28b77a2cbb2718b420642bea9ff8a9e106facf5357326912a6dee065e5d00995",
+    "resource_path": "experiments/loop_schedule_kappa_surface_v1_recovery1/untied_gradients.resource_receipt.json",
+    "resource_sha256": "5c4b4d6489c5cc85c5316d7f6a8c0faabbf0edb1c39f414988f9eb9652812d5b",
+    "status": "aborted",
+    "abort_reason": "sustained_io_cap_exceeded",
+    "peak_io_mb_s": 80.99,
+    "admitted_records": 0,
+    "rerun_policy": "rerun all nine untied cells; do not reuse any partial gradient outcome"
+  },
+  "frozen_training": {
+    "model_family": "two_linear_residual_loop",
+    "task_family": "deterministic_signed_permutation_regression",
+    "hidden_size": 128,
+    "batch_size": 8,
+    "measurement_batch_size": 8,
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "alpha": 1.0,
+    "beta": 0.25,
+    "progress_target": 4096,
+    "surface_exposures": [0, 1024, 2048, 4096],
+    "gradient_exposures": [512, 1024, 2048, 4096],
+    "checkpoint_exposures": [2048, 4096],
+    "rounds": [16, 32, 64],
+    "seeds": [101, 103, 107],
+    "power_iterations": 5
+  },
+  "paced_untied_execution": {
+    "rounds": [16, 32, 64],
+    "seeds": [101, 103, 107],
+    "kappa_exposures": [],
+    "gradient_exposures": [512, 1024, 2048, 4096],
+    "checkpoint_exposures": [2048, 4096],
+    "checkpoint_pacing_seconds": 2.0,
+    "pacing_location": "sleep immediately after each completed torch.save and event receipt",
+    "scientific_change": "none"
+  },
+  "surface_models": {
+    "response": "log(kappa)",
+    "coordinates": "x=log2(R/16), u=log2(1+exposure/512), I64=1[R=64]",
+    "separable": "a+b*x+c*u",
+    "smooth_interaction": "a+b*x+c*u+d*x*u",
+    "r64_change_point": "a+b*x+c*u+d*x*u+q*I64+z*I64*u",
+    "fit_cells": 12,
+    "comparison": {
+      "information_criterion": "AICc",
+      "predictive_check": "leave-one-exposure-block-out RMSE",
+      "winner_rule": "best model must beat the runner-up by at least 4 AICc units and have no more than 0.9 times the runner-up blocked-CV RMSE; otherwise unresolved"
+    }
+  },
+  "depth_curvature": {
+    "formula": "C(E)=log(kappa64(E))-2*log(kappa32(E))+log(kappa16(E))",
+    "bootstrap_samples": 5000,
+    "bootstrap_seed": 643216,
+    "interval_mass": 0.95,
+    "practical_equivalence_region": [-0.1, 0.1],
+    "transition_threshold": -0.2,
+    "onset_candidates": [1024, 2048],
+    "onset_rule": "first candidate where point C(E)<=-0.2 and the 95% paired-seed-bootstrap upper bound is below -0.1"
+  },
+  "gradient_coupling": {
+    "support_threshold": 5.0,
+    "co_localization_rule": "at onset, the R64 tied-to-untied interval-maximum ratio is at least 5 and exceeds the matched R16 and R32 ratios"
+  },
+  "resource_accounting": {
+    "debit_before_recovery2_seconds": 1909.626,
+    "aggregate_limit_seconds": 3600,
+    "remaining_before_recovery2_seconds": 1690.374
+  },
+  "claim_boundary": "Recovery 2 changes pacing only and cannot rehabilitate the original protocol as an as-preregistered completion. Any result remains labeled post-partial and retains Recovery 1's reduced untied-control limitation.",
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1800,
+    "aggregate_gpu_hours": 1,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}
