@@ -1,0 +1,3 @@
+checkpoints/
+*.stdout.log
+*.stderr.log

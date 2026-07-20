@@ -56,3 +56,12 @@ residual-loop measurement, not a task-performance or general-Transformer test.
 
 The config SHA-256 and registration commit are recorded in
 `configs/loop_schedule_algebra_saturation_addendum_v1_registration.json`.
+
+## Construction correction
+
+The first registration commit `ade595e` transcribed the sealed parent receipt
+hash as `3fa8c165...7414`. Pre-outcome validation rejected it; the actual
+SHA-256 is `3fa8c1e6...57414`. No `R=32` or `R=64` outcome directory existed.
+The superseding registration changes only that source hash and its registration
+timestamp; the scientific design, decision thresholds, seeds, and resource caps
+are byte-for-byte unchanged.

@@ -1,14 +1,14 @@
 {
   "protocol_id": "loop_schedule_algebra_saturation_addendum_v1",
   "protocol_version": 1,
-  "registered_utc": "2026-07-20T15:18:35.6506435Z",
+  "registered_utc": "2026-07-20T15:28:53.8204205Z",
   "registration_timing": "after loop_schedule_algebra_v0_1 outcomes and before R32 or R64 outcomes",
   "claim_scope": "functional-form discrimination for terminal visit alignment in the frozen small-scale tied residual-loop family; no task-performance, sample-efficiency, general Transformer, or general stability claim",
   "parent_v0_1": {
     "config_path": "configs/loop_schedule_algebra_v0_1.json",
     "config_sha256": "c6cd78a09909956962a2c6d585270807088a9b8b0dc5e1e69fc8b151d45882cc",
     "receipt_path": "data/benchmarks/lsa_v0_1_receipt.json",
-    "receipt_sha256": "3fa8c16577859e36fb70047c0b94105fae9a1e3d8063b3cc1103142811fc7414",
+    "receipt_sha256": "3fa8c1e6f360035a8d1fc17932d18b2c6fe0249e6653c6e5aa9992a5cdf57414",
     "primary_records_path": "experiments/loop_schedule_algebra_v0_1/primary_records.jsonl",
     "primary_records_sha256": "1fc75ed2c26d110d9b5a3205a12683dbbb0c11cd1dee0a18b2866466b9ea090e",
     "source_rounds": [2, 4, 8, 16],
