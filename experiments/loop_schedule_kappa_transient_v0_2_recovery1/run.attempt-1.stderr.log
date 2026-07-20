@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_transient_v0_2_recovery.py", line 517, in <module>
+    main()
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_transient_v0_2_recovery.py", line 508, in main
+    payload = run_recovery(config, config_hash, trainer, output)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_transient_v0_2_recovery.py", line 365, in run_recovery
+    resumed_records, resumed_training = _resume_seed_107(config, trainer, output_dir, event_path)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_transient_v0_2_recovery.py", line 191, in _resume_seed_107
+    _exact_equal(optimizer.state_dict(), checkpoint["optimizer"], "optimizer")
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_transient_v0_2_recovery.py", line 60, in _exact_equal
+    _exact_equal(left[key], right[key], f"{path}.{key}")
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_transient_v0_2_recovery.py", line 60, in _exact_equal
+    _exact_equal(left[key], right[key], f"{path}.{key}")
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_transient_v0_2_recovery.py", line 60, in _exact_equal
+    _exact_equal(left[key], right[key], f"{path}.{key}")
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_transient_v0_2_recovery.py", line 53, in _exact_equal
+    if left.dtype != right.dtype or left.shape != right.shape or not torch.equal(left, right):
+                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cpu and cuda:0! (when checking argument for argument other in method wrapper_CUDA__equal)
