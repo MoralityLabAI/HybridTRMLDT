@@ -1,0 +1,128 @@
+{
+    "peak_ram_mb":  910.781,
+    "elapsed_seconds":  119.13,
+    "hard_caps":  {
+                      "process_memory":  true,
+                      "cpu_rate":  true,
+                      "torch_allocator_vram":  true,
+                      "vram_abort":  true,
+                      "io_abort":  true,
+                      "aggregate_time_abort":  true
+                  },
+    "attempt":  1,
+    "samples":  95,
+    "abort_reason":  null,
+    "finished_utc":  "2026-07-20T15:32:40.4405666Z",
+    "lingering_owned_gpu_app":  false,
+    "cleanup_passed":  true,
+    "avg_cpu_pct":  8.069,
+    "memory_after":  {
+                         "available_ram_mb":  6307.871,
+                         "total_visible_ram_mb":  24355.305,
+                         "git_commit":  "8bb27ff257b1f7ee4406ca6e07f0096ea2f16363",
+                         "top_memory_processes":  [
+                                                      {
+                                                          "pid":  3052,
+                                                          "name":  "Memory Compression",
+                                                          "working_set_mb":  880.504,
+                                                          "private_memory_mb":  7.848
+                                                      },
+                                                      {
+                                                          "pid":  16328,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  792.254,
+                                                          "private_memory_mb":  869.051
+                                                      },
+                                                      {
+                                                          "pid":  25596,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  785.992,
+                                                          "private_memory_mb":  864.781
+                                                      },
+                                                      {
+                                                          "pid":  24568,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  722.113,
+                                                          "private_memory_mb":  823.305
+                                                      },
+                                                      {
+                                                          "pid":  14204,
+                                                          "name":  "codex",
+                                                          "working_set_mb":  684.062,
+                                                          "private_memory_mb":  1793.984
+                                                      }
+                                                  ],
+                         "gpu_compute_apps":  [
+
+                                              ]
+                     },
+    "peak_io_mb_s":  20.761,
+    "started_utc":  "2026-07-20T15:30:41.3108283Z",
+    "prior_elapsed_seconds":  0,
+    "ignored_cpu_only_gpu_registry_pids":  [
+
+                                           ],
+    "status":  "completed",
+    "caps":  {
+                 "ram_mb":  2048,
+                 "cpu_pct":  50,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_mb":  1500,
+                 "torch_vram_fraction":  0.35,
+                 "phase_timeout_seconds":  1800,
+                 "aggregate_gpu_hours":  1,
+                 "device":  "cuda_if_available_else_cpu",
+                 "foreign_gpu_process_policy":  "observe and abort before launch; never terminate foreign processes",
+                 "chunk_strategy":  "one rounds-by-regime-by-seed training cell at a time",
+                 "checkpoint_interval":  "terminal 4096 state-visit exposures for every new cell"
+             },
+    "memory_before":  {
+                          "available_ram_mb":  6329.234,
+                          "total_visible_ram_mb":  24355.305,
+                          "git_commit":  "8bb27ff257b1f7ee4406ca6e07f0096ea2f16363",
+                          "top_memory_processes":  [
+                                                       {
+                                                           "pid":  3052,
+                                                           "name":  "Memory Compression",
+                                                           "working_set_mb":  880.254,
+                                                           "private_memory_mb":  7.848
+                                                       },
+                                                       {
+                                                           "pid":  16328,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  791.879,
+                                                           "private_memory_mb":  868.629
+                                                       },
+                                                       {
+                                                           "pid":  25596,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  782.258,
+                                                           "private_memory_mb":  859.086
+                                                       },
+                                                       {
+                                                           "pid":  24568,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  712.754,
+                                                           "private_memory_mb":  813.871
+                                                       },
+                                                       {
+                                                           "pid":  14204,
+                                                           "name":  "codex",
+                                                           "working_set_mb":  675.859,
+                                                           "private_memory_mb":  1794.035
+                                                       }
+                                                   ],
+                          "gpu_compute_apps":  [
+
+                                               ]
+                      },
+    "protocol_id":  "loop_schedule_algebra_saturation_addendum_v1",
+    "owned_pid":  23716,
+    "peak_vram_mb":  0,
+    "lingering_owned_process":  false,
+    "phase":  "fit_r32",
+    "aggregate_elapsed_seconds":  119.13,
+    "avg_ram_mb":  881.21,
+    "foreign_process_policy":  "observed but never terminated"
+}
