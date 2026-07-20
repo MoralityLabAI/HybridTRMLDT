@@ -120,6 +120,14 @@ untouched `R=64`; both a saturating-exponential and logarithmic extrapolation mi
 and matched untied gradients remain at most `1.565`. The six-page empirical note compiles cleanly and its Overleaf
 bundle is hash-attested.
 
+A post-partial registered kappa-surface recovery maps tied visit alignment at `R={16,32,64}` over training and
+adds matched untied interval-gradient controls. The global separable model wins (`delta AICc=4.165`, blocked-CV
+ratio `0.869`), but a paired local diagnostic detects an `R=64` curvature trough at exposure 2048 (`C=-0.736`,
+95% interval `[-1.416,-0.296]`) with a `96.9x` tied-to-untied stress ratio. Because the persistent `R=64`
+change-point model loses while the smooth branch requires no onset, the registered result is `form_unresolved`.
+All nine tied terminal cells replicate exactly, untied terminal gamma is `0.0246`, and the labeled recovery remains
+explicitly weaker than the original uncompleted five-checkpoint untied-kappa protocol.
+
 ## Known Broken Pieces
 
 - GNU Make is not installed on this Windows host, so `make all` cannot be invoked directly. Every target body was
@@ -140,6 +148,8 @@ bundle is hash-attested.
 
 ## Next Recommended Patch
 
-Do not tune either failed feature panel. A successor bridge requires multiple task-aligned measured stalks,
-source-identity holdout, and discrimination against typed shuffles and matched synthetic spectra before any
-neural-source attribution claim.
+For loop alignment, preregister a transient-depth surface with a fixed-width `R=64` training-time pulse and test
+its trough location and rebound on new seeds or a second task family; do not fit that model on the recovered
+surface and call it confirmation. For the controller bridge, do not tune either failed feature panel: a successor
+still requires multiple task-aligned measured stalks, source-identity holdout, and discrimination against typed
+shuffles and matched synthetic spectra before any neural-source attribution claim.

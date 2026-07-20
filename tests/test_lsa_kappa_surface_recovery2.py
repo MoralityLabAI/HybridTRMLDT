@@ -5,12 +5,15 @@ import json
 from pathlib import Path
 
 import research_gym.scripts.bench_loop_schedule_kappa_surface as surface_runner
+import research_gym.scripts.bench_loop_schedule_kappa_surface_recovery2 as recovery2_runner
 from research_gym.scripts.bench_loop_schedule_kappa_surface_recovery2 import (
     DEFAULT_CONFIG,
+    FINAL_RECEIPT,
     REGISTRATION,
     load_registered_config,
     validate,
 )
+from research_gym.scripts.report_lsa_kappa_surface import render_svg
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,7 +26,10 @@ def test_recovery2_config_rehashes_pacing_registration() -> None:
     assert registration["checkpoint_pacing_seconds"] == 2.0
 
 
-def test_recovery2_validation_rejects_all_failed_untied_records(tmp_path: Path) -> None:
+def test_recovery2_validation_rejects_all_failed_untied_records(
+    monkeypatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(recovery2_runner, "FINAL_RECEIPT", tmp_path / "future_receipt.json")
     config, config_hash, recovery1, _ = load_registered_config(DEFAULT_CONFIG)
     result = validate(config, config_hash, recovery1, tmp_path)
     assert result["admitted_partial_measurements"] == 30
@@ -77,3 +83,50 @@ def test_wrapper_exposes_paced_phase_without_changing_io_cap() -> None:
     assert "untied_gradients_paced" in wrapper
     config = json.loads(DEFAULT_CONFIG.read_text(encoding="utf-8"))
     assert config["resources"]["io_abort_mb_s"] == 50
+
+
+def test_final_receipt_rehashes_combined_records_and_stays_under_budget() -> None:
+    receipt = json.loads(FINAL_RECEIPT.read_text(encoding="utf-8"))
+    records_path = ROOT / receipt["artifacts"]["combined_records_path"]
+    assert hashlib.sha256(records_path.read_bytes()).hexdigest() == receipt["artifacts"][
+        "combined_records_sha256"
+    ]
+    assert receipt["artifacts"]["combined_record_count"] == 81
+    assert receipt["resources"]["aggregate_elapsed_seconds"] == 1964.109
+    assert receipt["resources"]["aggregate_elapsed_seconds"] < receipt["resources"][
+        "aggregate_limit_seconds"
+    ]
+    assert receipt["resources"]["peak_io_mb_s"] == 42.331
+    assert receipt["resources"]["peak_io_mb_s"] < 50.0
+    assert receipt["resources"]["cleanup_passed"] is True
+
+
+def test_local_onset_and_global_model_conflict_remains_unresolved() -> None:
+    result = json.loads(
+        (ROOT / "experiments" / "loop_schedule_kappa_surface_v1_recovery2" / "recovery2_result.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert result["surface_model_comparison"]["winner"] == "separable"
+    assert result["surface_model_comparison"]["aicc_advantage"] > 4.0
+    assert result["surface_model_comparison"]["blocked_cv_rmse_ratio"] < 0.9
+    assert result["preterminal_curvature_onset"] == 2048
+    assert result["gradient_coupling"]["co_localized"] is True
+    assert result["gradient_coupling"]["onset_ratios"]["64"] > 90.0
+    assert result["tied_terminal_replication"]["maximum_absolute_log_ratio"] == 0.0
+    assert result["sealed_untied_terminal_control"]["passed"] is True
+    receipt = json.loads(FINAL_RECEIPT.read_text(encoding="utf-8"))
+    assert receipt["classification"] == "form_unresolved"
+
+
+def test_recovery_figure_is_byte_deterministic() -> None:
+    result = json.loads(
+        (ROOT / "experiments" / "loop_schedule_kappa_surface_v1_recovery2" / "recovery2_result.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    figure = ROOT / "reports" / "figures" / "lsa_kappa_surface_recovery2.svg"
+    assert figure.read_text(encoding="utf-8") == render_svg(result)
+    assert hashlib.sha256(figure.read_bytes()).hexdigest() == (
+        "c41153825310a9a5633b6d4413520fce62ae07c68bb17a8c9630720a116c4cd8"
+    )
