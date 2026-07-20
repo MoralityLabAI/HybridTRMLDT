@@ -1,0 +1,12 @@
+{
+    "schema_version":  1,
+    "status":  "failed",
+    "failure":  "calibration launcher exited 1",
+    "started_utc":  "2026-07-20T03:19:06.0926296Z",
+    "finished_utc":  "2026-07-20T04:47:45.6039931Z",
+    "elapsed_seconds":  5319.511,
+    "maximum_wait_seconds":  21600,
+    "poll_seconds":  30,
+    "foreign_process_policy":  "observe_only_never_terminate",
+    "calibration_output":  "experiments/loop_schedule_architecture_discovery_v1/calibration_runs"
+}

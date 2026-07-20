@@ -14,6 +14,7 @@ from research_gym.architecture_discovery.checkpoint import (  # noqa: E402
 )
 from research_gym.architecture_discovery.training import (  # noqa: E402
     measured_step_times,
+    training_device,
     write_prediction_artifact,
 )
 
@@ -63,3 +64,10 @@ def test_prediction_artifact_is_canonical_and_hash_attested(tmp_path: Path) -> N
     assert first == second
     assert path.read_bytes() == payload
     assert first["rows"] == 2
+
+
+def test_training_device_has_explicit_cuda_index(monkeypatch) -> None:
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: True)
+    monkeypatch.setattr(torch.cuda, "current_device", lambda: 2)
+
+    assert training_device() == torch.device("cuda:2")

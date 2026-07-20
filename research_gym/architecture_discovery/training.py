@@ -263,6 +263,12 @@ def measured_step_times(
     return tuple(float(value) for value in step_times[measurement_warmup_steps:])
 
 
+def training_device() -> torch.device:
+    if torch.cuda.is_available():
+        return torch.device("cuda", torch.cuda.current_device())
+    return torch.device("cpu")
+
+
 def run_training_cell(
     proposal: ArchitectureProposal,
     bundle: TaskBundle,
@@ -304,7 +310,7 @@ def run_training_cell(
     torch.manual_seed(config.seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(config.seed)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = training_device()
     if device.type == "cuda" and config.vram_fraction is not None:
         torch.cuda.set_per_process_memory_fraction(config.vram_fraction, device=device)
     model = LoopedDecoderLM.from_proposal(_proposal_model_mapping(proposal, config.scale_rung)).to(device)
