@@ -19,6 +19,7 @@ from research_gym.analysis.lsa_v0_1 import (  # noqa: E402
 from research_gym.scripts.bench_loop_schedule_algebra_v0_1 import (  # noqa: E402
     measurement_seed,
     prefix_context_batch,
+    steps_for_exposure_budget,
 )
 
 
@@ -98,6 +99,12 @@ def test_prefix_context_task_is_deterministic_and_contextual() -> None:
 def test_measurement_seed_is_fixed_across_checkpoint_exposures() -> None:
     assert measurement_seed(101, 0) == 50_101
     assert measurement_seed(101, 0) == measurement_seed(101, 4096)
+
+
+def test_exposure_budget_uses_v0_ceiling_semantics() -> None:
+    assert steps_for_exposure_budget(4096, 8, 6) == 86
+    assert steps_for_exposure_budget(4096, 8, 12) == 43
+    assert steps_for_exposure_budget(4096, 8, 8) == 64
 
 
 def _synthetic_records(exposure: int) -> list[dict]:

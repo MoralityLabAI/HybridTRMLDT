@@ -131,6 +131,12 @@ def measurement_seed(seed: int, exposure: int | None = None) -> int:
     return int(seed) + 50_000
 
 
+def steps_for_exposure_budget(progress_target: int, batch_size: int, rounds: int) -> int:
+    if progress_target <= 0 or batch_size <= 0 or rounds <= 0:
+        raise ValueError("exposure budget inputs must be positive")
+    return math.ceil(progress_target / (batch_size * rounds))
+
+
 def signed_permutation_batch(
     seed: int,
     batch_size: int,
@@ -287,14 +293,13 @@ def _train_cell(
     batch_size = int(spec["batch_size"])
     exposures_per_step = batch_size * rounds
     progress_target = int(shared["progress_target"])
-    if progress_target % exposures_per_step:
-        raise RuntimeError(f"{cell_id} cannot land exactly on the registered exposure target")
     measurement_targets = {int(value) for value in measurement_exposures}
     checkpoint_targets = {int(value) for value in checkpoint_exposures}
     all_targets = measurement_targets | checkpoint_targets
-    if any(value < 0 or value > progress_target or value % exposures_per_step for value in all_targets):
+    steps = steps_for_exposure_budget(progress_target, batch_size, rounds)
+    maximum_exposure = steps * exposures_per_step
+    if any(value < 0 or value > maximum_exposure or value % exposures_per_step for value in all_targets):
         raise RuntimeError(f"{cell_id} has an unreachable registered checkpoint exposure")
-    steps = progress_target // exposures_per_step
     initial_loss: float | None = None
     final_loss = math.nan
     max_gradient_norm = 0.0
