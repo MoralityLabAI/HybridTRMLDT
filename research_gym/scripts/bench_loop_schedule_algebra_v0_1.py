@@ -124,6 +124,13 @@ def _set_vram_fraction(config: dict[str, Any], requested: float | None) -> None:
     torch.cuda.set_per_process_memory_fraction(fraction, device=0)
 
 
+def measurement_seed(seed: int, exposure: int | None = None) -> int:
+    """Keep the stochastic probe direction fixed across training checkpoints."""
+
+    del exposure
+    return int(seed) + 50_000
+
+
 def signed_permutation_batch(
     seed: int,
     batch_size: int,
@@ -324,7 +331,7 @@ def _train_cell(
                 inputs,
                 targets,
                 power_iterations=int(shared["power_iterations"]),
-                seed=seed + 50_000 + exposure,
+                seed=measurement_seed(seed, exposure),
             )
             measurements.append(
                 {
@@ -498,7 +505,7 @@ def run_source_replay(
             inputs,
             targets,
             power_iterations=shared["power_iterations"],
-            seed=seed + 50_000,
+            seed=measurement_seed(seed, step * primary["batch_size"] * rounds),
         )
         is_terminal = step == terminal_step[values["cell"]]
         expected = expected_terminal[values["cell"]] if is_terminal else None

@@ -1,0 +1,12 @@
+{
+  "protocol_id": "loop_schedule_algebra_v0_1",
+  "phase": "primary",
+  "attempt": 1,
+  "status": "invalidated_before_interpretation",
+  "invalidated_utc": "2026-07-20T14:46:00Z",
+  "reason": "The implementation used seed + 50000 + exposure for kappa power iteration, changing the stochastic probe direction at every checkpoint and breaking comparability with the sealed v0 terminal estimator.",
+  "observable_signature": "The nominal v0 terminal replication ratios for R=2,4,8 were 0.972942, 0.947023, and 0.937465 instead of exact replay.",
+  "outcomes_used": false,
+  "repair": "Use seed + 50000 at every exposure, matching v0 and holding the probe direction fixed across gamma(t).",
+  "rerun_attempt": 2
+}

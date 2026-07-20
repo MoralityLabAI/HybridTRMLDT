@@ -17,6 +17,7 @@ from research_gym.analysis.lsa_v0_1 import (  # noqa: E402
     score_r16_holdout,
 )
 from research_gym.scripts.bench_loop_schedule_algebra_v0_1 import (  # noqa: E402
+    measurement_seed,
     prefix_context_batch,
 )
 
@@ -92,6 +93,11 @@ def test_prefix_context_task_is_deterministic_and_contextual() -> None:
     assert torch.equal(first_inputs, second_inputs)
     assert torch.equal(first_targets, second_targets)
     assert not torch.equal(first_targets[:, 1], torch.tanh(first_inputs[:, 1]))
+
+
+def test_measurement_seed_is_fixed_across_checkpoint_exposures() -> None:
+    assert measurement_seed(101, 0) == 50_101
+    assert measurement_seed(101, 0) == measurement_seed(101, 4096)
 
 
 def _synthetic_records(exposure: int) -> list[dict]:

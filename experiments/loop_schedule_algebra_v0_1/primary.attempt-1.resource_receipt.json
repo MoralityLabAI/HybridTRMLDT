@@ -1,0 +1,45 @@
+{
+    "peak_ram_mb":  894.547,
+    "elapsed_seconds":  77.037,
+    "hard_caps":  {
+                      "process_memory":  true,
+                      "cpu_rate":  true,
+                      "torch_allocator_vram":  true,
+                      "vram_abort":  true,
+                      "io_abort":  true,
+                      "aggregate_time_abort":  true
+                  },
+    "attempt":  1,
+    "samples":  59,
+    "abort_reason":  null,
+    "finished_utc":  "2026-07-20T14:44:10.2090265Z",
+    "cleanup_passed":  true,
+    "avg_cpu_pct":  7.863,
+    "peak_io_mb_s":  14.599,
+    "started_utc":  "2026-07-20T14:42:53.1723149Z",
+    "prior_elapsed_seconds":  29.243,
+    "ignored_cpu_only_gpu_registry_pids":  [
+
+                                           ],
+    "status":  "completed",
+    "caps":  {
+                 "ram_mb":  2048,
+                 "cpu_pct":  50,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_mb":  1500,
+                 "torch_vram_fraction":  0.35,
+                 "phase_timeout_seconds":  3600,
+                 "aggregate_gpu_hours":  24,
+                 "device":  "cuda_if_available_else_cpu",
+                 "foreign_gpu_process_policy":  "observe and abort before launch; never terminate foreign processes"
+             },
+    "protocol_id":  "loop_schedule_algebra_v0_1",
+    "owned_pid":  27052,
+    "peak_vram_mb":  0,
+    "lingering_owned_process":  false,
+    "phase":  "primary",
+    "aggregate_elapsed_seconds":  106.28,
+    "avg_ram_mb":  859.474,
+    "foreign_process_policy":  "observed but never terminated"
+}
