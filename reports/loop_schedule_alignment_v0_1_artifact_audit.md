@@ -51,9 +51,12 @@ The machine-readable final receipt is byte-identical at
   `e6499d1feb52f6efcf2116c2f5869c3268481176265826d317bd72e032fb2238`
 - Boundary ladder SVG SHA-256:
   `9b494a9227b143a59126e0a65329f5b73cc47c0a321badb565984757893493bd`
+- Overleaf ZIP SHA-256:
+  `4ea8fd8471789e2a338bb4f1597bec587e93544299ebf99ed75108d3d9352c3c`
 
 The paper-local SVGs are byte-identical to the report copies and regenerate
-deterministically from the sealed JSON artifacts.
+deterministically from the sealed JSON artifacts. The 9,241-byte ZIP contains
+exactly `main.tex`, `references.bib`, `README.md`, and the three SVG figures.
 
 ## Verification
 

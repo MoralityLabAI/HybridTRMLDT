@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
+import zipfile
 
 import pytest
 
@@ -208,3 +209,21 @@ def test_final_v0_1_receipt_rehashes_all_valid_phases() -> None:
     assert receipt_path.read_bytes() == (
         ROOT / "experiments" / "loop_schedule_algebra_v0_1" / "result_receipt.json"
     ).read_bytes()
+
+
+def test_overleaf_zip_is_hash_attested_and_self_contained() -> None:
+    package = ROOT / "packages" / "loop_schedule_alignment_v0_1_overleaf.zip"
+    sidecar = package.with_suffix(package.suffix + ".sha256")
+    expected_hash, expected_name = sidecar.read_text().strip().split()
+
+    assert expected_name == package.name
+    assert hashlib.sha256(package.read_bytes()).hexdigest() == expected_hash
+    with zipfile.ZipFile(package) as archive:
+        assert set(archive.namelist()) == {
+            "README.md",
+            "main.tex",
+            "references.bib",
+            "figures/lsa_v0_1_boundary_ladder.svg",
+            "figures/lsa_v0_1_gamma_trajectory.svg",
+            "figures/lsa_v0_1_kappa_scaling.svg",
+        }
