@@ -1,0 +1,39 @@
+{
+  "addendum_id": "loop_schedule_architecture_discovery_execution_v1",
+  "status": "frozen_before_task_outcomes",
+  "registered_on": "2026-07-19",
+  "implementation_commit": "61f794490c0e011a2b0c1934769c65c46b1df8a3",
+  "base_registration": {
+    "path": "configs/lsa/architecture_discovery_v1_registration.json",
+    "sha256": "2cec9cdd659181145df2de8145d393b0021218d323936f4af4bc7e13d870a0cb"
+  },
+  "promotion_policy": {
+    "path": "configs/lsa/architecture_promotion_policy_v1.json",
+    "sha256": "830418aa9354d9459252b2b97df863212c0f784cc8dfee1e0fb2f9825d21b316"
+  },
+  "stage_rules": {
+    "A1": "Exclude integrity, cleanup, finite-run, parameter, FLOP, >0.03 family-regression, or >1.10 step-time failures; rank remaining single-seed deltas descending and retain at most six. Positive delta is not required at this screen.",
+    "A2": "Apply the registered paired three-seed provisional gate and retain at most four passing candidates by mean macro delta.",
+    "B": "Apply the same provisional gate on Sudoku and routing. If fewer than two pass, open the sealed reserve exactly once and route it through A1, A2, and B under identical rules.",
+    "reserve_merge": "Merge passing first-batch and reserve B decisions, rank by mean macro delta, and retain at most four for C. No second reserve is permitted.",
+    "C": "Apply the paired three-seed provisional gate at 12M and retain at most two candidates separated by at least 0.35 standardized descriptor RMS distance.",
+    "D": "Open locked evaluation only for the sealed Stage-D manifest; compare each finalist with its matched periodic control using training-depth per-example pairs."
+  },
+  "final_inference": {
+    "hierarchical_paired_bootstrap_resamples": 10000,
+    "bootstrap_seed": 971,
+    "paired_randomization": "one-sided per-example sign flip, 10000 deterministic resamples",
+    "paired_randomization_seed": 977,
+    "multiplicity": "Holm step-down at alpha 0.05 across finalists",
+    "pass_rule": "95% paired hierarchical bootstrap lower bound > 0 and Holm-rejected paired randomization null",
+    "descriptive_only": ["balanced_schedule_nulls", "fully_tied_context", "fully_untied_context", "non_training_inference_depths"]
+  },
+  "resource_rules": {
+    "calibration": "20 warm-up plus 30 measured steps on LSAD-C-K2L8 at S0/S1/S2; no task metrics emitted",
+    "profile": "largest registered profile whose conservative mandatory path fits 24 GPU-hours with 1.2 safety factor",
+    "campaign_cap_gpu_seconds": 129600,
+    "maximum_resumptions_per_cell": 4
+  },
+  "frozen_config_hash_rule": "SHA-256 of canonical JSON after removing frozen_config_sha256",
+  "frozen_config_sha256": "7b93686696b9b33be672742b9d0368a0a1c9d1a6050e26cd7282d1a6ef22f4d8"
+}

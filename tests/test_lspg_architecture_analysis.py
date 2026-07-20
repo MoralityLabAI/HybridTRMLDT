@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
+from lsa.canonical import digest
 from research_gym.architecture_discovery.analysis import (
     holm_rejections,
     paired_randomization_pvalue,
@@ -22,3 +26,15 @@ def test_holm_rejections_stop_after_first_failure() -> None:
         "b": False,
         "c": False,
     }
+
+
+def test_execution_addendum_is_self_attested() -> None:
+    root = Path(__file__).resolve().parents[1]
+    value = json.loads(
+        (root / "configs/lsa/architecture_execution_addendum_v1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    claimed = value.pop("frozen_config_sha256")
+    assert value["status"] == "frozen_before_task_outcomes"
+    assert digest(value) == claimed
