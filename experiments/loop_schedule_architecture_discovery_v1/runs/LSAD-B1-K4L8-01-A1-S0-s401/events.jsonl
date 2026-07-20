@@ -1,0 +1,3 @@
+{"cell_hash":"8c4860507af9a2653ec7b929ea00669cb1628b71869993491119647a37ff29a2","cell_id":"LSAD-B1-K4L8-01-A1-S0-s401","event":"start","step":0,"target_steps":32,"time":1784553406.9103444}
+{"bytes":60821258,"bytes_per_second_cap":41943040,"cell_id":"LSAD-B1-K4L8-01-A1-S0-s401","elapsed_seconds":3.5114223999989918,"event":"checkpoint","path":"latest.pt","sha256":"188a5937098d241443d2c8238bfd97f728437cb10b2c11f617ecdf8518246a0d","step":32,"token_visit_exposures":524288}
+{"cell_id":"LSAD-B1-K4L8-01-A1-S0-s401","event":"finish","status":"completed"}
