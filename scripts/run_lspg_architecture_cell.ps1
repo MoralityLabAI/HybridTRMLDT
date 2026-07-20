@@ -21,6 +21,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $Repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+. (Join-Path $PSScriptRoot "lspg_gpu_process_policy.ps1")
 
 function Resolve-RepoPath([string]$Value) {
     if ([System.IO.Path]::IsPathRooted($Value)) {
@@ -58,6 +59,7 @@ if ($TimeoutSecondsOverride -gt 0) {
     $TimeoutSeconds = $TimeoutSecondsOverride
 }
 $started = Get-Date
+$IgnoredCpuOnlyRegistryPids = @()
 
 function Write-Receipt([hashtable]$Value) {
     $json = $Value | ConvertTo-Json -Depth 8
@@ -74,6 +76,7 @@ function Write-ConstructionFailure([string]$Reason) {
         started_utc = $started.ToUniversalTime().ToString("o")
         finished_utc = (Get-Date).ToUniversalTime().ToString("o")
         caps = $Caps
+        ignored_cpu_only_gpu_registry_pids = @($IgnoredCpuOnlyRegistryPids | Sort-Object -Unique)
         owned_pid = $null
         cleanup_passed = $true
     })
@@ -96,7 +99,22 @@ if (Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
             exit 2
         }
         $apps = @(& nvidia-smi --query-compute-apps=pid --format=csv,noheader,nounits 2>$null)
-        if (@($apps | Where-Object { $_.Trim() -match "^[0-9]+$" }).Count -gt 0) {
+        $foreignApps = @()
+        foreach ($line in $apps) {
+            $candidatePid = $line.Trim()
+            if ($candidatePid -notmatch "^[0-9]+$") { continue }
+            $candidate = Get-CimInstance Win32_Process -Filter "ProcessId=$candidatePid" -ErrorAction SilentlyContinue
+            if (
+                $null -ne $candidate -and
+                -not [string]::IsNullOrWhiteSpace($candidate.CommandLine) -and
+                (Test-LspgCpuOnlyNvidiaRegistration -ProcessName $candidate.Name -CommandLine $candidate.CommandLine)
+            ) {
+                $IgnoredCpuOnlyRegistryPids += [int]$candidatePid
+            } else {
+                $foreignApps += [int]$candidatePid
+            }
+        }
+        if ($foreignApps.Count -gt 0) {
             Write-ConstructionFailure "foreign_gpu_compute_process_present"
             exit 2
         }
@@ -259,6 +277,7 @@ try {
         lingering_owned_process = if ($null -eq $proc) { $false } else { -not $proc.HasExited }
         cleanup_passed = if ($null -eq $proc) { $true } else { $proc.HasExited }
         foreign_process_policy = "observed but never terminated"
+        ignored_cpu_only_gpu_registry_pids = @($IgnoredCpuOnlyRegistryPids | Sort-Object -Unique)
     })
 }
 if ($status -ne "completed") { exit 1 }

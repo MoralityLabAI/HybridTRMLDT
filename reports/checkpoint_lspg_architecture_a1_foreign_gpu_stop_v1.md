@@ -28,3 +28,12 @@ issue: repeated preflight refusals could exhaust the maximum-resumption counter
 without launching a model. The counter now limits receipts with an owned model
 PID; preflight refusals retain monotonically increasing attempt numbers but do
 not consume a training attempt. This is also an orchestration-only correction.
+
+The second process was subsequently confirmed to be `llama-server.exe` with
+the literal command-line pair `--n-gpu-layers 0`, zero sampled GPU utilization,
+and no remaining client connection. Execution amendment v1.3 was frozen at
+canonical SHA-256 `c74391f0b3072022424016e4bfa0872c2f1674ad248d7e26065d33aa56fe5855`
+before implementation. The wrapper may ignore only that exact CPU-only
+llama.cpp classification, records every ignored PID, and still rejects missing
+command lines, other binaries, nonzero GPU layer counts, or utilization above
+the registered threshold.
