@@ -1,0 +1,140 @@
+{
+  "protocol_id": "loop_schedule_algebra_saturation_addendum_v1",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-20T15:18:35.6506435Z",
+  "registration_timing": "after loop_schedule_algebra_v0_1 outcomes and before R32 or R64 outcomes",
+  "claim_scope": "functional-form discrimination for terminal visit alignment in the frozen small-scale tied residual-loop family; no task-performance, sample-efficiency, general Transformer, or general stability claim",
+  "parent_v0_1": {
+    "config_path": "configs/loop_schedule_algebra_v0_1.json",
+    "config_sha256": "c6cd78a09909956962a2c6d585270807088a9b8b0dc5e1e69fc8b151d45882cc",
+    "receipt_path": "data/benchmarks/lsa_v0_1_receipt.json",
+    "receipt_sha256": "3fa8c16577859e36fb70047c0b94105fae9a1e3d8063b3cc1103142811fc7414",
+    "primary_records_path": "experiments/loop_schedule_algebra_v0_1/primary_records.jsonl",
+    "primary_records_sha256": "1fc75ed2c26d110d9b5a3205a12683dbbb0c11cd1dee0a18b2866466b9ea090e",
+    "source_rounds": [2, 4, 8, 16],
+    "source_exposure": 4096,
+    "source_terminal_tied_kappa": {
+      "2": 1.3579664038435475,
+      "4": 1.893619753700988,
+      "8": 2.4406509174224094,
+      "16": 2.550934410719989
+    }
+  },
+  "frozen_training": {
+    "model_family": "two_linear_residual_loop",
+    "task_family": "deterministic_signed_permutation_regression",
+    "hidden_size": 128,
+    "batch_size": 8,
+    "measurement_batch_size": 8,
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "alpha": 1.0,
+    "beta": 0.25,
+    "progress_unit": "state_visit_exposures",
+    "progress_target": 4096,
+    "measurement_exposure": 4096,
+    "checkpoint_exposure": 4096,
+    "power_iterations": 5,
+    "seeds": [101, 103, 107],
+    "measurement_seed_rule": "parent loop_schedule_algebra_v0_1 measurement_seed(seed, exposure)",
+    "regimes": ["tied", "untied"]
+  },
+  "phase_order": [
+    "validate",
+    "fit_r32",
+    "commit_and_push_r64_predictions",
+    "holdout_r64",
+    "finalize"
+  ],
+  "rounds": {
+    "fit": [2, 4, 8, 16, 32],
+    "new_fit_round": 32,
+    "untouched_holdout_round": 64
+  },
+  "candidate_models": {
+    "saturating_exponential": {
+      "formula": "kappa(R)=K-A*exp(-R/tau)",
+      "fit_scale": "raw_kappa",
+      "fit_method": "for each deterministic tau-grid value solve ordinary least squares for K and A, retain A>=0 and K>=max(observed kappa), then minimize SSE",
+      "tau_grid": {
+        "minimum": 0.25,
+        "maximum": 256.0,
+        "points": 4097,
+        "spacing": "logarithmic"
+      },
+      "tie_break": "smallest tau, then smallest K, then smallest A"
+    },
+    "logarithmic": {
+      "formula": "kappa(R)=a+b*log(R)",
+      "fit_scale": "raw_kappa",
+      "fit_method": "ordinary least squares constrained to b>=0"
+    }
+  },
+  "fit_uncertainty": {
+    "method": "independent seed bootstrap within each R followed by geometric mean and complete model refit",
+    "samples": 2000,
+    "seed": 932064,
+    "interval_mass": 0.95
+  },
+  "prediction_seal": {
+    "path": "experiments/loop_schedule_algebra_saturation_addendum_v1/r64_predictions.json",
+    "require_tracked_clean_file": true,
+    "require_commit_before_holdout": true,
+    "require_commit_reachable_from_head": true,
+    "require_remote_branch_contains_commit": true,
+    "holdout_script_must_not_read_r64_records_before_verifying_seal": true
+  },
+  "discriminator": {
+    "endpoint": "absolute prediction error on the R64 tied geometric-mean kappa",
+    "minimum_absolute_error_advantage": 0.05,
+    "maximum_winner_to_loser_error_ratio": 0.75,
+    "saturating_exponential_wins": "sat_error+0.05<=log_error and sat_error<=0.75*log_error",
+    "logarithmic_wins": "log_error+0.05<=sat_error and log_error<=0.75*sat_error",
+    "otherwise": "unresolved"
+  },
+  "saturation_support_rule": {
+    "required_discriminator": "saturating_exponential",
+    "minimum_fit_r_squared": 0.9,
+    "maximum_r64_kappa": 3.0,
+    "maximum_tail_growth_fraction": 0.25,
+    "tail_growth_fraction": "(kappa_R64-kappa_R16)/(kappa_R8-kappa_R2)",
+    "minimum_tail_growth": -0.1,
+    "interpretation": "all criteria are jointly required; otherwise bounded saturation remains unestablished"
+  },
+  "untied_flatness_control": {
+    "rounds": [2, 4, 8, 16, 32, 64],
+    "bootstrap_samples": 2000,
+    "bootstrap_seed": 164032,
+    "interval_mass": 0.95,
+    "pass_rule": "the seed-bootstrap gamma interval contains zero and abs(point gamma)<=0.1"
+  },
+  "derived_metrics": {
+    "local_effective_gamma": "log(kappa_R2/kappa_R1)/log(R2/R1) for adjacent doubled R",
+    "power_law": "reported as a legacy descriptive diagnostic only; excluded from the R64 model discriminator",
+    "asymptotic_threshold": "if kappa is bounded, local effective gamma tends to zero and the DeepLoop threshold expression tends toward p=1/4"
+  },
+  "claim_boundary": "Bounded kappa would remove the additional alignment exponent asymptotically, but does not by itself remove the explicit R_g factor in B(A); this protocol cannot claim that total depth-dependent stability cost vanishes.",
+  "stop_branches": {
+    "on_nonfinite_training": "stop and seal construction_failure",
+    "on_estimator_instability": "stop the affected regime and retain raw traces",
+    "maximum_across_seed_kappa_spread": 10.0,
+    "on_invalid_model_fit": "seal model_fit_failure and do not expose R64",
+    "on_unpushed_prediction_seal": "refuse to run R64",
+    "on_resource_failure": "seal resource failure; do not reinterpret as geometric evidence"
+  },
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1800,
+    "aggregate_gpu_hours": 1,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes",
+    "chunk_strategy": "one rounds-by-regime-by-seed training cell at a time",
+    "checkpoint_interval": "terminal 4096 state-visit exposures for every new cell"
+  }
+}

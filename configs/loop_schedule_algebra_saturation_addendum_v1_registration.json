@@ -1,0 +1,20 @@
+{
+  "protocol_id": "loop_schedule_algebra_saturation_addendum_v1",
+  "config_path": "configs/loop_schedule_algebra_saturation_addendum_v1.json",
+  "config_sha256": "8ac412e67940a3d00b247e9437a6a68d34f1e4fefee4e9609337a1e8859c9045",
+  "registered_utc": "2026-07-20T15:18:35.6506435Z",
+  "registration_status": "frozen_after_v0_1_outcomes_before_r32_or_r64_outcomes",
+  "parent_result": {
+    "protocol_id": "loop_schedule_algebra_v0_1",
+    "artifact_commit": "a4c6245",
+    "receipt_sha256": "3fa8c16577859e36fb70047c0b94105fae9a1e3d8063b3cc1103142811fc7414",
+    "kappa_r16": 2.550934410719989,
+    "power_law_prediction_r16": 3.31522084596344,
+    "terminal_three_point_gamma": 0.4229090878632265,
+    "terminal_four_point_gamma": 0.309485335443915
+  },
+  "fit_rounds": [2, 4, 8, 16, 32],
+  "untouched_holdout_round": 64,
+  "candidate_models": ["saturating_exponential", "logarithmic"],
+  "outcomes_observed": false
+}
