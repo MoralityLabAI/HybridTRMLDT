@@ -51,3 +51,17 @@ def test_gradient_execution_amendment_is_self_attested_and_pre_outcome() -> None
     assert value["status"] == "frozen_after_resource_failure_before_task_outcomes"
     assert not value["task_outcomes_observed"]
     assert digest(value) == claimed
+
+
+def test_precision_execution_amendment_is_self_attested_and_pre_outcome() -> None:
+    root = Path(__file__).resolve().parents[1]
+    value = json.loads(
+        (root / "configs/lsa/architecture_execution_amendment_v1_2.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    claimed = value.pop("frozen_config_sha256")
+    assert value["status"] == "frozen_after_precision_diagnostics_before_task_outcomes"
+    assert value["replacement_rule"]["training_precision"] == "fp32"
+    assert not value["task_outcomes_observed"]
+    assert digest(value) == claimed

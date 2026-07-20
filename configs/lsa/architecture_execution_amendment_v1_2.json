@@ -1,0 +1,50 @@
+{
+  "amendment_id": "loop_schedule_architecture_discovery_execution_v1_2",
+  "status": "frozen_after_precision_diagnostics_before_task_outcomes",
+  "registered_on": "2026-07-20",
+  "implementation_commit": "7e2de15d0353897f0a7ea91f4f98f924040e47eb",
+  "supersedes_precision_rule_only": {
+    "path": "configs/lsa/architecture_execution_amendment_v1_1.json",
+    "sha256": "d986ab296ff16c239b5cd3d3c7da5eb7326a89952fdb966335d464434bd97670"
+  },
+  "diagnostic_evidence": {
+    "amp_fp16_near_zero_learning_rate_S0": {
+      "result_sha256": "7cf9e223ffffc42a68eb09a66afacb08bf486b15ecff43807d46decd62ec0d20",
+      "finite_optimizer_steps": 2,
+      "first_nonfinite_step": 2
+    },
+    "fp32_S0": {
+      "result_sha256": "d598df396b9838eb01cad79bc8dbfa526f3d3b606c1f3b8714611b7e678fe301",
+      "resource_receipt_sha256": "1be34dbb6e330c901c2df9eaf4b1e0738019dc61595105537073b21dcef8fee0",
+      "finite_optimizer_steps": 5,
+      "peak_ram_mb": 977.77
+    },
+    "fp32_S2": {
+      "result_sha256": "292b56d92367d8fa977220ac9f29fec45c5c5f80992e06aaf311fb308703feac",
+      "resource_receipt_sha256": "5ea410dd06e56f3393833629e04f7fcf9f9f48b895d2ab677a786df36d63612b",
+      "finite_optimizer_steps": 5,
+      "peak_cuda_allocation_bytes": 684327936,
+      "peak_ram_mb": 1337.137
+    }
+  },
+  "diagnosis": "AMP FP16 produces a deterministic non-finite backward pass by step 2 even with near-zero parameter updates. FP32 remains finite at the registered learning rate at both S0 and S2 and fits the frozen resource envelope.",
+  "replacement_rule": {
+    "training_precision": "fp32",
+    "evaluation_precision": "fp32",
+    "required_for_resource_calibration": true,
+    "required_for_all_candidate_and_control_cells": true
+  },
+  "unchanged": [
+    "candidate and control architectures",
+    "task bundle and split locks",
+    "optimizer and scale-wise learning rates",
+    "global gradient clip norm 100",
+    "token-visit budgets",
+    "resource caps and resumptions",
+    "promotion and final inference rules"
+  ],
+  "io_caveat": "S2 final checkpoint produced a one-sample OS telemetry spike above 50 MB/s, but not the registered three-consecutive-sample abort condition; the paced writer remained capped at 40 MB/s.",
+  "task_outcomes_observed": false,
+  "frozen_config_hash_rule": "SHA-256 of canonical JSON after removing frozen_config_sha256",
+  "frozen_config_sha256": "09b52fae5865ff5f09cd8bce9cfbd68551c0fa813c0adc8ee803daaecdac3576"
+}
