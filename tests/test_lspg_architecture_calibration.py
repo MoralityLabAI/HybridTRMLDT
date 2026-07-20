@@ -6,6 +6,7 @@ from pathlib import Path
 from research_gym.architecture_discovery.calibration import (
     CalibrationMeasurement,
     calibration_token_visit_budget,
+    latest_completed_resource_receipt,
     select_budget_profile,
 )
 
@@ -64,3 +65,12 @@ def test_profile_selector_seals_construction_failure_when_minimum_does_not_fit()
 
     assert selected["status"] == "construction_failure"
     assert selected["selected_profile"] is None
+
+
+def test_latest_completed_calibration_receipt_preserves_failed_attempts(tmp_path: Path) -> None:
+    failed = tmp_path / "cell.attempt-1.resource_receipt.json"
+    completed = tmp_path / "cell.attempt-2.resource_receipt.json"
+    failed.write_text('{"attempt":1,"status":"failed"}', encoding="utf-8")
+    completed.write_text('{"attempt":2,"status":"completed"}', encoding="utf-8")
+
+    assert latest_completed_resource_receipt((completed, failed)) == completed

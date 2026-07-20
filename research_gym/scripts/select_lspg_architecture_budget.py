@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from research_gym.architecture_discovery.calibration import (
+    latest_completed_resource_receipt,
     load_calibration_measurement,
     select_budget_profile,
 )
@@ -45,10 +46,17 @@ def main() -> None:
     measurements = []
     for scale in ("S0", "S1", "S2"):
         cell_id = f"LSAD-C-K2L8-calibration-{scale}-s397"
+        resource_receipt = latest_completed_resource_receipt(
+            tuple(
+                (args.runs / "resource_receipts").glob(
+                    f"{cell_id}.attempt-*.resource_receipt.json"
+                )
+            )
+        )
         measurements.append(
             load_calibration_measurement(
                 args.runs / cell_id / "result.json",
-                args.runs / "resource_receipts" / f"{cell_id}.attempt-1.resource_receipt.json",
+                resource_receipt,
             )
         )
     profile = _load(args.resource_profile)

@@ -40,6 +40,17 @@ def calibration_token_visit_budget(
     return effective_batch_size * sequence_length * visits * steps
 
 
+def latest_completed_resource_receipt(paths: Sequence[Path]) -> Path:
+    completed: list[tuple[int, Path]] = []
+    for path in paths:
+        value = json.loads(path.read_text(encoding="utf-8"))
+        if value.get("status") == "completed":
+            completed.append((int(value["attempt"]), path))
+    if not completed:
+        raise ValueError("no completed calibration resource receipt")
+    return max(completed, key=lambda value: value[0])[1]
+
+
 def load_calibration_measurement(
     result_path: Path,
     resource_receipt_path: Path,
