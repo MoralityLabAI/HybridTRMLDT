@@ -15,6 +15,8 @@ from pathlib import Path
 import sys
 from typing import Any, Iterable, Mapping, Sequence
 
+from research_gym.integrity import canonical_file_sha256, verify_file_sha256
+
 
 CLAIM_BOUNDARY = (
     "toy storyworld benchmark certifies claim/evidence channels, not neural feature identity; "
@@ -39,11 +41,7 @@ def canonical_sha256(value: object) -> str:
 
 
 def file_sha256(path: str | Path) -> str:
-    digest = sha256()
-    with Path(path).open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    return canonical_file_sha256(path)
 
 
 def frozen_config_sha256(config: Mapping[str, object]) -> str:
@@ -77,7 +75,7 @@ class RSIAttestationBackend:
         }
         for key, path in expected.items():
             actual = file_sha256(path)
-            if actual != str(source_integrity[key]):
+            if not verify_file_sha256(path, str(source_integrity[key])):
                 raise ValueError(f"RSITopology source hash mismatch for {key}: {actual}")
         root_text = str(self.root)
         if root_text not in sys.path:

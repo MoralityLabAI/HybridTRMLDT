@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 
@@ -17,6 +16,7 @@ from research_gym.architecture_discovery.promotion import (
     extension_required,
     select_distinct_winners,
 )
+from research_gym.integrity import verify_file_sha256
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -130,7 +130,7 @@ def test_architecture_registration_hashes_all_frozen_inputs() -> None:
     assert digest(registration) == claimed_hash
     for receipt in registration["inputs"].values():
         path = ROOT / receipt["path"]
-        assert hashlib.sha256(path.read_bytes()).hexdigest() == receipt["sha256"]
+        assert verify_file_sha256(path, receipt["sha256"])
 
 
 def test_extension_runs_at_most_once() -> None:

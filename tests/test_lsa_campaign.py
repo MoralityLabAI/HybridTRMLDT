@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import json
-import hashlib
 from pathlib import Path
 
+from research_gym.integrity import verify_file_sha256
 from research_gym.scripts.bench_loop_schedule_algebra import (
     _empirical_boundary,
     _gamma_summary,
@@ -87,7 +87,10 @@ def test_sealed_receipt_rehashes_records_and_prediction() -> None:
         ("prediction", "path"),
     ):
         path = ROOT / receipt[section][key]
-        assert hashlib.sha256(path.read_bytes()).hexdigest() == receipt[section]["sha256" if section == "prediction" else "records_sha256"]
+        expected = receipt[section][
+            "sha256" if section == "prediction" else "records_sha256"
+        ]
+        assert verify_file_sha256(path, expected)
 
     boundary_rows = [
         json.loads(line)

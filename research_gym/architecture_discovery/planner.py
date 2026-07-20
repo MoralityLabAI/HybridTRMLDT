@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-import hashlib
 import json
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -18,6 +17,7 @@ from lsa.topology import (
     select_discovery_batches,
     standardized_descriptor_vectors,
 )
+from research_gym.integrity import canonical_file_sha256
 
 
 CLAIM_SCOPE = (
@@ -63,7 +63,7 @@ class ArchitectureProposal:
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return canonical_file_sha256(path)
 
 
 def _model_for_scale(

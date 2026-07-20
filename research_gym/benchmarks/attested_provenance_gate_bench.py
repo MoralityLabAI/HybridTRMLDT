@@ -41,6 +41,7 @@ from research_gym.benchmarks.gaming_vs_improvement_bench import (
 from research_gym.core.hybrid import HybridMode, MembranePolicy, certify_and_apply
 from research_gym.core.typed_soundness import SoundnessType
 from research_gym.envs.coupled_storyworld import CoupledStoryworldEnv
+from research_gym.integrity import verify_file_sha256
 from research_gym.neural.rollout import (
     action_candidate_state,
     action_environment_sound,
@@ -71,8 +72,9 @@ def verify_local_sources(root: Path, registration: Mapping[str, object]) -> None
         "v1_results_file_sha256",
         "v1_records_file_sha256",
     ):
-        actual = file_sha256(_source_file(root, key))
-        if actual != str(integrity[key]):
+        path = _source_file(root, key)
+        actual = file_sha256(path)
+        if not verify_file_sha256(path, str(integrity[key])):
             raise ValueError(f"local source hash mismatch for {key}: {actual}")
 
 

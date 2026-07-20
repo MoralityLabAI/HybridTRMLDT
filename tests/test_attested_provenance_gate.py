@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from hashlib import sha256
 import json
 from pathlib import Path
 
@@ -22,6 +21,7 @@ from research_gym.benchmarks.attested_provenance_gate_bench import (
 )
 from research_gym.core.typed_soundness import SoundnessType
 from research_gym.envs.coupled_storyworld import CoupledStoryworldEnv, StoryState
+from research_gym.integrity import verify_file_sha256
 from research_gym.neural.rollout import StoryExample, action_environment_sound
 
 
@@ -162,9 +162,9 @@ def test_sealed_result_receipt_when_present():
     records_path = ROOT / receipt["records_path"]
     report_path = ROOT / receipt["report_path"]
 
-    assert sha256(result_path.read_bytes()).hexdigest() == receipt["results_sha256"]
-    assert sha256(records_path.read_bytes()).hexdigest() == receipt["records_sha256"]
-    assert sha256(report_path.read_bytes()).hexdigest() == receipt["report_sha256"]
+    assert verify_file_sha256(result_path, receipt["results_sha256"])
+    assert verify_file_sha256(records_path, receipt["records_sha256"])
+    assert verify_file_sha256(report_path, receipt["report_sha256"])
     assert receipt["records_reverified"]
     assert receipt["split_overlap"] == 0
     assert receipt["decision_receipt_failure_count"] == 0
