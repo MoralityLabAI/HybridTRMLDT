@@ -20,3 +20,11 @@ This changes receipt bookkeeping only. The sealed A1 manifest, proposal set,
 model precision, task data, seed, token-visit budget, resource caps, and
 promotion rules are unchanged. Completed cells remain content-addressed and are
 skipped on resume.
+
+After cell eight completed on `attempt-2`, a different foreign
+`llama-server.exe` process acquired the GPU before cell nine. The second failed
+stage receipt was committed at `7a56b32`. This exposed a separate accounting
+issue: repeated preflight refusals could exhaust the maximum-resumption counter
+without launching a model. The counter now limits receipts with an owned model
+PID; preflight refusals retain monotonically increasing attempt numbers but do
+not consume a training attempt. This is also an orchestration-only correction.

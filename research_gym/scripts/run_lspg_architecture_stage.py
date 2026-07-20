@@ -40,6 +40,14 @@ def _next_attempt(receipt_dir: Path, cell_id: str) -> int:
     return max(attempts, default=0) + 1
 
 
+def _launched_attempt_count(receipt_dir: Path, cell_id: str) -> int:
+    count = 0
+    for path in receipt_dir.glob(f"{cell_id}.attempt-*.resource_receipt.json"):
+        if _load(path).get("owned_pid") is not None:
+            count += 1
+    return count
+
+
 def _completed_result(output: Path, cell_id: str) -> bool:
     result_path = output / cell_id / "result.json"
     receipt_path = output / cell_id / "result_receipt.json"
@@ -120,8 +128,8 @@ def main() -> None:
         for cell in manifest["cells"]:
             if _completed_result(args.output, cell["cell_id"]):
                 continue
-            first_attempt = _next_attempt(receipt_dir, cell["cell_id"])
-            for attempt in range(first_attempt, maximum_attempts + 1):
+            while _launched_attempt_count(receipt_dir, cell["cell_id"]) < maximum_attempts:
+                attempt = _next_attempt(receipt_dir, cell["cell_id"])
                 remaining = maximum_seconds - _elapsed_seconds(receipt_dir)
                 if remaining <= 0:
                     raise RuntimeError("campaign_gpu_seconds_exhausted")

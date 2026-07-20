@@ -11,7 +11,10 @@ from research_gym.architecture_discovery.campaign import (
     write_stage_manifest,
 )
 from research_gym.architecture_discovery.planner import read_proposals
-from research_gym.scripts.run_lspg_architecture_stage import _next_attempt
+from research_gym.scripts.run_lspg_architecture_stage import (
+    _launched_attempt_count,
+    _next_attempt,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -110,3 +113,15 @@ def test_stage_retry_preserves_existing_attempt_receipts(tmp_path: Path) -> None
 
     assert _next_attempt(tmp_path, cell_id) == 3
     assert _next_attempt(tmp_path, "unseen-cell") == 1
+
+
+def test_foreign_gpu_preflight_does_not_consume_training_attempt(tmp_path: Path) -> None:
+    cell_id = "cell-A1"
+    (tmp_path / f"{cell_id}.attempt-1.resource_receipt.json").write_text(
+        json.dumps({"status": "construction_failure", "owned_pid": None})
+    )
+    (tmp_path / f"{cell_id}.attempt-2.resource_receipt.json").write_text(
+        json.dumps({"status": "completed", "owned_pid": 42})
+    )
+
+    assert _launched_attempt_count(tmp_path, cell_id) == 1
