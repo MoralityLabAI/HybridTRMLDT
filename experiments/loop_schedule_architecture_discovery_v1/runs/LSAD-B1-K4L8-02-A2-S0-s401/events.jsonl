@@ -1,0 +1,4 @@
+{"cell_hash":"8cc380a0bbbea571676db8b49ad10e6cdd6a79e88fbe76151da5077ae51ef5f5","cell_id":"LSAD-B1-K4L8-02-A2-S0-s401","event":"start","step":0,"target_steps":128,"time":1784554283.037741}
+{"bytes":60822474,"bytes_per_second_cap":41943040,"cell_id":"LSAD-B1-K4L8-02-A2-S0-s401","elapsed_seconds":1.7672664999990957,"event":"checkpoint","path":"latest.pt","sha256":"fb1ec005000579a8388341c00163f3c58a3f758ff08817aeb2d330a6e797ca17","step":100,"token_visit_exposures":1638400}
+{"bytes":60823242,"bytes_per_second_cap":41943040,"cell_id":"LSAD-B1-K4L8-02-A2-S0-s401","elapsed_seconds":1.8057283000016469,"event":"checkpoint","path":"latest.pt","sha256":"6ad17db56c66b9f1f2f6c63a9700f0d3e2735afa29e0784fbb925fdba50cc580","step":128,"token_visit_exposures":2097152}
+{"cell_id":"LSAD-B1-K4L8-02-A2-S0-s401","event":"finish","status":"completed"}
