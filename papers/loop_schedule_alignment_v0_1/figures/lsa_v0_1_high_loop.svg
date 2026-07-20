@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="540" viewBox="0 0 1000 540" role="img" aria-labelledby="title desc">
+<title id="title">High-loop visit alignment and gradient scale</title>
+<desc id="desc">Tied kappa peaks at R16 and then falls through R64 while tied maximum gradient norm rises above 100. Untied kappa and gradients remain near their controls.</desc>
+<rect width="1000" height="540" fill="#f3efe6"/>
+<text x="48.0" y="40.0" text-anchor="start" font-family="Georgia, serif" font-size="25" font-weight="bold" fill="#18332c">Alignment collapses in the high-loop regime</text>
+<text x="48.0" y="67.0" text-anchor="start" font-family="Georgia, serif" font-size="14" font-weight="normal" fill="#65736d">Untouched R=64 rejects both smooth extrapolators as tied gradient scale rises</text>
+<line x1="78" y1="420.0" x2="470" y2="420.0" stroke="#d2cabd"/>
+<text x="68.0" y="424.0" text-anchor="end" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">0</text>
+<line x1="78" y1="332.9" x2="470" y2="332.9" stroke="#d2cabd"/>
+<text x="68.0" y="336.9" text-anchor="end" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">1</text>
+<line x1="78" y1="245.7" x2="470" y2="245.7" stroke="#d2cabd"/>
+<text x="68.0" y="249.7" text-anchor="end" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">2</text>
+<line x1="78" y1="158.6" x2="470" y2="158.6" stroke="#d2cabd"/>
+<text x="68.0" y="162.6" text-anchor="end" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">3</text>
+<line x1="570" y1="420.0" x2="962" y2="420.0" stroke="#d2cabd"/>
+<text x="560.0" y="424.0" text-anchor="end" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">0.1</text>
+<line x1="570" y1="332.3" x2="962" y2="332.3" stroke="#d2cabd"/>
+<text x="560.0" y="336.3" text-anchor="end" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">1</text>
+<line x1="570" y1="244.6" x2="962" y2="244.6" stroke="#d2cabd"/>
+<text x="560.0" y="248.6" text-anchor="end" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">10</text>
+<line x1="570" y1="156.9" x2="962" y2="156.9" stroke="#d2cabd"/>
+<text x="560.0" y="160.9" text-anchor="end" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">100</text>
+<line x1="78" y1="115" x2="78" y2="420" stroke="#18332c" stroke-width="2"/>
+<line x1="78" y1="420" x2="470" y2="420" stroke="#18332c" stroke-width="2"/>
+<line x1="570" y1="115" x2="570" y2="420" stroke="#18332c" stroke-width="2"/>
+<line x1="570" y1="420" x2="962" y2="420" stroke="#18332c" stroke-width="2"/>
+<text x="274.0" y="98.0" text-anchor="middle" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#18332c">terminal kappa</text>
+<text x="766.0" y="98.0" text-anchor="middle" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#18332c">maximum gradient norm (log scale)</text>
+<text x="78.0" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">2</text>
+<text x="570.0" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">2</text>
+<text x="156.4" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">4</text>
+<text x="648.4" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">4</text>
+<text x="234.8" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">8</text>
+<text x="726.8" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">8</text>
+<text x="313.2" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">16</text>
+<text x="805.2" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">16</text>
+<text x="391.6" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">32</text>
+<text x="883.6" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">32</text>
+<text x="470.0" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">64</text>
+<text x="962.0" y="442.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="normal" fill="#65736d">64</text>
+<polyline points="78.0,301.7 156.4,255.0 234.8,207.3 313.2,197.7 391.6,218.9 470.0,288.4" fill="none" stroke="#b84b35" stroke-width="4"/>
+<polyline points="570.0,377.2 648.4,350.0 726.8,318.3 805.2,273.8 883.6,212.9 962.0,137.6" fill="none" stroke="#b84b35" stroke-width="4"/>
+<circle cx="78.0" cy="301.7" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="156.4" cy="255.0" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="234.8" cy="207.3" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="313.2" cy="197.7" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="391.6" cy="218.9" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="470.0" cy="288.4" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="570.0" cy="377.2" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="648.4" cy="350.0" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="726.8" cy="318.3" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="805.2" cy="273.8" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="883.6" cy="212.9" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="962.0" cy="137.6" r="5.5" fill="#b84b35" stroke="#f3efe6" stroke-width="2"/>
+<polyline points="78.0,335.0 156.4,332.5 234.8,331.9 313.2,331.7 391.6,332.4 470.0,324.4" fill="none" stroke="#19736c" stroke-width="4"/>
+<polyline points="570.0,390.0 648.4,376.9 726.8,363.3 805.2,349.6 883.6,333.9 962.0,315.2" fill="none" stroke="#19736c" stroke-width="4"/>
+<circle cx="78.0" cy="335.0" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="156.4" cy="332.5" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="234.8" cy="331.9" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="313.2" cy="331.7" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="391.6" cy="332.4" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="470.0" cy="324.4" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="570.0" cy="390.0" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="648.4" cy="376.9" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="726.8" cy="363.3" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="805.2" cy="349.6" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="883.6" cy="333.9" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="962.0" cy="315.2" r="5.5" fill="#19736c" stroke="#f3efe6" stroke-width="2"/>
+<circle cx="470.0" cy="197.7" r="8" fill="none" stroke="#d69a2d" stroke-width="3" stroke-dasharray="4 3"/>
+<circle cx="470.0" cy="169.3" r="8" fill="none" stroke="#65736d" stroke-width="3" stroke-dasharray="4 3"/>
+<text x="57.0" y="478.0" text-anchor="start" font-family="Consolas, monospace" font-size="12" font-weight="bold" fill="#b84b35">tied</text>
+<text x="117.0" y="478.0" text-anchor="start" font-family="Consolas, monospace" font-size="12" font-weight="bold" fill="#19736c">untied</text>
+<text x="205.0" y="478.0" text-anchor="start" font-family="Consolas, monospace" font-size="12" font-weight="normal" fill="#65736d">open markers: sealed R64 predictions</text>
+<text x="500.0" y="515.0" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="normal" fill="#65736d">loop visits R</text>
+</svg>

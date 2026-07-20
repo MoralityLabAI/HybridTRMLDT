@@ -112,12 +112,20 @@ for controller spectra and `+0.6402` for categorical labels. The registered gate
 crosses zero, top-16 uplift is lower, and typed Qwen-weight shuffles average `rho=+0.7582` (`p=0.9380`). The
 nonlinear product transform helps, but source-specific Qwen value is not established.
 
+Loop Schedule Algebra v0.1 directly measures visit alignment and classifies its within-training trajectory as
+`learned_growth`. The terminal `gamma=0.423` and `0.309` estimates share the same horizon and differ only because
+the latter adds `R=16`. A sealed high-loop addendum then measures tied kappa `2.307` at `R=32` and `1.510` at
+untouched `R=64`; both a saturating-exponential and logarithmic extrapolation miss, yielding
+`form_unresolved`. The decline coincides with tied maximum gradient norms of `149-166`, while all cells stay finite
+and matched untied gradients remain at most `1.565`. The six-page empirical note compiles cleanly and its Overleaf
+bundle is hash-attested.
+
 ## Known Broken Pieces
 
 - GNU Make is not installed on this Windows host, so `make all` cannot be invoked directly. Every target body was
   run through its Python command and passed.
-- No local `pdflatex` or `latexmk` executable is installed. TeX citations and figure inputs are mechanically
-  complete, but local PDF compilation is not verified.
+- No local `pdflatex` or `latexmk` executable is installed. The LSA v0.1 note was instead compiled and visually
+  verified with the official self-contained Tectonic `0.16.9` binary; its log has no layout or reference warnings.
 - The metta-storyworld service reports `in_memory_das_shaped`; native `das`, `das_agent`, `hyperon`, and
   `hyperon_das` packages are absent.
 - AIRIS induction is context-majority learning from deterministic calibration utilities. It does not measure

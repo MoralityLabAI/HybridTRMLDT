@@ -153,6 +153,17 @@ before the boundary run.
 | tied | 1.3580 | 1.8936 | 2.4407 | 0.4229 | 0.9940 | rejected: below 0.7 |
 | untied | 0.9755 | 1.0037 | 1.0115 | 0.0261 | 0.9026 | confirmed |
 
+### Post-v0.1 reconciliation
+
+The tied `gamma=0.422909` above is the terminal 4,096-exposure fit on
+`R={2,4,8}`. Loop Schedule Algebra v0.1 reproduces those three kappas exactly
+under the same hidden size, batch size, learning rate, residual scaling, and
+five-iteration fixed-direction probe. Its reported terminal `gamma=0.309485`
+is a same-horizon refit after adding `R=16`, not a conflicting replication or a
+different training time. A later sealed addendum further finds nonmonotonic
+kappa at `R=32` and `R=64`, so neither exponent should be interpreted as a
+global or time-invariant architectural constant.
+
 Across-seed spread ranged from 1.004x to 1.092x, far below the 10x stop.
 Both fits cleared the registered quality gate. Tying does increase visit
 alignment, but not at the preregistered near-linear exponent in this toy.

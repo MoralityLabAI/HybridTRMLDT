@@ -5,12 +5,16 @@ from __future__ import annotations
 import argparse
 from html import escape
 import json
+import math
 from pathlib import Path
 from typing import Any, Iterable
 
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_EXPERIMENT = ROOT / "experiments" / "loop_schedule_algebra_v0_1"
+DEFAULT_SATURATION_EXPERIMENT = (
+    ROOT / "experiments" / "loop_schedule_algebra_saturation_addendum_v1"
+)
 DEFAULT_OUTPUT = ROOT / "reports" / "figures"
 BACKGROUND = "#f3efe6"
 INK = "#18332c"
@@ -198,7 +202,112 @@ def ladder_figure(ladder: dict[str, Any]) -> str:
     )
 
 
-def generate(experiment: Path, output: Path) -> tuple[Path, ...]:
+def high_loop_figure(
+    primary: dict[str, Any], fit_r32: dict[str, Any], holdout_r64: dict[str, Any]
+) -> str:
+    """Show the nonmonotonic kappa trajectory beside its gradient-scale context."""
+
+    rounds = (2, 4, 8, 16, 32, 64)
+    tied = holdout_r64["summary"]["tied_geometric_mean_kappa"]
+    untied = holdout_r64["summary"]["untied_geometric_mean_kappa"]
+    predictions = holdout_r64["summary"]["sealed_predictions"]
+    training = [
+        *primary["summary"]["training_cells"],
+        *fit_r32["summary"]["training_cells"],
+        *holdout_r64["summary"]["training_cells"],
+    ]
+    gradients: dict[tuple[str, int], float] = {}
+    for regime in ("tied", "untied"):
+        for round_count in rounds:
+            marker = f"_{regime}_R{round_count}_"
+            values = [
+                float(row["max_gradient_norm"])
+                for row in training
+                if marker in row["cell_id"]
+            ]
+            gradients[(regime, round_count)] = max(values)
+
+    width, height = 1000, 540
+    body = [
+        _text(48, 40, "Alignment collapses in the high-loop regime", size=25, weight="bold"),
+        _text(48, 67, "Untouched R=64 rejects both smooth extrapolators as tied gradient scale rises", size=14, color=MUTED),
+    ]
+    left_x0, left_x1 = 78, 470
+    right_x0, right_x1 = 570, 962
+    top, bottom = 115, 420
+    xs_left = [left_x0 + index * (left_x1 - left_x0) / 5 for index in range(6)]
+    xs_right = [right_x0 + index * (right_x1 - right_x0) / 5 for index in range(6)]
+
+    def kappa_y(value: float) -> float:
+        return bottom - value / 3.5 * (bottom - top)
+
+    def gradient_y(value: float) -> float:
+        minimum, maximum = math.log10(0.1), math.log10(300.0)
+        return bottom - (math.log10(value) - minimum) / (maximum - minimum) * (bottom - top)
+
+    for tick in (0.0, 1.0, 2.0, 3.0):
+        yy = kappa_y(tick)
+        body.append(f'<line x1="{left_x0}" y1="{yy:.1f}" x2="{left_x1}" y2="{yy:.1f}" stroke="{GRID}"/>')
+        body.append(_text(left_x0 - 10, yy + 4, f"{tick:g}", size=11, color=MUTED, anchor="end", family="Consolas, monospace"))
+    for tick in (0.1, 1.0, 10.0, 100.0):
+        yy = gradient_y(tick)
+        body.append(f'<line x1="{right_x0}" y1="{yy:.1f}" x2="{right_x1}" y2="{yy:.1f}" stroke="{GRID}"/>')
+        body.append(_text(right_x0 - 10, yy + 4, f"{tick:g}", size=11, color=MUTED, anchor="end", family="Consolas, monospace"))
+    for x0, x1 in ((left_x0, left_x1), (right_x0, right_x1)):
+        body.extend(
+            [
+                f'<line x1="{x0}" y1="{top}" x2="{x0}" y2="{bottom}" stroke="{INK}" stroke-width="2"/>',
+                f'<line x1="{x0}" y1="{bottom}" x2="{x1}" y2="{bottom}" stroke="{INK}" stroke-width="2"/>',
+            ]
+        )
+    body.extend(
+        [
+            _text((left_x0 + left_x1) / 2, 98, "terminal kappa", size=17, anchor="middle", weight="bold"),
+            _text((right_x0 + right_x1) / 2, 98, "maximum gradient norm (log scale)", size=17, anchor="middle", weight="bold"),
+        ]
+    )
+    for round_count, left_x, right_x in zip(rounds, xs_left, xs_right):
+        body.append(_text(left_x, bottom + 22, str(round_count), size=11, color=MUTED, anchor="middle", family="Consolas, monospace"))
+        body.append(_text(right_x, bottom + 22, str(round_count), size=11, color=MUTED, anchor="middle", family="Consolas, monospace"))
+    for regime, color in (("tied", TIED), ("untied", UNTIED)):
+        values = tied if regime == "tied" else untied
+        points = " ".join(
+            f"{x:.1f},{kappa_y(float(values[str(round_count)])):.1f}"
+            for x, round_count in zip(xs_left, rounds)
+        )
+        body.append(f'<polyline points="{points}" fill="none" stroke="{color}" stroke-width="4"/>')
+        gradient_points = " ".join(
+            f"{x:.1f},{gradient_y(gradients[(regime, round_count)]):.1f}"
+            for x, round_count in zip(xs_right, rounds)
+        )
+        body.append(f'<polyline points="{gradient_points}" fill="none" stroke="{color}" stroke-width="4"/>')
+        for x, round_count in zip(xs_left, rounds):
+            body.append(f'<circle cx="{x:.1f}" cy="{kappa_y(float(values[str(round_count)])):.1f}" r="5.5" fill="{color}" stroke="{BACKGROUND}" stroke-width="2"/>')
+        for x, round_count in zip(xs_right, rounds):
+            body.append(f'<circle cx="{x:.1f}" cy="{gradient_y(gradients[(regime, round_count)]):.1f}" r="5.5" fill="{color}" stroke="{BACKGROUND}" stroke-width="2"/>')
+    for name, color in (("saturating_exponential", ACCENT), ("logarithmic", MUTED)):
+        predicted = float(predictions[name])
+        body.append(f'<circle cx="{xs_left[-1]:.1f}" cy="{kappa_y(predicted):.1f}" r="8" fill="none" stroke="{color}" stroke-width="3" stroke-dasharray="4 3"/>')
+    body.extend(
+        [
+            _text(57, 478, "tied", size=12, color=TIED, family="Consolas, monospace", weight="bold"),
+            _text(117, 478, "untied", size=12, color=UNTIED, family="Consolas, monospace", weight="bold"),
+            _text(205, 478, "open markers: sealed R64 predictions", size=12, color=MUTED, family="Consolas, monospace"),
+            _text(500, 515, "loop visits R", size=13, color=MUTED, anchor="middle"),
+        ]
+    )
+    return _svg(
+        "High-loop visit alignment and gradient scale",
+        "Tied kappa peaks at R16 and then falls through R64 while tied maximum gradient norm rises above 100. Untied kappa and gradients remain near their controls.",
+        body,
+        width=width,
+        height=height,
+    )
+def generate(
+    experiment: Path,
+    output: Path,
+    saturation_experiment: Path = DEFAULT_SATURATION_EXPERIMENT,
+) -> tuple[Path, ...]:
     primary = _read(experiment / "primary_result.json")
     external = _read(experiment / "external_result.json")
     ladder = _read(experiment / "ladder_result.json")
@@ -208,6 +317,12 @@ def generate(experiment: Path, output: Path) -> tuple[Path, ...]:
         "lsa_v0_1_kappa_scaling.svg": scaling_figure(primary, external),
         "lsa_v0_1_boundary_ladder.svg": ladder_figure(ladder),
     }
+    if (saturation_experiment / "holdout_r64_result.json").exists():
+        artifacts["lsa_v0_1_high_loop.svg"] = high_loop_figure(
+            primary,
+            _read(saturation_experiment / "fit_r32_result.json"),
+            _read(saturation_experiment / "holdout_r64_result.json"),
+        )
     paths = []
     for name, payload in artifacts.items():
         path = output / name
@@ -219,9 +334,16 @@ def generate(experiment: Path, output: Path) -> tuple[Path, ...]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--experiment", type=Path, default=DEFAULT_EXPERIMENT)
+    parser.add_argument(
+        "--saturation-experiment", type=Path, default=DEFAULT_SATURATION_EXPERIMENT
+    )
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
-    for path in generate(args.experiment.resolve(), args.output.resolve()):
+    for path in generate(
+        args.experiment.resolve(),
+        args.output.resolve(),
+        args.saturation_experiment.resolve(),
+    ):
         print(path)
 
 

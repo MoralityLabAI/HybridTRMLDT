@@ -24,6 +24,7 @@ from research_gym.scripts.bench_loop_schedule_algebra_v0_1 import (  # noqa: E40
     steps_for_exposure_budget,
 )
 from research_gym.scripts.report_lsa_v0_1 import generate  # noqa: E402
+from research_gym.scripts.analyze_lsa_v0_1_flatness import analyze  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -186,10 +187,25 @@ def test_report_figures_are_deterministic_valid_svg(tmp_path: Path) -> None:
     first = generate(experiment, tmp_path / "first")
     second = generate(experiment, tmp_path / "second")
 
-    assert len(first) == len(second) == 3
+    assert len(first) == len(second) == 4
     for first_path, second_path in zip(first, second):
         assert first_path.read_bytes() == second_path.read_bytes()
         assert ET.parse(first_path).getroot().tag.endswith("svg")
+
+
+def test_external_flatness_diagnostic_is_deterministic_and_contains_zero() -> None:
+    records = ROOT / "experiments" / "loop_schedule_algebra_v0_1" / "external_records.jsonl"
+
+    first = analyze(records)
+    second = analyze(records)
+
+    assert first == second
+    assert first["source_records_sha256"] == (
+        "6fea7187bc85f08ef2c969362c87376f609ee1b2843786dc87363877e534c991"
+    )
+    assert first["flatness_check"]["interval_contains_zero"]
+    assert first["gamma_interval"]["lower"] == pytest.approx(-0.0920637614452956)
+    assert first["gamma_interval"]["upper"] == pytest.approx(0.07703732549547229)
 
 
 def test_final_v0_1_receipt_rehashes_all_valid_phases() -> None:
@@ -223,7 +239,12 @@ def test_overleaf_zip_is_hash_attested_and_self_contained() -> None:
             "README.md",
             "main.tex",
             "references.bib",
+            "figures/lsa_v0_1_boundary_ladder.pdf",
             "figures/lsa_v0_1_boundary_ladder.svg",
+            "figures/lsa_v0_1_gamma_trajectory.pdf",
             "figures/lsa_v0_1_gamma_trajectory.svg",
+            "figures/lsa_v0_1_high_loop.pdf",
+            "figures/lsa_v0_1_high_loop.svg",
+            "figures/lsa_v0_1_kappa_scaling.pdf",
             "figures/lsa_v0_1_kappa_scaling.svg",
         }

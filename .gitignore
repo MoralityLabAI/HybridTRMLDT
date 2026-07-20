@@ -5,3 +5,5 @@ __pycache__/
 data/*.jsonl
 data/*.md
 papers/*.pdf
+tmp/
+output/pdf/main.*
