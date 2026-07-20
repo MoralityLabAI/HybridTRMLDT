@@ -1,0 +1,50 @@
+{
+  "amendment_id": "loop_schedule_architecture_discovery_execution_v1_1",
+  "status": "frozen_after_resource_failure_before_task_outcomes",
+  "registered_on": "2026-07-20",
+  "implementation_commit": "79a59646ac5704ff3ccc42c0b7bb2d5a34be6e33",
+  "supersedes_gradient_rule_only": {
+    "path": "configs/lsa/architecture_execution_addendum_v1.json",
+    "sha256": "8177697e3d519012b0c2a2ea012090e05fc1eed702ca0f5e1f979e233c3cc4be"
+  },
+  "triggering_resource_results": {
+    "S0": {
+      "result_sha256": "1c0833ac274af18073e0a9aa9e274db3355c042d650249f593d0ea29c494c14e",
+      "resource_receipt_sha256": "0519098d1d59b04db56dc55802eb302fea7747524075a7a197173677798967bf",
+      "optimizer_steps": 0,
+      "raw_gradient_norm": 323.9802558462295
+    },
+    "S1": {
+      "result_sha256": "8eec0fe951e03f8e3b7c1b62d913e58424dd1101e40edc73db18891061891351",
+      "resource_receipt_sha256": "d250393494bd99d1aac15d96dcd6a8b709080417cd09d6b5cfbb892c025979cb",
+      "optimizer_steps": 0,
+      "raw_gradient_norm": 525.2385346061412
+    },
+    "S2": {
+      "result_sha256": "58ea523cc5ff7e8360ae82c73cf7f54f6cb9eaa27202a6b0b649feee18903173",
+      "resource_receipt_sha256": "49123da763a8fc32119ba300332741a945cb633ebd6a6220d87684ae388ff74d",
+      "optimizer_steps": 0,
+      "raw_gradient_norm": 836.9609158231217
+    }
+  },
+  "diagnosis": "The absolute raw global-gradient stop confounded expected parameter-count scaling at random initialization with trajectory divergence and made every registered scale unexecutable before one optimizer update.",
+  "replacement_rule": {
+    "global_gradient_clip_norm": 100.0,
+    "record_raw_global_gradient_norm": true,
+    "record_applied_global_gradient_norm": true,
+    "record_clipped_step_count": true,
+    "stop_on_nonfinite_raw_gradient": true,
+    "catastrophic_raw_gradient_stop": 1000000.0
+  },
+  "unchanged": [
+    "candidate and control architectures",
+    "task bundle and split locks",
+    "optimizer and learning rates",
+    "token-visit budgets",
+    "resource caps and resumptions",
+    "promotion and final inference rules"
+  ],
+  "task_outcomes_observed": false,
+  "frozen_config_hash_rule": "SHA-256 of canonical JSON after removing frozen_config_sha256",
+  "frozen_config_sha256": "ea5ed33f1bcbca0ecaaa13551d45611dbffcd8a5b87b01044e2984e495530ef0"
+}
