@@ -1,0 +1,1 @@
+{"admitted_partial_measurements": 30, "checkpoint_pacing_seconds": 2.0, "config_sha256": "167182d2476249df5abf25701d0de9c49cd1610612d4aceaffcd9de18254a43e", "debit_before_recovery2_seconds": 1909.626, "failed_untied_records_admitted": 0, "parent_r64_records_sha256": "be1d78147fc5abc9c1844c3d534e4b13665bbca97807d0c6b7c42e578e808a43", "status": "valid"}
