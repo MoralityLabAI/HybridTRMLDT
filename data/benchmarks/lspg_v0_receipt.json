@@ -1,0 +1,98 @@
+{
+  "protocol_id": "loop_schedule_prognostic_gym_v0",
+  "status": "implemented_with_sealed_incomplete_stage_a",
+  "claim_scope": "trainability-boundary and schedule-cost measurement only",
+  "registration": {
+    "path": "configs/lsa/lspg_v0_registration.json",
+    "sha256": "8c653e9b36e55f8957d8e53f755a64e322ea269a9af3443c709b6f892fe5712d",
+    "implementation_commit": "f1ce7e7a60a69d45ef1276c449cdf66832ea59c0",
+    "registration_commit": "71e033dde2cff082becac640e6016f59938f3b84"
+  },
+  "proposals": {
+    "seal_commit": "fc520f061f6f0775b4d9c401b3311f164ddd0813",
+    "count": 12,
+    "table_sha256": "dad24032c40bc8e10648db50554a6277e06e06e265da26530c379b0a5f97e34a",
+    "receipt_sha256": "4ebb010474f048d8347957c98a2ec4d524473252d507dbb715996c39a0a5704f",
+    "outcomes_observed_at_seal": false,
+    "known_invalid_ranked": 0,
+    "execution_scale": "S0"
+  },
+  "invalid_launch": {
+    "status": "construction_failure",
+    "reason": "WDDM returned nonnumeric per-process VRAM telemetry",
+    "proposal_receipts": 0,
+    "correction_commit": "0c6ce2990d04b18f14da87aba09c0e40e6a51680"
+  },
+  "stage_a": {
+    "status": "incomplete_timeout",
+    "proposals": 12,
+    "receipts": 3,
+    "completed": 1,
+    "stopped": 2,
+    "pending": 9,
+    "raw_partial_sha256": "d17382a9e9871374b14559f0924cb1e03ededa544e70a534ee0a068d0d5250eb",
+    "normalized_records_sha256": "8f36945413a613ce6be1817624dc525c59add3477c9dd77400d059a169ccfaea",
+    "resource_receipt_sha256": "69f0d6cebe0f84e5a208a93bb8e9d36f8a2881dd0d635189e52068cac2d86460",
+    "cleanup_receipt_sha256": "60e2565c973765629a829d4786f3c3e53c6fce56d3af603a6bb64a0d5e640e64",
+    "posterior_sha256": "5e156f150f81abc05f14f6bc7faca2589a456a58142a84db8acf6a44e84ab106",
+    "result_sha256": "e234024669b0b3e5f601be4d15afc2352c5ebbdc3f7593e43f0ebbb15cd67d3a",
+    "experiment_receipt_sha256": "049aa653110e29a6dbb545169b051998815d08bfa89bb93776d74eb84781d79f",
+    "checkpoint_hashes": {
+      "LSPG-S0-06": "09c83399cee2906d9030dbe516dd20d6d134a59f67a2b5a7f5434772963cdbdf",
+      "LSPG-S0-07": "fe2df1424007f38d173367a15f19421eddfbb4030befd186db8a0e2dfe224511"
+    },
+    "checkpoint_storage": "local_gitignored"
+  },
+  "observations": [
+    {
+      "proposal_id": "LSPG-S0-01",
+      "status": "stopped",
+      "reason": "gradient_norm_above_100",
+      "max_gradient_norm": 235.40384419897052
+    },
+    {
+      "proposal_id": "LSPG-S0-02",
+      "status": "stopped",
+      "reason": "gradient_norm_above_100",
+      "max_gradient_norm": 278.8234641012909
+    },
+    {
+      "proposal_id": "LSPG-S0-06",
+      "status": "completed",
+      "state_visit_exposures": 8192,
+      "max_gradient_norm": 81.43500420073573,
+      "final_over_initial_loss": 0.31100859772379325,
+      "mean_step_seconds": 10.5925422843751
+    }
+  ],
+  "resources": {
+    "peak_ram_mb": 960.488,
+    "avg_ram_mb": 926.182,
+    "peak_io_mb_s": 45.703,
+    "avg_cpu_pct": 6.735,
+    "elapsed_seconds": 1800.897,
+    "cleanup_passed": true,
+    "lingering_owned_process": false,
+    "calibration_status": "confounded_by_concurrent_external_workload"
+  },
+  "promotion": {
+    "allowed": false,
+    "larger_scale_execution": false,
+    "reasons": [
+      "incomplete_stage_a",
+      "unresolved_grid_edge_censoring",
+      "stage_a_timeout",
+      "resource_forecast_miscalibrated"
+    ]
+  },
+  "verification": {
+    "full_test_suite": "222 passed in 48.32s",
+    "strict_normalized_json": true,
+    "unrelated_worktree_files_staged": false
+  },
+  "report": {
+    "path": "reports/loop_schedule_prognostic_gym_v0.md",
+    "sha256": "9de08c06f35810542d4692b9dd8a21c9cd2e80e7fd08ea06e8dce7caab86d28a"
+  },
+  "nonclaim": "no prediction about task accuracy, sample efficiency, or reasoning quality is made"
+}

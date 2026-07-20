@@ -1,0 +1,32 @@
+﻿{
+    "stage":  "A",
+    "status":  "aborted",
+    "abort_reason":  "timeout",
+    "started_utc":  "2026-07-19T23:26:36.9139516Z",
+    "finished_utc":  "2026-07-19T23:56:37.8109943Z",
+    "elapsed_seconds":  1800.897,
+    "caps":  {
+                 "ram_mb":  2048,
+                 "cpu_pct":  50,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_mb":  1500,
+                 "timeout_seconds":  1800
+             },
+    "hard_caps":  {
+                      "process_memory":  true,
+                      "cpu_rate":  true,
+                      "io":  false,
+                      "vram":  false
+                  },
+    "telemetry_enforcement":  "abort on sustained IO or sampled VRAM threshold",
+    "peak_ram_mb":  960.488,
+    "avg_ram_mb":  926.182,
+    "peak_io_mb_s":  45.703,
+    "peak_vram_mb":  0,
+    "avg_cpu_pct":  6.735,
+    "samples":  1225,
+    "owned_pid":  22916,
+    "lingering_owned_process":  false,
+    "cleanup_passed":  true
+}

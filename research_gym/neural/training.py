@@ -23,11 +23,11 @@ class ScreeningResult:
     stop_reason: str | None
     steps_completed: int
     state_visit_exposures: int
-    initial_loss: float
-    final_loss: float
-    final_over_initial_loss: float
+    initial_loss: float | None
+    final_loss: float | None
+    final_over_initial_loss: float | None
     max_gradient_norm: float
-    mean_step_seconds: float
+    mean_step_seconds: float | None
     peak_memory_bytes: int
     parameter_breakdown: Mapping[str, int]
     checkpoints: tuple[Mapping[str, Any], ...]
@@ -152,8 +152,7 @@ def screen_proposal(
                     latest_checkpoint,
                 )
         if not losses:
-            initial_loss = final_loss = math.nan
-            ratio = math.inf
+            initial_loss = final_loss = ratio = None
         else:
             initial_loss = losses[0]
             final_loss = losses[-1]
@@ -172,7 +171,7 @@ def screen_proposal(
             final_loss=final_loss,
             final_over_initial_loss=ratio,
             max_gradient_norm=max_gradient,
-            mean_step_seconds=sum(step_times) / len(step_times) if step_times else math.nan,
+            mean_step_seconds=sum(step_times) / len(step_times) if step_times else None,
             peak_memory_bytes=peak_memory,
             parameter_breakdown=model.parameter_breakdown(),
             checkpoints=tuple(checkpoint_records),

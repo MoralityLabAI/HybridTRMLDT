@@ -20,7 +20,10 @@ def _sha(path: Path) -> str:
 
 
 def _canonical(value: Any) -> bytes:
-    return (json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n").encode()
+    return (
+        json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
+        + "\n"
+    ).encode()
 
 
 def main() -> None:
