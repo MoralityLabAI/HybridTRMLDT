@@ -14,6 +14,7 @@ param(
     [ValidateRange(1, 5)][int]$Attempt = 1,
     [int]$TimeoutSecondsOverride = 0,
     [double]$GradientClipNorm = 100.0,
+    [double]$LearningRateOverride = 0.0,
     [int]$EvaluationLimitPerFamily = 256
 )
 
@@ -27,6 +28,7 @@ $Profile = Get-Content -Raw -LiteralPath $ResourcePath | ConvertFrom-Json
 $Caps = $Profile.caps
 $Microbatch = [int]$Profile.microbatch_by_scale.$Scale
 $LearningRate = [double]$Profile.learning_rate_by_scale.$Scale
+if ($LearningRateOverride -gt 0.0) { $LearningRate = $LearningRateOverride }
 $EffectiveBatch = [int]$Profile.effective_batch_size
 $CellName = "$ProposalId-$Stage-$Scale-s$Seed"
 $SafeCellName = $CellName -replace "[^A-Za-z0-9_.-]", "_"
