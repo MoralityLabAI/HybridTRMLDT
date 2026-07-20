@@ -1,0 +1,84 @@
+{
+  "batch_counts": {
+    "batch_1": 12,
+    "batch_2_reserve": 12,
+    "context": 2,
+    "control": 6,
+    "null": 6
+  },
+  "claim_scope": "architecture discovery and held-out task transfer; novelty is limited to non-equivalence within the audited schedule grammar",
+  "derived_artifacts": {
+    "decision_predictions.json": {
+      "path": "decision_predictions.json",
+      "sha256": "22d90f5df141c3db61417f3e993460deb59b0f8c784b0baf9d87283cc5029c29"
+    },
+    "empirical_predictions.json": {
+      "path": "empirical_predictions.json",
+      "sha256": "d3eb2a9fd158a6669ba4c4c191c876c0edf633d6a0cf32c02cf71744b97e0ec0"
+    },
+    "resource_forecasts.json": {
+      "path": "resource_forecasts.json",
+      "sha256": "e62748a835d7452a53960fb41066d8094afd0b733c10f4847c0088cc5ae222b5"
+    },
+    "theory_predictions.json": {
+      "path": "theory_predictions.json",
+      "sha256": "2a9b400c0d70f7f5a7039cc0eeac26f9920b4b6df58e667c1ab312e7b9820e02"
+    }
+  },
+  "inputs": {
+    "base_lsa_receipt": {
+      "path": "data/benchmarks/lsa_v0_receipt.json",
+      "sha256": "73c9959d14187b96b18f039d775a07d2396f832cb9c983cd5bbdc72da81ebdfb"
+    },
+    "base_lspg_receipt": {
+      "path": "data/benchmarks/lspg_v0_receipt.json",
+      "sha256": "9c2f85bbeadacf137f0bb3291984fd25c171f177c5f7947897b8e407b7d4950a"
+    },
+    "literature_registry": {
+      "path": "configs/lsa/architecture_literature_registry_v1.json",
+      "sha256": "8282d63c5626ebd0a0cdfc5e08a9e27d4af91f19ac334945c45e087b07e7b07b"
+    },
+    "promotion_policy": {
+      "path": "configs/lsa/architecture_promotion_policy_v1.json",
+      "sha256": "830418aa9354d9459252b2b97df863212c0f784cc8dfee1e0fb2f9825d21b316"
+    },
+    "registration": {
+      "path": "configs/lsa/architecture_discovery_v1_registration.json",
+      "sha256": "2cec9cdd659181145df2de8145d393b0021218d323936f4af4bc7e13d870a0cb"
+    },
+    "resource_profile": {
+      "path": "configs/lsa/architecture_resource_profile_v1.json",
+      "sha256": "27f9eb187d85e7ab098c91642a1e7fee65f31678de5e10ff38ac4b344d8a918a"
+    },
+    "scale_ladder": {
+      "path": "configs/lsa/architecture_scale_ladder_v1.json",
+      "sha256": "e51d44bb26613e677bef50b9f991d7be6cbfb6bb3b5af53bb1ffc8e3e5bd7b4e"
+    },
+    "search_space": {
+      "path": "configs/lsa/architecture_search_space_v1.json",
+      "sha256": "77de571a2c350131c2bf379debfec42e6d176427147b8aa1822696a1d505eda7"
+    },
+    "task_config": {
+      "path": "configs/lsa/architecture_task_bundle_v1.json",
+      "sha256": "36c5b0bba9c4ba881d680a23bf4f14d0e0eacdd513c7d2d987e8ed60bad6f522"
+    },
+    "task_manifest": {
+      "path": "experiments/loop_schedule_architecture_discovery_v1/datasets/manifest.json",
+      "sha256": "41e78a191ba3a71e73bee6595208b33d299c2cb69f9b753df90b6ccbcbc01d4d"
+    }
+  },
+  "manifest_hash": "0ca67d5f8bea2701515671da09eee7e7927f819a6926dc6c2f0ea22cd001dec7",
+  "proposal_count": 38,
+  "proposal_table": {
+    "path": "proposal_table.jsonl",
+    "sha256": "19e52be60a6296323549dc08c88fe75c5af6c550930c43dca5e13ee208c891e7"
+  },
+  "role_counts": {
+    "balanced_schedule_null": 6,
+    "candidate": 24,
+    "fully_tied_context": 1,
+    "fully_untied_context": 1,
+    "matched_periodic_control": 6
+  },
+  "schema_version": 1
+}

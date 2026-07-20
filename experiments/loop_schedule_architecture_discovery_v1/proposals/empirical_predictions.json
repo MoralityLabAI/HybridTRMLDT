@@ -1,0 +1,420 @@
+{
+  "LSAD-B1-K2L6-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K2L6-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K2L8-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K2L8-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K3L6-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K3L6-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K3L8-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K3L8-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K4L6-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K4L6-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K4L8-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B1-K4L8-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K2L6-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K2L6-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K2L8-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K2L8-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K3L6-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K3L6-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K3L8-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K3L8-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K4L6-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K4L6-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K4L8-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-B2-K4L8-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-C-K2L6": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-C-K2L8": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-C-K3L6": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-C-K3L8": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-C-K4L6": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-C-K4L8": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-N-K2L6": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-N-K2L8": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-N-K3L6": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-N-K3L8": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-N-K4L6": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-N-K4L8": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-X-01": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  },
+  "LSAD-X-02": {
+    "capability_prior": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "kind": "beta"
+    },
+    "finite_run_probability": null,
+    "measured_step_seconds": null,
+    "scale_transfer_probability": null,
+    "source": "unmeasured_before_campaign"
+  }
+}

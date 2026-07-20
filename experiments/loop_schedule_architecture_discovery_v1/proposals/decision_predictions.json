@@ -1,0 +1,306 @@
+{
+  "LSAD-B1-K2L6-01": {
+    "batch": "batch_1",
+    "estimated_information_gain": 4.524673218104758,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 4.524673218104758
+  },
+  "LSAD-B1-K2L6-02": {
+    "batch": "batch_1",
+    "estimated_information_gain": 2.7943463707354583,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.7943463707354583
+  },
+  "LSAD-B1-K2L8-01": {
+    "batch": "batch_1",
+    "estimated_information_gain": 6.437069754717132,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 6.437069754717132
+  },
+  "LSAD-B1-K2L8-02": {
+    "batch": "batch_1",
+    "estimated_information_gain": 4.732914187690726,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 4.732914187690726
+  },
+  "LSAD-B1-K3L6-01": {
+    "batch": "batch_1",
+    "estimated_information_gain": 3.43208192362899,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.43208192362899
+  },
+  "LSAD-B1-K3L6-02": {
+    "batch": "batch_1",
+    "estimated_information_gain": 3.6596354717906383,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.6596354717906383
+  },
+  "LSAD-B1-K3L8-01": {
+    "batch": "batch_1",
+    "estimated_information_gain": 3.1276617440446994,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.1276617440446994
+  },
+  "LSAD-B1-K3L8-02": {
+    "batch": "batch_1",
+    "estimated_information_gain": 3.2562622426814407,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.2562622426814407
+  },
+  "LSAD-B1-K4L6-01": {
+    "batch": "batch_1",
+    "estimated_information_gain": 2.338723286620257,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.338723286620257
+  },
+  "LSAD-B1-K4L6-02": {
+    "batch": "batch_1",
+    "estimated_information_gain": 3.1805340723936277,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.1805340723936277
+  },
+  "LSAD-B1-K4L8-01": {
+    "batch": "batch_1",
+    "estimated_information_gain": 3.934029752476377,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.934029752476377
+  },
+  "LSAD-B1-K4L8-02": {
+    "batch": "batch_1",
+    "estimated_information_gain": 2.9607529856852133,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.9607529856852133
+  },
+  "LSAD-B2-K2L6-01": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 2.794346370735456,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.794346370735456
+  },
+  "LSAD-B2-K2L6-02": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 3.427787055092543,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.427787055092543
+  },
+  "LSAD-B2-K2L8-01": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 2.7498405231911356,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.7498405231911356
+  },
+  "LSAD-B2-K2L8-02": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 5.206989664530668,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 5.206989664530668
+  },
+  "LSAD-B2-K3L6-01": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 1.7154361697379026,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 1.7154361697379026
+  },
+  "LSAD-B2-K3L6-02": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 2.2308450549620966,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.2308450549620966
+  },
+  "LSAD-B2-K3L8-01": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 2.272464615629845,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.272464615629845
+  },
+  "LSAD-B2-K3L8-02": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 3.1535818522790904,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.1535818522790904
+  },
+  "LSAD-B2-K4L6-01": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 3.0677319092119917,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.0677319092119917
+  },
+  "LSAD-B2-K4L6-02": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 2.511581820653083,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.511581820653083
+  },
+  "LSAD-B2-K4L8-01": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 2.768357142044068,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.768357142044068
+  },
+  "LSAD-B2-K4L8-02": {
+    "batch": "batch_2_reserve",
+    "estimated_information_gain": 3.1082047311164485,
+    "rankable": true,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.1082047311164485
+  },
+  "LSAD-C-K2L6": {
+    "batch": "control",
+    "estimated_information_gain": 5.987150549533215,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 5.987150549533215
+  },
+  "LSAD-C-K2L8": {
+    "batch": "control",
+    "estimated_information_gain": 5.987150549533215,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 5.987150549533215
+  },
+  "LSAD-C-K3L6": {
+    "batch": "control",
+    "estimated_information_gain": 5.105583791128778,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 5.105583791128778
+  },
+  "LSAD-C-K3L8": {
+    "batch": "control",
+    "estimated_information_gain": 3.673690701814181,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.673690701814181
+  },
+  "LSAD-C-K4L6": {
+    "batch": "control",
+    "estimated_information_gain": 3.03564183219759,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.03564183219759
+  },
+  "LSAD-C-K4L8": {
+    "batch": "control",
+    "estimated_information_gain": 4.64343809608434,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 4.64343809608434
+  },
+  "LSAD-N-K2L6": {
+    "batch": "null",
+    "estimated_information_gain": 4.524673218104758,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 4.524673218104758
+  },
+  "LSAD-N-K2L8": {
+    "batch": "null",
+    "estimated_information_gain": 4.732914187690726,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 4.732914187690726
+  },
+  "LSAD-N-K3L6": {
+    "batch": "null",
+    "estimated_information_gain": 3.6596354717906383,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 3.6596354717906383
+  },
+  "LSAD-N-K3L8": {
+    "batch": "null",
+    "estimated_information_gain": 1.3353120610081235,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 1.3353120610081235
+  },
+  "LSAD-N-K4L6": {
+    "batch": "null",
+    "estimated_information_gain": 2.2711819931005715,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.2711819931005715
+  },
+  "LSAD-N-K4L8": {
+    "batch": "null",
+    "estimated_information_gain": 2.2723283773216245,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.2723283773216245
+  },
+  "LSAD-X-01": {
+    "batch": "context",
+    "estimated_information_gain": 2.0,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 2.0
+  },
+  "LSAD-X-02": {
+    "batch": "context",
+    "estimated_information_gain": 1.7566406683288718,
+    "rankable": false,
+    "resource_calibration_required": true,
+    "selection": "deterministic_descriptor_farthest_point",
+    "structural_diversity": 1.7566406683288718
+  }
+}

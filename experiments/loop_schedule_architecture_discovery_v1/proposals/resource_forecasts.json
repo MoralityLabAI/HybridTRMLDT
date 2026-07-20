@@ -1,0 +1,2890 @@
+{
+  "LSAD-B1-K2L6-01": [
+    {
+      "applied_parameters_per_token": 13326976,
+      "estimated_flops_per_example": 52344913920,
+      "estimated_peak_vram_bytes": 85276672,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 33128288,
+      "estimated_flops_per_example": 132114284544,
+      "estimated_peak_vram_bytes": 195269120,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 84975296,
+      "estimated_flops_per_example": 342280372224,
+      "estimated_peak_vram_bytes": 479912960,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 208670560,
+      "estimated_flops_per_example": 845615726592,
+      "estimated_peak_vram_bytes": 1152377344,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 498180576,
+      "estimated_flops_per_example": 2026446520320,
+      "estimated_peak_vram_bytes": 2718128640,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1183574560,
+      "estimated_flops_per_example": 4826144440320,
+      "estimated_peak_vram_bytes": 6406858240,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-B1-K2L6-02": [
+    {
+      "applied_parameters_per_token": 13326976,
+      "estimated_flops_per_example": 52344913920,
+      "estimated_peak_vram_bytes": 85276672,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 33128288,
+      "estimated_flops_per_example": 132114284544,
+      "estimated_peak_vram_bytes": 195269120,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 84975296,
+      "estimated_flops_per_example": 342280372224,
+      "estimated_peak_vram_bytes": 479912960,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 208670560,
+      "estimated_flops_per_example": 845615726592,
+      "estimated_peak_vram_bytes": 1152377344,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 498180576,
+      "estimated_flops_per_example": 2026446520320,
+      "estimated_peak_vram_bytes": 2718128640,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1183574560,
+      "estimated_flops_per_example": 4826144440320,
+      "estimated_peak_vram_bytes": 6406858240,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-B1-K2L8-01": [
+    {
+      "applied_parameters_per_token": 17485312,
+      "estimated_flops_per_example": 69793218560,
+      "estimated_peak_vram_bytes": 86128640,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 43717760,
+      "estimated_flops_per_example": 176152379392,
+      "estimated_peak_vram_bytes": 195949056,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 112568576,
+      "estimated_flops_per_example": 456373829632,
+      "estimated_peak_vram_bytes": 480461824,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 277075072,
+      "estimated_flops_per_example": 1127487635456,
+      "estimated_peak_vram_bytes": 1152809472,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 662454912,
+      "estimated_flops_per_example": 2701928693760,
+      "estimated_peak_vram_bytes": 2718798336,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1575341440,
+      "estimated_flops_per_example": 6434859253760,
+      "estimated_peak_vram_bytes": 6407892480,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-B1-K2L8-02": [
+    {
+      "applied_parameters_per_token": 17485312,
+      "estimated_flops_per_example": 69793218560,
+      "estimated_peak_vram_bytes": 86128640,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 43717760,
+      "estimated_flops_per_example": 176152379392,
+      "estimated_peak_vram_bytes": 195949056,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 112568576,
+      "estimated_flops_per_example": 456373829632,
+      "estimated_peak_vram_bytes": 480461824,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 277075072,
+      "estimated_flops_per_example": 1127487635456,
+      "estimated_peak_vram_bytes": 1152809472,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 662454912,
+      "estimated_flops_per_example": 2701928693760,
+      "estimated_peak_vram_bytes": 2718798336,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1575341440,
+      "estimated_flops_per_example": 6434859253760,
+      "estimated_peak_vram_bytes": 6407892480,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-B1-K3L6-01": [
+    {
+      "applied_parameters_per_token": 9235708,
+      "estimated_flops_per_example": 35980836864,
+      "estimated_peak_vram_bytes": 83748864,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 23086848,
+      "estimated_flops_per_example": 91597307904,
+      "estimated_peak_vram_bytes": 197130240,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 58622208,
+      "estimated_flops_per_example": 235344494592,
+      "estimated_peak_vram_bytes": 486254592,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 140791550,
+      "estimated_flops_per_example": 569244647424,
+      "estimated_peak_vram_bytes": 1151133696,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 335424508,
+      "estimated_flops_per_example": 1362377048064,
+      "estimated_peak_vram_bytes": 2721816576,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 792854270,
+      "estimated_flops_per_example": 3229775560704,
+      "estimated_peak_vram_bytes": 6402041856,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-B1-K3L6-02": [
+    {
+      "applied_parameters_per_token": 9235708,
+      "estimated_flops_per_example": 35980836864,
+      "estimated_peak_vram_bytes": 83748864,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 23086848,
+      "estimated_flops_per_example": 91597307904,
+      "estimated_peak_vram_bytes": 197130240,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 58622208,
+      "estimated_flops_per_example": 235344494592,
+      "estimated_peak_vram_bytes": 486254592,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 140791550,
+      "estimated_flops_per_example": 569244647424,
+      "estimated_peak_vram_bytes": 1151133696,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 335424508,
+      "estimated_flops_per_example": 1362377048064,
+      "estimated_peak_vram_bytes": 2721816576,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 792854270,
+      "estimated_flops_per_example": 3229775560704,
+      "estimated_peak_vram_bytes": 6402041856,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-B1-K3L8-01": [
+    {
+      "applied_parameters_per_token": 12079440,
+      "estimated_flops_per_example": 47974449152,
+      "estimated_peak_vram_bytes": 84453376,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 30405632,
+      "estimated_flops_per_example": 122129743872,
+      "estimated_peak_vram_bytes": 197695488,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 77556736,
+      "estimated_flops_per_example": 313792659456,
+      "estimated_peak_vram_bytes": 486709248,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 186777256,
+      "estimated_flops_per_example": 758992863232,
+      "estimated_peak_vram_bytes": 1151488000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 445769040,
+      "estimated_flops_per_example": 1816502730752,
+      "estimated_peak_vram_bytes": 2722365440,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 1054883496,
+      "estimated_flops_per_example": 4306367414272,
+      "estimated_peak_vram_bytes": 6402887680,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-B1-K3L8-02": [
+    {
+      "applied_parameters_per_token": 12079440,
+      "estimated_flops_per_example": 47974449152,
+      "estimated_peak_vram_bytes": 84453376,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 30405632,
+      "estimated_flops_per_example": 122129743872,
+      "estimated_peak_vram_bytes": 197695488,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 77556736,
+      "estimated_flops_per_example": 313792659456,
+      "estimated_peak_vram_bytes": 486709248,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 186777256,
+      "estimated_flops_per_example": 758992863232,
+      "estimated_peak_vram_bytes": 1151488000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 445769040,
+      "estimated_flops_per_example": 1816502730752,
+      "estimated_peak_vram_bytes": 2722365440,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 1054883496,
+      "estimated_flops_per_example": 4306367414272,
+      "estimated_peak_vram_bytes": 6402887680,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-B1-K4L6-01": [
+    {
+      "applied_parameters_per_token": 7285664,
+      "estimated_flops_per_example": 28210888704,
+      "estimated_peak_vram_bytes": 84769792,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 17586240,
+      "estimated_flops_per_example": 69457674240,
+      "estimated_peak_vram_bytes": 195778560,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 44063232,
+      "estimated_flops_per_example": 176362094592,
+      "estimated_peak_vram_bytes": 480755712,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 106173600,
+      "estimated_flops_per_example": 428448153600,
+      "estimated_peak_vram_bytes": 1147468800,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 254037104,
+      "estimated_flops_per_example": 1030534201344,
+      "estimated_peak_vram_bytes": 2732952064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 596531104,
+      "estimated_flops_per_example": 2428023865344,
+      "estimated_peak_vram_bytes": 6398680064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-B1-K4L6-02": [
+    {
+      "applied_parameters_per_token": 7285664,
+      "estimated_flops_per_example": 28210888704,
+      "estimated_peak_vram_bytes": 84769792,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 17586240,
+      "estimated_flops_per_example": 69457674240,
+      "estimated_peak_vram_bytes": 195778560,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 44063232,
+      "estimated_flops_per_example": 176362094592,
+      "estimated_peak_vram_bytes": 480755712,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 106173600,
+      "estimated_flops_per_example": 428448153600,
+      "estimated_peak_vram_bytes": 1147468800,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 254037104,
+      "estimated_flops_per_example": 1030534201344,
+      "estimated_peak_vram_bytes": 2732952064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 596531104,
+      "estimated_flops_per_example": 2428023865344,
+      "estimated_peak_vram_bytes": 6398680064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-B1-K4L8-01": [
+    {
+      "applied_parameters_per_token": 9506688,
+      "estimated_flops_per_example": 37614518272,
+      "estimated_peak_vram_bytes": 85392384,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 23120640,
+      "estimated_flops_per_example": 92610232320,
+      "estimated_peak_vram_bytes": 196270080,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 58226688,
+      "estimated_flops_per_example": 235149459456,
+      "estimated_peak_vram_bytes": 481148928,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 140745600,
+      "estimated_flops_per_example": 571264204800,
+      "estimated_peak_vram_bytes": 1147776000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 337443648,
+      "estimated_flops_per_example": 1374045601792,
+      "estimated_peak_vram_bytes": 2733429248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 793419648,
+      "estimated_flops_per_example": 3237365153792,
+      "estimated_peak_vram_bytes": 6399413248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-B1-K4L8-02": [
+    {
+      "applied_parameters_per_token": 9506688,
+      "estimated_flops_per_example": 37614518272,
+      "estimated_peak_vram_bytes": 85392384,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 23120640,
+      "estimated_flops_per_example": 92610232320,
+      "estimated_peak_vram_bytes": 196270080,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 58226688,
+      "estimated_flops_per_example": 235149459456,
+      "estimated_peak_vram_bytes": 481148928,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 140745600,
+      "estimated_flops_per_example": 571264204800,
+      "estimated_peak_vram_bytes": 1147776000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 337443648,
+      "estimated_flops_per_example": 1374045601792,
+      "estimated_peak_vram_bytes": 2733429248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 793419648,
+      "estimated_flops_per_example": 3237365153792,
+      "estimated_peak_vram_bytes": 6399413248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-B2-K2L6-01": [
+    {
+      "applied_parameters_per_token": 13326976,
+      "estimated_flops_per_example": 52344913920,
+      "estimated_peak_vram_bytes": 85276672,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 33128288,
+      "estimated_flops_per_example": 132114284544,
+      "estimated_peak_vram_bytes": 195269120,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 84975296,
+      "estimated_flops_per_example": 342280372224,
+      "estimated_peak_vram_bytes": 479912960,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 208670560,
+      "estimated_flops_per_example": 845615726592,
+      "estimated_peak_vram_bytes": 1152377344,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 498180576,
+      "estimated_flops_per_example": 2026446520320,
+      "estimated_peak_vram_bytes": 2718128640,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1183574560,
+      "estimated_flops_per_example": 4826144440320,
+      "estimated_peak_vram_bytes": 6406858240,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-B2-K2L6-02": [
+    {
+      "applied_parameters_per_token": 13326976,
+      "estimated_flops_per_example": 52344913920,
+      "estimated_peak_vram_bytes": 85276672,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 33128288,
+      "estimated_flops_per_example": 132114284544,
+      "estimated_peak_vram_bytes": 195269120,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 84975296,
+      "estimated_flops_per_example": 342280372224,
+      "estimated_peak_vram_bytes": 479912960,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 208670560,
+      "estimated_flops_per_example": 845615726592,
+      "estimated_peak_vram_bytes": 1152377344,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 498180576,
+      "estimated_flops_per_example": 2026446520320,
+      "estimated_peak_vram_bytes": 2718128640,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1183574560,
+      "estimated_flops_per_example": 4826144440320,
+      "estimated_peak_vram_bytes": 6406858240,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-B2-K2L8-01": [
+    {
+      "applied_parameters_per_token": 17485312,
+      "estimated_flops_per_example": 69793218560,
+      "estimated_peak_vram_bytes": 86128640,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 43717760,
+      "estimated_flops_per_example": 176152379392,
+      "estimated_peak_vram_bytes": 195949056,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 112568576,
+      "estimated_flops_per_example": 456373829632,
+      "estimated_peak_vram_bytes": 480461824,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 277075072,
+      "estimated_flops_per_example": 1127487635456,
+      "estimated_peak_vram_bytes": 1152809472,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 662454912,
+      "estimated_flops_per_example": 2701928693760,
+      "estimated_peak_vram_bytes": 2718798336,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1575341440,
+      "estimated_flops_per_example": 6434859253760,
+      "estimated_peak_vram_bytes": 6407892480,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-B2-K2L8-02": [
+    {
+      "applied_parameters_per_token": 17485312,
+      "estimated_flops_per_example": 69793218560,
+      "estimated_peak_vram_bytes": 86128640,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 43717760,
+      "estimated_flops_per_example": 176152379392,
+      "estimated_peak_vram_bytes": 195949056,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 112568576,
+      "estimated_flops_per_example": 456373829632,
+      "estimated_peak_vram_bytes": 480461824,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 277075072,
+      "estimated_flops_per_example": 1127487635456,
+      "estimated_peak_vram_bytes": 1152809472,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 662454912,
+      "estimated_flops_per_example": 2701928693760,
+      "estimated_peak_vram_bytes": 2718798336,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1575341440,
+      "estimated_flops_per_example": 6434859253760,
+      "estimated_peak_vram_bytes": 6407892480,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-B2-K3L6-01": [
+    {
+      "applied_parameters_per_token": 9235708,
+      "estimated_flops_per_example": 35980836864,
+      "estimated_peak_vram_bytes": 83748864,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 23086848,
+      "estimated_flops_per_example": 91597307904,
+      "estimated_peak_vram_bytes": 197130240,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 58622208,
+      "estimated_flops_per_example": 235344494592,
+      "estimated_peak_vram_bytes": 486254592,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 140791550,
+      "estimated_flops_per_example": 569244647424,
+      "estimated_peak_vram_bytes": 1151133696,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 335424508,
+      "estimated_flops_per_example": 1362377048064,
+      "estimated_peak_vram_bytes": 2721816576,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 792854270,
+      "estimated_flops_per_example": 3229775560704,
+      "estimated_peak_vram_bytes": 6402041856,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-B2-K3L6-02": [
+    {
+      "applied_parameters_per_token": 9235708,
+      "estimated_flops_per_example": 35980836864,
+      "estimated_peak_vram_bytes": 83748864,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 23086848,
+      "estimated_flops_per_example": 91597307904,
+      "estimated_peak_vram_bytes": 197130240,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 58622208,
+      "estimated_flops_per_example": 235344494592,
+      "estimated_peak_vram_bytes": 486254592,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 140791550,
+      "estimated_flops_per_example": 569244647424,
+      "estimated_peak_vram_bytes": 1151133696,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 335424508,
+      "estimated_flops_per_example": 1362377048064,
+      "estimated_peak_vram_bytes": 2721816576,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 792854270,
+      "estimated_flops_per_example": 3229775560704,
+      "estimated_peak_vram_bytes": 6402041856,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-B2-K3L8-01": [
+    {
+      "applied_parameters_per_token": 12079440,
+      "estimated_flops_per_example": 47974449152,
+      "estimated_peak_vram_bytes": 84453376,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 30405632,
+      "estimated_flops_per_example": 122129743872,
+      "estimated_peak_vram_bytes": 197695488,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 77556736,
+      "estimated_flops_per_example": 313792659456,
+      "estimated_peak_vram_bytes": 486709248,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 186777256,
+      "estimated_flops_per_example": 758992863232,
+      "estimated_peak_vram_bytes": 1151488000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 445769040,
+      "estimated_flops_per_example": 1816502730752,
+      "estimated_peak_vram_bytes": 2722365440,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 1054883496,
+      "estimated_flops_per_example": 4306367414272,
+      "estimated_peak_vram_bytes": 6402887680,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-B2-K3L8-02": [
+    {
+      "applied_parameters_per_token": 12079440,
+      "estimated_flops_per_example": 47974449152,
+      "estimated_peak_vram_bytes": 84453376,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 30405632,
+      "estimated_flops_per_example": 122129743872,
+      "estimated_peak_vram_bytes": 197695488,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 77556736,
+      "estimated_flops_per_example": 313792659456,
+      "estimated_peak_vram_bytes": 486709248,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 186777256,
+      "estimated_flops_per_example": 758992863232,
+      "estimated_peak_vram_bytes": 1151488000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 445769040,
+      "estimated_flops_per_example": 1816502730752,
+      "estimated_peak_vram_bytes": 2722365440,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 1054883496,
+      "estimated_flops_per_example": 4306367414272,
+      "estimated_peak_vram_bytes": 6402887680,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-B2-K4L6-01": [
+    {
+      "applied_parameters_per_token": 7285664,
+      "estimated_flops_per_example": 28210888704,
+      "estimated_peak_vram_bytes": 84769792,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 17586240,
+      "estimated_flops_per_example": 69457674240,
+      "estimated_peak_vram_bytes": 195778560,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 44063232,
+      "estimated_flops_per_example": 176362094592,
+      "estimated_peak_vram_bytes": 480755712,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 106173600,
+      "estimated_flops_per_example": 428448153600,
+      "estimated_peak_vram_bytes": 1147468800,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 254037104,
+      "estimated_flops_per_example": 1030534201344,
+      "estimated_peak_vram_bytes": 2732952064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 596531104,
+      "estimated_flops_per_example": 2428023865344,
+      "estimated_peak_vram_bytes": 6398680064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-B2-K4L6-02": [
+    {
+      "applied_parameters_per_token": 7285664,
+      "estimated_flops_per_example": 28210888704,
+      "estimated_peak_vram_bytes": 84769792,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 17586240,
+      "estimated_flops_per_example": 69457674240,
+      "estimated_peak_vram_bytes": 195778560,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 44063232,
+      "estimated_flops_per_example": 176362094592,
+      "estimated_peak_vram_bytes": 480755712,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 106173600,
+      "estimated_flops_per_example": 428448153600,
+      "estimated_peak_vram_bytes": 1147468800,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 254037104,
+      "estimated_flops_per_example": 1030534201344,
+      "estimated_peak_vram_bytes": 2732952064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 596531104,
+      "estimated_flops_per_example": 2428023865344,
+      "estimated_peak_vram_bytes": 6398680064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-B2-K4L8-01": [
+    {
+      "applied_parameters_per_token": 9506688,
+      "estimated_flops_per_example": 37614518272,
+      "estimated_peak_vram_bytes": 85392384,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 23120640,
+      "estimated_flops_per_example": 92610232320,
+      "estimated_peak_vram_bytes": 196270080,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 58226688,
+      "estimated_flops_per_example": 235149459456,
+      "estimated_peak_vram_bytes": 481148928,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 140745600,
+      "estimated_flops_per_example": 571264204800,
+      "estimated_peak_vram_bytes": 1147776000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 337443648,
+      "estimated_flops_per_example": 1374045601792,
+      "estimated_peak_vram_bytes": 2733429248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 793419648,
+      "estimated_flops_per_example": 3237365153792,
+      "estimated_peak_vram_bytes": 6399413248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-B2-K4L8-02": [
+    {
+      "applied_parameters_per_token": 9506688,
+      "estimated_flops_per_example": 37614518272,
+      "estimated_peak_vram_bytes": 85392384,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 23120640,
+      "estimated_flops_per_example": 92610232320,
+      "estimated_peak_vram_bytes": 196270080,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 58226688,
+      "estimated_flops_per_example": 235149459456,
+      "estimated_peak_vram_bytes": 481148928,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 140745600,
+      "estimated_flops_per_example": 571264204800,
+      "estimated_peak_vram_bytes": 1147776000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 337443648,
+      "estimated_flops_per_example": 1374045601792,
+      "estimated_peak_vram_bytes": 2733429248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 793419648,
+      "estimated_flops_per_example": 3237365153792,
+      "estimated_peak_vram_bytes": 6399413248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-C-K2L6": [
+    {
+      "applied_parameters_per_token": 13326976,
+      "estimated_flops_per_example": 52344913920,
+      "estimated_peak_vram_bytes": 85276672,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 33128288,
+      "estimated_flops_per_example": 132114284544,
+      "estimated_peak_vram_bytes": 195269120,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 84975296,
+      "estimated_flops_per_example": 342280372224,
+      "estimated_peak_vram_bytes": 479912960,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 208670560,
+      "estimated_flops_per_example": 845615726592,
+      "estimated_peak_vram_bytes": 1152377344,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 498180576,
+      "estimated_flops_per_example": 2026446520320,
+      "estimated_peak_vram_bytes": 2718128640,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1183574560,
+      "estimated_flops_per_example": 4826144440320,
+      "estimated_peak_vram_bytes": 6406858240,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-C-K2L8": [
+    {
+      "applied_parameters_per_token": 17485312,
+      "estimated_flops_per_example": 69793218560,
+      "estimated_peak_vram_bytes": 86128640,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 43717760,
+      "estimated_flops_per_example": 176152379392,
+      "estimated_peak_vram_bytes": 195949056,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 112568576,
+      "estimated_flops_per_example": 456373829632,
+      "estimated_peak_vram_bytes": 480461824,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 277075072,
+      "estimated_flops_per_example": 1127487635456,
+      "estimated_peak_vram_bytes": 1152809472,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 662454912,
+      "estimated_flops_per_example": 2701928693760,
+      "estimated_peak_vram_bytes": 2718798336,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1575341440,
+      "estimated_flops_per_example": 6434859253760,
+      "estimated_peak_vram_bytes": 6407892480,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-C-K3L6": [
+    {
+      "applied_parameters_per_token": 9235708,
+      "estimated_flops_per_example": 35980836864,
+      "estimated_peak_vram_bytes": 83748864,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 23086848,
+      "estimated_flops_per_example": 91597307904,
+      "estimated_peak_vram_bytes": 197130240,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 58622208,
+      "estimated_flops_per_example": 235344494592,
+      "estimated_peak_vram_bytes": 486254592,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 140791550,
+      "estimated_flops_per_example": 569244647424,
+      "estimated_peak_vram_bytes": 1151133696,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 335424508,
+      "estimated_flops_per_example": 1362377048064,
+      "estimated_peak_vram_bytes": 2721816576,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 792854270,
+      "estimated_flops_per_example": 3229775560704,
+      "estimated_peak_vram_bytes": 6402041856,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-C-K3L8": [
+    {
+      "applied_parameters_per_token": 12079440,
+      "estimated_flops_per_example": 47974449152,
+      "estimated_peak_vram_bytes": 84453376,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 30405632,
+      "estimated_flops_per_example": 122129743872,
+      "estimated_peak_vram_bytes": 197695488,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 77556736,
+      "estimated_flops_per_example": 313792659456,
+      "estimated_peak_vram_bytes": 486709248,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 186777256,
+      "estimated_flops_per_example": 758992863232,
+      "estimated_peak_vram_bytes": 1151488000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 445769040,
+      "estimated_flops_per_example": 1816502730752,
+      "estimated_peak_vram_bytes": 2722365440,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 1054883496,
+      "estimated_flops_per_example": 4306367414272,
+      "estimated_peak_vram_bytes": 6402887680,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-C-K4L6": [
+    {
+      "applied_parameters_per_token": 7285664,
+      "estimated_flops_per_example": 28210888704,
+      "estimated_peak_vram_bytes": 84769792,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 17586240,
+      "estimated_flops_per_example": 69457674240,
+      "estimated_peak_vram_bytes": 195778560,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 44063232,
+      "estimated_flops_per_example": 176362094592,
+      "estimated_peak_vram_bytes": 480755712,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 106173600,
+      "estimated_flops_per_example": 428448153600,
+      "estimated_peak_vram_bytes": 1147468800,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 254037104,
+      "estimated_flops_per_example": 1030534201344,
+      "estimated_peak_vram_bytes": 2732952064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 596531104,
+      "estimated_flops_per_example": 2428023865344,
+      "estimated_peak_vram_bytes": 6398680064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-C-K4L8": [
+    {
+      "applied_parameters_per_token": 9506688,
+      "estimated_flops_per_example": 37614518272,
+      "estimated_peak_vram_bytes": 85392384,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 23120640,
+      "estimated_flops_per_example": 92610232320,
+      "estimated_peak_vram_bytes": 196270080,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 58226688,
+      "estimated_flops_per_example": 235149459456,
+      "estimated_peak_vram_bytes": 481148928,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 140745600,
+      "estimated_flops_per_example": 571264204800,
+      "estimated_peak_vram_bytes": 1147776000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 337443648,
+      "estimated_flops_per_example": 1374045601792,
+      "estimated_peak_vram_bytes": 2733429248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 793419648,
+      "estimated_flops_per_example": 3237365153792,
+      "estimated_peak_vram_bytes": 6399413248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-N-K2L6": [
+    {
+      "applied_parameters_per_token": 13326976,
+      "estimated_flops_per_example": 52344913920,
+      "estimated_peak_vram_bytes": 85276672,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 33128288,
+      "estimated_flops_per_example": 132114284544,
+      "estimated_peak_vram_bytes": 195269120,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 84975296,
+      "estimated_flops_per_example": 342280372224,
+      "estimated_peak_vram_bytes": 479912960,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 208670560,
+      "estimated_flops_per_example": 845615726592,
+      "estimated_peak_vram_bytes": 1152377344,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 498180576,
+      "estimated_flops_per_example": 2026446520320,
+      "estimated_peak_vram_bytes": 2718128640,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1183574560,
+      "estimated_flops_per_example": 4826144440320,
+      "estimated_peak_vram_bytes": 6406858240,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-N-K2L8": [
+    {
+      "applied_parameters_per_token": 17485312,
+      "estimated_flops_per_example": 69793218560,
+      "estimated_peak_vram_bytes": 86128640,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5010304
+    },
+    {
+      "applied_parameters_per_token": 43717760,
+      "estimated_flops_per_example": 176152379392,
+      "estimated_peak_vram_bytes": 195949056,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 11949344
+    },
+    {
+      "applied_parameters_per_token": 112568576,
+      "estimated_flops_per_example": 456373829632,
+      "estimated_peak_vram_bytes": 480461824,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29788736
+    },
+    {
+      "applied_parameters_per_token": 277075072,
+      "estimated_flops_per_example": 1127487635456,
+      "estimated_peak_vram_bytes": 1152809472,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71861536
+    },
+    {
+      "applied_parameters_per_token": 662454912,
+      "estimated_flops_per_example": 2701928693760,
+      "estimated_peak_vram_bytes": 2718798336,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169631904
+    },
+    {
+      "applied_parameters_per_token": 1575341440,
+      "estimated_flops_per_example": 6434859253760,
+      "estimated_peak_vram_bytes": 6407892480,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400040800
+    }
+  ],
+  "LSAD-N-K3L6": [
+    {
+      "applied_parameters_per_token": 9235708,
+      "estimated_flops_per_example": 35980836864,
+      "estimated_peak_vram_bytes": 83748864,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 23086848,
+      "estimated_flops_per_example": 91597307904,
+      "estimated_peak_vram_bytes": 197130240,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 58622208,
+      "estimated_flops_per_example": 235344494592,
+      "estimated_peak_vram_bytes": 486254592,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 140791550,
+      "estimated_flops_per_example": 569244647424,
+      "estimated_peak_vram_bytes": 1151133696,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 335424508,
+      "estimated_flops_per_example": 1362377048064,
+      "estimated_peak_vram_bytes": 2721816576,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 792854270,
+      "estimated_flops_per_example": 3229775560704,
+      "estimated_peak_vram_bytes": 6402041856,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-N-K3L8": [
+    {
+      "applied_parameters_per_token": 12079440,
+      "estimated_flops_per_example": 47974449152,
+      "estimated_peak_vram_bytes": 84453376,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4970112
+    },
+    {
+      "applied_parameters_per_token": 30405632,
+      "estimated_flops_per_example": 122129743872,
+      "estimated_peak_vram_bytes": 197695488,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12108672
+    },
+    {
+      "applied_parameters_per_token": 77556736,
+      "estimated_flops_per_example": 313792659456,
+      "estimated_peak_vram_bytes": 486709248,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30220416
+    },
+    {
+      "applied_parameters_per_token": 186777256,
+      "estimated_flops_per_example": 758992863232,
+      "estimated_peak_vram_bytes": 1151488000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71812992
+    },
+    {
+      "applied_parameters_per_token": 445769040,
+      "estimated_flops_per_example": 1816502730752,
+      "estimated_peak_vram_bytes": 2722365440,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 169907712
+    },
+    {
+      "applied_parameters_per_token": 1054883496,
+      "estimated_flops_per_example": 4306367414272,
+      "estimated_peak_vram_bytes": 6402887680,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399810432
+    }
+  ],
+  "LSAD-N-K4L6": [
+    {
+      "applied_parameters_per_token": 7285664,
+      "estimated_flops_per_example": 28210888704,
+      "estimated_peak_vram_bytes": 84769792,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 17586240,
+      "estimated_flops_per_example": 69457674240,
+      "estimated_peak_vram_bytes": 195778560,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 44063232,
+      "estimated_flops_per_example": 176362094592,
+      "estimated_peak_vram_bytes": 480755712,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 106173600,
+      "estimated_flops_per_example": 428448153600,
+      "estimated_peak_vram_bytes": 1147468800,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 254037104,
+      "estimated_flops_per_example": 1030534201344,
+      "estimated_peak_vram_bytes": 2732952064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 596531104,
+      "estimated_flops_per_example": 2428023865344,
+      "estimated_peak_vram_bytes": 6398680064,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-N-K4L8": [
+    {
+      "applied_parameters_per_token": 9506688,
+      "estimated_flops_per_example": 37614518272,
+      "estimated_peak_vram_bytes": 85392384,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5064640
+    },
+    {
+      "applied_parameters_per_token": 23120640,
+      "estimated_flops_per_example": 92610232320,
+      "estimated_peak_vram_bytes": 196270080,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12051840
+    },
+    {
+      "applied_parameters_per_token": 58226688,
+      "estimated_flops_per_example": 235149459456,
+      "estimated_peak_vram_bytes": 481148928,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29899776
+    },
+    {
+      "applied_parameters_per_token": 140745600,
+      "estimated_flops_per_example": 571264204800,
+      "estimated_peak_vram_bytes": 1147776000,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 71601600
+    },
+    {
+      "applied_parameters_per_token": 337443648,
+      "estimated_flops_per_example": 1374045601792,
+      "estimated_peak_vram_bytes": 2733429248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170630560
+    },
+    {
+      "applied_parameters_per_token": 793419648,
+      "estimated_flops_per_example": 3237365153792,
+      "estimated_peak_vram_bytes": 6399413248,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399642560
+    }
+  ],
+  "LSAD-X-01": [
+    {
+      "applied_parameters_per_token": 32171520,
+      "estimated_flops_per_example": 129243283456,
+      "estimated_peak_vram_bytes": 88771584,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 5039296
+    },
+    {
+      "applied_parameters_per_token": 83197440,
+      "estimated_flops_per_example": 336676782080,
+      "estimated_peak_vram_bytes": 199367680,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12048320
+    },
+    {
+      "applied_parameters_per_token": 218009088,
+      "estimated_flops_per_example": 886298378240,
+      "estimated_peak_vram_bytes": 484273152,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 29931968
+    },
+    {
+      "applied_parameters_per_token": 543313920,
+      "estimated_flops_per_example": 2214860947456,
+      "estimated_peak_vram_bytes": 1158766592,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 72157696
+    },
+    {
+      "applied_parameters_per_token": 1307842560,
+      "estimated_flops_per_example": 5340523397120,
+      "estimated_peak_vram_bytes": 2727792640,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170074880
+    },
+    {
+      "applied_parameters_per_token": 3117934080,
+      "estimated_flops_per_example": 12745709715456,
+      "estimated_peak_vram_bytes": 6409147392,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 399934656
+    }
+  ],
+  "LSAD-X-02": [
+    {
+      "applied_parameters_per_token": 4929120,
+      "estimated_flops_per_example": 19251855360,
+      "estimated_peak_vram_bytes": 81962496,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 4,
+      "microbatch_size": 8,
+      "scale_rung": "S0",
+      "unique_parameters": 4929120
+    },
+    {
+      "applied_parameters_per_token": 12077152,
+      "estimated_flops_per_example": 47974449152,
+      "estimated_peak_vram_bytes": 195700224,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 8,
+      "microbatch_size": 4,
+      "scale_rung": "S1",
+      "unique_parameters": 12077152
+    },
+    {
+      "applied_parameters_per_token": 30401952,
+      "estimated_flops_per_example": 122129743872,
+      "estimated_peak_vram_bytes": 488409600,
+      "exclusion_reasons": [],
+      "executable": true,
+      "gradient_accumulation": 16,
+      "microbatch_size": 2,
+      "scale_rung": "S2",
+      "unique_parameters": 30401952
+    },
+    {
+      "applied_parameters_per_token": 72126560,
+      "estimated_flops_per_example": 291713843200,
+      "estimated_peak_vram_bytes": 1155558912,
+      "exclusion_reasons": [
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S3",
+      "unique_parameters": 72126560
+    },
+    {
+      "applied_parameters_per_token": 170021280,
+      "estimated_flops_per_example": 690676039680,
+      "estimated_peak_vram_bytes": 2722705920,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S4",
+      "unique_parameters": 170021280
+    },
+    {
+      "applied_parameters_per_token": 400620992,
+      "estimated_flops_per_example": 1632121126912,
+      "estimated_peak_vram_bytes": 6413577216,
+      "exclusion_reasons": [
+        "estimated_vram_exceeds_cap",
+        "campaign_stops_at_30m"
+      ],
+      "executable": false,
+      "gradient_accumulation": 32,
+      "microbatch_size": 1,
+      "scale_rung": "S5",
+      "unique_parameters": 400620992
+    }
+  ]
+}
