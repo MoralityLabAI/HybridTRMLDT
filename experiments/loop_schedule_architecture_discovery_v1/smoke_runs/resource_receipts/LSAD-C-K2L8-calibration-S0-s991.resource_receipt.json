@@ -1,0 +1,23 @@
+{
+    "abort_reason":  "external_gpu_contention",
+    "finished_utc":  "2026-07-20T03:02:04.8482108Z",
+    "cleanup_passed":  true,
+    "status":  "construction_failure",
+    "cell_id":  "LSAD-C-K2L8-calibration-S0-s991",
+    "caps":  {
+                 "ram_bytes":  3984588800,
+                 "ram_mb":  3800,
+                 "cpu_pct":  50,
+                 "io_bytes_per_second":  52428800,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_bytes":  2621440000,
+                 "vram_mb":  2500,
+                 "torch_vram_fraction":  0.60,
+                 "child_timeout_seconds":  1800,
+                 "campaign_gpu_seconds":  129600
+             },
+    "started_utc":  "2026-07-20T03:02:04.6664949Z",
+    "owned_pid":  null,
+    "training_task_id":  "lspg_architecture_discovery_v1"
+}
