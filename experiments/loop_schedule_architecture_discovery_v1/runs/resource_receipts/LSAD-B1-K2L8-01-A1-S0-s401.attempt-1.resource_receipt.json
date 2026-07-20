@@ -1,0 +1,39 @@
+{
+    "cleanup_passed":  true,
+    "avg_cpu_pct":  7.26,
+    "status":  "completed",
+    "abort_reason":  null,
+    "samples":  59,
+    "cell_id":  "LSAD-B1-K2L8-01-A1-S0-s401",
+    "peak_vram_mb":  0,
+    "avg_ram_mb":  808.956,
+    "hard_caps":  {
+                      "process_memory":  true,
+                      "cpu_rate":  true,
+                      "torch_allocator_vram":  true,
+                      "io_abort":  true
+                  },
+    "foreign_process_policy":  "observed but never terminated",
+    "peak_ram_mb":  993,
+    "started_utc":  "2026-07-20T05:30:24.8227317Z",
+    "training_task_id":  "lspg_architecture_discovery_v1",
+    "finished_utc":  "2026-07-20T05:32:01.6021408Z",
+    "lingering_owned_process":  false,
+    "elapsed_seconds":  96.779,
+    "caps":  {
+                 "ram_bytes":  3984588800,
+                 "ram_mb":  3800,
+                 "cpu_pct":  50,
+                 "io_bytes_per_second":  52428800,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_bytes":  2621440000,
+                 "vram_mb":  2500,
+                 "torch_vram_fraction":  0.60,
+                 "child_timeout_seconds":  1800,
+                 "campaign_gpu_seconds":  129600
+             },
+    "attempt":  1,
+    "peak_io_mb_s":  38.964,
+    "owned_pid":  27292
+}
