@@ -1,0 +1,33 @@
+{
+  "action": "prepare_B",
+  "completed_stage": "A2",
+  "decisions": [
+    {
+      "maximum_task_regression": -0.01171875,
+      "mean_macro_delta": -0.005208333333333324,
+      "mean_step_time_ratio": 0.986284472437086,
+      "passed": false,
+      "positive_seed_count": 1,
+      "proposal_id": "LSAD-B1-K4L8-01",
+      "reasons": [
+        "positive_in_fewer_than_two_seeds"
+      ]
+    },
+    {
+      "maximum_task_regression": -0.010416666666666666,
+      "mean_macro_delta": -0.0030381944444444384,
+      "mean_step_time_ratio": 0.9939095676422663,
+      "passed": false,
+      "positive_seed_count": 0,
+      "proposal_id": "LSAD-B1-K4L8-02",
+      "reasons": [
+        "positive_in_fewer_than_two_seeds"
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "selected_candidates": [],
+  "stage_manifest_hash": "3bc4c681c951d03a393f6a3201bd8b06ddcf64ae5f813d120582ff842c6300f2",
+  "task_outcomes_observed": true,
+  "transition_hash": "a7f79b0407acb64550c9d34dd3ef4ba1031deb8650f3c4727425dccabd864a66"
+}
