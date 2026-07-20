@@ -28,6 +28,18 @@ def _elapsed_seconds(receipt_dir: Path) -> float:
     return total
 
 
+def _next_attempt(receipt_dir: Path, cell_id: str) -> int:
+    attempts: list[int] = []
+    prefix = f"{cell_id}.attempt-"
+    suffix = ".resource_receipt.json"
+    for path in receipt_dir.glob(f"{cell_id}.attempt-*.resource_receipt.json"):
+        name = path.name
+        value = name[len(prefix) : -len(suffix)]
+        if value.isdigit():
+            attempts.append(int(value))
+    return max(attempts, default=0) + 1
+
+
 def _completed_result(output: Path, cell_id: str) -> bool:
     result_path = output / cell_id / "result.json"
     receipt_path = output / cell_id / "result_receipt.json"
@@ -108,7 +120,8 @@ def main() -> None:
         for cell in manifest["cells"]:
             if _completed_result(args.output, cell["cell_id"]):
                 continue
-            for attempt in range(1, maximum_attempts + 1):
+            first_attempt = _next_attempt(receipt_dir, cell["cell_id"])
+            for attempt in range(first_attempt, maximum_attempts + 1):
                 remaining = maximum_seconds - _elapsed_seconds(receipt_dir)
                 if remaining <= 0:
                     raise RuntimeError("campaign_gpu_seconds_exhausted")
