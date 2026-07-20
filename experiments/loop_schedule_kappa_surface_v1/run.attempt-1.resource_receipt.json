@@ -1,0 +1,36 @@
+{
+  "protocol_id": "loop_schedule_kappa_surface_v1",
+  "phase": "run",
+  "attempt": 1,
+  "status": "external_orchestration_failure",
+  "abort_reason": "outer_command_host_timeout_before_wrapper_finalizer",
+  "scientific_interpretation": "none",
+  "owned_pid": 25180,
+  "owned_pid_terminated_utc": "2026-07-20T20:02:34.1689681Z",
+  "lingering_owned_process": false,
+  "lingering_owned_gpu_app": false,
+  "cleanup_passed_after_explicit_pid_cleanup": true,
+  "resource_peaks_available": false,
+  "resource_peak_reason": "the external host terminated the PowerShell wrapper before its finally block wrote sampled maxima",
+  "partial_ledger": {
+    "path": "experiments/loop_schedule_kappa_surface_v1/surface_events.jsonl",
+    "sha256": "ad4c4b7a40945b7086994705f21abdfb7598074c96d7b64c79fd9e6124b74c09",
+    "bytes": 57620,
+    "event_count": 56,
+    "measurement_count": 31,
+    "fully_completed_cell_count": 6,
+    "checkpoint_count": 12,
+    "canonical_surface_records_emitted": false,
+    "scientific_result_emitted": false
+  },
+  "caps": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1800,
+    "aggregate_gpu_hours": 1
+  }
+}
