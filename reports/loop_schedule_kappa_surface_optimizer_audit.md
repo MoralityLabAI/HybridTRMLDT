@@ -4,7 +4,7 @@
 
 The transient `R=64` alignment trough is not explained by an explicit learning-rate warmup, decay, or schedule knee. The frozen runner uses AdamW with a constant learning rate of `0.001`, and its execution path contains no scheduler or warmup operation.
 
-This audit does not establish that the trough is intrinsic to the loop dynamics. AdamW's moment estimates and bias correction remain optimizer-state mechanisms, and the experiment does not intervene on them independently. It rules out the narrower and immediately testable confound that a registered learning-rate transition occurred near exposure `2048`.
+The sealed combined records also contain the step-aligned cells omitted from the first audit figure. They reject a depth-generic step-4 trough: geometric-mean kappa rises at step 4 for `R=16` and `R=32`, while it falls only for `R=64`. This does not establish that the high-depth trough is intrinsic to the loop dynamics. An `R`-amplified early-Adam transient remains viable because AdamW's moment estimates and bias correction are based on only four updates at the `R=64` trough, and the experiment does not intervene on optimizer state independently.
 
 ![Constant learning rate and exposure-to-step mapping](figures/lsa_kappa_optimizer_schedule_audit.svg)
 
@@ -34,19 +34,19 @@ Therefore the registered checkpoints map to optimizer steps as follows:
 
 Exposure `2048` is not a common optimizer step. Conversely, optimizer step `4` occurs at exposures `512`, `1024`, and `2048` for `R=16`, `R=32`, and `R=64`, respectively.
 
-## Data Discriminator
+## Step-Aligned Discriminator
 
-Geometric-mean tied kappa is monotonic over the four registered surface points for `R=16` and `R=32`:
+The frozen combined records already include `R=16/E=512` and `R=32/E=1024`. No micro-run or post-registration measurement was needed. Aligning all depths at optimizer step 4 gives:
 
-| R | E=0 | E=1024 | E=2048 | E=4096 | Shape |
-|---:|---:|---:|---:|---:|---|
-| 16 | 1.825 | 2.148 | 2.306 | 2.551 | monotonic growth |
-| 32 | 1.243 | 1.586 | 1.991 | 2.307 | monotonic growth |
-| 64 | 0.790 | 0.966 | 0.824 | 1.510 | trough and recovery |
+| R | Previous point | Step-4 point | Next point | Step-4 shape |
+|---:|---:|---:|---:|---|
+| 16 | E=0: 1.825 | E=512: 1.949 | E=1024: 2.148 | rising |
+| 32 | E=512: 1.539 | E=1024: 1.586 | E=2048: 1.991 | rising |
+| 64 | E=1024: 0.966 | E=2048: 0.824 | E=4096: 1.510 | trough and recovery |
 
-The excursion is thus not pinned at exposure `2048` across depth. It is also not pinned at optimizer step `4`: `R=32` rises through its step-4 measurement at exposure `1024`, while `R=64` reaches the trough at step 4 and exposure `2048`.
+The step-4 log changes from the previous measurement are `+0.066`, `+0.030`, and `-0.159` for `R=16`, `R=32`, and `R=64`. The excursion is therefore neither a shared exposure-2048 event nor a depth-generic step-4 event in the observed range.
 
-The seed-level `R=64` values are heterogeneous, but the registered paired curvature interval at exposure `2048` excludes zero. This audit does not relabel that registered result or claim a new model family from the same outcomes.
+The seed-level values are heterogeneous. Previous-to-step-4 signs are `(+,+,-)` at `R=16`, `(+,+,-)` at `R=32`, and `(+,-,-)` at `R=64`; all three `R=64` seeds then rise from step 4 to step 8. The registered paired depth-curvature interval at exposure `2048` excludes zero, but the small step-aligned ensemble cannot distinguish a depth-amplified optimizer transient from a loop-intrinsic stability episode.
 
 ## Stress Scaling
 
@@ -55,6 +55,16 @@ At the registered curvature onset, tied-to-untied interval-gradient stress is `6
 `log2(96.891 / 21.620) = 2.164`.
 
 Across `R=16` to `R=64`, the corresponding endpoint exponent is `1.944`. These are descriptive slopes over two or three depths, not an established stress scaling law. They motivate a held-out `R=128` transient-prognostic test but do not license it without a new frozen protocol.
+
+## Held-Out Discriminator
+
+At `R=128` with batch size 8:
+
+- an exposure-pinned onset predicts the excursion at `E=2048`, optimizer step 2;
+- a step-pinned onset predicts the excursion at `E=4096`, optimizer step 4;
+- a measurement after step 4 tests whether the system recovers or crosses into persistent instability.
+
+This is a divergent prediction on one new depth. It must be frozen before the `R=128` run, and its outcome must not be blended with the retrospective step-aligned check.
 
 ## Scope
 
