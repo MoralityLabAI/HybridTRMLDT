@@ -1,0 +1,27 @@
+{
+    "owned_pid":  null,
+    "abort_reason":  "external_gpu_contention",
+    "finished_utc":  "2026-07-20T06:13:41.0872468Z",
+    "ignored_cpu_only_gpu_registry_pids":  [
+                                               16552
+                                           ],
+    "status":  "construction_failure",
+    "cell_id":  "LSAD-B1-K4L6-02-A1-S0-s401",
+    "attempt":  3,
+    "cleanup_passed":  true,
+    "started_utc":  "2026-07-20T06:13:39.5404444Z",
+    "caps":  {
+                 "ram_bytes":  3984588800,
+                 "ram_mb":  3800,
+                 "cpu_pct":  50,
+                 "io_bytes_per_second":  52428800,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_bytes":  2621440000,
+                 "vram_mb":  2500,
+                 "torch_vram_fraction":  0.60,
+                 "child_timeout_seconds":  1800,
+                 "campaign_gpu_seconds":  129600
+             },
+    "training_task_id":  "lspg_architecture_discovery_v1"
+}

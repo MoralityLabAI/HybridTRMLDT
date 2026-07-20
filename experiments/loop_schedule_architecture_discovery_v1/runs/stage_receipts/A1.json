@@ -1,5 +1,5 @@
 {
-  "campaign_elapsed_seconds": 746.2529999999999,
+  "campaign_elapsed_seconds": 1172.324,
   "cell_receipts": {
     "LSAD-B1-K2L6-01-A1-S0-s401": {
       "result_sha256": "c40a27b76534e733338bbb14423984d0ea487c4e04299419bd806a789c054ef5",
@@ -32,12 +32,16 @@
     "LSAD-B1-K3L8-02-A1-S0-s401": {
       "result_sha256": "f7f50470de97e11835320bf402627e3f8c029bcd637404ade3d9f646084ea624",
       "status": "completed"
+    },
+    "LSAD-B1-K4L6-01-A1-S0-s401": {
+      "result_sha256": "52db1073cb31aaee28be7b2b16797589232eb2c57c5892455b2bbad91dd842f2",
+      "status": "completed"
     }
   },
-  "completed_cells": 8,
+  "completed_cells": 9,
   "expected_cells": 18,
-  "failure": "cell failed without resumable timeout: LSAD-B1-K4L6-01-A1-S0-s401 external_gpu_contention",
-  "receipt_hash": "c24cc5052e8dfe33dbd1fa25bae0c5b5a5bfac6d84070bb343f7700d89eab4b1",
+  "failure": "cell failed without resumable timeout: LSAD-B1-K4L6-02-A1-S0-s401 external_gpu_contention",
+  "receipt_hash": "e5ef862488cfeb6f8e0ded66dbaa8dbc716674f30db781c4d9ddd90242d80728",
   "schema_version": 1,
   "stage_id": "A1",
   "stage_manifest_hash": "612c750c8302af876c26f1baff0e1902799157a3a0c45388ddc54bd49c4790aa",
