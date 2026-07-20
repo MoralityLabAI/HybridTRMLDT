@@ -135,3 +135,30 @@ def test_local_effective_gamma_exposes_a_plateau() -> None:
 
     assert values[-1]["gamma"] < values[0]["gamma"]
     assert values[-1]["from_rounds"] == 8
+
+
+def test_sealed_r64_holdout_preserves_the_registered_negative_result() -> None:
+    result_path = (
+        ROOT
+        / "experiments"
+        / "loop_schedule_algebra_saturation_addendum_v1"
+        / "holdout_r64_result.json"
+    )
+    if not result_path.exists():
+        pytest.skip("R64 holdout has not been materialized")
+    result = json.loads(result_path.read_text())
+    summary = result["summary"]
+
+    assert summary["prediction_seal"]["commit"] == (
+        "d91b745007c25bc01403aa12b67de73acb969c77"
+    )
+    assert summary["prediction_seal"]["sha256"] == (
+        "910f4d994be6d24afb8bb370b9b6e42a2b907df7b4b82245516286295119ed42"
+    )
+    assert summary["classification"] == "form_unresolved"
+    assert summary["holdout_decision"]["winner"] == "unresolved"
+    assert not summary["saturation_support"]["supported"]
+    assert summary["tied_geometric_mean_kappa"]["64"] == pytest.approx(
+        1.5098975282233111
+    )
+    assert not summary["untied_flatness_control"]["passed"]
