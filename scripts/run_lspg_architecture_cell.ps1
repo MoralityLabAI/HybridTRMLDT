@@ -21,10 +21,18 @@ param(
 
 $ErrorActionPreference = "Stop"
 $Repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$ProposalPath = [System.IO.Path]::GetFullPath((Join-Path $Repo $ProposalDir))
-$DatasetPath = [System.IO.Path]::GetFullPath((Join-Path $Repo $DatasetDir))
-$OutputPath = [System.IO.Path]::GetFullPath((Join-Path $Repo $Output))
-$ResourcePath = [System.IO.Path]::GetFullPath((Join-Path $Repo $ResourceConfig))
+
+function Resolve-RepoPath([string]$Value) {
+    if ([System.IO.Path]::IsPathRooted($Value)) {
+        return [System.IO.Path]::GetFullPath($Value)
+    }
+    return [System.IO.Path]::GetFullPath((Join-Path $Repo $Value))
+}
+
+$ProposalPath = Resolve-RepoPath $ProposalDir
+$DatasetPath = Resolve-RepoPath $DatasetDir
+$OutputPath = Resolve-RepoPath $Output
+$ResourcePath = Resolve-RepoPath $ResourceConfig
 $Profile = Get-Content -Raw -LiteralPath $ResourcePath | ConvertFrom-Json
 $Caps = $Profile.caps
 $Microbatch = [int]$Profile.microbatch_by_scale.$Scale

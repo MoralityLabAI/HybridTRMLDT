@@ -1,0 +1,13 @@
+{
+  "campaign_elapsed_seconds": 0.0,
+  "cell_receipts": {},
+  "completed_cells": 0,
+  "expected_cells": 18,
+  "failure": "missing resource receipt for LSAD-B1-K2L6-01-A1-S0-s401",
+  "receipt_hash": "52657910267c3e04e96c7e6b06ddccb5cabb130d6dfac256cee62271aedfda13",
+  "schema_version": 1,
+  "stage_id": "A1",
+  "stage_manifest_hash": "612c750c8302af876c26f1baff0e1902799157a3a0c45388ddc54bd49c4790aa",
+  "stage_manifest_sha256": "172a092d824afa869831517cbf68218de7ebce2feb614b5dc8b3025647dd6a28",
+  "status": "failed"
+}
