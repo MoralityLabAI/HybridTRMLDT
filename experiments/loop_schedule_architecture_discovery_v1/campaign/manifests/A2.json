@@ -1,0 +1,121 @@
+{
+  "cell_count": 9,
+  "cells": [
+    {
+      "allow_locked_evaluation": false,
+      "cell_id": "LSAD-B1-K4L8-01-A2-S0-s401",
+      "proposal_hash": "54863d593d3f5a9931ff1b780a07a5462a8aa0ac687c100b8c5cc93480205cbf",
+      "proposal_id": "LSAD-B1-K4L8-01",
+      "role": "candidate",
+      "scale_rung": "S0",
+      "seed": 401,
+      "stage_id": "A2",
+      "token_visit_budget": 2097152,
+      "training_stage": "A2"
+    },
+    {
+      "allow_locked_evaluation": false,
+      "cell_id": "LSAD-B1-K4L8-01-A2-S0-s409",
+      "proposal_hash": "54863d593d3f5a9931ff1b780a07a5462a8aa0ac687c100b8c5cc93480205cbf",
+      "proposal_id": "LSAD-B1-K4L8-01",
+      "role": "candidate",
+      "scale_rung": "S0",
+      "seed": 409,
+      "stage_id": "A2",
+      "token_visit_budget": 2097152,
+      "training_stage": "A2"
+    },
+    {
+      "allow_locked_evaluation": false,
+      "cell_id": "LSAD-B1-K4L8-01-A2-S0-s419",
+      "proposal_hash": "54863d593d3f5a9931ff1b780a07a5462a8aa0ac687c100b8c5cc93480205cbf",
+      "proposal_id": "LSAD-B1-K4L8-01",
+      "role": "candidate",
+      "scale_rung": "S0",
+      "seed": 419,
+      "stage_id": "A2",
+      "token_visit_budget": 2097152,
+      "training_stage": "A2"
+    },
+    {
+      "allow_locked_evaluation": false,
+      "cell_id": "LSAD-B1-K4L8-02-A2-S0-s401",
+      "proposal_hash": "18135081d8e3e1228cb7261b7ebcad554e2533a6d2e47089b19b620d3cfe5196",
+      "proposal_id": "LSAD-B1-K4L8-02",
+      "role": "candidate",
+      "scale_rung": "S0",
+      "seed": 401,
+      "stage_id": "A2",
+      "token_visit_budget": 2097152,
+      "training_stage": "A2"
+    },
+    {
+      "allow_locked_evaluation": false,
+      "cell_id": "LSAD-B1-K4L8-02-A2-S0-s409",
+      "proposal_hash": "18135081d8e3e1228cb7261b7ebcad554e2533a6d2e47089b19b620d3cfe5196",
+      "proposal_id": "LSAD-B1-K4L8-02",
+      "role": "candidate",
+      "scale_rung": "S0",
+      "seed": 409,
+      "stage_id": "A2",
+      "token_visit_budget": 2097152,
+      "training_stage": "A2"
+    },
+    {
+      "allow_locked_evaluation": false,
+      "cell_id": "LSAD-B1-K4L8-02-A2-S0-s419",
+      "proposal_hash": "18135081d8e3e1228cb7261b7ebcad554e2533a6d2e47089b19b620d3cfe5196",
+      "proposal_id": "LSAD-B1-K4L8-02",
+      "role": "candidate",
+      "scale_rung": "S0",
+      "seed": 419,
+      "stage_id": "A2",
+      "token_visit_budget": 2097152,
+      "training_stage": "A2"
+    },
+    {
+      "allow_locked_evaluation": false,
+      "cell_id": "LSAD-C-K4L8-A2-S0-s401",
+      "proposal_hash": "a69e4a5a2887e01bb2e95eacb942551cce1b02ce1e7e27fed8675f1360e03699",
+      "proposal_id": "LSAD-C-K4L8",
+      "role": "matched_periodic_control",
+      "scale_rung": "S0",
+      "seed": 401,
+      "stage_id": "A2",
+      "token_visit_budget": 2097152,
+      "training_stage": "A2"
+    },
+    {
+      "allow_locked_evaluation": false,
+      "cell_id": "LSAD-C-K4L8-A2-S0-s409",
+      "proposal_hash": "a69e4a5a2887e01bb2e95eacb942551cce1b02ce1e7e27fed8675f1360e03699",
+      "proposal_id": "LSAD-C-K4L8",
+      "role": "matched_periodic_control",
+      "scale_rung": "S0",
+      "seed": 409,
+      "stage_id": "A2",
+      "token_visit_budget": 2097152,
+      "training_stage": "A2"
+    },
+    {
+      "allow_locked_evaluation": false,
+      "cell_id": "LSAD-C-K4L8-A2-S0-s419",
+      "proposal_hash": "a69e4a5a2887e01bb2e95eacb942551cce1b02ce1e7e27fed8675f1360e03699",
+      "proposal_id": "LSAD-C-K4L8",
+      "role": "matched_periodic_control",
+      "scale_rung": "S0",
+      "seed": 419,
+      "stage_id": "A2",
+      "token_visit_budget": 2097152,
+      "training_stage": "A2"
+    }
+  ],
+  "code_commit": "7060d1002b1b4a254377a607f240daae839f4a17",
+  "manifest_hash": "3bc4c681c951d03a393f6a3201bd8b06ddcf64ae5f813d120582ff842c6300f2",
+  "profile_selection_hash": "28324027699340a077508471b813f074e8798f844b944360b4221b10276bb4a4",
+  "proposal_manifest_sha256": "8cdc824a9a39ac7bf6800fd5bd4b84bfdb4cc78843e28d0602c79f757ea660c8",
+  "schema_version": 1,
+  "selected_profile": "minimum",
+  "stage_id": "A2",
+  "status": "sealed_before_stage_outcomes"
+}
