@@ -1,0 +1,16 @@
+{
+  "protocol_id": "loop_schedule_kappa_transient_v0_2_recovery1",
+  "config_path": "configs/loop_schedule_kappa_transient_v0_2_recovery1.json",
+  "config_sha256": "a28fe5c68429cab6721de0725a1422a97bd8f2c2602164035bb6ee76dec2d2ae",
+  "registered_utc": "2026-07-20T23:11:08.3899884Z",
+  "registration_status": "frozen_before_recovery_outcomes",
+  "source_commit": "aef5ce8ba9a9e90b8c03d6b78c1f4161b6462ba2",
+  "parent_timeout_observed": true,
+  "new_recovery_outcomes_observed": false,
+  "admitted_parent_measurements": 10,
+  "resume_seed": 107,
+  "resume_checkpoint_exposure": 4096,
+  "tensor_exact_replay_required": true,
+  "untied_controls_to_run": 3,
+  "debit_before_recovery_seconds": 1800.713
+}

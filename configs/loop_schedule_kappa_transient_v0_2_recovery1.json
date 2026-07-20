@@ -1,0 +1,95 @@
+{
+  "protocol_id": "loop_schedule_kappa_transient_v0_2_recovery1",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-20T23:11:08.3899884Z",
+  "registration_timing": "after the registered R128 phase timeout, before any resumed or untied-control outcome",
+  "status_label": "post-timeout deterministic completion",
+  "claim_scope": "recovery of the frozen R128 timing, recovery, and matched-gradient endpoints",
+  "parent_attempt": {
+    "config_path": "configs/loop_schedule_kappa_transient_v0_2.json",
+    "config_sha256": "e548a27674acf94c381d57d8dc85aaed0b2b7f0d1343308be9a368c4037b3985",
+    "events_path": "experiments/loop_schedule_kappa_transient_v0_2/transient_events.jsonl",
+    "events_sha256": "09f54528a6deed960d08f7acd01b66edd897f6e9454b20740b57652c374b213e",
+    "resource_path": "experiments/loop_schedule_kappa_transient_v0_2/run.resource_receipt.json",
+    "resource_sha256": "dc82c934997eb6789b6f38afa688366368c95778d1d99bf95f26542d22cb06e5",
+    "resume_checkpoint_path": "experiments/loop_schedule_kappa_transient_v0_2/checkpoints/surface_tied_R128_S107_E4096_step_4.pt",
+    "resume_checkpoint_sha256": "a762f8bf26545d3bde924ec4e6d85fb3dfe613a173883c1a1b3a0c2d39762236",
+    "abort_reason": "phase_timeout",
+    "elapsed_seconds": 1800.713,
+    "cleanup_passed": true
+  },
+  "admission": {
+    "completed_tied_seeds": [101, 103],
+    "completed_measurements_per_seed": 4,
+    "partial_tied_seed": 107,
+    "admitted_partial_exposures": [1024, 2048],
+    "resume_exposures": [4096, 8192],
+    "parent_measurement_count": 10,
+    "parent_completed_cell_count": 2,
+    "parent_untied_measurement_count": 0,
+    "rule": "admit only complete seed-isolated measurements plus seed-107 measurements preceding the exact step-4 checkpoint"
+  },
+  "frozen_training": {
+    "model_family": "two_linear_residual_loop",
+    "task_family": "deterministic_signed_permutation_regression",
+    "hidden_size": 128,
+    "batch_size": 8,
+    "measurement_batch_size": 8,
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "alpha": 1.0,
+    "beta": 0.25,
+    "progress_target": 8192,
+    "surface_exposures": [1024, 2048, 4096, 8192],
+    "gradient_exposures": [1024, 2048, 4096, 8192],
+    "checkpoint_exposures": [],
+    "rounds": [128],
+    "seeds": [101, 103, 107],
+    "regimes": ["tied", "untied"],
+    "power_iterations": 5,
+    "checkpoint_pacing_seconds": 2.0
+  },
+  "replay_gate": {
+    "seed": 107,
+    "steps": 4,
+    "streams": [0, 1, 2, 3],
+    "required_model_state": "tensor_exact",
+    "required_optimizer_state": "tensor_exact",
+    "checkpoint_identity": "surface_tied_R128_S107 at exposure 4096 and step 4",
+    "continuation_streams": [4, 5, 6, 7]
+  },
+  "registered_predictions": {
+    "practical_log_change": 0.1,
+    "exposure_pinned": "log(K2048/K1024)<=-0.1 and log(K4096/K2048)>=0.1",
+    "step_pinned": "log(K4096/K2048)<=-0.1 and log(K8192/K4096)>=0.1",
+    "recovery_evaluation_exposure": 8192
+  },
+  "gradient_stress": {
+    "step_aligned_depths": [32, 64, 128],
+    "step_four_exposures": {
+      "32": 1024,
+      "64": 2048,
+      "128": 4096
+    },
+    "fit": "ordinary least squares of log tied-to-untied interval-maximum ratio on log R"
+  },
+  "resource_accounting": {
+    "debit_before_recovery_seconds": 1800.713,
+    "aggregate_limit_seconds": 3600,
+    "remaining_before_recovery_seconds": 1799.287
+  },
+  "claim_boundary": "This is a labeled deterministic recovery after a registered timeout. A step-pinned result supports a step-indexed optimizer-state hypothesis but does not causally identify AdamW bias correction; a finite step-8 result does not establish asymptotic stability.",
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1200,
+    "aggregate_gpu_hours": 1,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}
