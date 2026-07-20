@@ -1,0 +1,50 @@
+{
+  "amendment_id": "loop_schedule_architecture_discovery_execution_v1_3",
+  "status": "frozen_after_partial_A1_outcomes_for_gpu_process_classification",
+  "registered_on": "2026-07-20",
+  "implementation_base_commit": "56601d226ab88f4d1dee38b130cf8972756d6dd5",
+  "triggering_evidence": {
+    "completed_A1_cells": 8,
+    "expected_A1_cells": 18,
+    "failed_stage_receipt_sha256": "094c5594b1db0daa80f39ebf9ed810df97e222fac132eacd1367d91b7b0c0cd3",
+    "foreign_preflight_receipt_sha256": "ed23bee4d80be07dd66f3390e29ca0b56df2e6b86c92085e80444a84f61960cc",
+    "observed_process_name": "llama-server.exe",
+    "observed_required_command_line_fragment": "--n-gpu-layers 0",
+    "observed_gpu_utilization_pct": 0,
+    "observed_process_had_active_client_at_diagnosis": false
+  },
+  "diagnosis": "A CPU-only llama.cpp server launched with --n-gpu-layers 0 remains listed by nvidia-smi as a compute application. Treating every listed PID as GPU work produces a false foreign-GPU contention classification and can block the campaign indefinitely without improving isolation.",
+  "replacement_rule": {
+    "ignore_nvidia_registered_process_only_if": {
+      "windows_process_name": "llama-server.exe",
+      "command_line_contains_literal_argument_pair": [
+        "--n-gpu-layers",
+        "0"
+      ]
+    },
+    "record_ignored_pid_in_resource_receipt": true,
+    "gpu_utilization_max_pct": 5,
+    "idle_samples": 3,
+    "all_other_nvidia_registered_processes": "foreign_gpu_compute_process_present"
+  },
+  "non_exempt_cases": [
+    "missing or unreadable process command line",
+    "any process other than llama-server.exe",
+    "llama-server.exe without --n-gpu-layers 0",
+    "any sample above the registered GPU utilization threshold"
+  ],
+  "unchanged": [
+    "sealed A1 manifest and candidate ordering",
+    "candidate and control architectures",
+    "task bundle and split locks",
+    "training precision, optimizer, and learning rates",
+    "gradient clipping and token-visit budgets",
+    "RAM, CPU, IO, VRAM, timeout, and campaign GPU-hour caps",
+    "promotion and final inference rules",
+    "PID-scoped cleanup and prohibition on terminating foreign processes"
+  ],
+  "claim_boundary": "This is an operational process-classification correction made after eight A1 outcomes were observed. It does not support an architecture-performance claim and must be reported with the campaign receipts.",
+  "task_outcomes_observed": true,
+  "frozen_config_hash_rule": "SHA-256 of canonical JSON after removing frozen_config_sha256",
+  "frozen_config_sha256": "c74391f0b3072022424016e4bfa0872c2f1674ad248d7e26065d33aa56fe5855"
+}
