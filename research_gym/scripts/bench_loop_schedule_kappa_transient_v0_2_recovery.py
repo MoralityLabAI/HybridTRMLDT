@@ -50,7 +50,8 @@ FINAL_RECEIPT = (
 
 def _exact_equal(left: Any, right: Any, path: str = "state") -> None:
     if isinstance(left, torch.Tensor) and isinstance(right, torch.Tensor):
-        if left.dtype != right.dtype or left.shape != right.shape or not torch.equal(left, right):
+        same_value = torch.equal(left.detach().cpu(), right.detach().cpu())
+        if left.dtype != right.dtype or left.shape != right.shape or not same_value:
             raise RuntimeError(f"tensor-exact replay failed at {path}")
         return
     if isinstance(left, Mapping) and isinstance(right, Mapping):

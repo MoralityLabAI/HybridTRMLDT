@@ -34,6 +34,11 @@ def test_recovery_admits_only_registered_parent_measurements() -> None:
 
 def test_tensor_exact_gate_rejects_changed_state() -> None:
     _exact_equal({"value": torch.tensor([1.0])}, {"value": torch.tensor([1.0])})
+    if torch.cuda.is_available():
+        _exact_equal(
+            {"value": torch.tensor([1.0], device="cuda")},
+            {"value": torch.tensor([1.0])},
+        )
     try:
         _exact_equal({"value": torch.tensor([1.0])}, {"value": torch.tensor([2.0])})
     except RuntimeError as error:
