@@ -1,0 +1,33 @@
+{
+  "task_bundle_id": "lspg_architecture_tasks_v1",
+  "seed": 503,
+  "sequence_length": 64,
+  "vocabulary_size": 2048,
+  "counts": {
+    "pointer_chase": {"train": 2048, "calibration": 256, "evaluation": 512},
+    "modular_recurrence": {"train": 2048, "calibration": 256, "evaluation": 512},
+    "rewrite_normalization": {"train": 2048, "calibration": 256, "evaluation": 512},
+    "sudoku": {"train": 1024, "calibration": 128, "evaluation": 256}
+  },
+  "routing": {
+    "root": "D:/Research_Engine/tesseract_persistent/data",
+    "max_per_environment": 80,
+    "environments": [
+      "alphabet_sort",
+      "arc_challenge",
+      "arc_easy",
+      "gsm8k",
+      "intellect_3_logic",
+      "intellect_3_math",
+      "mbpp",
+      "wiki_search"
+    ],
+    "split": [0.6, 0.2, 0.2]
+  },
+  "depths": {
+    "train": [1, 4],
+    "calibration": [5, 6],
+    "evaluation": [7, 8]
+  },
+  "claim_scope": "architecture discovery and held-out task transfer; no global novelty claim"
+}

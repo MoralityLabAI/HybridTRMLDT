@@ -1,0 +1,62 @@
+{
+  "bundle_hash": "f6f5b87a8fd9861e51fc34d75f6f918080d030a88577ceedf6f606f417f01255",
+  "counts": {
+    "modular_recurrence": {
+      "calibration": 256,
+      "evaluation": 512,
+      "train": 2048
+    },
+    "pointer_chase": {
+      "calibration": 256,
+      "evaluation": 512,
+      "train": 2048
+    },
+    "rewrite_normalization": {
+      "calibration": 256,
+      "evaluation": 512,
+      "train": 2048
+    },
+    "routing": {
+      "calibration": 113,
+      "evaluation": 113,
+      "train": 339
+    },
+    "sudoku": {
+      "calibration": 128,
+      "evaluation": 256,
+      "train": 1024
+    }
+  },
+  "files": {
+    "calibration": {
+      "path": "calibration.jsonl",
+      "sha256": "6baee020635a9bc1a8d5a4029b76bbe81d814e1252f909fd4b50b3d9047fd88c"
+    },
+    "evaluation": {
+      "path": "evaluation.jsonl",
+      "sha256": "3fae1218c5c748453360319342059628fb3ae99537f0351bb8381d62066015b8"
+    },
+    "train": {
+      "path": "train.jsonl",
+      "sha256": "8fa0a7c3a98b40db12c764a100481abc518fb19d0a749f571ae7eec499dd9616"
+    }
+  },
+  "schema_version": 1,
+  "sequence_length": 64,
+  "source_files": {
+    "D:\\Research_Engine\\tesseract_persistent\\data\\normalized_trajectories\\alphabet_sort.jsonl": "4181ec5e1e746d9e40819e9e1f80bd71f6bc3b7c0d78674aede41d500fac55d3",
+    "D:\\Research_Engine\\tesseract_persistent\\data\\normalized_trajectories\\arc_challenge.jsonl": "df91091989aa1005fca71368f08e972d6f1c85219bdb070041ad9f47925dbd4e",
+    "D:\\Research_Engine\\tesseract_persistent\\data\\normalized_trajectories\\arc_easy.jsonl": "df3bfe60f03b64fa14f9785085825d9e73988ebeca3c7478e07c0cc8ce51f441",
+    "D:\\Research_Engine\\tesseract_persistent\\data\\normalized_trajectories\\gsm8k.jsonl": "29b2139b6b9a375f05e0cb5c0767b952720c3a5305c9636e5523b8a2c9a9d0ef",
+    "D:\\Research_Engine\\tesseract_persistent\\data\\normalized_trajectories\\intellect_3_logic.jsonl": "7bf3f11516befb08f787c8fc6d203b4c69aeaad1dcf607ab6295ed4651b9d8d7",
+    "D:\\Research_Engine\\tesseract_persistent\\data\\normalized_trajectories\\intellect_3_math.jsonl": "889d192953e844d09394b6960b6d675a177722b370fa24dc52036c52ed0ae922",
+    "D:\\Research_Engine\\tesseract_persistent\\data\\normalized_trajectories\\mbpp.jsonl": "a7c7b16d66753d1c0adecb06a2516cb18a078550d27c7efbff941815f306daeb",
+    "D:\\Research_Engine\\tesseract_persistent\\data\\normalized_trajectories\\wiki_search.jsonl": "66d19e609a3e5f36aaf54f83af03456990d3dba63a1cb11b770c80c2e027d111"
+  },
+  "split_hashes": {
+    "calibration": "99b0d6fc83d0c64b31dbe970f067114d92adf1e9e4817e7d2fe2a1bb30d91329",
+    "evaluation": "df5399719233cccfcd1c35b7f6092be540c97d77ed92e1b36df439a3b467fae5",
+    "train": "881163edaa0340bee470023a21795a2cf560ac3867f5a927ff9efe504a4cf543"
+  },
+  "vocabulary_size": 2048
+}
