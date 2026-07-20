@@ -71,3 +71,13 @@ def test_training_device_has_explicit_cuda_index(monkeypatch) -> None:
     monkeypatch.setattr(torch.cuda, "current_device", lambda: 2)
 
     assert training_device() == torch.device("cuda:2")
+
+
+def test_registered_gradient_clip_bounds_applied_norm() -> None:
+    parameter = torch.nn.Parameter(torch.tensor([3.0, 4.0]))
+    parameter.grad = torch.tensor([300.0, 400.0])
+
+    raw = torch.nn.utils.clip_grad_norm_((parameter,), 100.0)
+
+    assert raw.item() == pytest.approx(500.0)
+    assert parameter.grad.norm().item() == pytest.approx(100.0)

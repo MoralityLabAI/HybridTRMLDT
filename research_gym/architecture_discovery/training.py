@@ -48,6 +48,7 @@ class TrainingCellConfig:
     checkpoint_seconds: int = 120
     checkpoint_write_bytes_per_second: int = 40 * 1024 * 1024
     maximum_gradient_norm: float = 100.0
+    maximum_raw_gradient_norm: float = 1_000_000.0
     maximum_loss_ratio: float = 10.0
     evaluation_limit_per_family: int | None = 256
     allow_locked_evaluation: bool = False
@@ -84,6 +85,8 @@ class TrainingCellResult:
     final_loss: float | None
     final_over_initial_loss: float | None
     max_gradient_norm: float
+    max_raw_gradient_norm: float
+    gradient_clipped_steps: int
     mean_step_seconds: float | None
     measured_step_count: int
     measurement_warmup_steps: int
@@ -333,6 +336,8 @@ def run_training_cell(
         "initial_loss": None,
         "losses": [],
         "max_gradient_norm": 0.0,
+        "max_raw_gradient_norm": 0.0,
+        "gradient_clipped_steps": 0,
         "step_times": [],
         "checkpoints": [],
     }
@@ -395,18 +400,24 @@ def run_training_cell(
             if stop_reason:
                 break
             scaler.unscale_(optimizer)
-            gradient_sq = sum(
-                float(parameter.grad.detach().float().square().sum().item())
-                for parameter in model.parameters()
-                if parameter.grad is not None
+            raw_gradient = float(
+                torch.nn.utils.clip_grad_norm_(
+                    model.parameters(), config.maximum_gradient_norm
+                ).item()
             )
-            gradient = math.sqrt(gradient_sq)
+            gradient = min(raw_gradient, config.maximum_gradient_norm)
             state["max_gradient_norm"] = max(float(state["max_gradient_norm"]), gradient)
-            if not math.isfinite(gradient):
+            state["max_raw_gradient_norm"] = max(
+                float(state["max_raw_gradient_norm"]), raw_gradient
+            )
+            state["gradient_clipped_steps"] = int(state["gradient_clipped_steps"]) + int(
+                raw_gradient > config.maximum_gradient_norm
+            )
+            if not math.isfinite(raw_gradient):
                 stop_reason = "nonfinite_gradient"
                 break
-            if gradient > config.maximum_gradient_norm:
-                stop_reason = "gradient_norm_above_100"
+            if raw_gradient > config.maximum_raw_gradient_norm:
+                stop_reason = "catastrophic_raw_gradient_norm"
                 break
             scaler.step(optimizer)
             scaler.update()
@@ -508,6 +519,8 @@ def run_training_cell(
             final_loss=None if config.resource_only else final_loss,
             final_over_initial_loss=None if config.resource_only else loss_ratio,
             max_gradient_norm=float(state["max_gradient_norm"]),
+            max_raw_gradient_norm=float(state["max_raw_gradient_norm"]),
+            gradient_clipped_steps=int(state["gradient_clipped_steps"]),
             mean_step_seconds=(
                 sum(measured_times) / len(measured_times)
                 if measured_times

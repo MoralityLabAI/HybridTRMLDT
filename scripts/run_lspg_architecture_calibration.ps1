@@ -12,7 +12,9 @@ foreach ($Scale in $Scales) {
     $CellId = "LSAD-C-K2L8-calibration-$Scale-s397"
     $Existing = @(Get-ChildItem -LiteralPath (Join-Path $OutputPath "resource_receipts") -Filter "$CellId.attempt-*.resource_receipt.json" -ErrorAction SilentlyContinue)
     $Completed = @($Existing | Where-Object { (Get-Content -Raw -LiteralPath $_.FullName | ConvertFrom-Json).status -eq "completed" })
-    if ($Completed.Count -gt 0 -and (Test-Path -LiteralPath (Join-Path $OutputPath "$CellId\result.json"))) { continue }
+    $ResultPath = Join-Path $OutputPath "$CellId\result.json"
+    $ResultCompleted = (Test-Path -LiteralPath $ResultPath) -and ((Get-Content -Raw -LiteralPath $ResultPath | ConvertFrom-Json).status -eq "completed")
+    if ($Completed.Count -gt 0 -and $ResultCompleted) { continue }
     $Attempts = @($Existing | ForEach-Object { if ($_.Name -match "\.attempt-([0-9]+)\.") { [int]$Matches[1] } })
     $Attempt = if ($Attempts.Count) { ($Attempts | Measure-Object -Maximum).Maximum + 1 } else { 1 }
     if ($Attempt -gt 5) { throw "calibration exhausted registered attempts at $Scale" }

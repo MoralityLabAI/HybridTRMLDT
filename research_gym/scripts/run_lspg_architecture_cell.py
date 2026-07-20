@@ -63,6 +63,8 @@ def main() -> None:
         newline="\n",
     )
     print(json.dumps(receipt, indent=2, sort_keys=True))
+    if result.status != "completed":
+        raise SystemExit(3)
 
 
 if __name__ == "__main__":
