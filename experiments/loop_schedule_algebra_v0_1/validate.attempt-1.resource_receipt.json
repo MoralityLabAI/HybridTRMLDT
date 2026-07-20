@@ -1,0 +1,26 @@
+{
+  "protocol_id": "loop_schedule_algebra_v0_1",
+  "phase": "validate",
+  "attempt": 1,
+  "status": "construction_failure",
+  "abort_reason": "external_gpu_contention",
+  "started_utc": "2026-07-20T14:37:30.1690894Z",
+  "finished_utc": "2026-07-20T14:37:30.2727224Z",
+  "caps": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 3600,
+    "aggregate_gpu_hours": 24,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  },
+  "prior_elapsed_seconds": 0.0,
+  "ignored_cpu_only_gpu_registry_pids": [],
+  "owned_pid": null,
+  "cleanup_passed": true,
+  "reconstruction_note": "Restored from the wrapper output captured immediately after the overwritten preflight stop; no child process was launched."
+}

@@ -4,7 +4,9 @@ param(
     [string]$Phase,
     [string]$Config = "configs/loop_schedule_algebra_v0_1.json",
     [string]$Output = "experiments/loop_schedule_algebra_v0_1",
-    [string]$SourceCheckpointDir = "C:\projects\HybridTRMLDT\ldt_trm_research_gym_v0_0_2\ldt_trm_research_gym\experiments\loop_schedule_algebra_v0\checkpoints"
+    [string]$SourceCheckpointDir = "C:\projects\HybridTRMLDT\ldt_trm_research_gym_v0_0_2\ldt_trm_research_gym\experiments\loop_schedule_algebra_v0\checkpoints",
+    [ValidateRange(1, 2147483647)]
+    [int]$Attempt = 1
 )
 
 $ErrorActionPreference = "Stop"
@@ -24,9 +26,10 @@ $SourcePath = Resolve-RepoPath $SourceCheckpointDir
 $Protocol = Get-Content -Raw -LiteralPath $ConfigPath | ConvertFrom-Json
 $Caps = $Protocol.resources
 New-Item -ItemType Directory -Force -Path $OutputPath | Out-Null
-$Stdout = Join-Path $OutputPath "$Phase.stdout.log"
-$Stderr = Join-Path $OutputPath "$Phase.stderr.log"
+$Stdout = Join-Path $OutputPath "$Phase.attempt-$Attempt.stdout.log"
+$Stderr = Join-Path $OutputPath "$Phase.attempt-$Attempt.stderr.log"
 $Receipt = Join-Path $OutputPath "$Phase.resource_receipt.json"
+$AttemptReceipt = Join-Path $OutputPath "$Phase.attempt-$Attempt.resource_receipt.json"
 $MemoryLimitBytes = [UInt64]([double]$Caps.ram_mb * 1MB)
 $CpuRate = [uint32]([int]$Caps.cpu_pct * 100)
 $IoLimitBytesPerSecond = [double]$Caps.io_abort_mb_s * 1MB
@@ -37,9 +40,15 @@ $AggregateLimitSeconds = [double]$Caps.aggregate_gpu_hours * 3600.0
 $started = Get-Date
 $IgnoredCpuOnlyRegistryPids = @()
 $PriorElapsedSeconds = 0.0
-
-foreach ($path in Get-ChildItem -LiteralPath $OutputPath -Filter "*.resource_receipt.json" -File -ErrorAction SilentlyContinue) {
-    if ($path.FullName -eq $Receipt) { continue }
+$PriorReceipts = @(Get-ChildItem -LiteralPath $OutputPath -Filter "*.attempt-*.resource_receipt.json" -File -ErrorAction SilentlyContinue)
+if ($PriorReceipts.Count -eq 0) {
+    $PriorReceipts = @(
+        Get-ChildItem -LiteralPath $OutputPath -Filter "*.resource_receipt.json" -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -notmatch "^(validate|finalize)\.resource_receipt\.json$" }
+    )
+}
+foreach ($path in $PriorReceipts) {
+    if ($path.FullName -eq $AttemptReceipt) { continue }
     try {
         $prior = Get-Content -Raw -LiteralPath $path.FullName | ConvertFrom-Json
         if ($null -ne $prior.elapsed_seconds) { $PriorElapsedSeconds += [double]$prior.elapsed_seconds }
@@ -50,17 +59,20 @@ foreach ($path in Get-ChildItem -LiteralPath $OutputPath -Filter "*.resource_rec
 
 function Write-Receipt([hashtable]$Value) {
     $json = $Value | ConvertTo-Json -Depth 8
-    [System.IO.File]::WriteAllText(
-        $Receipt,
-        $json + [Environment]::NewLine,
-        [System.Text.UTF8Encoding]::new($false)
-    )
+    foreach ($path in ($Receipt, $AttemptReceipt)) {
+        [System.IO.File]::WriteAllText(
+            $path,
+            $json + [Environment]::NewLine,
+            [System.Text.UTF8Encoding]::new($false)
+        )
+    }
 }
 
 function Write-ConstructionFailure([string]$Reason) {
     Write-Receipt ([ordered]@{
         protocol_id = $Protocol.protocol_id
         phase = $Phase
+        attempt = $Attempt
         status = "construction_failure"
         abort_reason = $Reason
         started_utc = $started.ToUniversalTime().ToString("o")
@@ -255,6 +267,7 @@ try {
     Write-Receipt ([ordered]@{
         protocol_id = $Protocol.protocol_id
         phase = $Phase
+        attempt = $Attempt
         status = $status
         abort_reason = $abortReason
         started_utc = $started.ToUniversalTime().ToString("o")
