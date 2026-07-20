@@ -1,2 +1,5 @@
 {"cell_hash":"347e2cf613b8c38ab62d4969dcb0ff32111d7ba7bb23cad0bb7d2a86ad64887d","cell_id":"LSAD-C-K2L8-calibration-S1-s397","event":"start","step":0,"target_steps":50,"time":1784523043.056384}
 {"cell_id":"LSAD-C-K2L8-calibration-S1-s397","event":"finish","status":"stopped"}
+{"cell_hash":"e0c56d8d7b083621aae705d924171bb55deb6a77c82f63e7f6f0f43df9a8d28d","cell_id":"LSAD-C-K2L8-calibration-S1-s397","event":"start","step":0,"target_steps":50,"time":1784524555.7515574}
+{"bytes":143417882,"bytes_per_second_cap":41943040,"cell_id":"LSAD-C-K2L8-calibration-S1-s397","elapsed_seconds":4.320811999999933,"event":"checkpoint","path":"latest.pt","sha256":"73b5482a1508684e950f90f5285d941cfd4b6311c091a5e0b1ee5186b6da6e12","step":50,"token_visit_exposures":819200}
+{"cell_id":"LSAD-C-K2L8-calibration-S1-s397","event":"finish","status":"completed"}

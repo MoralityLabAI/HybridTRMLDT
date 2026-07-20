@@ -1,3 +1,6 @@
 {"cell_hash":"758dde12cfe60abfd0f2f8fac013ac3110b4afd694df7fadad3a7f440b891ee9","cell_id":"LSAD-C-K2L8-calibration-S0-s397","event":"start","step":0,"target_steps":50,"time":1784523028.8090484}
 {"cell_id":"LSAD-C-K2L8-calibration-S0-s397","event":"finish","status":"stopped"}
 {"cell_hash":"758dde12cfe60abfd0f2f8fac013ac3110b4afd694df7fadad3a7f440b891ee9","cell_id":"LSAD-C-K2L8-calibration-S0-s397","event":"start","step":0,"target_steps":50,"time":1784523286.1834724}
+{"cell_hash":"27210502c568da2541a8953eb03b4731c07f57b931323d3544006995b8089367","cell_id":"LSAD-C-K2L8-calibration-S0-s397","event":"start","step":0,"target_steps":50,"time":1784524446.4811368}
+{"bytes":60150234,"bytes_per_second_cap":41943040,"cell_id":"LSAD-C-K2L8-calibration-S0-s397","elapsed_seconds":1.9999628999994457,"event":"checkpoint","path":"latest.pt","sha256":"47b81e1a626ff4f9885906b7e92f07a4b397f0f10b5a0162e1d35c3ac86a7f52","step":50,"token_visit_exposures":819200}
+{"cell_id":"LSAD-C-K2L8-calibration-S0-s397","event":"finish","status":"completed"}
