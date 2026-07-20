@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import time
 
@@ -81,3 +82,15 @@ def test_registered_gradient_clip_bounds_applied_norm() -> None:
 
     assert raw.item() == pytest.approx(500.0)
     assert parameter.grad.norm().item() == pytest.approx(100.0)
+
+
+def test_strict_result_contract_rejects_no_nonfinite_float(tmp_path: Path) -> None:
+    value = {
+        "max_raw_gradient_norm": None,
+        "raw_gradient_nonfinite": True,
+        "nonfinite_gradient_step": 7,
+    }
+    path = tmp_path / "result.json"
+    path.write_text(json.dumps(value, allow_nan=False), encoding="utf-8")
+
+    assert "Infinity" not in path.read_text(encoding="utf-8")

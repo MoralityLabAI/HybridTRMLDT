@@ -85,7 +85,9 @@ class TrainingCellResult:
     final_loss: float | None
     final_over_initial_loss: float | None
     max_gradient_norm: float
-    max_raw_gradient_norm: float
+    max_raw_gradient_norm: float | None
+    raw_gradient_nonfinite: bool
+    nonfinite_gradient_step: int | None
     gradient_clipped_steps: int
     mean_step_seconds: float | None
     measured_step_count: int
@@ -337,6 +339,8 @@ def run_training_cell(
         "losses": [],
         "max_gradient_norm": 0.0,
         "max_raw_gradient_norm": 0.0,
+        "raw_gradient_nonfinite": False,
+        "nonfinite_gradient_step": None,
         "gradient_clipped_steps": 0,
         "step_times": [],
         "checkpoints": [],
@@ -351,6 +355,10 @@ def run_training_cell(
         scheduler.load_state_dict(saved["scheduler"])
         scaler.load_state_dict(saved["scaler"])
         state = saved["training_state"]
+        state.setdefault("max_raw_gradient_norm", 0.0)
+        state.setdefault("raw_gradient_nonfinite", False)
+        state.setdefault("nonfinite_gradient_step", None)
+        state.setdefault("gradient_clipped_steps", 0)
         resumed = True
     _event(
         event_path,
@@ -405,6 +413,11 @@ def run_training_cell(
                     model.parameters(), config.maximum_gradient_norm
                 ).item()
             )
+            if not math.isfinite(raw_gradient):
+                state["raw_gradient_nonfinite"] = True
+                state["nonfinite_gradient_step"] = step
+                stop_reason = "nonfinite_gradient"
+                break
             gradient = min(raw_gradient, config.maximum_gradient_norm)
             state["max_gradient_norm"] = max(float(state["max_gradient_norm"]), gradient)
             state["max_raw_gradient_norm"] = max(
@@ -413,9 +426,6 @@ def run_training_cell(
             state["gradient_clipped_steps"] = int(state["gradient_clipped_steps"]) + int(
                 raw_gradient > config.maximum_gradient_norm
             )
-            if not math.isfinite(raw_gradient):
-                stop_reason = "nonfinite_gradient"
-                break
             if raw_gradient > config.maximum_raw_gradient_norm:
                 stop_reason = "catastrophic_raw_gradient_norm"
                 break
@@ -462,6 +472,17 @@ def run_training_cell(
         if stop_reason is None and loss_ratio is not None and loss_ratio > config.maximum_loss_ratio:
             stop_reason = "final_over_initial_loss_above_10"
         status = "completed" if stop_reason is None and state["step"] == target_steps else "stopped"
+        if stop_reason is not None:
+            _event(
+                event_path,
+                {
+                    "event": "stop",
+                    "cell_id": cell_id,
+                    "step": int(state["step"]),
+                    "stop_reason": stop_reason,
+                    "raw_gradient_nonfinite": bool(state["raw_gradient_nonfinite"]),
+                },
+            )
         depth_metrics: dict[str, Mapping[str, Any]] = {}
         prediction_artifacts: dict[str, Mapping[str, Any]] = {}
         macro_exact: float | None = None
@@ -519,7 +540,17 @@ def run_training_cell(
             final_loss=None if config.resource_only else final_loss,
             final_over_initial_loss=None if config.resource_only else loss_ratio,
             max_gradient_norm=float(state["max_gradient_norm"]),
-            max_raw_gradient_norm=float(state["max_raw_gradient_norm"]),
+            max_raw_gradient_norm=(
+                float(state["max_raw_gradient_norm"])
+                if float(state["max_raw_gradient_norm"]) > 0.0
+                else None
+            ),
+            raw_gradient_nonfinite=bool(state["raw_gradient_nonfinite"]),
+            nonfinite_gradient_step=(
+                int(state["nonfinite_gradient_step"])
+                if state["nonfinite_gradient_step"] is not None
+                else None
+            ),
             gradient_clipped_steps=int(state["gradient_clipped_steps"]),
             mean_step_seconds=(
                 sum(measured_times) / len(measured_times)
