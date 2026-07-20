@@ -65,3 +65,20 @@ def test_precision_execution_amendment_is_self_attested_and_pre_outcome() -> Non
     assert value["replacement_rule"]["training_precision"] == "fp32"
     assert not value["task_outcomes_observed"]
     assert digest(value) == claimed
+
+
+def test_lsad_v1_closeout_is_self_attested_zero_winner() -> None:
+    root = Path(__file__).resolve().parents[1]
+    value = json.loads(
+        (
+            root
+            / "experiments/loop_schedule_architecture_discovery_v1/campaign/closeout_v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    claimed = value.pop("closeout_hash")
+
+    assert value["status"] == "completed_zero_winner"
+    assert value["qualifying_architectures"] == []
+    assert value["primary_metric"]["effective_denominator"] == 768
+    assert value["reserve"]["status"] == "sealed_unopened"
+    assert digest(value) == claimed

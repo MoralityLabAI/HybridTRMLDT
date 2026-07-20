@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "campaign_id": "loop_schedule_architecture_discovery_v1",
+  "status": "completed_zero_winner",
+  "closed_after_stage": "A2",
+  "qualifying_architectures": [],
+  "valid_null_result": true,
+  "reserve": {
+    "status": "sealed_unopened",
+    "batches_consumed": 0,
+    "reason": "same-grammar breadth does not address the remaining scale-transfer question"
+  },
+  "primary_metric": {
+    "name": "macro_exact",
+    "families": 3,
+    "examples_per_family": 256,
+    "effective_denominator": 768,
+    "quantum": 0.0013020833333333333
+  },
+  "a2_effect_bound": {
+    "scope": "two A1-selected K4L8 schedules at S0 on the calibration task bundle",
+    "maximum_absolute_mean_delta": 0.005208333333333324,
+    "maximum_absolute_seed_delta": 0.010416666666666657
+  },
+  "evidence_sha256": {
+    "registration": "2cec9cdd659181145df2de8145d393b0021218d323936f4af4bc7e13d870a0cb",
+    "a1_stage_receipt": "cabb4ae40d8d18cf3b825bfb4bb1613169c4cca40c0b0560394ec1fba4cc88ce",
+    "a1_transition": "1b06ac4e33ea00e6e1778d9fcbd863b5fd9e0d0cf4c775f0f046e383eeef63e7",
+    "a2_stage_receipt": "54cfe3f51b879699e01e931553a05a6e854dd4467d135a0e89057a286c543365",
+    "a2_transition": "c23296d4c19ff6327343184aa4e68a2ab56f37f908f85f3fb26d1ad1e1e761f2"
+  },
+  "claim_boundary": "The bound applies only to the two A2-tested K4L8 schedules at S0; it does not cover the full grammar, larger scales, held-out tasks, or general model quality.",
+  "closeout_hash_rule": "SHA-256 of canonical JSON after removing closeout_hash",
+  "closeout_hash": "917c636cc9f668208f1833843ceafa09f4db12dd9497cdf74a8a9af18bd4d570"
+}

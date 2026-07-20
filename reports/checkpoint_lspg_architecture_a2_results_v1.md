@@ -1,4 +1,4 @@
-# Checkpoint: LSPG Architecture Discovery A2 Results v1
+# Checkpoint: LSAD A2 Results v1
 
 ## Integrity audit
 
@@ -30,6 +30,28 @@ maximum per-task regression gate. The failure is specifically lack of a
 replicated capability gain, not instability, resource failure, or excessive
 task regression.
 
+## Resolution and effect bound
+
+Primary macro exact averages three families of 256 examples, so its score
+quantum is `1/768 = 0.0013020833`. The paired-block seed deltas are net changes
+of -5, -8, and +1 correct examples relative to control; the interleaved-return
+deltas are -2, -3, and -2. These are item-scale fluctuations, not evidence of a
+persistent effect. The two A2-tested K4/L8 schedules therefore license the
+bounded statement `|mean delta| <= 0.005209`, with maximum observed per-seed
+absolute delta `0.010417`, at 5M parameters on this calibration task bundle.
+
+That multi-seed bound does not extend to all twelve A1 candidates because ten
+received only one seed. Their single-seed screen is instead evidence that a
+full-budget one-seed selector can promote item-scale noise. A v2 should prefer
+two screening seeds at approximately half exposure when compute is fixed, then
+reserve longer runs for effects whose signs replicate.
+
+The near-equality of candidates and matched controls also supports the absence
+of a gross matching leak across parameters, visits, estimated FLOPs, exposure,
+and gradient policy. It is supporting instrument evidence, not a formal
+certification, because this campaign did not include an intentionally mismatched
+positive control.
+
 ## Decision boundary
 
 The A1 paired-block advantage did not replicate at four times the exposure.
@@ -39,6 +61,13 @@ improvement over the periodic control.
 
 The machine transition retains the generic action label `prepare_B` while its
 `selected_candidates` list is empty. A B manifest with no candidates is not a
-scientific experiment and must not be materialized. The frozen reserve trigger
-is defined only after B, so opening it now would require an explicit
-post-outcome protocol amendment; the reserve remains sealed and unused.
+scientific experiment and must not be materialized. The frozen reserve clause
+can be read as vacuously satisfied when zero candidates reach B, but it does not
+specify a zero-candidate re-entry stage. A transparent post-outcome addendum
+could close that procedural gap because reserve proposals were sealed before
+A1; the resulting combined campaign could not be called wholly preregistered.
+
+V1 closes instead as the registration's explicitly valid zero-winner result.
+The reserve remains sealed and unused: another twelve words from the same
+grammar would add breadth, while the open scientific question concerns scale
+transfer beyond S0. No candidate is promoted to B, S1, or S2.

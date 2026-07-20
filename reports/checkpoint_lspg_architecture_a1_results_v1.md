@@ -1,4 +1,4 @@
-# Checkpoint: LSPG Architecture Discovery A1 Results v1
+# Checkpoint: LSAD A1 Results v1
 
 ## Integrity audit
 
