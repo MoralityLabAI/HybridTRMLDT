@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet("validate", "run", "r64_tied", "untied_gradients", "finalize")]
+    [ValidateSet("validate", "run", "r64_tied", "untied_gradients", "untied_gradients_paced", "finalize")]
     [string]$Phase,
     [string]$Config = "configs/loop_schedule_kappa_surface_v1.json",
     [string]$Output = "experiments/loop_schedule_kappa_surface_v1",

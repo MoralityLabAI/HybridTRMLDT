@@ -7,6 +7,7 @@ import gc
 import json
 import math
 from pathlib import Path
+import time
 from typing import Any, Iterable, Mapping
 
 import torch
@@ -158,6 +159,7 @@ def _train_surface_cell(
     kappa_exposures: Iterable[int] | None = None,
     gradient_exposures: Iterable[int] | None = None,
     checkpoint_exposures: Iterable[int] | None = None,
+    checkpoint_pacing_seconds: float = 0.0,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     frozen = config["frozen_training"]
     tied = regime == "tied"
@@ -201,6 +203,8 @@ def _train_surface_cell(
     }
     observation_targets = kappa_targets | gradient_targets
     all_targets = observation_targets | checkpoint_targets
+    if checkpoint_pacing_seconds < 0.0:
+        raise ValueError("checkpoint pacing must be nonnegative")
     if any(value < 0 or value > target or value % exposures_per_step for value in all_targets):
         raise RuntimeError(f"{cell_id} has an unreachable registered exposure")
     if steps * exposures_per_step != target:
@@ -230,6 +234,8 @@ def _train_surface_cell(
                 event_path,
                 {"event": "checkpoint", "cell_id": cell_id, "exposure": exposure, **checkpoint},
             )
+            if checkpoint_pacing_seconds:
+                time.sleep(checkpoint_pacing_seconds)
         if exposure not in observation_targets:
             return
         interval = _interval_summary(interval_gradients, interval_start, exposure)
