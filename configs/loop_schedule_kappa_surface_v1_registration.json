@@ -1,0 +1,14 @@
+{
+  "protocol_id": "loop_schedule_kappa_surface_v1",
+  "config_path": "configs/loop_schedule_kappa_surface_v1.json",
+  "config_sha256": "85c7710685f4a9c364d4b7f780ffbf8df3b7aeeb9fb64cba19cf9233b86b4169",
+  "registered_utc": "2026-07-20T19:30:17.4150076Z",
+  "registration_status": "registered_after_terminal_outcomes_before_nonterminal_r32_r64_trajectories",
+  "source_commit": "80f0e6ce9d634bfe2be193877762bd8539ee26e2",
+  "known_terminal_outcomes": true,
+  "nonterminal_r32_r64_outcomes_observed": false,
+  "rounds": [16, 32, 64],
+  "measurement_exposures": [0, 512, 1024, 2048, 4096],
+  "co_primary_endpoints": ["alignment_surface", "optimization_stress"],
+  "candidate_models": ["separable", "smooth_interaction", "r64_change_point"]
+}

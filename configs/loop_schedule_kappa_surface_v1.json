@@ -1,0 +1,125 @@
+{
+  "protocol_id": "loop_schedule_kappa_surface_v1",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-20T19:30:17.4150076Z",
+  "registration_timing": "after the sealed terminal R16/R32/R64 outcomes and before any nonterminal R32/R64 kappa trajectory outcome",
+  "claim_scope": "mechanism mapping of visit alignment and optimization stress over training in the frozen small-scale two-linear residual-loop family; no task-performance, sample-efficiency, general Transformer, or general stability claim",
+  "prior_knowledge_boundary": "The R16/R32/R64 terminal outcomes and terminal gradient maxima are known. Terminal cells are replication checks, not new confirmation. The nonterminal R32/R64 trajectories and all interval-gradient summaries are untouched endpoints.",
+  "parents": {
+    "v0_1": {
+      "config_path": "configs/loop_schedule_algebra_v0_1.json",
+      "config_sha256": "c6cd78a09909956962a2c6d585270807088a9b8b0dc5e1e69fc8b151d45882cc",
+      "receipt_path": "data/benchmarks/lsa_v0_1_receipt.json",
+      "receipt_sha256": "3fa8c1e6f360035a8d1fc17932d18b2c6fe0249e6653c6e5aa9992a5cdf57414"
+    },
+    "high_loop_addendum": {
+      "config_path": "configs/loop_schedule_algebra_saturation_addendum_v1.json",
+      "config_sha256": "f4eb1cd7d1df7a18f523498ed48a159ccc2f123c80957913301c51cc1cc30894",
+      "receipt_path": "data/benchmarks/lsa_saturation_addendum_v1_receipt.json",
+      "receipt_sha256": "425e97fde47eb40b5baac381118ae95c77531b09083d2f847ee689951860b557",
+      "r32_records_path": "experiments/loop_schedule_algebra_saturation_addendum_v1/fit_r32_records.jsonl",
+      "r32_records_sha256": "574ef9e44e7e4aa2912872c03d794734f7c1b5262ae8d0f5c9b8372ab552eb1a",
+      "r64_records_path": "experiments/loop_schedule_algebra_saturation_addendum_v1/holdout_r64_records.jsonl",
+      "r64_records_sha256": "04840e2e4586578559a847b49d34e66c53092341bab0be4deeb6d6614f1241fe"
+    }
+  },
+  "frozen_training": {
+    "model_family": "two_linear_residual_loop",
+    "task_family": "deterministic_signed_permutation_regression",
+    "hidden_size": 128,
+    "batch_size": 8,
+    "measurement_batch_size": 8,
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "alpha": 1.0,
+    "beta": 0.25,
+    "progress_unit": "state_visit_exposures",
+    "progress_target": 4096,
+    "measurement_exposures": [0, 512, 1024, 2048, 4096],
+    "checkpoint_exposures": [2048, 4096],
+    "rounds": [16, 32, 64],
+    "seeds": [101, 103, 107],
+    "regimes": ["tied", "untied"],
+    "power_iterations": 5,
+    "measurement_seed_rule": "seed+50000, fixed across checkpoint exposures",
+    "chunk_strategy": "one rounds-by-regime-by-seed cell at a time",
+    "checkpoint_interval": "2048 state-visit exposures and terminal 4096 exposures"
+  },
+  "co_primary_endpoints": {
+    "alignment_surface": "per-seed kappa at every rounds-by-regime-by-exposure cell, summarized by a geometric mean",
+    "optimization_stress": "per-cell and per-interval maximum, root-mean-square, and terminal parameter-gradient norm, with loss endpoints and nonfinite status"
+  },
+  "surface_coordinates": {
+    "response": "log(kappa)",
+    "depth": "x=log2(R/16)",
+    "training": "u=log2(1+exposure/512)",
+    "change_indicator": "I64=1 when R=64, else 0"
+  },
+  "candidate_models": {
+    "separable": "log(kappa)=a+b*x+c*u",
+    "smooth_interaction": "log(kappa)=a+b*x+c*u+d*x*u",
+    "r64_change_point": "log(kappa)=a+b*x+c*u+d*x*u+q*I64+z*I64*u",
+    "fit_method": "deterministic ordinary least squares on the 15 tied geometric-mean cells",
+    "comparison": {
+      "information_criterion": "AICc with parameter counts 3, 4, and 6",
+      "predictive_check": "leave-one-exposure-block-out RMSE on log(kappa)",
+      "winner_rule": "best model must beat the runner-up by at least 4 AICc units and have no more than 0.9 times the runner-up blocked-CV RMSE; otherwise unresolved"
+    }
+  },
+  "depth_curvature": {
+    "formula": "C(E)=log(kappa64(E))-2*log(kappa32(E))+log(kappa16(E))",
+    "bootstrap_samples": 5000,
+    "bootstrap_seed": 643216,
+    "interval_mass": 0.95,
+    "practical_equivalence_region": [-0.1, 0.1],
+    "transition_threshold": -0.2,
+    "onset_rule": "first exposure in [512,1024,2048] where point C(E)<=-0.2 and the 95% seed-bootstrap upper bound is below -0.1",
+    "terminal_role": "E4096 is reported and used for surface fitting but excluded from first-onset confirmation because its direction was known before registration"
+  },
+  "gradient_coupling": {
+    "stress_ratio": "geometric-mean tied interval maximum gradient divided by the matched untied geometric mean",
+    "support_threshold": 5.0,
+    "co_localization_rule": "at the registered curvature-onset interval, the R64 stress ratio is at least 5 and exceeds the corresponding R16 and R32 ratios",
+    "association_diagnostic": "Spearman correlation across all depth-by-interval cells between negative delta log(kappa) and log(stress_ratio); diagnostic only"
+  },
+  "terminal_replication": {
+    "source": "sealed v0.1 and saturation-addendum terminal records",
+    "maximum_absolute_log_ratio": 0.02,
+    "pass_rule": "every new terminal per-seed kappa must differ from its sealed predecessor by at most 0.02 in absolute log ratio",
+    "on_failure": "classify instrument_drift and do not issue a trajectory-mechanism claim"
+  },
+  "untied_control": {
+    "equivalence_region": "abs(depth gamma)<=0.1",
+    "pass_rule": "the point depth gamma is within the equivalence region at terminal exposure and at least four of five exposures",
+    "interpretation": "a failed control is retained and prevents a tied-specific mechanism claim"
+  },
+  "classification": {
+    "depth_training_transition": "r64_change_point wins, a preterminal curvature onset is detected, gradient co-localization passes, terminal replication passes, and the untied control passes",
+    "geometric_transition_without_gradient_support": "r64_change_point wins and preterminal curvature onset is detected, but gradient co-localization fails",
+    "smooth_learning": "separable or smooth_interaction wins, no preterminal curvature onset is detected, and both integrity controls pass",
+    "instrument_drift": "terminal replication fails",
+    "control_failure": "terminal replication passes but the untied control fails",
+    "form_unresolved": "none of the above branches is licensed"
+  },
+  "stop_branches": {
+    "on_nonfinite_training": "stop the affected cell, retain its complete prior trace, and classify resource_or_training_failure rather than geometric evidence",
+    "maximum_across_seed_kappa_spread": 10.0,
+    "on_estimator_instability": "stop the affected regime and retain raw traces",
+    "on_resource_failure": "seal the resource failure and do not reinterpret it as a depth transition",
+    "on_existing_output": "refuse to overwrite any trajectory records or result receipt"
+  },
+  "claim_boundary": "This registered follow-up can identify when a depth-specific alignment deviation and optimization stress co-occur in one small residual-loop construction. It cannot establish causality between gradients and alignment, and it cannot generalize the transition to Transformers or task performance.",
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1800,
+    "aggregate_gpu_hours": 1,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}
