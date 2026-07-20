@@ -1,0 +1,91 @@
+{
+  "registry_id": "loop_schedule_architecture_literature_v1",
+  "verified_on": "2026-07-19",
+  "claim_boundary": "The audit classifies mechanisms relative to the frozen schedule-word grammar. It does not establish global novelty.",
+  "sources": [
+    {
+      "id": "universal_transformer",
+      "title": "Universal Transformers",
+      "primary_url": "https://arxiv.org/abs/1807.03819",
+      "classification": "recurrent_depth_reference",
+      "grammar_relation": "single repeated transition with optional adaptive halting; excluded reference family"
+    },
+    {
+      "id": "looped_learning_algorithms",
+      "title": "Looped Transformers are Better at Learning Learning Algorithms",
+      "primary_url": "https://arxiv.org/abs/2311.12424",
+      "classification": "looped_transformer_reference",
+      "grammar_relation": "repeated block schedule; periodic controls represent the in-grammar analogue"
+    },
+    {
+      "id": "deeploop",
+      "title": "DeepLoop: Depth Scaling for Looped Transformers",
+      "primary_url": "https://arxiv.org/abs/2607.13491",
+      "classification": "residual_scaling_reference",
+      "grammar_relation": "changes residual scaling for repeated visits; residual scaling is held fixed in this search"
+    },
+    {
+      "id": "fully_looped_transformer",
+      "title": "Simply Stabilizing the Loop via Fully Looped Transformer",
+      "primary_url": "https://arxiv.org/abs/2605.18797",
+      "classification": "fully_looped_reference",
+      "grammar_relation": "fully looped mechanism is an excluded contextual reference"
+    },
+    {
+      "id": "spiralformer",
+      "title": "SpiralFormer: Looped Transformers Can Learn Hierarchical Dependencies via Multi-Resolution Recursion",
+      "primary_url": "https://arxiv.org/abs/2602.11698",
+      "classification": "multi_resolution_recursion",
+      "grammar_relation": "multi-resolution state mechanism lies outside the schedule-only grammar"
+    },
+    {
+      "id": "cart",
+      "title": "CART: Context-Anchored Recurrent Transformer -- A Parameter-Efficient Architecture with Learned Stability",
+      "primary_url": "https://arxiv.org/abs/2606.01495",
+      "classification": "context_anchored_recurrence",
+      "grammar_relation": "context anchors and learned stability lie outside the schedule-only grammar"
+    },
+    {
+      "id": "depth_conditioned_asr",
+      "title": "Test-Time Compute Scaling for ASR with Depth-Conditioned Looped Transformers",
+      "primary_url": "https://arxiv.org/abs/2606.04678",
+      "classification": "depth_conditioning",
+      "grammar_relation": "depth conditioning lies outside the fixed training-word intervention"
+    },
+    {
+      "id": "memory_efficient_looped_transformer",
+      "title": "Memory-Efficient Looped Transformer: Decoupling Compute from Memory in Looped Language Models",
+      "primary_url": "https://arxiv.org/abs/2605.07721",
+      "classification": "memory_mechanism",
+      "grammar_relation": "memory decoupling lies outside the schedule-only grammar"
+    },
+    {
+      "id": "lotus",
+      "title": "Bridging the Gap Between Latent and Explicit Reasoning with Looped Transformers",
+      "primary_url": "https://arxiv.org/abs/2606.31779",
+      "classification": "reasoning_interface",
+      "grammar_relation": "latent-explicit reasoning interface lies outside the schedule-only grammar"
+    },
+    {
+      "id": "air",
+      "title": "One Model, Two Roles: Emergent Specialization in a Shared Recurrent Transformer",
+      "primary_url": "https://arxiv.org/abs/2605.17811",
+      "classification": "role_specialization",
+      "grammar_relation": "role specialization lies outside the schedule-only grammar"
+    },
+    {
+      "id": "hrm",
+      "title": "Hierarchical Reasoning Model",
+      "primary_url": "https://github.com/sapientinc/HRM",
+      "classification": "hierarchical_recurrence_reference",
+      "grammar_relation": "hierarchical timescale management lies outside the schedule-only grammar"
+    },
+    {
+      "id": "trm",
+      "title": "Tiny Recursive Models",
+      "primary_url": "https://github.com/SamsungSAILMontreal/TinyRecursiveModels",
+      "classification": "tiny_recursion_reference",
+      "grammar_relation": "recursive latent-state update lies outside the schedule-only grammar"
+    }
+  ]
+}

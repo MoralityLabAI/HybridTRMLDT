@@ -1,0 +1,44 @@
+{
+  "search_space_id": "loop_schedule_architecture_discovery_v1",
+  "grammar": "canonical_restricted_growth_words",
+  "physical_modules": [2, 3, 4],
+  "expanded_visits": [6, 8],
+  "selected_per_stratum": 4,
+  "batch_1_per_stratum": 2,
+  "reserve_per_stratum": 2,
+  "constraints": {
+    "canonical_first_appearance_labels": true,
+    "balanced_module_usage_max_count_difference": 1,
+    "primitive_minimal_period_equals_word_length": true,
+    "exclude_single_module": true,
+    "exclude_fully_untied": true,
+    "exclude_periodic_module_order": true
+  },
+  "fixed_architecture": {
+    "residual_alpha": 1.0,
+    "residual_beta": 0.25,
+    "normalization": "pre",
+    "parameter_gradients": "all_visits",
+    "retained_state_edges": "all_edges",
+    "supervision": "final_answer_token",
+    "carry": "reset_per_example",
+    "position_encoding": "sinusoidal",
+    "activation_checkpointing": true
+  },
+  "selection": {
+    "method": "deterministic_descriptor_farthest_point",
+    "descriptors": [
+      "transition_entropy",
+      "transition_spectral_gap",
+      "adjacent_repeat_fraction",
+      "return_gap_cv",
+      "reversal_symmetry",
+      "boundary_repeat",
+      "module_balance"
+    ],
+    "matched_control": "fixed_periodic_same_K_L",
+    "balanced_null_per_stratum": 1,
+    "context_architectures": ["fully_tied", "fully_untied"]
+  },
+  "claim_scope": "non-equivalence within this audited finite schedule grammar; no global architecture-novelty claim"
+}

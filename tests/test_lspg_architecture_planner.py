@@ -3,7 +3,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from research_gym.architecture_discovery.planner import generate_architecture_proposals
+import pytest
+
+from research_gym.architecture_discovery.planner import (
+    generate_architecture_proposals,
+    read_proposals,
+    write_proposals,
+)
 from research_gym.architecture_discovery.promotion import (
     PromotionDecision,
     extension_required,
@@ -64,6 +70,52 @@ def test_proposals_are_deterministic_and_above_30m_is_not_executable() -> None:
         for resource in proposal.resources
         if resource.scale_rung in {"S3", "S4", "S5"}
     )
+
+
+def test_frozen_search_space_drives_the_same_proposal_corpus() -> None:
+    search_space = _load("configs/lsa/architecture_search_space_v1.json")
+    task_manifest = _load(
+        "experiments/loop_schedule_architecture_discovery_v1/datasets/manifest.json"
+    )
+    scale_ladder = _load("configs/lsa/scale_ladder_v0.json")
+    resource_profile = {
+        "sequence_length": 64,
+        "effective_batch_size": 32,
+        "microbatch_by_scale": {"S0": 8, "S1": 4, "S2": 2},
+        "vram_bytes": 2_621_440_000,
+    }
+
+    frozen = generate_architecture_proposals(
+        code_commit="test",
+        task_manifest=task_manifest,
+        scale_ladder=scale_ladder,
+        resource_profile=resource_profile,
+        search_space=search_space,
+    )
+
+    assert [value.proposal_hash for value in frozen] == [
+        value.proposal_hash for value in _proposals()
+    ]
+
+
+def test_proposal_bundle_round_trips_and_rejects_tampering(tmp_path: Path) -> None:
+    proposals = _proposals()
+    input_path = ROOT / "configs/lsa/scale_ladder_v0.json"
+    manifest = write_proposals(
+        proposals,
+        tmp_path,
+        input_files={"scale_ladder": input_path},
+    )
+
+    assert manifest["proposal_count"] == 38
+    assert [value.proposal_hash for value in read_proposals(tmp_path)] == [
+        value.proposal_hash for value in proposals
+    ]
+
+    prediction_path = tmp_path / "theory_predictions.json"
+    prediction_path.write_text("{}\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="derived proposal artifact hash mismatch"):
+        read_proposals(tmp_path)
 
 
 def test_extension_runs_at_most_once() -> None:

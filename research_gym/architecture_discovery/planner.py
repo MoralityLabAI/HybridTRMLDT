@@ -238,13 +238,27 @@ def generate_architecture_proposals(
     task_manifest: Mapping[str, Any],
     scale_ladder: Mapping[str, Any],
     resource_profile: Mapping[str, Any],
+    search_space: Mapping[str, Any] | None = None,
 ) -> tuple[ArchitectureProposal, ...]:
-    pool = enumerate_schedule_grammar()
-    discovery, reserve = select_discovery_batches(pool)
+    grammar = search_space or {
+        "physical_modules": [2, 3, 4],
+        "expanded_visits": [6, 8],
+        "selected_per_stratum": 4,
+    }
+    module_counts = tuple(int(value) for value in grammar["physical_modules"])
+    lengths = tuple(int(value) for value in grammar["expanded_visits"])
+    if module_counts != (2, 3, 4) or lengths != (6, 8):
+        raise ValueError("v1 freezes K={2,3,4} and L={6,8}")
+    if int(grammar["selected_per_stratum"]) != 4:
+        raise ValueError("v1 freezes four selected schedules per (K,L) stratum")
+    pool = enumerate_schedule_grammar(modules=module_counts, lengths=lengths)
+    discovery, reserve = select_discovery_batches(
+        pool, per_stratum=int(grammar["selected_per_stratum"])
+    )
     controls = {
         (modules, length): periodic_control(modules, length)
-        for modules in (2, 3, 4)
-        for length in (6, 8)
+        for modules in module_counts
+        for length in lengths
     }
     nulls = {
         key: random_schedule_null(pool, modules=key[0], length=key[1])
@@ -347,6 +361,30 @@ def write_proposals(
         for proposal in proposals:
             handle.write(json.dumps(proposal.to_dict(), sort_keys=True, separators=(",", ":")))
             handle.write("\n")
+    derived_artifacts = {
+        "theory_predictions.json": {
+            proposal.proposal_id: proposal.theory for proposal in proposals
+        },
+        "empirical_predictions.json": {
+            proposal.proposal_id: proposal.empirical for proposal in proposals
+        },
+        "decision_predictions.json": {
+            proposal.proposal_id: proposal.decision for proposal in proposals
+        },
+        "resource_forecasts.json": {
+            proposal.proposal_id: [asdict(value) for value in proposal.resources]
+            for proposal in proposals
+        },
+    }
+    derived_receipts: dict[str, Mapping[str, str]] = {}
+    for name, value in derived_artifacts.items():
+        path = directory / name
+        path.write_text(
+            json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        derived_receipts[name] = {"path": name, "sha256": _sha256(path)}
     role_counts: dict[str, int] = {}
     batch_counts: dict[str, int] = {}
     for proposal in proposals:
@@ -361,6 +399,7 @@ def write_proposals(
             "path": "proposal_table.jsonl",
             "sha256": _sha256(table_path),
         },
+        "derived_artifacts": derived_receipts,
         "inputs": {
             name: {"path": str(path).replace("\\", "/"), "sha256": _sha256(path)}
             for name, path in sorted(input_files.items())
@@ -373,17 +412,47 @@ def write_proposals(
         encoding="utf-8",
         newline="\n",
     )
+    receipt = {
+        "schema_version": 1,
+        "manifest_path": "proposal_manifest.json",
+        "manifest_sha256": _sha256(directory / "proposal_manifest.json"),
+        "proposal_table_sha256": _sha256(table_path),
+        "proposal_hashes": {
+            proposal.proposal_id: proposal.proposal_hash for proposal in proposals
+        },
+        "code_commits": sorted({proposal.code_commit for proposal in proposals}),
+        "task_bundle_hashes": sorted({proposal.task_bundle_hash for proposal in proposals}),
+    }
+    (directory / "proposal_receipt.json").write_text(
+        json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
     return manifest
 
 
 def read_proposals(directory: Path) -> tuple[ArchitectureProposal, ...]:
     manifest = json.loads((directory / "proposal_manifest.json").read_text(encoding="utf-8"))
+    claimed_manifest_hash = manifest.pop("manifest_hash")
+    if digest(manifest) != claimed_manifest_hash:
+        raise ValueError("proposal manifest hash mismatch")
+    for artifact in manifest["derived_artifacts"].values():
+        path = directory / artifact["path"]
+        if _sha256(path) != artifact["sha256"]:
+            raise ValueError(f"derived proposal artifact hash mismatch: {artifact['path']}")
     table = directory / manifest["proposal_table"]["path"]
     if _sha256(table) != manifest["proposal_table"]["sha256"]:
         raise ValueError("proposal table hash mismatch")
     values: list[ArchitectureProposal] = []
     for line in table.read_text(encoding="utf-8").splitlines():
         row = json.loads(line)
+        proposal_core = {
+            key: value
+            for key, value in row.items()
+            if key not in {"proposal_hash", "descriptors"}
+        }
+        if digest(proposal_core) != row["proposal_hash"]:
+            raise ValueError(f"proposal hash mismatch: {row['proposal_id']}")
         row["resources"] = tuple(ArchitectureResourceForecast(**value) for value in row["resources"])
         values.append(ArchitectureProposal(**row))
     return tuple(values)
