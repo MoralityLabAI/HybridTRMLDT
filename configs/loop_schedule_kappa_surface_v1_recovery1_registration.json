@@ -1,0 +1,13 @@
+{
+  "protocol_id": "loop_schedule_kappa_surface_v1_recovery1",
+  "config_path": "configs/loop_schedule_kappa_surface_v1_recovery1.json",
+  "config_sha256": "436e3ad58e473d533192527c419f868388b37d20afc7eac9be21fb54cd3012b5",
+  "registered_utc": "2026-07-20T20:05:38.9330692Z",
+  "registration_status": "post_partial_recovery_registered_before_completed_r64_or_untied_gradient_trajectories",
+  "source_attempt_commit": "0e100c139fe3c37f7efa96c78e4b5fba7d16ed37",
+  "partial_ledger_sha256": "ad4c4b7a40945b7086994705f21abdfb7598074c96d7b64c79fd9e6124b74c09",
+  "attempt_1_debit_seconds": 1204.1,
+  "new_outcomes_observed": false,
+  "surface_exposures": [0, 1024, 2048, 4096],
+  "new_phases": ["r64_tied", "untied_gradients"]
+}

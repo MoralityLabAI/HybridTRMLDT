@@ -1,0 +1,133 @@
+{
+  "protocol_id": "loop_schedule_kappa_surface_v1_recovery1",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-20T20:05:38.9330692Z",
+  "registration_timing": "after attempt-1 exposed all tied R16/R32 trajectories and one incomplete R64 seed-101 initialization measurement, before any completed R64 trajectory or untied interval-gradient trajectory",
+  "status_label": "post-partial registered recovery; not as-preregistered completion of loop_schedule_kappa_surface_v1",
+  "claim_scope": "post-partial mechanism mapping of a reduced tied kappa surface and matched optimization stress in the frozen small-scale two-linear residual-loop family",
+  "observed_before_recovery": {
+    "attempt_commit": "0e100c139fe3c37f7efa96c78e4b5fba7d16ed37",
+    "failure_receipt_path": "experiments/loop_schedule_kappa_surface_v1/run.attempt-1.resource_receipt.json",
+    "failure_receipt_sha256": "a3c7ff2fc959681dcaec0ac6b4f464acb642a7c8acb95a41d90174d1cb8f81e3",
+    "partial_ledger_path": "experiments/loop_schedule_kappa_surface_v1/surface_events.jsonl",
+    "partial_ledger_sha256": "ad4c4b7a40945b7086994705f21abdfb7598074c96d7b64c79fd9e6124b74c09",
+    "measurement_count": 31,
+    "fully_completed_cells": [
+      "surface_tied_R16_S101",
+      "surface_tied_R16_S103",
+      "surface_tied_R16_S107",
+      "surface_tied_R32_S101",
+      "surface_tied_R32_S103",
+      "surface_tied_R32_S107"
+    ],
+    "incomplete_cell": "surface_tied_R64_S101",
+    "disclosure": "The R16/R32 trajectories and the incomplete R64 seed-101 E0 value were inspected while diagnosing the orchestration failure. They are prior evidence for this recovery, not untouched outcomes."
+  },
+  "admission_rule": {
+    "completed_cells_only": true,
+    "required_cell_complete": "finite cell_complete event with state_visit_exposures=4096",
+    "required_measurements": [0, 512, 1024, 2048, 4096],
+    "recovery_surface_exposures": [0, 1024, 2048, 4096],
+    "exclude_incomplete_cell_entirely": true,
+    "verify_partial_ledger_hash_before_read": true
+  },
+  "frozen_training": {
+    "model_family": "two_linear_residual_loop",
+    "task_family": "deterministic_signed_permutation_regression",
+    "hidden_size": 128,
+    "batch_size": 8,
+    "measurement_batch_size": 8,
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "alpha": 1.0,
+    "beta": 0.25,
+    "progress_target": 4096,
+    "surface_exposures": [0, 1024, 2048, 4096],
+    "gradient_exposures": [512, 1024, 2048, 4096],
+    "checkpoint_exposures": [2048, 4096],
+    "rounds": [16, 32, 64],
+    "seeds": [101, 103, 107],
+    "power_iterations": 5,
+    "measurement_seed_rule": "seed+50000, fixed across checkpoint exposures"
+  },
+  "phase_order": ["validate", "r64_tied", "untied_gradients", "finalize"],
+  "new_execution": {
+    "r64_tied": {
+      "rounds": 64,
+      "seeds": [101, 103, 107],
+      "kappa_exposures": [0, 1024, 2048, 4096],
+      "gradient_exposures": [512, 1024, 2048, 4096],
+      "note": "all three cells are rerun from initialization; the incomplete attempt-1 R64 event is not reused"
+    },
+    "untied_gradients": {
+      "rounds": [16, 32, 64],
+      "seeds": [101, 103, 107],
+      "kappa_exposures": [],
+      "gradient_exposures": [512, 1024, 2048, 4096],
+      "note": "intermediate untied kappa probes are omitted to preserve the registered aggregate budget; sealed terminal untied kappa supplies only the point-equivalence control"
+    }
+  },
+  "surface_models": {
+    "response": "log(kappa)",
+    "coordinates": "x=log2(R/16), u=log2(1+exposure/512), I64=1[R=64]",
+    "separable": "a+b*x+c*u",
+    "smooth_interaction": "a+b*x+c*u+d*x*u",
+    "r64_change_point": "a+b*x+c*u+d*x*u+q*I64+z*I64*u",
+    "fit_cells": 12,
+    "comparison": {
+      "information_criterion": "AICc",
+      "predictive_check": "leave-one-exposure-block-out RMSE",
+      "winner_rule": "best model must beat the runner-up by at least 4 AICc units and have no more than 0.9 times the runner-up blocked-CV RMSE; otherwise unresolved"
+    }
+  },
+  "depth_curvature": {
+    "formula": "C(E)=log(kappa64(E))-2*log(kappa32(E))+log(kappa16(E))",
+    "bootstrap_samples": 5000,
+    "bootstrap_seed": 643216,
+    "interval_mass": 0.95,
+    "practical_equivalence_region": [-0.1, 0.1],
+    "transition_threshold": -0.2,
+    "onset_candidates": [1024, 2048],
+    "onset_rule": "first candidate where point C(E)<=-0.2 and the 95% paired-seed-bootstrap upper bound is below -0.1",
+    "terminal_role": "E4096 is excluded from first-onset confirmation because its direction was known before both registrations"
+  },
+  "gradient_coupling": {
+    "stress_ratio": "geometric-mean tied interval maximum gradient divided by the matched untied geometric mean",
+    "support_threshold": 5.0,
+    "co_localization_rule": "at the curvature-onset interval, the R64 stress ratio is at least 5 and exceeds the corresponding R16 and R32 ratios",
+    "association_diagnostic": "omitted in recovery because R64 E512 kappa is not measured"
+  },
+  "integrity_controls": {
+    "tied_terminal_replication": "all nine tied R16/R32/R64 terminal per-seed kappas must match their sealed predecessors within absolute log ratio 0.02",
+    "untied_terminal_point_equivalence": "the sealed six-depth terminal untied point gamma must satisfy abs(gamma)<=0.1",
+    "limitation": "the original requirement for untied equivalence at four of five trajectory checkpoints is unobserved and cannot be claimed"
+  },
+  "classification": {
+    "post_partial_depth_training_transition": "r64_change_point wins, preterminal curvature onset exists, gradient co-localization passes, tied terminal replication passes, and sealed untied terminal point equivalence passes",
+    "post_partial_geometric_transition_without_gradient_support": "r64_change_point wins and onset exists but gradient co-localization fails",
+    "post_partial_smooth_surface": "separable or smooth_interaction wins and no onset exists",
+    "integrity_failure": "partial-ledger admission, tied replication, or untied terminal equivalence fails",
+    "form_unresolved": "none of the registered branches is licensed"
+  },
+  "resource_accounting": {
+    "attempt_1_debit_seconds": 1204.1,
+    "attempt_1_debit_basis": "outer command host reported 1204.1 seconds before termination",
+    "aggregate_limit_seconds": 3600,
+    "remaining_before_recovery_seconds": 2395.9,
+    "debit_is_conservative": true
+  },
+  "claim_boundary": "This labeled post-partial recovery cannot be described as the original experiment completing as preregistered. It can report only whether the reduced tied surface and matched gradient controls support a depth-by-training transition in this one small residual-loop construction; it cannot establish gradient causality, general Transformer behavior, or task performance.",
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1800,
+    "aggregate_gpu_hours": 1,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}
