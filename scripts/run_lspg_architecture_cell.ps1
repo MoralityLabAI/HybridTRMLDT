@@ -9,6 +9,8 @@ param(
     [string]$Output = "experiments/loop_schedule_architecture_discovery_v1/runs",
     [string]$ResourceConfig = "configs/lsa/architecture_resource_profile_v1.json",
     [switch]$AllowLockedEvaluation,
+    [switch]$ResourceOnly,
+    [int]$MeasurementWarmupSteps = 0,
     [int]$EvaluationLimitPerFamily = 256
 )
 
@@ -139,6 +141,11 @@ $arguments = @(
     "--out", $OutputPath
 )
 if ($AllowLockedEvaluation) { $arguments += "--allow-locked-evaluation" }
+if ($ResourceOnly) {
+    $arguments += "--resource-only"
+    $arguments += "--measurement-warmup-steps"
+    $arguments += [string]$MeasurementWarmupSteps
+}
 
 $status = "running"
 $abortReason = $null

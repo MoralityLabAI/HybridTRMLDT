@@ -52,6 +52,8 @@ class TrainingCellConfig:
     evaluation_limit_per_family: int | None = 256
     allow_locked_evaluation: bool = False
     vram_fraction: float | None = None
+    resource_only: bool = False
+    measurement_warmup_steps: int = 0
 
     @property
     def families(self) -> tuple[str, ...]:
@@ -83,6 +85,9 @@ class TrainingCellResult:
     final_over_initial_loss: float | None
     max_gradient_norm: float
     mean_step_seconds: float | None
+    measured_step_count: int
+    measurement_warmup_steps: int
+    resource_only: bool
     peak_memory_bytes: int
     unique_parameters: int
     estimated_flops: int
@@ -204,6 +209,14 @@ def _scheduler_factor(step: int, total_steps: int, warmup_fraction: float) -> fl
     return 0.1 + 0.9 * 0.5 * (1.0 + math.cos(math.pi * min(1.0, progress)))
 
 
+def measured_step_times(
+    step_times: Sequence[float], measurement_warmup_steps: int
+) -> tuple[float, ...]:
+    if measurement_warmup_steps < 0:
+        raise ValueError("measurement warm-up steps must be non-negative")
+    return tuple(float(value) for value in step_times[measurement_warmup_steps:])
+
+
 def run_training_cell(
     proposal: ArchitectureProposal,
     bundle: TaskBundle,
@@ -215,6 +228,8 @@ def run_training_cell(
         raise ValueError("microbatch must divide effective batch")
     if config.scale_rung not in proposal.models:
         raise ValueError("proposal does not materialize the requested scale")
+    if config.resource_only and config.stage != "calibration":
+        raise ValueError("resource-only cells must use the calibration stage")
     topology = ScheduleTopology.from_mapping(proposal.topology)
     exposures_per_step = (
         config.effective_batch_size * bundle.sequence_length * topology.train_visits
@@ -230,6 +245,8 @@ def run_training_cell(
         "effective_batch_size": config.effective_batch_size,
         "microbatch_size": config.microbatch_size,
         "learning_rate": config.learning_rate,
+        "resource_only": config.resource_only,
+        "measurement_warmup_steps": config.measurement_warmup_steps,
     }
     cell_hash = digest(cell_core)
     cell_id = f"{proposal.proposal_id}-{config.stage}-{config.scale_rung}-s{config.seed}"
@@ -385,7 +402,7 @@ def run_training_cell(
         depth_metrics: dict[str, Mapping[str, Any]] = {}
         macro_exact: float | None = None
         by_family: Mapping[str, float] = {}
-        if status == "completed":
+        if status == "completed" and not config.resource_only:
             split = "evaluation" if config.stage == "D" else "calibration"
             if split == "evaluation" and not config.allow_locked_evaluation:
                 raise ValueError("locked evaluation requires explicit Stage-D authorization")
@@ -409,6 +426,9 @@ def run_training_cell(
         resource = next(
             value for value in proposal.resources if value.scale_rung == config.scale_rung
         )
+        measured_times = measured_step_times(
+            state["step_times"], config.measurement_warmup_steps
+        )
         result = TrainingCellResult(
             cell_id=cell_id,
             cell_hash=cell_hash,
@@ -426,15 +446,18 @@ def run_training_cell(
             optimizer_steps=int(state["step"]),
             target_optimizer_steps=target_steps,
             token_visit_exposures=int(state["step"]) * exposures_per_step,
-            initial_loss=initial_loss,
-            final_loss=final_loss,
-            final_over_initial_loss=loss_ratio,
+            initial_loss=None if config.resource_only else initial_loss,
+            final_loss=None if config.resource_only else final_loss,
+            final_over_initial_loss=None if config.resource_only else loss_ratio,
             max_gradient_norm=float(state["max_gradient_norm"]),
             mean_step_seconds=(
-                sum(float(value) for value in state["step_times"]) / len(state["step_times"])
-                if state["step_times"]
+                sum(measured_times) / len(measured_times)
+                if measured_times
                 else None
             ),
+            measured_step_count=len(measured_times),
+            measurement_warmup_steps=config.measurement_warmup_steps,
+            resource_only=config.resource_only,
             peak_memory_bytes=peak_memory,
             unique_parameters=model.parameter_breakdown()["unique_parameters"],
             estimated_flops=resource.estimated_flops_per_example,

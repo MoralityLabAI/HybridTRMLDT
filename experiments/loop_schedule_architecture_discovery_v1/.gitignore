@@ -1,0 +1,4 @@
+calibration_runs/**/checkpoints/
+runs/**/checkpoints/
+calibration_runs/logs/
+runs/logs/
