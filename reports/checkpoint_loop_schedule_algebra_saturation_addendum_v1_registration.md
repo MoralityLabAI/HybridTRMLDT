@@ -65,3 +65,13 @@ SHA-256 is `3fa8c1e6...57414`. No `R=32` or `R=64` outcome directory existed.
 The superseding registration changes only that source hash and its registration
 timestamp; the scientific design, decision thresholds, seeds, and resource caps
 are byte-for-byte unchanged.
+
+## Validation receipt
+
+Committed runner `911fbc3` passed capped validation before any new training:
+
+- config SHA-256: `f4eb1cd7d1df7a18f523498ed48a159ccc2f123c80957913301c51cc1cc30894`
+- parent primary records SHA-256: `1fc75ed2c26d110d9b5a3205a12683dbbb0c11cd1dee0a18b2866466b9ea090e`
+- resource receipt SHA-256: `236e1174afd9dfaaaf2eef5ac43b607582bda69321d6de88c9c7339b933091dc`
+- peak RAM: `380.148 MB`; peak I/O: `6.544 MB/s`; peak VRAM: `0 MB`
+- cleanup: passed; `R=32`/`R=64` records present: false
