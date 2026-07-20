@@ -354,6 +354,7 @@ def write_proposals(
     directory: Path,
     *,
     input_files: Mapping[str, Path],
+    input_root: Path | None = None,
 ) -> dict[str, Any]:
     directory.mkdir(parents=True, exist_ok=True)
     table_path = directory / "proposal_table.jsonl"
@@ -390,6 +391,14 @@ def write_proposals(
     for proposal in proposals:
         role_counts[proposal.role] = role_counts.get(proposal.role, 0) + 1
         batch_counts[proposal.batch] = batch_counts.get(proposal.batch, 0) + 1
+    def display_path(path: Path) -> str:
+        if input_root is not None:
+            try:
+                path = path.resolve().relative_to(input_root.resolve())
+            except ValueError:
+                pass
+        return str(path).replace("\\", "/")
+
     manifest = {
         "schema_version": 1,
         "proposal_count": len(proposals),
@@ -401,7 +410,7 @@ def write_proposals(
         },
         "derived_artifacts": derived_receipts,
         "inputs": {
-            name: {"path": str(path).replace("\\", "/"), "sha256": _sha256(path)}
+            name: {"path": display_path(path), "sha256": _sha256(path)}
             for name, path in sorted(input_files.items())
         },
         "claim_scope": CLAIM_SCOPE,

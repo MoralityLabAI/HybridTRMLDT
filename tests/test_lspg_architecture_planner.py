@@ -107,9 +107,11 @@ def test_proposal_bundle_round_trips_and_rejects_tampering(tmp_path: Path) -> No
         proposals,
         tmp_path,
         input_files={"scale_ladder": input_path},
+        input_root=ROOT,
     )
 
     assert manifest["proposal_count"] == 38
+    assert manifest["inputs"]["scale_ladder"]["path"] == "configs/lsa/scale_ladder_v0.json"
     assert [value.proposal_hash for value in read_proposals(tmp_path)] == [
         value.proposal_hash for value in proposals
     ]

@@ -80,7 +80,12 @@ def main() -> None:
         },
         search_space=_load(inputs["search_space"]),
     )
-    manifest = write_proposals(proposals, args.out.resolve(), input_files=inputs)
+    manifest = write_proposals(
+        proposals,
+        args.out.resolve(),
+        input_files=inputs,
+        input_root=ROOT,
+    )
     if len(read_proposals(args.out.resolve())) != 38:
         raise RuntimeError("sealed proposal bundle failed round-trip validation")
     print(json.dumps(manifest, indent=2, sort_keys=True))
