@@ -68,6 +68,8 @@ def load_calibration_measurement(
         raise ValueError("calibration wrapper cleanup failed")
     if not result["resource_only"]:
         raise ValueError("calibration exposed a task-outcome cell")
+    if result.get("precision") != "fp32":
+        raise ValueError("v1.2 calibration requires FP32 precision")
     if any(result[field] is not None for field in ("macro_exact", "initial_loss", "final_loss")):
         raise ValueError("resource-only calibration leaked task outcomes")
     if result["by_family"] or result["depth_metrics"] or result["prediction_artifacts"]:

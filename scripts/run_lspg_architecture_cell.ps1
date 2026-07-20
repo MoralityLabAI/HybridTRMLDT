@@ -15,7 +15,7 @@ param(
     [int]$TimeoutSecondsOverride = 0,
     [double]$GradientClipNorm = 100.0,
     [double]$LearningRateOverride = 0.0,
-    [ValidateSet("amp_fp16", "fp32")][string]$Precision = "amp_fp16",
+    [ValidateSet("amp_fp16", "fp32")][string]$Precision = "fp32",
     [int]$EvaluationLimitPerFamily = 256
 )
 

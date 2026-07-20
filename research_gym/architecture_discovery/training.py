@@ -53,7 +53,7 @@ class TrainingCellConfig:
     evaluation_limit_per_family: int | None = 256
     allow_locked_evaluation: bool = False
     vram_fraction: float | None = None
-    precision: str = "amp_fp16"
+    precision: str = "fp32"
     resource_only: bool = False
     measurement_warmup_steps: int = 0
 

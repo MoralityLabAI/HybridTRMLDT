@@ -11,3 +11,5 @@ diagnostic_lr_*/logs/
 diagnostic_lr_*/**/checkpoints/
 diagnostic_fp32/logs/
 diagnostic_fp32/**/checkpoints/
+diagnostic_fp32_s2/logs/
+diagnostic_fp32_s2/**/checkpoints/

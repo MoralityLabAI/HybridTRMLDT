@@ -30,7 +30,7 @@ def main() -> None:
     parser.add_argument("--resource-only", action="store_true")
     parser.add_argument("--measurement-warmup-steps", type=int, default=0)
     parser.add_argument("--maximum-gradient-norm", type=float, default=100.0)
-    parser.add_argument("--precision", choices=("amp_fp16", "fp32"), default="amp_fp16")
+    parser.add_argument("--precision", choices=("amp_fp16", "fp32"), default="fp32")
     parser.add_argument("--vram-fraction", type=float, default=0.60)
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()

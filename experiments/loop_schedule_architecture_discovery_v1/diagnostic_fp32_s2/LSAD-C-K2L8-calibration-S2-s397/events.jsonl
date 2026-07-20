@@ -1,0 +1,3 @@
+{"cell_hash":"34e44132cf831d84e5151540c73b56495850ddb02ec0153118db05363083301a","cell_id":"LSAD-C-K2L8-calibration-S2-s397","event":"start","step":0,"target_steps":5,"time":1784524176.4986482}
+{"bytes":357490586,"bytes_per_second_cap":41943040,"cell_id":"LSAD-C-K2L8-calibration-S2-s397","elapsed_seconds":10.485826199999792,"event":"checkpoint","path":"latest.pt","sha256":"28c0b80d0ce777af351840e20d84b8d81ee971ee1bdff6a03158d25cb8d99877","step":5,"token_visit_exposures":81920}
+{"cell_id":"LSAD-C-K2L8-calibration-S2-s397","event":"finish","status":"completed"}
