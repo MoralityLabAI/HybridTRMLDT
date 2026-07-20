@@ -1,0 +1,19 @@
+{
+  "family": "looped_decoder_schedule_topology_v1",
+  "shape_policy": {
+    "scale_dimension": "width",
+    "solve_width_to_parameter_target": true,
+    "target_tolerance": 0.03,
+    "vocab_size": 2048,
+    "architecture_head_dim": 8,
+    "report_core_and_embedding_params_separately": true
+  },
+  "rungs": [
+    {"name": "S0", "target_unique_parameters": 5000000, "role": "architecture_screening"},
+    {"name": "S1", "target_unique_parameters": 12000000, "role": "scale_transfer"},
+    {"name": "S2", "target_unique_parameters": 30000000, "role": "locked_confirmation"},
+    {"name": "S3", "target_unique_parameters": 72000000, "role": "cost_only"},
+    {"name": "S4", "target_unique_parameters": 170000000, "role": "cost_only"},
+    {"name": "S5", "target_unique_parameters": 400000000, "role": "cost_only"}
+  ]
+}

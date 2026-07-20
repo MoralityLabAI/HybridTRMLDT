@@ -1,0 +1,32 @@
+{
+  "profile_id": "local_rtx3050_architecture_discovery_v1",
+  "training_task_id": "lspg_architecture_discovery_v1",
+  "caps": {
+    "ram_bytes": 3984588800,
+    "ram_mb": 3800,
+    "cpu_pct": 50,
+    "io_bytes_per_second": 52428800,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_bytes": 2621440000,
+    "vram_mb": 2500,
+    "torch_vram_fraction": 0.60,
+    "child_timeout_seconds": 1800,
+    "campaign_gpu_seconds": 129600
+  },
+  "sequence_length": 64,
+  "effective_batch_size": 32,
+  "microbatch_by_scale": {"S0": 8, "S1": 4, "S2": 2, "S3": 1, "S4": 1, "S5": 1},
+  "learning_rate_by_scale": {"S0": 0.0003, "S1": 0.0002, "S2": 0.0001},
+  "checkpoint": {
+    "optimizer_steps": 100,
+    "seconds": 120,
+    "write_bytes_per_second": 41943040,
+    "maximum_resumptions": 4
+  },
+  "preflight": {
+    "gpu_utilization_max_pct": 5,
+    "idle_samples": 3,
+    "foreign_compute_process_policy": "do_not_start_or_terminate"
+  }
+}

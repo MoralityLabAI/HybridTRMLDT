@@ -9,6 +9,7 @@ try:
     import torch
     from torch import Tensor, nn
     from torch.func import functional_call
+    from torch.utils.checkpoint import checkpoint
 except ImportError as exc:  # pragma: no cover
     raise ImportError("schedule execution requires the optional 'neural' extra") from exc
 
@@ -35,6 +36,7 @@ class ScheduleExecutor(nn.Module):
         parameter_visits: frozenset[int],
         retained_state_edges: frozenset[int],
         module_kwargs: Mapping[str, object] | None = None,
+        activation_checkpointing: bool = False,
     ) -> ScheduleExecution:
         if not module_indices:
             raise ValueError("schedule requires at least one visit")
@@ -52,10 +54,16 @@ class ScheduleExecutor(nn.Module):
             if visit > 0 and visit - 1 not in retained_state_edges:
                 state = state.detach()
             module = modules[module_index]
-            state = (
-                module(state, **kwargs)
-                if visit in parameter_visits
-                else _frozen_module_call(module, state, **kwargs)
-            )
+            if visit in parameter_visits:
+                if activation_checkpointing and torch.is_grad_enabled():
+                    state = checkpoint(
+                        lambda value, selected=module: selected(value, **kwargs),
+                        state,
+                        use_reentrant=False,
+                    )
+                else:
+                    state = module(state, **kwargs)
+            else:
+                state = _frozen_module_call(module, state, **kwargs)
             outputs.append(state)
         return ScheduleExecution(state, tuple(outputs))

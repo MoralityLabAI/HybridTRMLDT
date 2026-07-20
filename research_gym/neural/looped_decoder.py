@@ -86,6 +86,7 @@ class LoopedDecoderLM(nn.Module):
         carry_policy: str,
         module_word: tuple[int, ...] | None = None,
         use_sinusoidal_positions: bool = False,
+        activation_checkpointing: bool = False,
     ) -> None:
         super().__init__()
         if expanded_visits <= 0 or physical_modules <= 0:
@@ -104,6 +105,7 @@ class LoopedDecoderLM(nn.Module):
         self.supervision_points = supervision_points
         self.carry_policy = carry_policy
         self.use_sinusoidal_positions = bool(use_sinusoidal_positions)
+        self.activation_checkpointing = bool(activation_checkpointing)
         self.embedding = nn.Embedding(vocab_size, hidden_size)
         self.input_norm = nn.LayerNorm(hidden_size)
         self.blocks = nn.ModuleList(
@@ -176,6 +178,7 @@ class LoopedDecoderLM(nn.Module):
             carry_policy=str(mutation["carry"]),
             module_word=topology.expanded_word if topology else None,
             use_sinusoidal_positions=topology is not None,
+            activation_checkpointing=bool(model.get("activation_checkpointing", False)),
         )
 
     def parameter_breakdown(self) -> dict[str, int]:
@@ -235,6 +238,7 @@ class LoopedDecoderLM(nn.Module):
             parameter_visits=parameter_visits,
             retained_state_edges=retained_state_edges,
             module_kwargs={"causal_mask": causal_mask},
+            activation_checkpointing=self.activation_checkpointing,
         )
         final_state = self.final_norm(execution.output)
         logits = F.linear(final_state, self.embedding.weight)

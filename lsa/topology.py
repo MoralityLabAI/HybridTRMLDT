@@ -280,7 +280,7 @@ def periodic_control(modules: int, length: int) -> ScheduleTopology:
     )
 
 
-def _standardized_vectors(
+def standardized_descriptor_vectors(
     topologies: Sequence[ScheduleTopology],
 ) -> dict[str, tuple[float, ...]]:
     raw = [topology.descriptors.vector() for topology in topologies]
@@ -299,7 +299,7 @@ def _standardized_vectors(
 
 
 def topology_distance(left: ScheduleTopology, right: ScheduleTopology) -> float:
-    vectors = _standardized_vectors((left, right))
+    vectors = standardized_descriptor_vectors((left, right))
     left_vector = vectors[left.topology_hash]
     right_vector = vectors[right.topology_hash]
     return math.sqrt(sum((a - b) ** 2 for a, b in zip(left_vector, right_vector)))
@@ -312,7 +312,7 @@ def select_discovery_batches(
 
     if per_stratum != 4:
         raise ValueError("v1 freezes four selected schedules per (K,L) stratum")
-    vectors = _standardized_vectors(pool)
+    vectors = standardized_descriptor_vectors(pool)
     first: list[ScheduleTopology] = []
     reserve: list[ScheduleTopology] = []
     strata = sorted({(item.physical_modules, item.train_visits) for item in pool})
@@ -326,7 +326,7 @@ def select_discovery_batches(
             raise ValueError(f"not enough candidates in stratum {(modules, length)}")
         control = periodic_control(modules, length)
         comparison = tuple(candidates) + (control,)
-        local_vectors = _standardized_vectors(comparison)
+        local_vectors = standardized_descriptor_vectors(comparison)
         selected: list[ScheduleTopology] = []
         while len(selected) < per_stratum:
             def score(candidate: ScheduleTopology) -> tuple[float, str]:

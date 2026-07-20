@@ -1,0 +1,36 @@
+{
+  "policy_id": "lspg_architecture_promotion_v1",
+  "seeds": [401, 409, 419],
+  "calibration_seed": 397,
+  "profiles": {
+    "full": {"A1": 2097152, "A2": 8388608, "B": 8388608, "C": 12582912, "D": 16777216},
+    "medium": {"A1": 1048576, "A2": 4194304, "B": 4194304, "C": 6291456, "D": 8388608},
+    "minimum": {"A1": 524288, "A2": 2097152, "B": 2097152, "C": 3145728, "D": 4194304}
+  },
+  "profile_selection": {
+    "mandatory_path_gpu_seconds": 86400,
+    "reserve_gpu_seconds": 43200,
+    "on_minimum_profile_over_budget": "construction_failure"
+  },
+  "funnel": {
+    "A1": {"scale": "S0", "candidate_limit": 12, "seeds": [401], "families": ["pointer_chase", "modular_recurrence", "rewrite_normalization"]},
+    "A2": {"scale": "S0", "candidate_limit": 6, "seeds": [401, 409, 419], "families": ["pointer_chase", "modular_recurrence", "rewrite_normalization"]},
+    "B": {"scale": "S0", "candidate_limit": 4, "seeds": [401, 409, 419], "families": ["sudoku", "routing"]},
+    "C": {"scale": "S1", "candidate_limit": 4, "seeds": [401, 409, 419], "families": ["pointer_chase", "modular_recurrence", "rewrite_normalization", "sudoku", "routing"]},
+    "D": {"scale": "S2", "candidate_limit": 2, "seeds": [401, 409, 419], "families": ["pointer_chase", "modular_recurrence", "rewrite_normalization", "sudoku", "routing"]}
+  },
+  "extension": {"trigger": "fewer_than_two_provisional_candidates_after_B", "maximum_batches": 1},
+  "promotion_requires": {
+    "positive_seed_count": 2,
+    "maximum_task_regression": 0.03,
+    "maximum_step_time_ratio": 1.10,
+    "minimum_structural_distance": 0.35,
+    "maximum_gradient_norm": 100.0,
+    "maximum_loss_ratio": 10.0
+  },
+  "final_requires": {
+    "paired_bootstrap_lower_above": 0.0,
+    "holm_alpha": 0.05,
+    "locked_evaluation": true
+  }
+}
