@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import math
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Mapping, Protocol, Sequence
 
 try:
     import torch
@@ -118,6 +118,22 @@ class ToyLoop(nn.Module):
         return state
 
 
+class ResidualLoop(Protocol):
+    """Structural interface required by the visit-alignment estimator."""
+
+    rounds: int
+    alpha: float
+    beta: float
+
+    def zero_grad(self, set_to_none: bool = True) -> None: ...
+
+    def block_at(self, visit: int) -> nn.Module: ...
+
+    def states(self, state: Tensor) -> tuple[Tensor, ...]: ...
+
+    def suffix(self, state: Tensor, after_visit: int) -> Tensor: ...
+
+
 def _flatten(tensors: Iterable[Tensor]) -> Tensor:
     values = [tensor.reshape(-1) for tensor in tensors]
     if not values:
@@ -157,7 +173,7 @@ def alignment_coefficient(
 
 
 def _suffix_sensitivity(
-    model: ToyLoop,
+    model: ResidualLoop,
     state_after_visit: Tensor,
     visit: int,
     *,
@@ -191,14 +207,14 @@ def _suffix_sensitivity(
     return tangent.detach().reshape(-1)
 
 
-def _frozen_call(block: ToyResidualBlock, state: Tensor) -> Tensor:
+def _frozen_call(block: nn.Module, state: Tensor) -> Tensor:
     parameters = {name: value.detach() for name, value in block.named_parameters()}
     buffers = {name: value.detach() for name, value in block.named_buffers()}
     return functional_call(block, (parameters, buffers), (state,))
 
 
 def _visit_gradient(
-    model: ToyLoop,
+    model: ResidualLoop,
     inputs: Tensor,
     targets: Tensor,
     target_visit: int,
@@ -218,7 +234,7 @@ def _visit_gradient(
 
 
 def estimate_kappa(
-    model: ToyLoop,
+    model: ResidualLoop,
     inputs: Tensor,
     targets: Tensor,
     *,
