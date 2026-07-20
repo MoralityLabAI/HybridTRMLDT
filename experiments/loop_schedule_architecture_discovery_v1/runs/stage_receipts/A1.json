@@ -1,5 +1,5 @@
 {
-  "campaign_elapsed_seconds": 1172.324,
+  "campaign_elapsed_seconds": 1569.746,
   "cell_receipts": {
     "LSAD-B1-K2L6-01-A1-S0-s401": {
       "result_sha256": "c40a27b76534e733338bbb14423984d0ea487c4e04299419bd806a789c054ef5",
@@ -36,15 +36,51 @@
     "LSAD-B1-K4L6-01-A1-S0-s401": {
       "result_sha256": "52db1073cb31aaee28be7b2b16797589232eb2c57c5892455b2bbad91dd842f2",
       "status": "completed"
+    },
+    "LSAD-B1-K4L6-02-A1-S0-s401": {
+      "result_sha256": "2ba1bb61037e9ba2518ff906dfb7875a080111bd7f10fffce52ed39d3699b4cd",
+      "status": "completed"
+    },
+    "LSAD-B1-K4L8-01-A1-S0-s401": {
+      "result_sha256": "32ade8c7c084bd2c477b7b8c4db6128bb18d4b86305f98a72c5b46935516de4f",
+      "status": "completed"
+    },
+    "LSAD-B1-K4L8-02-A1-S0-s401": {
+      "result_sha256": "dece437b3c8c661aa04ca0dc8fd57a3e4149c1be0ce1197f686a3d152760f879",
+      "status": "completed"
+    },
+    "LSAD-C-K2L6-A1-S0-s401": {
+      "result_sha256": "b4a02ddf488077de7429b9e6cae2fa3ca1880def3adf22b7245231d325e9c752",
+      "status": "completed"
+    },
+    "LSAD-C-K2L8-A1-S0-s401": {
+      "result_sha256": "12827fdd7b1da720f039a684a0e05c9b9174b04f9145ea238b09fa281e9e621b",
+      "status": "completed"
+    },
+    "LSAD-C-K3L6-A1-S0-s401": {
+      "result_sha256": "ad7e10e12848d956680203ffb97ed0be36f4f2bf4529458fde97b7e8a33dd764",
+      "status": "completed"
+    },
+    "LSAD-C-K3L8-A1-S0-s401": {
+      "result_sha256": "1b8effbe77fc495070afb95d7351db3f9c07d2bb66ee3c670c7c2075acfb6e22",
+      "status": "completed"
+    },
+    "LSAD-C-K4L6-A1-S0-s401": {
+      "result_sha256": "905e6662461228bcfee87571e79360053a5a244ece817197dfbe9cb2a199b285",
+      "status": "completed"
+    },
+    "LSAD-C-K4L8-A1-S0-s401": {
+      "result_sha256": "b4340cfd458aff097a750c9474faac6eac75cba369ab4a2e521ba8b63633e100",
+      "status": "completed"
     }
   },
-  "completed_cells": 9,
+  "completed_cells": 18,
   "expected_cells": 18,
-  "failure": "missing resource receipt for LSAD-B1-K4L6-02-A1-S0-s401",
-  "receipt_hash": "39cbc9be3dfe4421bc5b4069e3ace01967e0eaad6da8b51e0763235f6a54212a",
+  "failure": null,
+  "receipt_hash": "a4c397fb2299524f64e13de08e15400c4b1c9ff6376cca385fc0d8dc3591d800",
   "schema_version": 1,
   "stage_id": "A1",
   "stage_manifest_hash": "612c750c8302af876c26f1baff0e1902799157a3a0c45388ddc54bd49c4790aa",
   "stage_manifest_sha256": "172a092d824afa869831517cbf68218de7ebce2feb614b5dc8b3025647dd6a28",
-  "status": "failed"
+  "status": "completed"
 }

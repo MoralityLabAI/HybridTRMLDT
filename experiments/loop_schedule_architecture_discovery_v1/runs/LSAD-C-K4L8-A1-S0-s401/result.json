@@ -1,0 +1,156 @@
+{
+  "by_family": {
+    "modular_recurrence": 0.0,
+    "pointer_chase": 0.109375,
+    "rewrite_normalization": 0.1953125
+  },
+  "cell_hash": "5afd51e69af052144aa82e11d14e4d125a5559af8276da548d82dd695a2cb809",
+  "cell_id": "LSAD-C-K4L8-A1-S0-s401",
+  "checkpoints": [
+    {
+      "bytes": 60821258,
+      "bytes_per_second_cap": 41943040,
+      "elapsed_seconds": 1.7025081999963732,
+      "path": "latest.pt",
+      "sha256": "8df31679ae0d6096377e9a54699e85b35788f67b9ac6db950b58669bcc053b71",
+      "step": 32,
+      "token_visit_exposures": 524288
+    }
+  ],
+  "cleanup_passed": true,
+  "depth_metrics": {
+    "12": {
+      "by_family": {
+        "modular_recurrence": 0.0,
+        "pointer_chase": 0.0,
+        "rewrite_normalization": 0.16796875
+      },
+      "correct_by_family": {
+        "modular_recurrence": 0,
+        "pointer_chase": 0,
+        "rewrite_normalization": 43
+      },
+      "macro_exact": 0.055989583333333336,
+      "routing_macro_accuracy": null,
+      "sudoku_full_puzzle_exact": null,
+      "total_by_family": {
+        "modular_recurrence": 256,
+        "pointer_chase": 256,
+        "rewrite_normalization": 256
+      }
+    },
+    "16": {
+      "by_family": {
+        "modular_recurrence": 0.0,
+        "pointer_chase": 0.0,
+        "rewrite_normalization": 0.16796875
+      },
+      "correct_by_family": {
+        "modular_recurrence": 0,
+        "pointer_chase": 0,
+        "rewrite_normalization": 43
+      },
+      "macro_exact": 0.055989583333333336,
+      "routing_macro_accuracy": null,
+      "sudoku_full_puzzle_exact": null,
+      "total_by_family": {
+        "modular_recurrence": 256,
+        "pointer_chase": 256,
+        "rewrite_normalization": 256
+      }
+    },
+    "4": {
+      "by_family": {
+        "modular_recurrence": 0.0,
+        "pointer_chase": 0.0,
+        "rewrite_normalization": 0.0
+      },
+      "correct_by_family": {
+        "modular_recurrence": 0,
+        "pointer_chase": 0,
+        "rewrite_normalization": 0
+      },
+      "macro_exact": 0.0,
+      "routing_macro_accuracy": null,
+      "sudoku_full_puzzle_exact": null,
+      "total_by_family": {
+        "modular_recurrence": 256,
+        "pointer_chase": 256,
+        "rewrite_normalization": 256
+      }
+    },
+    "8": {
+      "by_family": {
+        "modular_recurrence": 0.0,
+        "pointer_chase": 0.109375,
+        "rewrite_normalization": 0.1953125
+      },
+      "correct_by_family": {
+        "modular_recurrence": 0,
+        "pointer_chase": 28,
+        "rewrite_normalization": 50
+      },
+      "macro_exact": 0.1015625,
+      "routing_macro_accuracy": null,
+      "sudoku_full_puzzle_exact": null,
+      "total_by_family": {
+        "modular_recurrence": 256,
+        "pointer_chase": 256,
+        "rewrite_normalization": 256
+      }
+    }
+  },
+  "estimated_flops": 37614518272,
+  "final_loss": 7.560261487960815,
+  "final_over_initial_loss": 0.03234795108732412,
+  "gradient_clipped_steps": 9,
+  "initial_loss": 233.71685791015625,
+  "integrity_passed": true,
+  "macro_exact": 0.1015625,
+  "matched_control_id": null,
+  "max_gradient_norm": 100.0,
+  "max_raw_gradient_norm": 210.24569702148438,
+  "mean_step_seconds": 0.4659607031244377,
+  "measured_step_count": 32,
+  "measurement_warmup_steps": 0,
+  "nonfinite_gradient_step": null,
+  "optimizer_steps": 32,
+  "peak_memory_bytes": 159246336,
+  "precision": "fp32",
+  "prediction_artifacts": {
+    "12": {
+      "path": "experiments/loop_schedule_architecture_discovery_v1/runs/LSAD-C-K4L8-A1-S0-s401/predictions/depth_12.jsonl",
+      "rows": 768,
+      "sha256": "184dd256eca65cbd39b103a13a636908c0d30c234bcd3d641ff95180e86688f7"
+    },
+    "16": {
+      "path": "experiments/loop_schedule_architecture_discovery_v1/runs/LSAD-C-K4L8-A1-S0-s401/predictions/depth_16.jsonl",
+      "rows": 768,
+      "sha256": "184dd256eca65cbd39b103a13a636908c0d30c234bcd3d641ff95180e86688f7"
+    },
+    "4": {
+      "path": "experiments/loop_schedule_architecture_discovery_v1/runs/LSAD-C-K4L8-A1-S0-s401/predictions/depth_4.jsonl",
+      "rows": 768,
+      "sha256": "045dd64a7809ea6a5ac09b417124db1aa1d0aa4a496c23ef54171e8a69472031"
+    },
+    "8": {
+      "path": "experiments/loop_schedule_architecture_discovery_v1/runs/LSAD-C-K4L8-A1-S0-s401/predictions/depth_8.jsonl",
+      "rows": 768,
+      "sha256": "46fca03435028fdcd686ef8302b3e3408831011133bc7b367affde5a356f13e6"
+    }
+  },
+  "proposal_hash": "a69e4a5a2887e01bb2e95eacb942551cce1b02ce1e7e27fed8675f1360e03699",
+  "proposal_id": "LSAD-C-K4L8",
+  "raw_gradient_nonfinite": false,
+  "resource_only": false,
+  "resumed": false,
+  "scale_rung": "S0",
+  "seed": 401,
+  "stage": "A1",
+  "status": "completed",
+  "stop_reason": null,
+  "target_optimizer_steps": 32,
+  "token_visit_exposures": 524288,
+  "train_visits": 8,
+  "unique_parameters": 5064640
+}
