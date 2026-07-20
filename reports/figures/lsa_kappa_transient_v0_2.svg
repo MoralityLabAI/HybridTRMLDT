@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+<rect width="1200" height="650" fill="#F4F0E7"/>
+<rect x="30" y="28" width="1140" height="594" rx="18" fill="#FFFCF5" stroke="#2B302D" stroke-width="1.5"/>
+<text x="64" y="70" font-family="Georgia, serif" font-size="26" font-weight="bold" fill="#202723">R=128 favors exposure-pinned timing and survives the excursion</text>
+<text x="64" y="96" font-family="Georgia, serif" font-size="14" fill="#59615C">Post-timeout deterministic recovery; three registered seeds; matched untied gradient controls</text>
+<text x="95" y="137" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#202723">A. Tied visit alignment at R=128</text>
+<text x="695" y="137" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#202723">B. Step-4 tied / untied stress</text>
+<line x1="95.0" y1="499.64" x2="565.0" y2="499.64" stroke="#D8D2C6" stroke-width="1"/>
+<text x="80" y="504.64" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">0.03</text>
+<line x1="95.0" y1="398.19" x2="565.0" y2="398.19" stroke="#D8D2C6" stroke-width="1"/>
+<text x="80" y="403.19" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">0.1</text>
+<line x1="95.0" y1="305.62" x2="565.0" y2="305.62" stroke="#D8D2C6" stroke-width="1"/>
+<text x="80" y="310.62" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">0.3</text>
+<line x1="95.0" y1="204.17" x2="565.0" y2="204.17" stroke="#D8D2C6" stroke-width="1"/>
+<text x="80" y="209.17" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">1</text>
+<line x1="695.0" y1="515.00" x2="1135.0" y2="515.00" stroke="#D8D2C6" stroke-width="1"/>
+<text x="680" y="520.00" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">16</text>
+<line x1="695.0" y1="446.00" x2="1135.0" y2="446.00" stroke="#D8D2C6" stroke-width="1"/>
+<text x="680" y="451.00" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">32</text>
+<line x1="695.0" y1="377.00" x2="1135.0" y2="377.00" stroke="#D8D2C6" stroke-width="1"/>
+<text x="680" y="382.00" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">64</text>
+<line x1="695.0" y1="308.00" x2="1135.0" y2="308.00" stroke="#D8D2C6" stroke-width="1"/>
+<text x="680" y="313.00" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">128</text>
+<line x1="695.0" y1="239.00" x2="1135.0" y2="239.00" stroke="#D8D2C6" stroke-width="1"/>
+<text x="680" y="244.00" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">256</text>
+<line x1="695.0" y1="170.00" x2="1135.0" y2="170.00" stroke="#D8D2C6" stroke-width="1"/>
+<text x="680" y="175.00" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">512</text>
+<polyline points="95.00,198.64 251.67,481.35 408.33,263.57 565.00,234.19" fill="none" stroke="#287A81" stroke-width="2.5" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="95.00" cy="198.64" r="3.5" fill="#287A81"/>
+<circle cx="251.67" cy="481.35" r="3.5" fill="#287A81"/>
+<circle cx="408.33" cy="263.57" r="3.5" fill="#287A81"/>
+<circle cx="565.00" cy="234.19" r="3.5" fill="#287A81"/>
+<polyline points="95.00,342.50 251.67,254.80 408.33,232.57 565.00,268.41" fill="none" stroke="#D48432" stroke-width="2.5" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="95.00" cy="342.50" r="3.5" fill="#D48432"/>
+<circle cx="251.67" cy="254.80" r="3.5" fill="#D48432"/>
+<circle cx="408.33" cy="232.57" r="3.5" fill="#D48432"/>
+<circle cx="565.00" cy="268.41" r="3.5" fill="#D48432"/>
+<polyline points="95.00,247.79 251.67,305.69 408.33,229.75 565.00,202.09" fill="none" stroke="#70766F" stroke-width="2.5" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="95.00" cy="247.79" r="3.5" fill="#70766F"/>
+<circle cx="251.67" cy="305.69" r="3.5" fill="#70766F"/>
+<circle cx="408.33" cy="229.75" r="3.5" fill="#70766F"/>
+<circle cx="565.00" cy="202.09" r="3.5" fill="#70766F"/>
+<polyline points="95.00,262.98 251.67,347.28 408.33,241.97 565.00,234.90" fill="none" stroke="#A62E2E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="95.00" cy="262.98" r="6" fill="#FFFCF5" stroke="#A62E2E" stroke-width="3"/>
+<circle cx="251.67" cy="347.28" r="6" fill="#FFFCF5" stroke="#A62E2E" stroke-width="3"/>
+<circle cx="408.33" cy="241.97" r="6" fill="#FFFCF5" stroke="#A62E2E" stroke-width="3"/>
+<circle cx="565.00" cy="234.90" r="6" fill="#FFFCF5" stroke="#A62E2E" stroke-width="3"/>
+<line x1="251.67" y1="170.0" x2="251.67" y2="515.0" stroke="#A62E2E" stroke-width="1.2" stroke-dasharray="5 5"/>
+<text x="251.67" y="186.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#A62E2E">step 2</text>
+<line x1="408.33" y1="170.0" x2="408.33" y2="515.0" stroke="#A62E2E" stroke-width="1.2" stroke-dasharray="5 5"/>
+<text x="408.33" y="186.0" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#A62E2E">step 4</text>
+<polyline points="695.00,474.36 915.00,335.72 1135.00,181.79" fill="none" stroke="#146B74" stroke-width="5" stroke-linecap="round"/>
+<circle cx="695.00" cy="474.36" r="6" fill="#FFFCF5" stroke="#146B74" stroke-width="3"/>
+<text x="695.00" y="461.36" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#103F44">24.1x</text>
+<circle cx="915.00" cy="335.72" r="6" fill="#FFFCF5" stroke="#146B74" stroke-width="3"/>
+<text x="915.00" y="322.72" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#103F44">96.9x</text>
+<circle cx="1135.00" cy="181.79" r="6" fill="#FFFCF5" stroke="#146B74" stroke-width="3"/>
+<text x="1135.00" y="168.79" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#103F44">454.8x</text>
+<text x="915" y="190" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#202723">descriptive exponent = 2.120</text>
+<rect x="64" y="552" width="1072" height="48" rx="10" fill="#EFE8DA"/>
+<text x="600" y="573" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#202723">Frozen result: exposure-pinned, survived recovered excursion</text>
+<text x="600" y="592" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#59615C">Same exposure (2048), different optimizer step (R64: 4; R128: 2); step-pinned early-Adam timing is not supported.</text>
+<text x="330" y="542" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#202723">state-visit exposure</text>
+<text x="915" y="542" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#202723">loop depth R at optimizer step 4</text>
+<text x="50" y="345" transform="rotate(-90 50 345)" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#202723">kappa (log scale)</text>
+<text x="642" y="345" transform="rotate(-90 642 345)" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#202723">stress ratio (log2 scale)</text>
+<text x="95.00" y="535" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">1024</text>
+<text x="251.67" y="535" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">2048</text>
+<text x="408.33" y="535" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">4096</text>
+<text x="565.00" y="535" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">8192</text>
+<text x="695.00" y="535" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">32</text>
+<text x="915.00" y="535" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">64</text>
+<text x="1135.00" y="535" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">128</text>
+<line x1="270" y1="147" x2="292" y2="147" stroke="#287A81" stroke-width="2.5"/>
+<text x="297" y="151" font-family="Consolas, monospace" font-size="10" fill="#202723">S101</text>
+<line x1="352" y1="147" x2="374" y2="147" stroke="#D48432" stroke-width="2.5"/>
+<text x="379" y="151" font-family="Consolas, monospace" font-size="10" fill="#202723">S103</text>
+<line x1="434" y1="147" x2="456" y2="147" stroke="#70766F" stroke-width="2.5"/>
+<text x="461" y="151" font-family="Consolas, monospace" font-size="10" fill="#202723">S107</text>
+<line x1="516" y1="147" x2="538" y2="147" stroke="#A62E2E" stroke-width="5.0"/>
+<text x="543" y="151" font-family="Consolas, monospace" font-size="10" fill="#202723">geomean</text>
+</svg>
