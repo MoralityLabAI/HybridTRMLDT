@@ -332,7 +332,8 @@ def run_training_cell(
         optimizer,
         lr_lambda=lambda step: _scheduler_factor(step, target_steps, config.warmup_fraction),
     )
-    amp = device.type == "cuda" and config.precision == "amp_fp16"
+    use_cuda = device.type == "cuda"
+    amp = use_cuda and config.precision == "amp_fp16"
     scaler = torch.amp.GradScaler("cuda", enabled=amp)
     train_examples = bundle.split("train", config.families)
     examples_by_family = {
@@ -384,7 +385,7 @@ def run_training_cell(
     cleanup_passed = False
     result: TrainingCellResult | None = None
     peak_memory = 0
-    if amp:
+    if use_cuda:
         torch.cuda.reset_peak_memory_stats(device)
     try:
         model.train()
@@ -443,7 +444,7 @@ def run_training_cell(
             state["losses"].append(accumulated_loss)
             state["initial_loss"] = state["initial_loss"] or accumulated_loss
             state["step"] = step + 1
-            if amp:
+            if use_cuda:
                 torch.cuda.synchronize(device)
                 peak_memory = max(peak_memory, int(torch.cuda.max_memory_allocated(device)))
             state["step_times"].append(time.perf_counter() - started)
