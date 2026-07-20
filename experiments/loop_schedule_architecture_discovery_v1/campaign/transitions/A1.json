@@ -1,0 +1,136 @@
+{
+  "action": "prepare_A2",
+  "completed_stage": "A1",
+  "decisions": [
+    {
+      "eligible": false,
+      "macro_delta": 0.0026041666666666574,
+      "maximum_task_regression": -0.0390625,
+      "proposal_id": "LSAD-B1-K2L6-01",
+      "reasons": [
+        "step_time_not_matched",
+        "task_regression_above_three_points"
+      ],
+      "step_time_ratio": 1.6515672545542874
+    },
+    {
+      "eligible": false,
+      "macro_delta": 0.0026041666666666574,
+      "maximum_task_regression": -0.0390625,
+      "proposal_id": "LSAD-B1-K2L6-02",
+      "reasons": [
+        "step_time_not_matched",
+        "task_regression_above_three_points"
+      ],
+      "step_time_ratio": 1.6080561424108242
+    },
+    {
+      "eligible": false,
+      "macro_delta": -0.0078125,
+      "maximum_task_regression": -0.03515625,
+      "proposal_id": "LSAD-B1-K2L8-01",
+      "reasons": [
+        "step_time_not_matched",
+        "task_regression_above_three_points"
+      ],
+      "step_time_ratio": 1.5754535321396979
+    },
+    {
+      "eligible": false,
+      "macro_delta": 0.010416666666666671,
+      "maximum_task_regression": -0.015625,
+      "proposal_id": "LSAD-B1-K2L8-02",
+      "reasons": [
+        "step_time_not_matched"
+      ],
+      "step_time_ratio": 1.6743406011123139
+    },
+    {
+      "eligible": false,
+      "macro_delta": 0.0026041666666666713,
+      "maximum_task_regression": -0.00390625,
+      "proposal_id": "LSAD-B1-K3L6-01",
+      "reasons": [
+        "step_time_not_matched"
+      ],
+      "step_time_ratio": 1.9823767775017131
+    },
+    {
+      "eligible": false,
+      "macro_delta": -0.009114583333333329,
+      "maximum_task_regression": -0.0234375,
+      "proposal_id": "LSAD-B1-K3L6-02",
+      "reasons": [
+        "step_time_not_matched"
+      ],
+      "step_time_ratio": 1.9091849271324206
+    },
+    {
+      "eligible": false,
+      "macro_delta": 0.0013020833333333426,
+      "maximum_task_regression": -0.0546875,
+      "proposal_id": "LSAD-B1-K3L8-01",
+      "reasons": [
+        "step_time_not_matched",
+        "task_regression_above_three_points"
+      ],
+      "step_time_ratio": 1.938677535478365
+    },
+    {
+      "eligible": false,
+      "macro_delta": 0.005208333333333343,
+      "maximum_task_regression": -0.05078125,
+      "proposal_id": "LSAD-B1-K3L8-02",
+      "reasons": [
+        "step_time_not_matched",
+        "task_regression_above_three_points"
+      ],
+      "step_time_ratio": 2.548866579728786
+    },
+    {
+      "eligible": false,
+      "macro_delta": -0.01692708333333333,
+      "maximum_task_regression": -0.06640625,
+      "proposal_id": "LSAD-B1-K4L6-01",
+      "reasons": [
+        "step_time_not_matched",
+        "task_regression_above_three_points"
+      ],
+      "step_time_ratio": 14.484113840160992
+    },
+    {
+      "eligible": false,
+      "macro_delta": -0.013020833333333329,
+      "maximum_task_regression": -0.078125,
+      "proposal_id": "LSAD-B1-K4L6-02",
+      "reasons": [
+        "task_regression_above_three_points"
+      ],
+      "step_time_ratio": 1.0282383671642907
+    },
+    {
+      "eligible": true,
+      "macro_delta": 0.026041666666666657,
+      "maximum_task_regression": -0.02734375,
+      "proposal_id": "LSAD-B1-K4L8-01",
+      "reasons": [],
+      "step_time_ratio": 0.9756460417732045
+    },
+    {
+      "eligible": true,
+      "macro_delta": 0.0,
+      "maximum_task_regression": -0.02734375,
+      "proposal_id": "LSAD-B1-K4L8-02",
+      "reasons": [],
+      "step_time_ratio": 0.9759083358866761
+    }
+  ],
+  "schema_version": 1,
+  "selected_candidates": [
+    "LSAD-B1-K4L8-01",
+    "LSAD-B1-K4L8-02"
+  ],
+  "stage_manifest_hash": "612c750c8302af876c26f1baff0e1902799157a3a0c45388ddc54bd49c4790aa",
+  "task_outcomes_observed": true,
+  "transition_hash": "f759f244e4a32dac30ea1822cf0b8d386a4444e0455ca548a1aa03e0e1f70e9d"
+}
