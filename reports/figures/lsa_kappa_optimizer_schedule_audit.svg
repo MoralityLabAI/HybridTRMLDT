@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="650" viewBox="0 0 1120 650">
+<rect width="1120" height="650" fill="#F4F0E7"/>
+<rect x="30" y="28" width="1060" height="594" rx="18" fill="#FFFCF5" stroke="#2B302D" stroke-width="1.5"/>
+<text x="62" y="70" font-family="Georgia, serif" font-size="25" font-weight="bold" fill="#202723">The R=64 excursion is not pinned to an optimizer schedule knee</text>
+<text x="62" y="96" font-family="Georgia, serif" font-size="14" fill="#59615C">Frozen AdamW learning rate = 0.001; no scheduler or warmup path</text>
+<rect x="105" y="120" width="925" height="38" rx="8" fill="#E5EFE9" stroke="#146B74"/>
+<line x1="130" y1="132" x2="1005" y2="132" stroke="#146B74" stroke-width="4"/>
+<text x="557" y="151" text-anchor="middle" font-family="Consolas, monospace" font-size="13" fill="#103F44">constant LR 0.001 across every optimizer step</text>
+<line x1="105.0" y1="465.00" x2="1030.0" y2="465.00" stroke="#D8D2C6" stroke-width="1"/>
+<text x="91" y="470.00" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">0</text>
+<line x1="105.0" y1="375.00" x2="1030.0" y2="375.00" stroke="#D8D2C6" stroke-width="1"/>
+<text x="91" y="380.00" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">1</text>
+<line x1="105.0" y1="285.00" x2="1030.0" y2="285.00" stroke="#D8D2C6" stroke-width="1"/>
+<text x="91" y="290.00" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">2</text>
+<line x1="105.0" y1="195.00" x2="1030.0" y2="195.00" stroke="#D8D2C6" stroke-width="1"/>
+<text x="91" y="200.00" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#59615C">3</text>
+<polyline points="105.00,300.77 413.33,271.72 721.67,257.47 1030.00,235.42" fill="none" stroke="#146B74" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="105.00" cy="300.77" r="5" fill="#FFFCF5" stroke="#146B74" stroke-width="3"/>
+<circle cx="413.33" cy="271.72" r="5" fill="#FFFCF5" stroke="#146B74" stroke-width="3"/>
+<circle cx="721.67" cy="257.47" r="5" fill="#FFFCF5" stroke="#146B74" stroke-width="3"/>
+<circle cx="1030.00" cy="235.42" r="5" fill="#FFFCF5" stroke="#146B74" stroke-width="3"/>
+<polyline points="105.00,353.12 413.33,322.26 721.67,285.77 1030.00,257.35" fill="none" stroke="#D9772D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="105.00" cy="353.12" r="5" fill="#FFFCF5" stroke="#D9772D" stroke-width="3"/>
+<circle cx="413.33" cy="322.26" r="5" fill="#FFFCF5" stroke="#D9772D" stroke-width="3"/>
+<circle cx="721.67" cy="285.77" r="5" fill="#FFFCF5" stroke="#D9772D" stroke-width="3"/>
+<circle cx="1030.00" cy="257.35" r="5" fill="#FFFCF5" stroke="#D9772D" stroke-width="3"/>
+<polyline points="105.00,393.91 413.33,378.03 721.67,390.82 1030.00,329.11" fill="none" stroke="#A62E2E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="105.00" cy="393.91" r="5" fill="#FFFCF5" stroke="#A62E2E" stroke-width="3"/>
+<circle cx="413.33" cy="378.03" r="5" fill="#FFFCF5" stroke="#A62E2E" stroke-width="3"/>
+<circle cx="721.67" cy="390.82" r="5" fill="#FFFCF5" stroke="#A62E2E" stroke-width="3"/>
+<circle cx="1030.00" cy="329.11" r="5" fill="#FFFCF5" stroke="#A62E2E" stroke-width="3"/>
+<line x1="721.67" y1="195.0" x2="721.67" y2="465.0" stroke="#A62E2E" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="712.67" y="214" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#A62E2E">R=64 trough</text>
+<text x="61" y="330" transform="rotate(-90 61 330)" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#202723">geometric-mean kappa</text>
+<text x="105.00" y="490" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#202723">0</text>
+<text x="413.33" y="490" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#202723">1024</text>
+<text x="721.67" y="490" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#202723">2048</text>
+<text x="1030.00" y="490" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#202723">4096</text>
+<text x="567" y="516" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#202723">state-visit exposure</text>
+<text x="91" y="548" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#146B74">R=16 step</text>
+<text x="105.00" y="548" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">0</text>
+<text x="413.33" y="548" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">8</text>
+<text x="721.67" y="548" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">16</text>
+<text x="1030.00" y="548" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">32</text>
+<text x="91" y="571" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#D9772D">R=32 step</text>
+<text x="105.00" y="571" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">0</text>
+<text x="413.33" y="571" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">4</text>
+<text x="721.67" y="571" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">8</text>
+<text x="1030.00" y="571" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">16</text>
+<text x="91" y="594" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#A62E2E">R=64 step</text>
+<text x="105.00" y="594" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">0</text>
+<text x="413.33" y="594" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">2</text>
+<text x="721.67" y="594" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">4</text>
+<text x="1030.00" y="594" text-anchor="middle" font-family="Consolas, monospace" font-size="12" fill="#59615C">8</text>
+<line x1="746" y1="177" x2="771" y2="177" stroke="#146B74" stroke-width="4"/>
+<text x="777" y="182" font-family="Consolas, monospace" font-size="12" fill="#202723">R=16</text>
+<line x1="839" y1="177" x2="864" y2="177" stroke="#D9772D" stroke-width="4"/>
+<text x="870" y="182" font-family="Consolas, monospace" font-size="12" fill="#202723">R=32</text>
+<line x1="932" y1="177" x2="957" y2="177" stroke="#A62E2E" stroke-width="4"/>
+<text x="963" y="182" font-family="Consolas, monospace" font-size="12" fill="#202723">R=64</text>
+</svg>
