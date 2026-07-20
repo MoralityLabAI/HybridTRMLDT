@@ -11,6 +11,8 @@ param(
     [switch]$AllowLockedEvaluation,
     [switch]$ResourceOnly,
     [int]$MeasurementWarmupSteps = 0,
+    [ValidateRange(1, 5)][int]$Attempt = 1,
+    [int]$TimeoutSecondsOverride = 0,
     [int]$EvaluationLimitPerFamily = 256
 )
 
@@ -30,15 +32,19 @@ $SafeCellName = $CellName -replace "[^A-Za-z0-9_.-]", "_"
 $LogDir = Join-Path $OutputPath "logs"
 $ReceiptDir = Join-Path $OutputPath "resource_receipts"
 New-Item -ItemType Directory -Force -Path $OutputPath, $LogDir, $ReceiptDir | Out-Null
-$Stdout = Join-Path $LogDir "$SafeCellName.stdout.log"
-$Stderr = Join-Path $LogDir "$SafeCellName.stderr.log"
-$Receipt = Join-Path $ReceiptDir "$SafeCellName.resource_receipt.json"
+$Stdout = Join-Path $LogDir "$SafeCellName.attempt-$Attempt.stdout.log"
+$Stderr = Join-Path $LogDir "$SafeCellName.attempt-$Attempt.stderr.log"
+$Receipt = Join-Path $ReceiptDir "$SafeCellName.attempt-$Attempt.resource_receipt.json"
 $MemoryLimitBytes = [UInt64]$Caps.ram_bytes
 $CpuRate = [uint32]([int]$Caps.cpu_pct * 100)
 $IoLimitBytesPerSecond = [double]$Caps.io_bytes_per_second
 $VramLimitMb = [double]$Caps.vram_mb
 $IoViolationLimit = [int]$Caps.io_sustained_samples
 $TimeoutSeconds = [int]$Caps.child_timeout_seconds
+if ($TimeoutSecondsOverride -gt 0) {
+    if ($TimeoutSecondsOverride -gt $TimeoutSeconds) { throw "timeout override exceeds registered cap" }
+    $TimeoutSeconds = $TimeoutSecondsOverride
+}
 $started = Get-Date
 
 function Write-Receipt([hashtable]$Value) {
@@ -50,6 +56,7 @@ function Write-ConstructionFailure([string]$Reason) {
     Write-Receipt ([ordered]@{
         training_task_id = $Profile.training_task_id
         cell_id = $CellName
+        attempt = $Attempt
         status = "construction_failure"
         abort_reason = $Reason
         started_utc = $started.ToUniversalTime().ToString("o")
@@ -220,6 +227,7 @@ try {
     Write-Receipt ([ordered]@{
         training_task_id = $Profile.training_task_id
         cell_id = $CellName
+        attempt = $Attempt
         status = $status
         abort_reason = $abortReason
         started_utc = $started.ToUniversalTime().ToString("o")

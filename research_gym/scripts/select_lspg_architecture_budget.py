@@ -48,7 +48,7 @@ def main() -> None:
         measurements.append(
             load_calibration_measurement(
                 args.runs / cell_id / "result.json",
-                args.runs / "resource_receipts" / f"{cell_id}.resource_receipt.json",
+                args.runs / "resource_receipts" / f"{cell_id}.attempt-1.resource_receipt.json",
             )
         )
     profile = _load(args.resource_profile)
