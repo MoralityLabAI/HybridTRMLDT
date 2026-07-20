@@ -1,5 +1,5 @@
 {
-  "campaign_elapsed_seconds": 647.462,
+  "campaign_elapsed_seconds": 746.2529999999999,
   "cell_receipts": {
     "LSAD-B1-K2L6-01-A1-S0-s401": {
       "result_sha256": "c40a27b76534e733338bbb14423984d0ea487c4e04299419bd806a789c054ef5",
@@ -28,12 +28,16 @@
     "LSAD-B1-K3L8-01-A1-S0-s401": {
       "result_sha256": "2841b4f8f3f491c7efd6a616472f7936c93bf3f9ac6ebebd9680cb66d65c8db6",
       "status": "completed"
+    },
+    "LSAD-B1-K3L8-02-A1-S0-s401": {
+      "result_sha256": "f7f50470de97e11835320bf402627e3f8c029bcd637404ade3d9f646084ea624",
+      "status": "completed"
     }
   },
-  "completed_cells": 7,
+  "completed_cells": 8,
   "expected_cells": 18,
-  "failure": "cell failed without resumable timeout: LSAD-B1-K3L8-02-A1-S0-s401 foreign_gpu_compute_process_present",
-  "receipt_hash": "f91f4f34f010a28cd15738c4d2e364b4e868d3cfa7087052767097823f97a605",
+  "failure": "cell failed without resumable timeout: LSAD-B1-K4L6-01-A1-S0-s401 foreign_gpu_compute_process_present",
+  "receipt_hash": "a7247ce10f9faa5ec52f3f8eb70c90c626416b9dc51295e8cfff088d422f4a27",
   "schema_version": 1,
   "stage_id": "A1",
   "stage_manifest_hash": "612c750c8302af876c26f1baff0e1902799157a3a0c45388ddc54bd49c4790aa",
