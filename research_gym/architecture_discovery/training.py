@@ -302,6 +302,8 @@ def run_training_cell(
         "effective_batch_size": config.effective_batch_size,
         "microbatch_size": config.microbatch_size,
         "learning_rate": config.learning_rate,
+        "maximum_gradient_norm": config.maximum_gradient_norm,
+        "maximum_raw_gradient_norm": config.maximum_raw_gradient_norm,
         "resource_only": config.resource_only,
         "measurement_warmup_steps": config.measurement_warmup_steps,
     }

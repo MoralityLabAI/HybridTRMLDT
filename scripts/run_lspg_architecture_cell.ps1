@@ -13,6 +13,7 @@ param(
     [int]$MeasurementWarmupSteps = 0,
     [ValidateRange(1, 5)][int]$Attempt = 1,
     [int]$TimeoutSecondsOverride = 0,
+    [double]$GradientClipNorm = 100.0,
     [int]$EvaluationLimitPerFamily = 256
 )
 
@@ -143,6 +144,7 @@ $arguments = @(
     "--effective-batch-size", [string]$EffectiveBatch,
     "--microbatch-size", [string]$Microbatch,
     "--learning-rate", [string]$LearningRate,
+    "--maximum-gradient-norm", [string]$GradientClipNorm,
     "--evaluation-limit-per-family", [string]$EvaluationLimitPerFamily,
     "--vram-fraction", [string]$Caps.torch_vram_fraction,
     "--out", $OutputPath

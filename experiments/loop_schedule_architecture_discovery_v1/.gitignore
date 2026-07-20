@@ -3,3 +3,7 @@ runs/**/checkpoints/
 calibration_runs/logs/
 runs/logs/
 calibration/watcher.log
+diagnostic_runs/logs/
+diagnostic_runs/**/checkpoints/
+diagnostic_clip_*/logs/
+diagnostic_clip_*/**/checkpoints/

@@ -1,0 +1,9 @@
+{
+  "cell_hash": "758dde12cfe60abfd0f2f8fac013ac3110b4afd694df7fadad3a7f440b891ee9",
+  "cell_id": "LSAD-C-K2L8-calibration-S0-s397",
+  "cleanup_passed": true,
+  "integrity_passed": true,
+  "result_path": "experiments/loop_schedule_architecture_discovery_v1/diagnostic_runs/LSAD-C-K2L8-calibration-S0-s397/result.json",
+  "result_sha256": "b34e6b4fc13b400ff8769373ab33b8d4a2138eacb3b6c841e68a3cf164b1b866",
+  "status": "stopped"
+}
