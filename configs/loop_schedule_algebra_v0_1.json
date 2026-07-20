@@ -1,0 +1,114 @@
+{
+  "protocol_id": "loop_schedule_algebra_v0_1",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-20T14:23:42.6846326Z",
+  "claim_scope": "direct visit-alignment and trainability-boundary measurement at small scale; no task-performance, sample-efficiency, or general Transformer claim",
+  "frozen_claim_template": "In weight-tied residual loops at small scale, directly measured visit alignment follows kappa approximately R^gamma with gamma reported with a seed-bootstrap interval, is classified as learned-growth, invariant, or mixed over training, remains below or reaches the gamma=1 aligned envelope, and the previously predicted stability boundary either binds or fails to bind in the registered regime.",
+  "source_v0": {
+    "git_commit": "71559fb",
+    "receipt_path": "data/benchmarks/lsa_v0_receipt.json",
+    "receipt_sha256": "73c9959d14187b96b18f039d775a07d2396f832cb9c983cd5bbdc72da81ebdfb",
+    "gamma_records_path": "experiments/loop_schedule_algebra_v0/gamma_records.jsonl",
+    "gamma_records_sha256": "d614837dff4dc7fab220c69fb49d5ccc05b19da9a33f26be9247217fa9c3482d",
+    "gamma_result_path": "experiments/loop_schedule_algebra_v0/gamma_result.json",
+    "gamma_result_sha256": "fc32c99c829e6a99b53bce3a24be6aa24ba9fb2cff0ed14cc380696cb8d3de4a",
+    "tracked_artifact_verification": "hash Git blobs at source_v0.git_commit so checkout line-ending conversion cannot alter the sealed comparison",
+    "checkpoint_glob": "gamma_*.pt",
+    "expected_checkpoint_count": 42,
+    "checkpoint_manifest_rule": "hash every discovered checkpoint before any replay and seal the sorted inventory",
+    "replay_role": "secondary provenance replay only",
+    "replay_limit": "the original cadence has no common nonterminal exposure shared by R=2,4,8, so it cannot identify gamma(t)"
+  },
+  "shared_training": {
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "progress_unit": "state_visit_exposures",
+    "progress_target": 4096,
+    "checkpoint_exposures": [0, 512, 1024, 2048, 4096],
+    "seeds": [101, 103, 107],
+    "measurement_batch_size": 8,
+    "power_iterations": 5,
+    "alpha": 1.0,
+    "beta": 0.25,
+    "regimes": ["tied", "untied"]
+  },
+  "primary_mlp": {
+    "model_family": "two_linear_residual_loop",
+    "task_family": "deterministic_signed_permutation_regression",
+    "hidden_size": 128,
+    "batch_size": 8,
+    "rounds": [2, 4, 8, 16],
+    "trajectory_regime": "tied",
+    "terminal_control_regime": "untied"
+  },
+  "r16_holdout": {
+    "fit_rounds": [2, 4, 8],
+    "heldout_rounds": 16,
+    "sealed_tied_gamma": 0.4229090878632265,
+    "sealed_tied_intercept": 0.025971274076637352,
+    "sealed_tied_r_squared": 0.994025211094853,
+    "predicted_kappa_r16": 3.31522084596344,
+    "confirmation_ratio_interval": [0.8, 1.25],
+    "analysis": "compare the R=16 geometric-mean kappa with the untouched v0 extrapolation before refitting all four points"
+  },
+  "gamma_trajectory": {
+    "primary_rounds": [2, 4, 8, 16],
+    "bootstrap_samples": 2000,
+    "bootstrap_seed": 86017,
+    "interval_mass": 0.95,
+    "growth_minimum_delta": 0.1,
+    "invariant_maximum_range": 0.1,
+    "growth_minimum_nondecreasing_transitions": 3,
+    "classification": {
+      "learned_growth": "final-minus-initial gamma is at least 0.1 and at least three of four checkpoint transitions are nondecreasing",
+      "invariant": "the maximum minus minimum checkpoint gamma is at most 0.1",
+      "mixed": "neither learned_growth nor invariant"
+    }
+  },
+  "external_validity": {
+    "model_family": "mini_causal_attention_mlp_residual_loop",
+    "task_family": "deterministic_prefix_context_regression",
+    "hidden_size": 64,
+    "sequence_length": 8,
+    "attention_heads": 4,
+    "mlp_ratio": 2,
+    "batch_size": 4,
+    "rounds": [2, 4, 8, 16],
+    "regimes": ["tied", "untied"],
+    "endpoint": "terminal gamma and tied-minus-untied gamma contrast",
+    "replication_support_rule": "tied gamma exceeds untied gamma by at least 0.1 with finite fits of R-squared at least 0.8"
+  },
+  "learning_rate_ladder": {
+    "model_family": "two_linear_residual_loop",
+    "task_family": "deterministic_signed_permutation_regression",
+    "heldout_rounds": [6, 12],
+    "p_grid": [0.0, 0.05, 0.1, 0.15],
+    "learning_rates": [0.0003, 0.001, 0.003, 0.01],
+    "scaling": "alpha=1,beta=R^(-2p)",
+    "stable_seed_rule": "finite and max_gradient_norm<=100 and final_loss/initial_loss<=10",
+    "stable_cell_rule": "at least two of three seeds stable",
+    "boundary_rule": "lowest p for which the cell and every larger p-grid cell are stable; left-censored if the full grid is stable",
+    "ordering_rule": "at each learning rate with two identified boundaries, R=12 is no easier than R=6 when boundary_R12>=boundary_R6; censored comparisons are non-identifying"
+  },
+  "stop_branches": {
+    "max_across_seed_kappa_spread": 10.0,
+    "minimum_power_law_r_squared": 0.8,
+    "on_estimator_instability": "stop the affected family and publish raw traces",
+    "on_poor_primary_power_law": "do not issue the exponent claim; retain R=16 residual and raw kappa curves",
+    "on_transformer_probe_failure": "report the external-validity construction failure without replacing the primary MLP result",
+    "on_all_ladder_cells_stable": "retain left-censoring and report the LR ladder as non-identifying"
+  },
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 3600,
+    "aggregate_gpu_hours": 24,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "protocol_id": "loop_schedule_algebra_v0_1",
+  "config_path": "configs/loop_schedule_algebra_v0_1.json",
+  "config_sha256": "c6cd78a09909956962a2c6d585270807088a9b8b0dc5e1e69fc8b151d45882cc",
+  "registered_utc": "2026-07-20T14:23:42.6846326Z",
+  "registration_status": "frozen_before_v0_1_outcomes",
+  "parent_result": {
+    "protocol_id": "loop_schedule_algebra_v0",
+    "artifact_commit": "71559fb",
+    "tied_gamma": 0.4229090878632265,
+    "tied_r_squared": 0.994025211094853,
+    "untied_gamma": 0.0261185912523148,
+    "p2_status": "left_censored_at_or_below_0.15"
+  },
+  "phase_order": [
+    "source_replay",
+    "primary_trajectory_and_r16_holdout",
+    "external_validity",
+    "learning_rate_ladder"
+  ],
+  "outcomes_observed": false
+}
