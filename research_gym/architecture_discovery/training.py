@@ -53,6 +53,7 @@ class TrainingCellConfig:
     evaluation_limit_per_family: int | None = 256
     allow_locked_evaluation: bool = False
     vram_fraction: float | None = None
+    precision: str = "amp_fp16"
     resource_only: bool = False
     measurement_warmup_steps: int = 0
 
@@ -93,6 +94,7 @@ class TrainingCellResult:
     measured_step_count: int
     measurement_warmup_steps: int
     resource_only: bool
+    precision: str
     peak_memory_bytes: int
     unique_parameters: int
     estimated_flops: int
@@ -191,10 +193,11 @@ def evaluate_model(
     depth_visits: int,
     batch_size: int,
     device: torch.device,
+    use_amp: bool = True,
 ) -> tuple[TaskMetrics, tuple[Mapping[str, Any], ...]]:
     predictions: dict[str, int] = {}
     model.eval()
-    amp = device.type == "cuda"
+    amp = device.type == "cuda" and use_amp
     with torch.no_grad():
         for offset in range(0, len(examples), batch_size):
             batch = examples[offset : offset + batch_size]
@@ -287,6 +290,8 @@ def run_training_cell(
         raise ValueError("proposal does not materialize the requested scale")
     if config.resource_only and config.stage != "calibration":
         raise ValueError("resource-only cells must use the calibration stage")
+    if config.precision not in {"amp_fp16", "fp32"}:
+        raise ValueError("precision must be amp_fp16 or fp32")
     topology = ScheduleTopology.from_mapping(proposal.topology)
     exposures_per_step = (
         config.effective_batch_size * bundle.sequence_length * topology.train_visits
@@ -304,6 +309,7 @@ def run_training_cell(
         "learning_rate": config.learning_rate,
         "maximum_gradient_norm": config.maximum_gradient_norm,
         "maximum_raw_gradient_norm": config.maximum_raw_gradient_norm,
+        "precision": config.precision,
         "resource_only": config.resource_only,
         "measurement_warmup_steps": config.measurement_warmup_steps,
     }
@@ -326,7 +332,7 @@ def run_training_cell(
         optimizer,
         lr_lambda=lambda step: _scheduler_factor(step, target_steps, config.warmup_fraction),
     )
-    amp = device.type == "cuda"
+    amp = device.type == "cuda" and config.precision == "amp_fp16"
     scaler = torch.amp.GradScaler("cuda", enabled=amp)
     train_examples = bundle.split("train", config.families)
     examples_by_family = {
@@ -505,6 +511,7 @@ def run_training_cell(
                     depth_visits=depth,
                     batch_size=config.microbatch_size,
                     device=device,
+                    use_amp=amp,
                 )
                 depth_metrics[str(depth)] = asdict(metrics)
                 prediction_artifacts[str(depth)] = write_prediction_artifact(
@@ -562,6 +569,7 @@ def run_training_cell(
             measured_step_count=len(measured_times),
             measurement_warmup_steps=config.measurement_warmup_steps,
             resource_only=config.resource_only,
+            precision=config.precision,
             peak_memory_bytes=peak_memory,
             unique_parameters=model.parameter_breakdown()["unique_parameters"],
             estimated_flops=resource.estimated_flops_per_example,

@@ -30,6 +30,7 @@ def main() -> None:
     parser.add_argument("--resource-only", action="store_true")
     parser.add_argument("--measurement-warmup-steps", type=int, default=0)
     parser.add_argument("--maximum-gradient-norm", type=float, default=100.0)
+    parser.add_argument("--precision", choices=("amp_fp16", "fp32"), default="amp_fp16")
     parser.add_argument("--vram-fraction", type=float, default=0.60)
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
@@ -54,6 +55,7 @@ def main() -> None:
         resource_only=args.resource_only,
         measurement_warmup_steps=args.measurement_warmup_steps,
         maximum_gradient_norm=args.maximum_gradient_norm,
+        precision=args.precision,
     )
     result = run_training_cell(proposals[args.proposal_id], bundle, config, output_dir=args.out)
     result_path = args.out / result.cell_id / "result.json"

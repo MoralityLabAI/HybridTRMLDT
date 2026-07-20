@@ -7,3 +7,7 @@ diagnostic_runs/logs/
 diagnostic_runs/**/checkpoints/
 diagnostic_clip_*/logs/
 diagnostic_clip_*/**/checkpoints/
+diagnostic_lr_*/logs/
+diagnostic_lr_*/**/checkpoints/
+diagnostic_fp32/logs/
+diagnostic_fp32/**/checkpoints/

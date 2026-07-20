@@ -15,6 +15,7 @@ param(
     [int]$TimeoutSecondsOverride = 0,
     [double]$GradientClipNorm = 100.0,
     [double]$LearningRateOverride = 0.0,
+    [ValidateSet("amp_fp16", "fp32")][string]$Precision = "amp_fp16",
     [int]$EvaluationLimitPerFamily = 256
 )
 
@@ -147,6 +148,7 @@ $arguments = @(
     "--microbatch-size", [string]$Microbatch,
     "--learning-rate", [string]$LearningRate,
     "--maximum-gradient-norm", [string]$GradientClipNorm,
+    "--precision", $Precision,
     "--evaluation-limit-per-family", [string]$EvaluationLimitPerFamily,
     "--vram-fraction", [string]$Caps.torch_vram_fraction,
     "--out", $OutputPath
