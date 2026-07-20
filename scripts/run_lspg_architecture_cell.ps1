@@ -11,7 +11,7 @@ param(
     [switch]$AllowLockedEvaluation,
     [switch]$ResourceOnly,
     [int]$MeasurementWarmupSteps = 0,
-    [ValidateRange(1, 5)][int]$Attempt = 1,
+    [ValidateRange(1, 2147483647)][int]$Attempt = 1,
     [int]$TimeoutSecondsOverride = 0,
     [double]$GradientClipNorm = 100.0,
     [double]$LearningRateOverride = 0.0,

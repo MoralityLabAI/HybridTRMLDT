@@ -37,3 +37,10 @@ before implementation. The wrapper may ignore only that exact CPU-only
 llama.cpp classification, records every ignored PID, and still rejects missing
 command lines, other binaries, nonzero GPU layer counts, or utilization above
 the registered threshold.
+
+The sustained-idle watcher later reached receipt sequence `attempt-6` for cell
+ten. The wrapper still constrained the receipt identifier to five even though
+the stage runner had been corrected to count only owned model launches. That
+binding failure created no cell attempt receipt and stopped the watcher. The
+wrapper now accepts any positive 32-bit receipt sequence number; the registered
+maximum resumptions remains enforced separately by owned-process count.
