@@ -1,0 +1,15 @@
+{
+  "protocol_id": "loop_schedule_kappa_transient_v0_2",
+  "config_path": "configs/loop_schedule_kappa_transient_v0_2.json",
+  "config_sha256": "e548a27674acf94c381d57d8dc85aaed0b2b7f0d1343308be9a368c4037b3985",
+  "registered_utc": "2026-07-20T22:34:05.5182902Z",
+  "registration_status": "frozen_before_any_r128_outcome",
+  "source_commit": "173eebd0a5b109f7b8ff00d428305846c5b25be2",
+  "retrospective_step_aligned_cells_observed": true,
+  "new_r128_outcomes_observed": false,
+  "rounds": [128],
+  "seeds": [101, 103, 107],
+  "measurement_exposures": [1024, 2048, 4096, 8192],
+  "registered_timing_predictions": ["exposure_pinned_at_step_2", "step_pinned_at_step_4"],
+  "recovery_evaluation_step": 8
+}

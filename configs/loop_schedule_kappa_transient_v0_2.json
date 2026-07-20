@@ -1,0 +1,131 @@
+{
+  "protocol_id": "loop_schedule_kappa_transient_v0_2",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-20T22:34:05.5182902Z",
+  "registration_timing": "after the sealed v1 recovery and retrospective step-aligned audit, before any R128 outcome",
+  "status_label": "held-out R128 timing and recovery discriminator",
+  "claim_scope": "small-scale weight-tied residual-loop alignment timing, recovery, and matched gradient stress",
+  "parents": {
+    "surface_records": {
+      "path": "experiments/loop_schedule_kappa_surface_v1_recovery2/combined_records.jsonl",
+      "sha256": "69c1b1ded04426159d0da666ca34a2eaa22ff53ea3a13b0843775ec512dc9409"
+    },
+    "surface_result": {
+      "path": "experiments/loop_schedule_kappa_surface_v1_recovery2/recovery2_result.json",
+      "sha256": "cf6835e56d38a8255c0c66e650e6871e63feb49e95988c604c8e4ec49e714597"
+    },
+    "surface_receipt": {
+      "path": "data/benchmarks/lsa_kappa_surface_v1_recovery2_receipt.json",
+      "sha256": "294d06ede48cb7a2b6ef48bcd6db75afd3028305edbe20a5cb9503d7fde76cd8"
+    },
+    "trainer_config": {
+      "path": "configs/loop_schedule_algebra_v0_1.json",
+      "sha256": "c6cd78a09909956962a2c6d585270807088a9b8b0dc5e1e69fc8b151d45882cc"
+    }
+  },
+  "retrospective_step_four": {
+    "status": "observed_before_registration",
+    "batch_size": 8,
+    "cells": [
+      {
+        "rounds": 16,
+        "previous_exposure": 0,
+        "previous_kappa": 1.8248141457657014,
+        "step_four_exposure": 512,
+        "step_four_kappa": 1.9492695632137111,
+        "next_exposure": 1024,
+        "next_kappa": 2.1475990666470985,
+        "shape": "rising"
+      },
+      {
+        "rounds": 32,
+        "previous_exposure": 512,
+        "previous_kappa": 1.538722307751744,
+        "step_four_exposure": 1024,
+        "step_four_kappa": 1.5860523614672388,
+        "next_exposure": 2048,
+        "next_kappa": 1.9914017823789967,
+        "shape": "rising"
+      },
+      {
+        "rounds": 64,
+        "previous_exposure": 1024,
+        "previous_kappa": 0.9662969083723653,
+        "step_four_exposure": 2048,
+        "step_four_kappa": 0.8241679245853056,
+        "next_exposure": 4096,
+        "next_kappa": 1.5098975282233111,
+        "shape": "trough_and_recovery"
+      }
+    ],
+    "interpretation": "rejects a depth-generic step-four trough but leaves an R-amplified early-optimizer transient viable"
+  },
+  "frozen_training": {
+    "model_family": "two_linear_residual_loop",
+    "task_family": "deterministic_signed_permutation_regression",
+    "hidden_size": 128,
+    "batch_size": 8,
+    "measurement_batch_size": 8,
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "alpha": 1.0,
+    "beta": 0.25,
+    "progress_target": 8192,
+    "surface_exposures": [1024, 2048, 4096, 8192],
+    "gradient_exposures": [1024, 2048, 4096, 8192],
+    "checkpoint_exposures": [4096, 8192],
+    "rounds": [128],
+    "seeds": [101, 103, 107],
+    "regimes": ["tied", "untied"],
+    "power_iterations": 5,
+    "checkpoint_pacing_seconds": 2.0
+  },
+  "registered_predictions": {
+    "practical_log_change": 0.1,
+    "exposure_pinned": {
+      "trough_exposure": 2048,
+      "optimizer_step": 2,
+      "rule": "log(K2048/K1024)<=-0.1 and log(K4096/K2048)>=0.1"
+    },
+    "step_pinned": {
+      "trough_exposure": 4096,
+      "optimizer_step": 4,
+      "rule": "log(K4096/K2048)<=-0.1 and log(K8192/K4096)>=0.1"
+    },
+    "timing_fallback": "timing_unresolved",
+    "recovery": {
+      "evaluation_exposure": 8192,
+      "optimizer_step": 8,
+      "outcomes": [
+        "survived_recovered_excursion",
+        "survived_unrecovered_excursion",
+        "nonfinite_boundary",
+        "no_registered_excursion"
+      ]
+    }
+  },
+  "gradient_stress": {
+    "step_aligned_depths": [32, 64, 128],
+    "step_four_exposures": {
+      "32": 1024,
+      "64": 2048,
+      "128": 4096
+    },
+    "fit": "ordinary least squares of log tied-to-untied interval-maximum ratio on log R",
+    "claim": "three-depth descriptive exponent, not an asymptotic scaling law"
+  },
+  "claim_boundary": "A step-pinned R128 trough supports a step-indexed optimizer-state hypothesis but does not causally identify AdamW bias correction; causal attribution requires a registered warmup or optimizer intervention. A finite step-8 result does not establish asymptotic stability.",
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1800,
+    "aggregate_gpu_hours": 1,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}
