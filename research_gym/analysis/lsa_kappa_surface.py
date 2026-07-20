@@ -142,7 +142,10 @@ def compare_surface_models(
     cv = {name: blocked_cv_rmse(name, cells) for name in MODEL_NAMES}
     ranked = sorted(MODEL_NAMES, key=lambda name: (fits[name].aicc, name))
     best, runner_up = ranked[:2]
-    comparison = config["candidate_models"]["comparison"]
+    model_specification = config.get("candidate_models", config.get("surface_models"))
+    if model_specification is None:
+        raise ValueError("surface model specification is missing")
+    comparison = model_specification["comparison"]
     aicc_advantage = fits[runner_up].aicc - fits[best].aicc
     cv_ratio = cv[best] / cv[runner_up] if cv[runner_up] > 0.0 else math.inf
     winner = (
@@ -184,7 +187,11 @@ def curvature_intervals(
     values: Mapping[tuple[int, int], Mapping[int, float]], config: Mapping[str, Any]
 ) -> list[dict[str, Any]]:
     specification = config["depth_curvature"]
-    exposures = [int(value) for value in config["frozen_training"]["measurement_exposures"]]
+    frozen = config["frozen_training"]
+    exposures = [
+        int(value)
+        for value in frozen.get("measurement_exposures", frozen.get("surface_exposures", ()))
+    ]
     seeds = [int(value) for value in config["frozen_training"]["seeds"]]
     rng = random.Random(int(specification["bootstrap_seed"]))
     samples = int(specification["bootstrap_samples"])
@@ -232,7 +239,10 @@ def curvature_onset(intervals: Sequence[Mapping[str, Any]], config: Mapping[str,
     specification = config["depth_curvature"]
     threshold = float(specification["transition_threshold"])
     equivalence_upper = float(specification["practical_equivalence_region"][0])
-    eligible = {512, 1024, 2048}
+    eligible = {
+        int(value)
+        for value in specification.get("onset_candidates", (512, 1024, 2048))
+    }
     for row in sorted(intervals, key=lambda value: int(value["exposure"])):
         exposure = int(row["exposure"])
         if (

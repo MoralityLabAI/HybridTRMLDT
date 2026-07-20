@@ -155,6 +155,9 @@ def _train_surface_cell(
     seed: int,
     output_dir: Path,
     event_path: Path,
+    kappa_exposures: Iterable[int] | None = None,
+    gradient_exposures: Iterable[int] | None = None,
+    checkpoint_exposures: Iterable[int] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     frozen = config["frozen_training"]
     tied = regime == "tied"
@@ -179,11 +182,29 @@ def _train_surface_cell(
     exposures_per_step = batch_size * rounds
     target = int(frozen["progress_target"])
     steps = steps_for_exposure_budget(target, batch_size, rounds)
-    measurement_targets = {int(value) for value in frozen["measurement_exposures"]}
-    checkpoint_targets = {int(value) for value in frozen["checkpoint_exposures"]}
+    cell_id = f"surface_{regime}_R{rounds}_S{seed}"
+    default_kappa = frozen.get("measurement_exposures", frozen.get("surface_exposures", ()))
+    kappa_targets = {
+        int(value) for value in (default_kappa if kappa_exposures is None else kappa_exposures)
+    }
+    gradient_targets = {
+        int(value)
+        for value in (kappa_targets if gradient_exposures is None else gradient_exposures)
+    }
+    checkpoint_targets = {
+        int(value)
+        for value in (
+            frozen["checkpoint_exposures"]
+            if checkpoint_exposures is None
+            else checkpoint_exposures
+        )
+    }
+    observation_targets = kappa_targets | gradient_targets
+    all_targets = observation_targets | checkpoint_targets
+    if any(value < 0 or value > target or value % exposures_per_step for value in all_targets):
+        raise RuntimeError(f"{cell_id} has an unreachable registered exposure")
     if steps * exposures_per_step != target:
         raise RuntimeError("surface target must be exactly reachable")
-    cell_id = f"surface_{regime}_R{rounds}_S{seed}"
     records: list[dict[str, Any]] = []
     checkpoints: list[dict[str, Any]] = []
     interval_gradients: list[float] = []
@@ -209,39 +230,41 @@ def _train_surface_cell(
                 event_path,
                 {"event": "checkpoint", "cell_id": cell_id, "exposure": exposure, **checkpoint},
             )
-        inputs, targets = _task_batch(
-            parent,
-            "primary_mlp",
-            seed=seed,
-            batch_size=int(frozen["measurement_batch_size"]),
-            device=device,
-            stream=999_001,
-        )
-        estimate = estimate_kappa(
-            model,
-            inputs,
-            targets,
-            power_iterations=int(frozen["power_iterations"]),
-            seed=measurement_seed(seed, exposure),
-        )
+        if exposure not in observation_targets:
+            return
         interval = _interval_summary(interval_gradients, interval_start, exposure)
         record = {
             "record_id": f"{cell_id}_E{exposure}",
-            "kind": "kappa_surface",
+            "kind": "kappa_surface" if exposure in kappa_targets else "gradient_surface",
             "regime": regime,
             "rounds": rounds,
             "seed": seed,
             "exposure": exposure,
-            "kappa": estimate.kappa,
-            "estimate": estimate.to_dict(),
             "interval_gradient": interval,
             "latest_training_loss": None if exposure == 0 else final_loss,
         }
+        if exposure in kappa_targets:
+            inputs, targets = _task_batch(
+                parent,
+                "primary_mlp",
+                seed=seed,
+                batch_size=int(frozen["measurement_batch_size"]),
+                device=device,
+                stream=999_001,
+            )
+            estimate = estimate_kappa(
+                model,
+                inputs,
+                targets,
+                power_iterations=int(frozen["power_iterations"]),
+                seed=measurement_seed(seed, exposure),
+            )
+            record.update({"kappa": estimate.kappa, "estimate": estimate.to_dict()})
+            del inputs, targets
         records.append(record)
         _append_event(event_path, {"event": "measurement", **record})
         interval_gradients.clear()
         interval_start = exposure
-        del inputs, targets
 
     _append_event(
         event_path,
@@ -255,7 +278,8 @@ def _train_surface_cell(
             "device": str(device),
         },
     )
-    observe(0, 0)
+    if 0 in all_targets:
+        observe(0, 0)
     completed_steps = 0
     for step in range(1, steps + 1):
         inputs, targets = _task_batch(
@@ -289,7 +313,7 @@ def _train_surface_cell(
         final_loss = float(loss.detach().item())
         completed_steps = step
         exposure = step * exposures_per_step
-        if exposure in measurement_targets:
+        if exposure in all_targets:
             observe(step, exposure)
         del inputs, targets, loss
     training = {

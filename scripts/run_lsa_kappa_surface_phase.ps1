@@ -1,9 +1,12 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet("validate", "run", "finalize")]
+    [ValidateSet("validate", "run", "r64_tied", "untied_gradients", "finalize")]
     [string]$Phase,
     [string]$Config = "configs/loop_schedule_kappa_surface_v1.json",
     [string]$Output = "experiments/loop_schedule_kappa_surface_v1",
+    [string]$Module = "research_gym.scripts.bench_loop_schedule_kappa_surface",
+    [ValidateRange(0, 2147483647)]
+    [double]$ExternalPriorElapsedSeconds = 0,
     [ValidateRange(1, 2147483647)]
     [int]$Attempt = 1
 )
@@ -67,14 +70,19 @@ $AggregateLimitSeconds = [double]$Caps.aggregate_gpu_hours * 3600.0
 $started = Get-Date
 $memoryBefore = Get-MemoryAudit
 $IgnoredCpuOnlyRegistryPids = @()
-$PriorElapsedSeconds = 0.0
+$PriorElapsedSeconds = [double]$ExternalPriorElapsedSeconds
 $PriorReceipts = @(
-    Get-ChildItem -LiteralPath $OutputPath -Filter "run.attempt-*.resource_receipt.json" -File -ErrorAction SilentlyContinue
+    Get-ChildItem -LiteralPath $OutputPath -Filter "*.attempt-*.resource_receipt.json" -File -ErrorAction SilentlyContinue
 )
 foreach ($path in $PriorReceipts) {
     if ($path.FullName -eq $AttemptReceipt) { continue }
     $prior = Get-Content -Raw -LiteralPath $path.FullName | ConvertFrom-Json
-    if ($null -ne $prior.elapsed_seconds) { $PriorElapsedSeconds += [double]$prior.elapsed_seconds }
+    if (
+        $prior.phase -notin @("validate", "finalize") -and
+        $null -ne $prior.elapsed_seconds
+    ) {
+        $PriorElapsedSeconds += [double]$prior.elapsed_seconds
+    }
 }
 
 function Write-Receipt([hashtable]$Value) {
@@ -87,6 +95,7 @@ function Write-Receipt([hashtable]$Value) {
 function Write-ConstructionFailure([string]$Reason) {
     Write-Receipt ([ordered]@{
         protocol_id = $Protocol.protocol_id
+        module = $Module
         phase = $Phase
         attempt = $Attempt
         status = "construction_failure"
@@ -189,7 +198,7 @@ if (-not [LsaKappaSurfaceJobObject]::SetInformationJobObject($job, [LsaKappaSurf
 [Runtime.InteropServices.Marshal]::FreeHGlobal($ptr)
 
 $arguments = @(
-    "-m", "research_gym.scripts.bench_loop_schedule_kappa_surface",
+    "-m", $Module,
     "--phase", $Phase,
     "--config", $ConfigPath,
     "--output", $OutputPath,
@@ -279,6 +288,7 @@ try {
     $cleanupPassed = if ($null -eq $proc) { $true } else { $proc.HasExited -and $ownedGpuAfter.Count -eq 0 }
     Write-Receipt ([ordered]@{
         protocol_id = $Protocol.protocol_id
+        module = $Module
         phase = $Phase
         attempt = $Attempt
         status = $status
