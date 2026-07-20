@@ -58,11 +58,11 @@ foreach ($path in $PriorReceipts) {
 }
 
 function Write-Receipt([hashtable]$Value) {
-    $json = $Value | ConvertTo-Json -Depth 8
+    $json = ($Value | ConvertTo-Json -Depth 8).Replace("`r`n", "`n")
     foreach ($path in ($Receipt, $AttemptReceipt)) {
         [System.IO.File]::WriteAllText(
             $path,
-            $json + [Environment]::NewLine,
+            $json + "`n",
             [System.Text.UTF8Encoding]::new($false)
         )
     }
