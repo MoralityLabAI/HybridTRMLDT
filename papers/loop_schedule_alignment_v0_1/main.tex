@@ -1,0 +1,226 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{svg}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\title{Visit Alignment Is Learned in Small Weight-Tied Residual Loops}
+\author{Hybrid LDT/TRM Research Gym}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Repeated use of one parameterized block changes how its update is accumulated
+and read through an unrolled computation. DeepLoop formalizes this effect with
+a visit-alignment coefficient $\kappa_R$ and analyzes decorrelated and aligned
+envelopes, but leaves direct measurement of the coefficient as future
+work~\cite{li2026deeploop}. We directly estimate visit alignment in small tied
+residual loops from per-visit suffix sensitivities and single-live-application
+parameter gradients. An initial three-point measurement at
+$R\in\{2,4,8\}$ gave $\kappa\propto R^{0.423}$ with $R^2=0.994$. A
+preregistered extension finds that alignment grows during training, from
+$\gamma=0.130$ at initialization to $0.309$ after 4,096 state-visit exposures.
+A held-out $R=16$ point falls below the three-point extrapolation, reducing the
+terminal four-point exponent to $0.309$ with 95\% seed-bootstrap interval
+$[0.287,0.328]$. A mini causal attention+MLP loop yields tied
+$\gamma=0.501$ versus untied $\gamma=0.018$, although its strict composite
+replication gate fails because the flat untied sequence has poor power-law fit.
+All 96 cells in a residual-scaling learning-rate ladder remain stable, leaving
+the boundary left-censored at $p\le 0$. These small-scale results reject the
+fully aligned envelope as a descriptive model in this regime, not as a
+conservative bound.
+\end{abstract}
+
+\section{Motivation}
+
+A looped model applies a physical block repeatedly without increasing stored
+parameters. DeepLoop identifies the resulting tied-depth term: one shared
+update aggregates contributions from repeated visits and is then read through
+those visits in the next linearized forward pass~\cite{li2026deeploop}. Its
+analysis is controlled by $\kappa_R$, with decorrelated and fully aligned
+envelopes. The paper explicitly identifies direct measurement of $\kappa_R$ or
+cross-round gradient alignment as future work.
+
+We ask three narrow questions. Does a direct estimator distinguish tied from
+untied visits? Does the estimated exponent transfer to a held-out loop count?
+Is alignment fixed by architecture, or does it change during training? We also
+test one small attention+MLP block and revisit the associated stability
+boundary. We make no claim about language-model accuracy or large-scale
+transfer.
+
+\section{Estimator and Schedule Correction}
+
+For each gradient-visible visit $r$, let $U_r$ be a top-direction Jacobian
+vector product through the schedule suffix after that visit. Let $G_r$ be the
+parameter gradient from a recomputed loss in which only visit $r$ applies its
+module with live parameters; all other applications use detached parameters.
+We measure
+\begin{equation}
+\kappa_g =
+\frac{\left\|\sum_r U_r\right\|\left\|\sum_r G_r\right\|}
+{R_g\max_r\|U_r\|\max_r\|G_r\|},
+\qquad 0\le\kappa_g\le R_g.
+\end{equation}
+Residual scale is excluded from $\kappa_g$ and applied once in the schedule
+functional
+\begin{equation}
+B(A)=\sum_j J_jR_g(j)\kappa_g(j)
+\left(\frac{\beta_j}{\alpha_j}\right)^2.
+\end{equation}
+Here $R_g(j)$ counts gradient-visible applications rather than all forward
+visits. This distinction is required for truncated or masked schedules; using
+$R(j)$ silently restores contributions that autograd cannot transmit.
+
+We fit $\log\kappa_R=c+\gamma\log R$ to geometric-mean kappas across three
+seeds. The estimator uses five power iterations and one fixed probe direction
+per seed at all checkpoints.
+
+\section{Registered Design}
+
+The primary model is a hidden-size-128 two-linear-layer residual loop on
+deterministic signed-permutation regression. Tied and visit-untied schedules
+use $R\in\{2,4,8,16\}$, seeds $\{101,103,107\}$, and 4,096 state-visit
+exposures. Tied kappa is measured at exposures
+$\{0,512,1024,2048,4096\}$. The v0 three-point fit is frozen before observing
+$R=16$:
+\begin{equation}
+\log\widehat\kappa_R=0.025971+0.422909\log R,
+\qquad \widehat\kappa_{16}=3.315221.
+\end{equation}
+A holdout ratio in $[0.8,1.25]$ confirms extrapolation.
+
+The external-validity cell replaces the block and task with a hidden-size-64
+manual four-head causal attention+MLP residual block on deterministic
+prefix-context regression. The strict gate requires both tied and untied fits
+to have $R^2\ge0.8$ and a gamma contrast of at least 0.1.
+
+The stability ladder crosses $R\in\{6,12\}$,
+$p\in\{0,0.05,0.10,0.15\}$, learning rates
+$\{0.0003,0.001,0.003,0.01\}$, and three seeds. A run is stable if finite,
+with maximum gradient norm at most 100 and final-to-initial loss ratio at most
+10. A cell uses two-of-three seed majority. Grid edges remain censored.
+
+\section{Alignment Grows During Training}
+
+\begin{figure}[t]
+\centering
+\includesvg[width=0.92\linewidth]{figures/lsa_v0_1_gamma_trajectory}
+\caption{The four-point tied exponent and deterministic seed-bootstrap
+interval over common state-visit exposures. The registered outcome is
+\texttt{learned\_growth}.}
+\label{fig:trajectory}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Tied alignment exponent over training.}
+\begin{tabular}{rrrr}
+\toprule
+Exposures & $\gamma$ & $R^2$ & 95\% interval \\
+\midrule
+0     & 0.1304 & 0.6116 & $[0.1000,0.1834]$ \\
+512   & 0.1570 & 0.6829 & $[0.0913,0.2176]$ \\
+1,024 & 0.2000 & 0.8214 & $[0.1511,0.2624]$ \\
+2,048 & 0.2406 & 0.8564 & $[0.2062,0.2794]$ \\
+4,096 & 0.3095 & 0.9140 & $[0.2868,0.3278]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Gamma rises by 0.1790 and all four transitions are nondecreasing, satisfying
+the frozen \texttt{learned\_growth} rule. Early $R^2$ values are weak. Thus a
+power-law relation does not simply retain its form while changing exponent;
+the relation itself becomes better formed over training.
+
+The fixed-direction terminal probes at $R=2,4,8$ exactly reproduce the sealed
+v0 kappas. The held-out tied value is $\kappa_{16}=2.550934$, a ratio of
+0.769461 to the frozen prediction and a log residual of $-0.262065$. The
+three-point extrapolation is therefore rejected. Refitting all four points
+gives $\gamma=0.309485$ and $R^2=0.914049$. The untied point estimate remains
+near zero at $0.017527$, although its $R^2=0.796134$ narrowly misses the
+registered fit-quality threshold.
+
+\section{Attention+MLP Replication}
+
+\begin{figure}[t]
+\centering
+\includesvg[width=0.98\linewidth]{figures/lsa_v0_1_kappa_scaling}
+\caption{Terminal kappa scaling for the primary residual MLP and the mini
+attention+MLP cell. Weight tying produces a positive exponent in both. The
+open marker is the frozen v0 $R=16$ extrapolation.}
+\label{fig:scaling}
+\end{figure}
+
+The mini attention+MLP loop gives tied $\gamma=0.501246$ with
+$R^2=0.854021$. Its untied point estimate is $0.017859$, but
+$R^2=0.050919$ because the four kappas form a noisy flat sequence rather than
+a power law. The gamma contrast is $0.483387$.
+
+The strict composite replication gate is not confirmed because it required a
+high-quality untied power-law fit. That condition is poorly matched to a flat
+negative control, but changing it after outcomes would conflate preregistered
+confirmation with post-hoc interpretation. The licensed positive result is
+therefore mechanistic: the tied coefficient scales on a second small model and
+task while the untied point estimate remains near zero.
+
+\section{The Stability Boundary Still Does Not Bind}
+
+\begin{figure}[t]
+\centering
+\includesvg[width=0.88\linewidth]{figures/lsa_v0_1_boundary_ladder}
+\caption{All aggregate cells remain stable. Every boundary is left-censored at
+$p\le0$, so no registered depth ordering is identifiable.}
+\label{fig:ladder}
+\end{figure}
+
+All 96 seed-level ladder runs are stable. The maximum observed gradient norm is
+66.0719 and the maximum final-to-initial loss ratio is 0.6855. Every aggregate
+boundary is left-censored at $p\le0$ for both loop counts and all learning
+rates. The learning-rate ladder therefore does not rescue the proposed
+threshold as an ordering in this regime.
+
+\section{Discussion}
+
+The direct measurement supports four conclusions. First, weight tying creates
+measurable visit alignment: both tied model families have positive exponents,
+whereas untied point estimates are near zero. Second, alignment is partly
+learned rather than purely architectural. It is positive at initialization but
+grows substantially over 4,096 exposures. Third, the original
+$\gamma=0.423$ three-point estimate was not a transferable constant; $R=16$
+supplies the residual check that the initial fit lacked. Fourth, the fully
+aligned $\gamma=1$ case is conservative rather than descriptive here: the
+primary terminal upper interval is 0.328.
+
+This does not falsify DeepLoop's sufficient conservative parameterization.
+Instead, it rejects interpreting the aligned envelope as the measured behavior
+of these small loops. To our knowledge, this is the first direct estimate of
+DeepLoop's specific visit-alignment coefficient, but that novelty statement is
+scoped to our recorded literature audit rather than an exhaustive survey.
+
+\section{Limitations and Reproducibility}
+
+The primary network is small and synthetic. The attention+MLP cell changes
+model and task together and is not a language model. Three seeds provide only
+a small-sample interval. The short-horizon stability rule may be permissive,
+and every ladder boundary remains censored. No task-accuracy, sample-efficiency,
+large-scale Transformer, or general stability claim follows.
+
+The config SHA-256 is
+\nolinkurl{c6cd78a09909956962a2c6d585270807088a9b8b0dc5e1e69fc8b151d45882cc}.
+The final receipt SHA-256 is
+\nolinkurl{3fa8c1e6f360035a8d1fc17932d18b2c6fe0249e6653c6e5aa9992a5cdf57414}.
+It rehashes 42 replay, 72 primary, 24 attention+MLP, and 96 ladder records.
+Two invalid attempts are retained and excluded: a drifting probe seed in the
+first primary attempt and a pre-training exposure-divisibility construction
+failure in the first ladder attempt.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

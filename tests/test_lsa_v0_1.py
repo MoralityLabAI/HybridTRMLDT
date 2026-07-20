@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 import pytest
 
@@ -21,6 +22,7 @@ from research_gym.scripts.bench_loop_schedule_algebra_v0_1 import (  # noqa: E40
     prefix_context_batch,
     steps_for_exposure_budget,
 )
+from research_gym.scripts.report_lsa_v0_1 import generate  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -176,3 +178,33 @@ def test_claim_scope_excludes_task_performance() -> None:
 
     assert "no task-performance" in scope
     assert "sample-efficiency" in scope
+
+
+def test_report_figures_are_deterministic_valid_svg(tmp_path: Path) -> None:
+    experiment = ROOT / "experiments" / "loop_schedule_algebra_v0_1"
+    first = generate(experiment, tmp_path / "first")
+    second = generate(experiment, tmp_path / "second")
+
+    assert len(first) == len(second) == 3
+    for first_path, second_path in zip(first, second):
+        assert first_path.read_bytes() == second_path.read_bytes()
+        assert ET.parse(first_path).getroot().tag.endswith("svg")
+
+
+def test_final_v0_1_receipt_rehashes_all_valid_phases() -> None:
+    receipt_path = ROOT / "data" / "benchmarks" / "lsa_v0_1_receipt.json"
+    receipt = json.loads(receipt_path.read_text())
+
+    assert receipt["status"] == "complete"
+    assert receipt["primary_findings"]["trajectory_classification"] == "learned_growth"
+    assert not receipt["primary_findings"]["r16_holdout"]["confirmed"]
+    assert not receipt["external_validity"]["replication_supported"]
+    assert receipt["learning_rate_ladder"]["all_cells_stable"]
+    for phase in receipt["phases"].values():
+        records = ROOT / phase["records_path"]
+        result = ROOT / phase["result_path"]
+        assert hashlib.sha256(records.read_bytes()).hexdigest() == phase["records_sha256"]
+        assert hashlib.sha256(result.read_bytes()).hexdigest() == phase["result_sha256"]
+    assert receipt_path.read_bytes() == (
+        ROOT / "experiments" / "loop_schedule_algebra_v0_1" / "result_receipt.json"
+    ).read_bytes()
