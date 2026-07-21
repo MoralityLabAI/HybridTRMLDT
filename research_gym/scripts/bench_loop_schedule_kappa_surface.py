@@ -160,12 +160,36 @@ def _train_surface_cell(
     gradient_exposures: Iterable[int] | None = None,
     checkpoint_exposures: Iterable[int] | None = None,
     checkpoint_pacing_seconds: float = 0.0,
+    model_seed: int | None = None,
+    task_seed: int | None = None,
+    data_order_seed: int | None = None,
+    measurement_data_seed: int | None = None,
+    probe_seed: int | None = None,
+    cell_id_override: str | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     frozen = config["frozen_training"]
     tied = regime == "tied"
-    torch.manual_seed(seed)
+    resolved_model_seed = seed if model_seed is None else int(model_seed)
+    resolved_task_seed = seed if task_seed is None else int(task_seed)
+    resolved_data_order_seed = seed if data_order_seed is None else int(data_order_seed)
+    resolved_measurement_data_seed = (
+        seed if measurement_data_seed is None else int(measurement_data_seed)
+    )
+    resolved_probe_seed = seed if probe_seed is None else int(probe_seed)
+    split_seed_channels = any(
+        value is not None
+        for value in (model_seed, task_seed, data_order_seed, measurement_data_seed, probe_seed)
+    )
+    seed_channels = {
+        "model_seed": resolved_model_seed,
+        "task_seed": resolved_task_seed,
+        "data_order_seed": resolved_data_order_seed,
+        "measurement_data_seed": resolved_measurement_data_seed,
+        "probe_seed": resolved_probe_seed,
+    }
+    torch.manual_seed(resolved_model_seed)
     if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
+        torch.cuda.manual_seed_all(resolved_model_seed)
     device = _device(parent)
     model = _build_model(
         parent,
@@ -184,7 +208,7 @@ def _train_surface_cell(
     exposures_per_step = batch_size * rounds
     target = int(frozen["progress_target"])
     steps = steps_for_exposure_budget(target, batch_size, rounds)
-    cell_id = f"surface_{regime}_R{rounds}_S{seed}"
+    cell_id = cell_id_override or f"surface_{regime}_R{rounds}_S{seed}"
     default_kappa = frozen.get("measurement_exposures", frozen.get("surface_exposures", ()))
     kappa_targets = {
         int(value) for value in (default_kappa if kappa_exposures is None else kappa_exposures)
@@ -253,20 +277,23 @@ def _train_surface_cell(
             inputs, targets = _task_batch(
                 parent,
                 "primary_mlp",
-                seed=seed,
+                seed=resolved_task_seed,
                 batch_size=int(frozen["measurement_batch_size"]),
                 device=device,
                 stream=999_001,
+                data_seed=resolved_measurement_data_seed,
             )
             estimate = estimate_kappa(
                 model,
                 inputs,
                 targets,
                 power_iterations=int(frozen["power_iterations"]),
-                seed=measurement_seed(seed, exposure),
+                seed=measurement_seed(resolved_probe_seed, exposure),
             )
             record.update({"kappa": estimate.kappa, "estimate": estimate.to_dict()})
             del inputs, targets
+        if split_seed_channels:
+            record["seed_channels"] = seed_channels
         records.append(record)
         _append_event(event_path, {"event": "measurement", **record})
         interval_gradients.clear()
@@ -282,6 +309,7 @@ def _train_surface_cell(
             "seed": seed,
             "steps": steps,
             "device": str(device),
+            **({"seed_channels": seed_channels} if split_seed_channels else {}),
         },
     )
     if 0 in all_targets:
@@ -291,10 +319,11 @@ def _train_surface_cell(
         inputs, targets = _task_batch(
             parent,
             "primary_mlp",
-            seed=seed,
+            seed=resolved_task_seed,
             batch_size=batch_size,
             device=device,
             stream=step - 1,
+            data_seed=resolved_data_order_seed,
         )
         optimizer.zero_grad(set_to_none=True)
         loss = torch.nn.functional.mse_loss(model(inputs), targets)
@@ -336,6 +365,7 @@ def _train_surface_cell(
         "checkpoints": checkpoints,
         "parameter_count": sum(parameter.numel() for parameter in model.parameters()),
         "device": str(device),
+        **({"seed_channels": seed_channels} if split_seed_channels else {}),
     }
     _append_event(event_path, {"event": "cell_complete", **training})
     del model, optimizer

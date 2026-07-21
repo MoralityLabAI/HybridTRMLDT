@@ -1,0 +1,14 @@
+{
+  "protocol_id": "loop_schedule_kappa_data_order_v0_2_1",
+  "config_path": "configs/loop_schedule_kappa_data_order_v0_2_1.json",
+  "config_sha256": "5d02d12fe582b170284e29403afa9e90f8fea04ee60c0185dac0cb74c988ea11",
+  "registered_utc": "2026-07-21T02:15:36.4358689Z",
+  "registration_status": "frozen_before_any_seed_decoupled_training_outcome",
+  "source_commit": "02b779b48d790990d4574d7134ed833997a820fe",
+  "parent_outcomes_observed": true,
+  "new_seed_decoupled_outcomes_observed": false,
+  "construction_seed": 103,
+  "baseline_data_order_seed": 103,
+  "fresh_data_order_seeds": [211, 223, 227],
+  "registered_branches": ["persists_under_data_order_reseed", "data_order_sensitive", "instrument_drift", "resource_or_training_failure"]
+}

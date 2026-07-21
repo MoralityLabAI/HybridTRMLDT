@@ -144,8 +144,10 @@ def signed_permutation_batch(
     device: torch.device,
     *,
     stream: int,
+    data_seed: int | None = None,
 ) -> tuple[Tensor, Tensor]:
-    generator = torch.Generator(device="cpu").manual_seed(seed * 1009 + stream)
+    order_seed = seed if data_seed is None else int(data_seed)
+    generator = torch.Generator(device="cpu").manual_seed(order_seed * 1009 + stream)
     inputs = torch.randn(batch_size, hidden_size, generator=generator)
     permutation = torch.randperm(hidden_size, generator=torch.Generator().manual_seed(seed + 17))
     signs = torch.where(
@@ -220,10 +222,20 @@ def _task_batch(
     batch_size: int,
     device: torch.device,
     stream: int,
+    data_seed: int | None = None,
 ) -> tuple[Tensor, Tensor]:
     spec = _family_spec(config, family)
     if family == "primary_mlp":
-        return signed_permutation_batch(seed, batch_size, spec["hidden_size"], device, stream=stream)
+        return signed_permutation_batch(
+            seed,
+            batch_size,
+            spec["hidden_size"],
+            device,
+            stream=stream,
+            data_seed=data_seed,
+        )
+    if data_seed is not None and data_seed != seed:
+        raise ValueError("external-validity task does not yet support split data seeds")
     return prefix_context_batch(
         seed,
         batch_size,

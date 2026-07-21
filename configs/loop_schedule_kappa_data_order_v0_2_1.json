@@ -1,0 +1,86 @@
+{
+  "protocol_id": "loop_schedule_kappa_data_order_v0_2_1",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-21T02:15:36.4358689Z",
+  "registration_timing": "after the sealed v0.2 R128 result and deterministic mechanism audit, before any seed-decoupled training outcome",
+  "status_label": "data-order-only intervention on the R64 E2048 trough",
+  "claim_scope": "sensitivity of one registered small-scale R64 transient to training-data order with initialization, task, measurement, and probe channels held fixed",
+  "parents": {
+    "surface_records": {
+      "path": "experiments/loop_schedule_kappa_surface_v1_recovery2/combined_records.jsonl",
+      "sha256": "69c1b1ded04426159d0da666ca34a2eaa22ff53ea3a13b0843775ec512dc9409"
+    },
+    "surface_receipt": {
+      "path": "data/benchmarks/lsa_kappa_surface_v1_recovery2_receipt.json",
+      "sha256": "294d06ede48cb7a2b6ef48bcd6db75afd3028305edbe20a5cb9503d7fde76cd8"
+    },
+    "mechanism_audit": {
+      "path": "experiments/loop_schedule_kappa_transient_v0_2_recovery1/mechanism_audit.json",
+      "sha256": "8c59c2e83a6b221752dd31aa5f8cdb4ff8f734bd072e60bd75762ff1672f8ef9"
+    },
+    "trainer_config": {
+      "path": "configs/loop_schedule_algebra_v0_1.json",
+      "sha256": "c6cd78a09909956962a2c6d585270807088a9b8b0dc5e1e69fc8b151d45882cc"
+    }
+  },
+  "selection_disclosure": "construction seed 103 was selected after parent outcomes because it has the clearest individual R64 E2048 trough; inference is conditional on this fixed construction and baseline replay is mandatory",
+  "seed_channels": {
+    "construction_seed": 103,
+    "model_initialization_seed": 103,
+    "task_transform_seed": 103,
+    "measurement_data_seed": 103,
+    "probe_seed": 103,
+    "baseline_data_order_seed": 103,
+    "fresh_data_order_seeds": [211, 223, 227],
+    "data_order_seeds": [103, 211, 223, 227],
+    "intervention": "only the random input-batch sequence changes; task permutation and signs do not"
+  },
+  "frozen_training": {
+    "model_family": "two_linear_residual_loop",
+    "task_family": "deterministic_signed_permutation_regression",
+    "hidden_size": 128,
+    "batch_size": 8,
+    "measurement_batch_size": 8,
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "alpha": 1.0,
+    "beta": 0.25,
+    "progress_target": 4096,
+    "measurement_exposures": [0, 512, 1024, 2048, 4096],
+    "gradient_exposures": [512, 1024, 2048, 4096],
+    "checkpoint_exposures": [2048, 4096],
+    "rounds": [64],
+    "regimes": ["tied"],
+    "power_iterations": 5,
+    "checkpoint_pacing_seconds": 2.0
+  },
+  "baseline_replay": {
+    "data_order_seed": 103,
+    "parent_cell": "surface_tied_R64_S103",
+    "absolute_kappa_tolerance": 1e-12,
+    "failure_status": "instrument_drift",
+    "interpretation_rule": "fresh-order outcomes are not interpreted unless every parent checkpoint kappa replays within tolerance"
+  },
+  "registered_predictions": {
+    "practical_log_change": 0.1,
+    "per_order_trough_rule": "log(K2048/K1024)<=-0.1 and log(K4096/K2048)>=0.1",
+    "minimum_persistent_fresh_orders": 2,
+    "intrinsic_branch": "at least two of three fresh orders satisfy the registered E2048 trough-and-recovery rule",
+    "data_order_sensitive_branch": "at most one of three fresh orders satisfies the registered rule",
+    "cancellation_diagnostic": "report I_U and I_G at E2048 per order; diagnostic, not part of the branch gate"
+  },
+  "claim_boundary": "This post-outcome-selected intervention can determine whether the seed-103 R64 trough persists when only training order changes. Persistence does not establish an intrinsic stability boundary; sensitivity does not prove a single anomalous batch. No Transformer, task-performance, asymptotic, or optimizer-causal claim is licensed.",
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1800,
+    "aggregate_gpu_hours": 1,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}
