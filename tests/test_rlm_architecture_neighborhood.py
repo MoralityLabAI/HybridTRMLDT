@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from research_gym.integrity import canonical_file_sha256
+from research_gym.integrity import canonical_file_sha256, verify_file_sha256
 from research_gym.benchmarks.rlm_architecture_neighborhood import (
     answer_matches,
     architecture_manifest,
@@ -116,3 +116,26 @@ def test_resource_wrapper_accepts_explicit_python_interpreter() -> None:
     )
     assert '[string]$PythonExe = "python"' in wrapper
     assert 'Start-Process -FilePath $PythonPath' in wrapper
+
+
+def test_construction_failure_is_not_a_sealed_benchmark_when_present() -> None:
+    root = Path(__file__).resolve().parents[1]
+    failure_path = (
+        root
+        / "experiments"
+        / "rlm_architecture_neighborhood_v0"
+        / "construction_failure_receipt.json"
+    )
+    if not failure_path.exists():
+        return
+    failure = json.loads(failure_path.read_text(encoding="utf-8"))
+    assert failure["status"] == "construction_failure"
+    assert failure["provider_calls_reported"] == 0
+    assert failure["provider_tokens_reported"] == 0
+    assert failure["cells_completed"] == 0
+    assert not failure["sealed_as_benchmark"]
+    assert not (root / "data" / "benchmarks" / "rlm_architecture_neighborhood_v0_receipt.json").exists()
+    for prefix in ("result", "records", "events", "trajectory_manifest", "resource_receipt"):
+        assert verify_file_sha256(
+            root / failure[f"{prefix}_path"], failure[f"{prefix}_sha256"]
+        )
