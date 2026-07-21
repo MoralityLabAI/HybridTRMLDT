@@ -1,0 +1,1 @@
+{"excluded_from_architecture_metrics":true,"expected_response":"RLM_HYBRID_TRANSPORT_OK","finished_utc":"2026-07-21T19:44:58.785382+00:00","model":"gpt-4.1-mini","response":"RLM_HYBRID_TRANSPORT_OK","started_utc":"2026-07-21T19:44:57.523111+00:00","status":"passed","usage":{"calls":1,"input_tokens":19,"output_tokens":9,"reported_cost_usd":null,"total_tokens":28}}
