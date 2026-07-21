@@ -1,0 +1,1 @@
+{"error":{"error_type":"APIConnectionError","provider_code":null,"provider_type":null,"status_code":null},"excluded_from_architecture_metrics":true,"finished_utc":"2026-07-21T21:45:46.877430+00:00","model":"gpt-4.1-mini","started_utc":"2026-07-21T21:45:42.727119+00:00","status":"failed"}

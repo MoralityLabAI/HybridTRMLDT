@@ -1,0 +1,23 @@
+{
+  "protocol_id": "rlm_trm_ldt_hybrid_neighborhood_v1_1_calibration_informed_evaluation",
+  "status": "construction_failure_archived",
+  "attempt": 10,
+  "stage": "eval_227_latest_rule_action",
+  "archived_utc": "2026-07-21T22:40:40.2654584Z",
+  "reason": "The per-shard provider capability gate failed on a transient DNS getaddrinfo error before any task cell started.",
+  "original_path": "experiments/rlm_trm_ldt_hybrid_neighborhood_v1_1/campaign/shards/eval_227_latest_rule_action",
+  "archive_path": "experiments/rlm_trm_ldt_hybrid_neighborhood_v1_1/campaign/failed_shards/eval_227_latest_rule_action.attempt-10",
+  "capability_receipt_path": "experiments/rlm_trm_ldt_hybrid_neighborhood_v1_1/campaign/failed_shards/eval_227_latest_rule_action.attempt-10/provider_capability_receipt.json",
+  "capability_receipt_sha256": "8f293110bf292ee0281a9e10a9740f9381ee868daa532eb97c34806ce7f9d5a9",
+  "task_records_created": 0,
+  "scientific_outcomes_observed": false,
+  "provider_calls_counted_in_campaign": 0,
+  "post_failure_transport_probe": {
+    "status": "passed",
+    "model": "gpt-4.1-mini",
+    "input_tokens": 19,
+    "output_tokens": 9,
+    "excluded_from_campaign_metrics": true
+  },
+  "recovery_rule": "Preserve this archive and wrapper attempt-10 logs byte-for-byte; a later attempt may recreate the registered shard only after a fresh capability gate passes."
+}
