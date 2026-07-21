@@ -72,4 +72,4 @@ In this small tied residual-loop construction, a high-depth alignment excursion 
 
 ## Next Test
 
-The seed-decoupled follow-up is complete; see [Loop-Schedule Kappa Data-Order Intervention v0.2.1](loop_schedule_kappa_data_order_v0_2_1.md). Two of three fresh orders reproduce the registered trough and recovery, one does not recover, and all four orders show destructive suffix-sensitivity interference at `E=2048`. The next design should cross construction bundles `{101,103,107}` with fresh order seeds `{211,223,227}` before an optimizer intervention.
+The seed-decoupled follow-up is complete; see [Loop-Schedule Kappa Data-Order Intervention v0.2.1](loop_schedule_kappa_data_order_v0_2_1.md). Two of three fresh orders reproduce the registered trough and recovery, one remains unrecovered at the right-censored `E=4096` horizon, and all four orders show destructive suffix-sensitivity interference at `E=2048`. A checkpoint splice and extended order-211 horizon precede the crossed construction-by-order design and optimizer intervention.

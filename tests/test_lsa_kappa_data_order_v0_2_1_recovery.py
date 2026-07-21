@@ -70,5 +70,5 @@ def test_report_figure_renders_from_sealed_result() -> None:
         ).read_text(encoding="utf-8")
     )
     svg = render_svg(result)
-    assert "E2048 cancellation recurs" in svg
+    assert "E2048 cancellation recurs; exit timing varies" in svg
     assert "Registered outcome: 2/3 fresh orders pass" in svg

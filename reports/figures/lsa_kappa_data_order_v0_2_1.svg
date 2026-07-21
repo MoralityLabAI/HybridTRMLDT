@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1160" height="650" viewBox="0 0 1160 650">
 <rect width="1160" height="650" fill="#F1EBDD"/>
 <rect x="24" y="24" width="1112" height="602" rx="18" fill="#FFFDF7" stroke="#26342F" stroke-width="1.5"/>
-<text x="54" y="68" font-family="Georgia, serif" font-size="26" font-weight="bold" fill="#1F2D28">E2048 cancellation recurs; recovery depends on data order</text>
+<text x="54" y="68" font-family="Georgia, serif" font-size="26" font-weight="bold" fill="#1F2D28">E2048 cancellation recurs; exit timing varies by data order</text>
 <text x="54" y="96" font-family="Georgia, serif" font-size="14" fill="#56645F">Fixed construction seed 103; only the training-batch sequence changes</text>
 <text x="92" y="142" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#1F2D28">Kappa trajectories</text>
 <text x="790" y="142" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#1F2D28">Sensitivity interference at E2048</text>

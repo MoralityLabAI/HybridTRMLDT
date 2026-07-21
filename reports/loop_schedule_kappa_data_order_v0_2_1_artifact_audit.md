@@ -17,7 +17,7 @@
 - recovery run resource: `e30a8eb86d300cc44b0308212216e9663597e1fa9ede6b9a1d43b8b178b98ced`
 - result receipt: `c9b3ff9037b7d9dfcd9e74c14cfeb64be541dcd0964a84ac979a40335fae6fff`
 - finalizer resource: `f3ae03a89af338abfa1eeae26d84ee797c6a864ea94a143a6cb473b56815c462`
-- report figure: `e22d54eb1f99e4f0a6aa599d09dd2d1af314199f4fe5a148338890a1a8abbdbf`
+- report figure: `56c1a18fb7a5900e776479cfb3d2407b12d59f9d9e424842b257352c6eb76f06`
 
 The local and `data/benchmarks` receipts are byte-identical. The result receipt re-verifies the original source JSONL rather than a recovery copy. No training was rerun during recovery.
 

@@ -13,7 +13,7 @@ The frozen bookkeeping outcome is **`persists_under_data_order_reseed`**: two of
 | 223 | 1.094448 | 0.581698 | 1.125972 | -0.6321 | +0.6604 | pass |
 | 227 | 0.798553 | 0.625003 | 1.042084 | -0.2450 | +0.5112 | pass |
 
-The strict scientific interpretation is more nuanced than the branch label. Two independent new orders reproduce the practical trough and recovery, so the phenomenon is not explained by one anomalous original stream. Order 211 supplies a retained counterexample: kappa drops at `E=2048` but continues downward through `E=4096`. The replay cell has a local `E=2048` minimum and strong rebound but misses the practical drop threshold (`-0.0754` versus `-0.1`). Thus an order-invariant intrinsic transition is also unsupported. The observed regime is an exposure-localized tendency whose trajectory and recovery are modulated by data order.
+The strict scientific interpretation is more nuanced than the branch label. Two independent new orders reproduce the practical trough and recovery, so the phenomenon is not explained by one anomalous original stream. Order 211 supplies a retained right-censored counterexample: kappa drops at `E=2048` and continues downward through the registered `E=4096` horizon, but later recovery was not observed. The replay cell has a local `E=2048` minimum and strong rebound but misses the practical drop threshold (`-0.0754` versus `-0.1`). Thus an order-invariant exit trajectory is unsupported within the observed horizon. We call the descriptive pattern **shared cancellation with order-conditioned exit**. The stronger causal name *intrinsic cancellation, extrinsic recovery* remains a splice-test hypothesis.
 
 ## Robust Mechanism
 
@@ -34,9 +34,9 @@ Three increasingly broad data explanations are now separable:
 
 1. A single shared item at `E=2048` is structurally impossible because batches are step-indexed and `R=64` and `R=128` use different streams there.
 2. A single anomalous order is disfavored because fresh orders 223 and 227 reproduce the registered shape and all four orders reproduce destructive sensitivity interference.
-3. Data order is irrelevant is rejected descriptively: order 211 does not recover, and the fixed-construction trajectories differ substantially.
+3. Data order is irrelevant is rejected descriptively within the registered horizon: order 211 has not recovered by `E=4096`, and the fixed-construction trajectories differ substantially.
 
-The licensed conclusion is a reproducible cancellation mechanism with order-modulated manifestation, not causal identification of an intrinsic stability boundary.
+The licensed conclusion is a reproducible cancellation mechanism with order-conditioned exit through `E=4096`, not a claim that order 211 never recovers or causal identification of an intrinsic stability boundary.
 
 ## Recovery Disclosure
 
@@ -50,4 +50,4 @@ This is one post-outcome-selected small residual-loop construction at `R=64`, th
 
 ## Next Test
 
-Replace post-outcome construction selection with a registered crossed design: construction bundles `{101,103,107}` by fresh data-order seeds `{211,223,227}`. Keep initialization/task/probe fixed within each construction row and vary only order across columns. The primary analysis should partition construction, order, and interaction effects on the two log changes; optimizer warmup remains downstream of that factorial audit.
+First, continue order 211 beyond `E=4096` to resolve the right-censoring and run a registered checkpoint splice: apply recovering-order suffixes to the order-211 `E=2048` model/optimizer state, plus a reciprocal order-211 suffix on a recovering state. This distinguishes suffix-controlled exit from pre-`E=2048` path dependence. Then replace post-outcome construction selection with a crossed design over construction bundles `{101,103,107}` and fresh data-order seeds `{211,223,227}`.
