@@ -1,0 +1,24 @@
+{
+  "protocol_id": "loop_schedule_kappa_state_moment_v0_2_3",
+  "config_path": "configs/loop_schedule_kappa_state_moment_v0_2_3.json",
+  "config_sha256": "806b93a029445bf9db707912ee9734c06c7fb74f4d8afaa7e6b9e823f158af8b",
+  "registered_utc": "2026-07-21T03:28:26.2148343Z",
+  "registration_status": "frozen_before_any_model_weight_by_adamw_moment_swap_outcome",
+  "source_commit": "932df129ca24ef63601efe629df53ed11c953ebb",
+  "parent_outcomes_observed": true,
+  "new_state_moment_outcomes_observed": false,
+  "new_prefix_training": 0,
+  "new_continuation_cells": 4,
+  "imported_sealed_controls": 4,
+  "registered_classification_branches": [
+    "model_weight_dominant",
+    "optimizer_moment_dominant",
+    "suffix_dominant",
+    "model_weight_x_optimizer_moment_dominant",
+    "model_weight_x_suffix_dominant",
+    "optimizer_moment_x_suffix_dominant",
+    "three_way_interaction_dominant",
+    "factorial_unresolved"
+  ],
+  "inferential_boundary": "saturated deterministic eight-cell fit with zero residual degrees of freedom"
+}
