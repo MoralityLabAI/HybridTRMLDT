@@ -50,4 +50,4 @@ This is one post-outcome-selected small residual-loop construction at `R=64`, th
 
 ## Next Test
 
-First, continue order 211 beyond `E=4096` to resolve the right-censoring and run a registered checkpoint splice: apply recovering-order suffixes to the order-211 `E=2048` model/optimizer state, plus a reciprocal order-211 suffix on a recovering state. This distinguishes suffix-controlled exit from pre-`E=2048` path dependence. Then replace post-outcome construction selection with a crossed design over construction bundles `{101,103,107}` and fresh data-order seeds `{211,223,227}`.
+The checkpoint splice and censoring extension are complete; see [Loop-Schedule Kappa Checkpoint Splice v0.2.2](loop_schedule_kappa_splice_v0_2_2.md). Order 211 recovers by `E=5120`, and crossed continuations show mixed checkpoint-by-suffix control. The next mechanism test should split model weights from AdamW moments within the checkpoint bundle before a broader construction-by-order design.

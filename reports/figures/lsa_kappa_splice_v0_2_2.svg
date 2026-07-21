@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="650" viewBox="0 0 1160 650">
+<rect width="1160" height="650" fill="#EEE8DA"/>
+<rect x="24" y="24" width="1112" height="602" rx="18" fill="#FFFDF8" stroke="#26342F" stroke-width="1.5"/>
+<text x="54" y="68" font-family="Georgia, serif" font-size="25" font-weight="bold" fill="#1F2D28">Rebound is state-by-suffix mixed; sensitivity cancellation persists</text>
+<text x="54" y="96" font-family="Georgia, serif" font-size="14" fill="#56645F">Checkpoint splice at E2048; dashed line is the registered +0.1 log-kappa recovery threshold</text>
+<text x="94" y="146" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#1F2D28">Continuation trajectories</text>
+<text x="815" y="146" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#1F2D28">I_U at first recovery / endpoint</text>
+<line x1="94.0" y1="463.21" x2="715.0" y2="463.21" stroke="#D8D0C1"/>
+<text x="82" y="467.21" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">-0.6</text>
+<line x1="94.0" y1="419.64" x2="715.0" y2="419.64" stroke="#D8D0C1"/>
+<text x="82" y="423.64" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">-0.4</text>
+<line x1="94.0" y1="376.07" x2="715.0" y2="376.07" stroke="#D8D0C1"/>
+<text x="82" y="380.07" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">-0.2</text>
+<line x1="94.0" y1="332.50" x2="715.0" y2="332.50" stroke="#D8D0C1"/>
+<text x="82" y="336.50" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">+0.0</text>
+<line x1="94.0" y1="310.71" x2="715.0" y2="310.71" stroke="#9B3D2F" stroke-dasharray="6 4" stroke-width="2"/>
+<text x="82" y="314.71" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">+0.1</text>
+<line x1="94.0" y1="288.93" x2="715.0" y2="288.93" stroke="#D8D0C1"/>
+<text x="82" y="292.93" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">+0.2</text>
+<line x1="94.0" y1="245.36" x2="715.0" y2="245.36" stroke="#D8D0C1"/>
+<text x="82" y="249.36" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">+0.4</text>
+<line x1="94.0" y1="201.79" x2="715.0" y2="201.79" stroke="#D8D0C1"/>
+<text x="82" y="205.79" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">+0.6</text>
+<polyline points="94.00,332.50 301.00,403.24 404.50,223.33 508.00,200.30 715.00,220.40" fill="none" stroke="#4B6F66" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="94.00" cy="332.50" r="4.5" fill="#FFFDF8" stroke="#4B6F66" stroke-width="2.5"/>
+<circle cx="301.00" cy="403.24" r="4.5" fill="#FFFDF8" stroke="#4B6F66" stroke-width="2.5"/>
+<circle cx="404.50" cy="223.33" r="4.5" fill="#FFFDF8" stroke="#4B6F66" stroke-width="2.5"/>
+<circle cx="508.00" cy="200.30" r="4.5" fill="#FFFDF8" stroke="#4B6F66" stroke-width="2.5"/>
+<circle cx="715.00" cy="220.40" r="4.5" fill="#FFFDF8" stroke="#4B6F66" stroke-width="2.5"/>
+<polyline points="94.00,332.50 145.75,364.03 197.50,353.15 249.25,274.54 301.00,274.15" fill="none" stroke="#B43B2A" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="94.00" cy="332.50" r="4.5" fill="#FFFDF8" stroke="#B43B2A" stroke-width="2.5"/>
+<circle cx="145.75" cy="364.03" r="4.5" fill="#FFFDF8" stroke="#B43B2A" stroke-width="2.5"/>
+<circle cx="197.50" cy="353.15" r="4.5" fill="#FFFDF8" stroke="#B43B2A" stroke-width="2.5"/>
+<circle cx="249.25" cy="274.54" r="4.5" fill="#FFFDF8" stroke="#B43B2A" stroke-width="2.5"/>
+<circle cx="301.00" cy="274.15" r="4.5" fill="#FFFDF8" stroke="#B43B2A" stroke-width="2.5"/>
+<polyline points="94.00,332.50 145.75,340.47 197.50,420.90 249.25,429.71 301.00,406.97" fill="none" stroke="#226E8B" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="94.00" cy="332.50" r="4.5" fill="#FFFDF8" stroke="#226E8B" stroke-width="2.5"/>
+<circle cx="145.75" cy="340.47" r="4.5" fill="#FFFDF8" stroke="#226E8B" stroke-width="2.5"/>
+<circle cx="197.50" cy="420.90" r="4.5" fill="#FFFDF8" stroke="#226E8B" stroke-width="2.5"/>
+<circle cx="249.25" cy="429.71" r="4.5" fill="#FFFDF8" stroke="#226E8B" stroke-width="2.5"/>
+<circle cx="301.00" cy="406.97" r="4.5" fill="#FFFDF8" stroke="#226E8B" stroke-width="2.5"/>
+<polyline points="94.00,332.50 145.75,474.15 197.50,270.66 249.25,223.35 301.00,179.21" fill="none" stroke="#D27A26" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="94.00" cy="332.50" r="4.5" fill="#FFFDF8" stroke="#D27A26" stroke-width="2.5"/>
+<circle cx="145.75" cy="474.15" r="4.5" fill="#FFFDF8" stroke="#D27A26" stroke-width="2.5"/>
+<circle cx="197.50" cy="270.66" r="4.5" fill="#FFFDF8" stroke="#D27A26" stroke-width="2.5"/>
+<circle cx="249.25" cy="223.35" r="4.5" fill="#FFFDF8" stroke="#D27A26" stroke-width="2.5"/>
+<circle cx="301.00" cy="179.21" r="4.5" fill="#FFFDF8" stroke="#D27A26" stroke-width="2.5"/>
+<text x="94.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">2048</text>
+<text x="197.50" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">3072</text>
+<text x="301.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">4096</text>
+<text x="404.50" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">5120</text>
+<text x="508.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">6144</text>
+<text x="715.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">8192</text>
+<text x="405" y="535" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#26342F">state-visit exposure</text>
+<text x="46" y="335" transform="rotate(-90 46 335)" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#26342F">log(K / K_E2048)</text>
+<line x1="815.0" y1="180.00" x2="1090.0" y2="180.00" stroke="#26342F" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="1090.0" y="173.00" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#26342F">I_U=1</text>
+<rect x="815.00" y="220.05" width="42.0" height="264.95" rx="4" fill="#4B6F66"/>
+<text x="836.00" y="212.05" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="bold" fill="#26342F">0.869</text>
+<text x="836.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="10" fill="#26342F">S211/D211</text>
+<rect x="892.67" y="299.01" width="42.0" height="185.99" rx="4" fill="#B43B2A"/>
+<text x="913.67" y="291.01" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="bold" fill="#26342F">0.610</text>
+<text x="913.67" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="10" fill="#26342F">S211/D223</text>
+<rect x="970.33" y="438.67" width="42.0" height="46.33" rx="4" fill="#226E8B"/>
+<text x="991.33" y="430.67" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="bold" fill="#26342F">0.152</text>
+<text x="991.33" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="10" fill="#26342F">S211/D227</text>
+<rect x="1048.00" y="389.54" width="42.0" height="95.46" rx="4" fill="#D27A26"/>
+<text x="1069.00" y="381.54" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="bold" fill="#26342F">0.313</text>
+<text x="1069.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="10" fill="#26342F">S223/D211</text>
+<line x1="104" y1="576" x2="130" y2="576" stroke="#4B6F66" stroke-width="4"/>
+<text x="137" y="581" font-family="Consolas, monospace" font-size="11" fill="#26342F">S211->D211</text>
+<line x1="269" y1="576" x2="295" y2="576" stroke="#B43B2A" stroke-width="4"/>
+<text x="302" y="581" font-family="Consolas, monospace" font-size="11" fill="#26342F">S211->D223</text>
+<line x1="434" y1="576" x2="460" y2="576" stroke="#226E8B" stroke-width="4"/>
+<text x="467" y="581" font-family="Consolas, monospace" font-size="11" fill="#26342F">S211->D227</text>
+<line x1="599" y1="576" x2="625" y2="576" stroke="#D27A26" stroke-width="4"/>
+<text x="632" y="581" font-family="Consolas, monospace" font-size="11" fill="#26342F">S223->D211</text>
+<rect x="815" y="545" width="275" height="57" rx="8" fill="#E5EEE9" stroke="#4B6F66"/>
+<text x="952" y="567" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#1F2D28">Mixed state-by-suffix control</text>
+<text x="952" y="587" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#56645F">D211 delayed recovery: E5120</text>
+</svg>
