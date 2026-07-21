@@ -21,7 +21,18 @@ The registered log changes are `-1.0005`, `+1.2498`, and `+0.0839`. The exposure
 
 The original `R=64` trough occurred at `E=2048`, AdamW step 4. At `R=128`, the trough remains at `E=2048` even though that is AdamW step 2. This rejects the preregistered prediction that the excursion onset is pinned to the first four optimizer updates. It favors an exposure-indexed, loop-depth-dependent transient over an early-Adam timing artifact.
 
-This is not causal identification of a stability boundary. Learning-rate schedule confounding was ruled out earlier, and step-pinned optimizer timing now loses prospectively, but optimizer state was not independently intervened on. The licensed statement is that the transient tracks state-visit exposure across `R=64` and `R=128`, survives at `R=128`, and recovers by step 4 while remaining recovered at step 8.
+The stored probe norms identify what falls. Define
+
+```text
+I_U = ||sum_r U_r||^2 / sum_r ||U_r||^2
+I_G = ||sum_r G_r||^2 / sum_r ||G_r||^2.
+```
+
+Because `I-1` is the normalized sum of pairwise cross-terms, `I<1` proves net destructive interference in that channel; it does not imply that every visit pair is anti-aligned. At the `R=128` trough, geometric `I_U=0.0770` while `I_G=42.4632`. All three seeds have `I_U<1` and `I_G>1`. The excursion is therefore a collapse of aggregate suffix-sensitivity coherence against a strongly constructive gradient channel, not merely a small undifferentiated alignment coefficient. The less qualified word *anti-alignment* is not licensed by these aggregate norms.
+
+The training generator also rules out a literal shared-item artifact at `E=2048`. Batches advance as `stream=optimizer_step-1`, so the four depths use streams `15`, `7`, `3`, and `1` at that exposure. In particular, `R=64` and `R=128` do not read the same training batch at their trough. Untied geometric interval-gradient maxima decrease rather than bump from `E=1024` to `E=2048` at every depth. A broader fixed-order interaction remains possible because the current `seed` jointly controls initialization, task transform, training order, and probe randomness; it requires a data-order-only intervention.
+
+This is not causal identification of a stability boundary. Learning-rate schedule confounding was ruled out earlier, step-pinned optimizer timing now loses prospectively, and the literal same-batch explanation is structurally false, but data order and optimizer state were not independently intervened on. The licensed statement is that the transient tracks state-visit exposure across `R=64` and `R=128`, localizes to destructive suffix-sensitivity interference, survives at `R=128`, and recovers by step 4 while remaining recovered at step 8.
 
 ## Seed Variance
 
@@ -43,7 +54,7 @@ Matched tied-to-untied interval-maximum gradient ratios at optimizer step 4 are:
 | 64 | 2048 | 96.8908x |
 | 128 | 4096 | 454.8110x |
 
-The three-depth log-log exponent is `2.1200`. The adjacent slopes are `2.0093` from `R=32->64` and `2.2308` from `R=64->128`. The previously descriptive two-point escalation therefore persists with a third depth, but this remains a small-scale, single-task exponent rather than an asymptotic law.
+The three-depth log-log exponent is `2.1200`. The adjacent slopes are `2.0093` from `R=32->64` and `2.2308` from `R=64->128`. This is quantitatively consistent with the quadratic amplification pathway in the DeepLoop analysis: the observed exponent differs from `2` by `0.12`. Across this campaign, the proposed threshold has not bound in the `p` grid or learning-rate ladder and the fully aligned envelope has failed as a description, while this first stressed regime preserves the mechanism-level quadratic scaling prediction. In short, the machinery is right about how measured stress scales here and wrong about where the bound becomes active. This remains a small-scale, single-task, three-depth exponent rather than an asymptotic law.
 
 At `R=128`, the stress ratio remains between `415.6x` and `514.0x` over all four intervals. The tied run remains finite and improves loss despite this stress, so high gradient amplification is associated with the excursion but is not itself a divergence boundary in the observed horizon.
 
@@ -57,8 +68,8 @@ The combined record set contains 24 unique records: 12 tied kappa-plus-gradient 
 
 ## Claim Boundary
 
-In this small tied residual-loop construction, a high-depth alignment excursion is pinned to approximately 2048 state-visit exposures rather than four AdamW updates, deepens sharply by `R=128`, and recovers without nonfinite training by step 4. Step-aligned gradient stress grows approximately as `R^2.12` over `R={32,64,128}`. These measurements do not establish an asymptotic stability boundary, causal AdamW mechanism, task-performance effect, or transfer beyond this model and task family.
+In this small tied residual-loop construction, a high-depth alignment excursion is pinned to approximately 2048 state-visit exposures rather than four AdamW updates, consists of net destructive interference in the suffix-sensitivity channel, deepens sharply by `R=128`, and recovers without nonfinite training by step 4. Step-aligned gradient stress grows approximately as `R^2.12` over `R={32,64,128}`, consistent with a quadratic amplification prediction. These measurements do not establish an asymptotic stability boundary, causal optimizer or data-order mechanism, task-performance effect, or transfer beyond this model and task family.
 
 ## Next Test
 
-The next causal experiment should hold `R=128`, exposure, task streams, and probe seeds fixed while preregistering an optimizer intervention such as linear warmup versus constant LR. The endpoint should be excursion depth at `E=2048`, not onset timing, because onset timing is now prospectively exposure-pinned.
+The next causal experiment should separate the currently coupled random channels. Hold `R=64`, model initialization, task transform, measurement batch, and probe seed fixed while varying only three registered training-order seeds. The primary endpoint is trough depth at `E=2048`: persistence supports an exposure-indexed intrinsic transition, while movement or disappearance supports a data-order interaction. An optimizer intervention such as linear warmup versus constant LR follows only after this cheaper confound is resolved.

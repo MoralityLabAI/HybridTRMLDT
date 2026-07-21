@@ -21,6 +21,7 @@
 - finalizer resource receipt: `af79283b72acf9781a5e392f4b825909d7d82511d6c9537a52f11aa1b9cc897d`
 - benchmark/result receipt: `163ce7216f784426be7005b8a38d8edbbb4f819d6248f5bf8f84468b2b5993e7`
 - report figure: `36efaab2159901893d384d55b4397357732aa29ed31c3d1c01ed6fef45e71104`
+- post-outcome mechanism audit: `8c59c2e83a6b221752dd31aa5f8cdb4ff8f734bd072e60bd75762ff1672f8ef9`
 
 The copy under `data/benchmarks` is JSON-identical to the result receipt in the recovery directory. All text hashes use canonical LF verification with legacy raw-byte compatibility; the checkpoint remains raw-byte exact.
 
@@ -37,4 +38,9 @@ The copy under `data/benchmarks` is JSON-identical to the result receipt in the 
 - successful run and finalizer report no lingering owned process or GPU app;
 - no sealed v0.1 alignment-note artifact was modified.
 
-Full repository verification after packaging: `314 passed in 80.63s`.
+The mechanism audit is a labeled deterministic post-outcome derivation, not a
+new sealed training outcome. It verifies the exact cross-term identity from the
+stored norm vectors and shows that equal exposure maps to different training
+streams across loop depths.
+
+Full repository verification after the mechanism audit: `317 passed in 57.94s`.
