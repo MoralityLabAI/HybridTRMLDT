@@ -1,0 +1,30 @@
+{
+  "protocol_id": "rlm_hybrid_control_trm_build_v1",
+  "status": "pre-evaluation training protocol",
+  "task_suite_path": "data/benchmarks/rlm_hybrid_long_context_tasks_v1.json",
+  "training": {
+    "seeds": [211, 223, 227],
+    "latent_dim": 48,
+    "recurrence_steps": 4,
+    "steps": 200,
+    "checkpoint_interval": 50,
+    "batch_size": 16,
+    "learning_rate": 0.008,
+    "gradient_clip": 1.0,
+    "device": "cpu",
+    "checkpoint_selection": "final step only"
+  },
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1800,
+    "aggregate_gpu_hours": 1,
+    "device": "CPU-only local training",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  },
+  "claim_boundary": "The trained model is the gym ControlTRM analogue, not the official TinyRecursiveModels implementation. Checkpoint outputs are frozen proposal sources, not task-performance claims until registered evaluation."
+}
