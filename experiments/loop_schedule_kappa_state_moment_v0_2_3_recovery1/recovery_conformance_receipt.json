@@ -1,0 +1,60 @@
+{
+  "protocol_id": "loop_schedule_kappa_state_moment_v0_2_3",
+  "status": "recovery_conformant_unsealed",
+  "audit_utc": "2026-07-21T04:34:58.7945009Z",
+  "config_sha256": "806b93a029445bf9db707912ee9734c06c7fb74f4d8afaa7e6b9e823f158af8b",
+  "attempt_1_interruption_receipt": "experiments/loop_schedule_kappa_state_moment_v0_2_3/attempt_1_interruption_receipt.json",
+  "attempt_1_result_sha256": "f384ed8daf77ee3a794281eeabcdad35a8a3dfea6aa1ba7fbdd0a4e5a55b42b9",
+  "recovery_result_path": "experiments/loop_schedule_kappa_state_moment_v0_2_3_recovery1/state_moment_result.json",
+  "recovery_result_sha256": "2b87aad725f5555da15d1534870b4f149ff8de72ad00e82763de790eb7d6e581",
+  "result_byte_identity_expected": false,
+  "result_byte_identity_exception": "output paths and git_head differ across the preserved attempt and recovery",
+  "normalized_science_summary_exact": true,
+  "attempt_1_records_sha256": "ee1d17c1d2d66df080f453a20f75d7ee22f1b90b02ab043cc7bf995b6ebd7ce1",
+  "recovery_records_path": "experiments/loop_schedule_kappa_state_moment_v0_2_3_recovery1/state_moment_records.jsonl",
+  "recovery_records_sha256": "ee1d17c1d2d66df080f453a20f75d7ee22f1b90b02ab043cc7bf995b6ebd7ce1",
+  "records_byte_identical": true,
+  "terminal_checkpoints": [
+    {
+      "name": "state_moment_M211_O223_D211_E4096_step_8.pt",
+      "sha256": "62252f0806cfa4567b20d99efb24e7dc63798daf9dbf7ffca6926bd67714ee6c",
+      "byte_identical": true,
+      "model_tensor_exact": true,
+      "optimizer_tensor_exact": true
+    },
+    {
+      "name": "state_moment_M211_O223_D223_E4096_step_8.pt",
+      "sha256": "3bb19ff929b8133de691c8d098a867183e91537bc91f5c44bfd0d204098a58bf",
+      "byte_identical": true,
+      "model_tensor_exact": true,
+      "optimizer_tensor_exact": true
+    },
+    {
+      "name": "state_moment_M223_O211_D211_E4096_step_8.pt",
+      "sha256": "8b506cc9ad677445f87c2d795e705096d7c52802d7bc809917de7d9fe8092393",
+      "byte_identical": true,
+      "model_tensor_exact": true,
+      "optimizer_tensor_exact": true
+    },
+    {
+      "name": "state_moment_M223_O211_D223_E4096_step_8.pt",
+      "sha256": "78805fc8786ade067d5f3fb269c516e7442a051ee46a1516f8defbb4ac82a70e",
+      "byte_identical": true,
+      "model_tensor_exact": true,
+      "optimizer_tensor_exact": true
+    }
+  ],
+  "resource_receipt_path": "experiments/loop_schedule_kappa_state_moment_v0_2_3_recovery1/run.resource_receipt.json",
+  "resource_receipt_sha256": "418f75853f797e2873e7f259ce4d44991dee047b1679d4bbf9976f11ac03307e",
+  "resource_status": "completed",
+  "cleanup_passed": true,
+  "prior_elapsed_seconds": 620,
+  "run_elapsed_seconds": 662.195,
+  "aggregate_elapsed_seconds": 1282.195,
+  "peak_ram_mb": 934.559,
+  "peak_io_mb_s": 9.201,
+  "peak_vram_mb": 0,
+  "lingering_owned_process": false,
+  "lingering_owned_gpu_app": false,
+  "admissibility": "passed_pending_final_seal"
+}
