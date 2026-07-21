@@ -72,4 +72,4 @@ In this small tied residual-loop construction, a high-depth alignment excursion 
 
 ## Next Test
 
-The next causal experiment should separate the currently coupled random channels. Hold `R=64`, model initialization, task transform, measurement batch, and probe seed fixed while varying only three registered training-order seeds. The primary endpoint is trough depth at `E=2048`: persistence supports an exposure-indexed intrinsic transition, while movement or disappearance supports a data-order interaction. An optimizer intervention such as linear warmup versus constant LR follows only after this cheaper confound is resolved.
+The seed-decoupled follow-up is complete; see [Loop-Schedule Kappa Data-Order Intervention v0.2.1](loop_schedule_kappa_data_order_v0_2_1.md). Two of three fresh orders reproduce the registered trough and recovery, one does not recover, and all four orders show destructive suffix-sensitivity interference at `E=2048`. The next design should cross construction bundles `{101,103,107}` with fresh order seeds `{211,223,227}` before an optimizer intervention.

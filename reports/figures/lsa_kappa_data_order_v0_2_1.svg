@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="650" viewBox="0 0 1160 650">
+<rect width="1160" height="650" fill="#F1EBDD"/>
+<rect x="24" y="24" width="1112" height="602" rx="18" fill="#FFFDF7" stroke="#26342F" stroke-width="1.5"/>
+<text x="54" y="68" font-family="Georgia, serif" font-size="26" font-weight="bold" fill="#1F2D28">E2048 cancellation recurs; recovery depends on data order</text>
+<text x="54" y="96" font-family="Georgia, serif" font-size="14" fill="#56645F">Fixed construction seed 103; only the training-batch sequence changes</text>
+<text x="92" y="142" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#1F2D28">Kappa trajectories</text>
+<text x="790" y="142" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#1F2D28">Sensitivity interference at E2048</text>
+<rect x="503.00" y="175.0" width="60" height="310.0" fill="#ECDDCB" opacity="0.72"/>
+<line x1="92.0" y1="485.00" x2="680.0" y2="485.00" stroke="#D8D0C1"/>
+<text x="80" y="489.00" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">0.3</text>
+<line x1="92.0" y1="407.50" x2="680.0" y2="407.50" stroke="#D8D0C1"/>
+<text x="80" y="411.50" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">0.6</text>
+<line x1="92.0" y1="330.00" x2="680.0" y2="330.00" stroke="#D8D0C1"/>
+<text x="80" y="334.00" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">0.9</text>
+<line x1="92.0" y1="252.50" x2="680.0" y2="252.50" stroke="#D8D0C1"/>
+<text x="80" y="256.50" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">1.2</text>
+<line x1="92.0" y1="175.00" x2="680.0" y2="175.00" stroke="#D8D0C1"/>
+<text x="80" y="179.00" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#56645F">1.5</text>
+<polyline points="92.00,344.12 239.00,417.13 386.00,439.07 533.00,448.04 680.00,238.24" fill="none" stroke="#496A63" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="92.00" cy="344.12" r="4.5" fill="#FFFDF7" stroke="#496A63" stroke-width="2.5"/>
+<circle cx="239.00" cy="417.13" r="4.5" fill="#FFFDF7" stroke="#496A63" stroke-width="2.5"/>
+<circle cx="386.00" cy="439.07" r="4.5" fill="#FFFDF7" stroke="#496A63" stroke-width="2.5"/>
+<circle cx="533.00" cy="448.04" r="4.5" fill="#FFFDF7" stroke="#496A63" stroke-width="2.5"/>
+<circle cx="680.00" cy="238.24" r="4.5" fill="#FFFDF7" stroke="#496A63" stroke-width="2.5"/>
+<polyline points="92.00,344.12 239.00,198.45 386.00,243.01 533.00,314.44 680.00,383.22" fill="none" stroke="#D07A28" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="92.00" cy="344.12" r="4.5" fill="#FFFDF7" stroke="#D07A28" stroke-width="2.5"/>
+<circle cx="239.00" cy="198.45" r="4.5" fill="#FFFDF7" stroke="#D07A28" stroke-width="2.5"/>
+<circle cx="386.00" cy="243.01" r="4.5" fill="#FFFDF7" stroke="#D07A28" stroke-width="2.5"/>
+<circle cx="533.00" cy="314.44" r="4.5" fill="#FFFDF7" stroke="#D07A28" stroke-width="2.5"/>
+<circle cx="680.00" cy="383.22" r="4.5" fill="#FFFDF7" stroke="#D07A28" stroke-width="2.5"/>
+<polyline points="92.00,344.12 239.00,263.47 386.00,279.77 533.00,412.23 680.00,271.62" fill="none" stroke="#B33A2B" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="92.00" cy="344.12" r="4.5" fill="#FFFDF7" stroke="#B33A2B" stroke-width="2.5"/>
+<circle cx="239.00" cy="263.47" r="4.5" fill="#FFFDF7" stroke="#B33A2B" stroke-width="2.5"/>
+<circle cx="386.00" cy="279.77" r="4.5" fill="#FFFDF7" stroke="#B33A2B" stroke-width="2.5"/>
+<circle cx="533.00" cy="412.23" r="4.5" fill="#FFFDF7" stroke="#B33A2B" stroke-width="2.5"/>
+<circle cx="680.00" cy="271.62" r="4.5" fill="#FFFDF7" stroke="#B33A2B" stroke-width="2.5"/>
+<polyline points="92.00,344.12 239.00,377.57 386.00,356.21 533.00,401.04 680.00,293.29" fill="none" stroke="#226C8A" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="92.00" cy="344.12" r="4.5" fill="#FFFDF7" stroke="#226C8A" stroke-width="2.5"/>
+<circle cx="239.00" cy="377.57" r="4.5" fill="#FFFDF7" stroke="#226C8A" stroke-width="2.5"/>
+<circle cx="386.00" cy="356.21" r="4.5" fill="#FFFDF7" stroke="#226C8A" stroke-width="2.5"/>
+<circle cx="533.00" cy="401.04" r="4.5" fill="#FFFDF7" stroke="#226C8A" stroke-width="2.5"/>
+<circle cx="680.00" cy="293.29" r="4.5" fill="#FFFDF7" stroke="#226C8A" stroke-width="2.5"/>
+<text x="92.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">0</text>
+<text x="239.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">512</text>
+<text x="386.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">1024</text>
+<text x="533.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">2048</text>
+<text x="680.00" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">4096</text>
+<text x="386" y="535" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#26342F">state-visit exposure</text>
+<text x="47" y="335" transform="rotate(-90 47 335)" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#26342F">kappa</text>
+<line x1="790.0" y1="175.00" x2="1092.0" y2="175.00" stroke="#26342F" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="1092.0" y="168.00" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#26342F">I_U=1: zero aggregate cross-term</text>
+<rect x="790.00" y="454.72" width="47.0" height="30.28" rx="4" fill="#496A63"/>
+<text x="813.50" y="446.72" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="bold" fill="#26342F">0.098</text>
+<text x="813.50" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">D103</text>
+<rect x="875.00" y="350.69" width="47.0" height="134.31" rx="4" fill="#D07A28"/>
+<text x="898.50" y="342.69" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="bold" fill="#26342F">0.433</text>
+<text x="898.50" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">D211</text>
+<rect x="960.00" y="425.48" width="47.0" height="59.52" rx="4" fill="#B33A2B"/>
+<text x="983.50" y="417.48" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="bold" fill="#26342F">0.192</text>
+<text x="983.50" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">D223</text>
+<rect x="1045.00" y="429.02" width="47.0" height="55.98" rx="4" fill="#226C8A"/>
+<text x="1068.50" y="421.02" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="bold" fill="#26342F">0.181</text>
+<text x="1068.50" y="507" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#26342F">D227</text>
+<line x1="105.0" y1="574" x2="130.0" y2="574" stroke="#496A63" stroke-width="4"/>
+<text x="137.0" y="579" font-family="Consolas, monospace" font-size="11" fill="#26342F">D103 replay</text>
+<line x1="250.0" y1="574" x2="275.0" y2="574" stroke="#D07A28" stroke-width="4"/>
+<text x="282.0" y="579" font-family="Consolas, monospace" font-size="11" fill="#26342F">D211</text>
+<line x1="395.0" y1="574" x2="420.0" y2="574" stroke="#B33A2B" stroke-width="4"/>
+<text x="427.0" y="579" font-family="Consolas, monospace" font-size="11" fill="#26342F">D223 pass</text>
+<line x1="540.0" y1="574" x2="565.0" y2="574" stroke="#226C8A" stroke-width="4"/>
+<text x="572.0" y="579" font-family="Consolas, monospace" font-size="11" fill="#26342F">D227 pass</text>
+<rect x="790" y="548" width="302" height="51" rx="8" fill="#E6EFEA" stroke="#496A63"/>
+<text x="941" y="570" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#1F2D28">Registered outcome: 2/3 fresh orders pass</text>
+<text x="941" y="588" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#56645F">Destructive sensitivity cross-term: 4/4 orders</text>
+</svg>
