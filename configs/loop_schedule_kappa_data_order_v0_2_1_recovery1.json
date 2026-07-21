@@ -1,0 +1,75 @@
+{
+  "protocol_id": "loop_schedule_kappa_data_order_v0_2_1_recovery1",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-21T02:34:24.7473892Z",
+  "registration_timing": "after all four training cells completed and result assembly failed, before any aggregate branch was computed",
+  "status_label": "no-training recovery of the baseline exposure-set implementation error",
+  "parents": {
+    "original_config": {
+      "path": "configs/loop_schedule_kappa_data_order_v0_2_1.json",
+      "sha256": "5d02d12fe582b170284e29403afa9e90f8fea04ee60c0185dac0cb74c988ea11"
+    },
+    "failed_records": {
+      "path": "experiments/loop_schedule_kappa_data_order_v0_2_1/data_order_records.jsonl",
+      "sha256": "84419b04bbb59ceba0a87f91b67f8e143bcf3f2378b71ce9f8a47b86cb3518b3"
+    },
+    "failed_events": {
+      "path": "experiments/loop_schedule_kappa_data_order_v0_2_1/data_order_events.jsonl",
+      "sha256": "804ec89fd6c06c10c0aeaf18c3bdbc26f1ea4efd88856856c4b75cadf259e2af"
+    },
+    "failed_resource": {
+      "path": "experiments/loop_schedule_kappa_data_order_v0_2_1/run.resource_receipt.json",
+      "sha256": "bbf30a39d96d4382efb6d472125a691175937aa4a2a246e529d5fa96cb2afcca"
+    },
+    "failed_stderr": {
+      "path": "experiments/loop_schedule_kappa_data_order_v0_2_1/run.attempt-1.stderr.log",
+      "sha256": "d487312592fd269ebaf4eafba4b695789f1d1285db964370646b75a06681334f"
+    },
+    "surface_records": {
+      "path": "experiments/loop_schedule_kappa_surface_v1_recovery2/combined_records.jsonl",
+      "sha256": "69c1b1ded04426159d0da666ca34a2eaa22ff53ea3a13b0843775ec512dc9409"
+    }
+  },
+  "admission": {
+    "record_count": 20,
+    "data_order_seeds": [103, 211, 223, 227],
+    "measurement_exposures": [0, 512, 1024, 2048, 4096],
+    "required_regime": "tied",
+    "required_rounds": 64,
+    "rule": "admit all and only the complete failed-attempt records after hash, identity, exposure-grid, and five-channel seed verification"
+  },
+  "correction": {
+    "failed_rule": "new kappa exposure set must equal parent kappa exposure set",
+    "corrected_rule": "new grid must equal {0,512,1024,2048,4096}; parent kappa grid must equal {0,1024,2048,4096}; replay compares all and only parent kappa checkpoints",
+    "e512_role": "new registered measurement retained and excluded from replay because the sealed parent E512 row is gradient-only",
+    "scientific_rule_change": false,
+    "new_training": false
+  },
+  "frozen_analysis": {
+    "construction_seed": 103,
+    "fresh_data_order_seeds": [211, 223, 227],
+    "absolute_kappa_tolerance": 1e-12,
+    "practical_log_change": 0.1,
+    "minimum_persistent_fresh_orders": 2,
+    "per_order_trough_rule": "log(K2048/K1024)<=-0.1 and log(K4096/K2048)>=0.1",
+    "branches": ["persists_under_data_order_reseed", "data_order_sensitive", "instrument_drift"]
+  },
+  "resource_accounting": {
+    "failed_attempt_seconds": 767.664,
+    "aggregate_limit_seconds": 3600,
+    "new_training_cells": 0
+  },
+  "claim_boundary": "This labeled post-completion recovery changes only a malformed replay exposure-set assertion and performs no new training. The original post-outcome selection, branch rules, conditional R64 scope, and prohibition on intrinsic-boundary, Transformer, task-performance, asymptotic, or optimizer-causal claims remain in force.",
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 300,
+    "aggregate_gpu_hours": 1,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}

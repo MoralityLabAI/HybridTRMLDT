@@ -85,11 +85,13 @@ def baseline_replay_gate(
         and int(row.get("seed", -1)) == 103
         and "kappa" in row
     }
-    if set(new) != set(parent) or set(new) != {0, 512, 1024, 2048, 4096}:
-        raise ValueError("baseline replay and parent exposure grids differ")
+    if set(new) != {0, 512, 1024, 2048, 4096}:
+        raise ValueError("baseline replay has an unexpected exposure grid")
+    if set(parent) != {0, 1024, 2048, 4096}:
+        raise ValueError("sealed parent has an unexpected kappa exposure grid")
     differences = {
         str(exposure): abs(float(new[exposure]["kappa"]) - float(parent[exposure]["kappa"]))
-        for exposure in sorted(new)
+        for exposure in sorted(parent)
     }
     maximum = max(differences.values())
     return {

@@ -1,0 +1,13 @@
+{
+  "protocol_id": "loop_schedule_kappa_data_order_v0_2_1_recovery1",
+  "config_path": "configs/loop_schedule_kappa_data_order_v0_2_1_recovery1.json",
+  "config_sha256": "21717c2f67e32f35424c60e53c7bd86c7afadc23c018a01a27ecdc49b9b38de4",
+  "registered_utc": "2026-07-21T02:34:24.7473892Z",
+  "registration_status": "frozen_after_cell_completion_before_aggregate_classification",
+  "source_commit": "7ef610ac68f34674893e549d590def8c99b89c01",
+  "failed_attempt_outcomes_observed": true,
+  "aggregate_branch_computed": false,
+  "new_training_cells": 0,
+  "admitted_record_count": 20,
+  "scientific_rules_changed": false
+}

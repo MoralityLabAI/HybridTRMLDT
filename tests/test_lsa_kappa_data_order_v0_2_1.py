@@ -58,6 +58,7 @@ def test_baseline_gate_rejects_kappa_drift() -> None:
     parent = [
         {**row, "regime": "tied", "rounds": 64, "seed": 103}
         for row in new
+        if row["exposure"] != 512
     ]
     assert baseline_replay_gate(new, parent, tolerance=1e-12)["passed"]
     parent[2]["kappa"] = 1.21
