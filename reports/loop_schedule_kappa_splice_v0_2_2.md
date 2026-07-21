@@ -48,6 +48,6 @@ Recovery time, not eventual recovery within the tested horizon, is order-depende
 
 The splice causally intervenes on deterministic suffix identity while holding a source model-plus-optimizer checkpoint fixed, and the reciprocal arm demonstrates checkpoint dependence. It does not yet separate model representation state from AdamW moment state, identify a single causal batch, or generalize beyond this post-outcome-selected `R=64` construction and synthetic task.
 
-## Next Test
+## Successor Result
 
-Split the checkpoint bundle itself. Cross the order-211 and order-223 model weights with the opposite AdamW moment states before applying suffixes 211 and 223. That 2x2x2 decomposition distinguishes representation-conditioned rebound from optimizer-state-conditioned rebound. A broader construction-by-order matrix follows only after this cheaper mechanism split.
+The registered checkpoint-component split is complete; see [Loop-Schedule Kappa State/Moment Decomposition v0.2.3](loop_schedule_kappa_state_moment_v0_2_3.md). Neither representation-only nor moment-only control survives the full crossing. The result is `factorial_unresolved`: the three-way model-by-moment-by-suffix interaction (`+0.5280`) and model-weight main effect (`+0.5031`) are nearly tied, and swapping AdamW state reverses suffix preference under the 211 model weights.

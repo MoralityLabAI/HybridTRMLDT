@@ -1,6 +1,6 @@
 {
   "protocol_id": "loop_schedule_kappa_state_moment_v0_2_3",
-  "status": "recovery_conformant_unsealed",
+  "status": "recovery_conformant_sealed",
   "audit_utc": "2026-07-21T04:34:58.7945009Z",
   "config_sha256": "806b93a029445bf9db707912ee9734c06c7fb74f4d8afaa7e6b9e823f158af8b",
   "attempt_1_interruption_receipt": "experiments/loop_schedule_kappa_state_moment_v0_2_3/attempt_1_interruption_receipt.json",
@@ -46,6 +46,8 @@
   ],
   "resource_receipt_path": "experiments/loop_schedule_kappa_state_moment_v0_2_3_recovery1/run.resource_receipt.json",
   "resource_receipt_sha256": "418f75853f797e2873e7f259ce4d44991dee047b1679d4bbf9976f11ac03307e",
+  "sealed_result_receipt_path": "data/benchmarks/lsa_kappa_state_moment_v0_2_3_receipt.json",
+  "sealed_result_receipt_sha256": "d5299f930ebb67ce8cb882cc24a56a29f31072d7734b0152886fb5e934c3ea4a",
   "resource_status": "completed",
   "cleanup_passed": true,
   "prior_elapsed_seconds": 620,
@@ -56,5 +58,5 @@
   "peak_vram_mb": 0,
   "lingering_owned_process": false,
   "lingering_owned_gpu_app": false,
-  "admissibility": "passed_pending_final_seal"
+  "admissibility": "passed_and_sealed"
 }

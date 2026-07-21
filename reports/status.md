@@ -128,6 +128,14 @@ change-point model loses while the smooth branch requires no onset, the register
 All nine tied terminal cells replicate exactly, untied terminal gamma is `0.0246`, and the labeled recovery remains
 explicitly weaker than the original uncompleted five-checkpoint untied-kappa protocol.
 
+The sealed checkpoint splice resolves order 211 as delayed rather than nonrecovering and localizes rebound to a
+checkpoint-by-suffix interaction. Its registered model-weight by complete-AdamW-state by suffix successor is
+`factorial_unresolved`: the three-way effect (`+0.5280`) and model-weight main effect (`+0.5031`) are nearly tied.
+Under fixed 211 model weights, swapping only AdamW state reverses which suffix recovers. All endpoint gradient
+interference ratios remain strongly constructive (`34.05-36.22`), while functional sensitivity ranges from
+destructive cancellation (`I_U=0.178`) to constructive interference (`I_U=1.866`). The accepted scoped mechanism
+is checkpoint-component-conditioned sensitivity routing, not representation-only or optimizer-only control.
+
 ## Known Broken Pieces
 
 - GNU Make is not installed on this Windows host, so `make all` cannot be invoked directly. Every target body was
@@ -148,8 +156,8 @@ explicitly weaker than the original uncompleted five-checkpoint untied-kappa pro
 
 ## Next Recommended Patch
 
-For loop alignment, preregister a transient-depth surface with a fixed-width `R=64` training-time pulse and test
-its trough location and rebound on new seeds or a second task family; do not fit that model on the recovered
-surface and call it confirmation. For the controller bridge, do not tune either failed feature panel: a successor
+For loop alignment, replicate the full model-weight by AdamW-state by suffix decomposition at new construction
+and data-order seeds before splitting first and second optimizer moments; the saturated v0.2.3 design cannot
+estimate uncertainty. For the controller bridge, do not tune either failed feature panel: a successor
 still requires multiple task-aligned measured stalks, source-identity holdout, and discrimination against typed
 shuffles and matched synthetic spectra before any neural-source attribution claim.
