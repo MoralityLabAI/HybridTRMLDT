@@ -143,3 +143,8 @@ def test_v1_1_preserves_runtime_and_opens_only_eval_split() -> None:
     assert len(selected) == 72
     assert all(task.split == "eval" for task in selected)
     assert successor._prior_typed_unsafe(config, Path("missing-output")) == 0
+    registration = json.loads(Path("configs/rlm_trm_ldt_hybrid_neighborhood_v1_1_registration.json").read_text())
+    assert canonical_file_sha256(registration["config_path"]) == registration["config_sha256"]
+    assert canonical_file_sha256(registration["calibration_stop_path"]) == registration["calibration_stop_sha256"]
+    for path, digest in registration["implementation_hashes"].items():
+        assert canonical_file_sha256(path) == digest
