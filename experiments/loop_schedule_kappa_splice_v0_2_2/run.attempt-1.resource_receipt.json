@@ -1,0 +1,127 @@
+{
+    "status":  "completed",
+    "foreign_process_policy":  "observed but never terminated",
+    "aggregate_elapsed_seconds":  584.613,
+    "memory_after":  {
+                         "available_ram_mb":  2053.746,
+                         "total_visible_ram_mb":  24355.305,
+                         "git_commit":  "5e0ff127a03f7d41c3b47268c15b62b07ed61414",
+                         "top_memory_processes":  [
+                                                      {
+                                                          "pid":  27132,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  2634.676,
+                                                          "private_memory_mb":  2829.59
+                                                      },
+                                                      {
+                                                          "pid":  5108,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  1088.207,
+                                                          "private_memory_mb":  1130.996
+                                                      },
+                                                      {
+                                                          "pid":  3052,
+                                                          "name":  "Memory Compression",
+                                                          "working_set_mb":  899.59,
+                                                          "private_memory_mb":  9.449
+                                                      },
+                                                      {
+                                                          "pid":  16328,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  864.199,
+                                                          "private_memory_mb":  1019.074
+                                                      },
+                                                      {
+                                                          "pid":  25596,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  856.879,
+                                                          "private_memory_mb":  1012.895
+                                                      }
+                                                  ],
+                         "gpu_compute_apps":  [
+
+                                              ]
+                     },
+    "caps":  {
+                 "ram_mb":  2048,
+                 "cpu_pct":  50,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_mb":  1500,
+                 "torch_vram_fraction":  0.35,
+                 "phase_timeout_seconds":  1800,
+                 "aggregate_gpu_hours":  1,
+                 "device":  "cuda_if_available_else_cpu",
+                 "foreign_gpu_process_policy":  "observe and abort before launch; never terminate foreign processes"
+             },
+    "lingering_owned_gpu_app":  false,
+    "samples":  473,
+    "protocol_id":  "loop_schedule_kappa_splice_v0_2_2",
+    "prior_elapsed_seconds":  0,
+    "cleanup_passed":  true,
+    "ignored_cpu_only_gpu_registry_pids":  [
+
+                                           ],
+    "finished_utc":  "2026-07-21T03:09:36.2322091Z",
+    "peak_io_mb_s":  16.061,
+    "abort_reason":  null,
+    "owned_pid":  24600,
+    "attempt":  1,
+    "peak_ram_mb":  931.668,
+    "avg_ram_mb":  897.264,
+    "hard_caps":  {
+                      "process_memory":  true,
+                      "cpu_rate":  true,
+                      "torch_allocator_vram":  true,
+                      "vram_abort":  true,
+                      "io_abort":  true,
+                      "aggregate_time_abort":  true
+                  },
+    "lingering_owned_process":  false,
+    "avg_cpu_pct":  8.003,
+    "memory_before":  {
+                          "available_ram_mb":  2255.496,
+                          "total_visible_ram_mb":  24355.305,
+                          "git_commit":  "5e0ff127a03f7d41c3b47268c15b62b07ed61414",
+                          "top_memory_processes":  [
+                                                       {
+                                                           "pid":  27132,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  2381.586,
+                                                           "private_memory_mb":  2560.66
+                                                       },
+                                                       {
+                                                           "pid":  3052,
+                                                           "name":  "Memory Compression",
+                                                           "working_set_mb":  1092.777,
+                                                           "private_memory_mb":  9.445
+                                                       },
+                                                       {
+                                                           "pid":  5108,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  1052.574,
+                                                           "private_memory_mb":  1089.914
+                                                       },
+                                                       {
+                                                           "pid":  16328,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  862.031,
+                                                           "private_memory_mb":  1016.832
+                                                       },
+                                                       {
+                                                           "pid":  24568,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  775.914,
+                                                           "private_memory_mb":  979.566
+                                                       }
+                                                   ],
+                          "gpu_compute_apps":  [
+
+                                               ]
+                      },
+    "started_utc":  "2026-07-21T02:59:51.6187717Z",
+    "peak_vram_mb":  0,
+    "module":  "research_gym.scripts.bench_loop_schedule_kappa_splice_v0_2_2",
+    "elapsed_seconds":  584.613,
+    "phase":  "run"
+}
