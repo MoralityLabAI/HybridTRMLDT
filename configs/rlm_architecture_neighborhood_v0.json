@@ -1,0 +1,79 @@
+{
+  "protocol_id": "rlm_architecture_neighborhood_v0",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-21T14:54:27.4057600Z",
+  "registration_timing": "before any provider capability probe or architecture-neighborhood outcome",
+  "status_label": "bounded Recursive Language Model control-flow neighborhood pilot",
+  "task_suite": {
+    "path": "data/benchmarks/rlm_architecture_neighborhood_v0_tasks.json",
+    "sha256": "8b5607ca597c68831dbd8f739a289cb944ac8facf34a30e742088d2301236528",
+    "task_count": 4,
+    "families": ["retrieval", "relational_join", "global_aggregation", "version_resolution"]
+  },
+  "official_rlm_source": {
+    "repository": "https://github.com/alexzhang13/rlm.git",
+    "checkout_path": "C:/projects/rlm-official",
+    "commit": "72d6940142ddfb84ee6be573dc999a37e633e671",
+    "package": "rlms==0.1.3",
+    "files": [
+      {"path": "C:/projects/rlm-official/pyproject.toml", "sha256": "a5c3efe05886e5d6cf6a9071832de4a9a2cec65e57a653967e083a609d857a2b"},
+      {"path": "C:/projects/rlm-official/rlm/core/rlm.py", "sha256": "f7df6af55027159b2f428ff98c9b19beb872618ee88aa8fef62c9498fa1e0562"},
+      {"path": "C:/projects/rlm-official/rlm/environments/local_repl.py", "sha256": "cee6bcfc530b01cef4b39f722b2efc084dd2fa08fe495b88ceda7efa63b5e31e"},
+      {"path": "C:/projects/rlm-official/rlm/clients/openai.py", "sha256": "c81b0b08949900477bab7acd695464f687a88e0bb31e450a917a5782e49c8043"},
+      {"path": "C:/projects/rlm-official/rlm/utils/prompts.py", "sha256": "579c8ef220739f691d3896257b8289eec7e7b634fe473f41dea4adb83560b47e"}
+    ]
+  },
+  "architecture_order": [
+    "direct_full_context",
+    "map_reduce_4",
+    "rlm_depth_1",
+    "rlm_depth_2"
+  ],
+  "runtime": {
+    "python_executable": "C:/projects/rlm-official/.venv/Scripts/python.exe",
+    "python_version": "3.11.4",
+    "openai_package_version": "2.46.0",
+    "model": "gpt-5-nano",
+    "provider_max_retries": 1,
+    "max_output_tokens_per_call": 512,
+    "total_token_soft_cap": 12000,
+    "cell_timeout_seconds": 120,
+    "max_consecutive_errors": 2,
+    "max_concurrent_subcalls": 2,
+    "depth_1_max_iterations": 4,
+    "depth_2_max_iterations": 3,
+    "map_chunks": 4,
+    "execution_order": "architecture-major then task order",
+    "provider_temperature": "provider default",
+    "provider_seed": "not available in the registered official adapter"
+  },
+  "restricted_repl": {
+    "context_storage": "in-memory only",
+    "filesystem_access": false,
+    "subprocess_access": false,
+    "allowed_import_roots": ["collections", "json", "math", "re", "statistics"],
+    "network_access": "only official LM calls through the host handler",
+    "failure_rule": "retain attempted code and error in the trajectory; never relax restrictions after an outcome"
+  },
+  "registered_endpoints": {
+    "primary": "per-task answer-token match, reported by architecture without pooling task families",
+    "efficiency": ["provider calls", "input tokens", "output tokens", "wall time"],
+    "control_flow": ["iterations", "code blocks", "subcalls", "recursive subcalls", "maximum observed depth", "REPL errors"],
+    "summary": "accuracy/calls/tokens/time Pareto frontier; no scalarized winner",
+    "cell_failure": "retained as an error outcome and scored incorrect",
+    "token_cap_semantics": "official RLM soft cap checked between iterations and therefore permitted to overshoot within the final iteration"
+  },
+  "claim_boundary": "This four-task, one-run-per-cell API pilot evaluates a local control-flow neighborhood around the official RLM implementation. It can expose task-specific accuracy, cost, latency, recursion-use, and failure differences among direct full-context, deterministic map/reduce, and RLM depths 1 and 2. It cannot estimate stochastic uncertainty, attribute effects to recursion independently of prompts and provider behavior, establish long-context scaling, compare trained model architectures, or support a general RLM-superiority claim.",
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1800,
+    "aggregate_gpu_hours": 1,
+    "device": "CPU plus remote provider API",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}

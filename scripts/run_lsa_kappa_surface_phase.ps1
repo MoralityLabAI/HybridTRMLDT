@@ -5,6 +5,7 @@ param(
     [string]$Config = "configs/loop_schedule_kappa_surface_v1.json",
     [string]$Output = "experiments/loop_schedule_kappa_surface_v1",
     [string]$Module = "research_gym.scripts.bench_loop_schedule_kappa_surface",
+    [string]$PythonExe = "python",
     [ValidateRange(0, 2147483647)]
     [double]$ExternalPriorElapsedSeconds = 0,
     [ValidateRange(1, 2147483647)]
@@ -52,6 +53,12 @@ function Get-MemoryAudit {
 
 $ConfigPath = Resolve-RepoPath $Config
 $OutputPath = Resolve-RepoPath $Output
+$PythonPath = if ([System.IO.Path]::IsPathRooted($PythonExe)) {
+    [System.IO.Path]::GetFullPath($PythonExe)
+} else {
+    (Get-Command $PythonExe -ErrorAction Stop).Source
+}
+if (-not (Test-Path -LiteralPath $PythonPath)) { throw "Python executable does not exist" }
 if (-not (Test-Path -LiteralPath $ConfigPath)) { throw "registered config does not exist" }
 $Protocol = Get-Content -Raw -LiteralPath $ConfigPath | ConvertFrom-Json
 $Caps = $Protocol.resources
@@ -216,7 +223,7 @@ $ioViolations = 0
 $samples = 0
 $proc = $null
 try {
-    $proc = Start-Process -FilePath "python" -ArgumentList $arguments -WorkingDirectory $Repo -RedirectStandardOutput $Stdout -RedirectStandardError $Stderr -PassThru -NoNewWindow
+    $proc = Start-Process -FilePath $PythonPath -ArgumentList $arguments -WorkingDirectory $Repo -RedirectStandardOutput $Stdout -RedirectStandardError $Stderr -PassThru -NoNewWindow
     if (-not [LsaKappaSurfaceJobObject]::AssignProcessToJobObject($job, $proc.Handle)) {
         throw "process assignment to job failed"
     }
@@ -289,6 +296,7 @@ try {
     Write-Receipt ([ordered]@{
         protocol_id = $Protocol.protocol_id
         module = $Module
+        python_executable = $PythonPath
         phase = $Phase
         attempt = $Attempt
         status = $status

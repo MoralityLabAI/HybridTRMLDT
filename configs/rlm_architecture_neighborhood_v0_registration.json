@@ -1,0 +1,17 @@
+{
+  "protocol_id": "rlm_architecture_neighborhood_v0",
+  "config_path": "configs/rlm_architecture_neighborhood_v0.json",
+  "config_sha256": "9d7abc145cab136536ae5e2f43f6d924728e430e1dc4908fb9602bf664b38df4",
+  "registered_utc": "2026-07-21T14:54:27.4057600Z",
+  "registration_status": "frozen_before_any_provider_capability_probe_or_architecture_neighborhood_outcome",
+  "source_commit": "0826532b126e453e033fd261083f23a9ab54413e",
+  "official_rlm_commit": "72d6940142ddfb84ee6be573dc999a37e633e671",
+  "task_suite_sha256": "8b5607ca597c68831dbd8f739a289cb944ac8facf34a30e742088d2301236528",
+  "architecture_count": 4,
+  "task_count": 4,
+  "cell_count": 16,
+  "provider_outcomes_observed": false,
+  "registered_summary": "accuracy/calls/tokens/time Pareto frontier without scalarization",
+  "registered_failure_handling": "retain cell errors as incorrect outcomes; never relax restrictions or budgets",
+  "stochastic_boundary": "one provider run per cell with no deterministic provider seed"
+}
