@@ -1,0 +1,14 @@
+{
+  "protocol_id": "loop_schedule_kappa_splice_v0_2_2",
+  "config_path": "configs/loop_schedule_kappa_splice_v0_2_2.json",
+  "config_sha256": "7462fdca673324a593c32b23e5394147dba2a0b0c3d3cf41d882d5550bc600b1",
+  "registered_utc": "2026-07-21T02:53:34.0709133Z",
+  "registration_status": "frozen_before_any_splice_or_extended_horizon_outcome",
+  "source_commit": "bebae96acbd27bd8c4310f6fc3a8b8c7ab225c08",
+  "parent_outcomes_observed": true,
+  "new_splice_outcomes_observed": false,
+  "new_prefix_training": 0,
+  "new_continuation_arms": 5,
+  "registered_splice_branches": ["suffix_controlled_exit", "prehistory_controlled_exit", "mixed_state_suffix_control"],
+  "registered_censoring_branches": ["delayed_recovery", "right_censored_at_E8192"]
+}

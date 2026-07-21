@@ -1,0 +1,95 @@
+{
+  "protocol_id": "loop_schedule_kappa_splice_v0_2_2",
+  "protocol_version": 1,
+  "registered_utc": "2026-07-21T02:53:34.0709133Z",
+  "registration_timing": "after sealed v0.2.1 data-order outcomes and censoring correction, before any checkpoint-splice or extended-horizon outcome",
+  "status_label": "checkpoint splice of post-E2048 order suffixes plus D211 censoring extension",
+  "claim_scope": "causal continuation test within one post-outcome-selected R64 residual-loop construction; no intrinsic-boundary, Transformer, task-performance, asymptotic, or general data-order claim",
+  "parents": {
+    "source_records": {
+      "path": "experiments/loop_schedule_kappa_data_order_v0_2_1/data_order_records.jsonl",
+      "sha256": "84419b04bbb59ceba0a87f91b67f8e143bcf3f2378b71ce9f8a47b86cb3518b3"
+    },
+    "source_receipt": {
+      "path": "data/benchmarks/lsa_kappa_data_order_v0_2_1_recovery1_receipt.json",
+      "sha256": "c9b3ff9037b7d9dfcd9e74c14cfeb64be541dcd0964a84ac979a40335fae6fff"
+    },
+    "trainer_config": {
+      "path": "configs/loop_schedule_algebra_v0_1.json",
+      "sha256": "c6cd78a09909956962a2c6d585270807088a9b8b0dc5e1e69fc8b151d45882cc"
+    },
+    "d211_e2048": {
+      "path": "experiments/loop_schedule_kappa_data_order_v0_2_1/checkpoints/data_order_tied_R64_C103_D211_E2048_step_4.pt",
+      "sha256": "12e14efe098aa403841e7c71bf5a61960bab2deac0031c06c7dc8a3a725a8d4b"
+    },
+    "d211_e4096": {
+      "path": "experiments/loop_schedule_kappa_data_order_v0_2_1/checkpoints/data_order_tied_R64_C103_D211_E4096_step_8.pt",
+      "sha256": "fe8aff65ec0e241cad3d550f431d25584c981a8aa458c77b0b6a247e3ceb9d73"
+    },
+    "d223_e2048": {
+      "path": "experiments/loop_schedule_kappa_data_order_v0_2_1/checkpoints/data_order_tied_R64_C103_D223_E2048_step_4.pt",
+      "sha256": "5bdb2dc3174b8a06962a81f71065cc4ab6482091eae4aa3e21627b5db45eb3c4"
+    }
+  },
+  "splice_arms": [
+    {"state_seed": 211, "suffix_seed": 211, "role": "exact_replay"},
+    {"state_seed": 211, "suffix_seed": 223, "role": "forward_transfer"},
+    {"state_seed": 211, "suffix_seed": 227, "role": "forward_replication"},
+    {"state_seed": 223, "suffix_seed": 211, "role": "reciprocal_transfer"}
+  ],
+  "extension_arm": {
+    "state_seed": 211,
+    "suffix_seed": 211,
+    "source_exposure": 4096,
+    "terminal_exposure": 8192,
+    "measurement_exposures": [5120, 6144, 8192],
+    "role": "right-censoring resolution"
+  },
+  "frozen_training": {
+    "rounds": 64,
+    "construction_seed": 103,
+    "task_seed": 103,
+    "measurement_data_seed": 103,
+    "probe_seed": 103,
+    "batch_size": 8,
+    "measurement_batch_size": 8,
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "alpha": 1.0,
+    "beta": 0.25,
+    "power_iterations": 5,
+    "splice_measurement_exposures": [2560, 3072, 3584, 4096],
+    "chunk_strategy": "one checkpoint continuation arm at a time",
+    "checkpoint_interval": "terminal checkpoint for every arm"
+  },
+  "integrity_gate": {
+    "arm": "S211 state plus D211 suffix from E2048 to E4096",
+    "model_state": "tensor exact against sealed D211 E4096 checkpoint",
+    "optimizer_state": "tensor exact against sealed D211 E4096 checkpoint",
+    "absolute_kappa_tolerance": 1e-12,
+    "failure_rule": "stop before interpreting splice outcomes"
+  },
+  "registered_endpoints": {
+    "practical_log_change": 0.1,
+    "recovery_rule": "log(K_E/K_E2048)>=0.1",
+    "suffix_controlled_exit": "both S211->D223 and S211->D227 recover by E4096 and reciprocal S223->D211 does not",
+    "prehistory_controlled_exit": "neither S211 forward transfer recovers by E4096 and reciprocal S223->D211 does",
+    "mixed_state_suffix_control": "all other complete splice patterns",
+    "delayed_recovery": "unchanged S211->D211 reaches the recovery rule by a measured checkpoint at or before E8192",
+    "continued_censoring": "unchanged S211->D211 remains below the recovery rule through E8192"
+  },
+  "claim_boundary": "The splice intervenes on deterministic post-E2048 batch suffix identity while holding the source model and optimizer checkpoint fixed, and the reciprocal arm tests prehistory dependence. It can causally localize exit control within this one R64 construction but cannot identify a single causal batch, establish an intrinsic stability boundary, or generalize to Transformers, task performance, asymptotic depth, or other task families.",
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1800,
+    "aggregate_gpu_hours": 1,
+    "device": "cuda_if_available_else_cpu",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}
