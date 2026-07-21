@@ -1,0 +1,128 @@
+{
+    "caps":  {
+                 "ram_mb":  2048,
+                 "cpu_pct":  50,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_mb":  1500,
+                 "torch_vram_fraction":  0.35,
+                 "phase_timeout_seconds":  1800,
+                 "aggregate_gpu_hours":  1,
+                 "device":  "CPU plus remote provider API",
+                 "foreign_gpu_process_policy":  "observe and abort before launch; never terminate foreign processes"
+             },
+    "ignored_cpu_only_gpu_registry_pids":  [
+
+                                           ],
+    "elapsed_seconds":  10.393,
+    "peak_ram_mb":  4.215,
+    "avg_ram_mb":  2.107,
+    "aggregate_elapsed_seconds":  10.393,
+    "prior_elapsed_seconds":  0,
+    "samples":  2,
+    "memory_after":  {
+                         "available_ram_mb":  7304.727,
+                         "total_visible_ram_mb":  24355.305,
+                         "git_commit":  "36ded3ec999e5ab24d84a30d96a22d7293d059d3",
+                         "top_memory_processes":  [
+                                                      {
+                                                          "pid":  3180,
+                                                          "name":  "Memory Compression",
+                                                          "working_set_mb":  1239.656,
+                                                          "private_memory_mb":  3.059
+                                                      },
+                                                      {
+                                                          "pid":  228,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  788.531,
+                                                          "private_memory_mb":  858.758
+                                                      },
+                                                      {
+                                                          "pid":  12104,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  676.016,
+                                                          "private_memory_mb":  747.379
+                                                      },
+                                                      {
+                                                          "pid":  22512,
+                                                          "name":  "WindowsTerminal",
+                                                          "working_set_mb":  674.652,
+                                                          "private_memory_mb":  851.051
+                                                      },
+                                                      {
+                                                          "pid":  24276,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  614.406,
+                                                          "private_memory_mb":  809.902
+                                                      }
+                                                  ],
+                         "gpu_compute_apps":  [
+
+                                              ]
+                     },
+    "peak_io_mb_s":  0,
+    "started_utc":  "2026-07-21T15:59:58.0177737Z",
+    "owned_pid":  22012,
+    "hard_caps":  {
+                      "process_memory":  true,
+                      "cpu_rate":  true,
+                      "torch_allocator_vram":  true,
+                      "vram_abort":  true,
+                      "io_abort":  true,
+                      "aggregate_time_abort":  true
+                  },
+    "cleanup_passed":  true,
+    "protocol_id":  "rlm_architecture_neighborhood_v0_1",
+    "phase":  "validate",
+    "abort_reason":  null,
+    "python_executable":  "C:\\projects\\rlm-official\\.venv\\Scripts\\python.exe",
+    "module":  "research_gym.scripts.bench_rlm_architecture_neighborhood_v0_1",
+    "peak_vram_mb":  0,
+    "avg_cpu_pct":  0.061,
+    "status":  "completed",
+    "attempt":  1,
+    "lingering_owned_process":  false,
+    "memory_before":  {
+                          "available_ram_mb":  7867.469,
+                          "total_visible_ram_mb":  24355.305,
+                          "git_commit":  "36ded3ec999e5ab24d84a30d96a22d7293d059d3",
+                          "top_memory_processes":  [
+                                                       {
+                                                           "pid":  3180,
+                                                           "name":  "Memory Compression",
+                                                           "working_set_mb":  1239.738,
+                                                           "private_memory_mb":  3.059
+                                                       },
+                                                       {
+                                                           "pid":  228,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  788.539,
+                                                           "private_memory_mb":  858.777
+                                                       },
+                                                       {
+                                                           "pid":  12104,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  675.941,
+                                                           "private_memory_mb":  747.305
+                                                       },
+                                                       {
+                                                           "pid":  22512,
+                                                           "name":  "WindowsTerminal",
+                                                           "working_set_mb":  674.566,
+                                                           "private_memory_mb":  850.977
+                                                       },
+                                                       {
+                                                           "pid":  24276,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  614.328,
+                                                           "private_memory_mb":  809.824
+                                                       }
+                                                   ],
+                          "gpu_compute_apps":  [
+
+                                               ]
+                      },
+    "foreign_process_policy":  "observed but never terminated",
+    "lingering_owned_gpu_app":  false,
+    "finished_utc":  "2026-07-21T16:00:08.4104670Z"
+}
