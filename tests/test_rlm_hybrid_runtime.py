@@ -12,6 +12,7 @@ from research_gym.benchmarks.rlm_hybrid_runtime import (
     run_local_architecture,
 )
 from research_gym.scripts import bench_rlm_trm_ldt_hybrid_neighborhood_v1 as runner
+from research_gym.scripts.report_rlm_trm_ldt_hybrid_neighborhood_v1 import render_topology
 
 
 def _task() -> LongContextControlTask:
@@ -118,3 +119,12 @@ def test_resource_receipt_indexing_retains_failures(tmp_path: Path) -> None:
     assert [attempt for attempt, _, _ in completed] == [2, 3]
     assert [row["attempt"] for row in failures] == [1]
     assert failures[0]["abort_reason"] == "foreign_gpu"
+
+
+def test_topology_figure_is_deterministic_svg(tmp_path: Path) -> None:
+    first = tmp_path / "first.svg"
+    second = tmp_path / "second.svg"
+    render_topology(first)
+    render_topology(second)
+    assert first.read_bytes() == second.read_bytes()
+    assert "soft child" in first.read_text(encoding="utf-8")
