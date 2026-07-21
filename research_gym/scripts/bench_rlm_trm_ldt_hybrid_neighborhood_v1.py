@@ -490,6 +490,31 @@ def _aggregate_summary(records: list[Mapping[str, Any]]) -> list[dict[str, Any]]
     return output
 
 
+def _run_resource_receipts(output: Path) -> tuple[list[tuple[int, Path, dict[str, Any]]], list[dict[str, Any]]]:
+    completed = []
+    failures = []
+    for path in output.glob("run.attempt-*.resource_receipt.json"):
+        attempt = int(path.name.split("attempt-", 1)[1].split(".", 1)[0])
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        try:
+            receipt_path = path.relative_to(ROOT).as_posix()
+        except ValueError:
+            receipt_path = path.as_posix()
+        if payload.get("status") == "completed" and bool(payload.get("cleanup_passed")):
+            completed.append((attempt, path, payload))
+        else:
+            failures.append(
+                {
+                    "attempt": attempt,
+                    "path": receipt_path,
+                    "sha256": canonical_file_sha256(path),
+                    "status": payload.get("status"),
+                    "abort_reason": payload.get("abort_reason"),
+                }
+            )
+    return sorted(completed), sorted(failures, key=lambda row: int(row["attempt"]))
+
+
 def finalize(config: Mapping[str, Any], config_hash: str, output: Path) -> dict[str, Any]:
     if (output / "result.json").exists() or (output / "result_receipt.json").exists() or FINAL_RECEIPT.exists():
         raise RuntimeError("RLM hybrid campaign is already finalized")
@@ -497,6 +522,11 @@ def finalize(config: Mapping[str, Any], config_hash: str, output: Path) -> dict[
     results = []
     all_records = []
     shard_receipts = []
+    completed_resources, failed_resources = _run_resource_receipts(output)
+    if len(completed_resources) != len(stages):
+        raise RuntimeError(
+            f"expected {len(stages)} completed run resource receipts; found {len(completed_resources)}"
+        )
     for index, stage in enumerate(stages, start=1):
         shard_result_path = output / "shards" / stage / "result.json"
         if not shard_result_path.exists():
@@ -510,15 +540,13 @@ def finalize(config: Mapping[str, Any], config_hash: str, output: Path) -> dict[
         manifest = json.loads(_root_path(shard_result["trajectory_manifest_path"]).read_text(encoding="utf-8"))
         if not all(verify_file_sha256(_root_path(row["path"]), row["sha256"]) for row in manifest):
             raise RuntimeError(f"trajectory failed re-verification: {stage}")
-        resource_path = output / f"run.attempt-{index}.resource_receipt.json"
-        resource = json.loads(resource_path.read_text(encoding="utf-8"))
-        if resource["status"] != "completed" or not resource["cleanup_passed"]:
-            raise RuntimeError(f"resource receipt did not pass: {stage}")
+        resource_attempt, resource_path, _resource = completed_resources[index - 1]
         shard_receipts.append(
             {
                 "stage": stage,
                 "result_path": shard_result_path.relative_to(ROOT).as_posix(),
                 "result_sha256": canonical_file_sha256(shard_result_path),
+                "resource_attempt": resource_attempt,
                 "resource_path": resource_path.relative_to(ROOT).as_posix(),
                 "resource_sha256": canonical_file_sha256(resource_path),
             }
@@ -570,6 +598,7 @@ def finalize(config: Mapping[str, Any], config_hash: str, output: Path) -> dict[
         "records_path": records_path.relative_to(ROOT).as_posix(),
         "records_sha256": canonical_file_sha256(records_path),
         "shards": shard_receipts,
+        "failed_run_attempts": failed_resources,
         "summary": summary,
         "pareto_frontier": pareto_frontier(summary),
         "comparisons": comparisons,
@@ -588,6 +617,7 @@ def finalize(config: Mapping[str, Any], config_hash: str, output: Path) -> dict[
         "records_sha256": canonical_file_sha256(records_path),
         "record_count": len(all_records),
         "shards": shard_receipts,
+        "failed_run_attempts": failed_resources,
         "pareto_frontier": result["pareto_frontier"],
         "claim_boundary": config["claim_boundary"],
     }

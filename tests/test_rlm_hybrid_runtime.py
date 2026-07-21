@@ -95,3 +95,26 @@ def test_registration_hash_and_architectures_when_present() -> None:
     from research_gym.benchmarks.rlm_hybrid_neighborhood import architecture_hashes
 
     assert registration["architecture_hashes"] == architecture_hashes()
+    addendum_path = Path("configs/rlm_trm_ldt_hybrid_neighborhood_v1_construction_addendum_1.json")
+    if addendum_path.exists():
+        addendum = json.loads(addendum_path.read_text())
+        assert canonical_file_sha256(addendum["parent_registration_path"]) == addendum["parent_registration_sha256"]
+        assert canonical_file_sha256(addendum["triggering_receipt_path"]) == addendum["triggering_receipt_sha256"]
+        evaluator_path = "research_gym/scripts/bench_rlm_trm_ldt_hybrid_neighborhood_v1.py"
+        assert canonical_file_sha256(evaluator_path) == addendum["new_evaluator_sha256"]
+
+
+def test_resource_receipt_indexing_retains_failures(tmp_path: Path) -> None:
+    values = {
+        1: {"status": "construction_failure", "cleanup_passed": True, "abort_reason": "foreign_gpu"},
+        2: {"status": "completed", "cleanup_passed": True, "abort_reason": None},
+        3: {"status": "completed", "cleanup_passed": True, "abort_reason": None},
+    }
+    for attempt, payload in values.items():
+        (tmp_path / f"run.attempt-{attempt}.resource_receipt.json").write_text(json.dumps(payload))
+
+    completed, failures = runner._run_resource_receipts(tmp_path)
+
+    assert [attempt for attempt, _, _ in completed] == [2, 3]
+    assert [row["attempt"] for row in failures] == [1]
+    assert failures[0]["abort_reason"] == "foreign_gpu"

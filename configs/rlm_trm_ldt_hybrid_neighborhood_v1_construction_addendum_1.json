@@ -1,0 +1,22 @@
+{
+  "protocol_id": "rlm_trm_ldt_hybrid_neighborhood_v1",
+  "addendum_id": "construction_addendum_1_resource_attempt_indexing",
+  "status": "registered_before_scientific_outcomes",
+  "registered_utc": "2026-07-21T18:57:49.5047041Z",
+  "registered_git_commit": "6957cf26e9bae0196cb81eeb664372feffbad134",
+  "parent_registration_path": "configs/rlm_trm_ldt_hybrid_neighborhood_v1_registration.json",
+  "parent_registration_sha256": "b21a50e0a4d1b0ddf79c919d6a67add11a28279b484bbbd1d90e241f0c94115f",
+  "config_sha256_unchanged": "4d8d77535286d3e8e478052705b5d5503749dcf7779fb8b70f3f07f46e9ad20c",
+  "triggering_receipt_path": "experiments/rlm_trm_ldt_hybrid_neighborhood_v1/campaign/run.attempt-1.resource_receipt.json",
+  "triggering_receipt_sha256": "b81aa8d5088ce54e13cfb93168f28944822cf174f353562a4cebb6f2e84d41c0",
+  "triggering_status": "construction_failure",
+  "triggering_abort_reason": "external_gpu_contention",
+  "old_evaluator_sha256": "7305ede7fb29e77f3e9feb6f124f258c56c9c1f094b9b46245ebf3e8faa245ec",
+  "new_evaluator_sha256": "132ae88d6aae9ff53ca4e5aca16d28da89569dcbcb40e41f45c396c383c6e1e6",
+  "repair": "Finalization now binds stages to completed run-attempt resource receipts in attempt order and retains non-completed attempts in failed_run_attempts.",
+  "scientific_design_changed": false,
+  "task_data_changed": false,
+  "architecture_changed": false,
+  "runtime_changed": false,
+  "outcomes_observed": false
+}
