@@ -1,0 +1,33 @@
+{
+  "protocol_id": "rlm_trm_ldt_hybrid_neighborhood_v1",
+  "status": "registered_before_scientific_outcomes",
+  "registered_utc": "2026-07-21T18:51:46.2964450Z",
+  "registered_git_commit": "9de6e2a83bc555488b294a56b5b23df7d3f85504",
+  "config_path": "configs/rlm_trm_ldt_hybrid_neighborhood_v1.json",
+  "config_sha256": "4d8d77535286d3e8e478052705b5d5503749dcf7779fb8b70f3f07f46e9ad20c",
+  "task_suite_sha256": "9d550f05d651958c4a871d6522c73115e7f4192072eb79137ce6b2e39d2c3491",
+  "proposal_table_sha256": "238e7d9677e7bcc95f861657dde303b93231d7e75f4fc58c574c2afd38b108eb",
+  "checkpoint_manifest_sha256": "e7e77f61e7c6d24f0557806a43cefe2b526157d6dc2de9e4673cfb671d3046b4",
+  "official_rlm_commit": "72d6940142ddfb84ee6be573dc999a37e633e671",
+  "architecture_hashes": {
+    "rlm_repl_only": "1859ba88139934f951b03c575310dbbd79d140284af23785e9536821aa022026",
+    "ldt_only": "9f035a011747fa1a780afd10da4636e383e1ff628cd637c4309cf02592144af4",
+    "proxy_trm_only": "598be98b9643a00c05619ba2534149e8d9483e60c2f0361b5a367ef3adb717a5",
+    "trained_trm_only": "98849e4e6d41d6c3b7f66a322a3871df6cc76413b9784ff6a5ce643a5588ba7a",
+    "proxy_trm_ldt_fixed": "9c45e3f25fb6033e7e832bf60798bafaba59b7fb25b9b09c9bdfe3a2dc8c277f",
+    "trained_trm_ldt_fixed": "77e574ff2089aa74e725d7a0fa0bacbe95e0b05d11062664ce6aeb79505776fa",
+    "rlm_ldt_membrane": "573d22278cd6ae8f7b8b30cab7148bdca02b190ea0cf47632799b9ab0bde5b87",
+    "proxy_trm_rlm_critic_ldt": "bf297862a2a8afc794ce29c995f1a4a8f1c5d15c58fabd418d322dae33cadd46",
+    "trained_trm_rlm_critic_ldt": "433d578c821aa76d0647eddeaa84ce5fd79e8343f6d7e6abfc5a32ec1f1ee2b5",
+    "rlm_tool_conductor": "7c50f37362e664e49721ea3acd69163b352721632094fbc1480ace2129e57749",
+    "rlm_recursive_conductor": "44416cc7cdf1ffe048060e8eb9960786a6989bf9e373f49e2fd9f48b69679cfd"
+  },
+  "implementation_hashes": {
+    "research_gym/benchmarks/rlm_hybrid_neighborhood.py": "ef616ee566fa43e04ca83f0cf5df9931d2a7bfdd89bbb5ef824aa1338af08447",
+    "research_gym/benchmarks/rlm_hybrid_runtime.py": "2c1833ea6790d34db94e2deadb12ef78c33bb7d44ad5387dc06815baf63e3496",
+    "research_gym/scripts/bench_rlm_trm_ldt_hybrid_neighborhood_v1.py": "7305ede7fb29e77f3e9feb6f124f258c56c9c1f094b9b46245ebf3e8faa245ec"
+  },
+  "screening_outcomes_observed": false,
+  "evaluation_outcomes_observed": false,
+  "credential_recorded": false
+}

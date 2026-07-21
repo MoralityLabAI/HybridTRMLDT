@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from research_gym.integrity import canonical_file_sha256
 from research_gym.benchmarks.rlm_hybrid_neighborhood import LongContextControlTask, materialize_task_suite
 from research_gym.benchmarks.rlm_hybrid_runtime import (
     API_ARCHITECTURES,
@@ -83,3 +84,14 @@ def test_global_provider_access_errors_fail_fast() -> None:
         body = {"error": {"code": "model_not_found", "type": "invalid_request_error"}}
 
     assert runner._is_global_provider_error(Error())
+
+
+def test_registration_hash_and_architectures_when_present() -> None:
+    registration_path = Path("configs/rlm_trm_ldt_hybrid_neighborhood_v1_registration.json")
+    if not registration_path.exists():
+        return
+    registration = json.loads(registration_path.read_text())
+    assert canonical_file_sha256(registration["config_path"]) == registration["config_sha256"]
+    from research_gym.benchmarks.rlm_hybrid_neighborhood import architecture_hashes
+
+    assert registration["architecture_hashes"] == architecture_hashes()
