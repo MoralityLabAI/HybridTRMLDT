@@ -1,0 +1,16 @@
+{
+  "protocol_id": "rlm_hybrid_control_trm_build_v1",
+  "status": "registered_before_training",
+  "registered_utc": "2026-07-21T18:42:30.7929210Z",
+  "config_path": "configs/rlm_hybrid_control_trm_build_v1.json",
+  "config_sha256": "02dd3ffa177ee33b9f328729c3dfc15eb70f4ccdffc734490b85dc1672119de3",
+  "task_suite_path": "data/benchmarks/rlm_hybrid_long_context_tasks_v1.json",
+  "task_suite_sha256": "9d550f05d651958c4a871d6522c73115e7f4192072eb79137ce6b2e39d2c3491",
+  "task_count": 152,
+  "split_counts": {"train": 96, "calibration": 32, "eval": 24},
+  "feature_dim": 44,
+  "minimum_transcript_lines": 640,
+  "split_overlap": false,
+  "training_outcomes_observed": false,
+  "evaluation_outcomes_observed": false
+}
