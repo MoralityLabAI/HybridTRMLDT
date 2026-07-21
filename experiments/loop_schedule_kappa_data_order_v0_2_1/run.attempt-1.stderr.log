@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_data_order_v0_2_1.py", line 322, in <module>
+    main()
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_data_order_v0_2_1.py", line 313, in main
+    payload = run(config, config_hash, trainer_config, output)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_data_order_v0_2_1.py", line 190, in run
+    replay = baseline_replay_gate(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\projects\HybridTRMLDT\worktrees\loop_schedule_algebra_v0_1\research_gym\scripts\bench_loop_schedule_kappa_data_order_v0_2_1.py", line 89, in baseline_replay_gate
+    raise ValueError("baseline replay and parent exposure grids differ")
+ValueError: baseline replay and parent exposure grids differ
