@@ -1,0 +1,46 @@
+{
+  "protocol_id": "rlm_architecture_neighborhood_v0_1",
+  "status": "registered",
+  "registered_utc": "2026-07-21T15:56:03.2986438Z",
+  "registration_timing": "after successful transport-only probes and before any successor scientific outcome",
+  "successor_of": "rlm_architecture_neighborhood_v0",
+  "predecessor_construction_failure_commit": "8ebf91ad63d61f6db9a390b1062dcd3e51c19a09",
+  "config_path": "configs/rlm_architecture_neighborhood_v0_1.json",
+  "config_sha256": "26072bf1f30bff3a512d8f42a5aa7a736912621afd56185eb76057ab50493968",
+  "task_suite_path": "data/benchmarks/rlm_architecture_neighborhood_v0_tasks.json",
+  "task_suite_sha256": "8b5607ca597c68831dbd8f739a289cb944ac8facf34a30e742088d2301236528",
+  "transport_qualification": {
+    "requested_model_unavailable": {
+      "model": "gpt-5-nano",
+      "status_code": 403,
+      "provider_code": "model_not_found"
+    },
+    "responses_probe": {
+      "requested_model": "gpt-4.1-mini",
+      "resolved_model": "gpt-4.1-mini-2025-04-14",
+      "exact_response_passed": true,
+      "input_tokens": 15,
+      "output_tokens": 6
+    },
+    "official_rlm_client_probe": {
+      "client": "rlm.clients.openai.OpenAIClient",
+      "endpoint": "chat.completions",
+      "model": "gpt-4.1-mini",
+      "exact_response_passed": true,
+      "input_tokens": 16,
+      "output_tokens": 6
+    },
+    "credential_recorded": false,
+    "credential_fingerprint_recorded": false,
+    "scientific_observation": false
+  },
+  "preservation_assertions": [
+    "task suite hash unchanged",
+    "four architecture hashes unchanged",
+    "official RLM commit and source hashes unchanged",
+    "restricted REPL policy unchanged",
+    "registered endpoints unchanged",
+    "v0 construction-failure artifacts remain byte-identical"
+  ],
+  "outcomes_observed": false
+}
