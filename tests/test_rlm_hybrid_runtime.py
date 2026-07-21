@@ -12,6 +12,7 @@ from research_gym.benchmarks.rlm_hybrid_runtime import (
     run_local_architecture,
 )
 from research_gym.scripts import bench_rlm_trm_ldt_hybrid_neighborhood_v1 as runner
+from research_gym.scripts import bench_rlm_trm_ldt_hybrid_neighborhood_v1_1 as successor
 from research_gym.scripts.report_rlm_trm_ldt_hybrid_neighborhood_v1 import render_topology
 
 
@@ -128,3 +129,17 @@ def test_topology_figure_is_deterministic_svg(tmp_path: Path) -> None:
     render_topology(second)
     assert first.read_bytes() == second.read_bytes()
     assert "soft child" in first.read_text(encoding="utf-8")
+
+
+def test_v1_1_preserves_runtime_and_opens_only_eval_split() -> None:
+    parent = json.loads(Path("configs/rlm_trm_ldt_hybrid_neighborhood_v1.json").read_text())
+    config = json.loads(Path("configs/rlm_trm_ldt_hybrid_neighborhood_v1_1.json").read_text())
+    assert config["runtime"] == parent["runtime"]
+    assert config["architecture_order"] == parent["architecture_order"]
+    assert canonical_file_sha256(config["calibration_source"]["path"]) == config["calibration_source"]["sha256"]
+    tasks = [LongContextControlTask.from_jsonable(row) for row in materialize_task_suite()["tasks"]]
+    selected = [task for stage in config["execution"]["stages"] for task in runner._stage_tasks(stage, tasks)[1]]
+    assert len(config["execution"]["stages"]) == 12
+    assert len(selected) == 72
+    assert all(task.split == "eval" for task in selected)
+    assert successor._prior_typed_unsafe(config, Path("missing-output")) == 0
