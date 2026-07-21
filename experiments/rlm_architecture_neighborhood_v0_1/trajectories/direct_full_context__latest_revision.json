@@ -1,0 +1,1 @@
+{"architecture":"direct_full_context","execution_time":1.1297129000013229,"trajectory_metrics":{"code_blocks":0,"iterations":0,"maximum_observed_depth":0,"recursive_subcalls":0,"repl_errors":0,"subcalls":0},"usage_summary":{"model_usage_summaries":{"gpt-4.1-mini":{"total_calls":1,"total_input_tokens":24251,"total_output_tokens":6}}}}
