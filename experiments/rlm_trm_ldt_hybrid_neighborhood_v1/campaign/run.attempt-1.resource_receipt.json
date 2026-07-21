@@ -1,0 +1,108 @@
+{
+    "abort_reason":  "external_gpu_contention",
+    "memory_after":  {
+                         "available_ram_mb":  8508.023,
+                         "total_visible_ram_mb":  24355.305,
+                         "git_commit":  "1a1a2108abbbb171f762fe9174729aa66f58aa34",
+                         "top_memory_processes":  [
+                                                      {
+                                                          "pid":  28052,
+                                                          "name":  "python",
+                                                          "working_set_mb":  3965.07,
+                                                          "private_memory_mb":  6512.273
+                                                      },
+                                                      {
+                                                          "pid":  3180,
+                                                          "name":  "Memory Compression",
+                                                          "working_set_mb":  496.809,
+                                                          "private_memory_mb":  2.781
+                                                      },
+                                                      {
+                                                          "pid":  4324,
+                                                          "name":  "codex",
+                                                          "working_set_mb":  448.727,
+                                                          "private_memory_mb":  567.25
+                                                      },
+                                                      {
+                                                          "pid":  5740,
+                                                          "name":  "codex",
+                                                          "working_set_mb":  437.527,
+                                                          "private_memory_mb":  365.691
+                                                      },
+                                                      {
+                                                          "pid":  22512,
+                                                          "name":  "WindowsTerminal",
+                                                          "working_set_mb":  384.57,
+                                                          "private_memory_mb":  852.168
+                                                      }
+                                                  ],
+                         "gpu_compute_apps":  [
+                                                  "28052, [N/A]"
+                                              ]
+                     },
+    "finished_utc":  "2026-07-21T18:55:32.7483153Z",
+    "phase":  "run",
+    "cleanup_passed":  true,
+    "protocol_id":  "rlm_trm_ldt_hybrid_neighborhood_v1",
+    "started_utc":  "2026-07-21T18:55:32.1670176Z",
+    "prior_elapsed_seconds":  0,
+    "memory_before":  {
+                          "available_ram_mb":  8514.457,
+                          "total_visible_ram_mb":  24355.305,
+                          "git_commit":  "1a1a2108abbbb171f762fe9174729aa66f58aa34",
+                          "top_memory_processes":  [
+                                                       {
+                                                           "pid":  28052,
+                                                           "name":  "python",
+                                                           "working_set_mb":  3965.07,
+                                                           "private_memory_mb":  6512.273
+                                                       },
+                                                       {
+                                                           "pid":  3180,
+                                                           "name":  "Memory Compression",
+                                                           "working_set_mb":  496.809,
+                                                           "private_memory_mb":  2.781
+                                                       },
+                                                       {
+                                                           "pid":  4324,
+                                                           "name":  "codex",
+                                                           "working_set_mb":  448.727,
+                                                           "private_memory_mb":  567.25
+                                                       },
+                                                       {
+                                                           "pid":  5740,
+                                                           "name":  "codex",
+                                                           "working_set_mb":  437.25,
+                                                           "private_memory_mb":  365.414
+                                                       },
+                                                       {
+                                                           "pid":  22512,
+                                                           "name":  "WindowsTerminal",
+                                                           "working_set_mb":  384.59,
+                                                           "private_memory_mb":  852.188
+                                                       }
+                                                   ],
+                          "gpu_compute_apps":  [
+                                                   "28052, [N/A]"
+                                               ]
+                      },
+    "owned_pid":  null,
+    "ignored_cpu_only_gpu_registry_pids":  [
+
+                                           ],
+    "status":  "construction_failure",
+    "module":  "research_gym.scripts.bench_rlm_trm_ldt_hybrid_neighborhood_v1",
+    "caps":  {
+                 "ram_mb":  2048,
+                 "cpu_pct":  50,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_mb":  1500,
+                 "torch_vram_fraction":  0.35,
+                 "phase_timeout_seconds":  1800,
+                 "aggregate_gpu_hours":  1,
+                 "device":  "CPU plus remote provider API",
+                 "foreign_gpu_process_policy":  "observe and abort before launch; never terminate foreign processes"
+             },
+    "attempt":  1
+}
