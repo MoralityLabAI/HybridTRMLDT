@@ -76,3 +76,7 @@ research_gym/scripts/materialize_rlm_evidence_acquisition_v0.py text eol=lf
 research_gym/scripts/bench_rlm_evidence_acquisition_v0.py text eol=lf
 tests/test_rlm_evidence_acquisition.py text eol=lf
 scripts/run_rlm_evidence_acquisition_phase.ps1 text eol=lf
+research_gym/scripts/audit_rlm_evidence_acquisition_v0.py text eol=lf
+experiments/rlm_evidence_acquisition_mesh_v0/independent_audit.json text eol=lf
+reports/rlm_evidence_acquisition_mesh_v0_audit.md text eol=lf
+tests/test_rlm_evidence_acquisition_audit.py text eol=lf
