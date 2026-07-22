@@ -1,0 +1,108 @@
+{
+    "abort_reason":  "foreign_gpu_compute_process_present",
+    "memory_after":  {
+                         "available_ram_mb":  6577.492,
+                         "total_visible_ram_mb":  24355.305,
+                         "git_commit":  "56c7dff69ab05fd879790c7add5a54867a45d599",
+                         "top_memory_processes":  [
+                                                      {
+                                                          "pid":  3180,
+                                                          "name":  "Memory Compression",
+                                                          "working_set_mb":  1341.574,
+                                                          "private_memory_mb":  6.066
+                                                      },
+                                                      {
+                                                          "pid":  22408,
+                                                          "name":  "python",
+                                                          "working_set_mb":  1185.715,
+                                                          "private_memory_mb":  2173.973
+                                                      },
+                                                      {
+                                                          "pid":  29880,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  1042.52,
+                                                          "private_memory_mb":  1008.367
+                                                      },
+                                                      {
+                                                          "pid":  28988,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  583.664,
+                                                          "private_memory_mb":  562.102
+                                                      },
+                                                      {
+                                                          "pid":  28220,
+                                                          "name":  "firefox",
+                                                          "working_set_mb":  540.855,
+                                                          "private_memory_mb":  611.918
+                                                      }
+                                                  ],
+                         "gpu_compute_apps":  [
+                                                  "22408, [N/A]"
+                                              ]
+                     },
+    "finished_utc":  "2026-07-22T13:58:57.9747120Z",
+    "phase":  "run",
+    "cleanup_passed":  true,
+    "protocol_id":  "rlm_wrapped_controller_mesh_v0_calibration_informed_pilot",
+    "started_utc":  "2026-07-22T13:58:57.4091387Z",
+    "prior_elapsed_seconds":  0,
+    "memory_before":  {
+                          "available_ram_mb":  6595.184,
+                          "total_visible_ram_mb":  24355.305,
+                          "git_commit":  "56c7dff69ab05fd879790c7add5a54867a45d599",
+                          "top_memory_processes":  [
+                                                       {
+                                                           "pid":  3180,
+                                                           "name":  "Memory Compression",
+                                                           "working_set_mb":  1341.574,
+                                                           "private_memory_mb":  6.066
+                                                       },
+                                                       {
+                                                           "pid":  22408,
+                                                           "name":  "python",
+                                                           "working_set_mb":  1185.715,
+                                                           "private_memory_mb":  2173.973
+                                                       },
+                                                       {
+                                                           "pid":  29880,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  1042.512,
+                                                           "private_memory_mb":  1008.359
+                                                       },
+                                                       {
+                                                           "pid":  28988,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  583.664,
+                                                           "private_memory_mb":  562.102
+                                                       },
+                                                       {
+                                                           "pid":  28220,
+                                                           "name":  "firefox",
+                                                           "working_set_mb":  540.855,
+                                                           "private_memory_mb":  611.918
+                                                       }
+                                                   ],
+                          "gpu_compute_apps":  [
+                                                   "22408, [N/A]"
+                                               ]
+                      },
+    "owned_pid":  null,
+    "ignored_cpu_only_gpu_registry_pids":  [
+
+                                           ],
+    "status":  "construction_failure",
+    "module":  "research_gym.scripts.bench_rlm_wrapped_mesh",
+    "caps":  {
+                 "ram_mb":  2048,
+                 "cpu_pct":  50,
+                 "io_abort_mb_s":  50,
+                 "io_sustained_samples":  3,
+                 "vram_mb":  1500,
+                 "torch_vram_fraction":  0.35,
+                 "phase_timeout_seconds":  1200,
+                 "aggregate_gpu_hours":  1,
+                 "device":  "CPU plus remote provider API",
+                 "foreign_gpu_process_policy":  "observe and abort before launch; never terminate foreign processes"
+             },
+    "attempt":  1
+}
