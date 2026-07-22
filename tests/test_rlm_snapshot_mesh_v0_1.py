@@ -163,3 +163,52 @@ def _string_leaves(value: object) -> set[str]:
             output.update(_string_leaves(item))
         return output
     return set()
+
+
+def test_sealed_snapshot_mesh_result_preserves_containment_and_routing_null() -> None:
+    receipt_path = ROOT / "data/benchmarks/rlm_snapshot_mesh_v0_1_receipt.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    assert receipt["status"] == "complete"
+    for key in ("config", "result", "records", "trajectory_manifest"):
+        assert canonical_file_sha256(ROOT / receipt[f"{key}_path"]) == receipt[f"{key}_sha256"]
+    result = json.loads((ROOT / receipt["result_path"]).read_text(encoding="utf-8"))
+    records = [
+        json.loads(line)
+        for line in (ROOT / receipt["records_path"]).read_text(encoding="utf-8").splitlines()
+    ]
+    assert len(records) == result["record_count"] == receipt["record_count"] == 56
+    assert result["typed_unsafe_count"] == receipt["typed_unsafe_count"] == 0
+    assert result["no_op_control_passed"] is receipt["no_op_control_passed"] is True
+
+    fixed = {
+        row["task_id"]: row
+        for row in records
+        if row["architecture_id"] == "mesh_fixed_consensus"
+    }
+    for architecture in (
+        "rlm_mesh_task_first_atomic",
+        "rlm_mesh_snapshot_atomic",
+        "rlm_mesh_snapshot_text",
+    ):
+        completed = [
+            row
+            for row in records
+            if row["architecture_id"] == architecture and row["decision_reason"] != "cell_error"
+        ]
+        assert all(row["executed_action"] == fixed[row["task_id"]]["executed_action"] for row in completed)
+
+    task_first = [row for row in records if row["architecture_id"] == "rlm_mesh_task_first_atomic"]
+    snapshot_atomic = [row for row in records if row["architecture_id"] == "rlm_mesh_snapshot_atomic"]
+    snapshot_text = [row for row in records if row["architecture_id"] == "rlm_mesh_snapshot_text"]
+    assert sum(bool(row["wrapper_contract_passed"]) for row in task_first) == 1
+    assert sum(bool(row["wrapper_contract_passed"]) for row in snapshot_atomic) == 0
+    assert sum(bool(row["wrapper_contract_passed"]) for row in snapshot_text) == 4
+    assert sum(row["policy_hint"] == "trained_first" for row in snapshot_text) == 3
+    assert sorted(row["error"]["error_type"] for row in task_first if row.get("error")) == [
+        "TokenLimitExceededError",
+        "TokenLimitExceededError",
+    ]
+    assert sorted(row["error"]["error_type"] for row in snapshot_atomic if row.get("error")) == [
+        "ErrorThresholdExceededError",
+        "ErrorThresholdExceededError",
+    ]

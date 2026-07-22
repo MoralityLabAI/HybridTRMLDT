@@ -1,97 +1,4 @@
 {
-    "abort_reason":  "external_gpu_contention",
-    "memory_after":  {
-                         "available_ram_mb":  8742.195,
-                         "total_visible_ram_mb":  24355.305,
-                         "git_commit":  "37664076a54c8446ed193fa4e53fa3a98ea8dd4f",
-                         "top_memory_processes":  [
-                                                      {
-                                                          "pid":  28332,
-                                                          "name":  "python",
-                                                          "working_set_mb":  2311.781,
-                                                          "private_memory_mb":  6925.223
-                                                      },
-                                                      {
-                                                          "pid":  3180,
-                                                          "name":  "Memory Compression",
-                                                          "working_set_mb":  1028.734,
-                                                          "private_memory_mb":  5.949
-                                                      },
-                                                      {
-                                                          "pid":  5740,
-                                                          "name":  "codex",
-                                                          "working_set_mb":  647.402,
-                                                          "private_memory_mb":  628.141
-                                                      },
-                                                      {
-                                                          "pid":  4760,
-                                                          "name":  "MsMpEng",
-                                                          "working_set_mb":  427.047,
-                                                          "private_memory_mb":  445.609
-                                                      },
-                                                      {
-                                                          "pid":  6516,
-                                                          "name":  "ChatGPT",
-                                                          "working_set_mb":  287.316,
-                                                          "private_memory_mb":  393.797
-                                                      }
-                                                  ],
-                         "gpu_compute_apps":  [
-                                                  "28332, [N/A]"
-                                              ]
-                     },
-    "finished_utc":  "2026-07-22T15:11:05.9847323Z",
-    "phase":  "finalize",
-    "cleanup_passed":  true,
-    "protocol_id":  "rlm_snapshot_first_typed_mesh_v0_1_fresh_pilot",
-    "started_utc":  "2026-07-22T15:11:05.1243048Z",
-    "prior_elapsed_seconds":  351.139,
-    "memory_before":  {
-                          "available_ram_mb":  8825.617,
-                          "total_visible_ram_mb":  24355.305,
-                          "git_commit":  "37664076a54c8446ed193fa4e53fa3a98ea8dd4f",
-                          "top_memory_processes":  [
-                                                       {
-                                                           "pid":  28332,
-                                                           "name":  "python",
-                                                           "working_set_mb":  2311.781,
-                                                           "private_memory_mb":  6925.223
-                                                       },
-                                                       {
-                                                           "pid":  3180,
-                                                           "name":  "Memory Compression",
-                                                           "working_set_mb":  1028.734,
-                                                           "private_memory_mb":  5.949
-                                                       },
-                                                       {
-                                                           "pid":  5740,
-                                                           "name":  "codex",
-                                                           "working_set_mb":  617.918,
-                                                           "private_memory_mb":  589.73
-                                                       },
-                                                       {
-                                                           "pid":  4760,
-                                                           "name":  "MsMpEng",
-                                                           "working_set_mb":  430.305,
-                                                           "private_memory_mb":  449.055
-                                                       },
-                                                       {
-                                                           "pid":  6516,
-                                                           "name":  "ChatGPT",
-                                                           "working_set_mb":  287.297,
-                                                           "private_memory_mb":  393.773
-                                                       }
-                                                   ],
-                          "gpu_compute_apps":  [
-                                                   "28332, [N/A]"
-                                               ]
-                      },
-    "owned_pid":  null,
-    "ignored_cpu_only_gpu_registry_pids":  [
-
-                                           ],
-    "status":  "construction_failure",
-    "module":  "research_gym.scripts.bench_rlm_snapshot_mesh_v0_1",
     "caps":  {
                  "ram_mb":  2048,
                  "cpu_pct":  50,
@@ -104,5 +11,118 @@
                  "device":  "CPU plus remote provider API",
                  "foreign_gpu_process_policy":  "observe and abort before launch; never terminate foreign processes"
              },
-    "attempt":  1
+    "ignored_cpu_only_gpu_registry_pids":  [
+
+                                           ],
+    "elapsed_seconds":  6.615,
+    "peak_ram_mb":  0,
+    "avg_ram_mb":  0,
+    "aggregate_elapsed_seconds":  357.754,
+    "prior_elapsed_seconds":  351.139,
+    "samples":  1,
+    "memory_after":  {
+                         "available_ram_mb":  11171.633,
+                         "total_visible_ram_mb":  24355.305,
+                         "git_commit":  "40f31ba64f4339c5ee35f8927148ceeb3ea0716f",
+                         "top_memory_processes":  [
+                                                      {
+                                                          "pid":  3180,
+                                                          "name":  "Memory Compression",
+                                                          "working_set_mb":  1031.734,
+                                                          "private_memory_mb":  5.949
+                                                      },
+                                                      {
+                                                          "pid":  5740,
+                                                          "name":  "codex",
+                                                          "working_set_mb":  560.281,
+                                                          "private_memory_mb":  531.051
+                                                      },
+                                                      {
+                                                          "pid":  4760,
+                                                          "name":  "MsMpEng",
+                                                          "working_set_mb":  421.996,
+                                                          "private_memory_mb":  444.758
+                                                      },
+                                                      {
+                                                          "pid":  6516,
+                                                          "name":  "ChatGPT",
+                                                          "working_set_mb":  319.52,
+                                                          "private_memory_mb":  407.66
+                                                      },
+                                                      {
+                                                          "pid":  22512,
+                                                          "name":  "WindowsTerminal",
+                                                          "working_set_mb":  276.008,
+                                                          "private_memory_mb":  1041
+                                                      }
+                                                  ],
+                         "gpu_compute_apps":  [
+
+                                              ]
+                     },
+    "peak_io_mb_s":  0,
+    "started_utc":  "2026-07-22T15:15:47.0660818Z",
+    "owned_pid":  35108,
+    "hard_caps":  {
+                      "process_memory":  true,
+                      "cpu_rate":  true,
+                      "torch_allocator_vram":  true,
+                      "vram_abort":  true,
+                      "io_abort":  true,
+                      "aggregate_time_abort":  true
+                  },
+    "cleanup_passed":  true,
+    "protocol_id":  "rlm_snapshot_first_typed_mesh_v0_1_fresh_pilot",
+    "phase":  "finalize",
+    "abort_reason":  null,
+    "python_executable":  "C:\\projects\\rlm-official\\.venv\\Scripts\\python.exe",
+    "module":  "research_gym.scripts.bench_rlm_snapshot_mesh_v0_1",
+    "peak_vram_mb":  0,
+    "avg_cpu_pct":  0.127,
+    "status":  "completed",
+    "attempt":  1,
+    "lingering_owned_process":  false,
+    "memory_before":  {
+                          "available_ram_mb":  11218.66,
+                          "total_visible_ram_mb":  24355.305,
+                          "git_commit":  "40f31ba64f4339c5ee35f8927148ceeb3ea0716f",
+                          "top_memory_processes":  [
+                                                       {
+                                                           "pid":  3180,
+                                                           "name":  "Memory Compression",
+                                                           "working_set_mb":  1031.727,
+                                                           "private_memory_mb":  5.949
+                                                       },
+                                                       {
+                                                           "pid":  5740,
+                                                           "name":  "codex",
+                                                           "working_set_mb":  576.582,
+                                                           "private_memory_mb":  549.586
+                                                       },
+                                                       {
+                                                           "pid":  4760,
+                                                           "name":  "MsMpEng",
+                                                           "working_set_mb":  418.344,
+                                                           "private_memory_mb":  448.434
+                                                       },
+                                                       {
+                                                           "pid":  6516,
+                                                           "name":  "ChatGPT",
+                                                           "working_set_mb":  319.555,
+                                                           "private_memory_mb":  407.793
+                                                       },
+                                                       {
+                                                           "pid":  22512,
+                                                           "name":  "WindowsTerminal",
+                                                           "working_set_mb":  276.02,
+                                                           "private_memory_mb":  1041.023
+                                                       }
+                                                   ],
+                          "gpu_compute_apps":  [
+
+                                               ]
+                      },
+    "foreign_process_policy":  "observed but never terminated",
+    "lingering_owned_gpu_app":  false,
+    "finished_utc":  "2026-07-22T15:15:53.6810603Z"
 }
