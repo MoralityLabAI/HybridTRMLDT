@@ -1,0 +1,26 @@
+{
+  "status": "retired_before_registration",
+  "generator_seed": 294117,
+  "reason": "The evaluation summary was opened during a construction-gate check; this seed is ineligible for confirmatory use.",
+  "used_for_tuning": false,
+  "calibration_observation": {
+    "task_count": 32,
+    "mean_sequence_oracle_net_gain": 0.042225375,
+    "positive_gain_tasks": 7,
+    "oracle_sequences": {
+      "no_query": 25,
+      "independent_probe_then_exact_mechanics": 4,
+      "receipt_attestation_then_exact_mechanics": 3
+    }
+  },
+  "opened_evaluation_observation": {
+    "task_count": 24,
+    "mean_sequence_oracle_net_gain": 0.03680395833333333,
+    "positive_gain_tasks": 8
+  },
+  "retained_artifact_hashes": {
+    "tasks_sha256": "78c358b2370630f04ce93cb3378cc85c901ab1ac9f06d56334c43353f4d73dc5",
+    "proposals_sha256": "11b6cba14fb8ed8f12958e28df917bdab0c37d5b9126d2ffa4e81886b61efb76",
+    "truth_sha256": "bfa321c040ca3b8ee73738f13790136c44c10d98f7a42922664ec49b67df8bd0"
+  }
+}
