@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from research_gym.integrity import canonical_file_sha256
 from research_gym.benchmarks.rlm_hybrid_neighborhood import LongContextControlTask, materialize_task_suite
 from research_gym.benchmarks.rlm_hybrid_runtime import (
@@ -16,6 +18,8 @@ from research_gym.scripts import bench_rlm_trm_ldt_hybrid_neighborhood_v1_1 as s
 from research_gym.scripts.report_rlm_trm_ldt_hybrid_neighborhood_v1 import (
     _error_counts,
     _markdown_table,
+    _membrane_counterfactual,
+    _paired_success_delta,
     render_topology,
 )
 
@@ -156,6 +160,31 @@ def test_report_table_keeps_errors_and_manipulation_failures_visible() -> None:
     table = _markdown_table(summary, records)
     assert "Manip. fail" in table
     assert "| 1.0000 | 1 | 1,234 | 9.5 |" in table
+
+
+def test_v1_1_availability_sensitivity_is_recomputable() -> None:
+    records_path = Path(
+        "experiments/rlm_trm_ldt_hybrid_neighborhood_v1_1/campaign/evaluation_records.jsonl"
+    )
+    if not records_path.exists():
+        return
+    records = [json.loads(line) for line in records_path.read_text().splitlines()]
+    tasks_payload = json.loads(Path("data/benchmarks/rlm_hybrid_long_context_tasks_v1.json").read_text())
+    tasks = {row["task_id"]: row for row in tasks_payload["tasks"]}
+
+    assert sum(_error_counts(records).values()) == 71
+    membrane_ldt, cells = _paired_success_delta(records, "rlm_ldt_membrane", "ldt_only")
+    assert cells == 64
+    assert membrane_ldt == pytest.approx(-0.04676501018099544)
+    proxy_critic, cells = _paired_success_delta(
+        records, "proxy_trm_rlm_critic_ldt", "proxy_trm_ldt_fixed"
+    )
+    assert cells == 62
+    assert proxy_critic == pytest.approx(-0.18330809773284318)
+    counterfactual = _membrane_counterfactual(records, tasks)
+    assert counterfactual["cells"] == 64
+    assert counterfactual["delta"] == pytest.approx(0.10791397058823532)
+    assert counterfactual["unsafe_proposals"] == 17
 
 
 def test_v1_1_preserves_runtime_and_opens_only_eval_split() -> None:

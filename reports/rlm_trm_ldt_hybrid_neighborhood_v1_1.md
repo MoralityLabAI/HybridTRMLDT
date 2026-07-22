@@ -47,6 +47,16 @@ The co-primary endpoints are equal-family macro utility and unsafe executed-acti
 - Both conductor variants fail the registered manipulation test in every cell and fall back on at least two thirds of cells. Their results measure failed orchestration under this tool contract, not a successful Conductor-HRM implementation.
 - API-backed cells contain 71 recorded provider or token-limit errors; they remain in the sealed intention-to-evaluate table rather than being silently retried away.
 
+## Availability And Execution Sensitivity
+
+The registered analysis assigns zero utility to a bounded API cell error and keeps that cell in every endpoint and Pareto denominator. The Pareto result is therefore an end-to-end utility/safety/cost/availability result, not a competence-only ranking. The complete-case calculations below are post-hoc sensitivity checks and do not replace the registered estimands.
+
+- Registered LDT minus raw-RLM utility is +0.2325. The membrane recovers +0.1338 (57.6% of that gap), leaving LDT ahead by +0.0986.
+- On the 61 cells where both API calls completed, membrane minus raw RLM is +0.1416. On the 64 completed membrane cells, membrane minus deterministic LDT is -0.0468; availability therefore accounts for about half of the registered LDT margin.
+- Applying the typed execution rule counterfactually to the exact outputs from the 64 completed membrane calls raises equal-family macro utility from 0.4207 to 0.5286 (+0.1079). It intercepts 17 unsafe proposals and invokes 18 fallbacks. In these observed calls the membrane contributes positive execution value rather than a tax; the remaining LDT gap cannot be identified as pure RLM capacity because calls are independent and availability differs.
+- On paired completed cells, the proxy and trained critic penalties remain -0.1833 (`n=62`) and -0.1838 (`n=66`). Errors enlarge the registered penalties, but do not create their sign.
+- `Manipulation failure` is the protocol's name for conductor tool-contract noncompliance. No completed conductor cell produced an accepted typed commit. This campaign does not test whether conductor authority is inherently a manipulation target.
+
 ## Interpretation Boundary
 
 This calibration-informed campaign evaluates unchanged gym proxy/ControlTRM proposal sources, official RLM control flow, and exact typed LDT membranes on the untouched generated long-context evaluation split. It does not evaluate official TinyRecursiveModels, implement Conductor-HRM, use VPD, or support general alignment or model-superiority claims.

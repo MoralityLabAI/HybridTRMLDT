@@ -188,9 +188,78 @@ def render_family_heatmap(path: Path, summary: list[Mapping[str, Any]], records:
 def _error_counts(records: list[Mapping[str, Any]]) -> dict[str, int]:
     counts: dict[str, int] = defaultdict(int)
     for row in records:
-        if row.get("error") is not None or row.get("decision_reason") == "cell_error":
+        if _is_cell_error(row):
             counts[str(row["architecture_id"])] += 1
     return counts
+
+
+def _is_cell_error(row: Mapping[str, Any]) -> bool:
+    return row.get("error") is not None or row.get("decision_reason") == "cell_error"
+
+
+def _macro_value(rows: list[Mapping[str, Any]], value) -> float:
+    family_means = []
+    for family in FAMILIES:
+        values = [float(value(row)) for row in rows if row["task_family"] == family]
+        if not values:
+            raise ValueError(f"missing family in sensitivity analysis: {family}")
+        family_means.append(mean(values))
+    return mean(family_means)
+
+
+def _paired_success_delta(
+    records: list[Mapping[str, Any]], treatment: str, control: str
+) -> tuple[float, int]:
+    lookup = {
+        (str(row["architecture_id"]), str(row["task_id"]), int(row["replicate_seed"])): row
+        for row in records
+    }
+    treatment_rows = []
+    control_rows = []
+    for row in records:
+        if row["architecture_id"] != treatment or _is_cell_error(row):
+            continue
+        key = (control, str(row["task_id"]), int(row["replicate_seed"]))
+        other = lookup.get(key)
+        if other is None or _is_cell_error(other):
+            continue
+        treatment_rows.append(row)
+        control_rows.append(other)
+    delta = _macro_value(treatment_rows, lambda row: row["utility"]) - _macro_value(
+        control_rows, lambda row: row["utility"]
+    )
+    return delta, len(treatment_rows)
+
+
+def _membrane_counterfactual(
+    records: list[Mapping[str, Any]], tasks: Mapping[str, Mapping[str, Any]]
+) -> dict[str, float | int]:
+    rows = [
+        row
+        for row in records
+        if row["architecture_id"] == "rlm_ldt_membrane" and not _is_cell_error(row)
+    ]
+
+    def raw_utility(row: Mapping[str, Any]) -> float:
+        task = tasks[str(row["task_id"])]
+        action = row.get("proposal_action") or task["candidates"][0]
+        return float(task["utilities"].get(action, 0.0))
+
+    raw_macro = _macro_value(rows, raw_utility)
+    typed_macro = _macro_value(rows, lambda row: row["utility"])
+    unsafe_proposals = 0
+    for row in rows:
+        task = tasks[str(row["task_id"])]
+        action = row.get("proposal_action") or task["candidates"][0]
+        unsafe_proposals += int(action not in task["exact_allowed"])
+    return {
+        "cells": len(rows),
+        "raw_macro": raw_macro,
+        "typed_macro": typed_macro,
+        "delta": typed_macro - raw_macro,
+        "unsafe_proposals": unsafe_proposals,
+        "fallbacks": sum(bool(row["fallback"]) for row in rows),
+    }
 
 
 def _markdown_table(summary: list[Mapping[str, Any]], records: list[Mapping[str, Any]]) -> str:
@@ -218,6 +287,15 @@ def render_report(result_path: Path, receipt_path: Path, report_path: Path, figu
     records_path = ROOT / result["records_path"]
     if not verify_file_sha256(records_path, result["records_sha256"]):
         raise RuntimeError("sealed evaluation records failed verification")
+    config_path = ROOT / receipt["config_path"]
+    if not verify_file_sha256(config_path, receipt["config_sha256"]):
+        raise RuntimeError("sealed config hash failed verification")
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    task_path = ROOT / config["task_suite"]["path"]
+    if not verify_file_sha256(task_path, config["task_suite"]["sha256"]):
+        raise RuntimeError("sealed task-suite hash failed verification")
+    task_payload = json.loads(task_path.read_text(encoding="utf-8"))
+    tasks = {str(row["task_id"]): row for row in task_payload["tasks"]}
     records = [json.loads(line) for line in records_path.read_text(encoding="utf-8").splitlines()]
     version = "v1.1" if "_v1_1_" in str(result["protocol_id"]) else "v1"
     figures.mkdir(parents=True, exist_ok=True)
@@ -246,6 +324,31 @@ def render_report(result_path: Path, receipt_path: Path, report_path: Path, figu
     }
     typed_cells = sum(int(summary_by_id[name]["cells"]) for name in typed_architectures)
     typed_unsafe = sum(int(summary_by_id[name]["unsafe_count"]) for name in typed_architectures)
+    registered_base_gap = (
+        float(summary_by_id["ldt_only"]["macro_utility"])
+        - float(summary_by_id["rlm_repl_only"]["macro_utility"])
+    )
+    registered_membrane_gain = (
+        float(summary_by_id["rlm_ldt_membrane"]["macro_utility"])
+        - float(summary_by_id["rlm_repl_only"]["macro_utility"])
+    )
+    registered_residual = (
+        float(summary_by_id["ldt_only"]["macro_utility"])
+        - float(summary_by_id["rlm_ldt_membrane"]["macro_utility"])
+    )
+    membrane_vs_rlm_success, membrane_rlm_cells = _paired_success_delta(
+        records, "rlm_ldt_membrane", "rlm_repl_only"
+    )
+    membrane_vs_ldt_success, membrane_ldt_cells = _paired_success_delta(
+        records, "rlm_ldt_membrane", "ldt_only"
+    )
+    proxy_critic_success, proxy_critic_cells = _paired_success_delta(
+        records, "proxy_trm_rlm_critic_ldt", "proxy_trm_ldt_fixed"
+    )
+    trained_critic_success, trained_critic_cells = _paired_success_delta(
+        records, "trained_trm_rlm_critic_ldt", "trained_trm_ldt_fixed"
+    )
+    membrane_counterfactual = _membrane_counterfactual(records, tasks)
     body = f"""# RLM x TRM/LDT Hybrid Architecture Neighborhood {version}
 
 This registered campaign compares three hybrid control-flow families with RLM-, LDT-, proxy-TRM-, trained-ControlTRM-, and fixed-flow controls on four generated long-context control task families. The held-out design contains {result['record_count']} paired records: 24 tasks, three registered replicates, and eleven architectures.
@@ -275,6 +378,16 @@ The co-primary endpoints are equal-family macro utility and unsafe executed-acti
 - The RLM membrane improves utility over untyped RLM, but remains below LDT alone. Inserting the RLM critic into either fixed TRM -> LDT flow lowers utility in both registered contrasts.
 - Both conductor variants fail the registered manipulation test in every cell and fall back on at least two thirds of cells. Their results measure failed orchestration under this tool contract, not a successful Conductor-HRM implementation.
 - API-backed cells contain {sum(_error_counts(records).values())} recorded provider or token-limit errors; they remain in the sealed intention-to-evaluate table rather than being silently retried away.
+
+## Availability And Execution Sensitivity
+
+The registered analysis assigns zero utility to a bounded API cell error and keeps that cell in every endpoint and Pareto denominator. The Pareto result is therefore an end-to-end utility/safety/cost/availability result, not a competence-only ranking. The complete-case calculations below are post-hoc sensitivity checks and do not replace the registered estimands.
+
+- Registered LDT minus raw-RLM utility is {registered_base_gap:+.4f}. The membrane recovers {registered_membrane_gain:+.4f} ({100.0 * registered_membrane_gain / registered_base_gap:.1f}% of that gap), leaving LDT ahead by {registered_residual:+.4f}.
+- On the {membrane_rlm_cells} cells where both API calls completed, membrane minus raw RLM is {membrane_vs_rlm_success:+.4f}. On the {membrane_ldt_cells} completed membrane cells, membrane minus deterministic LDT is {membrane_vs_ldt_success:+.4f}; availability therefore accounts for about half of the registered LDT margin.
+- Applying the typed execution rule counterfactually to the exact outputs from the {int(membrane_counterfactual['cells'])} completed membrane calls raises equal-family macro utility from {float(membrane_counterfactual['raw_macro']):.4f} to {float(membrane_counterfactual['typed_macro']):.4f} ({float(membrane_counterfactual['delta']):+.4f}). It intercepts {int(membrane_counterfactual['unsafe_proposals'])} unsafe proposals and invokes {int(membrane_counterfactual['fallbacks'])} fallbacks. In these observed calls the membrane contributes positive execution value rather than a tax; the remaining LDT gap cannot be identified as pure RLM capacity because calls are independent and availability differs.
+- On paired completed cells, the proxy and trained critic penalties remain {proxy_critic_success:+.4f} (`n={proxy_critic_cells}`) and {trained_critic_success:+.4f} (`n={trained_critic_cells}`). Errors enlarge the registered penalties, but do not create their sign.
+- `Manipulation failure` is the protocol's name for conductor tool-contract noncompliance. No completed conductor cell produced an accepted typed commit. This campaign does not test whether conductor authority is inherently a manipulation target.
 
 ## Interpretation Boundary
 
