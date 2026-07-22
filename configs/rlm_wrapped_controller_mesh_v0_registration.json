@@ -1,0 +1,70 @@
+{
+  "protocol_id": "rlm_wrapped_controller_mesh_v0_calibration_informed_pilot",
+  "registered_utc": "2026-07-22T13:54:28.8451150Z",
+  "config_path": "configs/rlm_wrapped_controller_mesh_v0.json",
+  "config_sha256": "40a57bbdfc9432e27cdb5c1cc00f1e5f7cd04cf93778f089e514c4818900ee00",
+  "architecture_hashes": {
+    "ldt_only": "4d10a9b37554a8392463af252ac87116021a0aaff09aaf76132a5efe60fcc88e",
+    "trained_trm_ldt_fixed": "af2ae3631d5a69b4df35322f03c3871b70ebc81f30815ef93823c434049c172f",
+    "mesh_fixed_consensus": "cc44ee61bba515b842d058fa619354043be473bc4585bf4c06933443ee654a9b",
+    "mesh_forced_no_tool_fallback": "051c1ca62060a52df97b6a5d7143ec3df329c5f0b96f1cdac5acfdc89d63d1a2",
+    "rlm_mesh_atomic_tool": "eca2ce075247e2284bd04c2a03a29c7904a745a42d30cffd1e06cf2e4518ec7b",
+    "rlm_mesh_text_router": "de5923d463bb2ab4b886dc357481b7aceb2f4af058eee50e8fd98ad94ce56542"
+  },
+  "mesh_topology_hash": "e1bb3a22a3d022b654322c2f14ddc3ddbb7fd7250b750b2ec30bf2a28b60e1d7",
+  "task_ids": [
+    "latest_rule_action__eval__001",
+    "latest_rule_action__eval__002",
+    "multi_hop_reachability__eval__003",
+    "multi_hop_reachability__eval__000",
+    "storyworld_control__eval__005",
+    "storyworld_control__eval__000",
+    "provenance_gate__eval__004",
+    "provenance_gate__eval__002"
+  ],
+  "task_selection_sha256": "966b12a472dc3be8f829762eabb3f86e922929bd8f6f102240a7f0973b017c06",
+  "bound_artifacts": [
+    {
+      "path": "data/benchmarks/rlm_hybrid_long_context_tasks_v1.json",
+      "sha256": "9d550f05d651958c4a871d6522c73115e7f4192072eb79137ce6b2e39d2c3491"
+    },
+    {
+      "path": "experiments/rlm_trm_ldt_hybrid_neighborhood_v1/training/proposal_table.jsonl",
+      "sha256": "238e7d9677e7bcc95f861657dde303b93231d7e75f4fc58c574c2afd38b108eb"
+    },
+    {
+      "path": "experiments/rlm_trm_ldt_hybrid_neighborhood_v1/training/checkpoints/seed-211-step-200.pt",
+      "sha256": "f4755815d5ab26b8422855374de3a637cf3ebbad8bc1913156515d2778e80393"
+    },
+    {
+      "path": "experiments/rlm_trm_ldt_hybrid_neighborhood_v1_1/campaign/result.json",
+      "sha256": "c706538f7548e934e9f462e0a7bcff6fc5dacbe1f6bbfa71e70e9a2068eea986"
+    },
+    {
+      "path": "research_gym/benchmarks/rlm_wrapped_mesh.py",
+      "sha256": "236480ef889ab5714a1f5ab1d39b3a9486d1a03893031b44d89c74d66344566d"
+    },
+    {
+      "path": "research_gym/scripts/bench_rlm_wrapped_mesh.py",
+      "sha256": "e5272fc4a267f51993dd70c5c65a2d8df56af48f5c17982845428213a348750d"
+    },
+    {
+      "path": "research_gym/benchmarks/rlm_hybrid_runtime.py",
+      "sha256": "2c1833ea6790d34db94e2deadb12ef78c33bb7d44ad5387dc06815baf63e3496"
+    },
+    {
+      "path": "research_gym/benchmarks/rlm_hybrid_neighborhood.py",
+      "sha256": "ef616ee566fa43e04ca83f0cf5df9931d2a7bfdd89bbb5ef824aa1338af08447"
+    },
+    {
+      "path": "scripts/run_lsa_kappa_surface_phase.ps1",
+      "sha256": "32c48699a99fbf5abb19da3f3272b81ee30b57fcd6b9a7cacecc38b33d6b5e19"
+    }
+  ],
+  "official_rlm": {
+    "checkout_path": "C:/projects/rlm-official",
+    "commit": "72d6940142ddfb84ee6be573dc999a37e633e671",
+    "worktree_clean_at_registration": true
+  },
+  "outcomes_present_at_registration": false
+}

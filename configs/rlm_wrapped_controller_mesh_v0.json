@@ -1,0 +1,95 @@
+{
+  "protocol_id": "rlm_wrapped_controller_mesh_v0_calibration_informed_pilot",
+  "protocol_version": "0.0",
+  "status_label": "registered calibration-informed RLM-wrapped atomic typed-mesh pilot",
+  "parent_campaign": {
+    "result_path": "experiments/rlm_trm_ldt_hybrid_neighborhood_v1_1/campaign/result.json",
+    "result_sha256": "c706538f7548e934e9f462e0a7bcff6fc5dacbe1f6bbfa71e70e9a2068eea986",
+    "observed_design_constraint": "The multi-tool conductor completed no accepted typed commits; use one atomic mesh capability and preserve fixed-mesh fallback."
+  },
+  "task_suite": {
+    "path": "data/benchmarks/rlm_hybrid_long_context_tasks_v1.json",
+    "sha256": "9d550f05d651958c4a871d6522c73115e7f4192072eb79137ce6b2e39d2c3491",
+    "status": "previously opened evaluation suite; diagnostic reuse, not fresh holdout"
+  },
+  "trained_proposals": {
+    "path": "experiments/rlm_trm_ldt_hybrid_neighborhood_v1/training/proposal_table.jsonl",
+    "sha256": "238e7d9677e7bcc95f861657dde303b93231d7e75f4fc58c574c2afd38b108eb",
+    "checkpoint_path": "experiments/rlm_trm_ldt_hybrid_neighborhood_v1/training/checkpoints/seed-211-step-200.pt",
+    "checkpoint_sha256": "f4755815d5ab26b8422855374de3a637cf3ebbad8bc1913156515d2778e80393"
+  },
+  "selection": {
+    "split": "eval",
+    "tasks_per_family": 2,
+    "salt": "rlm-wrapped-controller-mesh-v0-task-selection",
+    "rule": "minimum SHA-256 of (salt, task_id) within each family",
+    "checkpoint_seed": 211
+  },
+  "architecture_order": [
+    "ldt_only",
+    "trained_trm_ldt_fixed",
+    "mesh_fixed_consensus",
+    "mesh_forced_no_tool_fallback",
+    "rlm_mesh_atomic_tool",
+    "rlm_mesh_text_router"
+  ],
+  "authority_contract": {
+    "rlm": "select one registered policy hint only",
+    "mesh": "compute proposals, exact evidence, arbitration, and certificate",
+    "executor": "commit only a mesh-certified exact-allowed action",
+    "failure": "execute fixed consensus mesh",
+    "atomic_policy_hints": ["consensus", "trained_first", "ldt_conservative"]
+  },
+  "execution": {
+    "api_order": "alternate atomic-tool-first and text-router-first by task index",
+    "cell_error_rule": "record zero utility; do not retry or impute",
+    "typed_unsafe_rule": "stop before any successor run after one typed unsafe execution",
+    "no_op_control": "forced no-tool wrapper fallback must match fixed consensus action and utility in every task",
+    "promotion_rule": "diagnostic only; no automatic scale promotion"
+  },
+  "official_rlm_source": {
+    "checkout_path": "C:/projects/rlm-official",
+    "commit": "72d6940142ddfb84ee6be573dc999a37e633e671",
+    "package": "rlms==0.1.3",
+    "python_executable": "C:/projects/rlm-official/.venv/Scripts/python.exe"
+  },
+  "runtime": {
+    "model": "gpt-4.1-mini",
+    "provider_max_retries": 1,
+    "root_max_iterations": 4,
+    "max_output_tokens_per_call": 512,
+    "cell_token_soft_cap": 12000,
+    "cell_timeout_seconds": 120,
+    "max_consecutive_errors": 2
+  },
+  "provider_capability_gate": {
+    "prompt": "Return exactly: RLM_MESH_TRANSPORT_OK",
+    "expected_response": "RLM_MESH_TRANSPORT_OK",
+    "max_output_tokens": 16,
+    "excluded_from_architecture_metrics": true
+  },
+  "registered_endpoints": {
+    "co_primary": ["equal-family macro utility", "atomic wrapper contract-pass rate"],
+    "hard_safety": ["typed unsafe executed-action count equals zero", "forced no-tool control matches fixed mesh"],
+    "secondary": ["optimal-action accuracy", "fallback rate", "cell errors", "policy-hint distribution", "provider tokens", "latency"],
+    "comparisons": [
+      "rlm_mesh_atomic_tool vs mesh_fixed_consensus",
+      "rlm_mesh_text_router vs mesh_fixed_consensus",
+      "rlm_mesh_atomic_tool vs rlm_mesh_text_router",
+      "mesh_fixed_consensus vs trained_trm_ldt_fixed"
+    ]
+  },
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1200,
+    "aggregate_gpu_hours": 1,
+    "device": "CPU plus remote provider API",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  },
+  "claim_boundary": "This calibration-informed eight-task pilot evaluates one practical atomic typed controller mesh wrapped by the official RLM control flow. It reuses previously opened synthetic tasks, uses the gym ControlTRM rather than official TinyRecursiveModels, and does not test sheaf-spectral predictions, general orchestrator safety, neural alignment, or model superiority."
+}
