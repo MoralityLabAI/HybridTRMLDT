@@ -6,6 +6,7 @@ from collections import Counter
 from dataclasses import dataclass
 import json
 from math import exp
+import re
 from typing import Any, Mapping, Sequence
 
 from research_gym.benchmarks.rlm_hybrid_neighborhood import (
@@ -70,6 +71,34 @@ ACQUISITION_CONTRACT = {
     },
 }
 ACQUISITION_CONTRACT_HASH = canonical_sha256(ACQUISITION_CONTRACT)
+ARCHITECTURES = (
+    "mesh_fixed_no_query",
+    "mesh_always_exact",
+    "mesh_exact_then_rollout",
+    "mesh_random_two_query",
+    "mesh_deterministic_voi",
+    "rlm_adaptive_two_query",
+    "rlm_forced_failure",
+)
+API_ARCHITECTURES = ("rlm_adaptive_two_query",)
+
+
+def architecture_hashes() -> dict[str, str]:
+    specifications = {
+        "mesh_fixed_no_query": ("local", ()),
+        "mesh_always_exact": ("local", (EXACT_MECHANICS,)),
+        "mesh_exact_then_rollout": ("local", (EXACT_MECHANICS, COUNTERFACTUAL_ROLLOUT)),
+        "mesh_random_two_query": ("local", "seeded_query_count_matched_two_query"),
+        "mesh_deterministic_voi": ("local", "snapshot_only_voi_v0"),
+        "rlm_adaptive_two_query": ("official_rlm", "two_round_text_decision"),
+        "rlm_forced_failure": ("control", "fixed_no_query_fallback"),
+    }
+    return {
+        name: canonical_sha256(
+            (ACQUISITION_CONTRACT_HASH, specifications[name], CHANNEL_WEIGHTS)
+        )
+        for name in ARCHITECTURES
+    }
 
 
 @dataclass(frozen=True)
@@ -213,6 +242,92 @@ def acquisition_context(
         "available_query_ids": remaining,
         "allowed_decisions": [*remaining, "STOP"],
     }
+
+
+def context_privacy_violations(
+    task: LongContextControlTask,
+    context: Mapping[str, Any],
+) -> tuple[str, ...]:
+    """Return direct task/action disclosures in a provider-bound context."""
+
+    serialized = json.dumps(context, sort_keys=True, separators=(",", ":"))
+    violations = []
+    if task.transcript and task.transcript in serialized:
+        violations.append("task_text")
+    if task.family and task.family in serialized:
+        violations.append("task_family")
+    for action in task.candidates:
+        if re.search(rf"(?<![A-Za-z0-9_]){re.escape(action)}(?![A-Za-z0-9_])", serialized):
+            violations.append(f"action_token:{action}")
+    forbidden_keys = {
+        "action",
+        "executed_action",
+        "exact_utility",
+        "family",
+        "optimal_action",
+        "task_id",
+        "task_text",
+        "transcript",
+        "utilities",
+    }
+
+    def visit(value: object) -> None:
+        if isinstance(value, Mapping):
+            for key, item in value.items():
+                if str(key) in forbidden_keys:
+                    violations.append(f"forbidden_key:{key}")
+                visit(item)
+        elif isinstance(value, (list, tuple)):
+            for item in value:
+                visit(item)
+
+    visit(context)
+    return tuple(sorted(set(violations)))
+
+
+def random_two_query_sequence(task: LongContextControlTask) -> tuple[str, str]:
+    ordered = sorted(
+        QUERY_IDS,
+        key=lambda query_id: canonical_sha256(
+            ("rlm-acquisition-random-v0", task.task_id, query_id)
+        ),
+    )
+    return ordered[0], ordered[1]
+
+
+def deterministic_voi_sequence(
+    task: LongContextControlTask,
+    trained_row: Mapping[str, Any],
+) -> tuple[str, ...]:
+    snapshot = build_initial_snapshot(task, trained_row)
+    modules = snapshot["modules"]
+    if snapshot["agreement"]["all_equal"]:
+        return (EXACT_MECHANICS,)
+    model_confidence = max(
+        float(modules["proxy_trm"]["confidence"]),
+        float(modules["trained_control_trm"]["confidence"]),
+    )
+    if model_confidence >= 0.80:
+        return RECEIPT_ATTESTATION, EXACT_MECHANICS
+    return INDEPENDENT_PROBE, EXACT_MECHANICS
+
+
+def architecture_query_sequence(
+    architecture_id: str,
+    task: LongContextControlTask,
+    trained_row: Mapping[str, Any],
+) -> tuple[str, ...]:
+    if architecture_id in {"mesh_fixed_no_query", "rlm_forced_failure"}:
+        return ()
+    if architecture_id == "mesh_always_exact":
+        return (EXACT_MECHANICS,)
+    if architecture_id == "mesh_exact_then_rollout":
+        return EXACT_MECHANICS, COUNTERFACTUAL_ROLLOUT
+    if architecture_id == "mesh_random_two_query":
+        return random_two_query_sequence(task)
+    if architecture_id == "mesh_deterministic_voi":
+        return deterministic_voi_sequence(task, trained_row)
+    raise ValueError(f"architecture does not have a static acquisition sequence: {architecture_id}")
 
 
 def make_evidence_receipt(
@@ -380,6 +495,36 @@ def execute_acquisition(
         action_changed=selected != baseline,
         fallback=fallback,
         decision_reason=reason,
+    )
+
+
+def execute_failure_fallback(
+    task: LongContextControlTask,
+    trained_row: Mapping[str, Any],
+    truth: Mapping[str, Any],
+    executed_queries: Sequence[str],
+) -> AcquisitionOutcome:
+    """Preserve fixed-consensus utility after a controller failure, charging spent queries."""
+
+    sequence = tuple(str(value) for value in executed_queries)
+    if len(sequence) > MAX_QUERIES or len(set(sequence)) != len(sequence):
+        raise ValueError("failure fallback sequence exceeds budget or repeats a query")
+    if any(value not in QUERY_IDS for value in sequence):
+        raise ValueError("failure fallback sequence contains an unknown query")
+    baseline = execute_acquisition(task, trained_row, truth, ())
+    receipts = tuple(make_evidence_receipt(task, trained_row, truth, value) for value in sequence)
+    query_cost = sum(QUERY_COSTS[value] for value in sequence)
+    return AcquisitionOutcome(
+        executed_action=baseline.executed_action,
+        baseline_action=baseline.baseline_action,
+        query_sequence=sequence,
+        receipts=receipts,
+        raw_utility=baseline.raw_utility,
+        query_cost=query_cost,
+        net_utility=baseline.raw_utility - query_cost,
+        action_changed=False,
+        fallback=True,
+        decision_reason="rlm_failure_fixed_consensus_fallback",
     )
 
 

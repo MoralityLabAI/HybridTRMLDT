@@ -10,6 +10,7 @@ import pytest
 
 from research_gym.benchmarks.rlm_evidence_acquisition import (
     ACQUISITION_CONTRACT_HASH,
+    ARCHITECTURES,
     COUNTERFACTUAL_ROLLOUT,
     EXACT_MECHANICS,
     INDEPENDENT_PROBE,
@@ -17,6 +18,8 @@ from research_gym.benchmarks.rlm_evidence_acquisition import (
     QUERY_IDS,
     RECEIPT_ATTESTATION,
     acquisition_context,
+    architecture_hashes,
+    architecture_query_sequence,
     build_initial_snapshot,
     execute_acquisition,
     make_evidence_receipt,
@@ -25,8 +28,10 @@ from research_gym.benchmarks.rlm_evidence_acquisition import (
     valid_query_sequences,
     verify_evidence_receipt,
 )
+from research_gym.benchmarks import rlm_evidence_runtime
 from research_gym.benchmarks.rlm_hybrid_neighborhood import LongContextControlTask
 from research_gym.integrity import canonical_file_sha256
+from research_gym.scripts import bench_rlm_evidence_acquisition_v0 as runner
 from research_gym.scripts import materialize_rlm_evidence_acquisition_v0 as materializer
 
 
@@ -169,3 +174,114 @@ def test_calibration_construction_gate_passes_without_eval_access() -> None:
     assert len(two_query) >= 3
     assert max(two_query.values()) / sum(two_query.values()) < 0.70
     assert sum(value > 1e-12 for value in gains) >= 10
+
+
+def test_architecture_hashes_and_static_sequences_are_bounded() -> None:
+    _, _, tasks, proposals, _ = _inputs()
+    hashes = architecture_hashes()
+    assert tuple(hashes) == ARCHITECTURES
+    assert len(set(hashes.values())) == len(ARCHITECTURES)
+    task = tasks[0]
+    for architecture in ARCHITECTURES:
+        if architecture == "rlm_adaptive_two_query":
+            continue
+        sequence = architecture_query_sequence(architecture, task, proposals[task.task_id])
+        assert len(sequence) <= 2
+        assert len(sequence) == len(set(sequence))
+
+
+def test_rlm_runtime_adapts_second_query_without_action_authority(monkeypatch) -> None:
+    _, _, tasks, proposals, truth = _inputs()
+    task = tasks[0]
+    responses = iter((INDEPENDENT_PROBE, EXACT_MECHANICS))
+
+    def fake_completion(context, runtime):
+        return next(responses), {"calls": 1, "input_tokens": 1, "output_tokens": 1, "total_tokens": 2, "reported_cost_usd": None}, {}, 0.1
+
+    monkeypatch.setattr(rlm_evidence_runtime, "_completion", fake_completion)
+    state, trajectory = rlm_evidence_runtime.run_rlm_acquisition(
+        task,
+        proposals[task.task_id],
+        truth[task.task_id],
+        {},
+    )
+    assert state["contract_passed"]
+    assert state["outcome"].query_sequence == (INDEPENDENT_PROBE, EXACT_MECHANICS)
+    assert trajectory["rounds"][1]["context"]["acquired_evidence"][0]["query_id"] == INDEPENDENT_PROBE
+    assert state["outcome"].executed_action in task.exact_allowed
+
+
+def test_rlm_provider_failure_executes_fixed_no_query_mesh(monkeypatch) -> None:
+    _, _, tasks, proposals, truth = _inputs()
+    task = tasks[0]
+
+    def failed_completion(context, runtime):
+        raise TimeoutError("synthetic timeout")
+
+    monkeypatch.setattr(rlm_evidence_runtime, "_completion", failed_completion)
+    state, _ = rlm_evidence_runtime.run_rlm_acquisition(
+        task,
+        proposals[task.task_id],
+        truth[task.task_id],
+        {},
+    )
+    baseline = execute_acquisition(task, proposals[task.task_id], truth[task.task_id], ())
+    assert not state["contract_passed"]
+    assert state["provider_error"]["error_type"] == "TimeoutError"
+    assert state["outcome"].executed_action == baseline.executed_action
+    assert state["outcome"].net_utility == baseline.net_utility
+
+
+def test_rlm_second_round_failure_discards_acquired_authority_but_charges_query(monkeypatch) -> None:
+    _, _, tasks, proposals, truth = _inputs()
+    task = tasks[0]
+    responses = iter((EXACT_MECHANICS, "not a valid decision"))
+
+    def fake_completion(context, runtime):
+        return next(responses), {"calls": 1, "input_tokens": 1, "output_tokens": 1, "total_tokens": 2, "reported_cost_usd": None}, {}, 0.1
+
+    monkeypatch.setattr(rlm_evidence_runtime, "_completion", fake_completion)
+    state, _ = rlm_evidence_runtime.run_rlm_acquisition(
+        task,
+        proposals[task.task_id],
+        truth[task.task_id],
+        {},
+    )
+    baseline = execute_acquisition(task, proposals[task.task_id], truth[task.task_id], ())
+    assert not state["contract_passed"]
+    assert state["outcome"].executed_action == baseline.executed_action
+    assert state["outcome"].raw_utility == baseline.raw_utility
+    assert state["outcome"].query_cost == QUERY_COSTS[EXACT_MECHANICS]
+    assert state["outcome"].net_utility == pytest.approx(
+        baseline.raw_utility - QUERY_COSTS[EXACT_MECHANICS]
+    )
+
+
+def test_runner_config_hashes_selection_and_initial_opacity() -> None:
+    config, _ = runner._raw_config(runner.DEFAULT_CONFIG)
+    calibration = runner._selected_tasks(config, "calibration")
+    evaluation = runner._selected_tasks(config, "eval")
+    _, proposals, _ = runner._load_inputs(config)
+    assert len(calibration) == 8
+    assert Counter(task.family for task in calibration) == {family: 2 for family in runner.FAMILIES}
+    assert len(evaluation) == 24
+    assert Counter(task.family for task in evaluation) == {family: 6 for family in runner.FAMILIES}
+    assert runner._initial_context_gate([*calibration, *evaluation], proposals) == {
+        "passed": True,
+        "contexts_checked": 32,
+        "failures": [],
+    }
+
+
+def test_evaluation_task_shard_is_atomic_and_replays(tmp_path) -> None:
+    config, config_hash = runner._raw_config(runner.DEFAULT_CONFIG)
+    task = runner._selected_tasks(config, "calibration")[0]
+    records = [
+        {"architecture_id": architecture, "task_id": task.task_id}
+        for architecture in ARCHITECTURES
+    ]
+    trajectories = [{"record_id": architecture} for architecture in ARCHITECTURES]
+    runner._write_task_shard(tmp_path, task, records, trajectories, config_hash)
+    loaded = runner._load_task_shard(tmp_path, task, config_hash)
+    assert loaded == (records, trajectories)
+    assert not list((tmp_path / "shards").glob(".*.tmp"))
