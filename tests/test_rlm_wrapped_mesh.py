@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import replace
 import json
 from pathlib import Path
+from statistics import mean
 
 import pytest
 
@@ -92,3 +93,55 @@ def test_registration_hashes_when_registration_exists() -> None:
     assert registration["mesh_topology_hash"] == MESH_TOPOLOGY_HASH
     for artifact in registration["bound_artifacts"]:
         assert canonical_file_sha256(ROOT / artifact["path"]) == artifact["sha256"]
+
+
+def test_sealed_pilot_preserves_containment_and_routing_null() -> None:
+    receipt_path = ROOT / "data/benchmarks/rlm_wrapped_controller_mesh_v0_receipt.json"
+    if not receipt_path.exists():
+        return
+    receipt = json.loads(receipt_path.read_text())
+    assert canonical_file_sha256(ROOT / receipt["result_path"]) == receipt["result_sha256"]
+    assert canonical_file_sha256(ROOT / receipt["records_path"]) == receipt["records_sha256"]
+    records = [
+        json.loads(line)
+        for line in (ROOT / receipt["records_path"]).read_text().splitlines()
+    ]
+    assert sum(bool(row["unsafe"]) for row in records) == 0
+    assert sum(row.get("decision_reason") == "cell_error" for row in records) == 3
+    fixed = {
+        row["task_id"]: row
+        for row in records
+        if row["architecture_id"] == "mesh_fixed_consensus"
+    }
+    for architecture in ("rlm_mesh_atomic_tool", "rlm_mesh_text_router"):
+        completed = [
+            row
+            for row in records
+            if row["architecture_id"] == architecture
+            and row["decision_reason"] != "cell_error"
+        ]
+        assert all(row["executed_action"] == fixed[row["task_id"]]["executed_action"] for row in completed)
+    atomic = [row for row in records if row["architecture_id"] == "rlm_mesh_atomic_tool"]
+    text = [row for row in records if row["architecture_id"] == "rlm_mesh_text_router"]
+    assert sum(bool(row["wrapper_contract_passed"]) for row in atomic) == 2
+    assert sum(bool(row["wrapper_contract_passed"]) for row in text) == 0
+
+
+def test_sealed_panel_contains_posthoc_routing_opportunity() -> None:
+    receipt_path = ROOT / "data/benchmarks/rlm_wrapped_controller_mesh_v0_receipt.json"
+    if not receipt_path.exists():
+        return
+    tasks, proposals = _inputs()
+    by_family: dict[str, list[tuple[float, float]]] = {family: [] for family in runner.FAMILIES}
+    opportunity_count = 0
+    for task in tasks:
+        utilities = {
+            hint: task.utilities[resolve_mesh(task, proposals[task.task_id], hint).action]
+            for hint in POLICY_HINTS
+        }
+        opportunity_count += int(len(set(utilities.values())) > 1)
+        by_family[task.family].append((utilities["consensus"], max(utilities.values())))
+    consensus = mean(mean(value[0] for value in by_family[family]) for family in runner.FAMILIES)
+    oracle = mean(mean(value[1] for value in by_family[family]) for family in runner.FAMILIES)
+    assert opportunity_count == 6
+    assert oracle - consensus == pytest.approx(0.03625)
