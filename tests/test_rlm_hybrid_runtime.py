@@ -13,7 +13,11 @@ from research_gym.benchmarks.rlm_hybrid_runtime import (
 )
 from research_gym.scripts import bench_rlm_trm_ldt_hybrid_neighborhood_v1 as runner
 from research_gym.scripts import bench_rlm_trm_ldt_hybrid_neighborhood_v1_1 as successor
-from research_gym.scripts.report_rlm_trm_ldt_hybrid_neighborhood_v1 import render_topology
+from research_gym.scripts.report_rlm_trm_ldt_hybrid_neighborhood_v1 import (
+    _error_counts,
+    _markdown_table,
+    render_topology,
+)
 
 
 def _task() -> LongContextControlTask:
@@ -129,6 +133,29 @@ def test_topology_figure_is_deterministic_svg(tmp_path: Path) -> None:
     render_topology(second)
     assert first.read_bytes() == second.read_bytes()
     assert "soft child" in first.read_text(encoding="utf-8")
+
+
+def test_report_table_keeps_errors_and_manipulation_failures_visible() -> None:
+    summary = [{
+        "architecture_id": "rlm_tool_conductor",
+        "macro_utility": 0.4,
+        "accuracy": 0.3,
+        "unsafe_rate": 0.0,
+        "fallback_rate": 0.75,
+        "manipulation_failure_rate": 1.0,
+        "total_tokens": 1234,
+        "execution_time": 9.5,
+    }]
+    records = [{
+        "architecture_id": "rlm_tool_conductor",
+        "decision_reason": "cell_error",
+        "error": {"error_type": "TokenLimitExceededError"},
+    }]
+
+    assert _error_counts(records) == {"rlm_tool_conductor": 1}
+    table = _markdown_table(summary, records)
+    assert "Manip. fail" in table
+    assert "| 1.0000 | 1 | 1,234 | 9.5 |" in table
 
 
 def test_v1_1_preserves_runtime_and_opens_only_eval_split() -> None:

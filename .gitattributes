@@ -46,3 +46,5 @@ experiments/rlm_trm_ldt_hybrid_neighborhood_v1*/**/*.jsonl text eol=lf
 experiments/rlm_trm_ldt_hybrid_neighborhood_v1*/**/*.log text eol=lf
 reports/rlm_trm_ldt_hybrid_neighborhood_v1*.md text eol=lf
 reports/figures/rlm_trm_ldt_hybrid_neighborhood_v1*/**/*.svg text eol=lf
+research_gym/scripts/report_rlm_trm_ldt_hybrid_neighborhood_v1.py text eol=lf
+tests/test_rlm_hybrid_runtime.py text eol=lf

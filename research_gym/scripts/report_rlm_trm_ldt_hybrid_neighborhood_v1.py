@@ -185,16 +185,27 @@ def render_family_heatmap(path: Path, summary: list[Mapping[str, Any]], records:
     _svg(path, 900, top + len(architectures) * cell_h + 25, "".join(parts))
 
 
-def _markdown_table(summary: list[Mapping[str, Any]]) -> str:
+def _error_counts(records: list[Mapping[str, Any]]) -> dict[str, int]:
+    counts: dict[str, int] = defaultdict(int)
+    for row in records:
+        if row.get("error") is not None or row.get("decision_reason") == "cell_error":
+            counts[str(row["architecture_id"])] += 1
+    return counts
+
+
+def _markdown_table(summary: list[Mapping[str, Any]], records: list[Mapping[str, Any]]) -> str:
+    errors = _error_counts(records)
     lines = [
-        "| Architecture | Macro utility | Accuracy | Unsafe | Fallback | Tokens | Calls |",
-        "|---|---:|---:|---:|---:|---:|---:|",
+        "| Architecture | Macro utility | Accuracy | Unsafe | Fallback | Manip. fail | Errors | Tokens | Wall s |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for row in sorted(summary, key=lambda value: float(value["macro_utility"]), reverse=True):
+        architecture = str(row["architecture_id"])
         lines.append(
-            f'| {LABELS[str(row["architecture_id"])]} | {float(row["macro_utility"]):.4f} | '
+            f'| {LABELS[architecture]} | {float(row["macro_utility"]):.4f} | '
             f'{float(row["accuracy"]):.4f} | {float(row["unsafe_rate"]):.4f} | '
-            f'{float(row["fallback_rate"]):.4f} | {int(row["total_tokens"]):,} | {int(row["total_calls"]):,} |'
+            f'{float(row["fallback_rate"]):.4f} | {float(row["manipulation_failure_rate"]):.4f} | '
+            f'{errors[architecture]} | {int(row["total_tokens"]):,} | {float(row["execution_time"]):,.1f} |'
         )
     return "\n".join(lines)
 
@@ -208,6 +219,7 @@ def render_report(result_path: Path, receipt_path: Path, report_path: Path, figu
     if not verify_file_sha256(records_path, result["records_sha256"]):
         raise RuntimeError("sealed evaluation records failed verification")
     records = [json.loads(line) for line in records_path.read_text(encoding="utf-8").splitlines()]
+    version = "v1.1" if "_v1_1_" in str(result["protocol_id"]) else "v1"
     figures.mkdir(parents=True, exist_ok=True)
     render_topology(figures / "architecture_topology.svg")
     render_utility(figures / "macro_utility.svg", result["summary"])
@@ -221,7 +233,20 @@ def render_report(result_path: Path, receipt_path: Path, report_path: Path, figu
             f'95% cluster bootstrap [{float(row["utility_delta_ci_95"][0]):+.4f}, '
             f'{float(row["utility_delta_ci_95"][1]):+.4f}], Holm p={float(row["holm_adjusted_p"]):.4f}.'
         )
-    body = f"""# RLM x TRM/LDT Hybrid Architecture Neighborhood v1
+    summary_by_id = {str(row["architecture_id"]): row for row in result["summary"]}
+    typed_architectures = {
+        "ldt_only",
+        "proxy_trm_ldt_fixed",
+        "trained_trm_ldt_fixed",
+        "rlm_ldt_membrane",
+        "proxy_trm_rlm_critic_ldt",
+        "trained_trm_rlm_critic_ldt",
+        "rlm_tool_conductor",
+        "rlm_recursive_conductor",
+    }
+    typed_cells = sum(int(summary_by_id[name]["cells"]) for name in typed_architectures)
+    typed_unsafe = sum(int(summary_by_id[name]["unsafe_count"]) for name in typed_architectures)
+    body = f"""# RLM x TRM/LDT Hybrid Architecture Neighborhood {version}
 
 This registered campaign compares three hybrid control-flow families with RLM-, LDT-, proxy-TRM-, trained-ControlTRM-, and fixed-flow controls on four generated long-context control task families. The held-out design contains {result['record_count']} paired records: 24 tasks, three registered replicates, and eleven architectures.
 
@@ -233,7 +258,7 @@ The co-primary endpoints are equal-family macro utility and unsafe executed-acti
 
 ![Macro utility]({relative_figures}/macro_utility.svg)
 
-{_markdown_table(result['summary'])}
+{_markdown_table(result['summary'], records)}
 
 ![Pareto neighborhood]({relative_figures}/pareto.svg)
 
@@ -242,6 +267,14 @@ The co-primary endpoints are equal-family macro utility and unsafe executed-acti
 ## Registered Comparisons
 
 {chr(10).join(comparisons)}
+
+## Observed Control Trade-offs
+
+- The fixed `trained_trm_ldt_fixed` flow is the sole measured Pareto point: macro utility {float(summary_by_id['trained_trm_ldt_fixed']['macro_utility']):.4f}, zero unsafe executions, and no provider calls.
+- Typed host-side action authority contained unsafe execution in all {typed_cells} typed cells ({typed_unsafe} observed); this is a campaign result, not evidence that the controller is generally safe.
+- The RLM membrane improves utility over untyped RLM, but remains below LDT alone. Inserting the RLM critic into either fixed TRM -> LDT flow lowers utility in both registered contrasts.
+- Both conductor variants fail the registered manipulation test in every cell and fall back on at least two thirds of cells. Their results measure failed orchestration under this tool contract, not a successful Conductor-HRM implementation.
+- API-backed cells contain {sum(_error_counts(records).values())} recorded provider or token-limit errors; they remain in the sealed intention-to-evaluate table rather than being silently retried away.
 
 ## Interpretation Boundary
 
