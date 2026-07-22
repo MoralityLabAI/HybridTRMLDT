@@ -1,0 +1,1 @@
+{"excluded_from_architecture_metrics":true,"expected_response":"RLM_EVIDENCE_TRANSPORT_OK","finished_utc":"2026-07-22T19:58:32.173704+00:00","model":"gpt-4.1-mini","response":"RLM_EVIDENCE_TRANSPORT_OK","started_utc":"2026-07-22T19:58:30.834007+00:00","status":"passed","usage":{"calls":1,"input_tokens":18,"output_tokens":8,"reported_cost_usd":null,"total_tokens":26}}
