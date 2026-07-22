@@ -3,10 +3,21 @@ from __future__ import annotations
 from hashlib import sha256
 import json
 from pathlib import Path
+import re
 
 import pytest
 
+from research_gym.benchmarks.rlm_snapshot_mesh import (
+    ARCHITECTURES,
+    SNAPSHOT_CONTRACT_HASH,
+    architecture_hashes,
+    build_opaque_snapshot,
+    snapshot_prompt,
+    verify_opaque_snapshot,
+)
+from research_gym.benchmarks.rlm_wrapped_mesh import POLICY_HINTS, resolve_mesh
 from research_gym.integrity import canonical_file_sha256
+from research_gym.scripts import bench_rlm_snapshot_mesh_v0_1 as runner
 from research_gym.scripts import materialize_rlm_snapshot_mesh_v0_1 as materializer
 
 
@@ -66,3 +77,89 @@ def test_materializer_refuses_to_overwrite_sealed_outputs() -> None:
             materializer.DEFAULT_PROPOSALS,
             materializer.DEFAULT_RECEIPT,
         )
+
+
+def _panel():
+    config = json.loads((ROOT / "configs/rlm_snapshot_mesh_v0_1.json").read_text(encoding="utf-8"))
+    return config, runner._load_tasks(config), runner._load_proposals(config)
+
+
+def test_snapshot_architecture_hashes_are_unique_and_stable() -> None:
+    assert tuple(architecture_hashes()) == ARCHITECTURES
+    assert len(set(architecture_hashes().values())) == len(ARCHITECTURES)
+    assert len(SNAPSHOT_CONTRACT_HASH) == 64
+
+
+def test_fresh_panel_has_two_policy_divergent_tasks_per_family() -> None:
+    _, tasks, proposals = _panel()
+    assert len(tasks) == 8
+    divergent_count = 0
+    for family in runner.FAMILIES:
+        family_tasks = [task for task in tasks if task.family == family]
+        assert len(family_tasks) == 2
+        for task in family_tasks:
+            actions = {
+                resolve_mesh(task, proposals[task.task_id], hint).action
+                for hint in POLICY_HINTS
+            }
+            divergent_count += int(len(actions) > 1)
+            if family == "multi_hop_reachability":
+                assert len(actions) == 1
+            else:
+                assert len(actions) > 1
+    assert divergent_count == 6
+
+
+def test_opaque_snapshot_is_replayable_and_rejects_tampering() -> None:
+    _, tasks, proposals = _panel()
+    for task in tasks:
+        snapshot = build_opaque_snapshot(task, proposals[task.task_id])
+        assert verify_opaque_snapshot(task, proposals[task.task_id], snapshot)
+        tampered = json.loads(json.dumps(snapshot))
+        tampered["agreement"]["distinct_top_count"] += 1
+        assert not verify_opaque_snapshot(task, proposals[task.task_id], tampered)
+
+
+@pytest.mark.parametrize("atomic", [False, True])
+def test_visible_snapshot_prompt_contains_no_task_or_action_tokens(atomic: bool) -> None:
+    _, tasks, proposals = _panel()
+    for task in tasks:
+        snapshot = build_opaque_snapshot(task, proposals[task.task_id])
+        prompt = snapshot_prompt(snapshot, atomic=atomic)
+        assert task.model_prompt() not in prompt
+        assert task.transcript not in prompt
+        for action in task.candidates:
+            assert not re.search(rf"(?<![A-Za-z0-9_]){re.escape(action)}(?![A-Za-z0-9_])", prompt)
+        serialized_values = json.dumps(snapshot, sort_keys=True)
+        assert task.optimal_action not in _string_leaves(json.loads(serialized_values))
+
+
+def test_registration_replays_all_bound_artifacts() -> None:
+    path = ROOT / "configs/rlm_snapshot_mesh_v0_1_registration.json"
+    registration = json.loads(path.read_text(encoding="utf-8"))
+    assert registration["provider_outcomes_present"] is False
+    assert registration["snapshot_contract_hash"] == SNAPSHOT_CONTRACT_HASH
+    assert canonical_file_sha256(ROOT / registration["config_path"]) == registration["config_sha256"]
+    assert registration["architecture_hashes"] == architecture_hashes()
+    _, tasks, _ = _panel()
+    task_ids = [task.task_id for task in tasks]
+    assert task_ids == registration["task_ids"]
+    for artifact in registration["bound_artifacts"]:
+        assert canonical_file_sha256(ROOT / artifact["path"]) == artifact["sha256"]
+
+
+def _string_leaves(value: object) -> set[str]:
+    if isinstance(value, str):
+        return {value}
+    if isinstance(value, dict):
+        output: set[str] = set()
+        for key, item in value.items():
+            output.update(_string_leaves(key))
+            output.update(_string_leaves(item))
+        return output
+    if isinstance(value, list):
+        output = set()
+        for item in value:
+            output.update(_string_leaves(item))
+        return output
+    return set()
