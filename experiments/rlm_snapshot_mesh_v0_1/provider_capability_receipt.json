@@ -1,0 +1,1 @@
+{"excluded_from_architecture_metrics":true,"expected_response":"RLM_SNAPSHOT_MESH_TRANSPORT_OK","finished_utc":"2026-07-22T15:04:05.988428+00:00","model":"gpt-4.1-mini","response":"RLM_SNAPSHOT_MESH_TRANSPORT_OK","started_utc":"2026-07-22T15:04:03.711008+00:00","status":"passed","usage":{"calls":1,"input_tokens":19,"output_tokens":9,"reported_cost_usd":null,"total_tokens":28}}
