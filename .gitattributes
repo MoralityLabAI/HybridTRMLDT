@@ -56,3 +56,6 @@ reports/rlm_wrapped_controller_mesh_v0*.md text eol=lf
 research_gym/benchmarks/rlm_wrapped_mesh.py text eol=lf
 research_gym/scripts/bench_rlm_wrapped_mesh.py text eol=lf
 tests/test_rlm_wrapped_mesh.py text eol=lf
+data/benchmarks/rlm_snapshot_mesh_* text eol=lf
+research_gym/scripts/materialize_rlm_snapshot_mesh_v0_1.py text eol=lf
+tests/test_rlm_snapshot_mesh_v0_1.py text eol=lf
