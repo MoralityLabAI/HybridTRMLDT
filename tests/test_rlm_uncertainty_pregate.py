@@ -17,6 +17,7 @@ from research_gym.benchmarks.rlm_uncertainty_pregate import (
 from research_gym.integrity import canonical_file_sha256
 from research_gym.scripts import bench_rlm_evidence_acquisition_v0 as v0
 from research_gym.scripts import bench_rlm_uncertainty_pregate_v0_1 as runner
+from research_gym.scripts import audit_rlm_uncertainty_pregate_v0_1 as audit
 from research_gym.scripts import materialize_rlm_uncertainty_pregate_v0_1 as materializer
 
 
@@ -127,3 +128,20 @@ def test_pregate_shard_roundtrip(tmp_path) -> None:
         records,
         trajectories,
     )
+
+
+def test_sealed_pregate_audit_recomputes_and_retains_negative_endpoint() -> None:
+    result = audit.build_audit(audit.DEFAULT_OUTPUT)
+    operational = result["registered_operational_result"]
+    assert result["canonical_replay"]["records_replayed"] == 144
+    assert result["canonical_replay"]["task_shards_replayed"] == 24
+    assert result["canonical_replay"]["evidence_receipt_failures"] == 0
+    assert operational["macro_all_in_utility_delta"]["primary"] == pytest.approx(
+        -0.004927398583334475
+    )
+    assert result["repeatability"]["query_sequence_matches"] == 2
+    assert result["repeatability"]["executed_action_matches"] == 7
+    assert result["coupled_replay"]["macro_all_in_utility_delta_vs_ungated"][
+        "primary"
+    ] == pytest.approx(0.00610969902708283)
+    assert result["winner"]["architecture"] == "gated_deterministic_voi"
