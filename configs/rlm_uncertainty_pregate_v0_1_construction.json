@@ -1,0 +1,15 @@
+{
+  "protocol_id": "rlm_uncertainty_pregate_v0_1",
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_pct": 50,
+    "io_abort_mb_s": 50,
+    "io_sustained_samples": 3,
+    "vram_mb": 1500,
+    "torch_vram_fraction": 0.35,
+    "phase_timeout_seconds": 1500,
+    "aggregate_gpu_hours": 1,
+    "device": "CPU plus remote provider API",
+    "foreign_gpu_process_policy": "observe and abort before launch; never terminate foreign processes"
+  }
+}
