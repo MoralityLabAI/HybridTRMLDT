@@ -7,12 +7,16 @@ from statistics import mean
 import pytest
 
 from research_gym.benchmarks.rlm_uncertainty_pregate import (
+    ARCHITECTURES,
     ProviderCostSpec,
     all_in_utility,
+    architecture_hashes,
     provider_utility_cost,
     should_invoke_rlm,
 )
+from research_gym.integrity import canonical_file_sha256
 from research_gym.scripts import bench_rlm_evidence_acquisition_v0 as v0
+from research_gym.scripts import bench_rlm_uncertainty_pregate_v0_1 as runner
 from research_gym.scripts import materialize_rlm_uncertainty_pregate_v0_1 as materializer
 
 
@@ -59,3 +63,67 @@ def test_fresh_materializer_identity() -> None:
     assert materializer.GENERATOR_SEED == 494117
     assert materializer.TASK_SUFFIX == "__pregate_v0_1"
     assert materializer.CORPUS_ID == "rlm_uncertainty_pregate_v0_1"
+
+
+def test_fresh_corpus_replays_without_provider_outcomes() -> None:
+    receipt = json.loads(materializer.DEFAULT_RECEIPT.read_text(encoding="utf-8"))
+    assert receipt["task_count"] == receipt["proposal_count"] == receipt["truth_count"] == 152
+    assert receipt["provider_outcomes_present"] is False
+    assert receipt["evaluation_outcomes_accessed"] is False
+    for name in ("tasks", "proposals", "truth", "checkpoint", "source"):
+        assert canonical_file_sha256(ROOT / receipt[f"{name}_path"]) == receipt[f"{name}_sha256"]
+
+
+def test_protocol_construction_gate_and_calibration_selection() -> None:
+    config, _ = runner._raw_config(runner.DEFAULT_CONFIG)
+    tasks, proposals, truth = runner._load_inputs(config)
+    calibration = [task for task in tasks if task.split == "calibration"]
+    gate = runner._construction_gate(calibration, proposals, truth, config)
+    selected = runner._selected_tasks(config, "calibration")
+    assert gate["passed"]
+    assert gate["invoked_tasks"] == 11
+    assert gate["families_represented"] == 4
+    assert len(selected) == 8
+    assert all(should_invoke_rlm(task, proposals[task.task_id]) for task in selected)
+    assert {family: sum(task.family == family for task in selected) for family in runner.FAMILIES} == {
+        family: 2 for family in runner.FAMILIES
+    }
+    assert tuple(architecture_hashes(config["provider_cost_regimes"])) == ARCHITECTURES
+
+
+def test_closed_gate_performs_no_provider_call(monkeypatch) -> None:
+    config, _ = runner._raw_config(runner.DEFAULT_CONFIG)
+    tasks, proposals, truth = runner._load_inputs(config)
+    task = next(
+        task
+        for task in tasks
+        if task.split == "calibration" and not should_invoke_rlm(task, proposals[task.task_id])
+    )
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("closed gate invoked provider")
+
+    monkeypatch.setattr(runner, "run_rlm_acquisition", forbidden)
+    record, _ = runner._run_architecture(
+        "gated_rlm", task, proposals[task.task_id], truth[task.task_id], config
+    )
+    assert not record["gate_open"]
+    assert not record["provider_called"]
+    assert record["usage"]["total_tokens"] == 0
+    assert record["provider_wall_seconds"] == 0
+
+
+def test_pregate_shard_roundtrip(tmp_path) -> None:
+    config, config_hash = runner._raw_config(runner.DEFAULT_CONFIG)
+    task = runner._selected_tasks(config, "calibration")[0]
+    hashes = architecture_hashes(config["provider_cost_regimes"])
+    records = [
+        {"architecture_id": architecture, "task_id": task.task_id}
+        for architecture in ARCHITECTURES
+    ]
+    trajectories = [{"record_id": architecture} for architecture in ARCHITECTURES]
+    runner._write_task_shard(tmp_path, task, records, trajectories, config_hash, hashes)
+    assert runner._load_task_shard(tmp_path, task, config_hash, hashes) == (
+        records,
+        trajectories,
+    )
