@@ -1,0 +1,57 @@
+name: ControlTRM CPU calibration verification
+
+on:
+  push:
+    branches:
+      - audit/control-trm-step2-calibration-20261025
+    paths:
+      - .github/workflows/control-trm-step2-calibration.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-pinned-calibration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CUDA_VISIBLE_DEVICES: ""
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install CPU-only test dependencies
+        run: |
+          python -m pip install pytest==9.0.2
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.10.0+cpu'
+      - name: Confirm CPU-only runtime
+        run: |
+          python - <<'PY'
+          import torch
+          assert torch.version.cuda is None, torch.version.cuda
+          assert not torch.cuda.is_available()
+          print("CPU-only PyTorch:", torch.__version__)
+          PY
+      - name: Synthetic intervention and fail-closed tests
+        run: python -m pytest -q tests/test_control_trm_intervention.py tests/test_control_trm_calibration_runner.py
+      - name: Verify original three checkpoint hashes, calibration logits, sham and rescue
+        run: |
+          python -m research_gym.scripts.verify_control_trm_latent_calibration > /tmp/controltrm-calibration.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("/tmp/controltrm-calibration.json").read_text())
+          assert r["status"] == "passed"
+          assert r["held_out_evaluated"] is False
+          assert r["training_performed"] is False
+          assert r["donor_effect_scored"] is False
+          assert len(r["results"]) == 3
+          assert sum(x["calibration_tasks"] for x in r["results"]) == 96
+          print(json.dumps(r, sort_keys=True))
+          PY
