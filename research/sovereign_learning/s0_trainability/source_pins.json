@@ -1,0 +1,44 @@
+{
+  "as_of": "2026-10-28",
+  "repo": {
+    "name": "MoralityLabAI/HybridTRMLDT",
+    "base_branch": "master",
+    "base_sha": "f162153f1c397a93d4750a4cce3edb1d5fa1cab7"
+  },
+  "codec": {
+    "repo": "PrismML-Eng/llama.cpp",
+    "branch": "prism",
+    "sha": "c96baf4abe24d11a50f326e40b6223b687449d63",
+    "files": [
+      "ggml/src/ggml-quants.c",
+      "ggml/src/ggml-common.h"
+    ],
+    "ptq1_type": 143,
+    "pq2_type": 142,
+    "group_size": 128,
+    "ptq1_bytes": 28,
+    "pq2_bytes": 34,
+    "ptq1_stages": [
+      16,
+      8
+    ]
+  },
+  "checkpoint": {
+    "model": "prism-ml/Ternary-Bonsai-2-27B-gguf",
+    "format": "PTQ1_0",
+    "checkpoint_sha": "PENDING_ON_DEVICE"
+  },
+  "benchmarks": {
+    "BitAgent": {
+      "repo": "patrickdugan/BitAgent",
+      "sha": "01da0ef2d297a57b553c3d47d1789440b79a2176",
+      "path": "apps/bitagent-launch-kernel/docs/research-architecture.md",
+      "status": "DEV; open gate tier has no sealed transfer holdout"
+    },
+    "HybridTRMLDT_PR1": {
+      "sha": "f0cdad0c50d7b3c1420737c88b589bed3cba7ee4",
+      "status": "calibration-only infrastructure; no steering result"
+    }
+  },
+  "hardware_status": "NOT_EVALUATED"
+}
