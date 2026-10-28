@@ -1,6 +1,7 @@
 """Bounded CPU tests; no model artifacts or GPU required."""
 import math
 import random
+from fractions import Fraction
 import struct
 import unittest
 from itertools import product
@@ -39,6 +40,39 @@ class CodecTests(unittest.TestCase):
                 q[120+n*2]=t
             self.assertEqual(decode_ptq1_block(encode_ptq1_block(q,1))[0],tuple(q))
 
+    def test_pq2_scale_first_known_encode(self):
+        expected = bytes.fromhex("00 38 02") + bytes(31)
+        self.assertEqual(encode_pq2_block([1] + [-1] * 127, 0.5), expected)
+
+    def test_pq2_scale_first_known_decode(self):
+        independent_block = bytes.fromhex("00 38 02") + bytes(31)
+        self.assertEqual(decode_pq2_block(independent_block),
+                         (tuple([1] + [-1] * 127), 0.5))
+
+    def test_non_integer_trits_rejected_without_truncation(self):
+        invalid = (True, False, 0.5, -0.5, 1.5, 1.0, float("nan"),
+                   float("inf"), float("-inf"), Fraction(1, 2), Fraction(1, 1))
+        for encoder in (encode_ptq1_block, encode_pq2_block):
+            for value in invalid:
+                with self.subTest(encoder=encoder.__name__, value=repr(value)):
+                    with self.assertRaises(ValueError):
+                        encoder([value] + [0] * 127, 0.5)
+
+    def test_integer_index_scalars_supported(self):
+        class IndexScalar:
+            def __init__(self, value):
+                self.value = value
+
+            def __index__(self):
+                return self.value
+
+        trits = [IndexScalar(1), IndexScalar(0), IndexScalar(-1)] + [0] * 125
+        expected = tuple([1, 0, -1] + [0] * 125)
+        for encoder, decoder in ((encode_ptq1_block, decode_ptq1_block),
+                                 (encode_pq2_block, decode_pq2_block)):
+            with self.subTest(encoder=encoder.__name__):
+                self.assertEqual(decoder(encoder(trits, 0.5)), (expected, 0.5))
+
     def test_random_cross_format_identity(self):
         rng=random.Random(20261028)
         for _ in range(512):
@@ -65,8 +99,11 @@ class CodecTests(unittest.TestCase):
         with self.assertRaises(ValueError):decode_matrix(bytes(28),rows=1,cols=256)
         with self.assertRaises(ValueError):decode_matrix(bytes(28),rows=1,cols=128,fmt="q1")
         invalid=bytearray(encode_pq2_block([0]*128,1))
-        invalid[0]=3
-        with self.assertRaises(ValueError):decode_pq2_block(bytes(invalid))
+        invalid[2]=3  # First code byte follows the two-byte FP16 scale.
+        with self.assertRaisesRegex(ValueError, r"\+2"):
+            decode_pq2_block(bytes(invalid))
+        nan_pq2_scale=struct.pack("<e",float("nan"))+bytes(32)
+        with self.assertRaises(ValueError):decode_pq2_block(nan_pq2_scale)
         nan_scale=encode_ptq1_block([0]*128,1)[:-2]+struct.pack("<e",float("nan"))
         with self.assertRaises(ValueError):decode_ptq1_block(nan_scale)
 

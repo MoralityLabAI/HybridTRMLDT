@@ -7,6 +7,7 @@ Hadamard and GGUF metadata are separate from the block codec.
 """
 from __future__ import annotations
 import math
+import operator
 import struct
 from typing import Sequence
 
@@ -20,10 +21,18 @@ GGUF_PQ2_TYPE = 142
 def _check_trits(trits: Sequence[int]) -> tuple[int, ...]:
     if len(trits) != GROUP:
         raise ValueError(f"expected {GROUP} ternary values, got {len(trits)}")
-    values = tuple(int(t) for t in trits)
-    if any(t not in (-1, 0, 1) for t in values):
-        raise ValueError("trits must be -1, 0, +1")
-    return values
+    values = []
+    for value in trits:
+        if isinstance(value, bool):
+            raise ValueError("boolean values are not trits")
+        try:
+            trit = operator.index(value)
+        except TypeError as exc:
+            raise ValueError("trits require integer-index scalar values") from exc
+        if trit not in (-1, 0, 1):
+            raise ValueError("trits must be -1, 0, +1")
+        values.append(trit)
+    return tuple(values)
 
 
 def _half(scale: float) -> bytes:
@@ -83,20 +92,22 @@ def decode_ptq1_block(block: bytes) -> tuple[tuple[int, ...], float]:
 
 
 def encode_pq2_block(trits: Sequence[int], scale: float) -> bytes:
+    """Encode the ternary subset of PQ2_0: FP16 scale before packed codes."""
     t = _check_trits(trits)
     qs = bytearray(32)
     for j, v in enumerate(t):
         qs[j // 4] |= (v + 1) << (2 * (j % 4))
-    return bytes(qs) + _half(scale)
+    return _half(scale) + bytes(qs)
 
 
 def decode_pq2_block(block: bytes) -> tuple[tuple[int, ...], float]:
+    """Decode ternary PQ2_0; PrismML's 0b11 (+2) is deliberately rejected."""
     if len(block) != PQ2_BLOCK_BYTES:
         raise ValueError(f"PQ2_0 block must have {PQ2_BLOCK_BYTES} bytes")
-    scale = struct.unpack("<e", block[32:34])[0]
+    scale = struct.unpack("<e", block[:2])[0]
     if not math.isfinite(scale) or scale < 0:
         raise ValueError("invalid FP16 scale")
-    codes = [(block[j // 4] >> (2 * (j % 4))) & 3 for j in range(GROUP)]
+    codes = [(block[2 + j // 4] >> (2 * (j % 4))) & 3 for j in range(GROUP)]
     if any(c == 3 for c in codes):
         raise ValueError("PQ2_0 contains +2 code, outside the ternary contract")
     return tuple(c - 1 for c in codes), scale
