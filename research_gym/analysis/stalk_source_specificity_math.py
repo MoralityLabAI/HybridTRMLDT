@@ -63,14 +63,13 @@ def normalize_max(eigenvalues):
     values = list(eigenvalues)
     if not values or any(not math.isfinite(x) for x in values):
         raise ValueError("empty or nonfinite spectrum")
-    scale = max(values)
-    if scale < -1e-10 or min(values) < -1e-10:
+    if min(values) < -1e-10:
         raise ValueError("requires a PSD spectrum")
-    if scale <= 1e-12:
-        if max(abs(x) for x in values) > 1e-10:
-            raise ValueError("ambiguous near-zero spectrum")
-        return [0.0] * len(values)
-    return [max(0.0, x) / scale for x in values]
+    # The production eigensolvers clamp tiny negative roundoff to zero.
+    nonnegative = [max(0.0, x) for x in values]
+    maximum = max(nonnegative)
+    # Production scales whenever maximum > 0, with no near-zero threshold.
+    return [x / maximum for x in nonnegative] if maximum > 0.0 else nonnegative
 
 
 def heat_trace(eigenvalues, time, *, normalized=False):
@@ -87,6 +86,8 @@ def certificate(controller, source, times=(0.0, 1.0, 4.0, 16.0)):
     c, q = eigvalsh_small(controller), eigvalsh_small(source)
     explicit = eigvalsh_small(kronecker_sum(controller, source))
     paired = pairwise_spectrum(controller, source)
+    if min(c) < -1e-10 or min(q) < -1e-10:
+        raise ValueError("certificate requires PSD matrices")
     tolerance = 1e-9
     if any(abs(x - y) > tolerance for x, y in zip(explicit, paired)):
         raise AssertionError("Kronecker spectral identity failed")
@@ -97,10 +98,24 @@ def certificate(controller, source, times=(0.0, 1.0, 4.0, 16.0)):
         product = heat_trace(c, t) * heat_trace(q, t)
         normal = heat_trace(explicit, t, normalized=True)
         adjusted = (heat_trace(c, t / scale) * heat_trace(q, t / scale)
-                    if scale > 1e-12 else 1.0)
+                    if scale > 0.0 else 1.0)
         if abs(raw - product) > tolerance or abs(normal - adjusted) > tolerance:
             raise AssertionError("heat trace identity failed")
         reports.append({"time": t, "raw": raw, "raw_product": product,
                         "normalized": normal, "scaled_product": adjusted})
     return {"explicit_spectrum": explicit, "pairwise_spectrum": paired,
             "heat": reports}
+
+
+def production_style_spectrum(controller, source, *, coupling=1.0):
+    """Reflect the bridge's factor-then-product maximum normalization.
+
+    Input matrices must be symmetric PSD. Production coupling is frozen at 1.
+    This small audit function neither reads nor modifies registered outcomes.
+    """
+    if not math.isfinite(coupling) or coupling < 0.0:
+        raise ValueError("coupling must be finite and nonnegative")
+    c = eigvalsh_small(controller)
+    q = eigvalsh_small(source)
+    c_norm, q_norm = normalize_max(c), normalize_max(q)
+    return normalize_max(sorted(x + coupling * y for x in c_norm for y in q_norm))
