@@ -128,7 +128,14 @@ An independent deterministic NumPy `eigvalsh` check over 90 tiny PSD
 matrix pairs (dimensions 1–4 per factor) found maximum absolute spectral
 discrepancy `1.7763568394002505e-14`. NumPy is used for this separate
 sanity check; the committed tests require only the standard library.
-No GitHub Actions CI run was present when checked.
+An additional CPU-only PyTorch `2.10.0+cpu` comparison checked the
+factor-normalize / pairwise-sum / final-normalize sequence on 90 seeded
+PSD matrix pairs. Maximum absolute difference from the standalone
+`production_style_spectrum` reference: `3.3306690738754696e-16`.
+This is a source-code-aligned numerical cross-check, not an execution
+of the complete benchmark pipeline. Also, `python -m pytest
+tests/test_stalk_source_specificity_math.py -q` reported **9 passed**
+in `0.07s`. No GitHub Actions CI run was present when checked.
 
 Numerical tolerances are test-local; these certificates prove no statement
 about real activation geometry or predictive performance.
