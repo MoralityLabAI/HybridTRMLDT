@@ -12,6 +12,8 @@ The reference codec is pinned to [PrismML's llama.cpp source](https://github.com
 
 - `ptq1_codec.py`: Python-standard-library PTQ1_0 and PQ2_0 block encoders/decoders and bounded already-located matrix payload decoder. The encoder serializes existing trits, not arbitrary FP16-to-ternary quantization. GGUF offset metadata and tensor selection remain external.
 - `packed_linear.py`: an **unpacked** PyTorch reference with int8 trit buffers, g128 scales, differentiable signed Walsh-Hadamard input transform, and an unmerged LoRA applied in the original input basis. It demonstrates small synthetic forward and gradient contracts; packed on-device backward remains unimplemented.
+- `gguf_reader.py`: standard-library, mmap-backed GGUF v2/v3 reader for metadata and tensor offsets. It does not dequantize.
+- `real_row_parity.py`: compares real PTQ1_0 rows decoded by `ptq1_codec` with the fork's compiled `dequantize_row_ptq1_0` (`ggml_get_type_traits(143)->to_float`, loaded via ctypes), and audits the tensor layout and `prism.hadamard.*` metadata.
 - `parity_cli.py`: compares **complete** paired output vocabularies for at least 32 identically tokenized prompts, checks top-1 match and logit differences, and writes hash-bound local file comparisons. CLI requires `--expected-vocab-size` from the pinned checkpoint metadata. The default 0.03 logit tolerance is provisional and must be independently justified before a hardware claim.
 
 Read-only local unit checks with existing Python dependencies:
@@ -21,6 +23,18 @@ python -m unittest discover -s research/sovereign_learning/s0_trainability/tests
 ```
 
 PyTorch tests skip when the optional `neural` extra is unavailable. Test code launches no training or model inference and needs no external access.
+
+## Real-row parity, measured 2026-10-31
+
+Receipt: `receipts/row_parity_20261031.json` (**PASS**).
+
+- Checkpoint: `prism-ml/Ternary-Bonsai-2-27B-gguf` revision `94dd51cdbbec5309ed8b76a12f3268bc4fdceb93`, file `Ternary-Bonsai-2-27B-PTQ1_0.gguf`, 5,946,648,928 bytes, sha256 `53107f530aa52eb00912263ab1ee29bd199261c87cd7b4ad4ca1318c1fe33ee3` (matches the Hugging Face LFS hash).
+- Reference: `ggml-base.dll` from a PrismML Windows build at commit `adfffbe41` (sha256 `8001b0cb…5d3c`). That commit is an ancestor of the pin `c96baf4`, and `ggml-quants.c`, `ggml-common.h` and the `ggml_type_traits` struct are identical between the two.
+- Layout: 851 tensors (402 PTQ1_0, 353 F32, 96 BF16), GGUF v3, alignment 32. Payloads do not overlap, and the last one ends exactly at end of file.
+- Rows: 0 mismatches, bit-exact. Every PTQ1_0 tensor was sampled (first, last and 2 seeded random rows: 11,600,896 values). `blk.0.attn_gate.weight` (31,457,280 values) and `blk.63.ffn_down.weight` (89,128,960 values) were compared in full. About 67% of the weights are non-zero.
+- Rotation metadata: normalized Sylvester Walsh-Hadamard, block 1024, input last dimension, `sign_mode` `explicit`. Three sign vectors (widths 5120, 6144, 17408; 28,672 values, 14,504 of them −1, sha256 `3d1ea913…8bed`). Every name in the 401 `weight_names` exists, and each row length has a sign width. `token_embd.weight` is the one inverse-transform tensor; `gdn_v_grouped` is true.
+
+This closes the weight-decoding part of gate step 1. The check compares this codec with the fork's C decoder on the real file, so a layout misreading shared by the two would now show up. Still open in step 1: the runtime order of sign and transform application, and tokenization. Steps 2 to 5 are not touched.
 
 ## Measured S0 acceptance gate, still open
 

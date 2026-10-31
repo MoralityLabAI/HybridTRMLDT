@@ -1,0 +1,99 @@
+{
+  "schema": "s0_real_row_parity.v1",
+  "gguf": {
+    "path": "C:\\Users\\patri\\models\\ternary-bonsai-2-27b\\Ternary-Bonsai-2-27B-PTQ1_0.gguf",
+    "bytes": 5946648928,
+    "sha256": "53107f530aa52eb00912263ab1ee29bd199261c87cd7b4ad4ca1318c1fe33ee3",
+    "version": 3,
+    "alignment": 32,
+    "architecture": "qwen35",
+    "file_type": 143
+  },
+  "reference": {
+    "dll": "C:\\Users\\patri\\tools\\llama-prism-b10743\\bin\\ggml-base.dll",
+    "dll_sha256": "8001b0cb71d550d730cbc96edbaeb41769993236ecd1465508bc40562a775d3c",
+    "type_name": "ptq1_0",
+    "blck_size": 128,
+    "type_size": 28
+  },
+  "candidate": "research/sovereign_learning/s0_trainability/ptq1_codec.py decode_ptq1_block",
+  "type_counts": {
+    "F32": 353,
+    "BF16": 96,
+    "PTQ1_0": 402
+  },
+  "layout": {
+    "tensors": 851,
+    "unknown_layout": [],
+    "overlaps": [],
+    "data_start": 11120992,
+    "last_payload_end": 5946648928,
+    "file_size": 5946648928,
+    "tail_bytes": 0
+  },
+  "rotation_metadata": {
+    "version": 1,
+    "block_size": 1024,
+    "transform": "normalized-sylvester-walsh-hadamard",
+    "axis": "input-last-dimension",
+    "sign_mode": "explicit",
+    "gdn_v_grouped": true,
+    "sign_widths": [
+      5120,
+      6144,
+      17408
+    ],
+    "sign_values_count": 28672,
+    "sign_values_sum_widths_match": true,
+    "sign_values_minus_one": 14504,
+    "sign_values_only_pm1": true,
+    "sign_values_sha256": "3d1ea9136a6044cd680cc1e92cde65e9dd7238e1288fe2effabec5d201c48bed",
+    "weight_names": 401,
+    "weight_names_missing": [],
+    "row_lengths_without_sign_width": [],
+    "inverse_weight_names": [
+      "token_embd.weight"
+    ]
+  },
+  "sampled": {
+    "seed": 20261031,
+    "rows_per_tensor": 4,
+    "tensors": 402,
+    "values_checked": 11600896,
+    "mismatches": 0,
+    "tensors_with_mismatch": []
+  },
+  "full_tensors": [
+    {
+      "tensor": "blk.0.attn_gate.weight",
+      "dims": [
+        5120,
+        6144
+      ],
+      "rows_checked": 6144,
+      "values_checked": 31457280,
+      "mismatches": 0,
+      "max_abs_diff": 0.0,
+      "nonzero_fraction": 0.672227414449056
+    },
+    {
+      "tensor": "blk.63.ffn_down.weight",
+      "dims": [
+        17408,
+        5120
+      ],
+      "rows_checked": 5120,
+      "values_checked": 89128960,
+      "mismatches": 0,
+      "max_abs_diff": 0.0,
+      "nonzero_fraction": 0.6721634359920726
+    }
+  ],
+  "not_tested": [
+    "activation rotation / sign application order at runtime",
+    "projection or full-model forward parity",
+    "PQ2_0 cross-format check"
+  ],
+  "elapsed_s": 79.4,
+  "row_parity": "PASS"
+}
