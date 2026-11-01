@@ -1,0 +1,54 @@
+{
+  "schema": "s0_projection_parity.v1",
+  "gguf": {
+    "path": "C:\\Users\\patri\\models\\ternary-bonsai-2-27b\\Ternary-Bonsai-2-27B-PTQ1_0.gguf",
+    "sha256": "53107f530aa52eb00912263ab1ee29bd199261c87cd7b4ad4ca1318c1fe33ee3",
+    "tensor": "blk.30.attn_qkv.weight",
+    "dims": [
+      5120,
+      10240
+    ],
+    "sign_width_offset": 0
+  },
+  "runtime": {
+    "bin": "C:\\Users\\patri\\tools\\llama-prism-b10743\\bin",
+    "cpu_variant": "icelake",
+    "threads": 4,
+    "ggml_base_sha256": "8001b0cb71d550d730cbc96edbaeb41769993236ecd1465508bc40562a775d3c",
+    "ggml_cpu_sha256": "73fe04a0088f26b552d169d2104769def2f893882c159f586450bda461bb2cce",
+    "note": "PrismML build adfffbe41; the pin c96baf4 changed x86 quants.c, ops.cpp and llama-graph.cpp since"
+  },
+  "input": {
+    "kind": "seeded Gaussian, not model activations",
+    "seed": 20261101,
+    "tokens": 4
+  },
+  "graph": "y = mul_mat(W, reshape(mul_mat_hint(rot, reshape(x*signs, block))))",
+  "checks": {
+    "A_fwht_vs_oracle_relmax": 4.1069305931701046e-07,
+    "A_pass": true,
+    "B_f32_vs_oracle_relmax": 1.6321632225467149e-06,
+    "B_pass": true,
+    "C_ratio_rms(q-oracle)/rms(q-f32)": 1.0000007276270533,
+    "C_pass": true
+  },
+  "measured": {
+    "rms_oracle": 1.0346246945057067,
+    "rms(fork_q-fork_f32)": 0.005450319180801819,
+    "rms(fork_q-oracle)": 0.005450323146601504,
+    "maxabs(fork_q-oracle)": 0.036998107818911885,
+    "relmax(fork_q-oracle)": 0.035759931128057774,
+    "cosine(fork_q,oracle)": 0.9999861279317253,
+    "fwht_vs_dense_rotation_relmax": 7.703658766005681e-07,
+    "dense_rotation_vs_oracle_relmax": 7.336678420145782e-07
+  },
+  "not_tested": [
+    "real activations / full forward",
+    "GDN-permuted ssm_out weights",
+    "pin c96baf4 runtime kernels",
+    "CUDA backend",
+    "tokenization"
+  ],
+  "elapsed_s": 18.2,
+  "projection_parity": "PASS"
+}

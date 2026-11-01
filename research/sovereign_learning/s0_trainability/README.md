@@ -36,6 +36,22 @@ Receipt: `receipts/row_parity_20261031.json` (**PASS**).
 
 This closes the weight-decoding part of gate step 1. The check compares this codec with the fork's C decoder on the real file, so a layout misreading shared by the two would now show up. Still open in step 1: the runtime order of sign and transform application, and tokenization. Steps 2 to 5 are not touched.
 
+## Projection parity, measured 2026-11-01
+
+Script `projection_parity.py`; its pass criteria were committed (`ca059ec`) before the first run. The script uses the fork's own `ggml-base.dll` and `ggml-cpu-*.dll` (via ctypes) to build the graph that `build_lora_mm` emits for a Hadamard-folded weight: multiply by the signs, run the block-1024 rotation as a `mul_mat` with `GGML_HINT_SRC0_IS_HADAMARD` (the FWHT kernel), then `mul_mat` with the PTQ1_0 weight. The rotation is filled exactly as `llama-model.cpp` fills it. It compares against `FrozenTernaryLinear` in float64, given the real signs. Inputs are 4 seeded Gaussian vectors, not model activations.
+
+| Tensor (input width) | CPU kernels | A: FWHT vs oracle | B: fork F32 vs oracle | C: rms(q−oracle) / rms(q−F32) | Q8_0 spread rms / output rms | Result |
+|---|---|---:|---:|---:|---:|---|
+| `blk.0.attn_gate.weight` (5120) | haswell | 4.1e-7 | 2.0e-6 | 1.000 | 0.0054 / 1.03 | PASS |
+| `blk.63.ffn_down.weight` (17408) | haswell | 4.7e-7 | 3.7e-6 | 1.000 | 0.0074 / 1.38 | PASS |
+| `blk.30.attn_qkv.weight` (5120) | icelake | 4.1e-7 | 1.6e-6 | 1.000 | 0.0055 / 1.03 | PASS |
+
+Thresholds: A < 1e-5 and B < 1e-4 (max abs difference over oracle rms), C ≤ 1.05. Receipts are in `receipts/projection_parity_20261101*.json`.
+
+Reading: the oracle's sign order, Sylvester transform, block size and weight decoding match the fork's runtime. The only gap between the fork's PTQ1_0 path and the oracle is the fork's own Q8_0 activation quantization (ratio C = 1.000): about 0.5% of output rms per projection, max abs about 0.026, cosine 0.99999. That spread is per projection and compounds over 64 layers, so it measures against the provisional 0.03 full-logit tolerance below only after a whole-model run.
+
+Not covered: the pin's runtime kernels (this build is `adfffbe41`; `c96baf4` changed x86 `quants.c`, `ops.cpp` and `llama-graph.cpp`), `ssm_out` weights (input width 6144, GDN feature permutation), real activations, the CUDA backend, tokenization and full-model logits.
+
 ## Measured S0 acceptance gate, still open
 
 1. Pin the **full checkpoint file SHA**, fork runtime commit, GGUF metadata and actual sign vector. Verify PTQ1_0-vs-PQ2_0 weights against independently decoded real matrix rows. Confirm activation rotation, tensor offsets and tokenization.
