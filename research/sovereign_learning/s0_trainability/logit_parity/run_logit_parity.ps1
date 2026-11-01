@@ -8,7 +8,9 @@ param(
     [Parameter(Mandatory)] [string] $Work,
     [string] $Vramorama = "$env:LOCALAPPDATA\Programs\vramorama\vramorama.exe",
     [int] $Threads = 8,
-    [double] $MinFreeRamGB = 10
+    [double] $MinFreeRamGB = 10,
+    # Amendment A1: extra flags for passes 1-2, e.g. '--device none --no-op-offload' for a CPU-only reference
+    [string] $CpuArgs = ''
 )
 $ErrorActionPreference = 'Stop'
 $log = Join-Path $Work 'runner.log'
@@ -42,8 +44,8 @@ Note @{ event = 'pq2_hash'; sha256 = $got; match = ($got -eq $expected) }
 if ($got -ne $expected) { Note @{ event = 'abort'; reason = 'PQ2_0 hash mismatch' }; exit 3 }
 
 Wait-Ram
-Step '01_base_ptq1_cpu' "`"$ppl`" -m `"$Ptq`" -f `"$Text`" -c 512 --chunks 32 -ngl 0 -t $Threads --kl-divergence-base `"$base`""
+Step '01_base_ptq1_cpu' "`"$ppl`" -m `"$Ptq`" -f `"$Text`" -c 512 --chunks 32 -ngl 0 $CpuArgs -t $Threads --kl-divergence-base `"$base`""
 Wait-Ram
-Step '02_pq2_cpu' "`"$ppl`" -m `"$Pq2`" -c 512 --chunks 32 -ngl 0 -t $Threads --kl-divergence-base `"$base`" --kl-divergence"
+Step '02_pq2_cpu' "`"$ppl`" -m `"$Pq2`" -c 512 --chunks 32 -ngl 0 $CpuArgs -t $Threads --kl-divergence-base `"$base`" --kl-divergence"
 Step '03_ptq1_cuda' "`"$Vramorama`" run --vram 9G --owner s0-logit-parity --guard-power 600 -- `"$ppl`" -m `"$Ptq`" -c 512 --chunks 32 -ngl 99 -t $Threads --kl-divergence-base `"$base`" --kl-divergence"
 Note @{ event = 'done'; at = (Get-Date -Format s) }

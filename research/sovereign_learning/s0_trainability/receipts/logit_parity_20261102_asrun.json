@@ -1,0 +1,37 @@
+{
+  "schema": "s0_logit_parity.v1",
+  "label": "as-run 2026-11-02 (reference used CUDA op offload)",
+  "passes": {
+    "01_base_ptq1_cpu": {
+      "final_ppl": 7.4934,
+      "gpu_assignment_seen": true
+    },
+    "02_pq2_cpu": {
+      "ppl_q": 7.493365,
+      "ppl_base": 7.493217,
+      "ppl_ratio": 1.00002,
+      "kld_mean": 0.0,
+      "kld_max": 5.8e-05,
+      "kld_p999": 5e-05,
+      "rms_dp_pct": 0.001,
+      "same_top_p_pct": 100.0,
+      "gpu_assignment_seen": true
+    },
+    "03_ptq1_cuda": {
+      "ppl_q": 7.494091,
+      "ppl_base": 7.493217,
+      "ppl_ratio": 1.000117,
+      "kld_mean": 0.000186,
+      "kld_max": 0.103031,
+      "kld_p999": 0.003491,
+      "rms_dp_pct": 0.459,
+      "same_top_p_pct": 99.51,
+      "gpu_assignment_seen": false
+    }
+  },
+  "primary_criterion": "same_top_p_pct >= 99.0 per comparison",
+  "primary_pass": {
+    "02_pq2_cpu": true,
+    "03_ptq1_cuda": true
+  }
+}
