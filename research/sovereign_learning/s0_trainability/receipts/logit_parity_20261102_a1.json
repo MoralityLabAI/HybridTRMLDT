@@ -1,0 +1,37 @@
+{
+  "schema": "s0_logit_parity.v1",
+  "label": "A1 CPU-only reference",
+  "passes": {
+    "01_base_ptq1_cpu": {
+      "final_ppl": 7.4935,
+      "gpu_assignment_seen": false
+    },
+    "02_pq2_cpu": {
+      "ppl_q": 7.492777,
+      "ppl_base": 7.4933,
+      "ppl_ratio": 0.99993,
+      "kld_mean": 0.000272,
+      "kld_max": 0.837389,
+      "kld_p999": 0.00511,
+      "rms_dp_pct": 0.739,
+      "same_top_p_pct": 99.326,
+      "gpu_assignment_seen": false
+    },
+    "03_ptq1_cuda": {
+      "ppl_q": 7.494091,
+      "ppl_base": 7.4933,
+      "ppl_ratio": 1.000105,
+      "kld_mean": 0.000196,
+      "kld_max": 0.120659,
+      "kld_p999": 0.005064,
+      "rms_dp_pct": 0.465,
+      "same_top_p_pct": 99.326,
+      "gpu_assignment_seen": false
+    }
+  },
+  "primary_criterion": "same_top_p_pct >= 99.0 per comparison",
+  "primary_pass": {
+    "02_pq2_cpu": true,
+    "03_ptq1_cuda": true
+  }
+}
