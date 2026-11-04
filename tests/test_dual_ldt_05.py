@@ -168,3 +168,23 @@ def test_evaluation_rejects_invalid_worlds_and_disturbance():
     p=next(p for p in programs() if p.kind=="PLAIN" and issue(w,p))
     with pytest.raises(ValueError):
         execute(w,p,issue(w,p),disturbance="invented")
+
+
+
+def test_posthoc_dominance_margin_consistency_development_only():
+    from experiments.dual_ldt_05.src.diagnose import diagnostic
+    heads, _ = load_heads()
+    for world in worlds()[:8]:
+        for persona, head in heads.items():
+            row = diagnostic(world, persona, head)
+            assert row["certified_builds"] >= 0
+            assert row["preference_tax_recovered"] >= -1e-10
+            if row["build_margin"] is not None:
+                assert row["build_selected"] == (
+                    row["strictly_positive"] or
+                    (row["tie_within_tolerance"] and row["build_selected"])
+                )
+                if row["strictly_positive"]:
+                    assert row["build_selected"]
+            else:
+                assert not row["build_selected"]
