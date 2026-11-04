@@ -15,9 +15,11 @@ theorem commuting_retractions
   · intro x
     constructor
     · exact hR.1 (Q x)
-    · rw [hcomm x]
+    · change D (R (Q x))
+      rw [hcomm x]
       exact hQ.1 (R x)
   · intro x hx
+    change R (Q x) = x
     rw [hQ.2 x hx.2, hR.2 x hx.1]
 
 theorem commuting_retractions_idempotent
