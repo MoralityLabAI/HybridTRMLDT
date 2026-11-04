@@ -1,0 +1,29 @@
+name: FWC-01 fixed-weight conditioning audit
+permissions:
+  contents: read
+
+on:
+  push:
+    paths:
+      - 'docs/fixed_weight_conditioning.md'
+      - 'research_gym/fixed_weight_conditioning.py'
+      - 'tests/test_fixed_weight_conditioning.py'
+      - '.github/workflows/fixed-weight-conditioning.yml'
+  pull_request:
+    paths:
+      - 'docs/fixed_weight_conditioning.md'
+      - 'research_gym/fixed_weight_conditioning.py'
+      - 'tests/test_fixed_weight_conditioning.py'
+      - '.github/workflows/fixed-weight-conditioning.yml'
+  workflow_dispatch:
+jobs:
+  exact-cpu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify minimal recurrent memory and typed gate controls
+        run: python -m unittest discover -s tests -p 'test_fixed_weight_conditioning.py' -v
