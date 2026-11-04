@@ -1,0 +1,47 @@
+name: Dual-LDT Beast corrigibility and Jinn sorting
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'research_gym/core/dual_ldt.py'
+      - 'tests/test_dual_ldt.py'
+      - 'tests/fixtures/dual_jinn_*'
+      - 'formal/CCA/DualLDT.lean'
+      - 'experiments/dual_ldt_01/**'
+      - '.github/workflows/dual_ldt.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-dual-math:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - name: Beast correction, Jinn odds and actual head fixtures
+        run: python -m pytest -q tests/test_dual_ldt.py tests/test_cca_real_heads.py
+      - name: Fixed in-distribution real-head diagnostic
+        run: python experiments/dual_ldt_01/src/run.py --output /tmp/dual-ldt-diagnostic.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dual-ldt-01-metrics
+          path: /tmp/dual-ldt-diagnostic.json
+
+  lean-beast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lean 4
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain leanprover/lean4:v4.16.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Kernel-check Beast interior and correction theorems
+        run: lean formal/CCA/DualLDT.lean
