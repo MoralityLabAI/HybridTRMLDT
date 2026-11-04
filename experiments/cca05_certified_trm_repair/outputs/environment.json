@@ -1,0 +1,93 @@
+{
+ "certificates": {
+  "checker_rejects_issued": 0,
+  "issued": 11889,
+  "issued_iff_admissible_violations": 0,
+  "json_bytes_h6": {
+   "max": 305,
+   "mean": 272.306999,
+   "min": 238
+  },
+  "witness_length_h6": {
+   "0": 234,
+   "1": 391,
+   "2": 570,
+   "3": 643,
+   "4": 626,
+   "5": 308
+  }
+ },
+ "certified_set_sizes_h6": {
+  "moral_optimization|0": 290,
+  "moral_optimization|1": 58,
+  "moral_optimization|2": 64,
+  "moral_optimization|3": 109,
+  "moral_optimization|4": 129,
+  "moral_optimization|5": 225,
+  "secret_ending|0": 667,
+  "secret_ending|1": 50,
+  "secret_ending|2": 32,
+  "secret_ending|3": 49,
+  "secret_ending|4": 28,
+  "secret_ending|5": 49
+ },
+ "cost": {
+  "certificate_check_seconds": {
+   "max": 6.5e-05,
+   "mean": 2.3e-05,
+   "n": 159
+  },
+  "cold_verify_seconds": {
+   "max": 0.005185,
+   "mean": 0.000897,
+   "n": 500
+  },
+  "cpu_s": 6.91,
+  "wall_s": 6.98
+ },
+ "domain": {
+  "d_bench": 1750,
+  "d_full": 2100
+ },
+ "env_digest": "575c3a100b21278948aae75c20a659acf4da076654c2323af90384881be7ffcd",
+ "lemma_violation_counts": {
+  "fallback_parity_violations": 0,
+  "moral_float_int_disagreements": 0,
+  "moral_verify_ne_U_ge_tau": 0,
+  "secret_certified_U_not_1": 0,
+  "secret_uncertified_U_above_0.05": 0,
+  "unconstrained_oracle_outside_S": 0
+ },
+ "trajectory_viability": {
+  "moral_optimization": {
+   "certified_transitions_into_empty_certified_set": 0,
+   "of_those_with_a_failing_myopic_path": 90,
+   "starts_with_a_myopic_action": 273,
+   "viable_starts": 585,
+   "viable_starts_with_a_failing_certified_path": 0
+  },
+  "secret_ending": {
+   "certified_transitions_into_empty_certified_set": 0,
+   "of_those_with_a_failing_myopic_path": 262,
+   "starts_with_a_myopic_action": 394,
+   "viable_starts": 208,
+   "viable_starts_with_a_failing_certified_path": 0
+  }
+ },
+ "viability_kernel": {
+  "moral_optimization": {
+   "actions_certified_model": 2154,
+   "actions_certified_nondet": 635,
+   "kernel_vs_verifier_mismatches": 0,
+   "nodes_checked": 5250,
+   "states_with_model_action_not_robust": 450
+  },
+  "secret_ending": {
+   "actions_certified_model": 618,
+   "actions_certified_nondet": 44,
+   "kernel_vs_verifier_mismatches": 0,
+   "nodes_checked": 5250,
+   "states_with_model_action_not_robust": 198
+  }
+ }
+}

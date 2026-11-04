@@ -19,4 +19,18 @@ jobs:
       - name: Install test runner
         run: python -m pip install pytest
       - name: Exact control invariants and membrane regression
-        run: python -m pytest -q tests/test_constitutional_control.py tests/test_cca_verified_membrane.py tests/test_cca_real_heads.py tests/test_hybrid_membrane.py
+        run: python -m pytest -q tests/test_constitutional_control.py tests/test_cca_verified_membrane.py tests/test_cca_real_heads.py tests/test_hybrid_membrane.py tests/test_cca_certified_repair.py
+
+  cca05-certified-trm-repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test runner and CPU torch (parity with rollout.py)
+        run: |
+          python -m pip install pytest
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Certificate invariants, semantics parity and tape replay
+        run: python -m pytest -q experiments/cca05_certified_trm_repair/tests

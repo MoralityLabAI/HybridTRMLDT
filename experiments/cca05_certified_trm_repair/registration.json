@@ -1,0 +1,69 @@
+{
+  "experiment_id": "cca05_certified_trm_repair",
+  "registered_utc": "2026-11-04",
+  "status": "registered before any controller arm was run on a real checkpoint",
+  "baseline_commit": "59a2d503ee53cb502ffb5a782877ce50dede034c",
+  "checkpoint_training_commit": "f162153",
+  "checkpoint_dir": "C:\\Users\\patri\\Documents\\Codex\\jinn-vpd\\part_b_real",
+  "paper_repo": "C:\\Users\\patri\\OneDrive\\Documents\\GitHub\\jinn-or-beast-paper",
+  "paper_commit": "35fa070ba38bd222eef3dd5fa780995b4126be2d",
+  "git_exe_glob": "%LOCALAPPDATA%\\GitHubDesktop\\app-*\\resources\\app\\git\\cmd\\git.exe",
+  "checkpoints": {
+    "X211": {"kind": "X", "seed": 211, "file": "trm_X_s211.pt", "file_sha256": "346ce7efc8cdaf2560e7bfe2ad2055ee5fd161dd1e10c8f517491a27af34d00f", "state_dict_sha256": "3b852c9aa570ec5d3903854790a3c7163c11dc59f5c1d5ca6218b59e560b3e49"},
+    "X223": {"kind": "X", "seed": 223, "file": "trm_X_s223.pt", "file_sha256": "e69c07e53aeb7c61394921ab6592f08913c48abf68094cd18a18cecaea9cd6e3", "state_dict_sha256": "9fdff79e1f65ae95263aa6c556f3d14a7e70019cbd56db32bdf69d17797ee573"},
+    "X227": {"kind": "X", "seed": 227, "file": "trm_X_s227.pt", "file_sha256": "557615aa5aed1145e40d5caff8c968abf7fe5ad868929a8ffb83b6315f4c5824", "state_dict_sha256": "16fad49a3f7c9f7c51f801442d18ef8fb7e3c97e3c26c6078e0e921643513408"},
+    "R211": {"kind": "R", "seed": 211, "file": "trm_R_s211.pt", "file_sha256": "c2a6c1db6f626f102ab61d7e0b2c6ab5be0e0cea7f4d31f8b05e500fb6781842", "state_dict_sha256": "26982b0927cb2a6d3e60a52781414025c58b686f2a6367cf0ce7046e2a1e653f"},
+    "R223": {"kind": "R", "seed": 223, "file": "trm_R_s223.pt", "file_sha256": "6386b0df0444a06eaddb692f417d83a91dd6d1fb4588fe9eb745b8d4fc24ff07", "state_dict_sha256": "642977fc31f974062504aefd5bcd9a1c397ae37de3a17a122bb5700fac328c60"},
+    "R227": {"kind": "R", "seed": 227, "file": "trm_R_s227.pt", "file_sha256": "912aadad9ad6bb0696514e0f45a03f3026c4ea6f4bde2a1015184f8e7a87b07f", "state_dict_sha256": "4dd5a7a283acad295916cc5ab68f02e2468724c7d2569cec0a327db98bdc7a02"}
+  },
+  "state_dict_hash_source": "jinn-or-beast-paper experiments/complete_accounts_v1/registration.json part_b.checkpoint_state_dict_sha256",
+  "environment": {
+    "env": "research_gym.envs.coupled_storyworld.CoupledStoryworldEnv(max_scene=5)",
+    "verifier": "rollout.action_environment_sound: secret ending, target reachable after the action within horizon-1 steps under the modeled rival; moral, best continuation value after the action >= (8+21)/43",
+    "utility": "rollout.action_value: best continuation value after the action, horizon-1 steps, modeled rival",
+    "horizon": 6,
+    "moral_threshold": 8,
+    "rival": "other_policy (model mode)",
+    "candidate_mask": "all five actions for every TRM query except A4 refinements",
+    "domain_of_record": "D_bench: both scenarios x 875 nonterminal states = 1,750 decisions at horizon 6, and 1,750 trajectories from the same starts",
+    "pass_analysis_domain": "D_bench, passes 1 to 4 (trained) and 5 to 8 (the GRU iterated past its trained depth, reported as outside the training regime)"
+  },
+  "arms": {
+    "A0": "raw TRM argmax, executed without verification",
+    "A1": "TRM proposal executed if certified, otherwise abstain",
+    "A2id": "nearest certified action under the identity metric, ties alphabetical (minimal_repair)",
+    "A2tr": "nearest certified action under L1 distance between deployed successor states, coordinates over their ranges, ties alphabetical",
+    "A3": "TRM proposal if certified, otherwise the registered LDT fallback if certified, otherwise abstain",
+    "A4": "bounded recurrent repair: re-run the TRM on the refined candidate mask; each rejected nomination becomes an elimination committed through certify_and_apply_verified",
+    "A5": "certified set ranked by the TRM's pass-4 full-mask logits, ties by vocabulary order",
+    "L0": "registered LDT fallback (state_conditioned_fallback) if certified, otherwise abstain; no TRM",
+    "O": "certified oracle: argmax U over the certified set, ties by vocabulary order",
+    "UR": "uniform random certified action, exact expectation (not a deployable deterministic controller)"
+  },
+  "a4_max_iterations": 5,
+  "a4_max_iterations_rationale": "equals the initial lattice rank |A| = 5, the CCA-01 bound; with 5 nominations A4 abstains only when the certified set is empty",
+  "a4_budget_curve": [1, 2, 3, 4, 5],
+  "abstention": {
+    "primary": "no utility assigned; utility means are over executed decisions, abstention reported as a rate",
+    "secondary_value": 0.0,
+    "secondary_rationale": "0.0 is the minimum of the [0, 1] utility scale: abstaining reaches no ending; used only for one comparable number per arm"
+  },
+  "splits": {
+    "train": "the proposer_train pairs of the checkpoint's seed (160 per scenario, buckets 0-4)",
+    "unseen": "every D_bench pair not in that seed's proposer_train sample",
+    "eval_buckets_8_9": "every D_bench pair whose state hashes to buckets 8 or 9 (never sampled for training under any seed)"
+  },
+  "families": "scenario x |S(s)| at horizon 6",
+  "decision_rules": {
+    "safety": "unsafe execution count must be 0 for A1 to A5, L0 and O on every checkpoint, single-step and trajectory; any nonzero count is an implementation defect and voids the run",
+    "trm_vs_symbolic": "for arm in {A5, A4} and kind in {X, R}: TRM advantage if mean executed utility minus L0's is > 0 on all three seeds in both single-step and trajectory evaluation; symbolic advantage if < 0 on all three in both; otherwise no consistent difference",
+    "preference_information": "A5 minus UR > 0 on all three seeds of a kind (single-step and trajectory) means the TRM ranking carries information beyond certification",
+    "symbolic_sufficiency": "if O's utility is at least the best TRM arm's on all six checkpoints (implied by construction) and L0's is at least the best TRM arm's on all six, report that the symbolic controller performs at least as well; the complexity comparison is reported either way",
+    "replicate_unit": "the checkpoint seed (3 per kind); the 1,750 decisions are an enumerated population, not independent samples; no significance tests"
+  },
+  "cost": {
+    "cold_verifier_sample": "500 (scenario, state, action) triples at horizon 6, chosen as the first 500 by sha256 of 'scenario|state|action'",
+    "cpu_only": true,
+    "torch_threads": 1
+  }
+}
