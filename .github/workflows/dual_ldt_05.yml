@@ -33,6 +33,8 @@ jobs:
         run: python experiments/dual_ldt_05/src/run.py --split development --out /tmp/dual05-development
       - name: Full paired prospective synthetic replay
         run: python experiments/dual_ldt_05/src/run.py --split all --out /tmp/dual05-all
+      - name: Post-hoc certified-plan dominance analysis
+        run: python experiments/dual_ldt_05/src/diagnose.py --out /tmp/dual05-all/dominance.json
       - uses: actions/upload-artifact@v4
         with:
           name: dual-ldt-05-results
@@ -40,6 +42,7 @@ jobs:
             /tmp/dual05-all/manifest.json
             /tmp/dual05-all/episodes.json
             /tmp/dual05-all/summary.json
+            /tmp/dual05-all/dominance.json
 
   lean-sequential:
     runs-on: ubuntu-latest
