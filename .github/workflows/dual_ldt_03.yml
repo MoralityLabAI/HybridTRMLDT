@@ -1,0 +1,53 @@
+name: Dual-LDT-03 stateful human intervention
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'experiments/dual_ldt_03/**'
+      - 'tests/test_dual_ldt_03.py'
+      - 'formal/CCA/DualLDTStateful.lean'
+      - '.github/workflows/dual_ldt_03.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stateful-finite-experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - name: Development-only invariants and frozen head tests
+        run: python -m pytest -q tests/test_dual_ldt_03.py tests/test_dual_ldt.py tests/test_dual_ldt_intervention.py
+      - name: Generate signed-by-code world configuration manifest
+        run: python experiments/dual_ldt_03/src/run.py --manifest-only --out /tmp/dual03-manifest
+      - name: Development trajectories
+        run: python experiments/dual_ldt_03/src/run.py --split development --out /tmp/dual03-development
+      - name: Report split and full paired outcome
+        run: python experiments/dual_ldt_03/src/run.py --split all --out /tmp/dual03-all
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dual-ldt-03-results
+          path: |
+            /tmp/dual03-manifest/manifest.json
+            /tmp/dual03-all/manifest.json
+            /tmp/dual03-all/summary.json
+            /tmp/dual03-all/episodes.json
+
+  stateful-lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lean 4
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain leanprover/lean4:v4.16.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Kernel check inductive three-step intervention invariant
+        run: lean formal/CCA/DualLDTStateful.lean
