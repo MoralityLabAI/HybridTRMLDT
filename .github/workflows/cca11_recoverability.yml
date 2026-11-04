@@ -1,0 +1,43 @@
+name: CCA-11 recoverability threshold
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'research_gym/core/cca_recoverability_threshold.py'
+      - 'tests/test_cca_recoverability_threshold.py'
+      - 'formal/CCA/RecoveryThreshold.lean'
+      - 'docs/cca11_recoverability_threshold.md'
+      - 'experiments/cca11_recoverability_threshold/**'
+      - '.github/workflows/cca11_recoverability.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-arithmetic-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - name: CCA-O/P/Q proof-obligation regressions
+        run: python -m pytest -q tests/test_cca_recoverability_threshold.py
+      - name: Frozen CPU envelopes
+        run: python experiments/cca11_recoverability_threshold/run.py
+
+  lean-kernel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Lean 4
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain leanprover/lean4:v4.16.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Verify discrete recurrence invariant
+        run: lean formal/CCA/RecoveryThreshold.lean
