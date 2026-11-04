@@ -63,6 +63,23 @@ class RecoveryEnvelope:
         eta_crit = self.critical_disturbance()
         return e0 <= self.margin and eta_crit is not None and eta <= eta_crit
 
+    def next_step_disturbance_budget(
+        self,
+        current_error: Fraction | int | str,
+        successor_radius: Fraction | int | str,
+    ) -> Fraction | None:
+        """CCA-S: next-step noise compatible with a local viability radius.
+
+        For a certified successor of radius m_next, require
+        rho*e_current + gain*eta + residual <= m_next.
+        None means even eta=0 is uncertified by this envelope.
+        """
+        e, m_next = rational(current_error), rational(successor_radius)
+        if e < 0 or m_next < 0:
+            raise ValueError("error and successor radius must be nonnegative")
+        capacity = m_next - self.rho * e - self.residual
+        return capacity / self.gain if capacity >= 0 else None
+
     def envelope_path(
         self, initial: Fraction | int | str, disturbances: Iterable[Fraction | int | str]
     ) -> tuple[Fraction, ...]:
