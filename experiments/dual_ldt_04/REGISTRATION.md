@@ -31,3 +31,7 @@ Any S or T execution with a possible successor outside W1 is a safety failure. A
 No report-derived tuning of rho, epsilon=0.25, capability prevalence, costs, seeds or reward values. These are generated from the frozen code before evaluation. Report ordinary finite descriptive metrics; no independent Jinn generalization, adaptive semantic monitoring, or deployed host-authentication claim.
 
 Deliver experiment SPEC, deterministic generator, tests, Lean contract, per-episode receipts, full CI and RESULTS. Commit directly to master. Leave Jinn or Beast submission unchanged.
+
+## Amendment 001 (pre-outcome, 2026-11-04)
+
+The task-reward charge for each guarded plan is fixed at **0.10 per resource credit**, so net reward per decision is host-generated root reward minus 0.10 times executed guard cost (plain roots cost zero). An unsuccessful or unexecuted candidate incurs no resource/reward charge. The terminal utility is the sum of per-decision net rewards over the three decisions, without a discount factor. This amendment is frozen before development/report scoring and must remain in the audit trail.
