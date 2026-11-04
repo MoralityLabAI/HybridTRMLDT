@@ -27,20 +27,41 @@ from research_gym.core.certified_repair import (  # noqa: E402
     ActionCertificate, bind, execute_certified,
 )
 from research_gym.core.hybrid import CandidateState  # noqa: E402
+from research_gym.core.cca_optimistic_bound import optimistic_moral_upper  # noqa: E402
 
 METHOD = "CCA09-host-global-upper-1.0"
 
-def upper_bound(ctx, action):
-    return UpperCertificate(action, 1.0, bind(ctx),
-                            {"proof_rule": METHOD, "environment": M.ENV_DIGEST})
+OPTIMISTIC = "CCA10-trusted-count-envelope-v1"
+
+def _expected_bound(ctx, action, method):
+    if method == "global":
+        return 1.0, METHOD
+    if method == "optimistic" and ctx["scenario"] == "moral_optimization":
+        state = M.StoryState(*ctx["state"])
+        nxt = M.successor(state, action)
+        return optimistic_moral_upper(*M.st(nxt), max(0, int(ctx["horizon"]) - 1)), OPTIMISTIC
+    if method == "optimistic":
+        return 1.0, METHOD
+    raise ValueError("unknown upper bound method")
+
+def upper_bound(ctx, action, method="global"):
+    upper, rule = _expected_bound(ctx, action, method)
+    return UpperCertificate(action, upper, bind(ctx),
+                            {"proof_rule": rule, "environment": M.ENV_DIGEST})
 
 def check_bound(ctx, action, cert):
-    # For this one frozen environment, terminal values lie in [0,1].
-    # Max aggregation therefore preserves the upper limit of one.
-    return (ctx.get("env") == M.ENV_DIGEST and action in M.ACTIONS and
-            cert.action == action and cert.upper == 1.0 and
-            cert.binding == bind(ctx) and
-            cert.evidence == {"proof_rule": METHOD, "environment": M.ENV_DIGEST})
+    if ctx.get("env") != M.ENV_DIGEST or action not in M.ACTIONS:
+        return False
+    if cert.action != action or cert.binding != bind(ctx):
+        return False
+    if cert.evidence == {"proof_rule": METHOD, "environment": M.ENV_DIGEST}:
+        return cert.upper == 1.0
+    if cert.evidence == {"proof_rule": OPTIMISTIC, "environment": M.ENV_DIGEST}:
+        if ctx["scenario"] != "moral_optimization":
+            return False
+        bound, _ = _expected_bound(ctx, action, "optimistic")
+        return cert.upper == bound
+    return False
 
 def evaluate(ctx, action):
     sc, state, horizon = ctx["scenario"], M.StoryState(*ctx["state"]), ctx["horizon"]
@@ -81,7 +102,7 @@ def stable_domain(limit):
     return [(sc, s) for name in M.SCENARIOS
             for _, sc, s in sorted(groups[name])]
 
-def run(outdir, tags, limit, budgets, epsilon):
+def run(outdir, tags, limit, budgets, epsilon, upper_mode='global'):
     outdir.mkdir(parents=True, exist_ok=True)
     domain = stable_domain(limit)
     aggregates = defaultdict(list)
@@ -98,7 +119,7 @@ def run(outdir, tags, limit, budgets, epsilon):
             best = max((M.utility(sc, state, M.HORIZON, a) for a in allowed),
                        default=None)
             ctx = M.context(sc, state, M.HORIZON)
-            bounds = {a: upper_bound(ctx, a) for a in M.ACTIONS}
+            bounds = {a: upper_bound(ctx, a, upper_mode) for a in M.ACTIONS}
             for name, order in (("trm_pass4", neural),
                                 ("fixed_priority", M.MORAL_PRIORITY)):
                 for budget in budgets:
@@ -153,7 +174,7 @@ def run(outdir, tags, limit, budgets, epsilon):
         "status": "retrospective_descriptive_replay",
         "source": "CCA-05 real TRM checkpoint logits, no new inference",
         "evaluator": "CCA-05 modeled-rival environment-owned checker",
-        "upper": METHOD, "environment_digest": M.ENV_DIGEST,
+        "upper": upper_mode, "environment_digest": M.ENV_DIGEST,
         "tape_sha256": tape_hashes,
         "sample": ("D_bench full" if not limit else f"deterministic {len(domain)}-state smoke"),
         "budgets": list(budgets), "epsilon": epsilon, "rows": rows,
@@ -174,10 +195,11 @@ def main():
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--budgets", type=int, nargs="+", default=[1,2,3,4,5])
     parser.add_argument("--epsilon", type=float, default=0.0)
+    parser.add_argument("--upper-mode", choices=["global", "optimistic"], default="global")
     args = parser.parse_args()
     if args.limit < 0 or not args.budgets or min(args.budgets)<1 or max(args.budgets)>5:
         parser.error("invalid limit or budgets")
-    run(Path(args.out), args.tags, args.limit, args.budgets, args.epsilon)
+    run(Path(args.out), args.tags, args.limit, args.budgets, args.epsilon, args.upper_mode)
 
 if __name__ == "__main__":
     main()
