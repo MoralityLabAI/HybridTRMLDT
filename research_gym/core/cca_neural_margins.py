@@ -121,3 +121,52 @@ def anchored_hidden_l2_radius(
         if norm:
             radii.append(gap / norm)
     return min(radii) if radii else inf
+
+
+def potentially_selected_certified(
+    logits: Sequence[float], actions: Sequence[str],
+    certified: Iterable[str], epsilon: float,
+) -> tuple[str, ...]:
+    """CCA-W outer set of shielded winners under L-infinity logit noise.
+
+    A certified candidate b can possibly beat the baseline max-certified
+    logit only if z_b >= max_{a in C} z_a - 2*epsilon. This is sufficient
+    for a safe regret UPPER BOUND. Boundary ties may be unreachable due
+    to the fixed action-vocabulary priority. No independence is assumed.
+    """
+    winner(logits, actions)
+    if not isfinite(epsilon) or epsilon < 0:
+        raise ValueError("epsilon must be finite and nonnegative")
+    allowed = frozenset(certified)
+    if not allowed <= set(actions):
+        raise ValueError("Unknown certified action")
+    if not allowed:
+        return ()
+    top = max(float(v) for a,v in zip(actions, logits) if a in allowed)
+    return tuple(a for a,v in zip(actions, logits)
+                 if a in allowed and float(v) + 2 * epsilon >= top)
+
+
+def shielded_identity_radius(
+    logits: Sequence[float], actions: Sequence[str],
+    certified: Iterable[str],
+) -> float | None:
+    """Safe argmax is stable under any ||noise||_infinity < radius.
+
+    For a singleton certified set the radius is infinity. At equality
+    the fixed tie priority matters. This is action stability, not safety
+    of the model's original unmasked action.
+    """
+    winner(logits, actions)
+    allowed = frozenset(certified)
+    if not allowed <= set(actions):
+        raise ValueError("Unknown certified action")
+    if not allowed:
+        return None
+    if len(allowed) == 1:
+        return inf
+    leader = certified_ranked_action(logits, actions, allowed)
+    other = max(float(z) for a,z in zip(actions, logits)
+                if a in allowed and a != leader)
+    zleader = float(logits[actions.index(leader)])
+    return max(0., (zleader - other) / 2.)

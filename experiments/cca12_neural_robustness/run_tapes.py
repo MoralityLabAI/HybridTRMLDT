@@ -24,6 +24,7 @@ from tape import input_key, read_gz  # noqa: E402
 from research_gym.core.cca_neural_margins import (  # noqa: E402
     certify_logit_infinity, guaranteed_safe_logit_noise,
     adversarial_logit_witness, certified_ranked_action, winner,
+    potentially_selected_certified, shielded_identity_radius,
 )
 
 EPSILONS = (0., 0.01, 0.05, 0.1, 0.25, 0.5, 1.)
@@ -56,6 +57,9 @@ class Metrics:
         self.shield_changes = defaultdict(int)
         self.shield_values = defaultdict(float)
         self.oracle_values = defaultdict(float)
+        self.preference_worst_values = defaultdict(float)
+        self.preference_possible_multiple = defaultdict(int)
+        self.identity_radius_values = []
 
     def add(self, logits, allowed, scenario, state, pass_number):
         cert = certify_logit_infinity(logits, M.ACTIONS, allowed)
@@ -68,6 +72,9 @@ class Metrics:
             if cert.radius > 0:
                 self.safe_with_margin += 1
                 self.positive_radii.append(cert.radius)
+        if pass_number == 4 and allowed:
+            self.identity_radius_values.append(
+                shielded_identity_radius(logits, M.ACTIONS, allowed))
         for eps in EPSILONS:
             key = str(eps)
             self.guarantees[key] += guaranteed_safe_logit_noise(cert, eps)
@@ -80,6 +87,11 @@ class Metrics:
             self.shield_unsafe[key] += selected is not None and selected not in allowed
             self.shield_changes[key] += selected is not None and selected != raw
             if selected is not None:
+                possible = potentially_selected_certified(
+                    logits, M.ACTIONS, allowed, eps)
+                self.preference_possible_multiple[key] += len(possible) > 1
+                self.preference_worst_values[key] += min(
+                    M.utility(scenario, state, M.HORIZON, a) for a in possible)
                 self.shield_values[key] += M.utility(scenario, state, M.HORIZON, selected)
                 self.oracle_values[key] += M.utility(
                     scenario, state, M.HORIZON,
@@ -109,6 +121,21 @@ class Metrics:
             "guaranteed_safe_count": dict(self.guarantees),
         }
         if pass_number == 4:
+            identity_finite = sorted(v for v in self.identity_radius_values
+                                     if isfinite(v))
+            output["shielded_identity_radius_quantiles_finite"] = {
+                "q10": q(identity_finite, .10),
+                "median": q(identity_finite, .50),
+                "q90": q(identity_finite, .90),
+            }
+            output["shielded_identity_infinite"] = sum(
+                v == inf for v in self.identity_radius_values)
+            output["worst_case_safe_utility_mean_viable"] = {
+                k: round(v/self.viable, 8) if self.viable else None
+                for k,v in self.preference_worst_values.items()
+            }
+            output["multiple_certified_winners_possible_count"] = dict(
+                self.preference_possible_multiple)
             output["worst_case_unsafe_count"] = dict(self.worst_unsafe)
             output["shield_unsafe_count"] = dict(self.shield_unsafe)
             output["shield_repairs_count"] = dict(self.shield_changes)
@@ -190,7 +217,8 @@ def audit(tapes_dir: Path, manifest_path: Path, out: Path, tags: list[str]):
               f'viable={row["viable"]}/1750 '
               f'certified_at_logit_eps_0.1={row["guaranteed_safe_count"]["0.1"]}/1750 '
               f'worst_unsafe_eps_0.1={row["worst_case_unsafe_count"]["0.1"]}/1750 '
-              f'shield_unsafe=0', flush=True)
+              f'shield_unsafe=0 '
+              f'shielded_worst_utility_eps_0.1={row["worst_case_safe_utility_mean_viable"]["0.1"]}', flush=True)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n",
                    encoding="utf-8")

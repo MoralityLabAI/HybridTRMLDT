@@ -39,6 +39,13 @@ jobs:
           for tag, v in sorted(r["checkpoints"].items()):
               m=v["split_pass_metrics"]["all"]["4"]
               lines.append(f'| {tag} | {m["raw_unsafe"]} | {m["guaranteed_safe_count"]["0.1"]} | {m["worst_case_unsafe_count"]["0.1"]} | {m["shield_unsafe_count"]["0.1"]} |')
+          lines.append("")
+          lines.append("### Exploratory CCA-W: lowest possible shielded utility")
+          lines.append("| Checkpoint | Worst-case shield utility at eps=0.1 | Certified oracle utility |")
+          lines.append("|---|---:|---:|")
+          for tag, v in sorted(r["checkpoints"].items()):
+              m=v["split_pass_metrics"]["all"]["4"]
+              lines.append(f'| {tag} | {m["worst_case_safe_utility_mean_viable"]["0.1"]:.6f} | {m["oracle_utility_mean_viable"]["0.1"]:.6f} |')
           with open(os.environ["GITHUB_STEP_SUMMARY"],"a",encoding="utf8") as f:
               f.write("\n".join(lines)+"\n")
           print("\n".join(lines))

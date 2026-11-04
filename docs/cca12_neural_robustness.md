@@ -81,3 +81,43 @@ With the original registered private checkpoints available on Windows:
 
 The latent probe reports only aggregates and expected hashes, keeping
 checkpoints and raw activations outside the public repository.
+
+
+## CCA-W: shielded preference fragility (post-hoc addition)
+
+The first CCA-12A tape scan established the noise margin for avoiding
+uncertified actions. The following preference question was added
+AFTER inspecting those results; treat it as exploratory, and do not
+merge its metric into the original registered primary endpoints.
+
+Let C be the host-certified set, and define z*=max_{a in C} z_a.
+Under arbitrary per-logit additive errors |delta_a|<=epsilon, every
+action that can win the certified-only argmax lies in
+
+    P_epsilon = {a in C : z_a >= z* - 2epsilon}.
+
+Proof: an action with z_a+epsilon < z*-epsilon cannot beat the
+original top-scored certified action under any permitted perturbation.
+For b with z_b > z* - 2epsilon, choose delta_b=+epsilon and all
+other certified deltas=-epsilon to make b win. Boundary ties
+depend on the declared action ordering.
+
+Consequently the worst shielded executed utility is bounded below by
+
+    min_{a in P_epsilon} U(s,a),
+
+and regret against the certified oracle is at most
+
+    max_{a in C} U(s,a) - min_{a in P_epsilon} U(s,a).
+
+If only one action is certified, its preference-choice radius is
+infinite even if the unshielded neural action is unstable. With
+multiple certified actions, the strict identity-preservation radius
+is half the gap between the first and second certified logits.
+
+CCA-12A's uniform safe-down/unsafe-up witness keeps every certified
+action's relative score unchanged, which would conceal within-set
+preference damage. The explicit P_epsilon calculation examines
+independent per-action disturbances that can reorder safe choices.
+It bounds worst-case single-decision utility under the CCA-05
+environment; it is not a trajectory or human-preference guarantee.

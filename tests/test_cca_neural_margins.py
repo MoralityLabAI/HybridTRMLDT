@@ -83,3 +83,42 @@ def test_logit_certificate_does_not_claim_upstream_state_safety():
     # certificate. The permission vocabulary is never learned from logits.
     wrong_context = certify_logit_infinity((2., 1., 0.), ACTIONS, {"c"})
     assert not guaranteed_safe_logit_noise(wrong_context, .2)
+
+
+def test_preference_winner_set_is_robust_to_all_endpoint_noises():
+    from research_gym.core.cca_neural_margins import (
+        potentially_selected_certified, shielded_identity_radius
+    )
+    for logits in product((-1., 0., 1.), repeat=3):
+        for mask in product((False, True), repeat=3):
+            allowed = frozenset(a for a,keep in zip(ACTIONS,mask) if keep)
+            for eps in (0., 0.25, 0.75, 2.):
+                possible = potentially_selected_certified(logits, ACTIONS, allowed, eps)
+                assert bool(possible) == bool(allowed)
+                for corners in product((-eps, eps), repeat=3):
+                    noisy = [z+e for z,e in zip(logits,corners)]
+                    choice = certified_ranked_action(noisy, ACTIONS, allowed)
+                    if choice is not None:
+                        assert choice in possible
+                radius = shielded_identity_radius(logits, ACTIONS, allowed)
+                if allowed and radius is not None and eps < radius:
+                    nominal = certified_ranked_action(logits, ACTIONS, allowed)
+                    assert possible == (nominal,)
+
+
+def test_utility_may_degrade_inside_certified_set():
+    from research_gym.core.cca_neural_margins import (
+        potentially_selected_certified, shielded_identity_radius
+    )
+    # CCA-12A's uniform safe-down, unsafe-up witness does not change the
+    # relative rankings of certified actions; individual logit noise can.
+    actions = ("useful", "bad_but_permitted", "forbidden")
+    z = (1.0, 0.95, -2.0)
+    allowed = {"useful", "bad_but_permitted"}
+    eps = 0.03
+    assert shielded_identity_radius(z, actions, allowed) == pytest.approx(0.025)
+    assert "bad_but_permitted" in potentially_selected_certified(z, actions, allowed, eps)
+    assert certified_ranked_action((1.0-eps, 0.95+eps, -2.0),
+                                   actions, allowed) == "bad_but_permitted"
+    # Outer shield remains within permission even if preference is reversed.
+    assert certified_ranked_action((1.0-eps,0.95+eps,-2.0),actions,allowed) in allowed
