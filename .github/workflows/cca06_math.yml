@@ -1,0 +1,36 @@
+name: CCA-06 formal mathematics
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'formal/CCA/**'
+      - 'research_gym/core/cca_compositional.py'
+      - 'tests/test_cca_compositional.py'
+      - '.github/workflows/cca06_math.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-math:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - run: python -m pytest -q tests/test_cca_compositional.py
+
+  lean-math:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lean 4 without mathlib
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain leanprover/lean4:v4.16.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Kernel-check formal lemmas
+        run: lean formal/CCA/RepairComposition.lean
