@@ -1,0 +1,45 @@
+name: CCA-09 certified anytime search
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'research_gym/core/cca_anytime_search.py'
+      - 'tests/test_cca_anytime_search.py'
+      - 'experiments/cca09_anytime_certified_search/**'
+      - 'formal/CCA/AnytimeBounds.lean'
+      - '.github/workflows/cca09_anytime.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cpu-anytime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - name: Exhaustive anytime invariants
+        run: python -m pytest -q tests/test_cca_anytime_search.py
+      - name: Real checkpoint tape replay smoke
+        run: python experiments/cca09_anytime_certified_search/src/run.py --limit 80 --out /tmp/cca09-smoke
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cca09-smoke
+          path: /tmp/cca09-smoke/metrics.json
+
+  lean-anytime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lean 4
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain leanprover/lean4:v4.16.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - run: lean formal/CCA/AnytimeBounds.lean
