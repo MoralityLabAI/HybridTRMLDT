@@ -93,3 +93,31 @@ def test_repair_safe_idempotent_and_abstains():
     assert minimal_repair("c", allowed, d).action == "c"
     assert minimal_repair("a", frozenset(), d).abstained
     assert minimal_repair("a", frozenset(), d).action is None
+
+
+def test_viability_kernel_catches_multi_step_trap():
+    from research_gym.core.constitutional_control import viability_kernel, shield_actions
+    safe = frozenset({"start", "bait", "safe"})
+    actions = {"start": frozenset({"tempt", "safe_route"}),
+               "bait": frozenset({"continue"}),
+               "safe": frozenset({"wait"})}
+    succ = {("start", "tempt"): frozenset({"bait"}),
+            ("start", "safe_route"): frozenset({"safe"}),
+            ("bait", "continue"): frozenset({"bad"}),
+            ("safe", "wait"): frozenset({"safe"})}
+    win = viability_kernel(safe, actions, succ)
+    assert win == frozenset({"start", "safe"})
+    assert shield_actions("start", win, actions, succ) == frozenset({"safe_route"})
+    assert shield_actions("bait", win, actions, succ) == frozenset()
+    for state in win:
+        for act in shield_actions(state, win, actions, succ):
+            assert succ[(state, act)] <= win
+
+
+def test_missing_or_empty_transition_fails_closed():
+    from research_gym.core.constitutional_control import viability_kernel, shield_actions
+    safe = frozenset({"start"})
+    actions = {"start": frozenset({"undocumented", "empty"})}
+    successors = {("start", "empty"): frozenset()}
+    assert viability_kernel(safe, actions, successors) == frozenset()
+    assert shield_actions("start", safe, actions, successors) == frozenset()

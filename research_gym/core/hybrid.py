@@ -348,3 +348,47 @@ def certify_and_apply(
         "accepted: certified monotone refinement",
         **verification_fields,
     )
+
+
+def certify_and_apply_verified(
+    current: CandidateState,
+    proposal: LatticeProposal,
+    *,
+    provenance_verifier: ProvenanceVerifier | None,
+    verifier_context: Any = None,
+    require_progress: bool = True,
+) -> HybridStepResult:
+    """Strict membrane entry point: hard refinements require an independent check.
+
+    The caller must supply an environment-owned verifier. A claim of
+    env_sound_dead inside the proposal is never sufficient; a missing or
+    inconclusive verifier fails closed. The verifier is called exactly once.
+    Historical certify_and_apply remains unchanged for reproducibility.
+    """
+    verdict = (provenance_verifier(proposal, verifier_context)
+               if provenance_verifier is not None else None)
+    if verdict != SoundnessType.ENV_SOUND_DEAD:
+        checked = verdict if isinstance(verdict, SoundnessType) else SoundnessType.UNKNOWN
+        return HybridStepResult(
+            False, current, current, proposal,
+            "rejected: independent environment verification required",
+            _soft_store_for(MembranePolicy(), proposal, checked),
+            claimed_soundness=proposal.soundness,
+            verified_soundness=checked,
+            provenance_disagreed=checked != proposal.soundness,
+        )
+    if require_progress and proposal.proposed_state == current:
+        return HybridStepResult(
+            False, current, current, proposal,
+            "rejected: no strict lattice progress",
+            claimed_soundness=proposal.soundness,
+            verified_soundness=verdict,
+            provenance_disagreed=verdict != proposal.soundness,
+        )
+    # Reuse the established monotonicity, bottom and mode checks. Supply the
+    # cached independent result rather than invoking a stateful verifier twice.
+    return certify_and_apply(
+        current, proposal,
+        policy=MembranePolicy(provenance_verifier=lambda _p, _ctx: verdict),
+        verifier_context=verifier_context,
+    )

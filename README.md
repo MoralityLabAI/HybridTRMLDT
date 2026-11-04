@@ -225,3 +225,8 @@ This is a scaffold. It is intentionally small and inspectable. The goal is to cr
 - `docs/hybrid_contract.md` and `docs/metta_frames.md`: operator-facing design contracts.
 
 The repo still avoids claiming direct VPD weight editing. VPD is reserved for instrumentation and decomposition over trained components.
+
+
+### Constitutional Control Algebra (CCA)
+
+The [CCA-01/02 reference kernel](docs/constitutional_control_algebra.md) defines set-theoretic constitutional authorization, exact rational three-lane LDT veto certificates, uncertainty-set tag checks, entropy-regularized persona strength, deterministic safe repair, and a finite-state safety shield. For new control experiments use certify_and_apply_verified with a trusted environment verifier; the old certify_and_apply entry point remains available for historical benchmark replay. Dedicated tests cover both paths.

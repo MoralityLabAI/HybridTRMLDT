@@ -160,3 +160,40 @@ def minimal_repair(
         raise ValueError("distance must be finite and nonnegative")
     cost, action = min(choices)
     return Repair(action=action, abstained=False, cost=cost)
+
+
+def viability_kernel(
+    safe_states: FrozenSet[str],
+    actions: Mapping[str, FrozenSet[str]],
+    successors: Mapping[tuple[str, str], FrozenSet[str]],
+) -> FrozenSet[str]:
+    """Greatest finite-state region permitting an indefinitely safe action.
+
+    A transition's nonempty successor set must be wholly within the region.
+    Missing/empty successor sets are treated as unsupported, never safe.
+    This assumes all physically possible successors are represented.
+    """
+    region = safe_states
+    while True:
+        updated = frozenset(s for s in region if any(
+            successors.get((s, a), frozenset()) and
+            successors[(s, a)].issubset(region)
+            for a in actions.get(s, frozenset())
+        ))
+        if updated == region:
+            return region
+        region = updated
+
+
+def shield_actions(
+    state: str,
+    region: FrozenSet[str],
+    actions: Mapping[str, FrozenSet[str]],
+    successors: Mapping[tuple[str, str], FrozenSet[str]],
+) -> FrozenSet[str]:
+    """Allow exactly the actions whose possible successors stay in the region."""
+    if state not in region:
+        return frozenset()
+    return frozenset(a for a in actions.get(state, frozenset())
+                     if successors.get((state, a), frozenset()) and
+                     successors[(state, a)].issubset(region))
