@@ -5,6 +5,8 @@ on:
     branches: [master]
     paths:
       - 'research_gym/core/cca_anytime_search.py'
+      - 'research_gym/core/cca_optimistic_bound.py'
+      - 'tests/test_cca_optimistic_bound.py'
       - 'tests/test_cca_anytime_search.py'
       - 'experiments/cca09_anytime_certified_search/**'
       - 'formal/CCA/AnytimeBounds.lean'
