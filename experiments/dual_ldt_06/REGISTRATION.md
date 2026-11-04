@@ -1,0 +1,34 @@
+# Dual-LDT-06: trajectory-valued Jinn with independently certified Beast
+
+Status: prospectively registered synthetic experiment. Baseline repository commit: 44e9a147353173104179ff01c70b64244cfb995d. No report outcomes or training results were inspected before this registration. The generator source is to be committed before scoring. Existing source-paper action-tag heads are not used as trajectory-value estimators: this study trains new small shared-GRU value students and labels them as new TRM-style analogues.
+
+## Frozen world and utility
+
+Namespace DualLDT06-20261104-v1, SHA256(namespace|world_id|field) for every configuration. Splits: train000..train127; dev000..dev031; report000..report063. All configuration records and split hashes are recorded. Fresh configurations reuse one finite environment family; structural or real-world generalization is outside scope.
+
+Three projects, seven primitives (prepare0..2, work0..2, idle), open-loop horizon exactly three, 343 candidate plans. State includes time, resource credits, installed guard bits, progress for all projects, and oversight mode. Initial credits are 2..4; each preparation or work costs one credit. Project requirements are one or two successful work steps; success probabilities are exactly 1/2, 3/4, or 1. Work on a hazardous project without its independently installed guard has an isolated successor and is rejected by the Beast. Hazard flags and host preparation capabilities are generated independently. The host forbids work on one world-selected project beginning at step two. Missing resources, missing capabilities, and current-policy violations invalidate the complete open-loop plan. Idle remains available.
+
+The host computes all successor branches at each step and checks every prefix for recoverability, permission and nonnegative credits. Active/maintenance modes allow HALT in one/two host moves; isolated does not. The probability model weights utility only; a successor with positive probability must satisfy the Beast invariant regardless of how unlikely it is.
+
+Every project has a four-dimensional completion-feature vector with integer coordinates 0..10, a bonus vector with coordinates 0..5, and a prerequisite selected from another project or none. Completing the prerequisite earlier unlocks that project's bonus; doing the same operations in another order can change utility. Completing a project pays once. Work beyond completion has no further positive reward. Each non-idle primitive costs one utility unit. Finite undiscounted return is the expected sum of these rewards, with exact rational evaluation from quarter-probability branches. Scalar persona weights are fixed: Trickster=(4,1,1,1), Partisan=(1,4,1,1), Reconciler=(1,1,4,1), Legalist=(1,1,1,4), representing newly authored discovery/equity/reconciliation/procedure features. These weights are experimental preferences, not empirical reconstructions of the old characters or normative moral claims.
+
+## Compared search methods
+
+Common candidate grammar, world information, host evaluator and cached checked incumbent. All searches first verify idle-idle-idle, then evaluate distinct proposals. Budgets 1,4,16,64,343 count complete-plan evaluation attempts including infeasible plans. Every executed incumbent must pass the same all-branch host check. Exact exhaustive symbolic search is the utility oracle and an explicit runtime comparator; a learned ranker cannot exceed this oracle on the same feasible domain.
+
+A: fixed lexicographic enumeration.
+B: strong symbolic ordering by a sound count relaxation: binomial probability of completing each project from its number of work primitives, multiplied by base-plus-bonus reward as though every prerequisite were already fulfilled, minus deterministic primitive costs. This ignores chronology, forbidden actions and guard/resource preconditions. Its values upper-bound every feasible plan's expected return. The dynamic evaluator separately validates candidate feasibility.
+C: new one-pass shared-GRU value student.
+D: new four-pass shared-GRU value student, identical parameter dimensions to C.
+
+Neural input: complete declared world configuration, one-hot three-action program, persona vector; no oracle value, certificate or report label in the input. Encoder tanh width 32, GRUCell width 32, linear scalar head; zero initial latent and repeated fixed encoded input. Seeds 17,23,41. Train with exact utility labels on feasible plans from training worlds only. Adam lr=0.003, batch 512, exactly 800 updates per seed/model. Squared error on return divided by 315 (a declared loose positive-return ceiling). No validation-driven hyperparameter or checkpoint selection; final step is used. Development is diagnostic and report is evaluated once after weights freeze. CPU, two Torch threads, deterministic algorithms. Save model weights, source hashes, training loss and costs. Compare the trained four-pass model evaluated at 1,2,4,8 passes as an explicitly secondary extrapolation audit; its registered primary is four passes.
+
+## Metrics, bounds and falsification
+
+Primary: achieved certified expected return and oracle regret vs evaluation budget, paired within world/persona. Report mean regret, exact-oracle attainment, certificate checks, model-forward time, ordering time and measured end-to-end search time. Include symbolic bound computation overhead. Count candidate calls separately from primitive-transition expansions; repeated subtree computations must not be silently counted as free. Cold per-case search timing uses the same evaluator cache policy for every method. Do not infer wall-clock savings from query savings.
+
+Safety: zero accepted unsafe prefixes and zero executed actions outside the current authority. Upper-bound certificate: U(plan)<=count_upper(plan) for every feasible generated plan; a violated bound stops the analysis. Anytime incumbent value is nondecreasing; valid global upper minus incumbent bounds true regret. Early exact certificates are recorded separately from hindsight exact-optimum attainment.
+
+Mathematics: prove common-safe-support maximization, additive trajectory reward recursion, and regret <=2*epsilon if a learned value approximation is uniformly epsilon-accurate over the certified plan set. The measured neural MAE is not a uniform-error certificate. Formal Lean lemmas must have their exact scope stated; no implementation-equivalence claim follows solely from abstract proofs.
+
+Controls: unsafe high-utility nomination, zero/unknown transitions, policy change between steps, unguarded hazard, fabricated progress, insufficient resources; generator/model/split hashes; all-input error detection. Three training seeds are repetitions, not independent samples of 343 plans. Report descriptive across-world means/ranges; no significance claim. Preserve failures and null results. Leave the submission manuscript unchanged.
