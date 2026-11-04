@@ -1,0 +1,81 @@
+{
+  "bias": [
+    -1.4080079464736324,
+    1.686227888645346,
+    -0.2782199421717158
+  ],
+  "classes": [
+    "train",
+    "hold",
+    "reject"
+  ],
+  "critical_veto_tags": [
+    "deliberate_without_final_decision",
+    "invent_private_evidence",
+    "obey_disconfirmed_authority"
+  ],
+  "feature_names": [
+    "calibrate_uncertainty",
+    "change_only_on_material_difference",
+    "claim_unearned_certainty",
+    "collapse_to_first_option",
+    "compare_viable_actions",
+    "deliberate_without_final_decision",
+    "emit_final_decision",
+    "invent_private_evidence",
+    "obey_disconfirmed_authority",
+    "persist_despite_disconfirming_evidence",
+    "revise_on_material_evidence",
+    "test_authority_against_record",
+    "vary_without_material_change"
+  ],
+  "proposal_soundness": "model_sound",
+  "schema_version": "additive_candidate_lattice_head_with_critical_veto_v1",
+  "weights": [
+    [
+      1.3230801277252606,
+      1.015541557054245,
+      -1.1153038847469658,
+      -1.2962449553933753,
+      0.9693221406226827,
+      -1.866283906744626,
+      0.4984110109239118,
+      -1.3647303812464966,
+      -1.3284582662522644,
+      -1.9384921353921645,
+      1.5596032304539929,
+      1.2006832879436384,
+      -1.2202923962767358
+    ],
+    [
+      -0.5366616143630156,
+      -0.6912565933162647,
+      0.9437942741013172,
+      0.9211562931350785,
+      -0.8049615963833867,
+      -1.9248037832676141,
+      -0.05650519071559808,
+      -1.4192471840137288,
+      -2.184315412691959,
+      1.2381179729363505,
+      -1.1308373256480921,
+      -0.6367748027569706,
+      0.8746582789315479
+    ],
+    [
+      -0.7996817695246575,
+      -0.3211525425940693,
+      0.169042228996195,
+      0.38681045555288596,
+      -0.1591290475935947,
+      3.7926210709596355,
+      -0.4407688855915662,
+      2.782972266264993,
+      3.5164743022086453,
+      0.6900890308875259,
+      -0.4151488946553194,
+      -0.5678970030589544,
+      0.33585094269610166
+    ]
+  ]
+}

@@ -66,3 +66,14 @@ For finite safety games, viability_kernel computes the greatest fixed point of t
 The first reference benchmark is a two-step trap: a tempting first action leads to a state with only a dangerous continuation. The viability kernel eliminates that first action, even though its immediate successor is labeled safe. This addresses the *structural form* of the red-team split-step attack; a semantic action-to-state model is still required to make it applicable to real outputs.
 
 Regression: nine local CCA kernel tests passed before commit; the new strict-path tests and historical membrane tests are included in a dedicated GitHub Actions workflow.
+
+
+## CCA-03: certificate counterexamples against real LDT heads
+
+The O(d)-per-critical-tag exact margin formula also constructs counterexamples. For a critical feature j and competing lane k with nonnegative maximum margin, set x_j=1 and every other x_i to 1 precisely when w_ki-w_Ri is positive. This achieves the bound and causes a non-reject winner under train/hold/reject tie priority. Tests compare this witness oracle with exhaustive checks for randomly generated five-feature heads.
+
+A StructuralVeto wraps the learned head and rejects when a host-owned critical feature is present. On every noncritical input it returns the base head's original choice identically. The property is independent of learned weights; it remains conditional on correct tag interpretation and trusted wrapper execution.
+
+Real saved 13-feature Jinn v3 checkpoint fixtures are copied from the private jinn-or-beast-paper repository (source Git blob SHAs recorded in tests/test_cca_real_heads.py). The underlying linear weights of veto_jinn fail the exact reject certificate and have a witness, while the structural veto in the original loader supplies the reject guarantee when its execution is independently verified. The constraint_jinn weights establish a sufficient condition for never choosing train on critical-tag inputs, but they do not guarantee choosing reject: hold can win. Thus there are three distinct contracts: no train, reject every critical input, and a deployed/verified hard wrapper.
+
+The audit_saved_head function treats serialized decimal weights as exact rationals, and compares checkpoint-declared veto tags to separately supplied trusted policy tags. Setting wrapper_verified must follow an independent runtime loader check. A serialized marker alone cannot make effective_reject_certificate true. This avoids allowing an actor or checkpoint author to self-assert the execution of a hard veto.

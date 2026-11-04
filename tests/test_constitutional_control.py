@@ -121,3 +121,46 @@ def test_missing_or_empty_transition_fails_closed():
     successors = {("start", "empty"): frozenset()}
     assert viability_kernel(safe, actions, successors) == frozenset()
     assert shield_actions("start", safe, actions, successors) == frozenset()
+
+
+def test_counterexample_iff_reject_dominance_fails():
+    from research_gym.core.constitutional_control import critical_counterexample
+    random.seed(17)
+    for _ in range(90):
+        n = 5
+        ws = [tuple(Fraction(random.randrange(-3, 4)) for _ in range(n))
+              for _ in range(3)]
+        bs = tuple(Fraction(random.randrange(-3, 4)) for _ in range(3))
+        h = LaneHead(*ws, bs)
+        witness = critical_counterexample(h, [2])
+        assert (witness is None) == h.certifies_critical_rejection([2])
+        if witness is not None:
+            assert witness[2] == 1 and h.winner(witness) != "reject"
+
+
+def test_structural_veto_preserves_noncritical_choices():
+    from research_gym.core.constitutional_control import StructuralVeto
+    h = LaneHead((Fraction(3), Fraction(2)), (Fraction(0), Fraction(2)),
+                 (Fraction(1), Fraction(-2)), (Fraction(0),) * 3)
+    v = StructuralVeto(h, frozenset({1}))
+    for bits in product((0, 1), repeat=2):
+        assert v.winner(bits) == ("reject" if bits[1] else h.winner(bits))
+
+
+def test_checkpoint_audit_requires_host_critical_tags():
+    from research_gym.core.constitutional_control import audit_saved_head
+    record = {
+        "feature_names": ["public", "critical"],
+        "classes": ["train", "hold", "reject"],
+        "weights": [[3, 2], [0, 0], [0, 0]],
+        "bias": [0, 0, 0],
+        "critical_veto_tags": ["critical"],
+    }
+    outcome = audit_saved_head(record, frozenset({"critical"}))
+    assert not outcome["underlying_linear_reject_certificate"]
+    assert not outcome["effective_reject_certificate"]
+    verified = audit_saved_head(record, frozenset({"critical"}), wrapper_verified=True)
+    assert verified["effective_reject_certificate"]
+    record["critical_veto_tags"] = ["public"]
+    outcome = audit_saved_head(record, frozenset({"critical"}), wrapper_verified=True)
+    assert not outcome["effective_reject_certificate"]

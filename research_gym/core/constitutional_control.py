@@ -197,3 +197,85 @@ def shield_actions(
     return frozenset(a for a in actions.get(state, frozenset())
                      if successors.get((state, a), frozenset()) and
                      successors[(state, a)].issubset(region))
+
+
+
+@dataclass(frozen=True)
+class StructuralVeto:
+    """Code-owned veto, applied after any learned lane score."""
+    base: LaneHead
+    critical_indices: FrozenSet[int]
+
+    def __post_init__(self) -> None:
+        if not self.critical_indices or any(j < 0 or j >= len(self.base.train)
+                                            for j in self.critical_indices):
+            raise ValueError("critical indices must be nonempty and in range")
+
+    def winner(self, bits: tuple[int, ...]) -> str:
+        lane = self.base.winner(bits)  # validate features, including nonbinary inputs
+        return "reject" if any(bits[j] for j in self.critical_indices) else lane
+
+
+def critical_counterexample(
+    head: LaneHead, critical_indices: Iterable[int]
+) -> tuple[int, ...] | None:
+    """Construct a maximizing critical input that defeats bare reject dominance.
+
+    Returns None iff exact reject dominance is certified for the given tags.
+    The construction needs O(number_of_critical_tags * features * lanes).
+    """
+    indices = tuple(sorted(set(critical_indices)))
+    if not indices:
+        raise ValueError("critical indices required")
+    for j in indices:
+        for lane in ("train", "hold"):
+            if head.max_competing_margin(lane, j) >= 0:
+                competitor = head.train if lane == "train" else head.hold
+                bits = tuple(int(i == j or competitor[i] > head.reject[i])
+                             for i in range(len(head.reject)))
+                assert head.winner(bits) != "reject"
+                return bits
+    return None
+
+
+def audit_saved_head(
+    record: Mapping[str, object], trusted_critical_tags: FrozenSet[str],
+    *, wrapper_verified: bool = False,
+) -> dict[str, object]:
+    """Audit a saved AdditiveCandidateHead/VetoHead against host policy tags.
+
+    JSON decimals are treated as exact rational coefficients for the symbolic
+    calculation. Structural-veto attestation requires equality to host policy;
+    record-declared tags alone are not considered an authority source.
+    wrapper_verified must come from the trusted runtime after checking that
+    the VetoHead loader and exact wrapper execute. A JSON field alone is NOT
+    evidence that the code-owned veto is active.
+    """
+    names = tuple(record["feature_names"])
+    if len(set(names)) != len(names) or not trusted_critical_tags:
+        raise ValueError("unique feature names and trusted critical tags required")
+    if not trusted_critical_tags <= set(names):
+        raise ValueError("trusted critical tag is absent from model features")
+    if tuple(record["classes"]) != ("train", "hold", "reject"):
+        raise ValueError("unexpected lane order")
+    ws = record["weights"]
+    bs = record["bias"]
+    if len(ws) != 3 or len(bs) != 3:
+        raise ValueError("expected three head weight rows and biases")
+    h = LaneHead(*(tuple(Fraction(str(v)) for v in row) for row in ws),
+                 tuple(Fraction(str(v)) for v in bs))
+    indices = frozenset(names.index(t) for t in trusted_critical_tags)
+    witness = critical_counterexample(h, indices)
+    declared = frozenset(record.get("critical_veto_tags", []))
+    structural = bool(declared) and declared == trusted_critical_tags
+    non_train = all(h.max_competing_margin("train", j) < 0 for j in indices)
+    return {
+        "features": len(names),
+        "trusted_critical_tags": sorted(trusted_critical_tags),
+        "underlying_linear_reject_certificate": witness is None,
+        "underlying_sufficient_non_train_certificate": non_train,
+        "underlying_witness_tags": [names[i] for i, bit in enumerate(witness) if bit]
+                                   if witness is not None else None,
+        "structural_veto_matches_policy": structural,
+        "effective_reject_certificate": (wrapper_verified and structural) or witness is None,
+    }
