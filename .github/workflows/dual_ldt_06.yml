@@ -1,0 +1,55 @@
+name: Dual-LDT-06 trajectory values and recurrent search
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'experiments/dual_ldt_06/**'
+      - 'tests/test_dual_ldt_06.py'
+      - 'formal/CCA/DualLDTTrajectory.lean'
+      - '.github/workflows/dual_ldt_06.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - run: python -m pytest -q tests/test_dual_ldt_06.py
+  lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Lean
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain leanprover/lean4:v4.16.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - run: lean formal/CCA/DualLDTTrajectory.lean
+  full-reproduction:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install torch==2.10.0 --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m pip install numpy pytest
+      - run: python -m pytest -q tests/test_dual_ldt_06.py
+      - run: python experiments/dual_ldt_06/run.py train --out /tmp/dual06
+      - run: python experiments/dual_ldt_06/run.py dev --out /tmp/dual06
+      - run: python experiments/dual_ldt_06/run.py report --out /tmp/dual06
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dual-ldt-06-reproduction
+          path: /tmp/dual06/
