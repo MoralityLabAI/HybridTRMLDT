@@ -21,6 +21,16 @@ def test_boundary_and_sharpness():
     assert env.first_possible_exit(env.envelope_path(1, [F(2, 5)] * 4)) is None
 
 
+def test_local_next_step_budget_and_empty_certification():
+    env = RecoveryEnvelope(F(1, 2), 1, F(1, 10), 1)
+    assert env.next_step_disturbance_budget(F(1, 2), 1) == F(13, 20)
+    assert env.next_step_disturbance_budget(1, 1) == env.critical_disturbance()
+    assert env.next_step_disturbance_budget(1, 0) is None
+    assert env.next_step_disturbance_budget(0, F(1, 10)) == 0
+    with pytest.raises(ValueError):
+        env.next_step_disturbance_budget(-1, 1)
+
+
 def test_burst_can_be_absorbed_beyond_uniform_threshold():
     env = RecoveryEnvelope(F(1, 2), 1, 0, 1)
     assert env.critical_disturbance() == F(1, 2)
