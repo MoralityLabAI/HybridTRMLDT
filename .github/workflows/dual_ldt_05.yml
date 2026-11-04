@@ -1,0 +1,54 @@
+name: Dual-LDT-05 sequential proof-carrying programs
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'research_gym/core/dual_ldt_programs.py'
+      - 'experiments/dual_ldt_05/**'
+      - 'tests/test_dual_ldt_05.py'
+      - 'formal/CCA/DualLDTPrograms.lean'
+      - '.github/workflows/dual_ldt_05.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sequential-programs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pytest
+        run: python -m pip install pytest
+      - name: Verify all-branch proof checks and development controls
+        run: python -m pytest -q tests/test_dual_ldt_05.py tests/test_dual_ldt_04.py
+      - name: Freeze readable configuration manifest
+        run: python experiments/dual_ldt_05/src/run.py --manifest-only --out /tmp/dual05-manifest
+      - name: Development-world outcomes
+        run: python experiments/dual_ldt_05/src/run.py --split development --out /tmp/dual05-development
+      - name: Full paired prospective synthetic replay
+        run: python experiments/dual_ldt_05/src/run.py --split all --out /tmp/dual05-all
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dual-ldt-05-results
+          path: |
+            /tmp/dual05-all/manifest.json
+            /tmp/dual05-all/episodes.json
+            /tmp/dual05-all/summary.json
+
+  lean-sequential:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lean 4
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain leanprover/lean4:v4.16.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Kernel check dynamic correction and composition
+        run: lean formal/CCA/DualLDTPrograms.lean
