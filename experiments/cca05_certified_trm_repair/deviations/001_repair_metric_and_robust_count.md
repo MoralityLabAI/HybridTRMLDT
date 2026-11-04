@@ -1,0 +1,9 @@
+# Amendment 001: repair-metric definition and the nondeterministic-rival count
+
+Written after the first live run (`outputs/` at the registration commit `9d3cd7c` code), and before the rerun that produced the committed outputs. Decision rules, arms, splits and verdict inputs are unchanged. None of the changes below touches any quantity a decision rule reads: executed utility, trajectory value, unsafe counts or abstention sets.
+
+1. **Repair count for A0.** `arm_metrics` counted a decision as repaired when the arm executed anything after the raw proposal failed `Verify`. A0 executes the raw proposal itself, so it reported 44 to 46 "repairs" with intent 0. The definition is now: executed and certified after a rejected raw proposal. This matches SPEC section 6. A1 to A5 are unaffected, because they execute only certified actions.
+2. **Executed actions outside the nondeterministic-rival set.** SPEC section 5 registered this count per arm, and the first run did not compute it. It is now `executed_outside_nondet_rival_set`, single-step at horizon 6, against the `viability_kernel` shield of the time-expanded game with every rival reply. Trajectory steps are not counted against this set.
+3. **Descriptive cost split.** `distinct_verifications_mean_executed` and `distinct_verifications_mean_empty_S` split the registered mean verifier evaluations into decisions that execute and decisions with an empty certified set. Proving a set empty takes five evaluations under every arm. The registered all-decision mean mixes the two.
+
+The first run's arm reports are superseded by the rerun. The rerun uses the same checkpoints, tapes and code otherwise. The quantities read by the decision rules are reproduced exactly (checked: summary verdicts and the per-checkpoint utility tables are identical).

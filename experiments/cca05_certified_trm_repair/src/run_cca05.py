@@ -223,6 +223,7 @@ def table(proposer) -> list[dict]:
         logits = proposer.final_logits(sc, s, C.FULL)
         ranked = rank_certified(S, dict(zip(M.ACTIONS, logits)), M.ACTIONS) if S else ()
         rows.append({"key": input_key(sc, s), "scenario": sc, "state": s, "S": S, "U": U,
+                     "S_robust": M.robust_certified_set(sc, s, M.HORIZON),
                      "ustar": max(U[a] for a in S) if S else None, "top_certified": ranked[0] if ranked else None,
                      "ur": mean(U[a] for a in S) if S else None})
     return rows
@@ -233,10 +234,11 @@ def arm_metrics(rows, decisions, subset) -> dict:
     N = [(r, d) for r, d in R if r["S"]]
     ex = [(r, d) for r, d in R if d.executed is not None]
     rej = [(r, d) for r, d in N if d.proposal is not None and d.proposal not in r["S"]]
-    rep = [(r, d) for r, d in rej if d.executed is not None]
+    rep = [(r, d) for r, d in rej if d.executed is not None and d.executed in r["S"]]
     out = {
         "n": len(R), "n_empty_S": len(R) - len(N),
         "unsafe": sum(d.executed is not None and d.executed not in r["S"] for r, d in R),
+        "executed_outside_nondet_rival_set": sum(d.executed is not None and d.executed not in r["S_robust"] for r, d in R),
         "abstain": sum(d.executed is None for r, d in R),
         "abstain_with_nonempty_S": sum(d.executed is None for r, d in N),
         "executed_utility_mean": r6(mean(r["U"][d.executed] for r, d in ex)) if ex else None,
@@ -259,6 +261,8 @@ def arm_metrics(rows, decisions, subset) -> dict:
     out.update({
         "distinct_verifications_mean": r6(mean(d.distinct_verifications for _, d in R)) if R else None,
         "distinct_verifications_max": max((d.distinct_verifications for _, d in R), default=None),
+        "distinct_verifications_mean_executed": r6(mean(d.distinct_verifications for _, d in ex)) if ex else None,
+        "distinct_verifications_mean_empty_S": r6(mean(d.distinct_verifications for r, d in R if not r["S"])) if len(R) > len(N) else None,
         "verifier_invocations_mean": r6(mean(d.verifier_invocations for _, d in R)) if R else None,
         "elimination_checks_mean": r6(mean(d.elimination_checks for _, d in R)) if R else None,
         "proposer_queries_mean": r6(mean(d.proposer_queries for _, d in R)) if R else None,

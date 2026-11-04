@@ -306,6 +306,16 @@ def kernel_shield(scenario: str, rival: str) -> dict[tuple[StoryState, int], fro
     return out
 
 
+@lru_cache(maxsize=None)
+def _robust_shield(scenario: str):
+    return kernel_shield(scenario, "nondet")
+
+
+def robust_certified_set(scenario: str, state: StoryState, horizon: int) -> frozenset[str]:
+    """Actions that stay viable against every rival reply (outside the guarantee's assumption)."""
+    return _robust_shield(scenario)[(state, horizon)]
+
+
 def environment_digest() -> str:
     """Digest of the behaviour the verifier depends on: transitions under every
     action pair, rival policy, target, terminal and moral score on all states."""
