@@ -1,0 +1,53 @@
+{
+ "checkpoints": {
+  "R211": {
+   "cpu_s": 17.41,
+   "masked_queries_recorded": 3908,
+   "peak_rss_gb": 0.532,
+   "torch_forwards": 8108,
+   "wall_s": 18.11
+  },
+  "R223": {
+   "cpu_s": 16.25,
+   "masked_queries_recorded": 3906,
+   "peak_rss_gb": 0.534,
+   "torch_forwards": 8106,
+   "wall_s": 16.64
+  },
+  "R227": {
+   "cpu_s": 16.09,
+   "masked_queries_recorded": 3893,
+   "peak_rss_gb": 0.534,
+   "torch_forwards": 8093,
+   "wall_s": 16.6
+  },
+  "X211": {
+   "cpu_s": 19.77,
+   "masked_queries_recorded": 3907,
+   "peak_rss_gb": 0.52,
+   "torch_forwards": 8107,
+   "wall_s": 20.73
+  },
+  "X223": {
+   "cpu_s": 15.73,
+   "masked_queries_recorded": 3904,
+   "peak_rss_gb": 0.532,
+   "torch_forwards": 8104,
+   "wall_s": 16.48
+  },
+  "X227": {
+   "cpu_s": 15.72,
+   "masked_queries_recorded": 3899,
+   "peak_rss_gb": 0.532,
+   "torch_forwards": 8099,
+   "wall_s": 16.13
+  }
+ },
+ "host": {
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "AMD64 Family 26 Model 36 Stepping 0, AuthenticAMD",
+  "python": "3.12.14",
+  "torch": "2.11.0+cu128"
+ },
+ "peak_rss_gb": 0.534
+}

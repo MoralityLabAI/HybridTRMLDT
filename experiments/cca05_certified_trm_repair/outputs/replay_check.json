@@ -1,0 +1,32 @@
+{
+ "R211": {
+  "receipt_digest_equal": true,
+  "single_step_equal": true,
+  "trajectory_equal": true
+ },
+ "R223": {
+  "receipt_digest_equal": true,
+  "single_step_equal": true,
+  "trajectory_equal": true
+ },
+ "R227": {
+  "receipt_digest_equal": true,
+  "single_step_equal": true,
+  "trajectory_equal": true
+ },
+ "X211": {
+  "receipt_digest_equal": true,
+  "single_step_equal": true,
+  "trajectory_equal": true
+ },
+ "X223": {
+  "receipt_digest_equal": true,
+  "single_step_equal": true,
+  "trajectory_equal": true
+ },
+ "X227": {
+  "receipt_digest_equal": true,
+  "single_step_equal": true,
+  "trajectory_equal": true
+ }
+}

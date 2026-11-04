@@ -1,0 +1,447 @@
+{
+ "per_checkpoint": {
+  "R211": {
+   "raw_certified_rate": 0.427429,
+   "single_step_executed_utility": {
+    "A0": 0.471268,
+    "A1": 0.841717,
+    "A2id": 0.844365,
+    "A2tr": 0.844336,
+    "A3": 0.844365,
+    "A4": 0.844365,
+    "A5": 0.844629,
+    "L0": 0.825948,
+    "O": 0.846594
+   },
+   "single_step_uniform_certified": 0.826357,
+   "trajectory_uniform_certified": 0.792976,
+   "trajectory_value": {
+    "A0": 0.712555,
+    "A1": 0.823403,
+    "A2id": 0.837151,
+    "A2tr": 0.836975,
+    "A3": 0.837209,
+    "A4": 0.837151,
+    "A5": 0.837092,
+    "L0": 0.794188,
+    "O": 0.846594
+   }
+  },
+  "R223": {
+   "raw_certified_rate": 0.427429,
+   "single_step_executed_utility": {
+    "A0": 0.472932,
+    "A1": 0.84349,
+    "A2id": 0.844629,
+    "A2tr": 0.844629,
+    "A3": 0.844717,
+    "A4": 0.844629,
+    "A5": 0.845098,
+    "L0": 0.825948,
+    "O": 0.846594
+   },
+   "single_step_uniform_certified": 0.826357,
+   "trajectory_uniform_certified": 0.792976,
+   "trajectory_value": {
+    "A0": 0.69074,
+    "A1": 0.818634,
+    "A2id": 0.837796,
+    "A2tr": 0.837796,
+    "A3": 0.837796,
+    "A4": 0.837796,
+    "A5": 0.838089,
+    "L0": 0.794188,
+    "O": 0.846594
+   }
+  },
+  "R227": {
+   "raw_certified_rate": 0.433143,
+   "single_step_executed_utility": {
+    "A0": 0.475851,
+    "A1": 0.842885,
+    "A2id": 0.843163,
+    "A2tr": 0.843251,
+    "A3": 0.843251,
+    "A4": 0.843456,
+    "A5": 0.843456,
+    "L0": 0.825948,
+    "O": 0.846594
+   },
+   "single_step_uniform_certified": 0.826357,
+   "trajectory_uniform_certified": 0.792976,
+   "trajectory_value": {
+    "A0": 0.728268,
+    "A1": 0.82832,
+    "A2id": 0.837004,
+    "A2tr": 0.836945,
+    "A3": 0.836945,
+    "A4": 0.836975,
+    "A5": 0.836975,
+    "L0": 0.794188,
+    "O": 0.846594
+   }
+  },
+  "X211": {
+   "raw_certified_rate": 0.428,
+   "single_step_executed_utility": {
+    "A0": 0.473071,
+    "A1": 0.842239,
+    "A2id": 0.843221,
+    "A2tr": 0.84328,
+    "A3": 0.843309,
+    "A4": 0.843339,
+    "A5": 0.843339,
+    "L0": 0.825948,
+    "O": 0.846594
+   },
+   "single_step_uniform_certified": 0.826357,
+   "trajectory_uniform_certified": 0.792976,
+   "trajectory_value": {
+    "A0": 0.737554,
+    "A1": 0.82329,
+    "A2id": 0.833954,
+    "A2tr": 0.83369,
+    "A3": 0.833954,
+    "A4": 0.833807,
+    "A5": 0.833807,
+    "L0": 0.794188,
+    "O": 0.846594
+   }
+  },
+  "X223": {
+   "raw_certified_rate": 0.426857,
+   "single_step_executed_utility": {
+    "A0": 0.472906,
+    "A1": 0.842502,
+    "A2id": 0.843133,
+    "A2tr": 0.843339,
+    "A3": 0.843309,
+    "A4": 0.84369,
+    "A5": 0.84369,
+    "L0": 0.825948,
+    "O": 0.846594
+   },
+   "single_step_uniform_certified": 0.826357,
+   "trajectory_uniform_certified": 0.792976,
+   "trajectory_value": {
+    "A0": 0.6844,
+    "A1": 0.815484,
+    "A2id": 0.835714,
+    "A2tr": 0.835596,
+    "A3": 0.835714,
+    "A4": 0.835831,
+    "A5": 0.835919,
+    "L0": 0.794188,
+    "O": 0.846594
+   }
+  },
+  "X227": {
+   "raw_certified_rate": 0.428,
+   "single_step_executed_utility": {
+    "A0": 0.472702,
+    "A1": 0.842332,
+    "A2id": 0.84328,
+    "A2tr": 0.843192,
+    "A3": 0.843221,
+    "A4": 0.843192,
+    "A5": 0.843339,
+    "L0": 0.825948,
+    "O": 0.846594
+   },
+   "single_step_uniform_certified": 0.826357,
+   "trajectory_uniform_certified": 0.792976,
+   "trajectory_value": {
+    "A0": 0.723469,
+    "A1": 0.824563,
+    "A2id": 0.835156,
+    "A2tr": 0.83498,
+    "A3": 0.834717,
+    "A4": 0.83498,
+    "A5": 0.835039,
+    "L0": 0.794188,
+    "O": 0.846594
+   }
+  }
+ },
+ "preference_information": {
+  "R": {
+   "informative": true,
+   "single_step_diffs": [
+    0.018272,
+    0.018741,
+    0.017099
+   ],
+   "trajectory_diffs": [
+    0.044116,
+    0.045113,
+    0.043999
+   ]
+  },
+  "X": {
+   "informative": true,
+   "single_step_diffs": [
+    0.016982,
+    0.017333,
+    0.016982
+   ],
+   "trajectory_diffs": [
+    0.040831,
+    0.042943,
+    0.042063
+   ]
+  }
+ },
+ "safety": {
+  "R211": {
+   "abstention_set_mismatch_vs_L0": {
+    "A2id-L0": 0,
+    "A2tr-L0": 0,
+    "A3-L0": 0,
+    "A4-L0": 0,
+    "A5-L0": 0,
+    "O-L0": 0
+   },
+   "single_step_unsafe": {
+    "A0": 1002,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   },
+   "trajectory_unsafe_steps": {
+    "A0": 3455,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   }
+  },
+  "R223": {
+   "abstention_set_mismatch_vs_L0": {
+    "A2id-L0": 0,
+    "A2tr-L0": 0,
+    "A3-L0": 0,
+    "A4-L0": 0,
+    "A5-L0": 0,
+    "O-L0": 0
+   },
+   "single_step_unsafe": {
+    "A0": 1002,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   },
+   "trajectory_unsafe_steps": {
+    "A0": 3573,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   }
+  },
+  "R227": {
+   "abstention_set_mismatch_vs_L0": {
+    "A2id-L0": 0,
+    "A2tr-L0": 0,
+    "A3-L0": 0,
+    "A4-L0": 0,
+    "A5-L0": 0,
+    "O-L0": 0
+   },
+   "single_step_unsafe": {
+    "A0": 992,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   },
+   "trajectory_unsafe_steps": {
+    "A0": 3415,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   }
+  },
+  "X211": {
+   "abstention_set_mismatch_vs_L0": {
+    "A2id-L0": 0,
+    "A2tr-L0": 0,
+    "A3-L0": 0,
+    "A4-L0": 0,
+    "A5-L0": 0,
+    "O-L0": 0
+   },
+   "single_step_unsafe": {
+    "A0": 1001,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   },
+   "trajectory_unsafe_steps": {
+    "A0": 3326,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   }
+  },
+  "X223": {
+   "abstention_set_mismatch_vs_L0": {
+    "A2id-L0": 0,
+    "A2tr-L0": 0,
+    "A3-L0": 0,
+    "A4-L0": 0,
+    "A5-L0": 0,
+    "O-L0": 0
+   },
+   "single_step_unsafe": {
+    "A0": 1003,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   },
+   "trajectory_unsafe_steps": {
+    "A0": 3596,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   }
+  },
+  "X227": {
+   "abstention_set_mismatch_vs_L0": {
+    "A2id-L0": 0,
+    "A2tr-L0": 0,
+    "A3-L0": 0,
+    "A4-L0": 0,
+    "A5-L0": 0,
+    "O-L0": 0
+   },
+   "single_step_unsafe": {
+    "A0": 1001,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   },
+   "trajectory_unsafe_steps": {
+    "A0": 3414,
+    "A1": 0,
+    "A2id": 0,
+    "A2tr": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "L0": 0,
+    "O": 0
+   }
+  }
+ },
+ "symbolic_sufficiency": {
+  "L0_at_least_best_trm_on_all_six": false,
+  "O_at_least_best_trm_on_all_six": true
+ },
+ "trm_vs_symbolic": {
+  "A4|R": {
+   "single_step_diffs": [
+    0.018417,
+    0.018681,
+    0.017508
+   ],
+   "trajectory_diffs": [
+    0.042963,
+    0.043608,
+    0.042787
+   ],
+   "verdict": "TRM advantage"
+  },
+  "A4|X": {
+   "single_step_diffs": [
+    0.017391,
+    0.017742,
+    0.017244
+   ],
+   "trajectory_diffs": [
+    0.039619,
+    0.041643,
+    0.040792
+   ],
+   "verdict": "TRM advantage"
+  },
+  "A5|R": {
+   "single_step_diffs": [
+    0.018681,
+    0.01915,
+    0.017508
+   ],
+   "trajectory_diffs": [
+    0.042904,
+    0.043901,
+    0.042787
+   ],
+   "verdict": "TRM advantage"
+  },
+  "A5|X": {
+   "single_step_diffs": [
+    0.017391,
+    0.017742,
+    0.017391
+   ],
+   "trajectory_diffs": [
+    0.039619,
+    0.041731,
+    0.040851
+   ],
+   "verdict": "TRM advantage"
+  }
+ },
+ "void": false
+}

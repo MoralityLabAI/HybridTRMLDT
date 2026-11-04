@@ -26,7 +26,7 @@ import controllers as C  # noqa: E402
 import negative_controls as NC  # noqa: E402
 import semantics as M  # noqa: E402
 from research_gym.core.certified_repair import canonical_digest, rank_certified  # noqa: E402
-from tape import ReplayTRM, input_key, write_tape  # noqa: E402
+from tape import ReplayTRM, input_key, read_gz, write_tape  # noqa: E402
 
 REG = json.loads((ROOT / "registration.json").read_text(encoding="utf-8"))
 TAGS = tuple(REG["checkpoints"])
@@ -447,7 +447,8 @@ def run_live(out: Path) -> None:
         write_tape(tape, out / "tapes" / f"{tag}.json.gz")
         manifest[f"tapes/{tag}.json.gz"] = hashlib.sha256((out / "tapes" / f"{tag}.json.gz").read_bytes()).hexdigest()
         manifest[f"arms/{tag}.json"] = dump(report, out / "arms" / f"{tag}.json")
-        manifest[f"receipts/{tag}.json"] = dump(receipt, out / "receipts" / f"{tag}.json")
+        write_tape(receipt, out / "receipts" / f"{tag}.json.gz")
+        manifest[f"receipts/{tag}.json.gz"] = hashlib.sha256((out / "receipts" / f"{tag}.json.gz").read_bytes()).hexdigest()
         manifest[f"receipts/{tag}.digest"] = canonical_digest(receipt)
         cost["checkpoints"][tag] = {"wall_s": round(time.perf_counter() - t0, 2),
                                     "cpu_s": round(time.process_time() - c0, 2),
@@ -469,7 +470,7 @@ def run_replay(out: Path, tags) -> dict:
         thr = (rep.get("provenance_claims") or {}).get("threshold")
         claims = tape.tape.get("env_claim_score")
         report, receipt = evaluate(tag, tape, claims, thr)
-        committed = json.loads((src / "receipts" / f"{tag}.json").read_text(encoding="utf-8"))
+        committed = read_gz(src / "receipts" / f"{tag}.json.gz")
         result[tag] = {"receipt_digest_equal": canonical_digest(receipt) == canonical_digest(committed),
                        "single_step_equal": report["single_step"] == rep["single_step"],
                        "trajectory_equal": report["trajectory"] == rep["trajectory"]}

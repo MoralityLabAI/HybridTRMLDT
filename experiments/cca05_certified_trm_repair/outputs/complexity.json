@@ -1,0 +1,73 @@
+{
+ "certified_set_table": {
+  "distinct_masks": 25,
+  "exact_tree_leaves_joint_mask": 278,
+  "exact_tree_leaves_per_action": {
+   "befriend": 82,
+   "defuse": 88,
+   "investigate": 107,
+   "rush": 88,
+   "wait": 81
+  },
+  "inputs": 1750
+ },
+ "issuer_lines": {
+  "CoupledStoryworldEnv.reachable": 38,
+  "semantics._moral_witness": 9,
+  "semantics.admissible": 6,
+  "semantics.best_value": 5,
+  "semantics.issue": 12
+ },
+ "issuer_total": 70,
+ "repair_membrane_lines": {
+  "certified_repair.bounded_recurrent_repair": 60,
+  "controllers.elimination_verifier": 15,
+  "hybrid.certify_and_apply": 87,
+  "hybrid.certify_and_apply_verified": 39
+ },
+ "repair_membrane_total": 201,
+ "trm": {
+  "parameters": 15521,
+  "published_exact_automaton_states": "229 to 590",
+  "published_exact_final_pass_tree_leaves_action_mode_conflict": {
+   "R": "371 to 588",
+   "X": "677 to 834"
+  },
+  "recurrent_passes_per_query": 4,
+  "source": "jinn-or-beast-paper complete_accounts_v1/RESULTS.md"
+ },
+ "trusted_components": [
+  "transition function (CoupledStoryworldEnv.step, clamp)",
+  "rival model (other_policy)",
+  "goal predicate and tau (target, terminal_value, MORAL_THRESHOLD)",
+  "certificate checker (witness_ends_in_goal, check_certificate)",
+  "executor (execute_certified, bind)",
+  "elimination verifier inside certify_and_apply_verified (A4 only)"
+ ],
+ "trusted_execution_path_lines": {
+  "CoupledStoryworldEnv.clamp": 3,
+  "CoupledStoryworldEnv.other_policy": 11,
+  "CoupledStoryworldEnv.step": 36,
+  "CoupledStoryworldEnv.target": 3,
+  "CoupledStoryworldEnv.terminal": 2,
+  "certified_repair.bind": 3,
+  "certified_repair.execute_certified": 21,
+  "semantics.check_certificate": 14,
+  "semantics.successor": 2,
+  "semantics.terminal_value": 14,
+  "semantics.witness_ends_in_goal": 17
+ },
+ "trusted_execution_path_total": 126,
+ "untrusted": [
+  "TRM weights and logits",
+  "TRM provenance head",
+  "issuer search (its certificates are rechecked)"
+ ],
+ "verified_constraints": {
+  "parameters": {
+   "horizon": 6,
+   "moral_threshold": 8
+  },
+  "per_decision": "one: Verify(s, a, k) for the executed action"
+ }
+}

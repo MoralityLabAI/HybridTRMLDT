@@ -37,8 +37,7 @@ class ReplayTRM:
 
     @classmethod
     def load(cls, path: Path) -> "ReplayTRM":
-        with gzip.open(path, "rt", encoding="utf-8") as fh:
-            return cls(json.load(fh))
+        return cls(read_gz(path))
 
     def final_logits(self, scenario, state, mask):
         self.queries += 1
@@ -48,6 +47,11 @@ class ReplayTRM:
 
     def pass_logits(self, scenario, state):
         return tuple(tuple(row) for row in self.full[input_key(scenario, state)])
+
+
+def read_gz(path: Path):
+    with gzip.open(path, "rt", encoding="utf-8") as fh:
+        return json.load(fh)
 
 
 def write_tape(tape: dict, path: Path) -> None:
