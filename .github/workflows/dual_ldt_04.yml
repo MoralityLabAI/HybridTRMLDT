@@ -1,0 +1,53 @@
+name: Dual-LDT-04 proof-carrying action synthesis
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'research_gym/core/dual_ldt_synthesis.py'
+      - 'experiments/dual_ldt_04/**'
+      - 'tests/test_dual_ldt_04.py'
+      - 'formal/CCA/DualLDTActionSynthesis.lean'
+      - '.github/workflows/dual_ldt_04.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proof-carrying-synthesis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - name: Development-only contracts and original real-head tests
+        run: python -m pytest -q tests/test_dual_ldt_04.py tests/test_dual_ldt.py tests/test_dual_ldt_intervention.py
+      - name: Frozen 64-world manifest before scoring
+        run: python experiments/dual_ldt_04/src/run.py --manifest-only --out /tmp/dual04-manifest
+      - name: Development-world paired episodes
+        run: python experiments/dual_ldt_04/src/run.py --split development --out /tmp/dual04-development
+      - name: New report-world and full paired outcomes
+        run: python experiments/dual_ldt_04/src/run.py --split all --out /tmp/dual04-full
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dual-ldt-04-results
+          path: |
+            /tmp/dual04-full/manifest.json
+            /tmp/dual04-full/episodes.json
+            /tmp/dual04-full/summary.json
+
+  lean-synthesis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lean
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain leanprover/lean4:v4.16.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Check abstract safe-expansion and preference-witness theorems
+        run: lean formal/CCA/DualLDTActionSynthesis.lean
