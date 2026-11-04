@@ -1,0 +1,56 @@
+name: Dual-LDT exact outcome cover and artifact audit
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'experiments/dual_ldt_06/outcome_frontier.py'
+      - 'experiments/dual_ldt_06/audit_artifact.py'
+      - 'tests/test_dual_ldt_outcome.py'
+      - 'formal/CCA/DualLDTOutcome.lean'
+      - '.github/workflows/dual_ldt_outcome.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  exact-cover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - run: python -m pytest -q tests/test_dual_ldt_outcome.py tests/test_dual_ldt_06.py
+      - name: Install pinned Lean
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain leanprover/lean4:v4.16.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - run: lean formal/CCA/DualLDTOutcome.lean
+  artifact-audit:
+    needs: exact-cover
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[audit-dual06]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch immutable completed training/report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dual-ldt-06-reproduction
+          run-id: 41868351947
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/dual06
+      - name: Independent rational replay and cover verification
+        run: python experiments/dual_ldt_06/audit_artifact.py /tmp/dual06 --out /tmp/INDEPENDENT_AUDIT.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dual-ldt-06-independent-audit
+          path: /tmp/INDEPENDENT_AUDIT.json
