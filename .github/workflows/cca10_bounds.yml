@@ -1,0 +1,36 @@
+name: CCA-10 optimistic certified bounds
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'research_gym/core/cca_optimistic_bound.py'
+      - 'tests/test_cca_optimistic_bound.py'
+      - 'experiments/cca09_anytime_certified_search/src/run.py'
+      - 'experiments/cca10_optimistic_bounds/**'
+      - '.github/workflows/cca10_bounds.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-bounds-and-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - name: Exhaustive proof-obligation regression
+        run: python -m pytest -q tests/test_cca_anytime_search.py tests/test_cca_optimistic_bound.py
+      - name: Smoke on frozen checkpoint tapes
+        run: python experiments/cca09_anytime_certified_search/src/run.py --upper-mode optimistic --limit 80 --out /tmp/cca10-smoke
+      - name: Full exploratory comparison
+        run: python experiments/cca09_anytime_certified_search/src/run.py --upper-mode optimistic --out /tmp/cca10-full
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cca10-full
+          path: /tmp/cca10-full/metrics.json
