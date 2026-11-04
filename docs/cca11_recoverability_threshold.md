@@ -214,3 +214,31 @@ whose binary utility is identical for all certified actions.
 These results are arithmetic on a symbolic environment. Their metric
 has no validated correspondence to SAE activations, recurrent hidden
 states, human values, or open-world semantic trust.
+
+
+## CCA-S: action-local admissible disturbance budget
+
+Let s be a trusted nominal state with a certified action a and possible
+nominal successors y=T(s,a,r). Let e denote current bounded deviation and
+suppose repair dynamics satisfy the CCA-O inequality for all specified
+rival/environment branches. Define
+
+    m_a = min_r m_(k-1)(T(s,a,r)),
+
+omitting successful goal stops that require no subsequent decision. If all
+branches terminate successfully, next-step recoverability is vacuous.
+
+If m_a >= rho*e + sigma, every disturbance satisfying
+
+    0 <= eta <= (m_a - rho*e - sigma)/c
+
+preserves viability of all nonterminal successors. If the numerator is
+negative, even zero disturbance is uncertified. The reference
+next_step_disturbance_budget returns None in this case rather than reporting
+zero as an admissible certificate.
+
+CCA-S follows by substitution into the one-step envelope. For
+action-independent rho, c, sigma, maximizing m_a maximizes the
+admissible disturbance budget. With action-dependent dynamics, optimize
+the full local budget. An unverified state/error metric or an unmodeled
+rival response invalidates this guarantee.
