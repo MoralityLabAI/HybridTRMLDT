@@ -32,6 +32,12 @@ jobs:
         with:
           name: cca09-smoke
           path: /tmp/cca09-smoke/metrics.json
+      - name: Full 1750-state retrospective replay, all six checkpoint tapes
+        run: python experiments/cca09_anytime_certified_search/src/run.py --out /tmp/cca09-full
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cca09-full
+          path: /tmp/cca09-full/metrics.json
 
   lean-anytime:
     runs-on: ubuntu-latest
