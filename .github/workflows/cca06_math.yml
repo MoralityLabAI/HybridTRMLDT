@@ -1,4 +1,4 @@
-name: CCA-06 formal mathematics
+name: CCA control mathematics
 
 on:
   push:
@@ -6,7 +6,9 @@ on:
     paths:
       - 'formal/CCA/**'
       - 'research_gym/core/cca_compositional.py'
+      - 'research_gym/core/cca_abstraction_refiner.py'
       - 'tests/test_cca_compositional.py'
+      - 'tests/test_cca_abstraction_refiner.py'
       - '.github/workflows/cca06_math.yml'
   workflow_dispatch:
 
@@ -22,7 +24,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install pytest
-      - run: python -m pytest -q tests/test_cca_compositional.py
+      - run: python -m pytest -q tests/test_cca_compositional.py tests/test_cca_abstraction_refiner.py
 
   lean-math:
     runs-on: ubuntu-latest
