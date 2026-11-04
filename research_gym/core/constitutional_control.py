@@ -279,3 +279,31 @@ def audit_saved_head(
         "structural_veto_matches_policy": structural,
         "effective_reject_certificate": (wrapper_verified and structural) or witness is None,
     }
+
+
+
+def project_reject_weights(
+    head: LaneHead,
+    critical_indices: Iterable[int],
+    *,
+    margin: Fraction = Fraction(1, 1000),
+) -> LaneHead:
+    """One-pass exact rational projection to a critical-tag reject certificate.
+
+    Only reject-lane weights at critical indices increase. The repair changes
+    no logit on any input with no critical tag. This is a sufficient monotone
+    projection, not a globally minimum-norm weight edit.
+    """
+    if not isinstance(margin, (int, Fraction)) or margin <= 0:
+        raise ValueError("margin must be a strictly positive rational")
+    indices = tuple(sorted(set(critical_indices)))
+    if not indices:
+        raise ValueError("critical indices required")
+    new_reject = list(head.reject)
+    for j in indices:
+        required = max(head.max_competing_margin(k, j)
+                       for k in ("train", "hold")) + margin
+        new_reject[j] += max(Fraction(0), required)
+    repaired = LaneHead(head.train, head.hold, tuple(new_reject), head.biases)
+    assert repaired.certifies_critical_rejection(indices)
+    return repaired

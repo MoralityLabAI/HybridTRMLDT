@@ -42,3 +42,23 @@ def test_real_constraint_jinn_only_certifies_nontrain():
     assert not report["structural_veto_matches_policy"]
     assert not report["effective_reject_certificate"]
     assert report["underlying_witness_tags"]
+
+
+def test_one_pass_projection_of_saved_jinn_heads():
+    from fractions import Fraction
+    from itertools import product
+    from research_gym.core.constitutional_control import (
+        LaneHead, StructuralVeto, project_reject_weights,
+    )
+    for name in ("cca_veto_jinn.json", "cca_constraint_jinn.json"):
+        record = read(name)
+        head = LaneHead(
+            *(tuple(Fraction(str(v)) for v in row) for row in record["weights"]),
+            tuple(Fraction(str(v)) for v in record["bias"]),
+        )
+        indices = frozenset(record["feature_names"].index(tag) for tag in POLICY)
+        projected = project_reject_weights(head, indices)
+        shield = StructuralVeto(head, indices)
+        assert projected.certifies_critical_rejection(indices)
+        for bits in product((0, 1), repeat=13):
+            assert projected.winner(bits) == shield.winner(bits)

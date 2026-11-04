@@ -77,3 +77,21 @@ A StructuralVeto wraps the learned head and rejects when a host-owned critical f
 Real saved 13-feature Jinn v3 checkpoint fixtures are copied from the private jinn-or-beast-paper repository (source Git blob SHAs recorded in tests/test_cca_real_heads.py). The underlying linear weights of veto_jinn fail the exact reject certificate and have a witness, while the structural veto in the original loader supplies the reject guarantee when its execution is independently verified. The constraint_jinn weights establish a sufficient condition for never choosing train on critical-tag inputs, but they do not guarantee choosing reject: hold can win. Thus there are three distinct contracts: no train, reject every critical input, and a deployed/verified hard wrapper.
 
 The audit_saved_head function treats serialized decimal weights as exact rationals, and compares checkpoint-declared veto tags to separately supplied trusted policy tags. Setting wrapper_verified must follow an independent runtime loader check. A serialized marker alone cannot make effective_reject_certificate true. This avoids allowing an actor or checkpoint author to self-assert the execution of a hard veto.
+
+
+## CCA-04: one-pass certified weight-space repair
+
+Let M_kj be the exact critical-tag margin defined in CCA-C, and fix a rational safety slack eta > 0. For each critical feature j compute, using the original head's weights,
+
+\[
+\alpha_j=\max\left(0,\ \eta+\max_{k\in\{T,H\}}M_{kj}\right),
+\qquad w'_{Rj}=w_{Rj}+\alpha_j.
+\]
+
+Leave every other weight and bias unchanged.
+
+**CCA-D (one-pass reject projection).** The repaired head rejects every binary input containing a critical tag, with competing score margins at most -eta. Proof: for each j, its competing margins decrease by alpha_j. Updates at the other critical indices can only decrease the positive-part contributions in M_kj, so M'_kj <= M_kj - alpha_j <= -eta. All scores on tag vectors containing no critical tags are unchanged because every edited weight multiplies a zero input feature. Hence the resulting discrete lane function is *exactly equivalent* to wrapping the original head with a structural critical-tag veto on the full binary domain.
+
+The projection is explicit, terminates after one pass, and requires no parameter search or post hoc recipe. It is conservative and is not asserted to minimize total weight change. Tests enumerate every input of 150 randomly generated six-feature heads, and verify the same equivalence for both frozen 13-feature Jinn v3 checkpoints.
+
+The theorem is about rational weights and a trusted binary tag vocabulary. For deployment with float weights, roundoff and quantization require bounds; for real actions, independently read tags remain the hardest unproved assumption. The code-owned veto avoids reliance on floating-point margins and can serve as a second independent enforcement layer.

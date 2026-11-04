@@ -164,3 +164,34 @@ def test_checkpoint_audit_requires_host_critical_tags():
     record["critical_veto_tags"] = ["public"]
     outcome = audit_saved_head(record, frozenset({"critical"}), wrapper_verified=True)
     assert not outcome["effective_reject_certificate"]
+
+
+def test_one_pass_reject_projection_matches_structural_veto_everywhere():
+    from research_gym.core.constitutional_control import (
+        project_reject_weights, StructuralVeto,
+    )
+    random.seed(63)
+    for _ in range(150):
+        n = 6
+        ws = [tuple(Fraction(random.randrange(-5, 6)) for _ in range(n))
+              for _ in range(3)]
+        bs = tuple(Fraction(random.randrange(-5, 6)) for _ in range(3))
+        head = LaneHead(*ws, bs)
+        critical = frozenset({1, 4})
+        projected = project_reject_weights(head, critical)
+        veto = StructuralVeto(head, critical)
+        assert projected.certifies_critical_rejection(critical)
+        for bits in product((0, 1), repeat=n):
+            assert projected.winner(bits) == veto.winner(bits)
+            if not any(bits[j] for j in critical):
+                assert projected.winner(bits) == head.winner(bits)
+
+
+def test_projection_requires_positive_rational_margin():
+    from research_gym.core.constitutional_control import project_reject_weights
+    h = LaneHead((Fraction(0),), (Fraction(0),), (Fraction(0),),
+                 (Fraction(0),) * 3)
+    with pytest.raises(ValueError):
+        project_reject_weights(h, [0], margin=Fraction(0))
+    with pytest.raises(ValueError):
+        project_reject_weights(h, [0], margin=0.2)
