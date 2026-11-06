@@ -13,6 +13,7 @@ from Kimilings.index import (
 )
 from Kimilings.router import route
 from Kimilings.membrane import certify_bank_subset
+from Kimilings.stats import cluster_paired_stats, holm_adjust
 from Kimilings.score import score_arc, score_logic_verdicts
 from Kimilings.vpd import causal_transfer, summarize_vpd
 
@@ -203,6 +204,13 @@ class RouterAndVpdTests(unittest.TestCase):
         invalid = {**base, "activation_source": "routed_kimi"}
         with self.assertRaisesRegex(ValueError, "capture"):
             summarize_vpd([invalid])
+
+    def test_cluster_paired_math_and_holm(self):
+        r = cluster_paired_stats([("g1", 1.0), ("g1", 1.0),
+                                  ("g2", -1.0)], seed=7, bootstrap_draws=199)
+        self.assertEqual(r["n_clusters"], 2)
+        self.assertEqual(r["cluster_macro_delta"], 0.0)
+        self.assertEqual(holm_adjust([0.01, 0.04, 0.03]), [0.03, 0.06, 0.06])
 
     def test_transfer_needs_real_sources_and_matched_budget(self):
         row = {
