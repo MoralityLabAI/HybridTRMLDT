@@ -45,3 +45,23 @@ For an independently captured prospective calibration, run `python Huginn/gate_e
 - [HybridTRMLDT research repo](https://github.com/MoralityLabAI/HybridTRMLDT)
 
 The existing Nanbeige audit is a distinct experiment. Preserve that separation.
+
+## One-command selection-side construction (new)
+
+After model instrumentation exports **only selection** pre-projection states and
+rank-one factor vectors, the checked-in builder replaces manual selection scripting:
+
+```bash
+python Huginn/build_controls.py \
+  --factor-vectors factors-export.npz \
+  --selection-states selection-only.npz \
+  --controls-out control-matrices.npz \
+  --report-out selection-report.json --candidates 512
+```
+
+The builder rejects verification/confirmation arrays outright, chooses fixed
+rank-one matrices from the selection split, and writes a source-hashed selection
+receipt. A read-family shortage is recorded as `read_all_eight_ready=false`;
+it is **not** a gate PASS. Selection arrays, factor exports and the original
+`factors.npz` remain separate inputs. See `SHORT_HANDOFF.md` for the minimal
+Silico task and `PROTOCOL.md` for the registered constraints.
