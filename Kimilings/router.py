@@ -3,12 +3,13 @@ from __future__ import annotations
 
 import hashlib
 import random
-from typing import Any
+from typing import Any, Callable
 
 VALID_POLICIES = ("trm", "ldt_verified", "hybrid", "hybrid_vpd", "random_matched")
 
 
-def route(record: dict[str, Any], policy: str) -> dict:
+def route(record: dict[str, Any], policy: str, *,
+          verify_ldt: Callable[[dict[str, Any]], bool] | None = None) -> dict:
     if policy not in VALID_POLICIES:
         raise ValueError(f"Unknown routing policy: {policy}")
     task_id = str(record["task_id"])
@@ -35,6 +36,8 @@ def route(record: dict[str, Any], policy: str) -> dict:
     independently_verified = (
         record.get("ldt_verification") == "independent"
         and bool(record.get("verifier_receipt"))
+        and verify_ldt is not None
+        and verify_ldt(record) is True
     )
     approved = record.get("ldt_allowed", [])
     if not isinstance(approved, list) or any(x not in candidates for x in approved):
