@@ -12,6 +12,7 @@ from Kimilings.index import (
     ARC_REVISION, audit_index, build_index, sha256_file, stable_split
 )
 from Kimilings.router import route
+from Kimilings.membrane import certify_bank_subset
 from Kimilings.score import score_arc, score_logic_verdicts
 from Kimilings.vpd import causal_transfer, summarize_vpd
 
@@ -171,6 +172,16 @@ class RouterAndVpdTests(unittest.TestCase):
         r["top_k_per_token"] = 3
         with self.assertRaisesRegex(ValueError, "top_k_per_token"):
             route(r, "hybrid")
+
+    def test_membrane_rejects_empty_and_untrusted(self):
+        ok, kept, _ = certify_bank_subset([0, 1, 2], [1], lambda: True)
+        self.assertTrue(ok)
+        self.assertEqual(kept, {1})
+        ok, kept, _ = certify_bank_subset([0, 1, 2], [1], lambda: False)
+        self.assertFalse(ok)
+        self.assertEqual(kept, {0, 1, 2})
+        ok, _, _ = certify_bank_subset([0, 1, 2], [], lambda: True)
+        self.assertFalse(ok)
 
     def test_random_route_reproducible(self):
         r = self.example_route()
