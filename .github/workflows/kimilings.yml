@@ -1,0 +1,34 @@
+name: Kimilings evaluation contracts
+
+on:
+  push:
+    branches: [master, research/kimilings-evals-01]
+    paths:
+      - 'Kimilings/**'
+      - '.github/workflows/kimilings.yml'
+  pull_request:
+    paths:
+      - 'Kimilings/**'
+      - '.github/workflows/kimilings.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cpu-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Contract unit tests
+        run: python -m unittest discover -s Kimilings/tests -p 'test_*.py' -v
+      - name: Compile source files
+        run: python -m compileall -q Kimilings
+      - name: Confirm no external Kimi weights or benchmark puzzles bundled
+        run: |
+          test ! -d Kimilings/data
+          test ! -d Kimilings/weights

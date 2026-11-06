@@ -1,0 +1,124 @@
+{
+  "id": "KIMILINGS-01",
+  "stage": "pre_execution_evaluation_harness",
+  "model": {
+    "original": "moonshotai/Kimi-K3.1-Pro",
+    "full_model_revision": null,
+    "slice_repo": "AlephFunk/Kimi-K3.1-Pro-expert-slices-0-15",
+    "slice_commit": "387322684297ff5f014d772f4ac6549c6d94a77d",
+    "expert_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "moe_layers": 92,
+    "extracted_tensors": 8832,
+    "slice_provenance": "Silico Task #1 recorded in supplied experiment thread",
+    "on_device_full_model_available": false
+  },
+  "benchmarks": {
+    "prime_logic": {
+      "env_id": "primeintellect/logic-env",
+      "env_version": "0.1.2",
+      "dataset": "PrimeIntellect/INTELLECT-3-RL:logic",
+      "verifiers": "task-specific external verifier; record version and receipt",
+      "official_eval_claim": false,
+      "exclude": [
+        "arc_agi",
+        "arc_agi_2",
+        "buggy_tables"
+      ]
+    },
+    "arc_agi_2": {
+      "repo": "arcprize/ARC-AGI-2",
+      "revision": "f3283f727488ad98fe575ea6a5ac981e4a188e49",
+      "train_dir": "data/training",
+      "public_eval_dir": "data/evaluation",
+      "expected_training_tasks": 1000,
+      "expected_public_evaluation_tasks": 120,
+      "max_attempts_per_test_input": 2,
+      "eval_policy": "sealed_until_once_only_final_scoring"
+    },
+    "repo_synthetic_arc2": {
+      "entrypoint": "python -m research_gym.scripts.bench_arc2",
+      "classification": "synthetic two-rule toy, not official ARC-AGI-2"
+    }
+  },
+  "splits": {
+    "seed": 11,
+    "train_fraction": 0.65,
+    "calibration_fraction": 0.15,
+    "validation_fraction": 0.2,
+    "final": "official ARC-AGI-2 public evaluation"
+  },
+  "policies": [
+    "trm",
+    "ldt_verified",
+    "hybrid",
+    "hybrid_vpd",
+    "random_matched"
+  ],
+  "routing": {
+    "bank_sizes": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "top_k_per_token": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "seeds": [
+      11,
+      29,
+      47
+    ],
+    "unit": "full index stack spanning 92 layers",
+    "tradeoff": "bank index is not an independent language model"
+  },
+  "vpd": {
+    "pilot_target": "one ~33M-parameter routed expert in one layer",
+    "perturbation_budgets": [
+      4,
+      16,
+      64
+    ],
+    "importance_thresholds": [
+      0.05,
+      0.1,
+      0.25
+    ],
+    "controls": [
+      "random_rank_matched",
+      "magnitude",
+      "architectural_unit",
+      "shuffled_importance"
+    ],
+    "provenance_gate": "routed inputs and independent source model forward receipts required",
+    "primary": "fresh adversarial reconstruction error versus active L0 Pareto",
+    "monitoring": [
+      "weight_relative_error",
+      "all_on_mse",
+      "importance_mask_mse",
+      "all_off_mse",
+      "plateau"
+    ]
+  }
+}
