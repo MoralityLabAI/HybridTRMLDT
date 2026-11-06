@@ -5,6 +5,8 @@ import hashlib
 import random
 from typing import Any, Callable
 
+from Kimilings.membrane import certify_bank_subset
+
 VALID_POLICIES = ("trm", "ldt_verified", "hybrid", "hybrid_vpd", "random_matched")
 
 
@@ -33,12 +35,13 @@ def route(record: dict[str, Any], policy: str, *,
     if any(not isfinite(scores[str(c)]) for c in candidates):
         raise ValueError("TRM scores must be finite")
 
-    independently_verified = (
-        record.get("ldt_verification") == "independent"
-        and bool(record.get("verifier_receipt"))
-        and verify_ldt is not None
-        and verify_ldt(record) is True
-    )
+    independently_verified = False
+    certified_indices: set[int] = set()
+    if (record.get("ldt_verification") == "independent"
+            and record.get("verifier_receipt") and verify_ldt is not None):
+        independently_verified, certified_indices, _ = certify_bank_subset(
+            candidates, record.get("ldt_allowed", []), lambda: verify_ldt(record)
+        )
     approved = record.get("ldt_allowed", [])
     if not isinstance(approved, list) or any(x not in candidates for x in approved):
         raise ValueError("Invalid LDT candidate set")
@@ -46,7 +49,7 @@ def route(record: dict[str, Any], policy: str, *,
     mode = "trm_unrestricted"
     if policy in ("ldt_verified", "hybrid", "hybrid_vpd"):
         if independently_verified:
-            eligible = [c for c in candidates if c in approved]
+            eligible = [c for c in candidates if c in certified_indices]
             mode = "independent_hard_gate"
         elif policy == "ldt_verified":
             eligible = []
