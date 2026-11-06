@@ -145,7 +145,8 @@ class RouterAndVpdTests(unittest.TestCase):
         self.assertEqual(route(r, "hybrid")["verification_mode"], "unverified_ldt_ignored")
         self.assertTrue(route(r, "ldt_verified")["abstained"])
         r["ldt_verification"], r["verifier_receipt"] = "independent", "trusted-sha"
-        self.assertEqual(route(r, "hybrid")["selected_indices"], [2, 0])
+        self.assertEqual(route(r, "hybrid")["selected_indices"], [1, 2])
+        self.assertEqual(route(r, "hybrid", verify_ldt=lambda _: True)["selected_indices"], [2, 0])
 
     def test_vpd_router_requires_real_activation_and_calibration(self):
         r = self.example_route()
@@ -163,8 +164,8 @@ class RouterAndVpdTests(unittest.TestCase):
         r = self.example_route()
         r["ldt_verification"], r["verifier_receipt"] = "independent", "receipt"
         r["ldt_allowed"] = [2]
-        self.assertTrue(route(r, "hybrid")["abstained"])
-        self.assertEqual(route(r, "hybrid")["verification_mode"],
+        self.assertTrue(route(r, "hybrid", verify_ldt=lambda _: True)["abstained"])
+        self.assertEqual(route(r, "hybrid", verify_ldt=lambda _: True)["verification_mode"],
                          "insufficient_verified_candidates")
         r["ldt_allowed"] = [0, 1, 2]
         r["top_k_per_token"] = 3
