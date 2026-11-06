@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from Kimilings.index import audit_index, manifest_for_task, read_jsonl, sha256_file
+from Kimilings.stats import cluster_paired_stats, holm_adjust
 
 
 def valid_grid(grid: object) -> bool:
@@ -96,6 +97,7 @@ def score_arc(
             ledger.write("\n")
     correct: dict[tuple[str, int], int] = defaultdict(int)
     covered: dict[tuple[str, int], int] = defaultdict(int)
+    solved_by_task: dict[tuple[str, int, str], bool] = {}
     for row in selected:
         path = task_dir / (row["task_id"].split("/", 1)[1] + ".json")
         if sha256_file(path) != row["content_sha256"]:
@@ -115,8 +117,10 @@ def score_arc(
             ]
             if all(p for _, p in task_attempts):
                 covered[(system, seed)] += 1
-            if all(any(p["grid"] == test_cases[i]["output"] for p in ps)
-                   for i, ps in task_attempts):
+            solved = all(any(p["grid"] == test_cases[i]["output"] for p in ps)
+                         for i, ps in task_attempts)
+            solved_by_task[(system, seed, row["task_id"])] = solved
+            if solved:
                 correct[(system, seed)] += 1
     # No extra test indices for the submitted task set.
     expected_case_counts = {
@@ -128,6 +132,24 @@ def score_arc(
         if idx >= expected_case_counts[task_id]:
             raise ValueError("Prediction references an impossible test index")
     n_tasks = len(selected)
+    paired = []
+    for i, (sys_a, seed_a) in enumerate(sorted(participants)):
+        for sys_b, seed_b in sorted(participants)[i+1:]:
+            if seed_a != seed_b:
+                continue
+            samples = [
+                (r["group_id"],
+                 int(solved_by_task[(sys_a, seed_a, r["task_id"])])
+                 - int(solved_by_task[(sys_b, seed_b, r["task_id"])]))
+                for r in selected
+            ]
+            paired.append({
+                "system_a": sys_a, "system_b": sys_b, "seed": seed_a,
+                "paired_n": n_tasks, **cluster_paired_stats(samples),
+            })
+    adjusted = holm_adjust([r["cluster_signflip_p"] for r in paired])
+    for row, p_adjusted in zip(paired, adjusted):
+        row["holm_p"] = p_adjusted
     return {
         "status": "graded_external_arc_tasks",
         "benchmark": "official_arc_agi_2" if split == "final" else "official_arc_agi_2_training_partition",
@@ -135,6 +157,7 @@ def score_arc(
         "source_revision": manifest["arc_revision"],
         "task_count": n_tasks,
         "max_attempts_per_test_input": 2,
+        "paired": paired,
         "systems": [{
             "system": system, "seed": seed,
             "solved": correct[(system, seed)],
@@ -212,12 +235,21 @@ def score_logic_verdicts(manifest: dict, verdicts: list[dict], *, split: str) ->
                         - outcomes[(system_b, seed_b, tid)]["correct"]
                         for tid in matched
                     ) / len(matched),
+                    **cluster_paired_stats([
+                        (task_index[tid]["group_id"],
+                         int(outcomes[(system_a, seed_a, tid)]["correct"])
+                         - int(outcomes[(system_b, seed_b, tid)]["correct"]))
+                        for tid in matched
+                    ]),
                     "mean_cost_delta_a_minus_b": sum(
                         outcomes[(system_a, seed_a, tid)]["cost"]
                         - outcomes[(system_b, seed_b, tid)]["cost"]
                         for tid in matched
                     ) / len(matched),
                 })
+    adjusted = holm_adjust([r["cluster_signflip_p"] for r in paired])
+    for row, p_adjusted in zip(paired, adjusted):
+        row["holm_p"] = p_adjusted
     return {
         "status": "reported_external_verifier_receipts_unverified_signature",
         "split": split, "systems": report, "paired": paired,
