@@ -103,7 +103,7 @@ class IndexAndArcTests(unittest.TestCase):
             {"task_id": "logic/a", "system": name, "seed": 1,
              "correct": good, "verifier_id": "logic-env",
              "verifier_revision": "0.1.2", "receipt_sha256": digest,
-             "cost": 2.0}
+             "cost": 2.0, "cost_unit": "inference_ms"}
             for name, good in (("trm", False), ("hybrid", True))
         ]
         rep = score_logic_verdicts(m, verdicts, split=logic["split"])
@@ -158,6 +158,18 @@ class RouterAndVpdTests(unittest.TestCase):
         r["calibration_receipt"] = "fit-on-calibration"
         r["vpd_weight"] = 1.0
         self.assertEqual(route(r, "hybrid_vpd")["selected_indices"], [2, 0])
+
+    def test_strict_budget_blocks_underfilled_verified_bank(self):
+        r = self.example_route()
+        r["ldt_verification"], r["verifier_receipt"] = "independent", "receipt"
+        r["ldt_allowed"] = [2]
+        self.assertTrue(route(r, "hybrid")["abstained"])
+        self.assertEqual(route(r, "hybrid")["verification_mode"],
+                         "insufficient_verified_candidates")
+        r["ldt_allowed"] = [0, 1, 2]
+        r["top_k_per_token"] = 3
+        with self.assertRaisesRegex(ValueError, "top_k_per_token"):
+            route(r, "hybrid")
 
     def test_random_route_reproducible(self):
         r = self.example_route()
