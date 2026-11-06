@@ -152,15 +152,19 @@ def score_logic_verdicts(manifest: dict, verdicts: list[dict], *, split: str) ->
     if not valid_ids:
         raise ValueError("No registered logic tasks in split")
     outcomes = {}
+    cost_units = set()
     for row in verdicts:
         fields = ("task_id", "system", "seed", "correct",
-                  "verifier_id", "verifier_revision", "receipt_sha256", "cost")
+                  "verifier_id", "verifier_revision", "receipt_sha256", "cost", "cost_unit")
         if any(field not in row for field in fields):
             raise ValueError("Logic result needs independent verifier metadata")
         if row["task_id"] not in valid_ids or not row["verifier_id"] or not row["verifier_revision"]:
             raise ValueError("Unknown logic task or missing verifier identity")
         if type(row["seed"]) is not int or type(row["correct"]) is not bool:
             raise ValueError("Invalid logic seed / correct type")
+        if not isinstance(row["cost_unit"], str) or not row["cost_unit"]:
+            raise ValueError("Measured cost_unit is required")
+        cost_units.add(row["cost_unit"])
         if type(row["cost"]) not in (int, float) or row["cost"] < 0:
             raise ValueError("Cost must be nonnegative measured units")
         digest = row["receipt_sha256"]
@@ -172,6 +176,8 @@ def score_logic_verdicts(manifest: dict, verdicts: list[dict], *, split: str) ->
         if key in outcomes:
             raise ValueError("Duplicate logic verdict")
         outcomes[key] = row
+    if len(cost_units) != 1:
+        raise ValueError("Cost units must match across all arms")
     participants = sorted({(s, seed) for s, seed, _ in outcomes})
     if not participants:
         raise ValueError("No logic receipts")
@@ -185,6 +191,7 @@ def score_logic_verdicts(manifest: dict, verdicts: list[dict], *, split: str) ->
             "accuracy_all_tasks": sum(r["correct"] for r in covered) / len(valid_ids),
             "coverage": len(covered) / len(valid_ids),
             "mean_cost_covered": sum(r["cost"] for r in covered) / len(covered),
+            "cost_unit": next(iter(cost_units)),
         })
     paired = []
     for i, (system_a, seed_a) in enumerate(participants):
@@ -203,6 +210,11 @@ def score_logic_verdicts(manifest: dict, verdicts: list[dict], *, split: str) ->
                     "accuracy_delta_a_minus_b": sum(
                         outcomes[(system_a, seed_a, tid)]["correct"]
                         - outcomes[(system_b, seed_b, tid)]["correct"]
+                        for tid in matched
+                    ) / len(matched),
+                    "mean_cost_delta_a_minus_b": sum(
+                        outcomes[(system_a, seed_a, tid)]["cost"]
+                        - outcomes[(system_b, seed_b, tid)]["cost"]
                         for tid in matched
                     ) / len(matched),
                 })
