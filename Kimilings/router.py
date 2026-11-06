@@ -20,6 +20,9 @@ def route(record: dict[str, Any], policy: str) -> dict:
     k = record["bank_size"]
     if type(k) is not int or k < 1 or k > len(candidates):
         raise ValueError("Bank size must be within available index count")
+    token_k = record.get("top_k_per_token")
+    if type(token_k) is not int or not 1 <= token_k <= k:
+        raise ValueError("top_k_per_token must be within bank size")
     scores = record["trm_scores"]
     if set(scores) != {str(c) for c in candidates}:
         raise ValueError("Each candidate needs a TRM score")
@@ -66,6 +69,14 @@ def route(record: dict[str, Any], policy: str) -> dict:
             raise ValueError("VPD coefficient requires calibration provenance")
         scores = {str(c): (1 - alpha) * scores[str(c)] + alpha * vpd[str(c)]
                   for c in candidates}
+    if independently_verified and len(eligible) < k:
+        return {
+            "task_id": task_id, "policy": policy, "selected_indices": [],
+            "requested_bank_size": k, "executed_bank_size": 0,
+            "abstained": True, "verification_mode": "insufficient_verified_candidates",
+            "status": "routing_plan_only", "top_k_per_token": token_k,
+            "inference_measurement": None,
+        }
     if policy == "random_matched":
         seed = int(record.get("seed", 11))
         keyed_seed = int.from_bytes(
@@ -87,6 +98,6 @@ def route(record: dict[str, Any], policy: str) -> dict:
         "abstained": not bool(selected),
         "verification_mode": mode,
         "status": "routing_plan_only",
-        "top_k_per_token": record.get("top_k_per_token"),
+        "top_k_per_token": token_k,
         "inference_measurement": None,
     }
