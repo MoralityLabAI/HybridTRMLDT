@@ -19,6 +19,7 @@ def audit_capture(manifest: dict, captures: list[dict], *, min_tokens: int = 100
     """Require traceable real full-Kimi forwards before reasoning claims."""
     tasks = manifest_for_task(manifest)
     seen: set[tuple] = set()
+    model_revisions: set[str] = set()
     tokens: dict[tuple[int, int], dict[str, int]] = defaultdict(lambda: defaultdict(int))
     task_counts: dict[tuple[int, int], dict[str, set[str]]] = defaultdict(
         lambda: defaultdict(set)
@@ -38,6 +39,7 @@ def audit_capture(manifest: dict, captures: list[dict], *, min_tokens: int = 100
             raise ValueError("Only actual routed inputs belong in reasoning captures")
         if not _is_sha(row["source_model_revision"], length=40):
             raise ValueError("Pin original full Kimi model revision, not slice commit")
+        model_revisions.add(row["source_model_revision"])
         if any(not _is_sha(row[k]) for k in (
             "activation_sha256", "router_receipt", "reference_forward_receipt"
         )):
@@ -53,12 +55,17 @@ def audit_capture(manifest: dict, captures: list[dict], *, min_tokens: int = 100
             raise ValueError("Duplicate capture block")
         seen.add(key)
         site = (row["layer"], row["expert_index"])
-        family = tasks[tid]["family"]
+        family = ("logic" if tasks[tid]["source"].startswith("PrimeIntellect/")
+                  else tasks[tid]["family"])
         tokens[site][family] += row["token_count"]
         task_counts[site][family].add(tid)
+    if len(model_revisions) > 1:
+        raise ValueError("Mixed full-model checkpoint revisions in activation capture")
     candidates = []
     for (layer, expert), by_family in tokens.items():
-        real_families = [f for f in ("logic", "arc_agi_2") if by_family.get(f, 0) >= min_tokens]
+        real_families = [f for f in ("logic", "arc_agi_2")
+                         if by_family.get(f, 0) >= min_tokens
+                         and len(task_counts[(layer, expert)].get(f, ())) >= 2]
         candidates.append({
             "layer": layer, "expert_index": expert,
             "token_counts_by_family": dict(sorted(by_family.items())),
@@ -78,6 +85,7 @@ def audit_capture(manifest: dict, captures: list[dict], *, min_tokens: int = 100
         "protocol": "KIMILINGS-01",
         "status": "real_capture_metadata_audited" if captures else "activation_capture_missing",
         "capture_blocks": len(captures),
+        "source_model_revision": next(iter(model_revisions)) if model_revisions else None,
         "candidate_sites": candidates,
         "ready_sites": sum(r["candidate_ready"] for r in candidates),
     }
