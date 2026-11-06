@@ -1,0 +1,184 @@
+{
+  "schema_version": "silico_rivet_v1",
+  "registration_status": "proposed_unlaunched",
+  "repository": "MoralityLabAI/HybridTRMLDT",
+  "registry_branch": "research/resolution-vpd-recurrent-sft-20261102",
+  "requires_pin_to_commit": true,
+  "research_question": "Does verifier-receipt-conditioned recurrent reasoning create causally identifiable reusable depth algorithms beyond cost-matched looped CoT and SGRT baselines?",
+  "references": {
+    "architecture": "docs/causal_receipt_recurrence_proposal.md",
+    "silico_protocol": "docs/silico_sft_vpd_protocol.md",
+    "catalog": "papers/resolution-alignment/catalog.json",
+    "sft_exporter": "research_gym/scripts/export_receipt_sft.py",
+    "legacy_leak_warning": "research_gym/scripts/export_sft_dataset.py currently includes target labels in inputs"
+  },
+  "preflight": {
+    "must_complete_before_gpu": [
+      "inspect exported input/output schemas",
+      "run tests/test_receipt_sft_export.py",
+      "fingerprint generator and verifier",
+      "confirm supported Silico training and VPD architecture",
+      "freeze split, seeds, and cost metrics",
+      "validate checkpoint output parity"
+    ],
+    "leakage_policy": "input_allowlist_only",
+    "gold_target_fields": [
+      "label",
+      "predicted_soundness_type",
+      "proposed_output_state"
+    ],
+    "external_certification_required": true,
+    "require_verifier_hash": true,
+    "silico_access_check": true
+  },
+  "dataset": {
+    "source": "data/generated",
+    "stage1_output": "data/sft/rivet_stage1_v1",
+    "split": "deterministic_sha256_public_state_group_80_10_10",
+    "holdout_families": [
+      "reachability"
+    ],
+    "additional_ood_axis": [
+      "unseen_rule_graphs",
+      "depth_9_to_12"
+    ],
+    "copyable_command": "python -m research_gym.scripts.export_receipt_sft --source data/generated --out-dir data/sft/rivet_stage1_v1 --holdout-family reachability",
+    "stage2_repair_source": "genuine externally checked negative proposal/counterfactual rollout; never synthetic future receipt injection"
+  },
+  "training": {
+    "seeds": [
+      1301,
+      1307,
+      1319
+    ],
+    "candidate_model_scales_million": [
+      16,
+      32,
+      64
+    ],
+    "large_model_teacher": "provider-supported 0.8B-class pretrained model, only after access check",
+    "checks": [
+      "one_pass_baseline",
+      "tied_recurrence",
+      "typed_receipts",
+      "counterfactual_repairs",
+      "data_patterning_if_approved"
+    ],
+    "visits": [
+      1,
+      2,
+      4,
+      8,
+      12
+    ],
+    "primary_endpoint": "family-macro exact correctness on unseen rule graphs and depth_9_to_12 at matched compute",
+    "cost_measurements": [
+      "executed_model_flops",
+      "verifier_calls",
+      "candidate_visits",
+      "training_tokens",
+      "wall_time",
+      "gpu_hours",
+      "ru_spend"
+    ],
+    "proof_policy": "model predicted soundness never upgrades an external receipt",
+    "frozen_exact_membrane": true,
+    "selected_controls": [
+      "constant_budget",
+      "same_training_examples",
+      "same_token_count",
+      "same_seed",
+      "same_oracle",
+      "same_verifier"
+    ]
+  },
+  "mechanistic_pilot": {
+    "status": "after_stage1_baselines",
+    "methods": [
+      "activation_interchange",
+      "rank1_parameter_decomposition",
+      "mask_faithfulness",
+      "intervention_outcome",
+      "matched_control"
+    ],
+    "model_size_target_million": 16,
+    "max_model_size_without_new_approval_million": 70,
+    "paired_examples": 256,
+    "modules_max": 2,
+    "families_max": 2,
+    "intervention_scope": [
+      "all_tied_visits",
+      "single_tied_visit"
+    ],
+    "required_nulls": [
+      "matched_rank_random",
+      "matched_norm_random",
+      "weight_shuffled_source",
+      "tag_shuffled",
+      "receipt_order_shuffled",
+      "loss_only_attribution"
+    ],
+    "required_diagnostics": [
+      "unmasked_parity",
+      "parameter_reconstruction",
+      "causal_ablations",
+      "sparsity_sweep",
+      "adversarial_mask_check",
+      "heldout_score",
+      "source_specificity"
+    ],
+    "posterior_susceptibility_status": "optional; requires actual SGLD chains and mixing diagnostics; ordinary gradient influence is a distinct comparator",
+    "posterior_mixing_requirements": [
+      "independent_chains",
+      "ess",
+      "autocorrelation",
+      "chain_variation"
+    ]
+  },
+  "search_arms": {
+    "sg_rt_schedule": "G[5:2:0.8]^12.G[7:3:0.65]^12.S.C^6",
+    "baselines": [
+      "no_spirograph",
+      "same_point_phase_shuffle",
+      "visit_matched_low_discrepancy",
+      "budget_matched_best_first"
+    ],
+    "target_blind_selector": true,
+    "no_outcome_based_itinerary_selection": true
+  },
+  "promotion_gates": {
+    "independent_training_seeds_min": 3,
+    "ood_accuracy_absolute_gain_pp": 8,
+    "alternative_cost_reduction_fraction": 0.25,
+    "must_beat_best_cost_matched_baseline": true,
+    "zero_unauthorized_hard_updates": true,
+    "requires_causal_effect_above_controls": true,
+    "predeclared_illustrative_thresholds": true,
+    "note": "Proposed decision thresholds; verify power and freeze before experiments."
+  },
+  "resources": {
+    "paid_compute_auto_launch": false,
+    "first_gpu_pilot_fraction_of_starting_ru_cap": 0.05,
+    "total_pilot_fraction_of_starting_ru_cap": 0.15,
+    "new_approval_required_for": [
+      "scaled_vpd",
+      "model_larger_than_70m",
+      "full_0_8b_vpd",
+      "third_party_large_training_run",
+      "any_cost_overrun"
+    ],
+    "require_projected_cost_receipt": true,
+    "abort_on_budget_exceed": true,
+    "save_artifacts_to": "$SILICO_EXPERIMENT_ARTIFACTS_DIR"
+  },
+  "outputs": [
+    "experiments/rivet_sft_v1/preregistration.json",
+    "experiments/rivet_sft_v1/dataset_manifest.json",
+    "experiments/rivet_sft_v1/paired_eval_records.jsonl",
+    "experiments/rivet_sft_v1/costs.json",
+    "experiments/rivet_vpd_v1/decomposition_diagnostics.json",
+    "experiments/rivet_vpd_v1/causal_effects.jsonl",
+    "experiments/rivet_vpd_v1/null_controls.json",
+    "reports/rivet_silico_v1.md"
+  ]
+}
