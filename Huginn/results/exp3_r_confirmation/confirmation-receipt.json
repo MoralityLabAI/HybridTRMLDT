@@ -1,0 +1,56 @@
+{
+  "R_gate_sha256": "31bd000ce16c3862f4e183471853b2620890355b8ced51450ae472b26c1bbff9",
+  "W_causal_inference_run": false,
+  "analysis_sha256": "973296f1b8538d5f3cc6eb2c9a307564381328fb7b684c8db760b37b6ef0dc95",
+  "approval_sha256": "e77544639b3f3a7ee3d719f2bf9a9c201c714646943c6c58b70bf4c0fa0bb372",
+  "batch_manifest_sha256": "ec73f3bb6b568195b8af9813be93c8357081544ba22d3fd1be85679bbb8e3ac4",
+  "clean_selection_sha256": "5855c8e98dc49acda21ec0578ed1bf67cbf98d3fedfa563ecdf0d0d8a2b1d1f8",
+  "condition_count": 80,
+  "confirmation_hypotheses": [
+    "core1_factor19",
+    "core1_factor58",
+    "core1_factor26",
+    "core1_factor31",
+    "core3_factor60",
+    "core3_factor17",
+    "core3_factor1",
+    "core3_factor44"
+  ],
+  "control_family": "read_rotation",
+  "controls_sha256": "abfae19211f55f0092ef470a786e64acb901ee4f4ad8beec903b4fb149768cb2",
+  "elapsed_from_setup_start_seconds": 2701.6722526550293,
+  "elapsed_script_seconds": 2556.532203286,
+  "item_summary": {
+    "examples_file_sha256": "f4c5e4e5dc674015dd4e98a541708d0356b983b691de2382f3f00ca8551fca9e",
+    "factor_answer_reversals_all": 1089,
+    "item_file_sha256": "a8dd4b02d437f7d4940476d505a72f25f57b55d7dcafd02b160c9cb88a2a0acf",
+    "item_rows": 5760
+  },
+  "limitations": [
+    "restricted top-64 SVD factors, not a full VPD fit",
+    "BF16 rank-one hook convention quantizes frozen factor/control vectors",
+    "matching verified at clean answer-position states, not every edited downstream state",
+    "clean-correct conditional subset",
+    "unadjusted inactive-window equivalence intervals across eight nominations"
+  ],
+  "max_answer_delta_norm": 229.56040954589844,
+  "model_revision": "bb6621b65e90b6a4b9b29ef88dc83866d450470c",
+  "n_clean_correct_programs": 240,
+  "n_full_deck_programs": 480,
+  "old_program_sha256": "818312e22ac48361371fe1d553cd44f0a45acd2667859f0f325a91f3a931f165",
+  "original_runner_sha256": "3847f0fec6ba0975ce42d7341fdf2d26586bbc8ceebb5b834145a4d6f1e334f2",
+  "original_weight_forward": true,
+  "outcomes_sha256": "213f6bcf6807b9a6d20fcf06593af5945d3ba3efbd3590d4e5e564eb8b6e48a7",
+  "peak_gpu_bytes": 9897903616,
+  "peak_host_rss_gib": 7.775508880615234,
+  "prior_factor_sha256": "86f90a1c9403240e4f69fdfad1f9f88a2410a85edfb2cfef2302fc74959f4a50",
+  "runtime_bf16_norm_check_sha256": "0c77759b002ed8b14ff428f5a5cf69654d89b91345fabce2f679b224affab9f6",
+  "same_batch_and_seed": true,
+  "seeds": [
+    20270111,
+    20270113,
+    20270117
+  ],
+  "source_manifest_sha256": "9b85edd57893b35e310f75a1d02cbdcf9e79ee430a8486d9069db3a86f496a0c",
+  "status": "complete"
+}

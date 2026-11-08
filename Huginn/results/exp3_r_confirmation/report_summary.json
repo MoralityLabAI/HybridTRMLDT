@@ -1,0 +1,246 @@
+{
+  "question": "Do eight frozen restricted-SVD rank-one factors differ in causal effect between Huginn calls 1–8 and 9–16 after matched intervention magnitude?",
+  "headline": "Three small read-control-adjusted timing differences; nominated strong temporal roles are not supported",
+  "assessment": "partial_signal: three of eight R-only interactions reject zero after Holm, but none of four early-/late-only nominations meets the pre-registered active harm criterion. W causal confirmation was not authorized or run.",
+  "decision_rule": {
+    "registered_primary": "For each of eight factors, paired factor-minus-mean-four-R-controls correct-digit log probability shift in late calls 9–16 minus early calls 1–8; program-clustered sign-flip p and Holm correction across eight.",
+    "matching": "Four fixed R matrices per factor; independently verified p10,p50,p90 relative errors <=15%, p95 <=25% in each window. Check applied original-hook BF16 quantiles before confirmation.",
+    "temporal_nomination": "For four early_only/late_only hypotheses, active harmful effect <−0.05 nats with 95% interval excluding zero, plus inactive-window unadjusted 90% equivalence interval inside ±0.05 nats. Large_effect and near_null nominations have separate labels; do not apply this criterion to them.",
+    "inference": "3000 program-clustered bootstrap draws retaining all three seeds and 9999 clustered sign flips; Holm over eight R interactions only. Equivalence intervals are not familywise adjusted."
+  },
+  "methods": {
+    "model": "tomg-group-umd/huginn-0125@bb6621b65e90b6a4b9b29ef88dc83866d450470c",
+    "factor_archive_sha256": "86f90a1c9403240e4f69fdfad1f9f88a2410a85edfb2cfef2302fc74959f4a50",
+    "PR8_base_commit": "c86481508971987ffef78fc1846b44b7b0180b59",
+    "splits": {
+      "selection": 120,
+      "independent_verification": 120,
+      "sealed_confirmation": 480,
+      "confirmation_clean_correct": 240
+    },
+    "seeds": [
+      20270111,
+      20270113,
+      20270117
+    ],
+    "instrument": "Original-weight BF16 hook subtracts frozen rank-one factor or the same four selection-frozen read-rotation matrices in calls 1–8 or 9–16; same full-deck batches, padding, source order, noise seeds; zero-edit identity and known-edit checks passed.",
+    "control_family": "R read_rotation only; W write_rotation causal comparison not executed."
+  },
+  "results": {
+    "factor_panel": {
+      "core1_factor19": {
+        "nomination": "early_only",
+        "p_signflip": 0.0001,
+        "holm_rejects_zero": true,
+        "early_nats": {
+          "mean": -0.0008621715914664998,
+          "lower": -0.0026824052686182163,
+          "upper": 0.0009578989578100555
+        },
+        "late_nats": {
+          "mean": 0.005651983732564582,
+          "lower": 0.00351188846773261,
+          "upper": 0.007779089742624719
+        },
+        "interaction_nats": {
+          "mean": 0.006514155324031081,
+          "lower": 0.0036213434395095754,
+          "upper": 0.009495563798700462
+        },
+        "active_harmful_and_95pct_excludes_zero": false
+      },
+      "core1_factor58": {
+        "nomination": "late_only",
+        "p_signflip": 0.676,
+        "holm_rejects_zero": false,
+        "early_nats": {
+          "mean": -0.0012600480397749276,
+          "lower": -0.003198169334015498,
+          "upper": 0.000682466975089887
+        },
+        "late_nats": {
+          "mean": -0.0019646993670095173,
+          "lower": -0.004531513485708273,
+          "upper": 0.0005097571794047132
+        },
+        "interaction_nats": {
+          "mean": -0.0007046513272345895,
+          "lower": -0.003923464783389741,
+          "upper": 0.002291224148810016
+        },
+        "active_harmful_and_95pct_excludes_zero": false
+      },
+      "core1_factor26": {
+        "nomination": "large_effect",
+        "p_signflip": 0.384,
+        "holm_rejects_zero": false,
+        "early_nats": {
+          "mean": -0.0009680955670773984,
+          "lower": -0.002872360792308528,
+          "upper": 0.0011308043804537093
+        },
+        "late_nats": {
+          "mean": -0.0023747947739644185,
+          "lower": -0.004960142828705203,
+          "upper": 0.00012516886681421805
+        },
+        "interaction_nats": {
+          "mean": -0.0014066992068870196,
+          "lower": -0.004590739928664535,
+          "upper": 0.001776268152623541
+        }
+      },
+      "core1_factor31": {
+        "nomination": "near_null",
+        "p_signflip": 0.7386,
+        "holm_rejects_zero": false,
+        "early_nats": {
+          "mean": -0.0005276090827667051,
+          "lower": -0.002278526259663825,
+          "upper": 0.0013320662002337894
+        },
+        "late_nats": {
+          "mean": -0.000984299392439425,
+          "lower": -0.002772404113655082,
+          "upper": 0.0008158998609805073
+        },
+        "interaction_nats": {
+          "mean": -0.00045669030967271997,
+          "lower": -0.003195565822792963,
+          "upper": 0.0022808208928391757
+        }
+      },
+      "core3_factor60": {
+        "nomination": "early_only",
+        "p_signflip": 0.6234,
+        "holm_rejects_zero": false,
+        "early_nats": {
+          "mean": 0.0013019906305190589,
+          "lower": -0.0005344699488745792,
+          "upper": 0.0032382991552973787
+        },
+        "late_nats": {
+          "mean": 0.0005268406459233826,
+          "lower": -0.001958199089794006,
+          "upper": 0.0030538334169735513
+        },
+        "interaction_nats": {
+          "mean": -0.0007751499845956759,
+          "lower": -0.003821197981273547,
+          "upper": 0.00235155012484433
+        },
+        "active_harmful_and_95pct_excludes_zero": false
+      },
+      "core3_factor17": {
+        "nomination": "late_only",
+        "p_signflip": 0.0009,
+        "holm_rejects_zero": true,
+        "early_nats": {
+          "mean": -0.00015300277413593394,
+          "lower": -0.002084112281833465,
+          "upper": 0.0018085787670376401
+        },
+        "late_nats": {
+          "mean": -0.00659836367962675,
+          "lower": -0.00966497669966581,
+          "upper": -0.0036711446850353634
+        },
+        "interaction_nats": {
+          "mean": -0.006445360905490817,
+          "lower": -0.01028208109498438,
+          "upper": -0.0026899314379423
+        },
+        "active_harmful_and_95pct_excludes_zero": false
+      },
+      "core3_factor1": {
+        "nomination": "large_effect",
+        "p_signflip": 0.6894,
+        "holm_rejects_zero": false,
+        "early_nats": {
+          "mean": 0.0006376761322220169,
+          "lower": -0.0015795609750138182,
+          "upper": 0.002892601105332791
+        },
+        "late_nats": {
+          "mean": 0.0013683497647030488,
+          "lower": -0.0015688412668856068,
+          "upper": 0.004258637588548785
+        },
+        "interaction_nats": {
+          "mean": 0.0007306736324810319,
+          "lower": -0.0028200007210640835,
+          "upper": 0.004353395002221483
+        }
+      },
+      "core3_factor44": {
+        "nomination": "near_null",
+        "p_signflip": 0.0011,
+        "holm_rejects_zero": true,
+        "early_nats": {
+          "mean": -0.0010092049138620493,
+          "lower": -0.003066456112428568,
+          "upper": 0.0010411708970140259
+        },
+        "late_nats": {
+          "mean": 0.00464673662920379,
+          "lower": 0.0021186253509303146,
+          "upper": 0.0073464687427945655
+        },
+        "interaction_nats": {
+          "mean": 0.005655941543065839,
+          "lower": 0.0025100179141413223,
+          "upper": 0.008970446912377762
+        }
+      }
+    },
+    "holm_significant": [
+      "core1_factor19",
+      "core3_factor17",
+      "core3_factor44"
+    ],
+    "n_temporal_nomination_active_harmful": 0,
+    "n_temporal_nominations": 4,
+    "reversals": {
+      "factor_wrong_digit_after_clean_correct_across_conditions": 1089,
+      "factor_program_seed_rows": 5760,
+      "windows_per_row": 2
+    },
+    "R_control_gate": "8/8 factors, 4/4 controls each, both windows; applied BF16 64/64 factor-control-window matches",
+    "previous_failure": "Old retrospective archive had 81/144 controls and only 10/36 full cases; 11/36 old pools lacked four matching candidates (post-hoc). Original W prospective STOP was a float32/float64 equality-check error, preserved. Corrected numerical check changed 1e-8 to 1e-6, not the 15/25% registered matching threshold. Both W and R control gates subsequently passed, but the researcher approved only R causal confirmation."
+  },
+  "limitations": [
+    "The factors came from a restricted top-64 SVD surrogate, not a full VPD fit, so their nominated roles do not establish an expert factorization.",
+    "The R matching rule covers the immediate clean answer-position norm distribution, not every token or downstream edited-state norm. Four R directions are correlated candidates, not independent trials; inference clusters programs rather than claiming generality over control draws.",
+    "Half the sealed deck qualified by all-three-seed clean correctness; conclusions are conditional on these 240 programs. The inactive-window 90% equivalence intervals are per nomination and not familywise adjusted. W matched but has no causal outcome."
+  ],
+  "supporting_artifacts": {
+    "analysis": "raw/confirmation-analysis.json",
+    "receipt": "raw/confirmation-receipt.json",
+    "audit": "raw/independent-audit.json",
+    "gate": "raw/gate-read_rotation-v2.json",
+    "bf16": "raw/runtime-bf16-norm-check.json",
+    "historical_W": "raw/old-W-STOP.json",
+    "repair": "raw/recovery-diagnosis.json",
+    "preparation": "raw/cpu_preparation.json",
+    "retrospective": "raw/archive_audit.json",
+    "examples": "raw/representative-examples.json",
+    "items": "raw/item-effects.jsonl",
+    "arrays": "raw/confirmation-outcomes.npz",
+    "plot_data": "raw/confirmation_figure_data.csv",
+    "packet": "raw/report-packet.json",
+    "source_manifest": "raw/source-manifest.json",
+    "reviewable_patch": "raw/huginn_pr8.patch",
+    "commands": "Experiment Changes: results/execution_commands.json (not bundled; platform-specific command variables)",
+    "examples_curated": "raw/examples_report.json",
+    "figure_data_copy": "raw/confirmation_figure_data.csv",
+    "approval": "raw/researcher_approval.json",
+    "source_split_audit": "raw/source_split_audit.json"
+  },
+  "required_displays": [
+    "Main text: eight R-only factor-by-factor early–late interaction estimates with 95% program-clustered intervals, Holm decision and visible zero reference.",
+    "Second main-text display: early and late control-adjusted effects for all eight factors, clarifying role labels and the 0.05-nat harmful criterion.",
+    "R 8/8 independent matching control; intact old W STOP and repair; harmed/helped/reversal examples from saved R item records; no W causal figures."
+  ],
+  "portable_copy_of_original_sha256": "c6a1442116412c3b98c277e7ff05da1c22227a1cec00104b09eb109d8d271173",
+  "portable_copy_note": "Scientific values and source keys preserved; source file references use report-local raw/ paths. Original audited bytes remain in experiment Changes."
+}

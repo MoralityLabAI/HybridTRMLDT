@@ -1,0 +1,21 @@
+{
+  "decision": "APPROVE_CONFIRMATION_R_ONLY",
+  "allowed_control_family": "read_rotation",
+  "forbid_write_rotation_causal_confirmation": true,
+  "authorized_panel_n": 8,
+  "controls_per_factor": 4,
+  "model_revision": "bb6621b65e90b6a4b9b29ef88dc83866d450470c",
+  "factor_sha256": "86f90a1c9403240e4f69fdfad1f9f88a2410a85edfb2cfef2302fc74959f4a50",
+  "controls_sha256": "abfae19211f55f0092ef470a786e64acb901ee4f4ad8beec903b4fb149768cb2",
+  "read_gate_receipt_sha256": "31bd000ce16c3862f4e183471853b2620890355b8ced51450ae472b26c1bbff9",
+  "source_manifest_sha256": "9b85edd57893b35e310f75a1d02cbdcf9e79ee430a8486d9069db3a86f496a0c",
+  "sealed_confirmation_source_count": 480,
+  "confirmation_seeds": [20270111, 20270113, 20270117],
+  "clean_correct_rule": "All three seeds correct on each source in the frozen full-deck same-batch original-weight clean pass; selection file frozen before any factor/control edit",
+  "paired_batch_rule": "All edited conditions score the same original full-deck family-ordered right-padded batches (64 max) and reseed immediately before every forward; selected source rows retain those exact batch identities.",
+  "estimand": "R-only factor minus mean four frozen rotated-read controls correct-digit log-probability shift, late calls 9-16 minus early calls 1-8",
+  "uncertainty": "Program-clustered bootstrap/sign-flips retaining three seeds; Holm across eight, inactive-window 90% equivalence within [-0.05,+0.05] nats",
+  "confirmation_h100_hours_max": 4.5,
+  "total_h100_hours_max": 6.0,
+  "provenance": "Researcher instruction in this experiment after independent gate review; original W STOP and numerical repair remain preserved; no W causal inference authorized."
+}

@@ -1,0 +1,81 @@
+{
+  "basis": "Selected illustrative programs from frozen R-only confirmation, not used for scoring or selection. Helped/harmed denotes factor minus mean four controls in correct-digit log probability; an improved relative score need not imply a correct argmax answer.",
+  "source": "raw/representative-examples.json",
+  "examples": [
+    {
+      "factor": "core3_factor17",
+      "kind": "harmed",
+      "family": "indexed_lookup",
+      "source_hash": "566ea3202a5923daaf6b0325fc7a3bf914ec04d081963f1f538db4bc8dcb6ff8",
+      "input": "# Each program prints one digit.\n\nt = [2, 7, 4, 5]\nr = 0\ne = r\nk = t[e]\nprint(k)\nOutput: 2\n\ni = [1, 4, 6, 0]\nw = 1\nd = w\nz = i[d]\nprint(z)\nOutput: 4\n\nh = [4, 6, 7, 8]\nc = 2\nx = c\nq = h[x]\nprint(q)\nOutput: 7\n\nd = [2, 0, 6, 1]\nt = 3\ns = t\nv = d[s]\nprint(v)\nOutput:",
+      "answer": 1,
+      "clean_predicted_3seeds": [
+        1,
+        1,
+        1
+      ],
+      "factor_predicted_early_3seeds": [
+        1,
+        1,
+        1
+      ],
+      "factor_predicted_late_3seeds": [
+        8,
+        8,
+        8
+      ],
+      "mean_control_adjusted_late_nats": -0.130498468875885,
+      "mean_interaction_nats": -0.12486967196067174
+    },
+    {
+      "factor": "core3_factor17",
+      "kind": "helped_relative_to_controls_but_wrong_answer",
+      "family": "conditional_select",
+      "source_hash": "23b02c880281c252375b90dd5b0e545e9df10744a71e4b203cc62390b8fcdfec",
+      "input": "# Each program prints one digit.\n\nd = 0\na = 5\ng = 9\nif d == 0:\n    f = a\nelse:\n    f = g\nx = f\nprint(x)\nOutput: 5\n\nc = 1\nr = 8\nf = 7\nif c == 0:\n    k = r\nelse:\n    k = f\nl = k\nprint(l)\nOutput: 7\n\nu = 0\nn = 0\nx = 1\nif u == 0:\n    a = n\nelse:\n    a = x\nk = a\nprint(k)\nOutput: 0\n\ns = 1\nm = 2\ny = 4\nif s == 0:\n    t = m\nelse:\n    t = y\nj = t\nprint(j)\nOutput:",
+      "answer": 4,
+      "clean_predicted_3seeds": [
+        4,
+        4,
+        4
+      ],
+      "factor_predicted_early_3seeds": [
+        4,
+        4,
+        4
+      ],
+      "factor_predicted_late_3seeds": [
+        2,
+        2,
+        2
+      ],
+      "mean_control_adjusted_late_nats": 0.0653931697209676,
+      "mean_interaction_nats": 0.05497807761033376
+    },
+    {
+      "factor": "core1_factor19",
+      "kind": "harmed_relative_to_controls_no_reversal",
+      "family": "indexed_lookup",
+      "source_hash": "317b8d1611ad9ed648f86e284cc48603cbcf59b1e25002f07f3e8e9dd60acf53",
+      "input": "# Each program prints one digit.\n\nx = [1, 0, 4, 9]\ns = 2\nt = s\nn = x[t]\nprint(n)\nOutput: 4\n\nn = [9, 0, 4, 6]\nb = 3\ns = b\nf = n[s]\nprint(f)\nOutput: 6\n\nm = [9, 3, 1, 6]\nh = 0\nr = h\nf = m[r]\nprint(f)\nOutput: 9\n\nz = [2, 3, 8, 4]\ng = 1\na = g\nn = z[a]\nprint(n)\nOutput:",
+      "answer": 3,
+      "clean_predicted_3seeds": [
+        3,
+        3,
+        3
+      ],
+      "factor_predicted_early_3seeds": [
+        3,
+        3,
+        3
+      ],
+      "factor_predicted_late_3seeds": [
+        3,
+        3,
+        3
+      ],
+      "mean_control_adjusted_early_nats": -0.05596009890238444,
+      "mean_control_adjusted_late_nats": 0.019944950938224792
+    }
+  ]
+}
