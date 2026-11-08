@@ -118,6 +118,51 @@ def rotated_write_controls(u: np.ndarray, v: np.ndarray, count: int = 4, seed: i
     return out
 
 
+class _BatchProjection:
+    """Bounded candidate blocks; float64 CUDA only when available and worthwhile."""
+
+    def __init__(self, x: Mapping[str, np.ndarray], backend: str = "auto", block: int = 64):
+        if backend not in ("auto", "numpy", "cuda") or block < 1:
+            raise ValueError("invalid projection backend or block size")
+        self.block = block
+        self.torch = None
+        if backend != "numpy" and (backend == "cuda" or
+                                   sum(a.size for a in x.values()) >= 1_000_000):
+            try:
+                import torch
+                if torch.cuda.is_available():
+                    self.torch = torch
+            except ImportError:
+                pass
+        if backend == "cuda" and self.torch is None:
+            raise RuntimeError("CUDA torch backend unavailable")
+        self.x = (x if self.torch is None else
+                  {w: self.torch.as_tensor(np.ascontiguousarray(a), dtype=self.torch.float64,
+                                           device="cuda") for w, a in x.items()})
+
+    def batches(self, vectors: np.ndarray, *, quantile_windows: bool = False):
+        """Yield (slice, pooled medians, optional per-window quantiles)."""
+        for start in range(0, vectors.shape[0], self.block):
+            end = min(start + self.block, vectors.shape[0])
+            block = np.ascontiguousarray(vectors[start:end].T)
+            if self.torch is None:
+                projections = [np.abs(self.x[w] @ block) for w in WINDOWS]
+                medians = np.median(np.concatenate(projections, axis=0), axis=0)
+                qs = ([np.quantile(a, Q, axis=0, method="linear") for a in projections]
+                      if quantile_windows else None)
+            else:
+                t = self.torch
+                with t.no_grad():
+                    b = t.as_tensor(block, dtype=t.float64, device="cuda")
+                    projections = [t.abs(self.x[w] @ b) for w in WINDOWS]
+                    # Interpolation matches NumPy's even-length pooled median.
+                    medians = t.quantile(t.cat(projections, dim=0), 0.5, dim=0).cpu().numpy()
+                    qs = ([t.quantile(a, t.tensor(Q, device="cuda", dtype=t.float64),
+                                      dim=0).cpu().numpy() for a in projections]
+                          if quantile_windows else None)
+            yield slice(start, end), medians, qs
+
+
 def read_rotation_pool(
     u: np.ndarray,
     v: np.ndarray,
@@ -126,6 +171,7 @@ def read_rotation_pool(
     seed: int = 17,
     max_abs_cosine: float = 0.95,
     ridge_fraction: float = 0.02,
+    *, backend: str = "auto", candidate_trace: list[dict] | None = None,
 ) -> list[RankOneControl]:
     """Diagonal-covariance-aware new input gates, fitted on selection ONLY.
 
@@ -149,24 +195,64 @@ def read_rotation_pool(
     target_median = np.median(np.abs(pooled @ v))
     rng = np.random.default_rng(seed)
     pool = []
+    proposed = []
+    if candidate_trace is not None:
+        candidate_trace.clear()
     for i in range(count):
+        record = {"id": i, "scale": None, "cosine": None,
+                  "windows": {w: {"target": None, "candidate": None} for w in WINDOWS},
+                  "max_normalized_error": None, "selection_passed": False,
+                  "selected": False, "rejection_reason": None}
+        if candidate_trace is not None:
+            candidate_trace.append(record)
         z = rng.standard_normal(v.size) * inv_std
         z -= float(z @ unit_v) * unit_v
         if np.linalg.norm(z) <= 1e-12:
+            record["rejection_reason"] = "zero_direction"
             continue
         z /= np.linalg.norm(z)
         # Fixed broad proposal grid, without checking verification outcomes.
         mix = (0.4, 0.7, 1.0)[i % 3]
         direction = (1.0 - mix) * unit_v + mix * z
         direction /= np.linalg.norm(direction)
-        if abs(float(direction @ unit_v)) > max_abs_cosine:
-            continue
-        candidate_v = v_norm * direction
-        candidate_median = np.median(np.abs(pooled @ candidate_v))
-        if candidate_median < 1e-12:
-            continue
-        scalar = float(target_median / candidate_median)
-        pool.append(RankOneControl(u.copy(), candidate_v, "read_rotation", i, scalar))
+        cosine = abs(float(direction @ unit_v))
+        record["cosine"] = cosine
+        if cosine > max_abs_cosine:
+            record["rejection_reason"] = "cosine_limit"
+        proposed.append((i, v_norm * direction))
+    if proposed:
+        projector = _BatchProjection(x, backend=backend)
+        vectors = np.stack([v_candidate for _, v_candidate in proposed])
+        target_q = ({w: quantiles(np.abs(x[w] @ v) * np.linalg.norm(u)) for w in WINDOWS}
+                    if candidate_trace is not None else None)
+        for sl, medians, qs in projector.batches(vectors, quantile_windows=candidate_trace is not None):
+            for j, (i, candidate_v) in enumerate(proposed[sl]):
+                candidate_median = medians[j]
+                if candidate_median < 1e-12:
+                    if candidate_trace is not None:
+                        candidate_trace[i]["rejection_reason"] = "zero_median"
+                    continue
+                scalar = float(target_median / candidate_median)
+                if candidate_trace is not None:
+                    record = candidate_trace[i]
+                    record["scale"] = scalar
+                    for wi, w in enumerate(WINDOWS):
+                        cq = qs[wi][:, j] * scalar * np.linalg.norm(u)
+                        tq = target_q[w]
+                        errors = np.abs(cq - tq) / np.maximum(tq, 1e-12)
+                        record["windows"][w] = {"target": tq.tolist(), "candidate": cq.tolist(),
+                                                "errors": errors.tolist(),
+                                                "accepted": bool(np.all(errors <= TOL)),
+                                                "max_normalized_error": float(np.max(errors / TOL))}
+                    record["max_normalized_error"] = max(record["windows"][w]["max_normalized_error"]
+                                                         for w in WINDOWS)
+                    record["selection_passed"] = (record["rejection_reason"] is None and
+                                                   all(record["windows"][w]["accepted"] for w in WINDOWS))
+                if (candidate_trace is None and
+                    abs(float(candidate_v @ unit_v)) / v_norm <= max_abs_cosine) or (
+                    candidate_trace is not None and candidate_trace[i]["rejection_reason"] is None
+                ):
+                    pool.append(RankOneControl(u.copy(), candidate_v, "read_rotation", i, scalar))
     return pool
 
 
@@ -176,11 +262,41 @@ def select_joint_controls(
     x_selection: Mapping[str, np.ndarray],
     count: int = 4,
     max_pairwise_abs_cosine: float = 0.99,
+    *, backend: str = "auto", candidate_trace: list[dict] | None = None,
 ) -> tuple[list[RankOneControl], list[dict]]:
     """Select four distinct fixed matrices based only on selection distributions."""
     if count < 1:
         raise ValueError("count must be positive")
-    scored = [(window_report(target, c, x_selection), c) for c in pool]
+    if set(x_selection) != set(WINDOWS):
+        raise ValueError("must include exactly early and late windows")
+    if not pool:
+        return [], []
+    x = {w: _matrix(x_selection[w]) for w in WINDOWS}
+    target_q = {w: quantiles(target.activation_norms(x[w])) for w in WINDOWS}
+    projector = _BatchProjection(x, backend=backend)
+    vectors = np.stack([c.v * c.scale * np.linalg.norm(c.u) for c in pool])
+    scored = []
+    for sl, _, qs in projector.batches(vectors, quantile_windows=True):
+        for j in range(sl.start, sl.stop):
+            windows = {}
+            for wi, w in enumerate(WINDOWS):
+                tq, cq = target_q[w], qs[wi][:, j - sl.start]
+                errors = np.abs(cq - tq) / np.maximum(tq, 1e-12)
+                windows[w] = {"target": tq.tolist(), "candidate": cq.tolist(),
+                              "errors": errors.tolist(), "accepted": bool(np.all(errors <= TOL)),
+                              "max_normalized_error": float(np.max(errors / TOL))}
+            r = {"accepted_both_windows": all(windows[w]["accepted"] for w in WINDOWS),
+                 "max_normalized_error": max(windows[w]["max_normalized_error"] for w in WINDOWS),
+                 "windows": windows}
+            c = pool[j]
+            if candidate_trace is not None:
+                record = candidate_trace[c.index]
+                record["windows"] = windows
+                record["max_normalized_error"] = r["max_normalized_error"]
+                record["selection_passed"] = r["accepted_both_windows"]
+                if not r["accepted_both_windows"]:
+                    record["rejection_reason"] = "quantile_limit"
+            scored.append((r, c))
     scored.sort(key=lambda pair: (not pair[0]["accepted_both_windows"],
                                   pair[0]["max_normalized_error"], pair[1].index))
     chosen, reports = [], []
@@ -190,11 +306,30 @@ def select_joint_controls(
         normalized = candidate.v / np.linalg.norm(candidate.v)
         if any(abs(float(normalized @ (c.v / np.linalg.norm(c.v)))) > max_pairwise_abs_cosine
                and candidate.family == c.family == "read_rotation" for c in chosen):
+            if candidate_trace is not None:
+                candidate_trace[candidate.index]["rejection_reason"] = "pairwise_cosine_limit"
+            continue
+        # Export uses the exact reference NumPy report, never an approximate GPU verdict.
+        exact = window_report(target, candidate, x)
+        if candidate_trace is not None:
+            record = candidate_trace[candidate.index]
+            record["windows"] = exact["windows"]
+            record["max_normalized_error"] = exact["max_normalized_error"]
+            record["selection_passed"] = exact["accepted_both_windows"]
+        if not exact["accepted_both_windows"]:
+            if candidate_trace is not None:
+                candidate_trace[candidate.index]["rejection_reason"] = "quantile_limit_cpu"
             continue
         chosen.append(candidate)
-        reports.append(r)
+        reports.append(exact)
+        if candidate_trace is not None:
+            candidate_trace[candidate.index]["selected"] = True
         if len(chosen) == count:
             break
+    if candidate_trace is not None:
+        for record in candidate_trace:
+            if record["rejection_reason"] is None and not record["selected"]:
+                record["rejection_reason"] = "not_selected"
     return chosen, reports
 
 

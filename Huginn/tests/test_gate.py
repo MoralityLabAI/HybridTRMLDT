@@ -24,8 +24,10 @@ class GateReplayTests(unittest.TestCase):
                 for window in ('early','late'):
                     state[f'{core}__{s}__{window}']=rng.normal(size=(256,7))
         for key in PANEL:
-            u=rng.normal(size=9)
-            v=rng.normal(size=7)
+            # Original archive vectors are float32; rotated controls use
+            # float64 orthogonalization. Test the actual dtype boundary.
+            u=rng.normal(size=9).astype(np.float32)
+            v=rng.normal(size=7).astype(np.float32)
             ctrls[key+'__u']=u
             ctrls[key+'__v']=v
             for c in rotated_write_controls(u,v,4,seed=77):

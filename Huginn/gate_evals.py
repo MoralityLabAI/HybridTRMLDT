@@ -85,12 +85,22 @@ def verify_gate(manifest: dict, states_path: Path, controls_path: Path,
     if _sha(original_factors_path) != expected_factors_sha:
         problems.append('original factors.npz byte checksum disagrees with pinned source')
     results = {}
-    with np.load(states_path, allow_pickle=False) as states, np.load(controls_path, allow_pickle=False) as ctrls:
+    with (np.load(states_path, allow_pickle=False) as states,
+          np.load(controls_path, allow_pickle=False) as ctrls,
+          np.load(original_factors_path, allow_pickle=False) as frozen):
         for key in PANEL:
             core = key.split('_')[0]
             selected = {w: states[f'{core}__selection__{w}'] for w in ('early','late')}
             verified = {w: states[f'{core}__verification__{w}'] for w in ('early','late')}
             target = RankOneControl(ctrls[key+'__u'], ctrls[key+'__v'], 'factor', 0)
+            # A checksum alone binds the factor archive, not the target copied
+            # into the proposed-control NPZ. Compare both vectors exactly to
+            # the pinned original rank-one factor before any gate can PASS.
+            if expected_factors_sha == FACTORS_SHA:
+                idx = int(key.split('factor')[1])
+                if (not np.array_equal(target.u, frozen[f'{core}_U'][idx]) or
+                    not np.array_equal(target.v, frozen[f'{core}_V'][:, idx])):
+                    problems.append(key+': target vectors differ from pinned original factor')
             candidates=[]
             for i in range(4):
                 prefix = f'{key}__{family}__{i}__'
@@ -105,7 +115,13 @@ def verify_gate(manifest: dict, states_path: Path, controls_path: Path,
                 if family=='write_rotation':
                     if abs(u_cos)>1e-6 or not np.allclose(c.v,target.v,rtol=1e-10,atol=1e-12):
                         family_problems.append(f'control {c.index} breaks same-input-gate orthogonal-write contract')
-                    if not np.isclose(np.linalg.norm(c.u)*abs(c.scale),normu,rtol=1e-8):
+                    # The frozen archive u is float32, while the orthogonalized
+                    # write control is float64. Converting u to float64 changes
+                    # its computed norm by up to ~1e-7 relative; 1e-8 was an
+                    # invalid bit-level construction check, not the registered
+                    # 15%/25% distribution-matching rule. Use a float32-scale
+                    # roundoff bound and leave the quantile gate untouched.
+                    if not np.isclose(np.linalg.norm(c.u)*abs(c.scale),normu,rtol=1e-6):
                         family_problems.append(f'control {c.index} has different immediate write norm')
                 elif abs(v_cos)>.95+1e-8:
                     family_problems.append(f'control {c.index} too close to original input gate')

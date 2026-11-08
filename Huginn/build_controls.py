@@ -1,4 +1,4 @@
-"""Selection-only HUG-CAL-02 control builder. No GPU/model loading.
+"""Selection-only HUG-CAL-02 control builder. Optional CUDA projections; no model loading.
 
 Inputs: an independently exported factor vector NPZ, with keys
 `core1_factor19__u`, `core1_factor19__v`, etc., and a state NPZ holding
@@ -29,7 +29,7 @@ def digest(p: Path) -> str:
 
 
 def build(vector_path: Path, states_path: Path, out_path: Path, report_path: Path,
-          *, n_candidates: int = 512, seed: int = 17) -> dict:
+          *, n_candidates: int = 512, seed: int = 17, backend: str = 'auto') -> dict:
     if n_candidates < 4:
         raise ValueError('at least four proposed read controls required')
     output: dict[str, np.ndarray] = {}
@@ -44,10 +44,19 @@ def build(vector_path: Path, states_path: Path, out_path: Path, report_path: Pat
             target = RankOneControl(u, v, 'factor', 0)
             output[name+'__u'] = u
             output[name+'__v'] = v
-            w_controls = rotated_write_controls(u, v, seed=seed + 100 * list(PANEL).index(name))
-            r_pool = read_rotation_pool(u, v, xs, count=n_candidates, seed=seed+1000+100*list(PANEL).index(name))
-            r_controls, r_reports = select_joint_controls(target, r_pool, xs)
+            write_seed = seed + 100 * list(PANEL).index(name)
+            read_seed = seed + 1000 + 100 * list(PANEL).index(name)
+            w_controls = rotated_write_controls(u, v, seed=write_seed)
+            trace: list[dict] = []
+            r_pool = read_rotation_pool(u, v, xs, count=n_candidates,
+                                        seed=read_seed,
+                                        backend=backend, candidate_trace=trace)
+            r_controls, r_reports = select_joint_controls(target, r_pool, xs,
+                                                           backend=backend, candidate_trace=trace)
             ledger[name] = {'read_candidates_generated': len(r_pool),
+                            'read_candidate_seed': read_seed,
+                            'write_control_seed': write_seed,
+                            'read_candidate_diagnostics': trace,
                             'read_selection_passed':len(r_controls),
                             'read_pool_success':len(r_controls)==4,
                             'read_selected_candidate_ids':[c.index for c in r_controls],
@@ -81,8 +90,10 @@ def main(argv=None):
     p.add_argument('--report-out',type=Path,required=True)
     p.add_argument('--candidates',type=int,default=512)
     p.add_argument('--seed',type=int,default=17)
+    p.add_argument('--backend',choices=('auto','numpy','cuda'),default='auto')
     a=p.parse_args(argv)
-    report=build(a.factor_vectors,a.selection_states,a.controls_out,a.report_out,n_candidates=a.candidates,seed=a.seed)
+    report=build(a.factor_vectors,a.selection_states,a.controls_out,a.report_out,
+                 n_candidates=a.candidates,seed=a.seed,backend=a.backend)
     print('Selection complete; read controls available for all factors:',report['read_all_eight_ready'])
     return 0
 
