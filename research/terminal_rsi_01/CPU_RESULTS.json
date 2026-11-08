@@ -1,0 +1,41 @@
+{
+  "status": "finite_input_reference_only",
+  "training_run": false,
+  "model_loaded": false,
+  "observation_padding": [
+    {
+      "observation_padding_tokens": 0,
+      "event_clock_credit": 0.5757437059998146,
+      "token_clock_credit": 0.5757437059998146
+    },
+    {
+      "observation_padding_tokens": 100,
+      "event_clock_credit": 0.5757437059998146,
+      "token_clock_credit": 0.00124769716307359
+    },
+    {
+      "observation_padding_tokens": 1000,
+      "event_clock_credit": 0.5757437059998146,
+      "token_clock_credit": 1.3153129177894065e-27
+    },
+    {
+      "observation_padding_tokens": 10000,
+      "event_clock_credit": 0.5757437059998146,
+      "token_clock_credit": 2.229605684451398e-267
+    }
+  ],
+  "spr_counterexample": {
+    "divisor": 100,
+    "success_pass_count": 100,
+    "policy_a": {
+      "strict_success_probability": 0.8,
+      "failure_pass_count": 0,
+      "expected_reward": 1.2000000000000002
+    },
+    "policy_b": {
+      "strict_success_probability": 0.75,
+      "failure_pass_count": 99,
+      "expected_reward": 1.2493718592964824
+    }
+  }
+}

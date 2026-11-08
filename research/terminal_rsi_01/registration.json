@@ -1,0 +1,23 @@
+{
+  "schema": "trsi-research-registration-v1",
+  "date": "2026-11-09",
+  "owner": "hybrid",
+  "status": "proposed_learned_experiments_unrun",
+  "cpu_reference_status": "executed",
+  "training_seeds": [
+    11,
+    23,
+    37,
+    53,
+    71
+  ],
+  "allow_gpu": false,
+  "allow_paid_calls": false,
+  "allow_model_downloads": false,
+  "allow_funded_actions": false,
+  "allow_ci_changes": false,
+  "native_integration_validated": false,
+  "baseline_policy": "strongest existing simple baseline plus deterministic/model-absent controls",
+  "selection": "validation-only; sealed root/family test split",
+  "protocol": "PROTOCOL.md"
+}

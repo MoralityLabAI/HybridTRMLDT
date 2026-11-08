@@ -1,0 +1,16 @@
+test_bad_boundary_value_breaks_invariance (test_clock.ClockTests.test_bad_boundary_value_breaks_invariance) ... ok
+test_chunk_continuation_200_cases (test_clock.ClockTests.test_chunk_continuation_200_cases) ... ok
+test_empty_chain (test_clock.ClockTests.test_empty_chain) ... ok
+test_invalid_inputs (test_clock.ClockTests.test_invalid_inputs) ... ok
+test_monte_carlo_unit_clock (test_clock.ClockTests.test_monte_carlo_unit_clock) ... ok
+test_naive_chunk_trace_reset_loses_credit (test_clock.ClockTests.test_naive_chunk_trace_reset_loses_credit) ... ok
+test_potential_telescope_200_cases (test_clock.ClockTests.test_potential_telescope_200_cases) ... ok
+test_spr_policy_reversal (test_clock.ClockTests.test_spr_policy_reversal) ... ok
+test_stutter_refinement_200_cases (test_clock.ClockTests.test_stutter_refinement_200_cases) ... ok
+test_stutter_with_real_cost_changes_value (test_clock.ClockTests.test_stutter_with_real_cost_changes_value) ... ok
+test_true_terminal_masks_both_continuations (test_clock.ClockTests.test_true_terminal_masks_both_continuations) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.027s
+
+OK
