@@ -1,0 +1,34 @@
+{
+  "experiment": "LDT-RED01",
+  "status": "STAGE0_SOURCE_LOCKED_BEFORE_MODEL_EXPERIMENT",
+  "date": "2026-11-18",
+  "files": {
+    "PROTOCOL.md": "d8d6ba0ca0643f86789a0f5b71b8a04db83de6aa",
+    "README.md": "f5b91d62ff9c6370cbd56bb83e1787c8630582a1",
+    "SOURCE_RECEIPT.json": "2758110cbd099667d59a92d7a7ad2a130af6c32b",
+    "__init__.py": "0b7160527d425b840f7fce4e7e2ce733c9cdbd02",
+    "adapter.py": "26f4681d5d7117d3c584b1ac0900ae9f464b61d0",
+    "adversary.py": "61cb9bac01f8637aa142ab83851e818e8154e418",
+    "eval.py": "93a8dce9e0e9ad3a33839f9cfbc876e02957e5b1",
+    "planner.py": "cf02dccb85964b3b9c671801c95f784f789eba6a",
+    "test_gym.py": "b3b6431ff773eabeeb304e2e2fcfda9955b79b90",
+    "world.py": "df0685a924e894a4025f7e8c6425c71d5d35aa01"
+  },
+  "calibration_depths": [
+    2,
+    4,
+    6
+  ],
+  "heldout_depths": [
+    8,
+    12
+  ],
+  "source_only": true,
+  "neural_model_training_completed": false,
+  "mechanistic_steering_scored": false,
+  "live_qwen_run": false,
+  "official_arc_agi1_scored": false,
+  "parent_cgc02": "https://github.com/MoralityLabAI/Compactification-Theory/pull/247",
+  "stage1_rules": "freeze model/checkpoint, root-disjoint train/eval, native Beast/Jinn membrane, full protected action observer, signed-Jacobian matched null and root-level evaluation before scoring",
+  "sealed_case_rule": "ARG-03-N 168-case heldout untouched"
+}
