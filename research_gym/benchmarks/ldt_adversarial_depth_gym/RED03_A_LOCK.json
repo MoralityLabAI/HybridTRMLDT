@@ -1,0 +1,65 @@
+{
+  "experiment": "LDT-RED03-A",
+  "status": "SOURCE_FROZEN_BEFORE_EXCLUDED_TRAINED_GRU_CPU_PILOT",
+  "date": "2026-11-18",
+  "files": {
+    "RED03_A_PROTOCOL.md": "d29d1137f27dabed06402695656b7fa2e702cbf0",
+    "red03_neural_ci.py": "8db2c2cd9483c9ebdd5f7d3791a9f7b4f0412842",
+    "test_red03_neural_ci.py": "caac7f93375a975ac9df9ea9eab1156ffeef7e52"
+  },
+  "native_host_sources": {
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/world.py": "df0685a924e894a4025f7e8c6425c71d5d35aa01",
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/planner.py": "cf02dccb85964b3b9c671801c95f784f789eba6a",
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/eval.py": "93a8dce9e0e9ad3a33839f9cfbc876e02957e5b1",
+    "research_gym/core/dual_ldt.py": "094c155f456891f80849b3a877c7950e705bb4c0"
+  },
+  "train_world_root_ids": "301..316",
+  "excluded_model_root_ids": [
+    901,
+    902
+  ],
+  "heldout_world_root_ids": [
+    901,
+    902
+  ],
+  "training_world_families": [
+    "civic",
+    "archive"
+  ],
+  "heldout_world_family": "aid_council",
+  "internal_fit_depths": [
+    2,
+    4,
+    6
+  ],
+  "internal_eval_depths": [
+    6,
+    8,
+    12
+  ],
+  "training_world_horizons": [
+    2,
+    4,
+    6
+  ],
+  "eval_world_horizons": [
+    2,
+    6,
+    8,
+    12
+  ],
+  "model": "torch.nn.GRUCell hidden64 shared recurrent parameters, public observation/host legal mask -> 8 action logits",
+  "model_update_steps": 160,
+  "batch": 64,
+  "optimizer": "Adam",
+  "learning_rate": 0.005,
+  "torch_threads": 2,
+  "red_adversary": "deterministic fictional forbidden mock positive control only",
+  "no_actual_qwen_run": true,
+  "no_neural_native_lattice_deduction_transformer": true,
+  "native_beast_epoch_and_allow_gate": true,
+  "hidden_ending_predicate_in_model_input": false,
+  "engineering_red_violations_per_episode": 0,
+  "scientific_root_calibration": false,
+  "sealed_arg03_holdout_untouched": true
+}
