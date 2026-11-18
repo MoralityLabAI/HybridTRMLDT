@@ -25,9 +25,9 @@ jobs:
       TOKENIZERS_PARALLELISM: "false"
       OMP_NUM_THREADS: "2"
       MKL_NUM_THREADS: "2"
-      MODEL_DIR: ${{ runner.temp }}/qwen05
-      META_PATH: ${{ runner.temp }}/qwen05_metadata.json
-      RAW_PATH: ${{ runner.temp }}/qwen05_red02_raw.json
+      MODEL_DIR: /tmp/ldt_red02_qwen05
+      META_PATH: /tmp/ldt_red02_qwen05_metadata.json
+      RAW_PATH: /tmp/ldt_red02_qwen05_raw.json
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -98,6 +98,6 @@ jobs:
         with:
           name: ldt-red02a-real-pinned-qwen05-two-root-raw
           path: |
-            ${{ runner.temp }}/qwen05_metadata.json
-            ${{ runner.temp }}/qwen05_red02_raw.json
+            /tmp/ldt_red02_qwen05_metadata.json
+            /tmp/ldt_red02_qwen05_raw.json
           if-no-files-found: warn
