@@ -1,0 +1,34 @@
+{
+  "R_gate_sha256": "31bd000ce16c3862f4e183471853b2620890355b8ced51450ae472b26c1bbff9",
+  "W_causal_inference_run": false,
+  "analysis_sha256": "973296f1b8538d5f3cc6eb2c9a307564381328fb7b684c8db760b37b6ef0dc95",
+  "checks": [
+    "all-three-seed clean selection",
+    "same-source clean baseline",
+    "all 8 R factor+4 control arrays",
+    "deterministic registered bootstrap/sign-flip/Holm",
+    "paired per-item logprobs and interactions",
+    "no write-rotation outcome keys or causal inference"
+  ],
+  "control_family": "read_rotation",
+  "factor_answer_reversals": 1089,
+  "item_rows_checked": 5760,
+  "note": "CPU re-analysis checks saved arrays and metadata; original-weight hook evidence is the separately saved GPU receipt.",
+  "outcome_values_checked": 69120,
+  "outcomes_sha256": "213f6bcf6807b9a6d20fcf06593af5945d3ba3efbd3590d4e5e564eb8b6e48a7",
+  "partial_full_predictions_sha256": "93208b22f85740896103aa60d15d46197e5230bfd916e0824e64dcb8af2a38ca",
+  "seeds": [
+    20270111,
+    20270113,
+    20270117
+  ],
+  "selected_by_family": {
+    "conditional_select": 81,
+    "indexed_lookup": 110,
+    "variable_copy_bridge": 49
+  },
+  "selected_clean_correct": 240,
+  "source_hashes_sha256": "b92705ff145e27cfd5eeb7a6365f65d3a76454cd33d242edaf6e92a7fac5bacb",
+  "source_programs_full": 480,
+  "status": "PASS"
+}

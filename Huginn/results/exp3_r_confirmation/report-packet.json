@@ -1,0 +1,776 @@
+{
+  "R_gate": {
+    "core1_factor19": {
+      "all_pass": true,
+      "max_error_to_limit_ratio": 0.9757695151264189,
+      "n_controls": 4
+    },
+    "core1_factor26": {
+      "all_pass": true,
+      "max_error_to_limit_ratio": 0.30990194540234606,
+      "n_controls": 4
+    },
+    "core1_factor31": {
+      "all_pass": true,
+      "max_error_to_limit_ratio": 0.3772453487266729,
+      "n_controls": 4
+    },
+    "core1_factor58": {
+      "all_pass": true,
+      "max_error_to_limit_ratio": 0.8931228473786207,
+      "n_controls": 4
+    },
+    "core3_factor1": {
+      "all_pass": true,
+      "max_error_to_limit_ratio": 0.0598670005164632,
+      "n_controls": 4
+    },
+    "core3_factor17": {
+      "all_pass": true,
+      "max_error_to_limit_ratio": 0.27352212986203434,
+      "n_controls": 4
+    },
+    "core3_factor44": {
+      "all_pass": true,
+      "max_error_to_limit_ratio": 0.20350584027038027,
+      "n_controls": 4
+    },
+    "core3_factor60": {
+      "all_pass": true,
+      "max_error_to_limit_ratio": 0.31332073987706544,
+      "n_controls": 4
+    }
+  },
+  "basis": "post-hoc display packet of frozen preregistered R-only analysis; no new selection or scoring",
+  "factor_results": [
+    {
+      "active_harmful_minus_point05": false,
+      "early": {
+        "bootstrap_draws": 3000,
+        "lower": -0.0026824052686182163,
+        "mean": -0.0008621715914664998,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0009578989578100555
+      },
+      "factor": "core1_factor19",
+      "holm_rejects_zero": true,
+      "inactive_90pct_equivalence_ci": {
+        "bootstrap_draws": 3000,
+        "lower": 0.003850084665722938,
+        "mean": 0.005651983732564582,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.007490601931672751
+      },
+      "interaction": {
+        "bootstrap_draws": 3000,
+        "lower": 0.0036213434395095754,
+        "mean": 0.006514155324031081,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.009495563798700462
+      },
+      "late": {
+        "bootstrap_draws": 3000,
+        "lower": 0.00351188846773261,
+        "mean": 0.005651983732564582,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.007779089742624719
+      },
+      "nomination": "early_only",
+      "p_signflip": 0.0001
+    },
+    {
+      "active_harmful_minus_point05": null,
+      "early": {
+        "bootstrap_draws": 3000,
+        "lower": -0.002872360792308528,
+        "mean": -0.0009680955670773984,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0011308043804537093
+      },
+      "factor": "core1_factor26",
+      "holm_rejects_zero": false,
+      "inactive_90pct_equivalence_ci": null,
+      "interaction": {
+        "bootstrap_draws": 3000,
+        "lower": -0.004590739928664535,
+        "mean": -0.0014066992068870196,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.001776268152623541
+      },
+      "late": {
+        "bootstrap_draws": 3000,
+        "lower": -0.004960142828705203,
+        "mean": -0.0023747947739644185,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.00012516886681421805
+      },
+      "nomination": "large_effect",
+      "p_signflip": 0.384
+    },
+    {
+      "active_harmful_minus_point05": null,
+      "early": {
+        "bootstrap_draws": 3000,
+        "lower": -0.002278526259663825,
+        "mean": -0.0005276090827667051,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0013320662002337894
+      },
+      "factor": "core1_factor31",
+      "holm_rejects_zero": false,
+      "inactive_90pct_equivalence_ci": null,
+      "interaction": {
+        "bootstrap_draws": 3000,
+        "lower": -0.003195565822792963,
+        "mean": -0.00045669030967271997,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0022808208928391757
+      },
+      "late": {
+        "bootstrap_draws": 3000,
+        "lower": -0.002772404113655082,
+        "mean": -0.000984299392439425,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0008158998609805073
+      },
+      "nomination": "near_null",
+      "p_signflip": 0.7386
+    },
+    {
+      "active_harmful_minus_point05": false,
+      "early": {
+        "bootstrap_draws": 3000,
+        "lower": -0.003198169334015498,
+        "mean": -0.0012600480397749276,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.000682466975089887
+      },
+      "factor": "core1_factor58",
+      "holm_rejects_zero": false,
+      "inactive_90pct_equivalence_ci": {
+        "bootstrap_draws": 3000,
+        "lower": -0.00289303998178285,
+        "mean": -0.0012600480397749276,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.00035332055762410104
+      },
+      "interaction": {
+        "bootstrap_draws": 3000,
+        "lower": -0.003923464783389741,
+        "mean": -0.0007046513272345895,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.002291224148810016
+      },
+      "late": {
+        "bootstrap_draws": 3000,
+        "lower": -0.004531513485708273,
+        "mean": -0.0019646993670095173,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0005097571794047132
+      },
+      "nomination": "late_only",
+      "p_signflip": 0.676
+    },
+    {
+      "active_harmful_minus_point05": null,
+      "early": {
+        "bootstrap_draws": 3000,
+        "lower": -0.0015795609750138182,
+        "mean": 0.0006376761322220169,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.002892601105332791
+      },
+      "factor": "core3_factor1",
+      "holm_rejects_zero": false,
+      "inactive_90pct_equivalence_ci": null,
+      "interaction": {
+        "bootstrap_draws": 3000,
+        "lower": -0.0028200007210640835,
+        "mean": 0.0007306736324810319,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.004353395002221483
+      },
+      "late": {
+        "bootstrap_draws": 3000,
+        "lower": -0.0015688412668856068,
+        "mean": 0.0013683497647030488,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.004258637588548785
+      },
+      "nomination": "large_effect",
+      "p_signflip": 0.6894
+    },
+    {
+      "active_harmful_minus_point05": false,
+      "early": {
+        "bootstrap_draws": 3000,
+        "lower": -0.002084112281833465,
+        "mean": -0.00015300277413593394,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0018085787670376401
+      },
+      "factor": "core3_factor17",
+      "holm_rejects_zero": true,
+      "inactive_90pct_equivalence_ci": {
+        "bootstrap_draws": 3000,
+        "lower": -0.001756366379170989,
+        "mean": -0.00015300277413593394,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0014669426969097306
+      },
+      "interaction": {
+        "bootstrap_draws": 3000,
+        "lower": -0.01028208109498438,
+        "mean": -0.006445360905490817,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": -0.0026899314379423
+      },
+      "late": {
+        "bootstrap_draws": 3000,
+        "lower": -0.00966497669966581,
+        "mean": -0.00659836367962675,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": -0.0036711446850353634
+      },
+      "nomination": "late_only",
+      "p_signflip": 0.0009
+    },
+    {
+      "active_harmful_minus_point05": null,
+      "early": {
+        "bootstrap_draws": 3000,
+        "lower": -0.003066456112428568,
+        "mean": -0.0010092049138620493,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0010411708970140259
+      },
+      "factor": "core3_factor44",
+      "holm_rejects_zero": true,
+      "inactive_90pct_equivalence_ci": null,
+      "interaction": {
+        "bootstrap_draws": 3000,
+        "lower": 0.0025100179141413223,
+        "mean": 0.005655941543065839,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.008970446912377762
+      },
+      "late": {
+        "bootstrap_draws": 3000,
+        "lower": 0.0021186253509303146,
+        "mean": 0.00464673662920379,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0073464687427945655
+      },
+      "nomination": "near_null",
+      "p_signflip": 0.0011
+    },
+    {
+      "active_harmful_minus_point05": false,
+      "early": {
+        "bootstrap_draws": 3000,
+        "lower": -0.0005344699488745792,
+        "mean": 0.0013019906305190589,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0032382991552973787
+      },
+      "factor": "core3_factor60",
+      "holm_rejects_zero": false,
+      "inactive_90pct_equivalence_ci": {
+        "bootstrap_draws": 3000,
+        "lower": -0.0015689079459601397,
+        "mean": 0.0005268406459233826,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.002582440627738832
+      },
+      "interaction": {
+        "bootstrap_draws": 3000,
+        "lower": -0.003821197981273547,
+        "mean": -0.0007751499845956759,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.00235155012484433
+      },
+      "late": {
+        "bootstrap_draws": 3000,
+        "lower": -0.001958199089794006,
+        "mean": 0.0005268406459233826,
+        "n_programs": 240,
+        "n_seeds": 3,
+        "upper": 0.0030538334169735513
+      },
+      "nomination": "early_only",
+      "p_signflip": 0.6234
+    }
+  ],
+  "factor_reversal_counts": {
+    "core1_factor19": {
+      "factor_answer_reversals_all_selected_seeds_windows": 24,
+      "n_selected": 240
+    },
+    "core1_factor26": {
+      "factor_answer_reversals_all_selected_seeds_windows": 168,
+      "n_selected": 240
+    },
+    "core1_factor31": {
+      "factor_answer_reversals_all_selected_seeds_windows": 30,
+      "n_selected": 240
+    },
+    "core1_factor58": {
+      "factor_answer_reversals_all_selected_seeds_windows": 122,
+      "n_selected": 240
+    },
+    "core3_factor1": {
+      "factor_answer_reversals_all_selected_seeds_windows": 292,
+      "n_selected": 240
+    },
+    "core3_factor17": {
+      "factor_answer_reversals_all_selected_seeds_windows": 162,
+      "n_selected": 240
+    },
+    "core3_factor44": {
+      "factor_answer_reversals_all_selected_seeds_windows": 109,
+      "n_selected": 240
+    },
+    "core3_factor60": {
+      "factor_answer_reversals_all_selected_seeds_windows": 182,
+      "n_selected": 240
+    }
+  },
+  "n_clean_correct": 240,
+  "n_full_deck": 480,
+  "n_seeds": 3,
+  "selected_examples": [
+    {
+      "answer": "3",
+      "factor": "core1_factor19",
+      "factor_reversal_count_3seeds_2windows": 0,
+      "family": "indexed_lookup",
+      "kind": "harmed",
+      "mean_control_adjusted_early": -0.05596009890238444,
+      "mean_control_adjusted_late": 0.019944950938224792,
+      "mean_interaction": 0.07590504984060924,
+      "seeds": [
+        {
+          "clean_digit": 3,
+          "factor_digits_early_late": [
+            3,
+            3
+          ],
+          "factor_effect_early_late": [
+            -0.03543868660926819,
+            0.04676654934883118
+          ],
+          "seed": 20270111
+        },
+        {
+          "clean_digit": 3,
+          "factor_digits_early_late": [
+            3,
+            3
+          ],
+          "factor_effect_early_late": [
+            -0.10409906506538391,
+            0.017173275351524353
+          ],
+          "seed": 20270113
+        },
+        {
+          "clean_digit": 3,
+          "factor_digits_early_late": [
+            3,
+            3
+          ],
+          "factor_effect_early_late": [
+            -0.02834254503250122,
+            -0.004104971885681152
+          ],
+          "seed": 20270117
+        }
+      ],
+      "source_hash": "317b8d1611ad9ed648f86e284cc48603cbcf59b1e25002f07f3e8e9dd60acf53",
+      "text": "# Each program prints one digit.\n\nx = [1, 0, 4, 9]\ns = 2\nt = s\nn = x[t]\nprint(n)\nOutput: 4\n\nn = [9, 0, 4, 6]\nb = 3\ns = b\nf = n[s]\nprint(f)\nOutput: 6\n\nm = [9, 3, 1, 6]\nh = 0\nr = h\nf = m[r]\nprint(f)\nOutput: 9\n\nz = [2, 3, 8, 4]\ng = 1\na = g\nn = z[a]\nprint(n)\nOutput:"
+    },
+    {
+      "answer": "4",
+      "factor": "core1_factor19",
+      "factor_reversal_count_3seeds_2windows": 0,
+      "family": "conditional_select",
+      "kind": "helped",
+      "mean_control_adjusted_early": 0.03459660212198893,
+      "mean_control_adjusted_late": -0.0006739149490992228,
+      "mean_interaction": -0.03527051707108816,
+      "seeds": [
+        {
+          "clean_digit": 4,
+          "factor_digits_early_late": [
+            4,
+            4
+          ],
+          "factor_effect_early_late": [
+            0.0388287752866745,
+            -0.00017306208610534668
+          ],
+          "seed": 20270111
+        },
+        {
+          "clean_digit": 4,
+          "factor_digits_early_late": [
+            4,
+            4
+          ],
+          "factor_effect_early_late": [
+            0.013397246599197388,
+            0.023406818509101868
+          ],
+          "seed": 20270113
+        },
+        {
+          "clean_digit": 4,
+          "factor_digits_early_late": [
+            4,
+            4
+          ],
+          "factor_effect_early_late": [
+            0.05156378448009491,
+            -0.02525550127029419
+          ],
+          "seed": 20270117
+        }
+      ],
+      "source_hash": "c3954ac0ff1fbd0c7f0923b2a3e9db5fd5127330812aa14a404e597dbd2ab5af",
+      "text": "# Each program prints one digit.\n\nv = 1\nu = 9\nr = 5\nif v == 0:\n    f = u\nelse:\n    f = r\nb = f\nprint(b)\nOutput: 5\n\nw = 0\nj = 7\nr = 0\nif w == 0:\n    u = j\nelse:\n    u = r\na = u\nprint(a)\nOutput: 7\n\nk = 1\ny = 9\nu = 0\nif k == 0:\n    i = y\nelse:\n    i = u\nt = i\nprint(t)\nOutput: 0\n\nf = 0\np = 4\nt = 3\nif f == 0:\n    j = p\nelse:\n    j = t\nq = j\nprint(q)\nOutput:"
+    },
+    {
+      "answer": "1",
+      "factor": "core3_factor17",
+      "factor_reversal_count_3seeds_2windows": 3,
+      "family": "indexed_lookup",
+      "kind": "harmed",
+      "mean_control_adjusted_early": -0.005628796915213267,
+      "mean_control_adjusted_late": -0.130498468875885,
+      "mean_interaction": -0.12486967196067174,
+      "seeds": [
+        {
+          "clean_digit": 1,
+          "factor_digits_early_late": [
+            1,
+            8
+          ],
+          "factor_effect_early_late": [
+            -0.023824721574783325,
+            -0.15072768926620483
+          ],
+          "seed": 20270111
+        },
+        {
+          "clean_digit": 1,
+          "factor_digits_early_late": [
+            1,
+            8
+          ],
+          "factor_effect_early_late": [
+            -0.010548949241638184,
+            -0.02874535322189331
+          ],
+          "seed": 20270113
+        },
+        {
+          "clean_digit": 1,
+          "factor_digits_early_late": [
+            1,
+            8
+          ],
+          "factor_effect_early_late": [
+            0.017487280070781708,
+            -0.21202236413955688
+          ],
+          "seed": 20270117
+        }
+      ],
+      "source_hash": "566ea3202a5923daaf6b0325fc7a3bf914ec04d081963f1f538db4bc8dcb6ff8",
+      "text": "# Each program prints one digit.\n\nt = [2, 7, 4, 5]\nr = 0\ne = r\nk = t[e]\nprint(k)\nOutput: 2\n\ni = [1, 4, 6, 0]\nw = 1\nd = w\nz = i[d]\nprint(z)\nOutput: 4\n\nh = [4, 6, 7, 8]\nc = 2\nx = c\nq = h[x]\nprint(q)\nOutput: 7\n\nd = [2, 0, 6, 1]\nt = 3\ns = t\nv = d[s]\nprint(v)\nOutput:"
+    },
+    {
+      "answer": "4",
+      "factor": "core3_factor17",
+      "factor_reversal_count_3seeds_2windows": 3,
+      "family": "conditional_select",
+      "kind": "helped",
+      "mean_control_adjusted_early": 0.01041509211063385,
+      "mean_control_adjusted_late": 0.0653931697209676,
+      "mean_interaction": 0.05497807761033376,
+      "seeds": [
+        {
+          "clean_digit": 4,
+          "factor_digits_early_late": [
+            4,
+            2
+          ],
+          "factor_effect_early_late": [
+            -0.0039970651268959045,
+            0.07099303603172302
+          ],
+          "seed": 20270111
+        },
+        {
+          "clean_digit": 4,
+          "factor_digits_early_late": [
+            4,
+            2
+          ],
+          "factor_effect_early_late": [
+            0.022838100790977478,
+            0.0671062171459198
+          ],
+          "seed": 20270113
+        },
+        {
+          "clean_digit": 4,
+          "factor_digits_early_late": [
+            4,
+            2
+          ],
+          "factor_effect_early_late": [
+            0.012404240667819977,
+            0.05808025598526001
+          ],
+          "seed": 20270117
+        }
+      ],
+      "source_hash": "23b02c880281c252375b90dd5b0e545e9df10744a71e4b203cc62390b8fcdfec",
+      "text": "# Each program prints one digit.\n\nd = 0\na = 5\ng = 9\nif d == 0:\n    f = a\nelse:\n    f = g\nx = f\nprint(x)\nOutput: 5\n\nc = 1\nr = 8\nf = 7\nif c == 0:\n    k = r\nelse:\n    k = f\nl = k\nprint(l)\nOutput: 7\n\nu = 0\nn = 0\nx = 1\nif u == 0:\n    a = n\nelse:\n    a = x\nk = a\nprint(k)\nOutput: 0\n\ns = 1\nm = 2\ny = 4\nif s == 0:\n    t = m\nelse:\n    t = y\nj = t\nprint(j)\nOutput:"
+    },
+    {
+      "answer": "0",
+      "factor": "core3_factor17",
+      "factor_reversal_count_3seeds_2windows": 6,
+      "family": "indexed_lookup",
+      "kind": "reversal",
+      "mean_control_adjusted_early": -0.008251458406448364,
+      "mean_control_adjusted_late": -0.001254191001256307,
+      "mean_interaction": 0.006997267405192058,
+      "seeds": [
+        {
+          "clean_digit": 0,
+          "factor_digits_early_late": [
+            8,
+            8
+          ],
+          "factor_effect_early_late": [
+            -0.041559576988220215,
+            -0.01798132061958313
+          ],
+          "seed": 20270111
+        },
+        {
+          "clean_digit": 0,
+          "factor_digits_early_late": [
+            8,
+            8
+          ],
+          "factor_effect_early_late": [
+            0.00696071982383728,
+            0.023700743913650513
+          ],
+          "seed": 20270113
+        },
+        {
+          "clean_digit": 0,
+          "factor_digits_early_late": [
+            8,
+            8
+          ],
+          "factor_effect_early_late": [
+            0.009844481945037842,
+            -0.009481996297836304
+          ],
+          "seed": 20270117
+        }
+      ],
+      "source_hash": "303e20beeeece835df28ecd19bd469536b05b188982ce6010367835079f43524",
+      "text": "# Each program prints one digit.\n\nm = [9, 1, 2, 3]\nc = 1\nl = c\ng = m[l]\nprint(g)\nOutput: 1\n\nj = [1, 5, 3, 8]\ns = 2\na = s\np = j[a]\nprint(p)\nOutput: 3\n\nu = [8, 2, 1, 6]\ne = 3\nt = e\nh = u[t]\nprint(h)\nOutput: 6\n\nb = [0, 8, 4, 5]\ns = 0\nr = s\nu = b[r]\nprint(u)\nOutput:"
+    },
+    {
+      "answer": "9",
+      "factor": "core3_factor17",
+      "factor_reversal_count_3seeds_2windows": 5,
+      "family": "conditional_select",
+      "kind": "counterexample",
+      "mean_control_adjusted_early": -0.032121479511260986,
+      "mean_control_adjusted_late": 0.03877152502536774,
+      "mean_interaction": 0.07089300453662872,
+      "seeds": [
+        {
+          "clean_digit": 9,
+          "factor_digits_early_late": [
+            9,
+            3
+          ],
+          "factor_effect_early_late": [
+            -0.015901729464530945,
+            0.057850196957588196
+          ],
+          "seed": 20270111
+        },
+        {
+          "clean_digit": 9,
+          "factor_digits_early_late": [
+            3,
+            3
+          ],
+          "factor_effect_early_late": [
+            -0.04927842319011688,
+            0.038275957107543945
+          ],
+          "seed": 20270113
+        },
+        {
+          "clean_digit": 9,
+          "factor_digits_early_late": [
+            3,
+            3
+          ],
+          "factor_effect_early_late": [
+            -0.031184285879135132,
+            0.02018842101097107
+          ],
+          "seed": 20270117
+        }
+      ],
+      "source_hash": "ff000b83896b7b980f35ee05c46a08f15753eb3aa015862b34d755fdca716d7d",
+      "text": "# Each program prints one digit.\n\ne = 1\nt = 4\nd = 0\nif e == 0:\n    c = t\nelse:\n    c = d\nf = c\nprint(f)\nOutput: 0\n\nl = 0\ny = 2\nn = 0\nif l == 0:\n    i = y\nelse:\n    i = n\ng = i\nprint(g)\nOutput: 2\n\nl = 1\nj = 0\nt = 5\nif l == 0:\n    k = j\nelse:\n    k = t\nc = k\nprint(c)\nOutput: 5\n\nv = 0\ne = 9\nu = 3\nif v == 0:\n    n = e\nelse:\n    n = u\nb = n\nprint(b)\nOutput:"
+    },
+    {
+      "answer": "0",
+      "factor": "core3_factor44",
+      "factor_reversal_count_3seeds_2windows": 0,
+      "family": "indexed_lookup",
+      "kind": "harmed",
+      "mean_control_adjusted_early": -0.01857750117778778,
+      "mean_control_adjusted_late": -0.05509875218073527,
+      "mean_interaction": -0.03652125100294749,
+      "seeds": [
+        {
+          "clean_digit": 0,
+          "factor_digits_early_late": [
+            0,
+            0
+          ],
+          "factor_effect_early_late": [
+            -0.021259784698486328,
+            -0.10029780864715576
+          ],
+          "seed": 20270111
+        },
+        {
+          "clean_digit": 0,
+          "factor_digits_early_late": [
+            0,
+            0
+          ],
+          "factor_effect_early_late": [
+            -0.0481380969285965,
+            -0.027762457728385925
+          ],
+          "seed": 20270113
+        },
+        {
+          "clean_digit": 0,
+          "factor_digits_early_late": [
+            0,
+            0
+          ],
+          "factor_effect_early_late": [
+            0.013665378093719482,
+            -0.037235990166664124
+          ],
+          "seed": 20270117
+        }
+      ],
+      "source_hash": "a9017db6926595daaa2243c24b765a19af762a76a4a2a5a39b87a6f2af1c3645",
+      "text": "# Each program prints one digit.\n\nw = [1, 2, 9, 4]\nb = 0\nc = b\nq = w[c]\nprint(q)\nOutput: 1\n\nn = [0, 3, 4, 1]\ng = 1\nt = g\nc = n[t]\nprint(c)\nOutput: 3\n\nz = [9, 3, 6, 0]\ny = 2\nd = y\nq = z[d]\nprint(q)\nOutput: 6\n\nj = [8, 4, 9, 0]\nb = 3\nu = b\nx = j[u]\nprint(x)\nOutput:"
+    },
+    {
+      "answer": "3",
+      "factor": "core3_factor44",
+      "factor_reversal_count_3seeds_2windows": 6,
+      "family": "indexed_lookup",
+      "kind": "reversal",
+      "mean_control_adjusted_early": -0.013337979714075724,
+      "mean_control_adjusted_late": 0.030514776706695557,
+      "mean_interaction": 0.04385275642077128,
+      "seeds": [
+        {
+          "clean_digit": 3,
+          "factor_digits_early_late": [
+            4,
+            9
+          ],
+          "factor_effect_early_late": [
+            0.00987255573272705,
+            -0.039337158203125
+          ],
+          "seed": 20270111
+        },
+        {
+          "clean_digit": 3,
+          "factor_digits_early_late": [
+            4,
+            2
+          ],
+          "factor_effect_early_late": [
+            -0.010745525360107422,
+            0.09436264634132385
+          ],
+          "seed": 20270113
+        },
+        {
+          "clean_digit": 3,
+          "factor_digits_early_late": [
+            4,
+            2
+          ],
+          "factor_effect_early_late": [
+            -0.0391409695148468,
+            0.03651884198188782
+          ],
+          "seed": 20270117
+        }
+      ],
+      "source_hash": "746a87111353ab786038536331d5401b7a38a996ada9a208d67355facdd5ca5d",
+      "text": "# Each program prints one digit.\n\nh = [8, 2, 5, 4]\nd = 3\nj = d\nr = h[j]\nprint(r)\nOutput: 4\n\nl = [6, 1, 9, 8]\nk = 0\nx = k\nt = l[x]\nprint(t)\nOutput: 6\n\nx = [5, 9, 0, 1]\nd = 1\nj = d\nw = x[j]\nprint(w)\nOutput: 9\n\nc = [9, 2, 3, 4]\nf = 2\nw = f\nn = c[w]\nprint(n)\nOutput:"
+    }
+  ],
+  "source_sha256": {
+    "confirmation_analysis": "973296f1b8538d5f3cc6eb2c9a307564381328fb7b684c8db760b37b6ef0dc95",
+    "independent_audit": "5efd16956a8bb9da2c3fcec519d4051cf41c8c6398a40f529bdefd0a58f2c35e",
+    "item_examples": "f4c5e4e5dc674015dd4e98a541708d0356b983b691de2382f3f00ca8551fca9e"
+  },
+  "total_factor_reversals": 1089
+}
