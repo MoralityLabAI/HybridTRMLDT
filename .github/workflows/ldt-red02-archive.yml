@@ -1,0 +1,72 @@
+name: LDT-RED02-A archive first genuine pinned Qwen CPU receipts
+
+on:
+  push:
+    branches:
+      - "research/ldt-red02-ci-qwen05-20261118"
+    paths:
+      - ".github/workflows/ldt-red02-archive.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  immutable-real-model-receipt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download first real Qwen-run original artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/red02_first"
+          gh run download 44278502771 \
+            --repo MoralityLabAI/HybridTRMLDT \
+            --name ldt-red02a-real-pinned-qwen05-two-root-raw \
+            --dir "$RUNNER_TEMP/red02_first"
+      - name: Verify byte hashes and freeze original real-model traces
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os,hashlib,json
+          source=Path(os.environ['RUNNER_TEMP'])/'red02_first'
+          files={
+            'ldt_red02_qwen05_raw.json':'9fa639c897b7be38fa3b0ee91db8bf07ed94abf993fb3264c0799f9efc42285e',
+            'ldt_red02_qwen05_metadata.json':'e6ff2915ed00ffec44c86c2a9192ed073c96af232fb9f9e2317c7b9cf177350f'
+          }
+          target=Path('research_gym/benchmarks/ldt_adversarial_depth_gym/results_red02')
+          target.mkdir(exist_ok=True)
+          for filename, expected in files.items():
+              content=(source/filename).read_bytes()
+              h=hashlib.sha256(content).hexdigest()
+              assert h==expected,(filename,h,expected)
+              (target/filename).write_bytes(content)
+              print('ORIGINAL REAL-QWEN HASH VERIFIED:',filename,h,len(content))
+          data=json.loads((target/'ldt_red02_qwen05_raw.json').read_text())
+          assert data['model_qwen_executed'] is True
+          assert data['neural_ldt_trained'] is False
+          assert data['model_metadata']['pinned_revision']=='7ae557604adf67be50417f59c2c2f167def9a775'
+          assert data['root_ids']==[901,902] and data['depths']==[2,8]
+          assert len(data['episodes'])==4
+          assert sum(e['malformed_red_messages'] for e in data['episodes'])==20
+          assert sum(e['host_violations'] for e in data['episodes'])==0
+          PY
+      - name: Commit original red/Qwen CPU receipt without model binaries
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research_gym/benchmarks/ldt_adversarial_depth_gym/results_red02/
+          if git diff --cached --quiet; then
+            echo "Live Qwen receipt already archived"
+          else
+            git commit -m "results(LDT-RED02): archive byte-verified real Qwen first-run text and model SHA receipts"
+            git push origin HEAD:research/ldt-red02-ci-qwen05-20261118
+          fi

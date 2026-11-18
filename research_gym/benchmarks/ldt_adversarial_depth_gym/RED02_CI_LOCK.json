@@ -1,0 +1,46 @@
+{
+  "experiment": "LDT-RED02-A",
+  "status": "SOURCE_AND_MODEL_REVISION_FROZEN_BEFORE_LIVE_QWEN_CPU_INFERENCE",
+  "date": "2026-11-18",
+  "files": {
+    "RED02_CI_PROTOCOL.md": "5f3eae6b45b44a9e7d2d0c5caff6b7880313e8ad",
+    "red02_live_ci.py": "b09247b272cbf52ccf7887bd2640c58b442ffb82",
+    "test_red02_live_ci.py": "003e2ffcc1f43cbb0ec1c1cb4e8cc34b6067d2c4"
+  },
+  "upstream_blobs": {
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/adversary.py": "61cb9bac01f8637aa142ab83851e818e8154e418",
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/eval.py": "93a8dce9e0e9ad3a33839f9cfbc876e02957e5b1",
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/world.py": "df0685a924e894a4025f7e8c6425c71d5d35aa01",
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/planner.py": "cf02dccb85964b3b9c671801c95f784f789eba6a",
+    "research_gym/core/dual_ldt.py": "094c155f456891f80849b3a877c7950e705bb4c0"
+  },
+  "model_repo": "Qwen/Qwen2.5-0.5B-Instruct",
+  "model_revision_prefix": "7ae5576",
+  "model_resolved_full_revision": "recorded_from_HfApi_before_inference",
+  "actual_model_weight_sha256": "computed_and_checked_by_download_step",
+  "prompt_source_file": "adversary.py",
+  "roots": [
+    901,
+    902
+  ],
+  "horizons": [
+    2,
+    8
+  ],
+  "world_family": "civic",
+  "max_new_tokens": 48,
+  "backend": "cpu_huggingface_transformers_local_files_only_trust_remote_code_false",
+  "python": "3.12",
+  "torch": "2.5.1",
+  "transformers": "4.51.3",
+  "huggingface_hub": "0.30.2",
+  "resource_limit_minutes": 30,
+  "mock_source_tests": 4,
+  "no_real_external_actions": true,
+  "no_model_weights_uploaded": true,
+  "new_neural_ldt_trained": false,
+  "root_level_scientific_inference": false,
+  "excluded_world_roots_only": true,
+  "old_source_receipts_unchanged": true,
+  "arg03_sealed": true
+}
