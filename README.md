@@ -1,3 +1,5 @@
+**LDT-RED01 harder moral/control gym (Nov 18, 2026):** [Long-horizon hidden-ending storyworlds, host-owned Beast/Jinn authorization and optional local adversarial Qwen](research_gym/benchmarks/ldt_adversarial_depth_gym/README.md), with fit depths 2/4/6 and heldout 8/12. **Source-only mock results; live Qwen and neural LDT training remain pending.** Paired compact [BPD TRM steering gym](https://github.com/MoralityLabAI/BPD/tree/research/bpd-dt01-recurrent-steering-worlds-20261118/mechinterp/bpd/experiments/depth_steering_gym).
+
 # LDT/TRM Research Gym
 
 Starter repo for testing a hybrid Lattice Deduction Transformer / Tiny Recursive Model research program.
