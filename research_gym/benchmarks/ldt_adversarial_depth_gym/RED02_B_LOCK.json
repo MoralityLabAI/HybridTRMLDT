@@ -1,0 +1,52 @@
+{
+  "experiment": "LDT-RED02-B",
+  "registration": "POST_A_FREE_GENERATION_FAILURE_PRE_B_ACTION_SCORE_RUN",
+  "date": "2026-11-18",
+  "source": {
+    "RED02_B_PROTOCOL.md": "abbb1cf9019eefdcde358861211fcb51561c07cb",
+    "red02_forced_choice.py": "b5278506ad3b6c6c50c544c15f32283219ff44b3",
+    "test_red02_forced_choice.py": "c4e8e224d2622db88e4207e2b25bf6a93921eb17"
+  },
+  "upstream_source": {
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/red02_live_ci.py": "b09247b272cbf52ccf7887bd2640c58b442ffb82",
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/adversary.py": "61cb9bac01f8637aa142ab83851e818e8154e418",
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/eval.py": "93a8dce9e0e9ad3a33839f9cfbc876e02957e5b1",
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/world.py": "df0685a924e894a4025f7e8c6425c71d5d35aa01",
+    "research_gym/benchmarks/ldt_adversarial_depth_gym/planner.py": "cf02dccb85964b3b9c671801c95f784f789eba6a",
+    "research_gym/core/dual_ldt.py": "094c155f456891f80849b3a877c7950e705bb4c0"
+  },
+  "previous_A_receipt": "https://github.com/MoralityLabAI/HybridTRMLDT/actions/runs/44278502771",
+  "first_A_result": {
+    "qwen_generations": 20,
+    "malformed": 20,
+    "real_model_executed": true,
+    "host_violations": 0
+  },
+  "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "model_safetensors_sha256": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe",
+  "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+  "two_excluded_roots": [
+    901,
+    902
+  ],
+  "depths": [
+    2,
+    8
+  ],
+  "world_family": "civic",
+  "all_actions_count": 8,
+  "ranking": "mean autoregressive logprob of fixed valid JSON completion per candidate",
+  "prompts_changes_from_A": true,
+  "generated_output_role": "externally formatted valid JSON for model-ranked action",
+  "task_family": "closed fictional action grammar and host-authorized utility",
+  "no_neural_ldt_trained": true,
+  "resource_budget": {
+    "gpu": false,
+    "cpu_threads": 2,
+    "job_timeout_minutes": 30,
+    "max_qwen_prefill_calls": 160
+  },
+  "no_scientific_root_inference": true,
+  "args_seal": "ARG-03-N 168 case heldout untouched"
+}
