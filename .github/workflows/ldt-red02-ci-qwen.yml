@@ -6,10 +6,8 @@ on:
       - "research/ldt-red02-ci-*"
     paths:
       - ".github/workflows/ldt-red02-ci-qwen.yml"
-  pull_request:
-    paths:
-      - "research_gym/benchmarks/ldt_adversarial_depth_gym/**"
-      - ".github/workflows/ldt-red02-ci-qwen.yml"
+  # Model-download/red inference runs on the named research branch or explicit dispatch only.
+  # PR source-only checks are provided by ldt-red02-source.yml.
   workflow_dispatch:
 
 permissions:
