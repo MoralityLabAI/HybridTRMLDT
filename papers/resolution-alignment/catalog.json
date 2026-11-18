@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "source_url": "https://resolution.org/research",
+  "source_checked": "2026-11-02",
+  "scope": "Full 28-item Resolution catalogue, plus one separate Timaeus research post",
+  "disclaimer": "Bibliography and download references only. No PDF binaries or paper experiments are stored here. Index is not evidence of reproduction.",
+  "papers": [
+    {
+      "id": "R2026-01",
+      "year": 2026,
+      "title": "Formalizing Hironaka's Resolution of Singularities",
+      "url": "https://resolution.org/post/formalizing-resolution-of-singularities",
+      "pdf_url": null,
+      "topic": "math-foundations",
+      "priority": "background",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-02",
+      "year": 2026,
+      "title": "Interpretability as a Benchmark for Sampling",
+      "url": "https://resolution.org/post/interpretability-as-a-benchmark-for-sampling",
+      "pdf_url": null,
+      "topic": "posterior-sampling",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-03",
+      "year": 2026,
+      "title": "Elicitation without Backpropagation: Steering Model Behavior by Optimizing the Latent Posterior",
+      "url": "https://arxiv.org/abs/2607.18804",
+      "pdf_url": "https://arxiv.org/pdf/2607.18804",
+      "topic": "posterior-steering",
+      "priority": "medium",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-04",
+      "year": 2026,
+      "title": "Interpreting Reinforcement Learning Agents with Susceptibilities",
+      "url": "https://arxiv.org/abs/2605.08007",
+      "pdf_url": "https://arxiv.org/pdf/2605.08007",
+      "topic": "causal-susceptibilities",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-05",
+      "year": 2026,
+      "title": "Linear Response Estimators for Singular Statistical Models",
+      "url": "https://arxiv.org/abs/2605.07970",
+      "pdf_url": "https://arxiv.org/pdf/2605.07970",
+      "topic": "linear-response",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-06",
+      "year": 2026,
+      "title": "Susceptibilities and Patterning: A Primer on Linear Response in Bayesian Learning",
+      "url": "https://arxiv.org/abs/2605.07980",
+      "pdf_url": "https://arxiv.org/pdf/2605.07980",
+      "topic": "linear-response",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-07",
+      "year": 2026,
+      "title": "Spectroscopy at Scale: Finding Interpretable Structure in Pythia-1.4B",
+      "url": "https://timaeus.co/research/2026-04-21-spectroscopy-main",
+      "pdf_url": null,
+      "topic": "spectroscopy",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-08",
+      "year": 2026,
+      "title": "How to Scale Susceptibilities",
+      "url": "https://timaeus.co/research/2026-04-21-spectroscopy-definitions",
+      "pdf_url": null,
+      "topic": "spectroscopy",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-09",
+      "year": 2026,
+      "title": "Interpreting the Ising Model",
+      "url": "https://timaeus.co/research/2026-04-21-spectroscopy-ising",
+      "pdf_url": null,
+      "topic": "mechanistic-toy-model",
+      "priority": "medium",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-10",
+      "year": 2026,
+      "title": "Guide for Sampling Hyperparameter Selection",
+      "url": "https://timaeus.co/research/2026-04-21-sampling-guide",
+      "pdf_url": null,
+      "topic": "posterior-sampling",
+      "priority": "medium",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-11",
+      "year": 2026,
+      "title": "Patterning: The Dual of Interpretability",
+      "url": "https://arxiv.org/abs/2601.13548",
+      "pdf_url": "https://arxiv.org/pdf/2601.13548",
+      "topic": "data-patterning",
+      "priority": "highest",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-12",
+      "year": 2026,
+      "title": "Towards Spectroscopy: Susceptibility Clusters in Language Models",
+      "url": "https://arxiv.org/abs/2601.12703",
+      "pdf_url": "https://arxiv.org/pdf/2601.12703",
+      "topic": "spectroscopy",
+      "priority": "highest",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2026-13",
+      "year": 2026,
+      "title": "Stagewise Reinforcement Learning and the Geometry of the Regret Landscape",
+      "url": "https://arxiv.org/abs/2601.07524",
+      "pdf_url": "https://arxiv.org/pdf/2601.07524",
+      "topic": "stagewise-training",
+      "priority": "medium",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-01",
+      "year": 2025,
+      "title": "Compressibility Measures Complexity: Minimum Description Length Meets Singular Learning Theory",
+      "url": "https://arxiv.org/abs/2510.12077",
+      "pdf_url": "https://arxiv.org/pdf/2510.12077",
+      "topic": "learning-geometry",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-02",
+      "year": 2025,
+      "title": "Influence Dynamics and Stagewise Data Attribution",
+      "url": "https://arxiv.org/abs/2510.12071",
+      "pdf_url": "https://arxiv.org/pdf/2510.12071",
+      "topic": "data-attribution",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-03",
+      "year": 2025,
+      "title": "The Loss Kernel: A Geometric Probe for Deep Learning Interpretability",
+      "url": "https://arxiv.org/abs/2509.26537",
+      "pdf_url": "https://arxiv.org/pdf/2509.26537",
+      "topic": "loss-geometry",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-04",
+      "year": 2025,
+      "title": "Bayesian Influence Functions for Hessian-Free Data Attribution",
+      "url": "https://arxiv.org/abs/2509.26544",
+      "pdf_url": "https://arxiv.org/pdf/2509.26544",
+      "topic": "data-attribution",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-05",
+      "year": 2025,
+      "title": "Embryology of a Language Model",
+      "url": "https://arxiv.org/abs/2508.00331",
+      "pdf_url": "https://arxiv.org/pdf/2508.00331",
+      "topic": "training-dynamics",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-06",
+      "year": 2025,
+      "title": "From Global to Local: A Scalable Benchmark for Local Posterior Sampling",
+      "url": "https://arxiv.org/abs/2507.21449",
+      "pdf_url": "https://arxiv.org/pdf/2507.21449",
+      "topic": "posterior-sampling",
+      "priority": "highest",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-07",
+      "year": 2025,
+      "title": "Structural Inference: Interpreting Small Language Models with Susceptibilities",
+      "url": "https://arxiv.org/abs/2504.18274",
+      "pdf_url": "https://arxiv.org/pdf/2504.18274",
+      "topic": "spectroscopy",
+      "priority": "highest",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-08",
+      "year": 2025,
+      "title": "Modes of Sequence Models and Learning Coefficients",
+      "url": "https://arxiv.org/abs/2504.18048",
+      "pdf_url": "https://arxiv.org/pdf/2504.18048",
+      "topic": "learning-geometry",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-09",
+      "year": 2025,
+      "title": "Programs as Singularities",
+      "url": "https://arxiv.org/abs/2504.08075",
+      "pdf_url": "https://arxiv.org/pdf/2504.08075",
+      "topic": "learning-geometry",
+      "priority": "medium",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-10",
+      "year": 2025,
+      "title": "You Are What You Eat: AI Alignment Requires Understanding How Data Shapes Structure and Generalisation",
+      "url": "https://arxiv.org/abs/2502.05475",
+      "pdf_url": "https://arxiv.org/pdf/2502.05475",
+      "topic": "data-patterning",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-11",
+      "year": 2025,
+      "title": "Structure Development in List-Sorting Transformers",
+      "url": "https://arxiv.org/abs/2501.18666",
+      "pdf_url": "https://arxiv.org/pdf/2501.18666",
+      "topic": "training-dynamics",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2025-12",
+      "year": 2025,
+      "title": "Dynamics of Transient Structure in In-Context Linear Regression Transformers",
+      "url": "https://arxiv.org/abs/2501.17745",
+      "pdf_url": "https://arxiv.org/pdf/2501.17745",
+      "topic": "training-dynamics",
+      "priority": "medium",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2024-01",
+      "year": 2024,
+      "title": "Differentiation and Specialization of Attention Heads via the Refined Local Learning Coefficient",
+      "url": "https://arxiv.org/abs/2410.02984",
+      "pdf_url": "https://arxiv.org/pdf/2410.02984",
+      "topic": "learning-geometry",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2024-02",
+      "year": 2024,
+      "title": "Loss Landscape Degeneracy and Stagewise Development of Transformers",
+      "url": "https://arxiv.org/abs/2402.02364",
+      "pdf_url": "https://arxiv.org/pdf/2402.02364",
+      "topic": "training-dynamics",
+      "priority": "high",
+      "status": "indexed_only"
+    },
+    {
+      "id": "R2023-01",
+      "year": 2023,
+      "title": "The Local Learning Coefficient: A Singularity-Aware Complexity Measure",
+      "url": "https://arxiv.org/abs/2308.12108",
+      "pdf_url": "https://arxiv.org/pdf/2308.12108",
+      "topic": "learning-geometry",
+      "priority": "high",
+      "status": "indexed_only"
+    }
+  ],
+  "additional_timaeus_posts": [
+    {
+      "id": "T2026-01",
+      "year": 2026,
+      "title": "Patterning the Toy Model of Superposition",
+      "url": "https://timaeus.co/research/2026-04-24-patterning-tms",
+      "topic": "data-patterning",
+      "priority": "highest",
+      "note": "October 2026 Timaeus research post outside the Resolution 28-item catalog; verify the page's date independently of its URL slug."
+    }
+  ]
+}
