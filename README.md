@@ -4,6 +4,8 @@
 
 Starter repo for testing a hybrid Lattice Deduction Transformer / Tiny Recursive Model research program.
 
+**MCP retrieval gym (Nov 19, 2026):** [MCP/](MCP/README.md) compares flat, searched, and layered catalogs with checked LDT filtering. It includes a synthetic evidence judge, actual MCP stdio transport, local chat-model inference, and separate accounting for local exploration and the evidence packet sent onward. The [architecture plan](MCP/ARCHITECTURE.md) records Data Goblin's longer-term retrieval specialization and adapters for other Transformer families. Initial reference receipts validate the harness; learned model results follow local inference runs.
+
 The gym is designed for small-agent operation. A GPT-5.4-mini-class agent should be able to run the toy tasks, generate frames, write checkpoint docs, and leave clean artifacts without needing the full Research_Engine stack.
 
 ## Core thesis
