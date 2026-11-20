@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp02-work/pilot_cpu/ckpt/trm_ldt_c2i1_d48.pt", "device": "cpu", "peak_rss_before_forward": 517918720, "peak_rss_after_forward": 541114368, "forward_peak_rss_delta": 23195648, "weights_bytes_fp32": 919512, "candidates": 32, "sequence_length": 74}

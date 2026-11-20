@@ -1,0 +1,267 @@
+{
+ "gym_version": "mcp-02",
+ "config": {
+  "name": "mcp02-pilot-cpu",
+  "purpose": "Modest CPU pilot: every architecture at width 48, matched recurrent depth 4 where applicable",
+  "dataset": {
+   "worlds": {
+    "train": 200,
+    "dev": 40
+   },
+   "seed": {
+    "train": 1101,
+    "dev": 2202
+   },
+   "catalog_size": 256,
+   "arm_configs": [
+    [
+     "search",
+     ""
+    ],
+    [
+     "layered",
+     "SCB"
+    ],
+    [
+     "layered",
+     "KBE"
+    ],
+    [
+     "layered_ldt",
+     "PSCB"
+    ]
+   ],
+   "epsilons": [
+    0.0,
+    0.35
+   ],
+   "max_candidates": 12,
+   "max_tool_calls": 40
+  },
+  "training": {
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "threads": 6
+  },
+  "models": {
+   "dense_d48": {
+    "config": {
+     "arch": "dense",
+     "d": 48
+    }
+   },
+   "transformer_l1_d48": {
+    "config": {
+     "arch": "transformer",
+     "d": 48,
+     "heads": 4,
+     "layers": 1
+    }
+   },
+   "transformer_l2_d48": {
+    "config": {
+     "arch": "transformer",
+     "d": 48,
+     "heads": 4,
+     "layers": 2
+    }
+   },
+   "transformer_l4_d48": {
+    "config": {
+     "arch": "transformer",
+     "d": 48,
+     "heads": 4,
+     "layers": 4
+    }
+   },
+   "looped_p4_d48": {
+    "config": {
+     "arch": "looped",
+     "d": 48,
+     "heads": 4,
+     "passes": 4
+    }
+   },
+   "trm_c2i1_d48": {
+    "config": {
+     "arch": "trm",
+     "d": 48,
+     "heads": 4,
+     "net_layers": 1,
+     "inner": 1,
+     "cycles": 2
+    }
+   },
+   "trm_ldt_c2i1_d48": {
+    "config": {
+     "arch": "trm_ldt",
+     "d": 48,
+     "heads": 4,
+     "net_layers": 1,
+     "inner": 1,
+     "cycles": 2
+    }
+   },
+   "hrm_h2l1_d48": {
+    "config": {
+     "arch": "hrm",
+     "d": 48,
+     "heads": 4,
+     "low_steps": 1,
+     "high_cycles": 2
+    }
+   },
+   "sham_shuffled_transformer_l2_d48": {
+    "config": {
+     "arch": "transformer",
+     "d": 48,
+     "heads": 4,
+     "layers": 2
+    },
+    "shuffle_labels": true
+   },
+   "transformer_l2_d48_match": {
+    "config": {
+     "arch": "transformer",
+     "d": 48,
+     "heads": 4,
+     "layers": 2,
+     "encoder": "match"
+    },
+    "note": "encoder ablation: identical to transformer_l2_d48 except the exact-match channel"
+   },
+   "trm_c2i1_d48_match": {
+    "config": {
+     "arch": "trm",
+     "d": 48,
+     "heads": 4,
+     "net_layers": 1,
+     "inner": 1,
+     "cycles": 2,
+     "encoder": "match"
+    },
+    "note": "encoder ablation: identical to trm_c2i1_d48 except the exact-match channel"
+   }
+  },
+  "evaluation": {
+   "split": "test",
+   "seed": 3303,
+   "worlds": 32,
+   "catalog_sizes": [
+    256,
+    1024
+   ],
+   "arm_configs": [
+    [
+     "search",
+     ""
+    ],
+    [
+     "layered",
+     "SCB"
+    ],
+    [
+     "layered",
+     "KBE"
+    ],
+    [
+     "layered_ldt",
+     "PSCB"
+    ],
+    [
+     "flat",
+     ""
+    ]
+   ],
+   "max_tool_calls": [
+    40
+   ],
+   "prefilter_k": 32,
+   "handoff_budget_bytes": 2048,
+   "controls": [
+    "deterministic_rules",
+    "lexical_bm25",
+    "sham_random",
+    "oracle_upper_bound"
+   ],
+   "depth_sweep": {
+    "models": [
+     "looped_p4_d48",
+     "trm_c2i1_d48",
+     "trm_ldt_c2i1_d48",
+     "hrm_h2l1_d48"
+    ],
+    "depths": [
+     1,
+     2,
+     4,
+     8
+    ],
+    "catalog_size": 256,
+    "arm_configs": [
+     [
+      "layered",
+      "SCB"
+     ],
+     [
+      "layered_ldt",
+      "PSCB"
+     ]
+    ]
+   },
+   "deliberation_sweep": {
+    "max_tool_calls": [
+     24,
+     64
+    ],
+    "catalog_size": 256,
+    "arm_configs": [
+     [
+      "layered",
+      "SCB"
+     ],
+     [
+      "search",
+      ""
+     ]
+    ],
+    "policies": [
+     "deterministic_rules",
+     "lexical_bm25",
+     "transformer_l4_d48",
+     "trm_c2i1_d48",
+     "looped_p4_d48"
+    ]
+   },
+   "layout_sweep": {
+    "layouts": [
+     "",
+     "S",
+     "SC",
+     "SCB",
+     "PSCB",
+     "KSB",
+     "KBE",
+     "PKBE"
+    ],
+    "catalog_size": 1024,
+    "policies": [
+     "deterministic_rules",
+     "oracle_upper_bound",
+     "trm_c2i1_d48",
+     "trm_ldt_c2i1_d48"
+    ],
+    "arms": [
+     "layered",
+     "layered_ldt"
+    ],
+    "worlds": 16
+   }
+  }
+ },
+ "config_path": "MCP/mcp02/configs/pilot_cpu.json",
+ "device": "cpu",
+ "transport": "inprocess"
+}

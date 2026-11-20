@@ -32,6 +32,15 @@ Catalog-size generalisation is therefore the main open gap.
 8 (PSCB) of 32 at 256 resources, where its match-encoder twin accepts 28 and 25. Its held-out ranking accuracy is
 0.73 against 0.91. The Transformer trained on shuffled labels accepts nothing on layered tasks.
 
+The CPU pilot isolates the encoder at width 48, with routers trained and run entirely on a laptop CPU. Same data,
+width and epochs; only the encoder changes:
+\begin{itemize}
+\item Transformer-L2: dev ranking accuracy 0.62 $\to$ 0.88; layered episodes at 256 resources 17/4/5 $\to$ 31/29/26.
+\item TRM: 0.61 $\to$ 0.86; layered episodes 20/7/5 $\to$ 30/29/28.
+\item On the kind-first index at 1024 resources: 5 $\to$ 16 for Transformer-L2 and 2 $\to$ 20 for TRM.
+\end{itemize}
+Every tokens-only router stays below BM25 and the rules on layered tasks, whatever its core.
+
 With the match channel, every architecture lands within a few episodes of every other. Dev ranking accuracy is
 0.904 to 0.915 for Transformers with 1--4 layers, looped cores with 4 or 12 passes, TRM, TRM+LDT and HRM. The dense
 dual encoder is the exception at 0.839, and it falls behind on layered tasks.

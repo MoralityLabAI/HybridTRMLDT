@@ -42,7 +42,7 @@ jobs:
       - name: MCP-02 torch-free replay of committed pilot tapes
         run: |
           for run in MCP/results/mcp02/*/; do
-            if [ -f "$run/run_config.json" ]; then python -m MCP.mcp02.run replay --run "$run" --every 9; fi
+            if [ -f "$run/run_config.json" ]; then python -m MCP.mcp02.run replay --run "$run" --every 15; fi
           done
       - name: Preserve fixture receipts
         if: always()

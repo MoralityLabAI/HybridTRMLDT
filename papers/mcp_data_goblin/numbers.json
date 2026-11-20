@@ -1,4 +1,12 @@
 {
+ "mcp02_pilot_cpu": {
+  "episodes": 7488,
+  "best_main": [
+   "oracle_upper_bound",
+   "flat",
+   1024
+  ]
+ },
  "mcp02_pilot_gpu": {
   "episodes": 8064,
   "best_main": [

@@ -1,0 +1,25 @@
+\begin{table}[t]
+\centering
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrrrrr}
+\toprule
+Router & Family & Params & Non-emb. & Depth & FLOPs/cand. & ms/decision & Infer RSS MiB & Train RSS MiB & Train CUDA MiB & Dev top-1 \\
+\midrule
+dense\_d48 & dense & 219985 & 22993 & 0 & 37728 & 22.54 & 3.30 & -- & -- & 0.48 \\
+hrm\_h2l1\_d48 & hrm & 257905 & 60913 & 16 & 82293696 & 96.33 & 22.00 & 1482 & -- & 0.61 \\
+looped\_p4\_d48 & looped & 231073 & 34081 & 4 & 20574144 & 96.91 & 20.60 & -- & -- & 0.56 \\
+sham\_shuffled\_transformer\_l2\_d48 & transformer & 257809 & 60817 & 2 & 10287552 & 49.17 & 20.90 & 1313 & -- & 0.16 \\
+transformer\_l1\_d48 & transformer & 229537 & 32545 & 1 & 5144256 & 49.61 & 19.00 & -- & -- & 0.56 \\
+transformer\_l2\_d48 & transformer & 257809 & 60817 & 2 & 10287552 & 81.31 & 20.60 & -- & -- & 0.62 \\
+transformer\_l2\_d48\_match & transformer & 257905 & 60913 & 2 & 10287552 & 49.30 & 20.30 & 1290 & -- & 0.88 \\
+transformer\_l4\_d48 & transformer & 314353 & 117361 & 4 & 20574144 & 84.70 & 20.90 & -- & -- & 0.65 \\
+trm\_c2i1\_d48 & trm & 229633 & 32641 & 4 & 20574144 & 366.54 & 21.30 & -- & -- & 0.61 \\
+trm\_c2i1\_d48\_match & trm & 229729 & 32737 & 4 & 20574144 & 107.48 & 22.10 & 1512 & -- & 0.86 \\
+trm\_ldt\_c2i1\_d48 & trm\_ldt & 229878 & 32886 & 4 & 20574624 & 100.19 & 22.10 & 1483 & -- & 0.61 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{MCP-02 pilot cpu router receipts: measured parameters, recurrent depth (block applications), FLOPs per candidate (FlopCounterMode), router latency, peak memory.}
+\label{tab:mcp02-pilot_cpu-receipts}
+\end{table}
