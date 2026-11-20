@@ -43,6 +43,7 @@ The packet is a ranked file map followed by source snippets of the symbols the r
 
 Gold targets come from the patch: the changed files, and the innermost function, method or class around each
 changed line of the old file. The split is grouped by repository. Training uses 160 django and sympy instances from
-SWE-bench minus Lite, and the 32 django and sympy instances from Lite form the dev set. The test set is all 109 SWE-bench Lite
+SWE-bench minus Lite; one, whose patch touches no Python file, is skipped. The 32 django and sympy instances from Lite
+form the dev set. The test set is all 109 SWE-bench Lite
 instances from the ten other repositories. The non-agentic reference is SWE-bench's BM25 retrieval: whole files
 ranked by BM25 of the issue and packed until the budget.
