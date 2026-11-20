@@ -128,15 +128,21 @@ def mcp03_tables(numbers: dict) -> None:
         return
     rows = []
     for g in summary["groups"]:
-        for b in ("1024", "2048", "4096"):
+        if g["policy"] == "sham_random" and g["arm"] == "layered":
+            continue
+        for b in ("c512", "c2048", "512", "2048"):
             if b not in g["budgets"]:
                 continue
             x = g["budgets"][b]
-            rows.append([g["policy"], g["arm"], int(b), x["packet_tokens_mean"], x["file_recall_mean"],
+            label = g["arm"] + (" +map" if b.startswith("c") else "")
+            rows.append([g["policy"], label, int(b.lstrip("c")), x["packet_tokens_mean"], x["file_recall_mean"],
                          f"{x['all_files_hit']}/{g['instances']}", x["symbol_recall_mean"],
                          g["tool_calls_mean"], g["retrieval_result_tokens_mean"]])
     for b, x in sorted(summary["bm25_file_baseline"].items(), key=lambda kv: int(kv[0])):
         rows.append(["bm25_whole_files", "direct", int(b), x["tokens_mean"], x["file_recall_mean"],
+                     f"{x['all_files_hit']}/{x['instances']}", None, 0, None])
+    for k, x in sorted(summary.get("bm25_path_map_baseline", {}).items(), key=lambda kv: int(kv[0])):
+        rows.append([f"bm25_path_map_top{k}", "direct", None, x["tokens_mean"], x["file_recall_mean"],
                      f"{x['all_files_hit']}/{x['instances']}", None, 0, None])
     table("mcp03_packets", ["Router", "Arm", "Budget", "Packet tok.", "File recall", "All files", "Symbol recall",
                             "Calls", "Local tok. read"], rows,
@@ -144,6 +150,38 @@ def mcp03_tables(numbers: dict) -> None:
           "(Qwen2.5 tokenizer) against localisation of the gold patch, with the tokens the router read locally.",
           "tab:mcp03-packets")
     numbers["mcp03"] = {"instances": summary["instances"], "context": summary["context"]}
+    receipts = load(run / "model_receipts.json") or {}
+    mem_dir = run / "memory"
+    by_policy = {}
+    for g in summary["groups"]:
+        by_policy.setdefault(g["policy"], {})[g["arm"]] = g
+    rows = []
+    for name, rec in sorted(receipts.items()):
+        params = rec.get("parameters") or {}
+        if not isinstance(params, dict) or "non_embedding" not in params:
+            continue
+        inf = load(mem_dir / f"{name}.mem.json") or {}
+        tcuda = load(mem_dir / f"{name}.train_cuda.json") or {}
+        tcpu = load(mem_dir / f"{name}.train_cpu.json") or {}
+        ldt = by_policy.get(name, {}).get("layered_ldt") or by_policy.get(name, {}).get("search")
+        mib = lambda b: round(b / 2**20) if b else None  # noqa: E731
+        rows.append([name, rec.get("family"), params["total"], params["non_embedding"], rec.get("recurrent_depth"),
+                     (rec.get("flops_per_candidate") or {}).get("flops"),
+                     ldt["router_ms_per_decision"] if ldt else None,
+                     mib(inf.get("forward_peak_rss_delta")),
+                     mib((tcpu.get("peak_rss_training") or 0) - (tcpu.get("peak_rss_after_dataset_and_torch_load") or 0)),
+                     mib(tcuda.get("cuda_max_memory_allocated")),
+                     tcuda.get("seconds_per_step"),
+                     ldt["budgets"].get("c2048", ldt["budgets"]["2048"])["file_recall_mean"] if ldt else None,
+                     ldt["budgets"]["2048"]["symbol_recall_mean"] if ldt else None])
+    if rows:
+        table("mcp03_receipts", ["Router", "Family", "Params", "Non-emb.", "Depth", "FLOPs/cand.", "ms/dec.",
+                                 "Infer +MiB", "Train CPU +MiB", "Train CUDA MiB", "s/step GPU", "File R@2K+map",
+                                 "Sym R@2K"], rows,
+              "MCP-03 router modules: measured size, recurrent depth, FLOPs per candidate, latency, inference memory "
+              "delta around a 32-candidate forward, training memory over 15 CPU / 40 GPU steps (CPU: growth above the "
+              "loaded dataset and runtime; GPU: peak allocation), and held-out localisation in the LDT arm.",
+              "tab:mcp03-receipts")
 
 
 def gdk_table(numbers: dict) -> None:
@@ -157,11 +195,68 @@ def gdk_table(numbers: dict) -> None:
     numbers["gdk_demo"] = demo.get("summary", {})
 
 
+def macros(numbers: dict) -> None:
+    """LaTeX macros for headline numbers quoted in the prose."""
+    out = []
+
+    def put(name: str, value) -> None:
+        out.append(rf"\newcommand{{\{name}}}{{{tex(fmt(value))}}}")
+
+    s3 = load(R3 / "swebench_lite" / "summary.json")
+    if s3:
+        groups = {(g["arm"], g["policy"]): g for g in s3["groups"]}
+        def recall(arm, policy, budget, key="file_recall_mean"):
+            g = groups.get((arm, policy))
+            return round(g["budgets"][budget][key], 3) if g and budget in g["budgets"] else None
+        put("McpThreeInstances", s3["instances"])
+        put("BmRouterFileRecallFiveTwelve", recall("search", "lexical_bm25", "512"))
+        put("BmComposedFileRecallTwoK", recall("search", "lexical_bm25", "c2048"))
+        put("BmComposedSymRecallTwoK", recall("search", "lexical_bm25", "c2048", "symbol_recall_mean"))
+        put("OracleLdtComposedFileRecallTwoK", recall("layered_ldt", "oracle_upper_bound", "c2048"))
+        put("BmRouterFileRecallTwoK", recall("search", "lexical_bm25", "2048"))
+        put("BmRouterSymRecallTwoK", recall("search", "lexical_bm25", "2048", "symbol_recall_mean"))
+        put("OracleLdtFileRecallTwoK", recall("layered_ldt", "oracle_upper_bound", "2048"))
+        put("OracleLdtSymRecallTwoK", recall("layered_ldt", "oracle_upper_bound", "2048", "symbol_recall_mean"))
+        b = s3["bm25_file_baseline"]
+        for key, name in (("2048", "Two"), ("4096", "Four"), ("13000", "Thirteen"), ("27000", "TwentySeven")):
+            if key in b:
+                put(f"BmFilesRecall{name}", round(b[key]["file_recall_mean"], 3))
+                put(f"BmFilesTokens{name}", round(b[key]["tokens_mean"]))
+        maps = s3.get("bm25_path_map_baseline", {})
+        for key, name in (("5", "Five"), ("12", "Twelve"), ("25", "TwentyFive")):
+            if key in maps:
+                put(f"BmMapRecall{name}", round(maps[key]["file_recall_mean"], 3))
+                put(f"BmMapTokens{name}", round(maps[key]["tokens_mean"]))
+        put("GoldFilesTokens", round(s3["context"]["gold_files_tokens_mean"]))
+        put("RepoPythonFiles", round(s3["context"]["repo_python_files_mean"]))
+        learned = [g for g in s3["groups"] if g["family"] not in ("lexical", "deterministic", "sham", "oracle")]
+        if learned:
+            best = max(learned, key=lambda g: g["budgets"]["2048"]["symbol_recall_mean"])
+            put("BestLearnedRouter", best["policy"])
+            put("BestLearnedArm", best["arm"].replace("_", " "))
+            put("BestLearnedFileRecallTwoK", round(best["budgets"]["2048"]["file_recall_mean"], 3))
+            put("BestLearnedSymRecallTwoK", round(best["budgets"]["2048"]["symbol_recall_mean"], 3))
+            if "c2048" in best["budgets"]:
+                put("BestLearnedComposedFileRecallTwoK", round(best["budgets"]["c2048"]["file_recall_mean"], 3))
+                put("BestLearnedComposedSymRecallTwoK", round(best["budgets"]["c2048"]["symbol_recall_mean"], 3))
+    demo = load(R3 / "gdk_demo" / "receipts.json")
+    if demo and demo.get("summary"):
+        for key, name in (("packet", "Packet"), ("no_packet", "NoPacket")):
+            s = demo["summary"].get(key, {})
+            put(f"Gdk{name}Runs", s.get("runs"))
+            put(f"Gdk{name}FileNamed", s.get("file_named"))
+            put(f"Gdk{name}FunctionNamed", s.get("function_named"))
+            put(f"Gdk{name}InputTokens", round(s.get("provider_input_tokens_mean", 0)))
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "numbers.tex").write_text("\n".join(out) + "\n", encoding="utf-8")
+
+
 def main() -> None:
     numbers: dict = {}
     mcp02_tables(numbers)
     mcp03_tables(numbers)
     gdk_table(numbers)
+    macros(numbers)
     (Path(__file__).resolve().parent / "numbers.json").write_text(json.dumps(numbers, indent=1) + "\n", encoding="utf-8")
     print("tables:", sorted(p.name for p in OUT.glob("*.tex")) if OUT.is_dir() else [])
 

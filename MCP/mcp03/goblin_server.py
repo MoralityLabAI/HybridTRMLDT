@@ -56,7 +56,8 @@ class GoblinService:
                  {"task": {"type": "string"}, "repo_path": {"type": "string"},
                   "budget_tokens": {"type": "integer", "minimum": 128, "maximum": 32768},
                   "max_tool_calls": {"type": "integer", "minimum": 1, "maximum": 200},
-                  "arm": {"type": "string", "enum": ["search", "layered", "hybrid", "layered_ldt"]}},
+                  "arm": {"type": "string", "enum": ["search", "layered", "hybrid", "layered_ldt"]},
+                  "compose": {"type": "boolean"}},
                  ["task", "repo_path"]),
             tool("read_symbol", "Read one symbol's source by path::qualname.",
                  {"repo_path": {"type": "string"}, "uri": {"type": "string"}}, ["repo_path", "uri"]),
@@ -81,10 +82,11 @@ class GoblinService:
                 arm = arguments.get("arm", "hybrid")
                 budget = int(arguments.get("budget_tokens", 2048))
                 env = CodeEnv(snap, {}, {"files": [], "symbols": []}, arm, index=index)
+                compose = bool(arguments.get("compose", os.environ.get("MCP03_COMPOSED") == "1"))
                 ep = run_code_episode(env, arguments["task"], policy=self.router,
                                       max_tool_calls=int(arguments.get("max_tool_calls", 24)),
-                                      budgets=(budget,), return_text=True)
-                packet = ep["packets"][str(budget)]
+                                      budgets=(budget,), return_text=True, compose=compose)
+                packet = ep["packets"][("c" if compose else "") + str(budget)]
                 payload = {"packet": packet["text"], "packet_tokens": packet["tokens"],
                            "tokenizer": tokenizer_name(), "tool_calls": ep["tool_calls"],
                            "local_result_tokens": ep["compute"]["result_tokens"],

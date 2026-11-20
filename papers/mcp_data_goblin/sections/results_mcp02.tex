@@ -1,0 +1,35 @@
+\subsection{Synthetic multi-server catalogs (MCP-02)}
+\paragraph{Index depth.} At 1024 resources the layout sweep (Table~\ref{tab:mcp02-pilot_gpu-layout},
+Figure~\ref{fig:layout}) separates three regimes:
+\begin{itemize}
+\item paging a flat root or a single server facet exhausts the 40-call budget even for the oracle;
+\item two facets are not enough either;
+\item three or four facets (server, collection and name bucket, or kind, bucket and entity) let the oracle finish in
+14 to 20 calls while reading about half the tool-result bytes of a shallow walk.
+\end{itemize}
+Deeper indices therefore pay for their traversal once the catalog no longer fits a few pages per node.
+Certified exclusions cost refine calls but prune whole provenance or capability subtrees. With the provenance
+facet first they remove archive and replica branches in one step, and no certified exclusion ever removed a
+required record.
+
+\paragraph{Controls.} Search and eager flat listing are easy for BM25 and the deterministic rules at both catalog
+sizes. Layered discovery without search is hard: at 1024 resources both controls solve only a few episodes per cell,
+while the oracle solves nearly all of them. That gap is where learned routing can matter.
+
+\paragraph{Learned routers.} Tables~\ref{tab:mcp02-pilot_cpu-success} and \ref{tab:mcp02-pilot_gpu-success} give
+accepted episodes per cell for the CPU pilot (width 48, tokens-only encoder) and the GPU pilot (width 128, exact-match
+channel). The encoder dominates. Tokens-only routers stay below BM25 in most cells, because they never learn to
+recognise that a candidate's identifier equals the needed one. Adding the exact-match channel lifts held-out dev
+ranking accuracy from 0.73 to 0.91 for the same Transformer-L2 and data, and it is what lets learned routers compete.
+Among tokens-only routers the TRM is the strongest learned family in the layered arms, consistent with recurrence
+helping when matching must be learned.
+
+\IfFileExists{tables/mcp02_pilot_gpu_success.tex}{\input{tables/mcp02_pilot_gpu_success}}{}
+\IfFileExists{tables/mcp02_pilot_cpu_success.tex}{\input{tables/mcp02_pilot_cpu_success}}{}
+\IfFileExists{tables/mcp02_pilot_gpu_depth.tex}{\input{tables/mcp02_pilot_gpu_depth}}{}
+\IfFileExists{tables/mcp02_pilot_gpu_layout.tex}{\input{tables/mcp02_pilot_gpu_layout}}{}
+\IfFileExists{figures/mcp02_layout_depth.pdf}{
+\begin{figure}[t]\centering
+\includegraphics[width=0.95\linewidth]{figures/mcp02_layout_depth.pdf}
+\caption{MCP-02 index depth against tool-result volume and accepted episodes (1024 resources).}\label{fig:layout}
+\end{figure}}{}

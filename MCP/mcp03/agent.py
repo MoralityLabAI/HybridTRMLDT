@@ -226,8 +226,11 @@ def _prefilter(need: str, items: list[dict], k: int) -> tuple[list[dict], int]:
 
 
 def build_packet(env: CodeEnv, reads: list[tuple[float, str]], seen: dict[str, float], budget: int,
-                 snippet_lines: int = 40) -> dict:
-    """Ranked file map plus snippets of read symbols, cut to ``budget`` tokens."""
+                 snippet_lines: int = 40, file_map: list[str] | None = None) -> dict:
+    """Ranked file map plus snippets of read symbols, cut to ``budget`` tokens.
+
+    ``file_map`` replaces the router-derived file ranking (the composed packet uses the ranked
+    paths returned by one ``file_search`` call)."""
     file_score: dict[str, float] = {}
     for uri, score in seen.items():
         path = uri.split("::")[0][2:] if uri.startswith(("s:", "f:")) else None
@@ -237,6 +240,8 @@ def build_packet(env: CodeEnv, reads: list[tuple[float, str]], seen: dict[str, f
         path = uri.split("::")[0]
         file_score[path] = max(file_score.get(path, -1e9), score + 1.0)
     ranked_files = [p for p, _s in sorted(file_score.items(), key=lambda x: (-x[1], x[0]))]
+    if file_map is not None:
+        ranked_files = list(file_map) + [p for p in ranked_files if p not in file_map]
     parts, used = [], 0
     header = "Relevant files (ranked):\n"
     map_files = []
@@ -268,7 +273,8 @@ def build_packet(env: CodeEnv, reads: list[tuple[float, str]], seen: dict[str, f
 
 def run_code_episode(env: CodeEnv, issue: str, *, policy: Policy, max_tool_calls: int = 24,
                      budgets: tuple[int, ...] = (1024, 2048, 4096), prefilter_k: int = 32,
-                     record=None, tape: list | None = None, return_text: bool = False) -> dict:
+                     record=None, tape: list | None = None, return_text: bool = False,
+                     compose: bool = False) -> dict:
     started = time.perf_counter()
     terms = salient_terms(issue)
     need = " ".join(terms) or issue.strip().split("\n")[0]
@@ -379,6 +385,20 @@ def run_code_episode(env: CodeEnv, issue: str, *, policy: Policy, max_tool_calls
         elif item["tool"] == "read_symbol":
             reads.append((rel, payload["uri"]))
     packets = {}
+    composed_map = None
+    if compose and budgets:
+        # One counted MCP call after exploration: whole-file BM25 ranking used as the packet's file map.
+        fs = env.call("file_search", {"query": issue, "limit": 16})
+        totals["result_bytes"] += len(fs["content"][0]["text"].encode("utf-8"))
+        totals["result_tokens"] += count_tokens(fs["content"][0]["text"])
+        result_digests.append(digest(fs["structuredContent"]))
+        composed_map = fs["structuredContent"].get("paths", [])[:12]
+        for b in budgets:
+            packet = build_packet(env, reads, seen, b, file_map=composed_map)
+            packets[f"c{b}"] = {"tokens": packet["tokens"], "bytes": packet["bytes"], "grade": env.grade(packet),
+                                "snippets": len(packet["snippets"]), "map": len(packet["map"])}
+            if return_text:
+                packets[f"c{b}"]["text"] = packet["text"]
     for b in budgets:
         packet = build_packet(env, reads, seen, b)
         packets[str(b)] = {"tokens": packet["tokens"], "bytes": packet["bytes"], "grade": env.grade(packet),

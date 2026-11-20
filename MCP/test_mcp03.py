@@ -116,6 +116,15 @@ def test_controls_build_budgeted_packets(repo, arm):
             assert ep["packets"]["512"]["grade"]["symbol_recall"] == 1.0
 
 
+def test_composed_packet_uses_file_search(repo):
+    issue = "Ledger post should round the amount"
+    env = CodeEnv(repo["snap"], {}, repo["gold"], "layered")
+    ep = run_code_episode(env, issue, policy=make_code_control("sham_random"), max_tool_calls=3, budgets=(256,),
+                          compose=True)
+    assert ep["packets"]["c256"]["grade"]["file_recall"] == 1.0 and ep["packets"]["c256"]["tokens"] <= 256
+    assert ep["tool_calls"] == 4 and ep["environment_stats"]["search_calls"] >= 1
+
+
 def test_tape_replay(repo):
     issue = "Ledger.post should round the amount"
     env = CodeEnv(repo["snap"], {}, repo["gold"], "layered_ldt")

@@ -75,7 +75,9 @@ def iter_envs(cfg: dict, rows: list[dict], arms: list[str]):
             continue
         base = CodeEnv(snap, {}, gold, arms[0])
         index = base.index
-        yield inst, gold, {arm: (lambda arm=arm: CodeEnv(snap, {}, gold, arm, index=index)) for arm in arms}
+        file_index = base.file_index
+        yield inst, gold, {arm: (lambda arm=arm: CodeEnv(snap, {}, gold, arm, index=index, file_index=file_index))
+                           for arm in arms}
 
 
 class EpsilonCodeOracle(CodeOraclePolicy):
@@ -225,7 +227,8 @@ def evaluate(args) -> int:
                         if key in done:
                             continue
                         ep = run_code_episode(envs[arm](), inst["problem_statement"], policy=policy,
-                                              max_tool_calls=budget, budgets=budgets, prefilter_k=ev["prefilter_k"])
+                                              max_tool_calls=budget, budgets=budgets, prefilter_k=ev["prefilter_k"],
+                                              compose=ev.get("composed_packets", False))
                         tape = ep.pop("tape")
                         desc = ep.pop("policy")
                         receipts[name] = desc
@@ -359,9 +362,10 @@ def replay(run: Path, every: int = 1) -> dict:
     for inst, gold, envs in iter_envs(cfg, rows, ev["arms"]):
         for e in by_id.get(inst["instance_id"], []):
             tape = tapes[(e["instance_id"], e["arm"], e["policy_name"], e["max_tool_calls"])]
+            budgets = tuple(sorted({int(b.lstrip("c")) for b in e["packets"]}))
             out = run_code_episode(envs[e["arm"]](), inst["problem_statement"], policy=make_code_control("sham_random"),
-                                   max_tool_calls=e["max_tool_calls"], budgets=tuple(int(b) for b in e["packets"]),
-                                   prefilter_k=ev["prefilter_k"], tape=tape)
+                                   max_tool_calls=e["max_tool_calls"], budgets=budgets, prefilter_k=ev["prefilter_k"],
+                                   tape=tape, compose=any(b.startswith("c") for b in e["packets"]))
             same = (out["results_sha256"] == e["results_sha256"] and out["reads"] == e["reads"]
                     and out["tool_calls"] == e["tool_calls"])
             if same_tokenizer:

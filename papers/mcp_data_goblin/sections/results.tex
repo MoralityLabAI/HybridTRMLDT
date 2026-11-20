@@ -1,0 +1,31 @@
+\subsection{Compact packets on SWE-bench Lite (MCP-03)}
+Table~\ref{tab:mcp03-packets} and Figure~\ref{fig:mcp03} report packet size against localisation on
+\McpThreeInstances{} SWE-bench Lite tasks from ten repositories that contributed no training data. A held-out
+repository has \RepoPythonFiles{} Python files on average, and its gold files alone average \GoldFilesTokens{}
+tokens.
+
+With search access, a router spending 24 local tool calls produces a packet that contains every gold file in a
+fraction of tasks no lower than whole-file retrieval at many times the size. BM25 as the router places a gold file in the packet
+for a mean file recall of \BmRouterFileRecallFiveTwelve{} at 512 tokens and \BmRouterFileRecallTwoK{} at 2,048
+tokens. SWE-bench's BM25 whole-file retrieval reaches \BmFilesRecallTwo{} at 2,048 tokens, \BmFilesRecallThirteen{}
+at \BmFilesTokensThirteen{} tokens and \BmFilesRecallTwentySeven{} at \BmFilesTokensTwentySeven{} tokens. Part of the
+gap is the packet's ranked path map. Giving the whole-file baseline the same pointer channel (its top 12 BM25 paths,
+\BmMapTokensTwelve{} tokens) yields file recall \BmMapRecallTwelve{}. The router's advantage therefore comes from
+symbol-level search and reads, not from listing paths.
+
+The oracle bound in the certified LDT arm, which mixes search with index navigation, reaches file recall
+\OracleLdtFileRecallTwoK{} and symbol recall \OracleLdtSymRecallTwoK{} at 2,048 tokens, against
+\BmRouterSymRecallTwoK{} symbol recall for BM25. That gap is the room a learned router can take. The best learned
+router (\texttt{\BestLearnedRouter}, \BestLearnedArm{} arm) reaches file recall \BestLearnedFileRecallTwoK{} and symbol
+recall \BestLearnedSymRecallTwoK{}. Without search, browsing the index alone fails for every non-oracle control:
+directory names carry too little signal to steer by.
+
+\IfFileExists{tables/mcp03_packets.tex}{\input{tables/mcp03_packets}}{}
+\IfFileExists{figures/mcp03_tokens_vs_recall.pdf}{
+\begin{figure}[t]\centering
+\includegraphics[width=0.85\linewidth]{figures/mcp03_tokens_vs_recall.pdf}
+\caption{Handoff tokens against gold-file recall on held-out SWE-bench Lite repositories.}\label{fig:mcp03}
+\end{figure}}{}
+
+\IfFileExists{sections/results_mcp02.tex}{\input{sections/results_mcp02}}{}
+\IfFileExists{sections/results_resources.tex}{\input{sections/results_resources}}{}

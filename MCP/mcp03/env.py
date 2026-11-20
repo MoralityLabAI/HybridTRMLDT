@@ -89,7 +89,7 @@ class CodeEnv:
     """One task episode over a repository snapshot."""
 
     def __init__(self, snapshot: Snapshot, task: dict, oracle: dict, arm: str, page_limit: int = 8,
-                 index: SymbolIndex | None = None):
+                 index: SymbolIndex | None = None, file_index: SymbolIndex | None = None):
         if arm not in ARMS:
             raise ValueError("unknown arm")
         self.snapshot, self.task, self.arm, self.page_limit = snapshot, task, arm, page_limit
@@ -98,6 +98,7 @@ class CodeEnv:
         self.lines = {p: src.splitlines() for p, src in snapshot.sources.items()}
         self.flags = {p: path_flags(p) for p in snapshot.files}
         self._index = index
+        self._file_index = file_index
         self._children: dict[str, list[tuple[str, str]]] = {}
         self._build_tree()
         self._states: dict[str, CandidateState] = {}
@@ -113,6 +114,12 @@ class CodeEnv:
             docs = [(s.uri, symbol_document(s, self.lines.get(s.path, []))) for s in self.symbols.values()]
             self._index = SymbolIndex(docs)
         return self._index
+
+    @property
+    def file_index(self) -> SymbolIndex:
+        if self._file_index is None:
+            self._file_index = SymbolIndex([(p, code_tokens(src)) for p, src in sorted(self.snapshot.sources.items())])
+        return self._file_index
 
     def _build_tree(self) -> None:
         dirs: dict[str, set[str]] = {"": set()}
@@ -184,6 +191,8 @@ class CodeEnv:
                                                                          "minItems": 1, "maxItems": 64},
                              "predicate": {"type": "string", "enum": list(PREDICATES)}},
                             ["node_id", "exclude", "predicate"]))
+        out.append(tool("file_search", "BM25 over whole files; returns ranked file paths only (no content).",
+                        {"query": {"type": "string"}, **page}, ["query"]))
         return out + reads
 
     def _page(self, args: dict) -> tuple[int, int]:
@@ -266,6 +275,14 @@ class CodeEnv:
                     window = [k for k in window if k[1] in kept]
                 payload = {"node_id": node, "children": [self.row(k) for _t, k in window], "total": len(kids),
                            "next_cursor": cursor + limit if cursor + limit < len(kids) else None}
+            elif name == "file_search":
+                self.stats["search_calls"] += 1
+                limit, cursor = self._page({"limit": args.get("limit", 16), "cursor": args.get("cursor", 0)})
+                before = self.file_index.operations
+                hits = self.file_index.search(str(args["query"]))
+                self.stats["search_postings_ops"] += self.file_index.operations - before
+                payload = {"query": args["query"], "paths": [p for _s, p in hits[cursor:cursor + limit]],
+                           "total": len(hits)}
             elif name == "read_outline":
                 self.stats["outline_calls"] += 1
                 path = args["path"]

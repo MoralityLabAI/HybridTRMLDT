@@ -1,0 +1,18 @@
+\subsection{Compute and memory of the router modules}
+Tables~\ref{tab:mcp03-receipts}, \ref{tab:mcp02-pilot_gpu-receipts} and \ref{tab:mcp02-pilot_cpu-receipts} list, per module:
+\begin{itemize}
+\item measured parameters (total and without the hashed embedding);
+\item recurrent depth in block applications;
+\item FLOPs per scored candidate;
+\item router latency per decision;
+\item peak memory for training and inference.
+\end{itemize}
+All modules are small: the hashed embedding dominates the parameter count, and a scored decision costs
+megaFLOPs to low gigaFLOPs. Recurrence trades parameters for FLOPs. At equal depth, a looped block or a TRM
+holds the parameters of one block but pays the FLOPs of four, while the four-layer Transformer pays both.
+Training memory is dominated by the framework runtime and the in-memory dataset rather than by the router. The
+inference forward adds a few megabytes on top of the runtime.
+
+\IfFileExists{tables/mcp03_receipts.tex}{\input{tables/mcp03_receipts}}{}
+\IfFileExists{tables/mcp02_pilot_gpu_receipts.tex}{\input{tables/mcp02_pilot_gpu_receipts}}{}
+\IfFileExists{tables/mcp02_pilot_cpu_receipts.tex}{\input{tables/mcp02_pilot_cpu_receipts}}{}
