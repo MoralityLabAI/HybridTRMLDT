@@ -1,0 +1,22 @@
+\begin{itemize}
+\item \textbf{Retrieval tokens.} The handoff packet is counted three ways:
+\begin{itemize}
+\item exact UTF-8 bytes;
+\item a named tokenizer in MCP-03 (Qwen2.5-0.5B-Instruct, pinned revision);
+\item a labelled 4-bytes-per-token estimate in the MCP-02 economics.
+\end{itemize}
+The tokens the router \emph{read} locally (every tool result) are counted separately, as are router tokens (encoder
+positions processed).
+\item \textbf{Compute.} FLOPs per candidate come from \texttt{torch.utils.flop\_counter.FlopCounterMode} at the fixed sequence
+length, multiplied by the candidates scored. Recurrent depth is the number of block applications. Latency is the
+wall clock per router decision on the recorded host.
+\item \textbf{Memory.} For training we record the process peak working set, which includes the in-memory dataset, and the CUDA
+peak allocation on GPU. For inference we record the peak working-set delta around one 32-candidate forward pass in a
+fresh process, together with the weight bytes.
+\item \textbf{Economics.} Cost per accepted task divides the summed cost of every assigned episode, failures included, by
+the accepted count. The downstream handoff is priced at an assumed frontier input price, and local seconds at
+amortised device prices. Tool calls and verifier checks carry nominal prices. All prices are labelled assumptions,
+with four sensitivity scenarios.
+\end{itemize}
+The hosts were shared: an RTX 5080 Laptop GPU with other workloads resident (80 W limit), and a CPU at
+full load from concurrent jobs. Wall-clock figures are upper bounds; FLOPs and token counts are host independent.

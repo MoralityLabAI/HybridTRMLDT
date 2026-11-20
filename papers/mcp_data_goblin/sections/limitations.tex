@@ -1,0 +1,17 @@
+\begin{itemize}
+\item \textbf{Synthetic worlds.} MCP-02 tasks are generated. Their exact judge makes accounting precise, but descriptor
+language and catalog structure are simpler than real MCP deployments.
+\item \textbf{Localisation, not resolution.} MCP-03 measures whether the packet contains the code the gold patch
+edits. That is the retrieval stage of agentless SWE-bench pipelines. It is not an end-to-end resolve rate. No
+frontier-model API key was available on the host, and the local models that fit beside the other resident workloads
+(0.5B to 1.7B parameters) resolve too few issues for a measurable contrast. The GDK demo therefore scores whether the
+model names the gold file and function, not whether its patch passes the tests.
+\item \textbf{Small training budgets.} Routers saw at most tens of thousands of decision states for two or three epochs.
+Architecture differences of a few points are within noise at 32 to 109 tasks per cell. The paper reports Wilson
+intervals and paired bootstrap intervals rather than significance claims.
+\item \textbf{Shared hardware.} The GPU and CPU served concurrent jobs, so latencies are upper bounds and comparisons
+across runs taken at different times are not exact. FLOPs, tokens and memory peaks are not affected.
+\item \textbf{Encoder amendment.} The exact-match channel was added after inspecting dev-world decision traces of a
+tokens-only router, and before any test-set evaluation of a learned router. The CPU pilot keeps the registered tokens-only
+encoder for comparison.
+\end{itemize}

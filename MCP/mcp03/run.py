@@ -249,6 +249,24 @@ def evaluate(args) -> int:
     return 0
 
 
+def recompute_baselines(args) -> int:
+    """Rewrite baselines.jsonl (BM25 whole files and BM25 path maps, gold context sizes) for the test split."""
+    cfg = json.loads(args.config.read_text(encoding="utf-8"))
+    ev = cfg["evaluation"]
+    rows = select_instances(cfg, "test")
+    tmp = args.out / "baselines.jsonl.tmp"
+    with open(tmp, "w", encoding="utf-8", newline=chr(10)) as out:
+        for inst, gold, envs in iter_envs(cfg, rows, ev["arms"][:1]):
+            if envs is None:
+                continue
+            env = envs[ev["arms"][0]]()
+            b = bm25_file_baseline(env, inst["problem_statement"], tuple(ev["bm25_file_budgets"]))
+            out.write(canonical_json({"instance_id": inst["instance_id"], "repo": inst["repo"], "gold": gold,
+                                      "bm25_files": b, "context": oracle_context_tokens(env)}) + chr(10))
+    os.replace(tmp, args.out / "baselines.jsonl")
+    return 0
+
+
 def _mean(xs):
     return sum(xs) / len(xs) if xs else None
 
@@ -299,11 +317,18 @@ def summarize(run: Path) -> dict:
         baseline[b] = {"tokens_mean": _mean([p["tokens"] for p in pk]),
                        "file_recall_mean": _mean([p["grade"]["file_recall"] for p in pk]),
                        "all_files_hit": sum(p["grade"]["all_files"] for p in pk), "instances": len(pk)}
+    maps = {}
+    first = next(iter(bases.values()), {})
+    for k in first.get("bm25_files", {}).get("path_maps", {}):
+        pk = [x["bm25_files"]["path_maps"][k] for x in bases.values() if "path_maps" in x["bm25_files"]]
+        maps[k] = {"tokens_mean": _mean([p["tokens"] for p in pk]),
+                   "file_recall_mean": _mean([p["grade"]["file_recall"] for p in pk]),
+                   "all_files_hit": sum(p["grade"]["all_files"] for p in pk), "instances": len(pk)}
     context = {"gold_files_tokens_mean": _mean([x["context"]["gold_files_tokens"] for x in bases.values()]),
                "repo_python_bytes_mean": _mean([x["context"]["repo_python_bytes"] for x in bases.values()]),
                "repo_python_files_mean": _mean([x["context"]["repo_python_files"] for x in bases.values()])}
     summary = {"gym_version": GYM_VERSION, "episodes": len(eps), "instances": len(bases), "groups": rows,
-               "bm25_file_baseline": baseline, "context": context,
+               "bm25_file_baseline": baseline, "bm25_path_map_baseline": maps, "context": context,
                "episodes_sha256": hashlib.sha256(canonical_json(eps).encode()).hexdigest()}
     (run / "summary.json").write_text(json.dumps(summary, indent=1) + "\n", encoding="utf-8")
     return summary
@@ -357,6 +382,9 @@ def main(argv=None) -> int:
     e.add_argument("--device", default="cpu")
     e.add_argument("--policies", nargs="*")
     e.add_argument("--limit", type=int)
+    bl = sub.add_parser("baselines")
+    bl.add_argument("--config", type=Path, required=True)
+    bl.add_argument("--out", type=Path, required=True)
     s = sub.add_parser("summarize")
     s.add_argument("--run", type=Path, required=True)
     r = sub.add_parser("replay")
@@ -373,6 +401,8 @@ def main(argv=None) -> int:
         return 0
     if args.cmd == "evaluate":
         return evaluate(args)
+    if args.cmd == "baselines":
+        return recompute_baselines(args)
     if args.cmd == "summarize":
         s = summarize(args.run)
         for row in s["groups"]:

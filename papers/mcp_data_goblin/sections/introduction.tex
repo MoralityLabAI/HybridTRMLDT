@@ -1,0 +1,28 @@
+A frontier coding agent pays for every token it reads. Model Context Protocol (MCP) servers expose large tool
+catalogs, resource hierarchies and code repositories. If the agent explores them directly, it pulls tool schemas, listings and
+file contents into its own context. Data Goblin is the intended counterpart: a local retrieval specialist of
+about one billion parameters. It spends inexpensive local inference on searching, filtering, cross-referencing and checking,
+then hands the frontier agent a compact, verifiable \emph{packet}.
+
+This paper reports the gym built to choose that specialist's architecture, and the first measurements taken with it.
+We ask four questions:
+\begin{enumerate}
+\item Which small router family turns a complex MCP catalog into a correct packet with the fewest tool calls and the
+least local compute? The families are lexical BM25, a trained dense dual encoder, feed-forward Transformers,
+shared-weight looped Transformers, Tiny Recursive Models (TRM), TRM with certified lattice (LDT) refinement, and a
+two-timescale Hierarchical Reasoning Model (HRM).
+\item At matched FLOPs, does recurrence with fewer parameters match distinct layers? Does depth added at test time
+buy anything?
+\item Does a deeper MCP index save more context than its extra traversal costs?
+\item On real repositories from a popular code-agent benchmark (SWE-bench Lite), how small can the packet be while
+still containing the code the gold patch edits?
+\end{enumerate}
+
+Three contributions are executable artifacts in the repository:
+\begin{itemize}
+\item \textbf{MCP-02}, a synthetic multi-server world with eight compositional task families, layered indices
+and candidate refinement certified by an environment-owned verifier.
+\item \textbf{MCP-03}, a code-repository MCP over SWE-bench tasks, split by repository.
+\item \textbf{goblin-gdk}, a Rust app on the Goose Development Kit (GDK) whose agent loop grounds inference in the packet.
+\end{itemize}
+Every run stores decision tapes that replay without torch, and continuous integration replays them.

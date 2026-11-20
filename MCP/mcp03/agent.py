@@ -409,7 +409,12 @@ def bm25_file_baseline(env: CodeEnv, issue: str, budgets: tuple[int, ...]) -> di
             used += cost
         packet = {"snippets": [], "map": chosen, "ranked_files": ranked[:50]}
         out[str(b)] = {"tokens": used, "grade": env.grade(packet), "files": len(chosen)}
-    return {"packets": out, "lexical_ops": index.operations}
+    maps = {}
+    for k in (5, 12, 25):
+        text = "Relevant files (ranked):" + chr(10) + "".join(f"- {p}" + chr(10) for p in ranked[:k])
+        maps[str(k)] = {"tokens": count_tokens(text), "grade": env.grade({"snippets": [], "map": ranked[:k],
+                                                                          "ranked_files": ranked[:k]})}
+    return {"packets": out, "path_maps": maps, "lexical_ops": index.operations}
 
 
 def oracle_context_tokens(env: CodeEnv) -> dict:

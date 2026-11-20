@@ -142,7 +142,8 @@ def evaluate_ranking(model, states, device, batch=64) -> dict:
 
 
 def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, device: str, seed: int,
-        shuffle_labels: bool = False, dev: dict | None = None, threads: int = 6, log=print) -> tuple:
+        shuffle_labels: bool = False, dev: dict | None = None, threads: int = 6, log=print,
+        max_steps: int | None = None) -> tuple:
     import torch
     from .models import Router, flops_per_candidate, parameter_counts
     torch.manual_seed(seed)
@@ -188,11 +189,15 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
             opt.step()
             sched.step()
             step += 1
-            running.append(float(loss))
+            running.append(float(loss.detach()))
+            if max_steps is not None and step >= max_steps:
+                break
             if step % 100 == 0:
                 log(f"  step {step}/{total_steps} loss {sum(running[-100:]) / len(running[-100:]):.4f} "
                     f"{time.perf_counter() - started:.0f}s")
         curve.append({"epoch": epoch + 1, "mean_loss": sum(running) / len(running)})
+        if max_steps is not None and step >= max_steps:
+            break
     receipt = {"config": config, "epochs": epochs, "lr": lr, "batch_states": batch_states, "seed": seed,
                "shuffle_labels": shuffle_labels, "device": device, "threads": threads,
                "train_seconds": time.perf_counter() - started, "steps": step, "loss_curve": curve,
@@ -228,6 +233,12 @@ def main(argv=None) -> int:
     d.add_argument("--config", type=Path, required=True)
     d.add_argument("--split", choices=("train", "dev"), required=True)
     d.add_argument("--out", type=Path, required=True)
+    tp = sub.add_parser("trainprobe", help="peak memory and step time for a fixed number of training steps")
+    tp.add_argument("--config", type=Path, required=True)
+    tp.add_argument("--model", required=True)
+    tp.add_argument("--train", type=Path, required=True)
+    tp.add_argument("--steps", type=int, default=40)
+    tp.add_argument("--device", default="cpu")
     f = sub.add_parser("fit")
     f.add_argument("--config", type=Path, required=True)
     f.add_argument("--model", required=True, help="model name from the config's models table")
@@ -252,6 +263,28 @@ def main(argv=None) -> int:
         print(json.dumps(data["meta"], indent=1)[:2000])
         return 0
     import gzip
+    if args.cmd == "trainprobe":
+        from .run import peak_rss_bytes
+        data = json.load(gzip.open(args.train, "rt", encoding="utf-8"))
+        spec, train = cfg["models"][args.model], cfg["training"]
+        import torch
+        torch.zeros(1)
+        if args.device == "cuda":
+            torch.zeros(1, device="cuda")
+            torch.cuda.reset_peak_memory_stats()
+        before = peak_rss_bytes()
+        started = time.perf_counter()
+        model, receipt = fit(spec["config"], data, epochs=1, lr=train["lr"], batch_states=train["batch_states"],
+                             device=args.device, seed=train["seed"], threads=train.get("threads", 6),
+                             log=lambda *_: None, max_steps=args.steps)
+        out = {"model": args.model, "device": args.device, "steps": receipt["steps"],
+               "seconds_per_step": (time.perf_counter() - started) / max(1, receipt["steps"]),
+               "batch_states": train["batch_states"], "peak_rss_after_dataset_and_torch_load": before,
+               "peak_rss_training": peak_rss_bytes(), "parameters": receipt["parameters"]}
+        if args.device == "cuda":
+            out["cuda_max_memory_allocated"] = int(torch.cuda.max_memory_allocated())
+        print(json.dumps(out))
+        return 0
     data = json.load(gzip.open(args.train, "rt", encoding="utf-8"))
     dev = json.load(gzip.open(args.dev, "rt", encoding="utf-8")) if args.dev else None
     spec = cfg["models"][args.model]
