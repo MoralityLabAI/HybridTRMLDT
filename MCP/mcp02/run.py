@@ -51,9 +51,7 @@ def source_receipt() -> dict:
                                  "MCP/transport.py", "MCP/serve.py", "MCP/local_model.py")]
     # LF-normalised so Windows (autocrlf) and Linux checkouts of one commit hash alike.
     files = {str(p.relative_to(ROOT)).replace("\\", "/"):
-             hashlib.sha256(p.read_bytes().replace(b"
-", b"
-")).hexdigest() for p in paths if p.is_file()}
+             hashlib.sha256(p.read_bytes().replace(b"\r\n", b"\n")).hexdigest() for p in paths if p.is_file()}
     try:
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True,
                                          stderr=subprocess.DEVNULL).strip()
