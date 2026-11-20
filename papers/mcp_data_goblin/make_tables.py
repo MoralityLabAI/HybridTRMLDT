@@ -188,10 +188,19 @@ def gdk_table(numbers: dict) -> None:
     demo = load(R3 / "gdk_demo" / "receipts.json")
     if not demo:
         return
-    rows = [[d["label"], d["used_packet"], d.get("packet_tokens"), d["provider_input_tokens"],
-             d["provider_output_tokens"], d["retrieval_seconds"], d["inference_seconds"]] for d in demo["runs"]]
-    table("gdk_demo", ["Run", "Packet", "Packet tok.", "Provider in", "Provider out", "Retrieval s", "Inference s"],
-          rows, "The goblin-gdk Goose GDK app with and without the compact packet.", "tab:gdk-demo")
+    rows = []
+    for flag, label in ((True, "with goblin packet"), (False, "without packet")):
+        runs = [r for r in demo["runs"] if r["used_packet"] is flag and "score" in r]
+        n = len(runs)
+        mean = lambda key: sum(r[key] or 0 for r in runs) / n if n else None  # noqa: E731
+        rows.append([label, n, mean("packet_tokens") if flag else None, mean("provider_input_tokens"),
+                     mean("provider_output_tokens"), sum(r["score"]["file_named"] for r in runs),
+                     sum(bool(r["score"]["function_named"]) for r in runs), mean("inference_seconds")])
+    table("gdk_demo", ["Run", "Tasks", "Packet tok.", "Provider in", "Provider out", "File named", "Function named",
+                       "Inference s"], rows,
+          "goblin-gdk with Qwen2.5-0.5B-Instruct on CPU: SWE-bench Lite tasks from requests, flask and seaborn. "
+          "The model must name the file and function to edit; answers are scored against the hidden gold patch.",
+          "tab:gdk-demo")
     numbers["gdk_demo"] = demo.get("summary", {})
 
 

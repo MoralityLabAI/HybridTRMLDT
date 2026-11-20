@@ -1,0 +1,645 @@
+{
+ "model": "qwen2.5-0.5b-instruct",
+ "budget": 1536,
+ "max_tokens": 200,
+ "summary": {
+  "packet": {
+   "runs": 11,
+   "file_named": 5,
+   "function_named": 3,
+   "provider_input_tokens_mean": 2012.2727272727273,
+   "provider_output_tokens_mean": 128.72727272727272
+  },
+  "no_packet": {
+   "runs": 11,
+   "file_named": 1,
+   "function_named": 2,
+   "provider_input_tokens_mean": 503.45454545454544,
+   "provider_output_tokens_mean": 107.9090909090909
+  }
+ },
+ "runs": [
+  {
+   "instance_id": "psf__requests-1963",
+   "repo": "psf/requests",
+   "used_packet": true,
+   "label": "psf__requests-1963 packet",
+   "packet_tokens": 1510,
+   "local_result_tokens": 9424,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 1751,
+   "provider_output_tokens": 109,
+   "retrieval_seconds": 12.605762469,
+   "inference_seconds": 387.188089192,
+   "answer": "FILE: requests/sessions.py\nFUNCTION: Session.resolve_redirects\nCHANGE: Fixes the behavior where `Session.resolve_redirects` copies the original request for all subsequent requests, causing incorrect method selection.\n\nIn the provided example, the first 303 See Other redirect causes the POST to be converted to a GET. To maintain the correct method selection, the code should start each iteration by creating a new `Response` object rather than copying the original request. This ensures that the correct method (`POST`) is selected for each subsequent request.",
+   "score": {
+    "file_named": true,
+    "function_named": true
+   },
+   "gold": {
+    "files": [
+     "requests/sessions.py"
+    ],
+    "symbols": [
+     "requests/sessions.py::SessionRedirectMixin.resolve_redirects"
+    ]
+   }
+  },
+  {
+   "instance_id": "psf__requests-1963",
+   "repo": "psf/requests",
+   "used_packet": false,
+   "label": "psf__requests-1963 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 241,
+   "provider_output_tokens": 155,
+   "retrieval_seconds": 1.022e-06,
+   "inference_seconds": 449.052281312,
+   "answer": "FILE: session.py\nFUNCTION: resolve_redirects\nCHANGE: Add `Session.resolve_redirects` to copy the original request object instead of starting it from scratch.\n\nISSUE:\n`Session.resolve_redirects` copies the original request for all subsequent requests, can cause incorrect method selection.\nConsider the following redirection chain:\n\n```\nPOST /do_something HTTP/1.1\nHost: server.example.com\n...\n\nHTTP/1.1 303 See Other\nLocation: /new_thing_1513\n\nGET /new_thing_1513\nHost: server.example.com\n...\n\nHTTP/1.1 307 Temporary Redirect\nLocation: //failover.example.com/new_thing_1513\n```",
+   "score": {
+    "file_named": false,
+    "function_named": true
+   },
+   "gold": {
+    "files": [
+     "requests/sessions.py"
+    ],
+    "symbols": [
+     "requests/sessions.py::SessionRedirectMixin.resolve_redirects"
+    ]
+   }
+  },
+  {
+   "instance_id": "psf__requests-2148",
+   "repo": "psf/requests",
+   "used_packet": true,
+   "label": "psf__requests-2148 packet",
+   "packet_tokens": 1524,
+   "local_result_tokens": 6678,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 2352,
+   "provider_output_tokens": 53,
+   "retrieval_seconds": 12.293051873,
+   "inference_seconds": 226.1012309,
+   "answer": "FILE: requests/models.py\nFUNCTION: Response.content\nCHANGE: Added a check to ensure the `Response` object has `_content` attribute before returning its content.\n\nISSUE:\nsocket.error exception not caught/wrapped in a requests exception (ConnectionError perhaps?)",
+   "score": {
+    "file_named": true,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "requests/models.py"
+    ],
+    "symbols": [
+     "requests/models.py",
+     "requests/models.py::Response.iter_content.generate"
+    ]
+   }
+  },
+  {
+   "instance_id": "psf__requests-2148",
+   "repo": "psf/requests",
+   "used_packet": false,
+   "label": "psf__requests-2148 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 828,
+   "provider_output_tokens": 62,
+   "retrieval_seconds": 2.615e-06,
+   "inference_seconds": 194.449612825,
+   "answer": "FILE: **/***/***/***/***/***.py\nFUNCTION: __init__\nCHANGE: Added a check to ensure that the request object has been properly initialized before attempting to use it.\nISSUE:\nsocket.error exception not caught/wrapped in a requests exception (ConnectionError perhaps?)",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "requests/models.py"
+    ],
+    "symbols": [
+     "requests/models.py",
+     "requests/models.py::Response.iter_content.generate"
+    ]
+   }
+  },
+  {
+   "instance_id": "psf__requests-2317",
+   "repo": "psf/requests",
+   "used_packet": true,
+   "label": "psf__requests-2317 packet",
+   "packet_tokens": 1505,
+   "local_result_tokens": 5412,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 1782,
+   "provider_output_tokens": 138,
+   "retrieval_seconds": 5.468904935,
+   "inference_seconds": 417.675242772,
+   "answer": "FILE: tests/test_requests.py\nFUNCTION: TestRequestsTestCase\nCHANGE: Fix conversion of method from binary to normal string\n\nISSUE:\nMethod should always be converted to normal string when used in requests calls.\nIn requests/sessions.py, the `method` parameter is currently set to a binary string (\"b'GET'\") instead of the normal string (\"GET\"). This causes issues when trying to send a GET request, resulting in a 404 Not Found error.\n\nTo fix this, we need to ensure that the method is always treated as a normal string before attempting to make a request. This involves converting the method from its current binary form to a normal string representation.",
+   "score": {
+    "file_named": true,
+    "function_named": true
+   },
+   "gold": {
+    "files": [
+     "requests/sessions.py"
+    ],
+    "symbols": [
+     "requests/sessions.py",
+     "requests/sessions.py::Session.request"
+    ]
+   }
+  },
+  {
+   "instance_id": "psf__requests-2317",
+   "repo": "psf/requests",
+   "used_packet": false,
+   "label": "psf__requests-2317 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 277,
+   "provider_output_tokens": 106,
+   "retrieval_seconds": 1.012e-06,
+   "inference_seconds": 305.640965502,
+   "answer": "FILE: requests/sessions.py\nFUNCTION: method\nCHANGE: Convert method from 'b'GET' to 'GET'\n\nISSUE:\nMethod conversion breaks requests when trying to use it as part of a URL query parameter.\nWhen requests tries to use the method \"b'GET'\", it returns a 404 Not Found response instead of the expected result. This occurs because the method is being treated as a binary string, even though it should be converted to its literal form before being used in a URL query parameter.",
+   "score": {
+    "file_named": true,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "requests/sessions.py"
+    ],
+    "symbols": [
+     "requests/sessions.py",
+     "requests/sessions.py::Session.request"
+    ]
+   }
+  },
+  {
+   "instance_id": "psf__requests-2674",
+   "repo": "psf/requests",
+   "used_packet": true,
+   "label": "psf__requests-2674 packet",
+   "packet_tokens": 1520,
+   "local_result_tokens": 6903,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 1691,
+   "provider_output_tokens": 164,
+   "retrieval_seconds": 19.929184147,
+   "inference_seconds": 530.994460596,
+   "answer": "FILE: tests/test_requests.py\nFUNCTION: test_requests\nCHANGE: Add checks to ensure `requests.packages.urllib3.exceptions.DecodeError` and `requests.packages.urllib3.exceptions.TimeoutError` are caught when they occur during requests operations.\n\nISSUE:\nurllib3 exceptions passing through requests API\nI don't know if it's a design goal of requests to hide urllib3's exceptions and wrap them around requests.exceptions types.\n\n(If it's not IMHO it should be, but that's another discussion)\n\nIf it is, I have at least two of them passing through that I have to catch in addition to requests' exceptions. They are requests.packages.urllib3.exceptions.DecodeError and requests.packages.urllib3.exceptions.TimeoutError (this one I get when a proxy timeouts)\n\nThanks!",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "requests/adapters.py"
+    ],
+    "symbols": [
+     "requests/adapters.py",
+     "requests/adapters.py::HTTPAdapter.send"
+    ]
+   }
+  },
+  {
+   "instance_id": "psf__requests-2674",
+   "repo": "psf/requests",
+   "used_packet": false,
+   "label": "psf__requests-2674 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 171,
+   "provider_output_tokens": 115,
+   "retrieval_seconds": 7.92e-07,
+   "inference_seconds": 251.80899052,
+   "answer": "FILE: urlopen.py\nFUNCTION: open\nCHANGE: Catch both DecodeError and TimeoutError\n\nISSUE:\nurllib3 exceptions passing through requests API\nI don't know if it's a design goal of requests to hide urllib3's exceptions and wrap them around requests.exceptions types. If it is, I have at least two of them passing through that I have to catch in addition to requests' exceptions. They are requests.packages.urllib3.exceptions.DecodeError and requests.packages.urllib3.exceptions.TimeoutError (this one I get when a proxy timeouts)",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "requests/adapters.py"
+    ],
+    "symbols": [
+     "requests/adapters.py",
+     "requests/adapters.py::HTTPAdapter.send"
+    ]
+   }
+  },
+  {
+   "instance_id": "pallets__flask-4045",
+   "repo": "pallets/flask",
+   "used_packet": true,
+   "label": "pallets__flask-4045 packet",
+   "packet_tokens": 1475,
+   "local_result_tokens": 4220,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 1585,
+   "provider_output_tokens": 80,
+   "retrieval_seconds": 6.130043957,
+   "inference_seconds": 240.152197958,
+   "answer": "FILE: src/flask/app.py\nFUNCTION: Flask.app\nCHANGE: Add support for dots in blueprint names to raise an error.\n\nISSUE:\nRaise error when blueprint name contains a dot\nThis is required since every dot is now significant since blueprints can be nested. An error was already added for endpoint names in 1.0, but should have been added for this as well.",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "src/flask/blueprints.py"
+    ],
+    "symbols": [
+     "src/flask/blueprints.py::Blueprint.__init__",
+     "src/flask/blueprints.py::Blueprint.add_url_rule"
+    ]
+   }
+  },
+  {
+   "instance_id": "pallets__flask-4045",
+   "repo": "pallets/flask",
+   "used_packet": false,
+   "label": "pallets__flask-4045 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 110,
+   "provider_output_tokens": 81,
+   "retrieval_seconds": 0.000182556,
+   "inference_seconds": 148.430878643,
+   "answer": "FILE: app/blueprints/endpoint.py\nFUNCTION: EndpointBlueprint\nCHANGE: Add check to ensure blueprint name does not contain a dot\n\nISSUE:\nRaise error when blueprint name contains a dot\nThis is required since every dot is now significant since blueprints can be nested. An error was already added for endpoint names in 1.0, but should have been added for this as well.",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "src/flask/blueprints.py"
+    ],
+    "symbols": [
+     "src/flask/blueprints.py::Blueprint.__init__",
+     "src/flask/blueprints.py::Blueprint.add_url_rule"
+    ]
+   }
+  },
+  {
+   "instance_id": "pallets__flask-4992",
+   "repo": "pallets/flask",
+   "used_packet": false,
+   "label": "pallets__flask-4992 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 337,
+   "provider_output_tokens": 40,
+   "retrieval_seconds": 1.433e-06,
+   "inference_seconds": 483.028284736,
+   "answer": "FILE: config.toml\r\nFUNCTION: Config.from_file\r\nCHANGE: Add a file mode parameter to Flask.Config.from_file()\r\n\r\nISSUE:\nAdd a file mode parameter to Flask.Config.from_file()",
+   "score": {
+    "file_named": false,
+    "function_named": true
+   },
+   "gold": {
+    "files": [
+     "src/flask/config.py"
+    ],
+    "symbols": [
+     "src/flask/config.py::Config.from_file"
+    ]
+   }
+  },
+  {
+   "instance_id": "pallets__flask-4992",
+   "repo": "pallets/flask",
+   "used_packet": true,
+   "label": "pallets__flask-4992 packet",
+   "packet_tokens": 1530,
+   "local_result_tokens": 7637,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 1867,
+   "provider_output_tokens": 200,
+   "retrieval_seconds": 7.757936499,
+   "inference_seconds": 556.049286968,
+   "answer": "FILE: src/flask/config.py\nFUNCTION: Config.from_file\nCHANGE: Add a file mode parameter to flask.Config.from_file()\n\nISSUE:\nAdd a file mode parameter to flask.Config.from_file()\nPython 3.11 introduced native TOML support with the `tomllib` package. This could work nicely with the `flask.Config.from_file()` method as an easy way to load TOML config files:\n\n```python\napp.config.from_file(\"config.toml\", tomllib.load)\n```\n\nHowever, `tomllib.load()` takes an object readable in binary mode, while `flask.Config.from_file()` opens a file in text mode, resulting in this error:\n\n```python\nTypeError: File must be opened in binary mode, e.g. use `open('foo.toml', 'rb')`\n```\n\nWe can get around this with a more verbose expression, like loading from a file opened with the built-in `open()` function and passing the `dict` to",
+   "score": {
+    "file_named": true,
+    "function_named": true
+   },
+   "gold": {
+    "files": [
+     "src/flask/config.py"
+    ],
+    "symbols": [
+     "src/flask/config.py::Config.from_file"
+    ]
+   }
+  },
+  {
+   "instance_id": "pallets__flask-5063",
+   "repo": "pallets/flask",
+   "used_packet": true,
+   "label": "pallets__flask-5063 packet",
+   "packet_tokens": 1507,
+   "local_result_tokens": 9097,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 1917,
+   "provider_output_tokens": 164,
+   "retrieval_seconds": 4.9788426569999995,
+   "inference_seconds": 441.465282223,
+   "answer": "FILE: src/flask/app.py\nFUNCTION: Flask.register_blueprint\nCHANGE: Add support for specifying subdomains in the URL prefix.\n\nISSUE:\nFlask routes to return domain/sub-domains information\nCurrently when checking **flask routes** it provides all routes but **it is no way to see which routes are assigned to which subdomain**.\n\n**Default server name:**\nSERVER_NAME: 'test.local'\n\n**Domains (sub-domains):**\ntest.test.local\nadmin.test.local\ntest.local\n\n**Adding blueprints:**\napp.register_blueprint(admin_blueprint,url_prefix='',subdomain='admin')\napp.register_blueprint(test_subdomain_blueprint,url_prefix='',subdomain='test')\n\nThis adds support for specifying subdomains in the URL prefix, allowing for clearer visibility into which routes are associated with each subdomain.",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "src/flask/cli.py"
+    ],
+    "symbols": [
+     "src/flask/cli.py",
+     "src/flask/cli.py::routes_command"
+    ]
+   }
+  },
+  {
+   "instance_id": "pallets__flask-5063",
+   "repo": "pallets/flask",
+   "used_packet": false,
+   "label": "pallets__flask-5063 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 410,
+   "provider_output_tokens": 132,
+   "retrieval_seconds": 1.132e-06,
+   "inference_seconds": 278.672643466,
+   "answer": "FILE: routes.py\nFUNCTION: app.route\nCHANGE: Add a new endpoint for each subdomain and update the rule accordingly.\n\nISSUE:\nFlask routes to return domain/sub-domain information\nCurrently when checking Flask routes it provides all routes but it is not possible to see which routes are assigned to which subdomains.\n\n**Default server name:** \nSERVER_NAME: 'test.local'\n\n**Domains (sub-domains):**\ntest.test.local\nadmin.test.local\ntest.local\n\n**Adding blueprints:**\napp.register_blueprint(admin_blueprint,url_prefix='',subdomain='admin')\napp.register_blueprint(test_subdomain_blueprint,url_prefix='',subdomain='test')\n\n```",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "src/flask/cli.py"
+    ],
+    "symbols": [
+     "src/flask/cli.py",
+     "src/flask/cli.py::routes_command"
+    ]
+   }
+  },
+  {
+   "instance_id": "mwaskom__seaborn-2848",
+   "repo": "mwaskom/seaborn",
+   "used_packet": true,
+   "label": "mwaskom__seaborn-2848 packet",
+   "packet_tokens": 1495,
+   "local_result_tokens": 10873,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 1800,
+   "provider_output_tokens": 200,
+   "retrieval_seconds": 10.361924734,
+   "inference_seconds": 420.230974051,
+   "answer": "FILE: seaborn/_core.py\nFUNCTION: pairplot\nCHANGE: Fix hue_order to include all hue values in seaborn 0.11.1\n\nISSUE:\npairplot fails with hue_order not containing all hue values in seaborn 0.11.1\nIn seaborn < 0.11, one could plot only a subset of the values in the hue column, by passing a hue_order list containing only the desired values. Points with hue values not in the list were simply not plotted.\n```python\niris = sns.load_dataset(\"iris\")`\n# The hue column contains three different species; here we want to plot two\nsns.pairplot(iris, hue=\"species\", hue_order=[\"setosa\", \"versicolor\"])\n```\n\nThis no longer works in 0.11.1. Passing a hue_order list that does not contain some of the values in the hue column raises a long, ugly error traceback. The first exception arises in seaborn/_core",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "seaborn/_oldcore.py"
+    ],
+    "symbols": [
+     "seaborn/_oldcore.py::HueMapping._lookup_single"
+    ]
+   }
+  },
+  {
+   "instance_id": "mwaskom__seaborn-2848",
+   "repo": "mwaskom/seaborn",
+   "used_packet": false,
+   "label": "mwaskom__seaborn-2848 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 305,
+   "provider_output_tokens": 155,
+   "retrieval_seconds": 1.022e-06,
+   "inference_seconds": 444.342245188,
+   "answer": "FILE: pairplot.py\nFUNCTION: pairplot\nCHANGE: Fix hue_order not containing all hue values in seaborn 0.11.1\n\nISSUE:\nWhen using hue_order with seaborn 0.11.1, points with hue values not present in the hue column are not plotted. This is due to changes in how seaborn handles hue ordering between versions. In seaborn < 0.11, hue ordering was limited to the available hue values, but it now requires a specific order when hue_order is provided. This change affects the way pairs plots are generated and can lead to errors if hue_order lists do not include all valid hue values. To resolve this issue, ensure that hue_order includes all hue values present in the dataset before plotting.",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "seaborn/_oldcore.py"
+    ],
+    "symbols": [
+     "seaborn/_oldcore.py::HueMapping._lookup_single"
+    ]
+   }
+  },
+  {
+   "instance_id": "mwaskom__seaborn-3010",
+   "repo": "mwaskom/seaborn",
+   "used_packet": true,
+   "label": "mwaskom__seaborn-3010 packet",
+   "packet_tokens": 1487,
+   "local_result_tokens": 6090,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 2836,
+   "provider_output_tokens": 152,
+   "retrieval_seconds": 44.191957006,
+   "inference_seconds": 480.064103099,
+   "answer": "FILE: tests/_core/test_plot.py\nFUNCTION: TestPlotting.test_png_repr\nCHANGE: Fix PolyFit's `fit_poly` method to handle missing data gracefully.\n\nIn the provided code snippet, there was an issue where the `fit_poly` method of `PolyFit` failed when encountering missing values (`None`) in the input data. The original implementation used `np.polyfit` without error handling, leading to potential issues during computation. To address this, I've modified the `fit_poly` method to include a check for missing data before attempting to fit a polynomial. If any rows contain `None`, the method returns `None` rather than raising an exception. This ensures that the function behaves correctly even when the dataset contains missing values.",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "seaborn/_stats/regression.py"
+    ],
+    "symbols": [
+     "seaborn/_stats/regression.py",
+     "seaborn/_stats/regression.py::PolyFit.__call__"
+    ]
+   }
+  },
+  {
+   "instance_id": "mwaskom__seaborn-3010",
+   "repo": "mwaskom/seaborn",
+   "used_packet": false,
+   "label": "mwaskom__seaborn-3010 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 1349,
+   "provider_output_tokens": 73,
+   "retrieval_seconds": 9.92e-07,
+   "inference_seconds": 218.004652996,
+   "answer": "FILE: so/PolyFit.py\nFUNCTION: add\nCHANGE: Fix PolyFit function to handle missing data gracefully.\n\nThis change ensures that the `PolyFit` function now correctly handles cases where input data includes `None` values, preventing the program from crashing due to a \"Linear Algebra Error\" when attempting to fit a polynomial model using least squares regression.",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "seaborn/_stats/regression.py"
+    ],
+    "symbols": [
+     "seaborn/_stats/regression.py",
+     "seaborn/_stats/regression.py::PolyFit.__call__"
+    ]
+   }
+  },
+  {
+   "instance_id": "mwaskom__seaborn-3190",
+   "repo": "mwaskom/seaborn",
+   "used_packet": true,
+   "label": "mwaskom__seaborn-3190 packet",
+   "packet_tokens": 1530,
+   "local_result_tokens": 8202,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 2110,
+   "provider_output_tokens": 66,
+   "retrieval_seconds": 16.879589511,
+   "inference_seconds": 232.347153725,
+   "answer": "FILE: so/PLOT.py\nFUNCTION: so.Plot\nCHANGE: Fix the TypeError by ensuring the subtraction operation works correctly.\n\nISSUE:\nColor mapping fails with boolean data\n```python\nso.Plot([\"a\", \"b\"], [1, 2], color=[True, False]).add(so.Bar())\n```",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "seaborn/_core/scales.py"
+    ],
+    "symbols": [
+     "seaborn/_core/scales.py::ContinuousBase._setup"
+    ]
+   }
+  },
+  {
+   "instance_id": "mwaskom__seaborn-3190",
+   "repo": "mwaskom/seaborn",
+   "used_packet": false,
+   "label": "mwaskom__seaborn-3190 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 580,
+   "provider_output_tokens": 200,
+   "retrieval_seconds": 1.142e-06,
+   "inference_seconds": 432.648276256,
+   "answer": "FILE: so.Plot.py\nFUNCTION: _setup_scales\nCHANGE: Fix the subtraction operation between boolean values and avoid unsupported operations.\n\nISSUE:\nColor mapping fails with boolean data\n```python\nso.Plot([\"a\", \"b\"], [1, 2], color=[True, False]).add(so.Bar())\n```\n```python-traceback\n---------------------------------------------------------------------------\nTypeError                                 Traceback (most recent call last)\n...\nFile ~/code/seaborn/seaborn/_core/plot.py:841, in Plot._plot(self, pyplot)\n    838 plotter._compute_stats(self, layers)\n    840 # Process scale spec for semantic variables and coordinates computed by stat\n--> 841 plotter._setup_scales(self, common, layers)\n    843 # TODO Remove these after updating other methods\n    844 # ---- Maybe have debug= param that attaches these when True?\n    845",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "seaborn/_core/scales.py"
+    ],
+    "symbols": [
+     "seaborn/_core/scales.py::ContinuousBase._setup"
+    ]
+   }
+  },
+  {
+   "instance_id": "mwaskom__seaborn-3407",
+   "repo": "mwaskom/seaborn",
+   "used_packet": true,
+   "label": "mwaskom__seaborn-3407 packet",
+   "packet_tokens": 1514,
+   "local_result_tokens": 8776,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 2444,
+   "provider_output_tokens": 90,
+   "retrieval_seconds": 7.969825644,
+   "inference_seconds": 187.423216349,
+   "answer": "FILE: seaborn/axisgrid.py\nFUNCTION: PairGrid._map_diag_iter_hue\nCHANGE: Fix the `KeyError` by flattening the columns before plotting.\n\nISSUE:\npairplot raises KeyError with MultiIndex DataFrame\nWhen trying to pairplot a MultiIndex DataFrame, `pairplot` raises a `KeyError`.\n\nThis fix ensures that the `KeyError` is handled gracefully and avoids an unexpected behavior in the codebase.",
+   "score": {
+    "file_named": true,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "seaborn/axisgrid.py"
+    ],
+    "symbols": [
+     "seaborn/axisgrid.py::PairGrid.map_diag"
+    ]
+   }
+  },
+  {
+   "instance_id": "mwaskom__seaborn-3407",
+   "repo": "mwaskom/seaborn",
+   "used_packet": false,
+   "label": "mwaskom__seaborn-3407 no packet",
+   "packet_tokens": null,
+   "local_result_tokens": null,
+   "router_tool_calls": null,
+   "provider_input_tokens": 930,
+   "provider_output_tokens": 68,
+   "retrieval_seconds": 7.11e-07,
+   "inference_seconds": 171.767909965,
+   "answer": "FILE: pairplot.py\r\nFUNCTION: pairplot\r\nCHANGE: Flatten the MultiIndex DataFrame before calling pairplot.\r\n\r\nISSUE:\npairplot raises KeyError with MultiIndex DataFrame\nWhen trying to pairplot a MultiIndex DataFrame, `pairplot` raises a `KeyError`. A workaround is to flatten the columns before calling pairplot.",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "seaborn/axisgrid.py"
+    ],
+    "symbols": [
+     "seaborn/axisgrid.py::PairGrid.map_diag"
+    ]
+   }
+  }
+ ],
+ "earlier_provider_timeouts": [
+  {
+   "instance_id": "pallets__flask-4992",
+   "repo": "pallets/flask",
+   "used_packet": true,
+   "label": "pallets__flask-4992 packet",
+   "packet_tokens": 1530,
+   "local_result_tokens": 7637,
+   "router_tool_calls": 24,
+   "provider_input_tokens": 0,
+   "provider_output_tokens": 0,
+   "retrieval_seconds": 5.559989564,
+   "inference_seconds": 2406.862787245,
+   "answer": "",
+   "score": {
+    "file_named": false,
+    "function_named": false
+   },
+   "gold": {
+    "files": [
+     "src/flask/config.py"
+    ],
+    "symbols": [
+     "src/flask/config.py::Config.from_file"
+    ]
+   },
+   "retried": true
+  }
+ ],
+ "setup": {
+  "app": "goblin-gdk (goose-agent/goose-providers 0.1.0-alpha.14)",
+  "host": "Ubuntu 24.04 under WSL2, CPU inference",
+  "model": "Qwen2.5-0.5B-Instruct @7ae5576, fp32, served by MCP/mcp02/hf_server.py (8 threads)",
+  "packet": "goblin_server compact_context, lexical_bm25 router, hybrid arm, 24 tool calls, 1536-token budget, router-derived file map",
+  "instances": "SWE-bench Lite: first 4 per repository of psf/requests, pallets/flask (3 exist), mwaskom/seaborn",
+  "scoring": "answer contains a gold file path or basename / a gold function or method name; never fed back",
+  "notes": "Runs completed before the restart had no output cap; later runs used --max-tokens 200. One packet run hit the provider's 600 s timeout under full CPU contention and was retried; its receipt is kept under earlier_provider_timeouts."
+ }
+}

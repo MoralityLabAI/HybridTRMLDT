@@ -192,6 +192,9 @@ def evaluate(args) -> int:
     rows = select_instances(cfg, "test")
     if args.limit:
         rows = rows[:args.limit]
+    if args.shard:
+        k, n = (int(x) for x in args.shard.split("/"))
+        rows = rows[k::n]
     policies = load_policies(cfg, args.checkpoints, args.device, set(args.policies) if args.policies else None)
     args.out.mkdir(parents=True, exist_ok=True)
     done = set()
@@ -270,6 +273,30 @@ def recompute_baselines(args) -> int:
             out.write(canonical_json({"instance_id": inst["instance_id"], "repo": inst["repo"], "gold": gold,
                                       "bm25_files": b, "context": oracle_context_tokens(env)}) + chr(10))
     os.replace(tmp, args.out / "baselines.jsonl")
+    return 0
+
+
+def merge_runs(inputs: list[Path], out: Path) -> int:
+    """Concatenate sharded evaluation runs (episodes, tapes, baselines) and merge their receipts."""
+    import shutil
+    out.mkdir(parents=True, exist_ok=True)
+    for name in ("episodes.jsonl", "tapes.jsonl", "baselines.jsonl"):
+        with open(out / name, "w", encoding="utf-8", newline=chr(10)) as dst:
+            for run in inputs:
+                if (run / name).is_file():
+                    dst.write((run / name).read_text(encoding="utf-8"))
+    receipts = {}
+    for run in inputs:
+        if (run / "model_receipts.json").is_file():
+            receipts.update(json.loads((run / "model_receipts.json").read_text(encoding="utf-8")))
+    (out / "model_receipts.json").write_text(json.dumps(receipts, indent=1, default=str) + chr(10), encoding="utf-8")
+    hosts = [json.loads((r / "host.json").read_text(encoding="utf-8")) for r in inputs if (r / "host.json").is_file()]
+    if hosts:
+        host = dict(hosts[0], shards=len(inputs), peak_rss_bytes_by_shard=[h.get("peak_rss_bytes") for h in hosts])
+        (out / "host.json").write_text(json.dumps(host, indent=1) + chr(10), encoding="utf-8")
+    for name in ("source_manifest.json", "run_config.json"):
+        if (inputs[0] / name).is_file():
+            shutil.copyfile(inputs[0] / name, out / name)
     return 0
 
 
@@ -393,6 +420,10 @@ def main(argv=None) -> int:
     e.add_argument("--device", default="cpu")
     e.add_argument("--policies", nargs="*")
     e.add_argument("--limit", type=int)
+    e.add_argument("--shard", help="k/n: evaluate every n-th test instance starting at k")
+    mr = sub.add_parser("merge-runs")
+    mr.add_argument("--inputs", type=Path, nargs="+", required=True)
+    mr.add_argument("--out", type=Path, required=True)
     bl = sub.add_parser("baselines")
     bl.add_argument("--config", type=Path, required=True)
     bl.add_argument("--out", type=Path, required=True)
@@ -427,6 +458,8 @@ def main(argv=None) -> int:
         return evaluate(args)
     if args.cmd == "baselines":
         return recompute_baselines(args)
+    if args.cmd == "merge-runs":
+        return merge_runs(args.inputs, args.out)
     if args.cmd == "summarize":
         s = summarize(args.run)
         for row in s["groups"]:
