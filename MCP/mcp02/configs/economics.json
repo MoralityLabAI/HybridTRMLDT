@@ -1,0 +1,17 @@
+{
+  "label": "MCP-02 price assumptions (calculation inputs, not measured bills)",
+  "bytes_per_token_estimate": 4.0,
+  "bytes_per_token_note": "Estimator: 4 UTF-8 bytes per token for the downstream handoff. Exact handoff bytes are reported separately.",
+  "frontier_input_usd_per_mtok": 3.0,
+  "local_cpu_usd_per_hour": 0.05,
+  "local_gpu_usd_per_hour": 0.30,
+  "local_price_note": "Amortised laptop hardware plus power at roughly 0.30 USD/h for the RTX 5080 laptop GPU and 0.05 USD/h for CPU router inference.",
+  "tool_call_usd": 0.00001,
+  "verification_check_usd": 1e-9,
+  "scenarios": {
+    "frontier_cheap": {"frontier_input_usd_per_mtok": 0.25},
+    "default": {},
+    "frontier_expensive": {"frontier_input_usd_per_mtok": 15.0},
+    "local_expensive": {"local_cpu_usd_per_hour": 1.0, "local_gpu_usd_per_hour": 3.0}
+  }
+}

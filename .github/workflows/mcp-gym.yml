@@ -22,7 +22,7 @@ permissions:
 jobs:
   fixture-and-protocol:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -34,11 +34,23 @@ jobs:
         run: python -m pytest -q MCP tests/test_cca_verified_membrane.py tests/test_hybrid_membrane.py
       - name: Matched deterministic MCP stdio pilot
         run: python -m MCP.run --controller reference --transport stdio --cases 24 --catalog-sizes 8 64 --depths 3 --out MCP/runs/ci
+      - name: MCP-02 deterministic control smoke, summary and tape replay
+        run: |
+          python -m MCP.mcp02.run evaluate --config MCP/mcp02/configs/smoke_cpu.json --controls-only --out MCP/runs/mcp02-ci
+          python -m MCP.mcp02.run summarize --run MCP/runs/mcp02-ci
+          python -m MCP.mcp02.run replay --run MCP/runs/mcp02-ci
+      - name: MCP-02 torch-free replay of committed pilot tapes
+        run: |
+          for run in MCP/results/mcp02/*/; do
+            if [ -f "$run/run_config.json" ]; then python -m MCP.mcp02.run replay --run "$run" --every 9; fi
+          done
       - name: Preserve fixture receipts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mcp-01-fixture-receipts
-          path: MCP/runs/ci
+          name: mcp-fixture-receipts
+          path: |
+            MCP/runs/ci
+            MCP/runs/mcp02-ci
           if-no-files-found: warn
           retention-days: 14

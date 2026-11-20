@@ -4,6 +4,10 @@
 
 Data Goblin's longer-term goal is to become a local retrieval specialist that spends local inference on finding evidence and gives a frontier agent a compact, useful packet. [ARCHITECTURE.md](ARCHITECTURE.md) describes that path and the interfaces for other Transformer families. [PROTOCOL.md](PROTOCOL.md) separates the current smoke from a later frozen model comparison.
 
+## MCP-02
+
+[MCP-02](mcp02/README.md) adds multi-server compositional tasks, layered indices with certified candidate refinement, and interchangeable learned routers (dense, Transformer, looped, TRM, TRM+LDT, HRM) with deterministic, sham and oracle controls. MCP-01 below remains the reference baseline; its code and receipts are unchanged.
+
 ## Run the gym
 
 Run from the repository root with Python 3.10 or newer. The gym's runtime uses the standard library and the repository's existing lattice kernel.
