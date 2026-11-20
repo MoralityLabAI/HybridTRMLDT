@@ -201,6 +201,11 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
                "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen "
                                      "(upper bound; batches use shorter dynamic padding)",
                "parameters": parameter_counts(model), "dataset": data["meta"]}
+    from .run import peak_rss_bytes
+    receipt["memory"] = {"process_peak_rss_bytes": peak_rss_bytes(),
+                         "scope": "whole training process, including the in-memory dataset"}
+    if device == "cuda":
+        receipt["memory"]["cuda_max_memory_allocated"] = int(torch.cuda.max_memory_allocated())
     if dev is not None:
         receipt["dev_ranking"] = evaluate_ranking(model, dev["decide"], device)
     return model, receipt

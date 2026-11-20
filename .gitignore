@@ -6,3 +6,4 @@ data/*.jsonl
 data/*.md
 papers/*.pdf
 MCP/runs/
+MCP/goose_gdk_app/target/
