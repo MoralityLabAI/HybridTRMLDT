@@ -1,11 +1,10 @@
 \begin{itemize}
 \item \textbf{Synthetic worlds.} MCP-02 tasks are generated. Their exact judge makes accounting precise, but descriptor
 language and catalog structure are simpler than real MCP deployments.
-\item \textbf{Localisation, not resolution.} MCP-03 measures whether the packet contains the code the gold patch
-edits. That is the retrieval stage of agentless SWE-bench pipelines. We did not measure an end-to-end resolve rate. No frontier-model API
-key was available on the host, and the local model that fit beside the other resident workloads (Qwen2.5-0.5B) could
-not even drive the synthetic controller task (Table~\ref{tab:llm-controllers}). The GDK demo therefore scores whether
-that model names the gold file and function, on 11 tasks, not whether a patch passes the tests.
+\item \textbf{Resolution with a small local model.} The end-to-end SWE-bench run used Qwen3-4B-Instruct on 26 tasks
+from three repositories, because no frontier-model API key was available on the host. Its resolve rates (at most 1
+of 26) are too low to separate the context conditions statistically. The main localisation study covers all 109
+held-out tasks, but it measures whether the packet contains the edited code, not whether a patch passes the tests.
 \item \textbf{Small training budgets.} Routers saw at most tens of thousands of decision states for two or three epochs.
 Architecture differences of a few points are within noise at 32 to 109 tasks per cell. The paper reports Wilson
 intervals and paired bootstrap intervals rather than significance claims.

@@ -29,6 +29,29 @@
    "episodes": 6
   }
  },
+ "swebench_e2e": {
+  "none": {
+   "resolved": 0,
+   "resolved_valid": 0,
+   "n": 26,
+   "nonempty_patches": 0,
+   "input_tokens_mean": 690.4615384615385
+  },
+  "bm25_13k": {
+   "resolved": 0,
+   "resolved_valid": 0,
+   "n": 26,
+   "nonempty_patches": 14,
+   "input_tokens_mean": 13429.653846153846
+  },
+  "goblin": {
+   "resolved": 1,
+   "resolved_valid": 1,
+   "n": 26,
+   "nonempty_patches": 12,
+   "input_tokens_mean": 4038.6153846153848
+  }
+ },
  "gdk_demo": {
   "packet": {
    "runs": 11,

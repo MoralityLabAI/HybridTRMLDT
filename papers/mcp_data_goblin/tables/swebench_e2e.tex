@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Context & Resolved & Resolved (gold-valid) & Non-empty patches & Provider in & Provider out & Packet tok. & Local tok. read & Local calls \\
+\midrule
+issue only & 0/26 & 0/21 & 0 & 690.46 & 331.00 & -- & -- & -- \\
+BM25 whole files (13K) & 0/26 & 0/21 & 14 & 13429.65 & 370.38 & -- & -- & -- \\
+goblin packet (4K) & 1/26 & 1/21 & 12 & 4038.62 & 335.50 & 3348.15 & 8349.08 & 25.00 \\
+gold patches (harness check) & 21/26 & -- & -- & -- & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{End-to-end SWE-bench Lite (requests, flask, pytest; all from repositories unseen by the routers). Qwen3-4B-Instruct-2507 writes search/replace edits through the goblin-gdk Goose GDK app; the official harness runs the FAIL\_TO\_PASS and PASS\_TO\_PASS tests in Docker. Gold-valid: instances whose gold patch resolves on this host.}
+\label{tab:swebench-e2e}
+\end{table}

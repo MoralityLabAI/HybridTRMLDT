@@ -12,6 +12,10 @@ router places the gold files in a \CompactFirstTokens{}-token packet with recall
 BM25 whole-file context reaches \BmFilesRecallTwentySeven{} at \BmFilesTokensTwentySeven{} tokens. Learned routers
 read too few symbols, though. For function-level evidence, BM25 reading combined with a BM25 path map is still best
 (file recall \BmComposedFileRecallTwoK{}, function recall \BmComposedSymRecallTwoK{} at 2,048 tokens).
+\item \textbf{End-to-end resolution.} With Qwen3-4B-Instruct writing patches through a Goose Development Kit app, scored by the
+official SWE-bench harness on 26 tasks, the goblin packet yields \EtoeGoblinPatches{} applicable patches and
+\EtoeGoblinResolved{} resolved task at \EtoeGoblinInput{} input tokens. BM25 whole-file context yields
+\EtoeBmPatches{} patches and \EtoeBmResolved{} resolved at \EtoeBmInput{} tokens, and the issue alone yields none.
 \item \textbf{Cost.} Training a router fits in a few hundred megabytes of process memory, and inference adds megabytes on top of the
 runtime.
 \end{itemize}

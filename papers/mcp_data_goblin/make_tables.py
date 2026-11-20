@@ -215,6 +215,56 @@ def llm_table(numbers: dict) -> None:
     numbers["llm"] = {g["policy"]: {"accepted": g["accepted"], "episodes": g["episodes"]} for g in llm["groups"]}
 
 
+def e2e_table(numbers: dict) -> None:
+    """End-to-end SWE-bench Lite resolution through goblin-gdk, scored by the official harness."""
+    run = R3 / "swebench_e2e"
+    gold = load(run / "report_gold.json")
+    if not gold:
+        return
+    valid = set(gold.get("resolved_ids", []))
+    labels = {"none": "issue only", "bm25_13k": "BM25 whole files (13K)", "goblin": "goblin packet (4K)"}
+    rows, summary = [], {}
+    for cond in ("none", "bm25_13k", "goblin"):
+        rec, rep = load(run / f"receipts_{cond}.json"), load(run / f"report_{cond}.json")
+        if not rec or not rep:
+            continue
+        runs = list(rec["runs"].values())
+        n = len(runs)
+        resolved = set(rep.get("resolved_ids", []))
+        mean = lambda key: sum((r.get(key) or 0) for r in runs) / n if n else None  # noqa: E731
+        nonempty = sum(bool(r.get("patch")) for r in runs)
+        packet = [((r.get("packet") or {}).get("packet_tokens")) for r in runs if r.get("packet")]
+        local = [((r.get("packet") or {}).get("local_result_tokens")) for r in runs if r.get("packet")]
+        calls = [((r.get("packet") or {}).get("tool_calls")) for r in runs if r.get("packet")]
+        rows.append([labels[cond], f"{len(resolved)}/{n}", f"{len(resolved & valid)}/{len(valid)}", nonempty,
+                     mean("provider_input_tokens"), mean("provider_output_tokens"),
+                     sum(packet) / len(packet) if packet else None, sum(local) / len(local) if local else None,
+                     sum(calls) / len(calls) if calls else None])
+        summary[cond] = {"resolved": len(resolved), "resolved_valid": len(resolved & valid), "n": n,
+                         "nonempty_patches": nonempty, "input_tokens_mean": mean("provider_input_tokens")}
+    rows.append(["gold patches (harness check)", f"{len(valid)}/{gold.get('total_instances', 26)}", "--", "--", None,
+                 None, None, None, None])
+    table("swebench_e2e", ["Context", "Resolved", "Resolved (gold-valid)", "Non-empty patches", "Provider in",
+                           "Provider out", "Packet tok.", "Local tok. read", "Local calls"], rows,
+          "End-to-end SWE-bench Lite (requests, flask, pytest; all from repositories unseen by the routers). "
+          "Qwen3-4B-Instruct-2507 writes search/replace edits through the goblin-gdk Goose GDK app; the official "
+          "harness runs the FAIL\\_TO\\_PASS and PASS\\_TO\\_PASS tests in Docker. Gold-valid: instances whose gold "
+          "patch resolves on this host.", "tab:swebench-e2e")
+    numbers["swebench_e2e"] = summary
+    names = {"none": "None", "bm25_13k": "Bm", "goblin": "Goblin"}
+    for cond, d in summary.items():
+        tag = names[cond]
+        macros_e2e[f"Etoe{tag}Resolved"] = d["resolved"]
+        macros_e2e[f"Etoe{tag}ResolvedValid"] = d["resolved_valid"]
+        macros_e2e[f"Etoe{tag}Input"] = round(d["input_tokens_mean"] or 0)
+        macros_e2e[f"Etoe{tag}Patches"] = d["nonempty_patches"]
+        macros_e2e["EtoeN"] = d["n"]
+    macros_e2e["EtoeValid"] = len(valid)
+
+
+macros_e2e: dict = {}
+
+
 def gdk_table(numbers: dict) -> None:
     demo = load(R3 / "gdk_demo" / "receipts.json")
     if not demo:
@@ -242,7 +292,8 @@ MACRO_NAMES = (
      "BestLearnedFileRecallTwoK", "BestLearnedSymRecallTwoK", "BestLearnedComposedFileRecallTwoK",
      "BestLearnedComposedSymRecallTwoK", "CompactFirstRouter", "CompactFirstTokens", "CompactFirstFileRecall",
      "CompactSecondRouter", "CompactSecondTokens", "CompactSecondFileRecall", "LearnedLocalTokens",
-     "BmRouterLocalTokens"]
+     "BmRouterLocalTokens", "EtoeN", "EtoeValid"]
+    + [f"Etoe{c}{m}" for c in ("None", "Bm", "Goblin") for m in ("Resolved", "ResolvedValid", "Input", "Patches")]
     + [f"BmFiles{k}{n}" for k in ("Recall", "Tokens") for n in ("Two", "Four", "Thirteen", "TwentySeven")]
     + [f"BmMap{k}{n}" for k in ("Recall", "Tokens") for n in ("Five", "Twelve", "TwentyFive")]
     + [f"Gdk{c}{k}" for c in ("Packet", "NoPacket") for k in ("Runs", "FileNamed", "FunctionNamed", "InputTokens")])
@@ -321,6 +372,8 @@ def macros(numbers: dict) -> None:
             put(f"Gdk{name}FileNamed", s.get("file_named"))
             put(f"Gdk{name}FunctionNamed", s.get("function_named"))
             put(f"Gdk{name}InputTokens", round(s.get("provider_input_tokens_mean", 0)))
+    for name, value in macros_e2e.items():
+        put(name, value)
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "numbers.tex").write_text("\n".join(out) + "\n", encoding="utf-8")
 
@@ -330,6 +383,7 @@ def main() -> None:
     mcp02_tables(numbers)
     mcp03_tables(numbers)
     llm_table(numbers)
+    e2e_table(numbers)
     gdk_table(numbers)
     macros(numbers)
     (Path(__file__).resolve().parent / "numbers.json").write_text(json.dumps(numbers, indent=1) + "\n", encoding="utf-8")

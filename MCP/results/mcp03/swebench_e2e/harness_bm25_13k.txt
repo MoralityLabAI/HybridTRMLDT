@@ -1,0 +1,8 @@
+Total instances: 26
+Instances submitted: 26
+Instances completed: 14
+Instances resolved: 0
+Instances unresolved: 14
+Instances with empty patches: 12
+Instances with errors: 0
+Report written to goblin-gdk__qwen3-4b-instruct-2507__bm25_13k.goblin_e2e_bm25_13k.json
