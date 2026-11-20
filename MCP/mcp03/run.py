@@ -90,9 +90,12 @@ class EpsilonCodeOracle(CodeOraclePolicy):
         return [rng.random() for _ in base] if rng.random() < self.eps else [b + 1e-3 * rng.random() for b in base]
 
 
-def build_dataset(cfg: dict, split: str) -> dict:
+def build_dataset(cfg: dict, split: str, shard: str | None = None) -> dict:
     spec = cfg["dataset"]
     rows = select_instances(cfg, split)
+    if shard:
+        k, n = (int(x) for x in shard.split("/"))
+        rows = rows[k::n]
     decide, excl, skipped = [], [], 0
     rng = random.Random(f"mcp03-dataset/{split}")
 
@@ -128,7 +131,7 @@ def build_dataset(cfg: dict, split: str) -> dict:
                                  max_tool_calls=spec["max_tool_calls"], budgets=(), record=keep)
                 episodes += 1
     return {"decide": decide, "rows": excl, "meta": {
-        "split": split, "instances": len(rows), "skipped_no_python_gold": skipped, "episodes": episodes,
+        "split": split, "shard": shard, "instances": len(rows), "skipped_no_python_gold": skipped, "episodes": episodes,
         "repos": sorted({r["repo"] for r in rows}), "instance_ids": [r["instance_id"] for r in rows],
         "decide_states": len(decide), "row_states": len(excl), "encoder": FE.ENCODER_VERSION}}
 
@@ -375,6 +378,10 @@ def main(argv=None) -> int:
     d.add_argument("--config", type=Path, required=True)
     d.add_argument("--split", choices=("train", "dev"), required=True)
     d.add_argument("--out", type=Path, required=True)
+    d.add_argument("--shard", help="k/n: build every n-th instance starting at k")
+    mg = sub.add_parser("merge")
+    mg.add_argument("--inputs", type=Path, nargs="+", required=True)
+    mg.add_argument("--out", type=Path, required=True)
     e = sub.add_parser("evaluate")
     e.add_argument("--config", type=Path, required=True)
     e.add_argument("--checkpoints", type=Path)
@@ -393,11 +400,24 @@ def main(argv=None) -> int:
     args = p.parse_args(argv)
     if args.cmd == "dataset":
         cfg = json.loads(args.config.read_text(encoding="utf-8"))
-        data = build_dataset(cfg, args.split)
+        data = build_dataset(cfg, args.split, args.shard)
         args.out.parent.mkdir(parents=True, exist_ok=True)
         with gzip.open(args.out, "wt", encoding="utf-8") as stream:
             json.dump(data, stream, separators=(",", ":"))
         print(json.dumps({k: v for k, v in data["meta"].items() if k != "instance_ids"}, indent=1))
+        return 0
+    if args.cmd == "merge":
+        parts = [json.load(gzip.open(p, "rt", encoding="utf-8")) for p in args.inputs]
+        meta = dict(parts[0]["meta"], shard=None, merged_from=[str(p) for p in args.inputs])
+        for key in ("instances", "skipped_no_python_gold", "episodes", "decide_states", "row_states"):
+            meta[key] = sum(p["meta"][key] for p in parts)
+        meta["instance_ids"] = sorted(i for p in parts for i in p["meta"]["instance_ids"])
+        meta["repos"] = sorted({r for p in parts for r in p["meta"]["repos"]})
+        data = {"decide": [s for p in parts for s in p["decide"]], "rows": [s for p in parts for s in p["rows"]],
+                "meta": meta}
+        with gzip.open(args.out, "wt", encoding="utf-8") as stream:
+            json.dump(data, stream, separators=(",", ":"))
+        print(json.dumps({k: v for k, v in meta.items() if k != "instance_ids"}))
         return 0
     if args.cmd == "evaluate":
         return evaluate(args)
