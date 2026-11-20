@@ -113,6 +113,12 @@ The amendment was applied as follows:
 - **CPU pilot:** stays on the registered tokens-only encoder, plus an ablation pair (`transformer_l2_d48_match`, `trm_c2i1_d48_match`).
 - **GPU pilot:** uses `match` for every router except `transformer_l2_d128_tokens`, the tokens-only anchor. That checkpoint was trained before the switch and renamed. Two other d=128 tokens-only checkpoints (dense, Transformer-L1) were set aside unevaluated, and one in-progress fit (Transformer-L4) was stopped.
 
+**Run logistics, recorded as they happened.**
+- Both pilots ran on a CPU and GPU shared with other sessions' jobs. Evaluations were split into processes by policy subset or instance shard and then merged; resumable runners keep one record per job and case, so splitting changes no outcome.
+- The GPU pilot was paused after its MCP-02 grid so the MCP-03 routers could train inside a single VRAM lease, and it resumed afterwards.
+- The LLM-controller stage was stopped after six Qwen2.5-0.5B episodes because its server outgrew the job's VRAM lease on a nearly full card. The planned Qwen3-1.7B run did not execute.
+- Training receipts before the Windows peak-RSS fix carry CUDA peaks only. MCP-03 training memory comes from fixed-step `trainprobe` runs in fresh processes.
+
 ## CI
 
 [`.github/workflows/mcp-gym.yml`](../../.github/workflows/mcp-gym.yml) runs the MCP-01 and MCP-02 contract tests without torch, a deterministic MCP-02 control smoke with summary and replay, and a torch-free replay of the committed pilot tapes. Learned-router training and inference run locally.

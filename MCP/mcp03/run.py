@@ -378,10 +378,11 @@ def replay(run: Path, every: int = 1) -> dict:
             return [json.loads(l) for l in stream if l.strip()]
     tapes = {(t["instance_id"], t["arm"], t["policy"], t["max_tool_calls"]): t["tape"] for t in read("tapes.jsonl")}
     eps = read("episodes.jsonl")
-    wanted = {e["instance_id"] for i, e in enumerate(eps) if i % every == 0}
+    sampled = [e for i, e in enumerate(eps) if i % every == 0]
+    wanted = {e["instance_id"] for e in sampled}
     rows = [r for r in select_instances(cfg, "test") if r["instance_id"] in wanted]
     by_id = {}
-    for e in eps:
+    for e in sampled:
         by_id.setdefault(e["instance_id"], []).append(e)
     checked = mismatched = 0
     host = json.loads((run / "host.json").read_text(encoding="utf-8")) if (run / "host.json").is_file() else {}

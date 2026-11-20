@@ -8,6 +8,10 @@ Data Goblin's longer-term goal is to become a local retrieval specialist that sp
 
 [MCP-02](mcp02/README.md) adds multi-server compositional tasks, layered indices with certified candidate refinement, and interchangeable learned routers (dense, Transformer, looped, TRM, TRM+LDT, HRM) with deterministic, sham and oracle controls. MCP-01 below remains the reference baseline; its code and receipts are unchanged.
 
+## MCP-03 and Goose
+
+[MCP-03](mcp03/README.md) applies the same routers to code-repository MCP surfaces on SWE-bench (training on django and sympy, testing on ten held-out SWE-bench Lite repositories) and measures token-budgeted context packets. [goblin-gdk](goose_gdk_app/README.md) is a Goose Development Kit app that injects the packet into a goose-agent state machine; `mcp03/goblin_server.py` exposes it as an MCP extension. Results: [`results/mcp02`](results/mcp02/README.md), [`results/mcp03`](results/mcp03/README.md); paper: [`papers/mcp_data_goblin`](../papers/mcp_data_goblin).
+
 ## Run the gym
 
 Run from the repository root with Python 3.10 or newer. The gym's runtime uses the standard library and the repository's existing lattice kernel.

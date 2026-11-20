@@ -47,6 +47,16 @@ python -m MCP.mcp03.run replay --run WORK/run --every 5
 
 `work_dir` in the config must contain `data/*.jsonl` (converted from the SWE-bench parquet files) and `repos/<owner>__<name>` bare clones.
 
+## History
+
+The first control-only evaluation showed that a whole-file BM25 ranking listed as paths reaches higher gold-file recall than the router-derived file map. After that run, two things were added:
+- the `file_search` tool, BM25 over whole files returning paths only;
+- composed packets (`cNNN` keys), which keep the router's snippets and take their file map from one counted `file_search` call.
+
+All published MCP-03 numbers come from a later evaluation, run in four instance shards and merged, that includes every router and both packet types.
+
+Training data was built in four instance shards and merged. Training memory comes from `trainprobe` runs: 15 CPU steps and 40 GPU steps, 32 states per batch, each in a fresh process.
+
 ## Goose integration
 
 - [`goblin_server.py`](goblin_server.py) is an MCP stdio server exposing `compact_context(task, repo_path, budget_tokens, ...)` and `read_symbol`. It reads a live working tree. Goose loads it as an extension with `--with-extension "python -m MCP.mcp03.goblin_server"`.
