@@ -116,6 +116,11 @@ def test_tape_replay_reproduces_outcomes(cases):
         out = run_episode(cases[4], arm=arm, layout=layout, policy=TapeOnly("tape"), tape=ep["decisions"])
         for field in ("accepted", "tool_calls", "results_sha256", "handoff_utf8_bytes", "environment_stats"):
             assert out[field] == ep[field]
+    from MCP.mcp02.run import compact_tape, expand_tape
+    ldt = run_episode(cases[4], arm="layered_ldt", layout="PSCB", policy=make_control("deterministic_rules"))
+    compact = expand_tape(json.loads(json.dumps(compact_tape(ldt["decisions"]))))
+    out = run_episode(cases[4], arm="layered_ldt", layout="PSCB", policy=TapeOnly("tape"), tape=compact)
+    assert out["results_sha256"] == ldt["results_sha256"] and out["compute"]["flops"] == ldt["compute"]["flops"]
     bad = [dict(ep["decisions"][0], obs_sha="0" * 16)] + ep["decisions"][1:]
     out = run_episode(cases[4], arm="search", layout="", policy=TapeOnly("tape"), tape=bad)
     assert out["failure"] == "transport_or_environment_error"
@@ -230,6 +235,16 @@ def test_encoder_has_fixed_shape_and_no_lexical_features(cases):
                             0, 40, "layered")
     ids, segs, structs = FE.encode_observation(obs)
     assert all(len(r) == FE.SEQ_LEN for r in ids) and all(len(s) == FE.STRUCT_DIM for s in structs)
+    assert {v for row in segs for v in row} <= {0, 1}
+    ids, segs, _ = FE.encode_observation(obs, "match")
+    assert {v for row in segs for v in row} <= {0, 1, 2, 3}
+    need = FE.encode_text("need find team entity tm-3f2a", 32)
+    cand = FE.encode_text("resource team entity tm-3f2a scope people", 40)
+    seg = FE.segments(need, cand, "match")
+    # Shared identity tokens are flagged; template glue ("need", "entity", "scope") never is.
+    flagged = {t for t, s in zip([1] + need + [2] + cand, seg) if s in (2, 3)}
+    assert FE.token_id("3f2a") in flagged and FE.token_id("team") in flagged
+    assert FE.token_id("entity") not in flagged and FE.token_id("scope") not in flagged
 
 
 def test_economics_helpers():

@@ -88,14 +88,14 @@ def build_dataset(split: str, worlds: int, seed: int, catalog_size: int, arm_con
 
 
 # -- fitting (torch) ------------------------------------------------------------------------
-def _assemble(states, device):
+def _assemble(states, device, encoder: str = "tokens"):
     import torch
     seqs, segs, structs, owner, labels = [], [], [], [], []
     for s_index, state in enumerate(states):
         for cand, struct, label in zip(state["cands"], state["structs"], state["labels"]):
             ids = [FE.SPECIALS["cls"]] + state["need"] + [FE.SPECIALS["sep"]] + cand
             seqs.append(ids)
-            segs.append([0] * (len(state["need"]) + 2) + [1] * len(cand))
+            segs.append(FE.segments(state["need"], cand, encoder))
             structs.append(struct)
             owner.append(s_index)
             labels.append(label)
@@ -130,7 +130,7 @@ def evaluate_ranking(model, states, device, batch=64) -> dict:
     with torch.no_grad():
         for i in range(0, len(states), batch):
             chunk = states[i:i + batch]
-            ids, seg, structs, owner, labels = _assemble(chunk, device)
+            ids, seg, structs, owner, labels = _assemble(chunk, device, model.encoder)
             scores, _ = model(ids, seg, structs)
             for s in range(len(chunk)):
                 m = owner == s
@@ -171,14 +171,14 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
         running = []
         for b in range(steps_per_epoch):
             chunk = decide[b * batch_states:(b + 1) * batch_states]
-            ids, seg, structs, owner, labels = _assemble(chunk, device)
+            ids, seg, structs, owner, labels = _assemble(chunk, device, model.encoder)
             scores, _ = model(ids, seg, structs)
             loss = _listwise_loss(scores, owner, labels, len(chunk))
             train_flops += 3 * per_cand * ids.shape[0]
             if rows:
                 rchunk = rows[b * row_batch:(b + 1) * row_batch]
                 if rchunk:
-                    rids, rseg, rstruct, _owner, rlabels = _assemble(rchunk, device)
+                    rids, rseg, rstruct, _owner, rlabels = _assemble(rchunk, device, model.encoder)
                     _s, logits = model(rids, rseg, rstruct)
                     loss = loss + 0.5 * torch.nn.functional.cross_entropy(logits, rlabels)
                     train_flops += 3 * per_cand * rids.shape[0]

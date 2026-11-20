@@ -106,6 +106,13 @@ Before any learned router was trained, control-policy smokes exposed three envir
 
 Branch labels also gained collection kind words, and buckets shrank from 24 to 12 records with six-name sketches, after the deterministic rules solved under half of the layered episodes. The learned-model configs were written before any learned router was evaluated.
 
+**Encoder amendment.** The CPU pilot's Transformer-L2 (tokens-only encoder) reached a dev top-1 of 0.62. Decision traces on dev worlds showed it read many wrong resources. It had not learned to recognise that a candidate's entity id equals the needed id from hashed tokens alone. At that point no learned router had been evaluated on test worlds. An encoder option `match` was then added: tokens present in both the needs and the candidate get segment ids 2 and 3, and a fixed list of template glue words never counts. The option supplies no BM25 score or count. On the smoke data it raised the same Transformer-L2's dev top-1 from 0.40 to 0.77.
+
+The amendment was applied as follows:
+
+- **CPU pilot:** stays on the registered tokens-only encoder, plus an ablation pair (`transformer_l2_d48_match`, `trm_c2i1_d48_match`).
+- **GPU pilot:** uses `match` for every router except `transformer_l2_d128_tokens`, the tokens-only anchor. That checkpoint was trained before the switch and renamed. Two other d=128 tokens-only checkpoints (dense, Transformer-L1) were set aside unevaluated, and one in-progress fit (Transformer-L4) was stopped.
+
 ## CI
 
 [`.github/workflows/mcp-gym.yml`](../../.github/workflows/mcp-gym.yml) runs the MCP-01 and MCP-02 contract tests without torch, a deterministic MCP-02 control smoke with summary and replay, and a torch-free replay of the committed pilot tapes. Learned-router training and inference run locally.

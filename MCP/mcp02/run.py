@@ -330,6 +330,56 @@ def summarize_run(run: Path, prices_path: Path) -> dict:
     return summary
 
 
+# -- publish ---------------------------------------------------------------------------
+def compact_tape(tape: list[dict]) -> list[list]:
+    out = []
+    for e in tape:
+        c = e.get("cost", {})
+        cost = [c.get("flops", 0), c.get("router_tokens", 0), c.get("lexical_ops", 0)]
+        if e["kind"] == "decide":
+            out.append(["d", e["obs_sha"], e["n"], e["choice_index"], *cost])
+        else:
+            out.append(["p", e["node"], e["proposals"], *cost])
+    return out
+
+
+def expand_tape(tape: list) -> list[dict]:
+    out = []
+    for e in tape:
+        if isinstance(e, dict):
+            out.append(e)
+        elif e[0] == "d":
+            out.append({"kind": "decide", "obs_sha": e[1], "n": e[2], "choice_index": e[3],
+                        "cost": {"flops": e[4], "router_tokens": e[5], "lexical_ops": e[6]}})
+        else:
+            out.append({"kind": "propose", "node": e[1], "proposals": e[2],
+                        "cost": {"flops": e[3], "router_tokens": e[4], "lexical_ops": e[5]}})
+    return out
+
+
+def publish(src: Path, dst: Path) -> dict:
+    """Copy a run into a compact, gzip-compressed result directory."""
+    import shutil
+    dst.mkdir(parents=True, exist_ok=True)
+    episodes = read_jsonl(src / "episodes.jsonl")
+    with gzip.open(dst / "episodes.jsonl.gz", "wt", encoding="utf-8", newline="\n") as stream:
+        for e in episodes:
+            e = dict(e)
+            e.pop("history", None)
+            stream.write(canonical_json(e) + "\n")
+    with gzip.open(dst / "tapes.jsonl.gz", "wt", encoding="utf-8", newline="\n") as stream:
+        for t in read_jsonl(src / "tapes.jsonl"):
+            if "tape" in t:
+                t = dict(t, tape=compact_tape(t["tape"]))
+            stream.write(canonical_json(t) + "\n")
+    for name in ("model_receipts.json", "host.json", "source_manifest.json", "run_config.json"):
+        if (src / name).is_file():
+            shutil.copyfile(src / name, dst / name)
+    if (src / "memory").is_dir():
+        shutil.copytree(src / "memory", dst / "memory", dirs_exist_ok=True)
+    return {"episodes": len(episodes)}
+
+
 # -- replay ------------------------------------------------------------------------------
 class TapeOnly(Policy):
     name, family = "tape_replay", "replay"
@@ -363,6 +413,8 @@ def replay(run: Path, every: int = 1, limit: int | None = None) -> dict:
             cache[key] = make_cases(ev["split"], ev["seed"], job["worlds"], job["catalog_size"])
         case = cache[key][rec["case_index"]]
         tape = tapes[(rec["job_key"], rec["case_id"])]
+        if isinstance(tape, list):
+            tape = expand_tape(tape)
         if isinstance(tape, dict) and "llm_responses" in tape:
             from .llm import ScriptedModel, run_llm_episode
             out = run_llm_episode(case, arm=job["arm"], layout=job["layout"],
@@ -404,6 +456,9 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--run", type=Path, required=True)
     r.add_argument("--every", type=int, default=1)
     r.add_argument("--limit", type=int)
+    pb = sub.add_parser("publish")
+    pb.add_argument("--run", type=Path, required=True)
+    pb.add_argument("--out", type=Path, required=True)
     m = sub.add_parser("memprobe")
     m.add_argument("--checkpoint", required=True)
     m.add_argument("--device", default="cpu")
@@ -420,6 +475,9 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"{row['catalog_size']:5d} {row['arm']:12s} {row['layout']:5s} {row['policy']:34s} "
                       f"{row['accepted']:3d}/{row['episodes']:<3d} calls/ep {row['tool_calls_mean']:.1f} "
                       f"cost/success {row['cost_per_success_usd']}")
+        return 0
+    if args.cmd == "publish":
+        print(json.dumps(publish(args.run, args.out)))
         return 0
     if args.cmd == "replay":
         result = replay(args.run, args.every, args.limit)

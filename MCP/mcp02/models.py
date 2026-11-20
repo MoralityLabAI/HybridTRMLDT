@@ -52,11 +52,11 @@ class Block(nn.Module):
 
 
 class Embed(nn.Module):
-    def __init__(self, d: int):
+    def __init__(self, d: int, segments: int = 2):
         super().__init__()
         self.tok = nn.Embedding(FE.OFFSET + FE.VOCAB_BUCKETS, d)
         self.pos = nn.Embedding(FE.SEQ_LEN, d)
-        self.seg = nn.Embedding(2, d)
+        self.seg = nn.Embedding(segments, d)
         self.struct = nn.Linear(FE.STRUCT_DIM, d)
 
     def forward(self, ids, segs, structs):
@@ -73,7 +73,10 @@ class Router(nn.Module):
         if arch not in ARCHES:
             raise ValueError("unknown architecture")
         self.arch = arch
-        self.embed = Embed(d)
+        self.encoder = config.get("encoder", "tokens")
+        if self.encoder not in FE.ENCODERS:
+            raise ValueError("unknown encoder")
+        self.embed = Embed(d, 4 if self.encoder == "match" else 2)
         if arch == "dense":
             self.need_tower = nn.Sequential(nn.Linear(d, 2 * d), nn.GELU(), nn.Linear(2 * d, d))
             self.cand_tower = nn.Sequential(nn.Linear(d, 2 * d), nn.GELU(), nn.Linear(2 * d, d))
@@ -117,8 +120,8 @@ class Router(nn.Module):
         c = self.config
         if self.arch == "dense":
             m = mask.float()
-            need_m = m * (segs == 0).float()
-            cand_m = m * (segs == 1).float()
+            need_m = m * ((segs == 0) | (segs == 2)).float()
+            cand_m = m * ((segs == 1) | (segs == 3)).float()
             tok = x
             need = (tok * need_m[..., None]).sum(1) / need_m.sum(1, keepdim=True).clamp(min=1)
             cand = (tok * cand_m[..., None]).sum(1) / cand_m.sum(1, keepdim=True).clamp(min=1)
@@ -226,7 +229,7 @@ class RouterPolicy(Policy):
 
     @torch.inference_mode()
     def score(self, obs: dict) -> list[float]:
-        ids, segs, structs = FE.encode_observation(obs)
+        ids, segs, structs = FE.encode_observation(obs, self.model.encoder)
         scores, _ = self.model(*self._tensors(ids, segs, structs))
         self._cost = {"flops": self._flops["flops"] * len(ids), "router_tokens": FE.router_tokens(ids),
                       "lexical_ops": 0}
@@ -239,7 +242,7 @@ class RouterPolicy(Policy):
         if self.proposer != "learned" or self.model.exclusion_head is None:
             return []
         cands = FE.rows_as_candidates(rows, 1)
-        ids, segs, structs = FE.encode_observation(dict(obs, candidates=cands))
+        ids, segs, structs = FE.encode_observation(dict(obs, candidates=cands), self.model.encoder)
         _, logits = self.model(*self._tensors(ids, segs, structs))
         probs = logits.float().softmax(-1).cpu().tolist()
         self._cost["flops"] += self._flops["flops"] * len(ids)
@@ -259,4 +262,4 @@ class RouterPolicy(Policy):
                 "parameters": parameter_counts(self.model), "recurrent_depth": self.model.depth(),
                 "depth_override": self.model.depth_override, "flops_per_candidate": self._flops,
                 "proposer": self.proposer, "checkpoint_sha256": self.checkpoint,
-                "encoder": FE.ENCODER_VERSION, "uses_private_oracle": False, "training": self.receipt}
+                "encoder": f"{FE.ENCODER_VERSION}/{self.model.encoder}", "uses_private_oracle": False, "training": self.receipt}
