@@ -1,0 +1,208 @@
+"""OpenAI-compatible relay with a raw arm and a goblin packet arm.
+
+Routes ``/<arm>/<tag>/v1/...`` to the upstream server. ``arm`` is ``raw``
+(messages forwarded unchanged) or ``goblin`` (messages passed through
+``compact_messages`` first). ``tag`` names the run in the call log. Every chat
+call appends one JSON line to the log with the provider's exact token usage,
+latency, finish reason, tool-call count and the compaction receipt.
+
+The relay removes ``reasoning_content`` from replies before returning them, so
+an environment and its later turns see the final answer only, as with a
+hosted model that hides its reasoning. Its length is still logged. Both arms
+are treated alike.
+
+The upstream is reached either directly over HTTP or, from WSL, through the
+Windows ``curl.exe`` (``--via-curl``): WSL in NAT mode cannot open Windows
+loopback ports, but a Windows process started from WSL can.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import threading
+import time
+import urllib.error
+import urllib.request
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+
+from MCP.mcp02.textutil import digest
+from .packet import compact_messages
+
+ARMS = ("raw", "goblin")
+STATUS_MARK = "\n__RELAY_STATUS__"
+
+
+def normalize_messages(messages: list[dict]) -> list[dict]:
+    """Give every message string content and string tool-call arguments.
+
+    Clients send ``content: null`` on assistant tool-call turns and ``null``
+    for unset fields such as ``tool_calls`` or ``reasoning_content``, which
+    llama-server's template parser rejects (HTTP 500). Null fields other than
+    ``content`` are dropped. Applied to both arms.
+    """
+    out = []
+    for message in messages:
+        message = {k: v for k, v in message.items() if v is not None or k == "content"}
+        if message.get("content") is None:
+            message["content"] = ""
+        calls = message.get("tool_calls")
+        if calls:
+            fixed = []
+            for call in calls:
+                call = dict(call)
+                fn = dict(call.get("function") or {})
+                if not isinstance(fn.get("arguments"), str):
+                    fn["arguments"] = json.dumps(fn.get("arguments") or {})
+                call["function"] = fn
+                fixed.append(call)
+            message["tool_calls"] = fixed
+        out.append(message)
+    return out
+
+
+class Relay:
+    def __init__(self, upstream: str, log_path: Path, via_curl: str | None, max_tokens_cap: int,
+                 threshold: int, budget: int, keep_recent: int, per_message_cap: int, timeout: int,
+                 strip_reasoning: bool = True):
+        self.upstream = upstream.rstrip("/")
+        self.strip_reasoning = strip_reasoning
+        self.log_path = log_path
+        self.via_curl = via_curl
+        self.max_tokens_cap = max_tokens_cap
+        self.compaction = {"threshold_tokens": threshold, "budget_tokens": budget, "keep_recent": keep_recent,
+                           "per_message_cap": per_message_cap}
+        self.timeout = timeout
+        self.lock = threading.Lock()
+
+    def forward(self, method: str, path: str, body: bytes | None) -> tuple[int, bytes]:
+        url = self.upstream + path
+        if self.via_curl:
+            cmd = [self.via_curl, "-sS", "--max-time", str(self.timeout), "-X", method,
+                   "-H", "Content-Type: application/json", "-w", STATUS_MARK + "%{http_code}", url]
+            if body is not None:
+                cmd[1:1] = ["--data-binary", "@-"]
+            proc = subprocess.run(cmd, input=body or b"", capture_output=True, timeout=self.timeout + 30)
+            raw = proc.stdout
+            if STATUS_MARK.encode() not in raw:
+                return 502, json.dumps({"error": {"message": "relay: " + proc.stderr.decode(errors="replace")[:500]}}).encode()
+            payload, _, code = raw.rpartition(STATUS_MARK.encode())
+            return int(code or b"502"), payload
+        req = urllib.request.Request(url, data=body, method=method, headers={"Content-Type": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                return resp.status, resp.read()
+        except urllib.error.HTTPError as exc:
+            return exc.code, exc.read()
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+            return 502, json.dumps({"error": {"message": f"relay: {exc}"}}).encode()
+
+    def chat(self, arm: str, tag: str, body: bytes) -> tuple[int, bytes]:
+        request = json.loads(body)
+        messages = normalize_messages(request.get("messages", []))
+        request["messages"] = messages
+        receipt = {"compacted": False}
+        if arm == "goblin":
+            messages, receipt = compact_messages(messages, **self.compaction)
+            request["messages"] = messages
+        cap = request.get("max_tokens") or request.get("max_completion_tokens")
+        if not cap or cap > self.max_tokens_cap:
+            request["max_tokens"] = self.max_tokens_cap
+            request.pop("max_completion_tokens", None)
+        sent = json.dumps(request).encode()
+        start = time.time()
+        status, payload = self.forward("POST", "/v1/chat/completions", sent)
+        elapsed = time.time() - start
+        record = {"ts": round(start, 3), "arm": arm, "tag": tag, "status": status, "latency_s": round(elapsed, 3),
+                  "n_messages": len(messages), "request_bytes": len(sent), "request_digest": digest(request),
+                  "tools": len(request.get("tools") or []), "compaction": receipt}
+        try:
+            data = json.loads(payload)
+            usage = data.get("usage") or {}
+            choice = (data.get("choices") or [{}])[0]
+            message = choice.get("message") or {}
+            record.update({"prompt_tokens": usage.get("prompt_tokens"),
+                           "completion_tokens": usage.get("completion_tokens"),
+                           "cached_tokens": (usage.get("prompt_tokens_details") or {}).get("cached_tokens"),
+                           "finish_reason": choice.get("finish_reason"),
+                           "tool_calls": len(message.get("tool_calls") or []),
+                           "reasoning_chars": len(message.get("reasoning_content") or ""),
+                           "content_chars": len(message.get("content") or "")})
+            if status >= 400:
+                record["error"] = json.dumps(data)[:400]
+            elif self.strip_reasoning:
+                for item in data.get("choices") or []:
+                    (item.get("message") or {}).pop("reasoning_content", None)
+                payload = json.dumps(data).encode()
+        except (json.JSONDecodeError, AttributeError):
+            record["error"] = payload[:400].decode(errors="replace")
+        with self.lock, self.log_path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(record) + "\n")
+        return status, payload
+
+
+def make_handler(relay: Relay):
+    class Handler(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"
+
+        def _route(self) -> tuple[str, str, str] | None:
+            parts = self.path.split("/", 3)
+            if len(parts) < 4 or parts[1] not in ARMS:
+                return None
+            return parts[1], parts[2], "/" + parts[3]
+
+        def _send(self, status: int, payload: bytes) -> None:
+            self.send_response(status)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(payload)))
+            self.end_headers()
+            self.wfile.write(payload)
+
+        def do_GET(self) -> None:  # noqa: N802
+            route = self._route()
+            if route is None:
+                return self._send(404, b'{"error":"use /<raw|goblin>/<tag>/v1/..."}')
+            self._send(*relay.forward("GET", route[2], None))
+
+        def do_POST(self) -> None:  # noqa: N802
+            route = self._route()
+            body = self.rfile.read(int(self.headers.get("Content-Length", "0")))
+            if route is None:
+                return self._send(404, b'{"error":"use /<raw|goblin>/<tag>/v1/..."}')
+            arm, tag, rest = route
+            if rest.rstrip("/") == "/v1/chat/completions":
+                return self._send(*relay.chat(arm, tag, body))
+            self._send(*relay.forward("POST", rest, body))
+
+        def log_message(self, fmt: str, *args) -> None:
+            return
+
+    return Handler
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--port", type=int, default=18130)
+    ap.add_argument("--upstream", default="http://127.0.0.1:18127")
+    ap.add_argument("--via-curl", default=None, help="path to Windows curl.exe when running in WSL")
+    ap.add_argument("--log", required=True)
+    ap.add_argument("--max-tokens-cap", type=int, default=4096)
+    ap.add_argument("--threshold", type=int, default=6000)
+    ap.add_argument("--budget", type=int, default=1800)
+    ap.add_argument("--keep-recent", type=int, default=2)
+    ap.add_argument("--per-message-cap", type=int, default=6000)
+    ap.add_argument("--timeout", type=int, default=1800)
+    ap.add_argument("--keep-reasoning", action="store_true",
+                    help="return reasoning_content to the client (default: strip it; its length is still logged)")
+    args = ap.parse_args()
+    relay = Relay(args.upstream, Path(args.log), args.via_curl, args.max_tokens_cap, args.threshold, args.budget,
+                  args.keep_recent, args.per_message_cap, args.timeout, strip_reasoning=not args.keep_reasoning)
+    server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(relay))
+    print(json.dumps({"listening": args.port, "upstream": args.upstream, "via_curl": bool(args.via_curl),
+                      "compaction": relay.compaction, "max_tokens_cap": args.max_tokens_cap}), flush=True)
+    server.serve_forever()
+
+
+if __name__ == "__main__":
+    main()
