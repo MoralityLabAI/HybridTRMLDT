@@ -57,6 +57,8 @@ def main() -> int:
     p.add_argument("--budget", type=int, default=1536)
     p.add_argument("--repos", nargs="+", default=["psf/requests", "pallets/flask", "mwaskom/seaborn"])
     p.add_argument("--per-repo", type=int, default=4)
+    p.add_argument("--max-tokens", type=int, default=200)
+    p.add_argument("--timeout-secs", type=int, default=3600)
     args = p.parse_args()
     rows = [r for r in load_instances(args.work / "data" / "lite_test.jsonl") if r["repo"] in args.repos]
     picked = []
@@ -64,6 +66,16 @@ def main() -> int:
         picked += sorted([r for r in rows if r["repo"] == repo], key=lambda r: r["instance_id"])[:args.per_repo]
     store = SnapshotStore(args.work / "repos", args.work / "cache")
     runs = []
+    if args.out.is_file():  # resume: keep completed runs, retry errors and provider timeouts (no output tokens)
+        previous = json.loads(args.out.read_text(encoding="utf-8")).get("runs", [])
+        runs = [r for r in previous if "score" in r and r.get("provider_output_tokens", 0) > 0]
+        retried = [r for r in previous if r not in runs]
+        for r in retried:
+            r["retried"] = True
+        timeouts = [r for r in retried if "score" in r]
+    else:
+        timeouts = []
+    done = {(r["instance_id"], r["used_packet"]) for r in runs}
     for inst in picked:
         bare = store.bare(inst["repo"])
         gold = gold_symbols(store.snapshot(inst["repo"], inst["base_commit"], with_sources=False), inst["patch"])
@@ -72,8 +84,11 @@ def main() -> int:
         task_file = args.trees / f"{inst['instance_id']}.task.txt"
         task_file.write_text(PROMPT + inst["problem_statement"][:6000], encoding="utf-8")
         for use_packet in (True, False):
+            if (inst["instance_id"], use_packet) in done:
+                continue
             cmd = [args.binary, "--task-file", str(task_file), "--base-url", args.base_url, "--model", args.model,
-                   "--python", sys.executable, "--goblin-cwd", str(ROOT), "--budget", str(args.budget)]
+                   "--python", sys.executable, "--goblin-cwd", str(ROOT), "--budget", str(args.budget),
+                   "--max-tokens", str(args.max_tokens), "--timeout-secs", str(args.timeout_secs)]
             cmd += ["--repo", str(tree)] if use_packet else ["--no-packet"]
             out = subprocess.run(cmd, capture_output=True, text=True, timeout=3600)
             if out.returncode != 0:
@@ -99,7 +114,8 @@ def main() -> int:
             "function_named": sum(bool(r["score"]["function_named"]) for r in sel),
             "provider_input_tokens_mean": sum(r["provider_input_tokens"] for r in sel) / max(1, len(sel)),
             "provider_output_tokens_mean": sum(r["provider_output_tokens"] for r in sel) / max(1, len(sel))}
-    args.out.write_text(json.dumps({"model": args.model, "budget": args.budget, "summary": summary, "runs": runs},
+    args.out.write_text(json.dumps({"model": args.model, "budget": args.budget, "max_tokens": args.max_tokens,
+                                    "summary": summary, "runs": runs, "earlier_provider_timeouts": timeouts},
                                    indent=1), encoding="utf-8")
     print(json.dumps(summary, indent=1))
     return 0

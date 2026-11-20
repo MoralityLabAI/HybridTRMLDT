@@ -200,6 +200,8 @@ struct Args {
     python: String,
     goblin_cwd: String,
     no_packet: bool,
+    max_tokens: Option<i32>,
+    timeout_secs: u64,
 }
 
 fn parse_args() -> Result<Args> {
@@ -214,6 +216,8 @@ fn parse_args() -> Result<Args> {
         python: "python3".into(),
         goblin_cwd: ".".into(),
         no_packet: false,
+        max_tokens: None,
+        timeout_secs: 600,
     };
     let mut it = std::env::args().skip(1);
     while let Some(flag) = it.next() {
@@ -230,6 +234,8 @@ fn parse_args() -> Result<Args> {
             "--python" => args.python = value()?,
             "--goblin-cwd" => args.goblin_cwd = value()?,
             "--no-packet" => args.no_packet = true,
+            "--max-tokens" => args.max_tokens = Some(value()?.parse()?),
+            "--timeout-secs" => args.timeout_secs = value()?.parse()?,
             other => bail!("unknown flag {other}"),
         }
     }
@@ -265,12 +271,20 @@ async fn main() -> Result<()> {
     };
     let retrieval_seconds = started.elapsed().as_secs_f64();
 
-    let api = ApiClient::new_with_tls(args.base_url.clone(), AuthMethod::NoAuth, None)?;
+    let api = ApiClient::with_timeout_and_tls(
+        args.base_url.clone(),
+        AuthMethod::NoAuth,
+        std::time::Duration::from_secs(args.timeout_secs),
+        None,
+    )?;
     let provider = Arc::new(OpenAiCompatibleProvider::new("local".into(), api, String::new()).with_supports_streaming(false));
     let machine = StateMachine::new(
         vec![
             Step::Operation(Arc::new(CompactContextOperation { packet: packet.clone() })),
-            Step::Inference(Arc::new(InferenceRunner::new(provider, ModelConfig::new(&args.model)))),
+            Step::Inference(Arc::new(InferenceRunner::new(
+                provider,
+                ModelConfig::new(&args.model).with_max_tokens(args.max_tokens),
+            ))),
         ],
         CancellationToken::new(),
     );
@@ -294,7 +308,8 @@ async fn main() -> Result<()> {
         "app": "goblin-gdk", "gdk": "goose-agent 0.1.0-alpha.14", "model": args.model,
         "used_packet": !args.no_packet, "packet_stats": packet_stats, "packet_chars": packet.len(),
         "provider_input_tokens": input_tokens, "provider_output_tokens": output_tokens,
-        "inference_calls": usage.len(), "retrieval_seconds": retrieval_seconds,
+        "inference_calls": usage.len(), "max_tokens": args.max_tokens, "timeout_secs": args.timeout_secs,
+        "retrieval_seconds": retrieval_seconds,
         "inference_seconds": inference_started.elapsed().as_secs_f64(), "answer": answer,
     });
     println!("{}", serde_json::to_string_pretty(&receipt)?);
