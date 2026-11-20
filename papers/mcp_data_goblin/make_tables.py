@@ -186,6 +186,35 @@ def mcp03_tables(numbers: dict) -> None:
               "tab:mcp03-receipts")
 
 
+def llm_table(numbers: dict) -> None:
+    """LLM end-to-end controllers against small routers on the same MCP-02 test worlds (size 256)."""
+    llm = load(R2 / "llm_pilot" / "summary.json")
+    gpu = load(R2 / "pilot_gpu" / "summary.json")
+    if not llm:
+        return
+    rows = []
+    for g in llm["groups"]:
+        episodes = g["episodes"]
+        rows.append([g["policy"], f"{g['arm']}{('/' + g['layout']) if g['layout'] else ''}",
+                     f"{g['accepted']}/{episodes}", g["tool_calls_mean"], g["router_tokens_total"] / episodes,
+                     g["router_seconds_total"] / episodes])
+    worlds = {g["catalog_size"] for g in llm["groups"]}
+    cells = {(g["arm"], g["layout"]) for g in llm["groups"]}
+    if gpu:
+        for g in gpu["groups"]:
+            if (g["experiment"] == "main" and g["catalog_size"] in worlds and (g["arm"], g["layout"]) in cells
+                    and g["policy"] in ("looped_p4_d128", "trm_c2i1_d128", "lexical_bm25")):
+                rows.append([g["policy"], f"{g['arm']}{('/' + g['layout']) if g['layout'] else ''}",
+                             f"{g['accepted']}/{g['episodes']}", g["tool_calls_mean"],
+                             g["router_tokens_total"] / g["episodes"], g["router_seconds_total"] / g["episodes"]])
+    table("llm_controllers", ["Controller", "Arm", "Accepted", "Calls/ep", "Local tokens/ep", "Local s/ep"], rows,
+          "Local LLMs as end-to-end MCP controllers (JSON actions through MCP.local\\_model.LocalModel, RTX 5080) "
+          "against small routers on MCP-02 test worlds at 256 resources. LLM tokens are server-counted prompt plus "
+          "completion tokens; router tokens are encoder positions scored. Router rows cover 32 worlds, LLM rows 8.",
+          "tab:llm-controllers")
+    numbers["llm"] = {g["policy"]: {"accepted": g["accepted"], "episodes": g["episodes"]} for g in llm["groups"]}
+
+
 def gdk_table(numbers: dict) -> None:
     demo = load(R3 / "gdk_demo" / "receipts.json")
     if not demo:
@@ -300,6 +329,7 @@ def main() -> None:
     numbers: dict = {}
     mcp02_tables(numbers)
     mcp03_tables(numbers)
+    llm_table(numbers)
     gdk_table(numbers)
     macros(numbers)
     (Path(__file__).resolve().parent / "numbers.json").write_text(json.dumps(numbers, indent=1) + "\n", encoding="utf-8")

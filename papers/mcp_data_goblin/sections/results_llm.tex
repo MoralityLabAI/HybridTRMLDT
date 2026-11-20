@@ -1,0 +1,20 @@
+Table~\ref{tab:llm-controllers} shows the conventional alternative to a small router: a small instruction-tuned LLM
+driving the MCP tools end to end. It is served locally and issues JSON actions through the repository's
+\texttt{LocalModel} adapter.
+
+Qwen2.5-0.5B-Instruct (494M parameters, measured by the server) accepted none of the six search-arm episodes it ran
+on MCP-02 test worlds. It used nearly the whole 40-call budget and processed about 79K prompt and completion tokens
+per episode, yet never submitted a packet. In five episodes it called \texttt{resource\_read} 40 times with invented
+URIs, never searching, and every call returned an error. In the sixth it repeated a nonexistent tool name.
+
+The four-pass looped router solves all 32 episodes of the same cell in 5.5 calls. It scores about 2.7K encoder
+positions per episode, in 0.14 s of GPU time.
+
+The comparison is lopsided by design: the router works inside the shared plan tracker and frontier, while the LLM
+must also plan, parse and compose. That is the point. Spending local compute on a general small LLM is the
+expensive way to explore MCP surfaces.
+
+We stopped the LLM stage after six episodes to stay within the VRAM lease on a GPU shared with other workloads. The
+planned Qwen3-1.7B run was not executed.
+
+\IfFileExists{tables/llm_controllers.tex}{\input{tables/llm_controllers}}{}

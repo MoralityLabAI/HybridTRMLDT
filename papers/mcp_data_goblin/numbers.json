@@ -15,6 +15,12 @@
    "repo_python_files_mean": 620.1743119266055
   }
  },
+ "llm": {
+  "llm:qwen2.5-0.5b-instruct": {
+   "accepted": 0,
+   "episodes": 6
+  }
+ },
  "gdk_demo": {
   "packet": {
    "runs": 11,
