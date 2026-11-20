@@ -211,7 +211,9 @@ MACRO_NAMES = (
      "OracleLdtComposedFileRecallTwoK", "BmRouterFileRecallTwoK", "BmRouterSymRecallTwoK", "OracleLdtFileRecallTwoK",
      "OracleLdtSymRecallTwoK", "GoldFilesTokens", "RepoPythonFiles", "BestLearnedRouter", "BestLearnedArm",
      "BestLearnedFileRecallTwoK", "BestLearnedSymRecallTwoK", "BestLearnedComposedFileRecallTwoK",
-     "BestLearnedComposedSymRecallTwoK"]
+     "BestLearnedComposedSymRecallTwoK", "CompactFirstRouter", "CompactFirstTokens", "CompactFirstFileRecall",
+     "CompactSecondRouter", "CompactSecondTokens", "CompactSecondFileRecall", "LearnedLocalTokens",
+     "BmRouterLocalTokens"]
     + [f"BmFiles{k}{n}" for k in ("Recall", "Tokens") for n in ("Two", "Four", "Thirteen", "TwentySeven")]
     + [f"BmMap{k}{n}" for k in ("Recall", "Tokens") for n in ("Five", "Twelve", "TwentyFive")]
     + [f"Gdk{c}{k}" for c in ("Packet", "NoPacket") for k in ("Runs", "FileNamed", "FunctionNamed", "InputTokens")])
@@ -260,6 +262,19 @@ def macros(numbers: dict) -> None:
         put("GoldFilesTokens", round(s3["context"]["gold_files_tokens_mean"]))
         put("RepoPythonFiles", round(s3["context"]["repo_python_files_mean"]))
         learned = [g for g in s3["groups"] if g["family"] not in ("lexical", "deterministic", "sham", "oracle")]
+        compact = [g for g in learned if g["arm"] == "search" and "512" in g["budgets"]
+                   and not g["policy"].endswith("_tokens")]
+        if compact:
+            for rank, g in enumerate(sorted(compact, key=lambda g: -g["budgets"]["512"]["file_recall_mean"])[:2]):
+                tag = ("First", "Second")[rank]
+                put(f"Compact{tag}Router", g["policy"])
+                put(f"Compact{tag}Tokens", round(g["budgets"]["512"]["packet_tokens_mean"]))
+                put(f"Compact{tag}FileRecall", round(g["budgets"]["512"]["file_recall_mean"], 3))
+            reads = {g["policy"]: g for g in learned}
+            put("LearnedLocalTokens", round(sum(g["retrieval_result_tokens_mean"] for g in compact) / len(compact)))
+        bm = groups.get(("search", "lexical_bm25"))
+        if bm:
+            put("BmRouterLocalTokens", round(bm["retrieval_result_tokens_mean"]))
         if learned:
             best = max(learned, key=lambda g: g["budgets"]["2048"]["symbol_recall_mean"])
             put("BestLearnedRouter", best["policy"])

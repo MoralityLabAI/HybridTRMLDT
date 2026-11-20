@@ -1,0 +1,1 @@
+{"model": "looped_p8_d64", "device": "cpu", "steps": 15, "seconds_per_step": 5.8231839733198285, "batch_states": 32, "peak_rss_after_dataset_and_torch_load": 645677056, "peak_rss_training": 2027089920, "parameters": {"total": 320513, "non_embedding": 57857, "embedding": 262656, "bytes_fp32": 1282052}}

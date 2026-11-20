@@ -1,0 +1,1 @@
+{"model": "transformer_l2_d64", "device": "cpu", "steps": 15, "seconds_per_step": 2.2431439333284895, "batch_states": 32, "peak_rss_after_dataset_and_torch_load": 644943872, "peak_rss_training": 1118441472, "parameters": {"total": 368449, "non_embedding": 105793, "embedding": 262656, "bytes_fp32": 1473796}}

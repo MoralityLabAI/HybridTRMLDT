@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp02-work/pilot_gpu/ckpt/hrm_h2l1_d128.pt", "device": "cuda", "peak_rss_before_forward": 646934528, "peak_rss_after_forward": 1093668864, "forward_peak_rss_delta": 446734336, "weights_bytes_fp32": 3735044, "candidates": 32, "sequence_length": 74, "cuda_max_memory_allocated": 40594432}

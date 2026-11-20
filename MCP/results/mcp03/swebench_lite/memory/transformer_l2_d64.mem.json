@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp03-work/ckpt/transformer_l2_d64.pt", "device": "cpu", "peak_rss_before_forward": 519020544, "peak_rss_after_forward": 541073408, "forward_peak_rss_delta": 22052864, "weights_bytes_fp32": 1473796, "candidates": 32, "sequence_length": 74}

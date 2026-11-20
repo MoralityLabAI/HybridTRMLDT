@@ -1,0 +1,1 @@
+{"model": "trm_c2i1_d64", "device": "cuda", "steps": 40, "seconds_per_step": 0.5208046299987472, "batch_states": 32, "peak_rss_after_dataset_and_torch_load": 787070976, "peak_rss_training": 1761886208, "parameters": {"total": 318593, "non_embedding": 55937, "embedding": 262656, "bytes_fp32": 1274372}, "cuda_max_memory_allocated": 675281408}

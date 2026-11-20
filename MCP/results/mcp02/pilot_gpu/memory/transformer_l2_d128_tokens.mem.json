@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp02-work/pilot_gpu/ckpt/transformer_l2_d128_tokens.pt", "device": "cuda", "peak_rss_before_forward": 646688768, "peak_rss_after_forward": 1095041024, "forward_peak_rss_delta": 448352256, "weights_bytes_fp32": 3732996, "candidates": 32, "sequence_length": 74, "cuda_max_memory_allocated": 37278720}

@@ -1,0 +1,1 @@
+{"model": "looped_p4_d64", "device": "cuda", "steps": 40, "seconds_per_step": 0.5939335275033955, "batch_states": 32, "peak_rss_after_dataset_and_torch_load": 787484672, "peak_rss_training": 1766211584, "parameters": {"total": 320513, "non_embedding": 57857, "embedding": 262656, "bytes_fp32": 1282052}, "cuda_max_memory_allocated": 668107264}

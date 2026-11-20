@@ -1,0 +1,4622 @@
+{
+ "gym_version": "mcp-03",
+ "episodes": 4251,
+ "instances": 109,
+ "groups": [
+  {
+   "arm": "layered",
+   "policy": "dense_d64",
+   "family": "dense",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 10106.495412844037,
+   "router_tokens_mean": 24111.155963302754,
+   "router_flops_mean": 42648505.541284405,
+   "router_ms_per_decision": 18.476901948843608,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 848.1926605504588,
+     "file_recall_mean": 0.08256880733944955,
+     "all_files_hit": 9,
+     "all_files_ci95": [
+      0.044,
+      0.1495
+     ],
+     "symbol_recall_mean": 0.01834862385321101,
+     "all_symbols_hit": 2
+    },
+    "2048": {
+     "packet_tokens_mean": 1518.1009174311926,
+     "file_recall_mean": 0.08256880733944955,
+     "all_files_hit": 9,
+     "all_files_ci95": [
+      0.044,
+      0.1495
+     ],
+     "symbol_recall_mean": 0.027522935779816515,
+     "all_symbols_hit": 3
+    },
+    "4096": {
+     "packet_tokens_mean": 2186.238532110092,
+     "file_recall_mean": 0.08256880733944955,
+     "all_files_hit": 9,
+     "all_files_ci95": [
+      0.044,
+      0.1495
+     ],
+     "symbol_recall_mean": 0.027522935779816515,
+     "all_symbols_hit": 3
+    },
+    "512": {
+     "packet_tokens_mean": 444.6605504587156,
+     "file_recall_mean": 0.08256880733944955,
+     "all_files_hit": 9,
+     "all_files_ci95": [
+      0.044,
+      0.1495
+     ],
+     "symbol_recall_mean": 0.009174311926605505,
+     "all_symbols_hit": 1
+    },
+    "c1024": {
+     "packet_tokens_mean": 836.6146788990826,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.01834862385321101,
+     "all_symbols_hit": 2
+    },
+    "c2048": {
+     "packet_tokens_mean": 1506.954128440367,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.027522935779816515,
+     "all_symbols_hit": 3
+    },
+    "c4096": {
+     "packet_tokens_mean": 2179.2844036697247,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.027522935779816515,
+     "all_symbols_hit": 3
+    },
+    "c512": {
+     "packet_tokens_mean": 441.2201834862385,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.009174311926605505,
+     "all_symbols_hit": 1
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.0,
+    "mwaskom/seaborn": 0.25,
+    "pallets/flask": 0.0,
+    "psf/requests": 0.3333333333333333,
+    "pydata/xarray": 0.0,
+    "pylint-dev/pylint": 0.0,
+    "pytest-dev/pytest": 0.23529411764705882,
+    "scikit-learn/scikit-learn": 0.08695652173913043,
+    "sphinx-doc/sphinx": 0.0
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "hrm_h2l1_d64",
+   "family": "hrm",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 11401.587155963303,
+   "router_tokens_mean": 24664.61467889908,
+   "router_flops_mean": 22864065552.44037,
+   "router_ms_per_decision": 148.42245577434392,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 828.605504587156,
+     "file_recall_mean": 0.11926605504587157,
+     "all_files_hit": 13,
+     "all_files_ci95": [
+      0.071,
+      0.1934
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    },
+    "2048": {
+     "packet_tokens_mean": 1437.366972477064,
+     "file_recall_mean": 0.11926605504587157,
+     "all_files_hit": 13,
+     "all_files_ci95": [
+      0.071,
+      0.1934
+     ],
+     "symbol_recall_mean": 0.025993883792048932,
+     "all_symbols_hit": 2
+    },
+    "4096": {
+     "packet_tokens_mean": 1908.651376146789,
+     "file_recall_mean": 0.11926605504587157,
+     "all_files_hit": 13,
+     "all_files_ci95": [
+      0.071,
+      0.1934
+     ],
+     "symbol_recall_mean": 0.03822629969418961,
+     "all_symbols_hit": 3
+    },
+    "512": {
+     "packet_tokens_mean": 423.07339449541286,
+     "file_recall_mean": 0.11926605504587157,
+     "all_files_hit": 13,
+     "all_files_ci95": [
+      0.071,
+      0.1934
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    },
+    "c1024": {
+     "packet_tokens_mean": 818.5963302752293,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    },
+    "c2048": {
+     "packet_tokens_mean": 1426.5229357798164,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.016819571865443424,
+     "all_symbols_hit": 1
+    },
+    "c4096": {
+     "packet_tokens_mean": 1901.2660550458716,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.03822629969418961,
+     "all_symbols_hit": 3
+    },
+    "c512": {
+     "packet_tokens_mean": 423.8440366972477,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.08695652173913043,
+    "mwaskom/seaborn": 0.0,
+    "pallets/flask": 0.3333333333333333,
+    "psf/requests": 0.16666666666666666,
+    "pydata/xarray": 0.0,
+    "pylint-dev/pylint": 0.0,
+    "pytest-dev/pytest": 0.17647058823529413,
+    "scikit-learn/scikit-learn": 0.21739130434782608,
+    "sphinx-doc/sphinx": 0.0625
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "identifier_rules",
+   "family": "deterministic",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 8176.05504587156,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 1.1379175465404474,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 931.9266055045872,
+     "file_recall_mean": 0.1651376146788991,
+     "all_files_hit": 18,
+     "all_files_ci95": [
+      0.1071,
+      0.246
+     ],
+     "symbol_recall_mean": 0.039755351681957186,
+     "all_symbols_hit": 4
+    },
+    "2048": {
+     "packet_tokens_mean": 1636.880733944954,
+     "file_recall_mean": 0.1651376146788991,
+     "all_files_hit": 18,
+     "all_files_ci95": [
+      0.1071,
+      0.246
+     ],
+     "symbol_recall_mean": 0.07492354740061162,
+     "all_symbols_hit": 7
+    },
+    "4096": {
+     "packet_tokens_mean": 2092.238532110092,
+     "file_recall_mean": 0.1651376146788991,
+     "all_files_hit": 18,
+     "all_files_ci95": [
+      0.1071,
+      0.246
+     ],
+     "symbol_recall_mean": 0.09327217125382263,
+     "all_symbols_hit": 9
+    },
+    "512": {
+     "packet_tokens_mean": 471.4954128440367,
+     "file_recall_mean": 0.1651376146788991,
+     "all_files_hit": 18,
+     "all_files_ci95": [
+      0.1071,
+      0.246
+     ],
+     "symbol_recall_mean": 0.022935779816513763,
+     "all_symbols_hit": 2
+    },
+    "c1024": {
+     "packet_tokens_mean": 933.0,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.03669724770642202,
+     "all_symbols_hit": 4
+    },
+    "c2048": {
+     "packet_tokens_mean": 1644.2935779816514,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.07492354740061162,
+     "all_symbols_hit": 7
+    },
+    "c4096": {
+     "packet_tokens_mean": 2096.4954128440368,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.09327217125382263,
+     "all_symbols_hit": 9
+    },
+    "c512": {
+     "packet_tokens_mean": 472.1926605504587,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.022935779816513763,
+     "all_symbols_hit": 2
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.17391304347826086,
+    "mwaskom/seaborn": 0.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.16666666666666666,
+    "pydata/xarray": 0.0,
+    "pylint-dev/pylint": 0.3333333333333333,
+    "pytest-dev/pytest": 0.058823529411764705,
+    "scikit-learn/scikit-learn": 0.13043478260869565,
+    "sphinx-doc/sphinx": 0.25
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "lexical_bm25",
+   "family": "lexical",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 7692.05504587156,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 6.152986464822602,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 924.0183486238532,
+     "file_recall_mean": 0.07339449541284404,
+     "all_files_hit": 8,
+     "all_files_ci95": [
+      0.0377,
+      0.1382
+     ],
+     "symbol_recall_mean": 0.027522935779816515,
+     "all_symbols_hit": 3
+    },
+    "2048": {
+     "packet_tokens_mean": 1606.7614678899083,
+     "file_recall_mean": 0.07339449541284404,
+     "all_files_hit": 8,
+     "all_files_ci95": [
+      0.0377,
+      0.1382
+     ],
+     "symbol_recall_mean": 0.05504587155963303,
+     "all_symbols_hit": 6
+    },
+    "4096": {
+     "packet_tokens_mean": 2014.1834862385322,
+     "file_recall_mean": 0.07339449541284404,
+     "all_files_hit": 8,
+     "all_files_ci95": [
+      0.0377,
+      0.1382
+     ],
+     "symbol_recall_mean": 0.06422018348623854,
+     "all_symbols_hit": 7
+    },
+    "512": {
+     "packet_tokens_mean": 470.0183486238532,
+     "file_recall_mean": 0.07339449541284404,
+     "all_files_hit": 8,
+     "all_files_ci95": [
+      0.0377,
+      0.1382
+     ],
+     "symbol_recall_mean": 0.013761467889908258,
+     "all_symbols_hit": 1
+    },
+    "c1024": {
+     "packet_tokens_mean": 922.4036697247707,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.027522935779816515,
+     "all_symbols_hit": 3
+    },
+    "c2048": {
+     "packet_tokens_mean": 1611.8073394495414,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.05504587155963303,
+     "all_symbols_hit": 6
+    },
+    "c4096": {
+     "packet_tokens_mean": 2019.4128440366972,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.06422018348623854,
+     "all_symbols_hit": 7
+    },
+    "c512": {
+     "packet_tokens_mean": 468.8440366972477,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.013761467889908258,
+     "all_symbols_hit": 1
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.043478260869565216,
+    "mwaskom/seaborn": 0.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.16666666666666666,
+    "pydata/xarray": 0.0,
+    "pylint-dev/pylint": 0.16666666666666666,
+    "pytest-dev/pytest": 0.0,
+    "scikit-learn/scikit-learn": 0.08695652173913043,
+    "sphinx-doc/sphinx": 0.0625
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "looped_p4_d64",
+   "family": "looped",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 11738.70642201835,
+   "router_tokens_mean": 24669.495412844037,
+   "router_flops_mean": 22801657196.036697,
+   "router_ms_per_decision": 153.99003390869657,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 861.1009174311927,
+     "file_recall_mean": 0.1743119266055046,
+     "all_files_hit": 19,
+     "all_files_ci95": [
+      0.1145,
+      0.2563
+     ],
+     "symbol_recall_mean": 0.05045871559633028,
+     "all_symbols_hit": 5
+    },
+    "2048": {
+     "packet_tokens_mean": 1521.2752293577983,
+     "file_recall_mean": 0.1743119266055046,
+     "all_files_hit": 19,
+     "all_files_ci95": [
+      0.1145,
+      0.2563
+     ],
+     "symbol_recall_mean": 0.05963302752293578,
+     "all_symbols_hit": 6
+    },
+    "4096": {
+     "packet_tokens_mean": 2003.0,
+     "file_recall_mean": 0.1743119266055046,
+     "all_files_hit": 19,
+     "all_files_ci95": [
+      0.1145,
+      0.2563
+     ],
+     "symbol_recall_mean": 0.07339449541284404,
+     "all_symbols_hit": 7
+    },
+    "512": {
+     "packet_tokens_mean": 438.1834862385321,
+     "file_recall_mean": 0.1743119266055046,
+     "all_files_hit": 19,
+     "all_files_ci95": [
+      0.1145,
+      0.2563
+     ],
+     "symbol_recall_mean": 0.01834862385321101,
+     "all_symbols_hit": 1
+    },
+    "c1024": {
+     "packet_tokens_mean": 852.302752293578,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.05045871559633028,
+     "all_symbols_hit": 5
+    },
+    "c2048": {
+     "packet_tokens_mean": 1514.6880733944954,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.05963302752293578,
+     "all_symbols_hit": 6
+    },
+    "c4096": {
+     "packet_tokens_mean": 1997.073394495413,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.07339449541284404,
+     "all_symbols_hit": 7
+    },
+    "c512": {
+     "packet_tokens_mean": 436.3302752293578,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.01834862385321101,
+     "all_symbols_hit": 1
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.13043478260869565,
+    "mwaskom/seaborn": 0.25,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.5,
+    "pydata/xarray": 0.2,
+    "pylint-dev/pylint": 0.16666666666666666,
+    "pytest-dev/pytest": 0.17647058823529413,
+    "scikit-learn/scikit-learn": 0.13043478260869565,
+    "sphinx-doc/sphinx": 0.125
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "looped_p8_d64",
+   "family": "looped",
+   "max_tool_calls": 24,
+   "recurrent_depth": 8,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 11614.477064220184,
+   "router_tokens_mean": 24853.394495412846,
+   "router_flops_mean": 45538792633.54128,
+   "router_ms_per_decision": 295.5314961820271,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 883.8348623853211,
+     "file_recall_mean": 0.1559633027522936,
+     "all_files_hit": 17,
+     "all_files_ci95": [
+      0.0997,
+      0.2356
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "2048": {
+     "packet_tokens_mean": 1599.880733944954,
+     "file_recall_mean": 0.1559633027522936,
+     "all_files_hit": 17,
+     "all_files_ci95": [
+      0.0997,
+      0.2356
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "4096": {
+     "packet_tokens_mean": 2213.7155963302753,
+     "file_recall_mean": 0.1559633027522936,
+     "all_files_hit": 17,
+     "all_files_ci95": [
+      0.0997,
+      0.2356
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "512": {
+     "packet_tokens_mean": 447.39449541284404,
+     "file_recall_mean": 0.1559633027522936,
+     "all_files_hit": 17,
+     "all_files_ci95": [
+      0.0997,
+      0.2356
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "c1024": {
+     "packet_tokens_mean": 881.4862385321101,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "c2048": {
+     "packet_tokens_mean": 1592.1284403669724,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "c4096": {
+     "packet_tokens_mean": 2209.9633027522937,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "c512": {
+     "packet_tokens_mean": 452.1467889908257,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.022935779816513763,
+     "all_symbols_hit": 2
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.21739130434782608,
+    "mwaskom/seaborn": 0.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.16666666666666666,
+    "pydata/xarray": 0.4,
+    "pylint-dev/pylint": 0.16666666666666666,
+    "pytest-dev/pytest": 0.17647058823529413,
+    "scikit-learn/scikit-learn": 0.08695652173913043,
+    "sphinx-doc/sphinx": 0.0
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "oracle_upper_bound",
+   "family": "oracle",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 9836.045871559632,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 0.44060370873087384,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 931.3669724770642,
+     "file_recall_mean": 0.9174311926605505,
+     "all_files_hit": 100,
+     "all_files_ci95": [
+      0.8505,
+      0.956
+     ],
+     "symbol_recall_mean": 0.8776758409785933,
+     "all_symbols_hit": 94
+    },
+    "2048": {
+     "packet_tokens_mean": 1653.7064220183486,
+     "file_recall_mean": 0.9174311926605505,
+     "all_files_hit": 100,
+     "all_files_ci95": [
+      0.8505,
+      0.956
+     ],
+     "symbol_recall_mean": 0.8868501529051989,
+     "all_symbols_hit": 95
+    },
+    "4096": {
+     "packet_tokens_mean": 2135.5963302752293,
+     "file_recall_mean": 0.9174311926605505,
+     "all_files_hit": 100,
+     "all_files_ci95": [
+      0.8505,
+      0.956
+     ],
+     "symbol_recall_mean": 0.8868501529051989,
+     "all_symbols_hit": 95
+    },
+    "512": {
+     "packet_tokens_mean": 462.0550458715596,
+     "file_recall_mean": 0.9174311926605505,
+     "all_files_hit": 100,
+     "all_files_ci95": [
+      0.8505,
+      0.956
+     ],
+     "symbol_recall_mean": 0.6743119266055045,
+     "all_symbols_hit": 67
+    },
+    "c1024": {
+     "packet_tokens_mean": 931.256880733945,
+     "file_recall_mean": 0.9541284403669725,
+     "all_files_hit": 104,
+     "all_files_ci95": [
+      0.8971,
+      0.9802
+     ],
+     "symbol_recall_mean": 0.8776758409785933,
+     "all_symbols_hit": 94
+    },
+    "c2048": {
+     "packet_tokens_mean": 1650.788990825688,
+     "file_recall_mean": 0.9541284403669725,
+     "all_files_hit": 104,
+     "all_files_ci95": [
+      0.8971,
+      0.9802
+     ],
+     "symbol_recall_mean": 0.8868501529051989,
+     "all_symbols_hit": 95
+    },
+    "c4096": {
+     "packet_tokens_mean": 2141.9908256880735,
+     "file_recall_mean": 0.9541284403669725,
+     "all_files_hit": 104,
+     "all_files_ci95": [
+      0.8971,
+      0.9802
+     ],
+     "symbol_recall_mean": 0.8868501529051989,
+     "all_symbols_hit": 95
+    },
+    "c512": {
+     "packet_tokens_mean": 461.2844036697248,
+     "file_recall_mean": 0.9541284403669725,
+     "all_files_hit": 104,
+     "all_files_ci95": [
+      0.8971,
+      0.9802
+     ],
+     "symbol_recall_mean": 0.6422018348623854,
+     "all_symbols_hit": 62
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.8260869565217391,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 1.0,
+    "pydata/xarray": 0.8,
+    "pylint-dev/pylint": 1.0,
+    "pytest-dev/pytest": 0.9411764705882353,
+    "scikit-learn/scikit-learn": 0.9565217391304348,
+    "sphinx-doc/sphinx": 0.875
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "sham_random",
+   "family": "sham",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 7799.422018348624,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 0.3210153231868629,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 690.4311926605504,
+     "file_recall_mean": 0.009174311926605505,
+     "all_files_hit": 1,
+     "all_files_ci95": [
+      0.0016,
+      0.0501
+     ],
+     "symbol_recall_mean": 0.0,
+     "all_symbols_hit": 0
+    },
+    "2048": {
+     "packet_tokens_mean": 907.1376146788991,
+     "file_recall_mean": 0.009174311926605505,
+     "all_files_hit": 1,
+     "all_files_ci95": [
+      0.0016,
+      0.0501
+     ],
+     "symbol_recall_mean": 0.0,
+     "all_symbols_hit": 0
+    },
+    "4096": {
+     "packet_tokens_mean": 930.3761467889908,
+     "file_recall_mean": 0.009174311926605505,
+     "all_files_hit": 1,
+     "all_files_ci95": [
+      0.0016,
+      0.0501
+     ],
+     "symbol_recall_mean": 0.0,
+     "all_symbols_hit": 0
+    },
+    "512": {
+     "packet_tokens_mean": 384.39449541284404,
+     "file_recall_mean": 0.009174311926605505,
+     "all_files_hit": 1,
+     "all_files_ci95": [
+      0.0016,
+      0.0501
+     ],
+     "symbol_recall_mean": 0.0,
+     "all_symbols_hit": 0
+    },
+    "c1024": {
+     "packet_tokens_mean": 691.4587155963303,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0,
+     "all_symbols_hit": 0
+    },
+    "c2048": {
+     "packet_tokens_mean": 912.5963302752293,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0,
+     "all_symbols_hit": 0
+    },
+    "c4096": {
+     "packet_tokens_mean": 934.0642201834862,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0,
+     "all_symbols_hit": 0
+    },
+    "c512": {
+     "packet_tokens_mean": 382.45871559633025,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0,
+     "all_symbols_hit": 0
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.0,
+    "mwaskom/seaborn": 0.0,
+    "pallets/flask": 0.0,
+    "psf/requests": 0.0,
+    "pydata/xarray": 0.0,
+    "pylint-dev/pylint": 0.16666666666666666,
+    "pytest-dev/pytest": 0.0,
+    "scikit-learn/scikit-learn": 0.0,
+    "sphinx-doc/sphinx": 0.0
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "transformer_l2_d64",
+   "family": "transformer",
+   "max_tool_calls": 24,
+   "recurrent_depth": 2,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 11103.330275229358,
+   "router_tokens_mean": 24708.908256880735,
+   "router_flops_mean": 11371795056.733946,
+   "router_ms_per_decision": 85.71412633676923,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 806.1651376146789,
+     "file_recall_mean": 0.11926605504587157,
+     "all_files_hit": 13,
+     "all_files_ci95": [
+      0.071,
+      0.1934
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "2048": {
+     "packet_tokens_mean": 1450.8440366972477,
+     "file_recall_mean": 0.11926605504587157,
+     "all_files_hit": 13,
+     "all_files_ci95": [
+      0.071,
+      0.1934
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "4096": {
+     "packet_tokens_mean": 2028.6697247706422,
+     "file_recall_mean": 0.11926605504587157,
+     "all_files_hit": 13,
+     "all_files_ci95": [
+      0.071,
+      0.1934
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "512": {
+     "packet_tokens_mean": 417.5596330275229,
+     "file_recall_mean": 0.11926605504587157,
+     "all_files_hit": 13,
+     "all_files_ci95": [
+      0.071,
+      0.1934
+     ],
+     "symbol_recall_mean": 0.022935779816513763,
+     "all_symbols_hit": 2
+    },
+    "c1024": {
+     "packet_tokens_mean": 801.256880733945,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "c2048": {
+     "packet_tokens_mean": 1452.1376146788991,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "c4096": {
+     "packet_tokens_mean": 2024.0550458715597,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    },
+    "c512": {
+     "packet_tokens_mean": 415.697247706422,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.022935779816513763,
+     "all_symbols_hit": 2
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.13043478260869565,
+    "mwaskom/seaborn": 0.25,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.3333333333333333,
+    "pydata/xarray": 0.0,
+    "pylint-dev/pylint": 0.0,
+    "pytest-dev/pytest": 0.11764705882352941,
+    "scikit-learn/scikit-learn": 0.043478260869565216,
+    "sphinx-doc/sphinx": 0.0625
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "transformer_l2_d64_tokens",
+   "family": "transformer",
+   "max_tool_calls": 24,
+   "recurrent_depth": 2,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 10851.256880733945,
+   "router_tokens_mean": 23178.38532110092,
+   "router_flops_mean": 10673496214.311926,
+   "router_ms_per_decision": 76.6047676221506,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 880.605504587156,
+     "file_recall_mean": 0.07339449541284404,
+     "all_files_hit": 8,
+     "all_files_ci95": [
+      0.0377,
+      0.1382
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    },
+    "2048": {
+     "packet_tokens_mean": 1656.3853211009175,
+     "file_recall_mean": 0.07339449541284404,
+     "all_files_hit": 8,
+     "all_files_ci95": [
+      0.0377,
+      0.1382
+     ],
+     "symbol_recall_mean": 0.013761467889908258,
+     "all_symbols_hit": 1
+    },
+    "4096": {
+     "packet_tokens_mean": 2345.3669724770643,
+     "file_recall_mean": 0.07339449541284404,
+     "all_files_hit": 8,
+     "all_files_ci95": [
+      0.0377,
+      0.1382
+     ],
+     "symbol_recall_mean": 0.029051987767584095,
+     "all_symbols_hit": 2
+    },
+    "512": {
+     "packet_tokens_mean": 444.8348623853211,
+     "file_recall_mean": 0.07339449541284404,
+     "all_files_hit": 8,
+     "all_files_ci95": [
+      0.0377,
+      0.1382
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    },
+    "c1024": {
+     "packet_tokens_mean": 882.6238532110092,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    },
+    "c2048": {
+     "packet_tokens_mean": 1661.9449541284403,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.013761467889908258,
+     "all_symbols_hit": 1
+    },
+    "c4096": {
+     "packet_tokens_mean": 2342.1926605504586,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.029051987767584095,
+     "all_symbols_hit": 2
+    },
+    "c512": {
+     "packet_tokens_mean": 443.8348623853211,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.0,
+    "mwaskom/seaborn": 0.0,
+    "pallets/flask": 0.3333333333333333,
+    "psf/requests": 0.3333333333333333,
+    "pydata/xarray": 0.0,
+    "pylint-dev/pylint": 0.0,
+    "pytest-dev/pytest": 0.17647058823529413,
+    "scikit-learn/scikit-learn": 0.0,
+    "sphinx-doc/sphinx": 0.125
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "transformer_l4_d64",
+   "family": "transformer",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 10071.642201834862,
+   "router_tokens_mean": 24407.990825688074,
+   "router_flops_mean": 22346012512.29358,
+   "router_ms_per_decision": 154.1610776032186,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 779.0642201834862,
+     "file_recall_mean": 0.05504587155963303,
+     "all_files_hit": 6,
+     "all_files_ci95": [
+      0.0255,
+      0.1149
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    },
+    "2048": {
+     "packet_tokens_mean": 1248.532110091743,
+     "file_recall_mean": 0.05504587155963303,
+     "all_files_hit": 6,
+     "all_files_ci95": [
+      0.0255,
+      0.1149
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    },
+    "4096": {
+     "packet_tokens_mean": 1657.7522935779816,
+     "file_recall_mean": 0.05504587155963303,
+     "all_files_hit": 6,
+     "all_files_ci95": [
+      0.0255,
+      0.1149
+     ],
+     "symbol_recall_mean": 0.01834862385321101,
+     "all_symbols_hit": 1
+    },
+    "512": {
+     "packet_tokens_mean": 431.76146788990826,
+     "file_recall_mean": 0.05504587155963303,
+     "all_files_hit": 6,
+     "all_files_ci95": [
+      0.0255,
+      0.1149
+     ],
+     "symbol_recall_mean": 0.0,
+     "all_symbols_hit": 0
+    },
+    "c1024": {
+     "packet_tokens_mean": 772.5412844036697,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    },
+    "c2048": {
+     "packet_tokens_mean": 1232.8715596330276,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0045871559633027525,
+     "all_symbols_hit": 0
+    },
+    "c4096": {
+     "packet_tokens_mean": 1649.7247706422017,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.01834862385321101,
+     "all_symbols_hit": 1
+    },
+    "c512": {
+     "packet_tokens_mean": 430.92660550458714,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.0,
+     "all_symbols_hit": 0
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.0,
+    "mwaskom/seaborn": 0.0,
+    "pallets/flask": 0.3333333333333333,
+    "psf/requests": 0.5,
+    "pydata/xarray": 0.0,
+    "pylint-dev/pylint": 0.16666666666666666,
+    "pytest-dev/pytest": 0.0,
+    "scikit-learn/scikit-learn": 0.043478260869565216,
+    "sphinx-doc/sphinx": 0.0
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "trm_c2i1_d64",
+   "family": "trm",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 11456.614678899083,
+   "router_tokens_mean": 24778.990825688074,
+   "router_flops_mean": 22747845909.137615,
+   "router_ms_per_decision": 154.08820171766794,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 820.7706422018349,
+     "file_recall_mean": 0.1834862385321101,
+     "all_files_hit": 20,
+     "all_files_ci95": [
+      0.122,
+      0.2665
+     ],
+     "symbol_recall_mean": 0.05045871559633028,
+     "all_symbols_hit": 5
+    },
+    "2048": {
+     "packet_tokens_mean": 1513.6146788990825,
+     "file_recall_mean": 0.1834862385321101,
+     "all_files_hit": 20,
+     "all_files_ci95": [
+      0.122,
+      0.2665
+     ],
+     "symbol_recall_mean": 0.05963302752293578,
+     "all_symbols_hit": 6
+    },
+    "4096": {
+     "packet_tokens_mean": 2152.321100917431,
+     "file_recall_mean": 0.1834862385321101,
+     "all_files_hit": 20,
+     "all_files_ci95": [
+      0.122,
+      0.2665
+     ],
+     "symbol_recall_mean": 0.0871559633027523,
+     "all_symbols_hit": 9
+    },
+    "512": {
+     "packet_tokens_mean": 430.4770642201835,
+     "file_recall_mean": 0.1834862385321101,
+     "all_files_hit": 20,
+     "all_files_ci95": [
+      0.122,
+      0.2665
+     ],
+     "symbol_recall_mean": 0.03669724770642202,
+     "all_symbols_hit": 4
+    },
+    "c1024": {
+     "packet_tokens_mean": 815.697247706422,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.05045871559633028,
+     "all_symbols_hit": 5
+    },
+    "c2048": {
+     "packet_tokens_mean": 1506.7798165137615,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.05963302752293578,
+     "all_symbols_hit": 6
+    },
+    "c4096": {
+     "packet_tokens_mean": 2145.9908256880735,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.0871559633027523,
+     "all_symbols_hit": 9
+    },
+    "c512": {
+     "packet_tokens_mean": 428.26605504587155,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.03669724770642202,
+     "all_symbols_hit": 4
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.08695652173913043,
+    "mwaskom/seaborn": 0.5,
+    "pallets/flask": 0.3333333333333333,
+    "psf/requests": 0.3333333333333333,
+    "pydata/xarray": 0.6,
+    "pylint-dev/pylint": 0.3333333333333333,
+    "pytest-dev/pytest": 0.11764705882352941,
+    "scikit-learn/scikit-learn": 0.13043478260869565,
+    "sphinx-doc/sphinx": 0.1875
+   }
+  },
+  {
+   "arm": "layered",
+   "policy": "trm_ldt_c2i1_d64",
+   "family": "trm_ldt",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 11443.825688073395,
+   "router_tokens_mean": 23592.45871559633,
+   "router_flops_mean": 21623939007.412846,
+   "router_ms_per_decision": 148.7533717107566,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 885.8532110091743,
+     "file_recall_mean": 0.21100917431192662,
+     "all_files_hit": 23,
+     "all_files_ci95": [
+      0.1449,
+      0.2968
+     ],
+     "symbol_recall_mean": 0.03669724770642202,
+     "all_symbols_hit": 4
+    },
+    "2048": {
+     "packet_tokens_mean": 1628.3394495412845,
+     "file_recall_mean": 0.21100917431192662,
+     "all_files_hit": 23,
+     "all_files_ci95": [
+      0.1449,
+      0.2968
+     ],
+     "symbol_recall_mean": 0.0779816513761468,
+     "all_symbols_hit": 7
+    },
+    "4096": {
+     "packet_tokens_mean": 2271.1284403669724,
+     "file_recall_mean": 0.21100917431192662,
+     "all_files_hit": 23,
+     "all_files_ci95": [
+      0.1449,
+      0.2968
+     ],
+     "symbol_recall_mean": 0.11009174311926606,
+     "all_symbols_hit": 11
+    },
+    "512": {
+     "packet_tokens_mean": 446.51376146788994,
+     "file_recall_mean": 0.21100917431192662,
+     "all_files_hit": 23,
+     "all_files_ci95": [
+      0.1449,
+      0.2968
+     ],
+     "symbol_recall_mean": 0.01834862385321101,
+     "all_symbols_hit": 2
+    },
+    "c1024": {
+     "packet_tokens_mean": 886.1926605504588,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.03669724770642202,
+     "all_symbols_hit": 4
+    },
+    "c2048": {
+     "packet_tokens_mean": 1627.7431192660551,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.0779816513761468,
+     "all_symbols_hit": 7
+    },
+    "c4096": {
+     "packet_tokens_mean": 2270.9908256880735,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.11009174311926606,
+     "all_symbols_hit": 11
+    },
+    "c512": {
+     "packet_tokens_mean": 440.3761467889908,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.03211009174311927,
+     "all_symbols_hit": 3
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.0,
+    "matplotlib/matplotlib": 0.17391304347826086,
+    "mwaskom/seaborn": 0.5,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.0,
+    "pydata/xarray": 0.4,
+    "pylint-dev/pylint": 0.16666666666666666,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.13043478260869565,
+    "sphinx-doc/sphinx": 0.0625
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "dense_d64",
+   "family": "dense",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 16662.5871559633,
+   "router_tokens_mean": 30018.07339449541,
+   "router_flops_mean": 48067976.220183484,
+   "router_ms_per_decision": 18.6902462593833,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 92,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 471.0,
+     "file_recall_mean": 0.6697247706422018,
+     "all_files_hit": 73,
+     "all_files_ci95": [
+      0.577,
+      0.7509
+     ],
+     "symbol_recall_mean": 0.07568807339449542,
+     "all_symbols_hit": 7
+    },
+    "2048": {
+     "packet_tokens_mean": 695.2752293577981,
+     "file_recall_mean": 0.6697247706422018,
+     "all_files_hit": 73,
+     "all_files_ci95": [
+      0.577,
+      0.7509
+     ],
+     "symbol_recall_mean": 0.08027522935779817,
+     "all_symbols_hit": 7
+    },
+    "4096": {
+     "packet_tokens_mean": 876.7706422018349,
+     "file_recall_mean": 0.6697247706422018,
+     "all_files_hit": 73,
+     "all_files_ci95": [
+      0.577,
+      0.7509
+     ],
+     "symbol_recall_mean": 0.08027522935779817,
+     "all_symbols_hit": 7
+    },
+    "512": {
+     "packet_tokens_mean": 287.8532110091743,
+     "file_recall_mean": 0.6697247706422018,
+     "all_files_hit": 73,
+     "all_files_ci95": [
+      0.577,
+      0.7509
+     ],
+     "symbol_recall_mean": 0.04357798165137615,
+     "all_symbols_hit": 4
+    },
+    "c1024": {
+     "packet_tokens_mean": 468.1284403669725,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.07568807339449542,
+     "all_symbols_hit": 7
+    },
+    "c2048": {
+     "packet_tokens_mean": 694.2660550458716,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.08027522935779817,
+     "all_symbols_hit": 7
+    },
+    "c4096": {
+     "packet_tokens_mean": 874.0,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.08027522935779817,
+     "all_symbols_hit": 7
+    },
+    "c512": {
+     "packet_tokens_mean": 284.3119266055046,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.04357798165137615,
+     "all_symbols_hit": 4
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.8260869565217391,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.0,
+    "pytest-dev/pytest": 0.35294117647058826,
+    "scikit-learn/scikit-learn": 0.8695652173913043,
+    "sphinx-doc/sphinx": 0.375
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "hrm_h2l1_d64",
+   "family": "hrm",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 16127.614678899083,
+   "router_tokens_mean": 28689.660550458717,
+   "router_flops_mean": 24291497500.183487,
+   "router_ms_per_decision": 162.08612297894246,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 175,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 578.0550458715596,
+     "file_recall_mean": 0.6788990825688074,
+     "all_files_hit": 74,
+     "all_files_ci95": [
+      0.5864,
+      0.7592
+     ],
+     "symbol_recall_mean": 0.11009174311926606,
+     "all_symbols_hit": 10
+    },
+    "2048": {
+     "packet_tokens_mean": 852.697247706422,
+     "file_recall_mean": 0.6788990825688074,
+     "all_files_hit": 74,
+     "all_files_ci95": [
+      0.5864,
+      0.7592
+     ],
+     "symbol_recall_mean": 0.11926605504587157,
+     "all_symbols_hit": 11
+    },
+    "4096": {
+     "packet_tokens_mean": 970.4128440366973,
+     "file_recall_mean": 0.6788990825688074,
+     "all_files_hit": 74,
+     "all_files_ci95": [
+      0.5864,
+      0.7592
+     ],
+     "symbol_recall_mean": 0.12385321100917432,
+     "all_symbols_hit": 11
+    },
+    "512": {
+     "packet_tokens_mean": 329.2844036697248,
+     "file_recall_mean": 0.6788990825688074,
+     "all_files_hit": 74,
+     "all_files_ci95": [
+      0.5864,
+      0.7592
+     ],
+     "symbol_recall_mean": 0.0779816513761468,
+     "all_symbols_hit": 5
+    },
+    "c1024": {
+     "packet_tokens_mean": 573.6880733944954,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.11009174311926606,
+     "all_symbols_hit": 10
+    },
+    "c2048": {
+     "packet_tokens_mean": 849.6330275229358,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.11926605504587157,
+     "all_symbols_hit": 11
+    },
+    "c4096": {
+     "packet_tokens_mean": 967.348623853211,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.12385321100917432,
+     "all_symbols_hit": 11
+    },
+    "c512": {
+     "packet_tokens_mean": 328.27522935779814,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.06880733944954129,
+     "all_symbols_hit": 4
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.8333333333333334,
+    "matplotlib/matplotlib": 0.782608695652174,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.6666666666666666,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.3333333333333333,
+    "pytest-dev/pytest": 0.5294117647058824,
+    "scikit-learn/scikit-learn": 0.6956521739130435,
+    "sphinx-doc/sphinx": 0.5625
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "identifier_rules",
+   "family": "deterministic",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 9002.018348623853,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 1.289533293216856,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 3,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 998.0091743119266,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.2978593272171254,
+     "all_symbols_hit": 24
+    },
+    "2048": {
+     "packet_tokens_mean": 2010.5688073394494,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.3697247706422018,
+     "all_symbols_hit": 33
+    },
+    "4096": {
+     "packet_tokens_mean": 3457.4954128440368,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.45840978593272175,
+     "all_symbols_hit": 42
+    },
+    "512": {
+     "packet_tokens_mean": 488.92660550458714,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.15336391437308866,
+     "all_symbols_hit": 8
+    },
+    "c1024": {
+     "packet_tokens_mean": 1001.2660550458716,
+     "file_recall_mean": 0.8165137614678899,
+     "all_files_hit": 89,
+     "all_files_ci95": [
+      0.7335,
+      0.878
+     ],
+     "symbol_recall_mean": 0.2978593272171254,
+     "all_symbols_hit": 24
+    },
+    "c2048": {
+     "packet_tokens_mean": 2010.3211009174313,
+     "file_recall_mean": 0.8348623853211009,
+     "all_files_hit": 91,
+     "all_files_ci95": [
+      0.754,
+      0.8929
+     ],
+     "symbol_recall_mean": 0.3697247706422018,
+     "all_symbols_hit": 33
+    },
+    "c4096": {
+     "packet_tokens_mean": 3458.798165137615,
+     "file_recall_mean": 0.8623853211009175,
+     "all_files_hit": 94,
+     "all_files_ci95": [
+      0.7853,
+      0.9148
+     ],
+     "symbol_recall_mean": 0.45840978593272175,
+     "all_symbols_hit": 42
+    },
+    "c512": {
+     "packet_tokens_mean": 489.1743119266055,
+     "file_recall_mean": 0.8165137614678899,
+     "all_files_hit": 89,
+     "all_files_ci95": [
+      0.7335,
+      0.878
+     ],
+     "symbol_recall_mean": 0.1487767584097859,
+     "all_symbols_hit": 8
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.7391304347826086,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 0.6,
+    "pylint-dev/pylint": 0.6666666666666666,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.782608695652174,
+    "sphinx-doc/sphinx": 0.75
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "lexical_bm25",
+   "family": "lexical",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 9214.201834862386,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 6.993784355805892,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 60,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 998.5963302752293,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.2981651376146789,
+     "all_symbols_hit": 23
+    },
+    "2048": {
+     "packet_tokens_mean": 2007.4587155963302,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.40948012232415903,
+     "all_symbols_hit": 36
+    },
+    "4096": {
+     "packet_tokens_mean": 3491.3853211009173,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.46758409785932725,
+     "all_symbols_hit": 43
+    },
+    "512": {
+     "packet_tokens_mean": 489.0366972477064,
+     "file_recall_mean": 0.7064220183486238,
+     "all_files_hit": 77,
+     "all_files_ci95": [
+      0.6151,
+      0.7837
+     ],
+     "symbol_recall_mean": 0.1536697247706422,
+     "all_symbols_hit": 9
+    },
+    "c1024": {
+     "packet_tokens_mean": 998.348623853211,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.2996941896024465,
+     "all_symbols_hit": 23
+    },
+    "c2048": {
+     "packet_tokens_mean": 2005.7155963302753,
+     "file_recall_mean": 0.8623853211009175,
+     "all_files_hit": 94,
+     "all_files_ci95": [
+      0.7853,
+      0.9148
+     ],
+     "symbol_recall_mean": 0.41406727828746176,
+     "all_symbols_hit": 37
+    },
+    "c4096": {
+     "packet_tokens_mean": 3491.321100917431,
+     "file_recall_mean": 0.8623853211009175,
+     "all_files_hit": 94,
+     "all_files_ci95": [
+      0.7853,
+      0.9148
+     ],
+     "symbol_recall_mean": 0.46758409785932725,
+     "all_symbols_hit": 43
+    },
+    "c512": {
+     "packet_tokens_mean": 487.1651376146789,
+     "file_recall_mean": 0.8348623853211009,
+     "all_files_hit": 91,
+     "all_files_ci95": [
+      0.754,
+      0.8929
+     ],
+     "symbol_recall_mean": 0.1613149847094801,
+     "all_symbols_hit": 9
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.6956521739130435,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 0.8,
+    "pylint-dev/pylint": 0.5,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.782608695652174,
+    "sphinx-doc/sphinx": 0.75
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "looped_p4_d64",
+   "family": "looped",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 15466.62385321101,
+   "router_tokens_mean": 27952.605504587154,
+   "router_flops_mean": 23996968267.155964,
+   "router_ms_per_decision": 165.1439156818675,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 217,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 597.9174311926605,
+     "file_recall_mean": 0.6513761467889908,
+     "all_files_hit": 71,
+     "all_files_ci95": [
+      0.5581,
+      0.7343
+     ],
+     "symbol_recall_mean": 0.11620795107033638,
+     "all_symbols_hit": 10
+    },
+    "2048": {
+     "packet_tokens_mean": 939.2110091743119,
+     "file_recall_mean": 0.6513761467889908,
+     "all_files_hit": 71,
+     "all_files_ci95": [
+      0.5581,
+      0.7343
+     ],
+     "symbol_recall_mean": 0.11620795107033638,
+     "all_symbols_hit": 10
+    },
+    "4096": {
+     "packet_tokens_mean": 1119.4495412844037,
+     "file_recall_mean": 0.6513761467889908,
+     "all_files_hit": 71,
+     "all_files_ci95": [
+      0.5581,
+      0.7343
+     ],
+     "symbol_recall_mean": 0.12079510703363913,
+     "all_symbols_hit": 10
+    },
+    "512": {
+     "packet_tokens_mean": 337.61467889908255,
+     "file_recall_mean": 0.6513761467889908,
+     "all_files_hit": 71,
+     "all_files_ci95": [
+      0.5581,
+      0.7343
+     ],
+     "symbol_recall_mean": 0.06880733944954129,
+     "all_symbols_hit": 5
+    },
+    "c1024": {
+     "packet_tokens_mean": 599.2110091743119,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.11620795107033638,
+     "all_symbols_hit": 10
+    },
+    "c2048": {
+     "packet_tokens_mean": 936.816513761468,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.11620795107033638,
+     "all_symbols_hit": 10
+    },
+    "c4096": {
+     "packet_tokens_mean": 1117.559633027523,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.12079510703363913,
+     "all_symbols_hit": 10
+    },
+    "c512": {
+     "packet_tokens_mean": 339.2844036697248,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.06880733944954129,
+     "all_symbols_hit": 5
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.8333333333333334,
+    "matplotlib/matplotlib": 0.6521739130434783,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 1.0,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.3333333333333333,
+    "pytest-dev/pytest": 0.47058823529411764,
+    "scikit-learn/scikit-learn": 0.6521739130434783,
+    "sphinx-doc/sphinx": 0.5625
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "looped_p8_d64",
+   "family": "looped",
+   "max_tool_calls": 24,
+   "recurrent_depth": 8,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 16167.339449541285,
+   "router_tokens_mean": 28953.788990825688,
+   "router_flops_mean": 49174967570.788994,
+   "router_ms_per_decision": 308.1072201406754,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 145,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 624.3669724770642,
+     "file_recall_mean": 0.6605504587155964,
+     "all_files_hit": 72,
+     "all_files_ci95": [
+      0.5675,
+      0.7426
+     ],
+     "symbol_recall_mean": 0.14984709480122324,
+     "all_symbols_hit": 14
+    },
+    "2048": {
+     "packet_tokens_mean": 978.9816513761468,
+     "file_recall_mean": 0.6605504587155964,
+     "all_files_hit": 72,
+     "all_files_ci95": [
+      0.5675,
+      0.7426
+     ],
+     "symbol_recall_mean": 0.16819571865443425,
+     "all_symbols_hit": 16
+    },
+    "4096": {
+     "packet_tokens_mean": 1156.0366972477063,
+     "file_recall_mean": 0.6605504587155964,
+     "all_files_hit": 72,
+     "all_files_ci95": [
+      0.5675,
+      0.7426
+     ],
+     "symbol_recall_mean": 0.172782874617737,
+     "all_symbols_hit": 16
+    },
+    "512": {
+     "packet_tokens_mean": 338.3761467889908,
+     "file_recall_mean": 0.6605504587155964,
+     "all_files_hit": 72,
+     "all_files_ci95": [
+      0.5675,
+      0.7426
+     ],
+     "symbol_recall_mean": 0.07645259938837921,
+     "all_symbols_hit": 6
+    },
+    "c1024": {
+     "packet_tokens_mean": 626.8073394495412,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.14984709480122324,
+     "all_symbols_hit": 14
+    },
+    "c2048": {
+     "packet_tokens_mean": 973.4495412844037,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.16819571865443425,
+     "all_symbols_hit": 16
+    },
+    "c4096": {
+     "packet_tokens_mean": 1153.8715596330276,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.172782874617737,
+     "all_symbols_hit": 16
+    },
+    "c512": {
+     "packet_tokens_mean": 341.61467889908255,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.0672782874617737,
+     "all_symbols_hit": 5
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.6666666666666666,
+    "matplotlib/matplotlib": 0.5217391304347826,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.3333333333333333,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.3333333333333333,
+    "pytest-dev/pytest": 0.5294117647058824,
+    "scikit-learn/scikit-learn": 0.8695652173913043,
+    "sphinx-doc/sphinx": 0.625
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "oracle_upper_bound",
+   "family": "oracle",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 9924.577981651377,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 150.71094038495139,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 396,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 983.5871559633027,
+     "file_recall_mean": 0.963302752293578,
+     "all_files_hit": 105,
+     "all_files_ci95": [
+      0.9094,
+      0.9856
+     ],
+     "symbol_recall_mean": 0.9281345565749236,
+     "all_symbols_hit": 98
+    },
+    "2048": {
+     "packet_tokens_mean": 1948.2844036697247,
+     "file_recall_mean": 0.963302752293578,
+     "all_files_hit": 105,
+     "all_files_ci95": [
+      0.9094,
+      0.9856
+     ],
+     "symbol_recall_mean": 0.9327217125382263,
+     "all_symbols_hit": 100
+    },
+    "4096": {
+     "packet_tokens_mean": 2830.7155963302753,
+     "file_recall_mean": 0.963302752293578,
+     "all_files_hit": 105,
+     "all_files_ci95": [
+      0.9094,
+      0.9856
+     ],
+     "symbol_recall_mean": 0.9327217125382263,
+     "all_symbols_hit": 100
+    },
+    "512": {
+     "packet_tokens_mean": 479.4954128440367,
+     "file_recall_mean": 0.963302752293578,
+     "all_files_hit": 105,
+     "all_files_ci95": [
+      0.9094,
+      0.9856
+     ],
+     "symbol_recall_mean": 0.7454128440366973,
+     "all_symbols_hit": 71
+    },
+    "c1024": {
+     "packet_tokens_mean": 986.5412844036697,
+     "file_recall_mean": 0.9724770642201835,
+     "all_files_hit": 106,
+     "all_files_ci95": [
+      0.9222,
+      0.9906
+     ],
+     "symbol_recall_mean": 0.9281345565749236,
+     "all_symbols_hit": 98
+    },
+    "c2048": {
+     "packet_tokens_mean": 1951.2201834862385,
+     "file_recall_mean": 0.9724770642201835,
+     "all_files_hit": 106,
+     "all_files_ci95": [
+      0.9222,
+      0.9906
+     ],
+     "symbol_recall_mean": 0.9327217125382263,
+     "all_symbols_hit": 100
+    },
+    "c4096": {
+     "packet_tokens_mean": 2834.5504587155965,
+     "file_recall_mean": 0.9724770642201835,
+     "all_files_hit": 106,
+     "all_files_ci95": [
+      0.9222,
+      0.9906
+     ],
+     "symbol_recall_mean": 0.9327217125382263,
+     "all_symbols_hit": 100
+    },
+    "c512": {
+     "packet_tokens_mean": 477.8073394495413,
+     "file_recall_mean": 0.9724770642201835,
+     "all_files_hit": 106,
+     "all_files_ci95": [
+      0.9222,
+      0.9906
+     ],
+     "symbol_recall_mean": 0.731651376146789,
+     "all_symbols_hit": 69
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.9565217391304348,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 1.0,
+    "pydata/xarray": 0.8,
+    "pylint-dev/pylint": 1.0,
+    "pytest-dev/pytest": 0.9411764705882353,
+    "scikit-learn/scikit-learn": 1.0,
+    "sphinx-doc/sphinx": 0.9375
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "sham_random",
+   "family": "sham",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 9191.48623853211,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 0.26101616572360603,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 257,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 985.4678899082569,
+     "file_recall_mean": 0.5596330275229358,
+     "all_files_hit": 61,
+     "all_files_ci95": [
+      0.466,
+      0.6492
+     ],
+     "symbol_recall_mean": 0.12232415902140674,
+     "all_symbols_hit": 9
+    },
+    "2048": {
+     "packet_tokens_mean": 1881.0550458715597,
+     "file_recall_mean": 0.5596330275229358,
+     "all_files_hit": 61,
+     "all_files_ci95": [
+      0.466,
+      0.6492
+     ],
+     "symbol_recall_mean": 0.21865443425076453,
+     "all_symbols_hit": 19
+    },
+    "4096": {
+     "packet_tokens_mean": 2649.3119266055046,
+     "file_recall_mean": 0.5596330275229358,
+     "all_files_hit": 61,
+     "all_files_ci95": [
+      0.466,
+      0.6492
+     ],
+     "symbol_recall_mean": 0.24617737003058102,
+     "all_symbols_hit": 21
+    },
+    "512": {
+     "packet_tokens_mean": 484.5963302752294,
+     "file_recall_mean": 0.5596330275229358,
+     "all_files_hit": 61,
+     "all_files_ci95": [
+      0.466,
+      0.6492
+     ],
+     "symbol_recall_mean": 0.05963302752293578,
+     "all_symbols_hit": 3
+    },
+    "c1024": {
+     "packet_tokens_mean": 985.5137614678899,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.12232415902140674,
+     "all_symbols_hit": 9
+    },
+    "c2048": {
+     "packet_tokens_mean": 1876.7522935779816,
+     "file_recall_mean": 0.7981651376146789,
+     "all_files_hit": 87,
+     "all_files_ci95": [
+      0.7133,
+      0.8628
+     ],
+     "symbol_recall_mean": 0.20948012232415902,
+     "all_symbols_hit": 18
+    },
+    "c4096": {
+     "packet_tokens_mean": 2647.816513761468,
+     "file_recall_mean": 0.8256880733944955,
+     "all_files_hit": 90,
+     "all_files_ci95": [
+      0.7437,
+      0.8855
+     ],
+     "symbol_recall_mean": 0.24617737003058102,
+     "all_symbols_hit": 21
+    },
+    "c512": {
+     "packet_tokens_mean": 485.70642201834863,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.06422018348623854,
+     "all_symbols_hit": 3
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.8333333333333334,
+    "matplotlib/matplotlib": 0.5217391304347826,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 0.6,
+    "pylint-dev/pylint": 0.16666666666666666,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.5652173913043478,
+    "sphinx-doc/sphinx": 0.5625
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "transformer_l2_d64",
+   "family": "transformer",
+   "max_tool_calls": 24,
+   "recurrent_depth": 2,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 15146.770642201835,
+   "router_tokens_mean": 27817.633027522937,
+   "router_flops_mean": 11991602944.0,
+   "router_ms_per_decision": 87.96017716720887,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 195,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 682.605504587156,
+     "file_recall_mean": 0.5596330275229358,
+     "all_files_hit": 61,
+     "all_files_ci95": [
+      0.466,
+      0.6492
+     ],
+     "symbol_recall_mean": 0.09174311926605505,
+     "all_symbols_hit": 7
+    },
+    "2048": {
+     "packet_tokens_mean": 1137.0642201834862,
+     "file_recall_mean": 0.5596330275229358,
+     "all_files_hit": 61,
+     "all_files_ci95": [
+      0.466,
+      0.6492
+     ],
+     "symbol_recall_mean": 0.11009174311926606,
+     "all_symbols_hit": 9
+    },
+    "4096": {
+     "packet_tokens_mean": 1424.6605504587155,
+     "file_recall_mean": 0.5596330275229358,
+     "all_files_hit": 61,
+     "all_files_ci95": [
+      0.466,
+      0.6492
+     ],
+     "symbol_recall_mean": 0.12385321100917432,
+     "all_symbols_hit": 11
+    },
+    "512": {
+     "packet_tokens_mean": 371.9449541284404,
+     "file_recall_mean": 0.5596330275229358,
+     "all_files_hit": 61,
+     "all_files_ci95": [
+      0.466,
+      0.6492
+     ],
+     "symbol_recall_mean": 0.05733944954128441,
+     "all_symbols_hit": 3
+    },
+    "c1024": {
+     "packet_tokens_mean": 681.5963302752293,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.09174311926605505,
+     "all_symbols_hit": 7
+    },
+    "c2048": {
+     "packet_tokens_mean": 1133.1743119266055,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.11009174311926606,
+     "all_symbols_hit": 9
+    },
+    "c4096": {
+     "packet_tokens_mean": 1422.651376146789,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.12385321100917432,
+     "all_symbols_hit": 11
+    },
+    "c512": {
+     "packet_tokens_mean": 372.0550458715596,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.05733944954128441,
+     "all_symbols_hit": 3
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.8333333333333334,
+    "matplotlib/matplotlib": 0.6086956521739131,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.6666666666666666,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.0,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.6086956521739131,
+    "sphinx-doc/sphinx": 0.3125
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "transformer_l2_d64_tokens",
+   "family": "transformer",
+   "max_tool_calls": 24,
+   "recurrent_depth": 2,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 15957.29357798165,
+   "router_tokens_mean": 28944.403669724772,
+   "router_flops_mean": 12127409809.61468,
+   "router_ms_per_decision": 85.19509625745292,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 139,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 632.5871559633027,
+     "file_recall_mean": 0.6146788990825688,
+     "all_files_hit": 67,
+     "all_files_ci95": [
+      0.5209,
+      0.7007
+     ],
+     "symbol_recall_mean": 0.08944954128440367,
+     "all_symbols_hit": 8
+    },
+    "2048": {
+     "packet_tokens_mean": 991.4954128440367,
+     "file_recall_mean": 0.6146788990825688,
+     "all_files_hit": 67,
+     "all_files_ci95": [
+      0.5209,
+      0.7007
+     ],
+     "symbol_recall_mean": 0.09862385321100918,
+     "all_symbols_hit": 9
+    },
+    "4096": {
+     "packet_tokens_mean": 1211.8256880733945,
+     "file_recall_mean": 0.6146788990825688,
+     "all_files_hit": 67,
+     "all_files_ci95": [
+      0.5209,
+      0.7007
+     ],
+     "symbol_recall_mean": 0.10321100917431193,
+     "all_symbols_hit": 10
+    },
+    "512": {
+     "packet_tokens_mean": 337.43119266055044,
+     "file_recall_mean": 0.6146788990825688,
+     "all_files_hit": 67,
+     "all_files_ci95": [
+      0.5209,
+      0.7007
+     ],
+     "symbol_recall_mean": 0.06651376146788991,
+     "all_symbols_hit": 6
+    },
+    "c1024": {
+     "packet_tokens_mean": 631.0825688073395,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.08944954128440367,
+     "all_symbols_hit": 8
+    },
+    "c2048": {
+     "packet_tokens_mean": 987.6238532110092,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.09862385321100918,
+     "all_symbols_hit": 9
+    },
+    "c4096": {
+     "packet_tokens_mean": 1208.073394495413,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.10321100917431193,
+     "all_symbols_hit": 10
+    },
+    "c512": {
+     "packet_tokens_mean": 344.0091743119266,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.06651376146788991,
+     "all_symbols_hit": 6
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.5,
+    "matplotlib/matplotlib": 0.6521739130434783,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.0,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.6521739130434783,
+    "sphinx-doc/sphinx": 0.625
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "transformer_l4_d64",
+   "family": "transformer",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 16347.605504587156,
+   "router_tokens_mean": 29144.697247706423,
+   "router_flops_mean": 24531578626.348625,
+   "router_ms_per_decision": 167.68490953003408,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 130,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 590.9908256880734,
+     "file_recall_mean": 0.7064220183486238,
+     "all_files_hit": 77,
+     "all_files_ci95": [
+      0.6151,
+      0.7837
+     ],
+     "symbol_recall_mean": 0.1434250764525994,
+     "all_symbols_hit": 11
+    },
+    "2048": {
+     "packet_tokens_mean": 920.1651376146789,
+     "file_recall_mean": 0.7064220183486238,
+     "all_files_hit": 77,
+     "all_files_ci95": [
+      0.6151,
+      0.7837
+     ],
+     "symbol_recall_mean": 0.14954128440366973,
+     "all_symbols_hit": 12
+    },
+    "4096": {
+     "packet_tokens_mean": 1107.3302752293578,
+     "file_recall_mean": 0.7064220183486238,
+     "all_files_hit": 77,
+     "all_files_ci95": [
+      0.6151,
+      0.7837
+     ],
+     "symbol_recall_mean": 0.16788990825688074,
+     "all_symbols_hit": 14
+    },
+    "512": {
+     "packet_tokens_mean": 342.6330275229358,
+     "file_recall_mean": 0.7064220183486238,
+     "all_files_hit": 77,
+     "all_files_ci95": [
+      0.6151,
+      0.7837
+     ],
+     "symbol_recall_mean": 0.07415902140672784,
+     "all_symbols_hit": 4
+    },
+    "c1024": {
+     "packet_tokens_mean": 590.7889908256881,
+     "file_recall_mean": 0.7889908256880734,
+     "all_files_hit": 86,
+     "all_files_ci95": [
+      0.7032,
+      0.8551
+     ],
+     "symbol_recall_mean": 0.1434250764525994,
+     "all_symbols_hit": 11
+    },
+    "c2048": {
+     "packet_tokens_mean": 917.5688073394496,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.14954128440366973,
+     "all_symbols_hit": 12
+    },
+    "c4096": {
+     "packet_tokens_mean": 1105.7064220183486,
+     "file_recall_mean": 0.7889908256880734,
+     "all_files_hit": 86,
+     "all_files_ci95": [
+      0.7032,
+      0.8551
+     ],
+     "symbol_recall_mean": 0.16788990825688074,
+     "all_symbols_hit": 14
+    },
+    "c512": {
+     "packet_tokens_mean": 346.0091743119266,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.07415902140672784,
+     "all_symbols_hit": 4
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.8333333333333334,
+    "matplotlib/matplotlib": 0.8260869565217391,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.6666666666666666,
+    "pydata/xarray": 0.8,
+    "pylint-dev/pylint": 0.5,
+    "pytest-dev/pytest": 0.5294117647058824,
+    "scikit-learn/scikit-learn": 0.8695652173913043,
+    "sphinx-doc/sphinx": 0.375
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "trm_c2i1_d64",
+   "family": "trm",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 17070.449541284404,
+   "router_tokens_mean": 29995.77981651376,
+   "router_flops_mean": 25028935017.688072,
+   "router_ms_per_decision": 167.06356515614755,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 104,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 434.88990825688074,
+     "file_recall_mean": 0.7431192660550459,
+     "all_files_hit": 81,
+     "all_files_ci95": [
+      0.6538,
+      0.8159
+     ],
+     "symbol_recall_mean": 0.10932721712538226,
+     "all_symbols_hit": 9
+    },
+    "2048": {
+     "packet_tokens_mean": 631.1743119266055,
+     "file_recall_mean": 0.7431192660550459,
+     "all_files_hit": 81,
+     "all_files_ci95": [
+      0.6538,
+      0.8159
+     ],
+     "symbol_recall_mean": 0.12614678899082568,
+     "all_symbols_hit": 11
+    },
+    "4096": {
+     "packet_tokens_mean": 800.9082568807339,
+     "file_recall_mean": 0.7431192660550459,
+     "all_files_hit": 81,
+     "all_files_ci95": [
+      0.6538,
+      0.8159
+     ],
+     "symbol_recall_mean": 0.13073394495412843,
+     "all_symbols_hit": 12
+    },
+    "512": {
+     "packet_tokens_mean": 260.54128440366975,
+     "file_recall_mean": 0.7431192660550459,
+     "all_files_hit": 81,
+     "all_files_ci95": [
+      0.6538,
+      0.8159
+     ],
+     "symbol_recall_mean": 0.07568807339449542,
+     "all_symbols_hit": 7
+    },
+    "c1024": {
+     "packet_tokens_mean": 437.25688073394497,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.10932721712538226,
+     "all_symbols_hit": 9
+    },
+    "c2048": {
+     "packet_tokens_mean": 627.0550458715596,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.12614678899082568,
+     "all_symbols_hit": 11
+    },
+    "c4096": {
+     "packet_tokens_mean": 796.9174311926605,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.13073394495412843,
+     "all_symbols_hit": 12
+    },
+    "c512": {
+     "packet_tokens_mean": 263.48623853211006,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.07568807339449542,
+     "all_symbols_hit": 7
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.8333333333333334,
+    "matplotlib/matplotlib": 0.8260869565217391,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.5,
+    "pytest-dev/pytest": 0.5294117647058824,
+    "scikit-learn/scikit-learn": 0.782608695652174,
+    "sphinx-doc/sphinx": 0.6875
+   }
+  },
+  {
+   "arm": "layered_ldt",
+   "policy": "trm_ldt_c2i1_d64",
+   "family": "trm_ldt",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 17106.018348623853,
+   "router_tokens_mean": 29941.394495412846,
+   "router_flops_mean": 24956797742.972477,
+   "router_ms_per_decision": 166.11059572638374,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 100,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 435.08256880733944,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.07033639143730887,
+     "all_symbols_hit": 6
+    },
+    "2048": {
+     "packet_tokens_mean": 597.8440366972477,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.08868501529051988,
+     "all_symbols_hit": 8
+    },
+    "4096": {
+     "packet_tokens_mean": 665.5779816513761,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.08868501529051988,
+     "all_symbols_hit": 8
+    },
+    "512": {
+     "packet_tokens_mean": 266.72477064220186,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.05504587155963303,
+     "all_symbols_hit": 5
+    },
+    "c1024": {
+     "packet_tokens_mean": 431.348623853211,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.07033639143730887,
+     "all_symbols_hit": 6
+    },
+    "c2048": {
+     "packet_tokens_mean": 600.5688073394496,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.08868501529051988,
+     "all_symbols_hit": 8
+    },
+    "c4096": {
+     "packet_tokens_mean": 661.5963302752293,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.08868501529051988,
+     "all_symbols_hit": 8
+    },
+    "c512": {
+     "packet_tokens_mean": 260.74311926605503,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.05504587155963303,
+     "all_symbols_hit": 5
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.8333333333333334,
+    "matplotlib/matplotlib": 0.6956521739130435,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.3333333333333333,
+    "pytest-dev/pytest": 0.35294117647058826,
+    "scikit-learn/scikit-learn": 0.9130434782608695,
+    "sphinx-doc/sphinx": 0.75
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "dense_d64",
+   "family": "dense",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 18335.229357798165,
+   "router_tokens_mean": 31696.43119266055,
+   "router_flops_mean": 49722328.07339449,
+   "router_ms_per_decision": 20.797375305958052,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 417.1192660550459,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.09403669724770643,
+     "all_symbols_hit": 8
+    },
+    "2048": {
+     "packet_tokens_mean": 546.697247706422,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.09862385321100918,
+     "all_symbols_hit": 8
+    },
+    "4096": {
+     "packet_tokens_mean": 613.697247706422,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.09862385321100918,
+     "all_symbols_hit": 8
+    },
+    "512": {
+     "packet_tokens_mean": 266.3394495412844,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.05733944954128441,
+     "all_symbols_hit": 5
+    },
+    "c1024": {
+     "packet_tokens_mean": 413.5045871559633,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.09403669724770643,
+     "all_symbols_hit": 8
+    },
+    "c2048": {
+     "packet_tokens_mean": 543.302752293578,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.09862385321100918,
+     "all_symbols_hit": 8
+    },
+    "c4096": {
+     "packet_tokens_mean": 610.302752293578,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.09862385321100918,
+     "all_symbols_hit": 8
+    },
+    "c512": {
+     "packet_tokens_mean": 262.54128440366975,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.05733944954128441,
+     "all_symbols_hit": 5
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.8695652173913043,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.3333333333333333,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.9565217391304348,
+    "sphinx-doc/sphinx": 0.75
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "hrm_h2l1_d64",
+   "family": "hrm",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 18203.495412844037,
+   "router_tokens_mean": 31084.981651376147,
+   "router_flops_mean": 25374728257.761467,
+   "router_ms_per_decision": 174.92384231661444,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 519.3669724770642,
+     "file_recall_mean": 0.8348623853211009,
+     "all_files_hit": 91,
+     "all_files_ci95": [
+      0.754,
+      0.8929
+     ],
+     "symbol_recall_mean": 0.12844036697247707,
+     "all_symbols_hit": 11
+    },
+    "2048": {
+     "packet_tokens_mean": 758.6880733944954,
+     "file_recall_mean": 0.8348623853211009,
+     "all_files_hit": 91,
+     "all_files_ci95": [
+      0.754,
+      0.8929
+     ],
+     "symbol_recall_mean": 0.14678899082568808,
+     "all_symbols_hit": 13
+    },
+    "4096": {
+     "packet_tokens_mean": 882.0366972477065,
+     "file_recall_mean": 0.8348623853211009,
+     "all_files_hit": 91,
+     "all_files_ci95": [
+      0.754,
+      0.8929
+     ],
+     "symbol_recall_mean": 0.16972477064220184,
+     "all_symbols_hit": 15
+    },
+    "512": {
+     "packet_tokens_mean": 303.9357798165138,
+     "file_recall_mean": 0.8348623853211009,
+     "all_files_hit": 91,
+     "all_files_ci95": [
+      0.754,
+      0.8929
+     ],
+     "symbol_recall_mean": 0.0963302752293578,
+     "all_symbols_hit": 6
+    },
+    "c1024": {
+     "packet_tokens_mean": 518.816513761468,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.12844036697247707,
+     "all_symbols_hit": 11
+    },
+    "c2048": {
+     "packet_tokens_mean": 754.8256880733945,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.14678899082568808,
+     "all_symbols_hit": 13
+    },
+    "c4096": {
+     "packet_tokens_mean": 878.1743119266055,
+     "file_recall_mean": 0.7889908256880734,
+     "all_files_hit": 86,
+     "all_files_ci95": [
+      0.7032,
+      0.8551
+     ],
+     "symbol_recall_mean": 0.16972477064220184,
+     "all_symbols_hit": 15
+    },
+    "c512": {
+     "packet_tokens_mean": 301.2844036697248,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.0779816513761468,
+     "all_symbols_hit": 4
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.9130434782608695,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.5,
+    "pytest-dev/pytest": 0.5294117647058824,
+    "scikit-learn/scikit-learn": 0.9565217391304348,
+    "sphinx-doc/sphinx": 0.875
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "identifier_rules",
+   "family": "deterministic",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 9016.834862385322,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 1.3751681576858898,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 997.697247706422,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.2978593272171254,
+     "all_symbols_hit": 24
+    },
+    "2048": {
+     "packet_tokens_mean": 2010.788990825688,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.3697247706422018,
+     "all_symbols_hit": 33
+    },
+    "4096": {
+     "packet_tokens_mean": 3464.5963302752293,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.45840978593272175,
+     "all_symbols_hit": 42
+    },
+    "512": {
+     "packet_tokens_mean": 488.61467889908255,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.1487767584097859,
+     "all_symbols_hit": 8
+    },
+    "c1024": {
+     "packet_tokens_mean": 1001.2660550458716,
+     "file_recall_mean": 0.8165137614678899,
+     "all_files_hit": 89,
+     "all_files_ci95": [
+      0.7335,
+      0.878
+     ],
+     "symbol_recall_mean": 0.2978593272171254,
+     "all_symbols_hit": 24
+    },
+    "c2048": {
+     "packet_tokens_mean": 2010.3211009174313,
+     "file_recall_mean": 0.8348623853211009,
+     "all_files_hit": 91,
+     "all_files_ci95": [
+      0.754,
+      0.8929
+     ],
+     "symbol_recall_mean": 0.3697247706422018,
+     "all_symbols_hit": 33
+    },
+    "c4096": {
+     "packet_tokens_mean": 3465.678899082569,
+     "file_recall_mean": 0.8623853211009175,
+     "all_files_hit": 94,
+     "all_files_ci95": [
+      0.7853,
+      0.9148
+     ],
+     "symbol_recall_mean": 0.45840978593272175,
+     "all_symbols_hit": 42
+    },
+    "c512": {
+     "packet_tokens_mean": 489.1743119266055,
+     "file_recall_mean": 0.8165137614678899,
+     "all_files_hit": 89,
+     "all_files_ci95": [
+      0.7335,
+      0.878
+     ],
+     "symbol_recall_mean": 0.1487767584097859,
+     "all_symbols_hit": 8
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.7391304347826086,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 0.6,
+    "pylint-dev/pylint": 0.6666666666666666,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.782608695652174,
+    "sphinx-doc/sphinx": 0.75
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "lexical_bm25",
+   "family": "lexical",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 9262.321100917432,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 6.731537955621576,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 1000.4495412844037,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.2981651376146789,
+     "all_symbols_hit": 23
+    },
+    "2048": {
+     "packet_tokens_mean": 2018.0275229357799,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.40948012232415903,
+     "all_symbols_hit": 36
+    },
+    "4096": {
+     "packet_tokens_mean": 3589.770642201835,
+     "file_recall_mean": 0.7247706422018348,
+     "all_files_hit": 79,
+     "all_files_ci95": [
+      0.6344,
+      0.7999
+     ],
+     "symbol_recall_mean": 0.47675840978593276,
+     "all_symbols_hit": 44
+    },
+    "512": {
+     "packet_tokens_mean": 490.0366972477064,
+     "file_recall_mean": 0.7064220183486238,
+     "all_files_hit": 77,
+     "all_files_ci95": [
+      0.6151,
+      0.7837
+     ],
+     "symbol_recall_mean": 0.14908256880733944,
+     "all_symbols_hit": 9
+    },
+    "c1024": {
+     "packet_tokens_mean": 1000.0,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.2996941896024465,
+     "all_symbols_hit": 23
+    },
+    "c2048": {
+     "packet_tokens_mean": 2016.5412844036698,
+     "file_recall_mean": 0.8623853211009175,
+     "all_files_hit": 94,
+     "all_files_ci95": [
+      0.7853,
+      0.9148
+     ],
+     "symbol_recall_mean": 0.41406727828746176,
+     "all_symbols_hit": 37
+    },
+    "c4096": {
+     "packet_tokens_mean": 3588.908256880734,
+     "file_recall_mean": 0.8715596330275229,
+     "all_files_hit": 95,
+     "all_files_ci95": [
+      0.7959,
+      0.9219
+     ],
+     "symbol_recall_mean": 0.47675840978593276,
+     "all_symbols_hit": 44
+    },
+    "c512": {
+     "packet_tokens_mean": 488.9633027522936,
+     "file_recall_mean": 0.8348623853211009,
+     "all_files_hit": 91,
+     "all_files_ci95": [
+      0.754,
+      0.8929
+     ],
+     "symbol_recall_mean": 0.1613149847094801,
+     "all_symbols_hit": 9
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.6956521739130435,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 0.8,
+    "pylint-dev/pylint": 0.6666666666666666,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.782608695652174,
+    "sphinx-doc/sphinx": 0.75
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "looped_p4_d64",
+   "family": "looped",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 18421.376146788993,
+   "router_tokens_mean": 31276.036697247706,
+   "router_flops_mean": 25616401433.83486,
+   "router_ms_per_decision": 155.85550840914502,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 511.48623853211006,
+     "file_recall_mean": 0.8623853211009175,
+     "all_files_hit": 94,
+     "all_files_ci95": [
+      0.7853,
+      0.9148
+     ],
+     "symbol_recall_mean": 0.172782874617737,
+     "all_symbols_hit": 15
+    },
+    "2048": {
+     "packet_tokens_mean": 729.7614678899082,
+     "file_recall_mean": 0.8623853211009175,
+     "all_files_hit": 94,
+     "all_files_ci95": [
+      0.7853,
+      0.9148
+     ],
+     "symbol_recall_mean": 0.17737003058103976,
+     "all_symbols_hit": 15
+    },
+    "4096": {
+     "packet_tokens_mean": 813.3669724770642,
+     "file_recall_mean": 0.8623853211009175,
+     "all_files_hit": 94,
+     "all_files_ci95": [
+      0.7853,
+      0.9148
+     ],
+     "symbol_recall_mean": 0.1819571865443425,
+     "all_symbols_hit": 15
+    },
+    "512": {
+     "packet_tokens_mean": 307.55045871559633,
+     "file_recall_mean": 0.8623853211009175,
+     "all_files_hit": 94,
+     "all_files_ci95": [
+      0.7853,
+      0.9148
+     ],
+     "symbol_recall_mean": 0.11162079510703363,
+     "all_symbols_hit": 8
+    },
+    "c1024": {
+     "packet_tokens_mean": 510.92660550458714,
+     "file_recall_mean": 0.7889908256880734,
+     "all_files_hit": 86,
+     "all_files_ci95": [
+      0.7032,
+      0.8551
+     ],
+     "symbol_recall_mean": 0.172782874617737,
+     "all_symbols_hit": 15
+    },
+    "c2048": {
+     "packet_tokens_mean": 727.651376146789,
+     "file_recall_mean": 0.7889908256880734,
+     "all_files_hit": 86,
+     "all_files_ci95": [
+      0.7032,
+      0.8551
+     ],
+     "symbol_recall_mean": 0.17737003058103976,
+     "all_symbols_hit": 15
+    },
+    "c4096": {
+     "packet_tokens_mean": 810.1559633027523,
+     "file_recall_mean": 0.7889908256880734,
+     "all_files_hit": 86,
+     "all_files_ci95": [
+      0.7032,
+      0.8551
+     ],
+     "symbol_recall_mean": 0.1819571865443425,
+     "all_symbols_hit": 15
+    },
+    "c512": {
+     "packet_tokens_mean": 303.4954128440367,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.10244648318042814,
+     "all_symbols_hit": 7
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.9130434782608695,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 1.0,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.5,
+    "pytest-dev/pytest": 0.5882352941176471,
+    "scikit-learn/scikit-learn": 0.9565217391304348,
+    "sphinx-doc/sphinx": 0.9375
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "looped_p8_d64",
+   "family": "looped",
+   "max_tool_calls": 24,
+   "recurrent_depth": 8,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 18198.091743119265,
+   "router_tokens_mean": 31070.48623853211,
+   "router_flops_mean": 50861872546.055046,
+   "router_ms_per_decision": 295.36159591016286,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 561.1284403669724,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.17507645259938837,
+     "all_symbols_hit": 16
+    },
+    "2048": {
+     "packet_tokens_mean": 842.1284403669724,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.19801223241590213,
+     "all_symbols_hit": 18
+    },
+    "4096": {
+     "packet_tokens_mean": 1013.5779816513761,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.20718654434250763,
+     "all_symbols_hit": 19
+    },
+    "512": {
+     "packet_tokens_mean": 313.04587155963304,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.0879204892966361,
+     "all_symbols_hit": 7
+    },
+    "c1024": {
+     "packet_tokens_mean": 561.1559633027523,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.17507645259938837,
+     "all_symbols_hit": 16
+    },
+    "c2048": {
+     "packet_tokens_mean": 837.7155963302753,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.19801223241590213,
+     "all_symbols_hit": 18
+    },
+    "c4096": {
+     "packet_tokens_mean": 1009.1651376146789,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.20718654434250763,
+     "all_symbols_hit": 19
+    },
+    "c512": {
+     "packet_tokens_mean": 314.04587155963304,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.07874617737003059,
+     "all_symbols_hit": 6
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.8695652173913043,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 1.0,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.5,
+    "pytest-dev/pytest": 0.5294117647058824,
+    "scikit-learn/scikit-learn": 0.9565217391304348,
+    "sphinx-doc/sphinx": 0.9375
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "oracle_upper_bound",
+   "family": "oracle",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 9517.59633027523,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 153.87347267130005,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 999.3761467889908,
+     "file_recall_mean": 0.7431192660550459,
+     "all_files_hit": 81,
+     "all_files_ci95": [
+      0.6538,
+      0.8159
+     ],
+     "symbol_recall_mean": 0.6159021406727829,
+     "all_symbols_hit": 64
+    },
+    "2048": {
+     "packet_tokens_mean": 2017.2018348623853,
+     "file_recall_mean": 0.7431192660550459,
+     "all_files_hit": 81,
+     "all_files_ci95": [
+      0.6538,
+      0.8159
+     ],
+     "symbol_recall_mean": 0.6174311926605505,
+     "all_symbols_hit": 65
+    },
+    "4096": {
+     "packet_tokens_mean": 3683.798165137615,
+     "file_recall_mean": 0.7431192660550459,
+     "all_files_hit": 81,
+     "all_files_ci95": [
+      0.6538,
+      0.8159
+     ],
+     "symbol_recall_mean": 0.6174311926605505,
+     "all_symbols_hit": 65
+    },
+    "512": {
+     "packet_tokens_mean": 485.4678899082569,
+     "file_recall_mean": 0.7339449541284404,
+     "all_files_hit": 80,
+     "all_files_ci95": [
+      0.6441,
+      0.8079
+     ],
+     "symbol_recall_mean": 0.49281345565749235,
+     "all_symbols_hit": 46
+    },
+    "c1024": {
+     "packet_tokens_mean": 998.2752293577981,
+     "file_recall_mean": 0.8715596330275229,
+     "all_files_hit": 95,
+     "all_files_ci95": [
+      0.7959,
+      0.9219
+     ],
+     "symbol_recall_mean": 0.6128440366972476,
+     "all_symbols_hit": 63
+    },
+    "c2048": {
+     "packet_tokens_mean": 2019.1743119266055,
+     "file_recall_mean": 0.8715596330275229,
+     "all_files_hit": 95,
+     "all_files_ci95": [
+      0.7959,
+      0.9219
+     ],
+     "symbol_recall_mean": 0.6174311926605505,
+     "all_symbols_hit": 65
+    },
+    "c4096": {
+     "packet_tokens_mean": 3686.137614678899,
+     "file_recall_mean": 0.8715596330275229,
+     "all_files_hit": 95,
+     "all_files_ci95": [
+      0.7959,
+      0.9219
+     ],
+     "symbol_recall_mean": 0.6174311926605505,
+     "all_symbols_hit": 65
+    },
+    "c512": {
+     "packet_tokens_mean": 485.1926605504587,
+     "file_recall_mean": 0.8715596330275229,
+     "all_files_hit": 95,
+     "all_files_ci95": [
+      0.7959,
+      0.9219
+     ],
+     "symbol_recall_mean": 0.47293577981651375,
+     "all_symbols_hit": 42
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.6956521739130435,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 1.0,
+    "psf/requests": 1.0,
+    "pydata/xarray": 0.6,
+    "pylint-dev/pylint": 0.6666666666666666,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.8260869565217391,
+    "sphinx-doc/sphinx": 0.8125
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "sham_random",
+   "family": "sham",
+   "max_tool_calls": 24,
+   "recurrent_depth": 0,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 9832.137614678899,
+   "router_tokens_mean": 0.0,
+   "router_flops_mean": 0.0,
+   "router_ms_per_decision": 0.25712114209465864,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 998.6880733944954,
+     "file_recall_mean": 0.6330275229357798,
+     "all_files_hit": 69,
+     "all_files_ci95": [
+      0.5395,
+      0.7175
+     ],
+     "symbol_recall_mean": 0.13577981651376148,
+     "all_symbols_hit": 8
+    },
+    "2048": {
+     "packet_tokens_mean": 1999.1009174311926,
+     "file_recall_mean": 0.6422018348623854,
+     "all_files_hit": 70,
+     "all_files_ci95": [
+      0.5488,
+      0.7259
+     ],
+     "symbol_recall_mean": 0.2397553516819572,
+     "all_symbols_hit": 18
+    },
+    "4096": {
+     "packet_tokens_mean": 3312.9266055045873,
+     "file_recall_mean": 0.6422018348623854,
+     "all_files_hit": 70,
+     "all_files_ci95": [
+      0.5488,
+      0.7259
+     ],
+     "symbol_recall_mean": 0.354434250764526,
+     "all_symbols_hit": 30
+    },
+    "512": {
+     "packet_tokens_mean": 487.20183486238534,
+     "file_recall_mean": 0.6238532110091743,
+     "all_files_hit": 68,
+     "all_files_ci95": [
+      0.5302,
+      0.7091
+     ],
+     "symbol_recall_mean": 0.08226299694189602,
+     "all_symbols_hit": 4
+    },
+    "c1024": {
+     "packet_tokens_mean": 995.5688073394496,
+     "file_recall_mean": 0.7981651376146789,
+     "all_files_hit": 87,
+     "all_files_ci95": [
+      0.7133,
+      0.8628
+     ],
+     "symbol_recall_mean": 0.13577981651376148,
+     "all_symbols_hit": 8
+    },
+    "c2048": {
+     "packet_tokens_mean": 2002.8165137614678,
+     "file_recall_mean": 0.8256880733944955,
+     "all_files_hit": 90,
+     "all_files_ci95": [
+      0.7437,
+      0.8855
+     ],
+     "symbol_recall_mean": 0.24434250764525994,
+     "all_symbols_hit": 18
+    },
+    "c4096": {
+     "packet_tokens_mean": 3314.733944954128,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.354434250764526,
+     "all_symbols_hit": 30
+    },
+    "c512": {
+     "packet_tokens_mean": 487.4770642201835,
+     "file_recall_mean": 0.7981651376146789,
+     "all_files_hit": 87,
+     "all_files_ci95": [
+      0.7133,
+      0.8628
+     ],
+     "symbol_recall_mean": 0.08073394495412844,
+     "all_symbols_hit": 4
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.6521739130434783,
+    "mwaskom/seaborn": 0.75,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 0.6,
+    "pylint-dev/pylint": 0.16666666666666666,
+    "pytest-dev/pytest": 0.35294117647058826,
+    "scikit-learn/scikit-learn": 0.782608695652174,
+    "sphinx-doc/sphinx": 0.6875
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "transformer_l2_d64",
+   "family": "transformer",
+   "max_tool_calls": 24,
+   "recurrent_depth": 2,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 18008.174311926607,
+   "router_tokens_mean": 30858.761467889908,
+   "router_flops_mean": 12664587259.302752,
+   "router_ms_per_decision": 88.25347503944121,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 605.6146788990826,
+     "file_recall_mean": 0.7981651376146789,
+     "all_files_hit": 87,
+     "all_files_ci95": [
+      0.7133,
+      0.8628
+     ],
+     "symbol_recall_mean": 0.1559633027522936,
+     "all_symbols_hit": 12
+    },
+    "2048": {
+     "packet_tokens_mean": 936.2660550458716,
+     "file_recall_mean": 0.7981651376146789,
+     "all_files_hit": 87,
+     "all_files_ci95": [
+      0.7133,
+      0.8628
+     ],
+     "symbol_recall_mean": 0.22018348623853212,
+     "all_symbols_hit": 19
+    },
+    "4096": {
+     "packet_tokens_mean": 1115.5871559633028,
+     "file_recall_mean": 0.7981651376146789,
+     "all_files_hit": 87,
+     "all_files_ci95": [
+      0.7133,
+      0.8628
+     ],
+     "symbol_recall_mean": 0.23394495412844038,
+     "all_symbols_hit": 21
+    },
+    "512": {
+     "packet_tokens_mean": 346.41284403669727,
+     "file_recall_mean": 0.7981651376146789,
+     "all_files_hit": 87,
+     "all_files_ci95": [
+      0.7133,
+      0.8628
+     ],
+     "symbol_recall_mean": 0.09862385321100918,
+     "all_symbols_hit": 5
+    },
+    "c1024": {
+     "packet_tokens_mean": 599.9174311926605,
+     "file_recall_mean": 0.8073394495412844,
+     "all_files_hit": 88,
+     "all_files_ci95": [
+      0.7234,
+      0.8704
+     ],
+     "symbol_recall_mean": 0.1559633027522936,
+     "all_symbols_hit": 12
+    },
+    "c2048": {
+     "packet_tokens_mean": 934.651376146789,
+     "file_recall_mean": 0.8165137614678899,
+     "all_files_hit": 89,
+     "all_files_ci95": [
+      0.7335,
+      0.878
+     ],
+     "symbol_recall_mean": 0.22018348623853212,
+     "all_symbols_hit": 19
+    },
+    "c4096": {
+     "packet_tokens_mean": 1111.6605504587155,
+     "file_recall_mean": 0.8165137614678899,
+     "all_files_hit": 89,
+     "all_files_ci95": [
+      0.7335,
+      0.878
+     ],
+     "symbol_recall_mean": 0.23394495412844038,
+     "all_symbols_hit": 21
+    },
+    "c512": {
+     "packet_tokens_mean": 340.5321100917431,
+     "file_recall_mean": 0.7981651376146789,
+     "all_files_hit": 87,
+     "all_files_ci95": [
+      0.7133,
+      0.8628
+     ],
+     "symbol_recall_mean": 0.09862385321100918,
+     "all_symbols_hit": 5
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.9130434782608695,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.5,
+    "pytest-dev/pytest": 0.4117647058823529,
+    "scikit-learn/scikit-learn": 0.8695652173913043,
+    "sphinx-doc/sphinx": 0.875
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "transformer_l2_d64_tokens",
+   "family": "transformer",
+   "max_tool_calls": 24,
+   "recurrent_depth": 2,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 17368.54128440367,
+   "router_tokens_mean": 30744.036697247706,
+   "router_flops_mean": 12570812061.357798,
+   "router_ms_per_decision": 91.99418123140049,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 588.0825688073395,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.09403669724770643,
+     "all_symbols_hit": 9
+    },
+    "2048": {
+     "packet_tokens_mean": 899.1376146788991,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.11697247706422019,
+     "all_symbols_hit": 11
+    },
+    "4096": {
+     "packet_tokens_mean": 1104.1834862385322,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.13073394495412843,
+     "all_symbols_hit": 13
+    },
+    "512": {
+     "packet_tokens_mean": 324.57798165137615,
+     "file_recall_mean": 0.7155963302752294,
+     "all_files_hit": 78,
+     "all_files_ci95": [
+      0.6247,
+      0.7918
+     ],
+     "symbol_recall_mean": 0.06651376146788991,
+     "all_symbols_hit": 6
+    },
+    "c1024": {
+     "packet_tokens_mean": 585.2935779816514,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.09403669724770643,
+     "all_symbols_hit": 9
+    },
+    "c2048": {
+     "packet_tokens_mean": 893.3577981651376,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.11697247706422019,
+     "all_symbols_hit": 11
+    },
+    "c4096": {
+     "packet_tokens_mean": 1100.51376146789,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.13073394495412843,
+     "all_symbols_hit": 13
+    },
+    "c512": {
+     "packet_tokens_mean": 327.9633027522936,
+     "file_recall_mean": 0.7614678899082569,
+     "all_files_hit": 83,
+     "all_files_ci95": [
+      0.6734,
+      0.8317
+     ],
+     "symbol_recall_mean": 0.06651376146788991,
+     "all_symbols_hit": 6
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 0.8333333333333334,
+    "matplotlib/matplotlib": 0.782608695652174,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.3333333333333333,
+    "pytest-dev/pytest": 0.47058823529411764,
+    "scikit-learn/scikit-learn": 0.782608695652174,
+    "sphinx-doc/sphinx": 0.6875
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "transformer_l4_d64",
+   "family": "transformer",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 18120.24770642202,
+   "router_tokens_mean": 30901.65137614679,
+   "router_flops_mean": 25315504001.174313,
+   "router_ms_per_decision": 160.41890657503322,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 547.183486238532,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.1694189602446483,
+     "all_symbols_hit": 13
+    },
+    "2048": {
+     "packet_tokens_mean": 834.5137614678899,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.19388379204892967,
+     "all_symbols_hit": 16
+    },
+    "4096": {
+     "packet_tokens_mean": 980.8348623853211,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.21223241590214068,
+     "all_symbols_hit": 18
+    },
+    "512": {
+     "packet_tokens_mean": 326.4770642201835,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.10474006116207951,
+     "all_symbols_hit": 6
+    },
+    "c1024": {
+     "packet_tokens_mean": 547.5045871559633,
+     "file_recall_mean": 0.7889908256880734,
+     "all_files_hit": 86,
+     "all_files_ci95": [
+      0.7032,
+      0.8551
+     ],
+     "symbol_recall_mean": 0.1694189602446483,
+     "all_symbols_hit": 13
+    },
+    "c2048": {
+     "packet_tokens_mean": 830.7798165137615,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.19388379204892967,
+     "all_symbols_hit": 16
+    },
+    "c4096": {
+     "packet_tokens_mean": 977.3761467889908,
+     "file_recall_mean": 0.7889908256880734,
+     "all_files_hit": 86,
+     "all_files_ci95": [
+      0.7032,
+      0.8551
+     ],
+     "symbol_recall_mean": 0.21223241590214068,
+     "all_symbols_hit": 18
+    },
+    "c512": {
+     "packet_tokens_mean": 326.86238532110093,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.10474006116207951,
+     "all_symbols_hit": 6
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.8260869565217391,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 0.8,
+    "pylint-dev/pylint": 0.3333333333333333,
+    "pytest-dev/pytest": 0.5294117647058824,
+    "scikit-learn/scikit-learn": 0.9130434782608695,
+    "sphinx-doc/sphinx": 0.8125
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "trm_c2i1_d64",
+   "family": "trm",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 18579.45871559633,
+   "router_tokens_mean": 31685.422018348625,
+   "router_flops_mean": 25819547002.12844,
+   "router_ms_per_decision": 159.1216370804073,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 365.48623853211006,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.113914373088685,
+     "all_symbols_hit": 9
+    },
+    "2048": {
+     "packet_tokens_mean": 457.1559633027523,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.13073394495412843,
+     "all_symbols_hit": 11
+    },
+    "4096": {
+     "packet_tokens_mean": 525.651376146789,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.13073394495412843,
+     "all_symbols_hit": 11
+    },
+    "512": {
+     "packet_tokens_mean": 237.23853211009174,
+     "file_recall_mean": 0.8440366972477065,
+     "all_files_hit": 92,
+     "all_files_ci95": [
+      0.7644,
+      0.9003
+     ],
+     "symbol_recall_mean": 0.08027522935779817,
+     "all_symbols_hit": 7
+    },
+    "c1024": {
+     "packet_tokens_mean": 361.5321100917431,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.113914373088685,
+     "all_symbols_hit": 9
+    },
+    "c2048": {
+     "packet_tokens_mean": 451.42201834862385,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.13073394495412843,
+     "all_symbols_hit": 11
+    },
+    "c4096": {
+     "packet_tokens_mean": 521.697247706422,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.13073394495412843,
+     "all_symbols_hit": 11
+    },
+    "c512": {
+     "packet_tokens_mean": 241.4678899082569,
+     "file_recall_mean": 0.7522935779816514,
+     "all_files_hit": 82,
+     "all_files_ci95": [
+      0.6636,
+      0.8238
+     ],
+     "symbol_recall_mean": 0.08027522935779817,
+     "all_symbols_hit": 7
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.8695652173913043,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 1.0,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.5,
+    "pytest-dev/pytest": 0.5294117647058824,
+    "scikit-learn/scikit-learn": 0.9565217391304348,
+    "sphinx-doc/sphinx": 0.9375
+   }
+  },
+  {
+   "arm": "search",
+   "policy": "trm_ldt_c2i1_d64",
+   "family": "trm_ldt",
+   "max_tool_calls": 24,
+   "recurrent_depth": 4,
+   "instances": 109,
+   "tool_calls_mean": 25.0,
+   "retrieval_result_tokens_mean": 18553.394495412846,
+   "router_tokens_mean": 31782.477064220184,
+   "router_flops_mean": 25901219163.59633,
+   "router_ms_per_decision": 169.82527928338214,
+   "certified_exclusions_containing_gold": 0,
+   "ldt_excluded": 0,
+   "budgets": {
+    "1024": {
+     "packet_tokens_mean": 392.73394495412845,
+     "file_recall_mean": 0.8256880733944955,
+     "all_files_hit": 90,
+     "all_files_ci95": [
+      0.7437,
+      0.8855
+     ],
+     "symbol_recall_mean": 0.07492354740061162,
+     "all_symbols_hit": 6
+    },
+    "2048": {
+     "packet_tokens_mean": 499.2110091743119,
+     "file_recall_mean": 0.8256880733944955,
+     "all_files_hit": 90,
+     "all_files_ci95": [
+      0.7437,
+      0.8855
+     ],
+     "symbol_recall_mean": 0.08409785932721713,
+     "all_symbols_hit": 7
+    },
+    "4096": {
+     "packet_tokens_mean": 517.045871559633,
+     "file_recall_mean": 0.8256880733944955,
+     "all_files_hit": 90,
+     "all_files_ci95": [
+      0.7437,
+      0.8855
+     ],
+     "symbol_recall_mean": 0.08409785932721713,
+     "all_symbols_hit": 7
+    },
+    "512": {
+     "packet_tokens_mean": 246.4862385321101,
+     "file_recall_mean": 0.8256880733944955,
+     "all_files_hit": 90,
+     "all_files_ci95": [
+      0.7437,
+      0.8855
+     ],
+     "symbol_recall_mean": 0.05045871559633028,
+     "all_symbols_hit": 4
+    },
+    "c1024": {
+     "packet_tokens_mean": 387.44954128440367,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.07492354740061162,
+     "all_symbols_hit": 6
+    },
+    "c2048": {
+     "packet_tokens_mean": 493.92660550458714,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.08409785932721713,
+     "all_symbols_hit": 7
+    },
+    "c4096": {
+     "packet_tokens_mean": 511.76146788990826,
+     "file_recall_mean": 0.7798165137614679,
+     "all_files_hit": 85,
+     "all_files_ci95": [
+      0.6932,
+      0.8473
+     ],
+     "symbol_recall_mean": 0.08409785932721713,
+     "all_symbols_hit": 7
+    },
+    "c512": {
+     "packet_tokens_mean": 239.55963302752295,
+     "file_recall_mean": 0.7706422018348624,
+     "all_files_hit": 84,
+     "all_files_ci95": [
+      0.6833,
+      0.8395
+     ],
+     "symbol_recall_mean": 0.05045871559633028,
+     "all_symbols_hit": 4
+    }
+   },
+   "file_recall_2048_by_repo": {
+    "astropy/astropy": 1.0,
+    "matplotlib/matplotlib": 0.9130434782608695,
+    "mwaskom/seaborn": 1.0,
+    "pallets/flask": 0.6666666666666666,
+    "psf/requests": 0.8333333333333334,
+    "pydata/xarray": 1.0,
+    "pylint-dev/pylint": 0.3333333333333333,
+    "pytest-dev/pytest": 0.47058823529411764,
+    "scikit-learn/scikit-learn": 0.9565217391304348,
+    "sphinx-doc/sphinx": 0.9375
+   }
+  }
+ ],
+ "bm25_file_baseline": {
+  "13000": {
+   "tokens_mean": 12582.981651376147,
+   "file_recall_mean": 0.41284403669724773,
+   "all_files_hit": 45,
+   "instances": 109
+  },
+  "2048": {
+   "tokens_mean": 1733.1743119266055,
+   "file_recall_mean": 0.07339449541284404,
+   "all_files_hit": 8,
+   "instances": 109
+  },
+  "27000": {
+   "tokens_mean": 26567.8623853211,
+   "file_recall_mean": 0.5321100917431193,
+   "all_files_hit": 58,
+   "instances": 109
+  },
+  "4096": {
+   "tokens_mean": 3750.8348623853212,
+   "file_recall_mean": 0.1834862385321101,
+   "all_files_hit": 20,
+   "instances": 109
+  }
+ },
+ "bm25_path_map_baseline": {
+  "12": {
+   "tokens_mean": 113.30275229357798,
+   "file_recall_mean": 0.7614678899082569,
+   "all_files_hit": 83,
+   "instances": 109
+  },
+  "25": {
+   "tokens_mean": 230.6422018348624,
+   "file_recall_mean": 0.8623853211009175,
+   "all_files_hit": 94,
+   "instances": 109
+  },
+  "5": {
+   "tokens_mean": 50.95412844036697,
+   "file_recall_mean": 0.6605504587155964,
+   "all_files_hit": 72,
+   "instances": 109
+  }
+ },
+ "context": {
+  "gold_files_tokens_mean": 9853.926605504586,
+  "repo_python_bytes_mean": 5726203.394495413,
+  "repo_python_files_mean": 620.1743119266055
+ },
+ "episodes_sha256": "fed0d9fb0d1a9426381d1e26fe3aa8d8979a7ffbca141b85a3c86080579b5d9b"
+}

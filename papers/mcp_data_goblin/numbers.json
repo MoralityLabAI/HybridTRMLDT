@@ -1,0 +1,34 @@
+{
+ "mcp02_pilot_gpu": {
+  "episodes": 8064,
+  "best_main": [
+   "oracle_upper_bound",
+   "flat",
+   1024
+  ]
+ },
+ "mcp03": {
+  "instances": 109,
+  "context": {
+   "gold_files_tokens_mean": 9853.926605504586,
+   "repo_python_bytes_mean": 5726203.394495413,
+   "repo_python_files_mean": 620.1743119266055
+  }
+ },
+ "gdk_demo": {
+  "packet": {
+   "runs": 11,
+   "file_named": 5,
+   "function_named": 3,
+   "provider_input_tokens_mean": 2012.2727272727273,
+   "provider_output_tokens_mean": 128.72727272727272
+  },
+  "no_packet": {
+   "runs": 11,
+   "file_named": 1,
+   "function_named": 2,
+   "provider_input_tokens_mean": 503.45454545454544,
+   "provider_output_tokens_mean": 107.9090909090909
+  }
+ }
+}

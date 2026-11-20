@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp02-work/pilot_gpu/ckpt/looped_p4_d128.pt", "device": "cuda", "peak_rss_before_forward": 646250496, "peak_rss_after_forward": 1094889472, "forward_peak_rss_delta": 448638976, "weights_bytes_fp32": 2957316, "candidates": 32, "sequence_length": 74, "cuda_max_memory_allocated": 38680064}

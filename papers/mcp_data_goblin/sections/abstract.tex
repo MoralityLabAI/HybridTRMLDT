@@ -7,10 +7,11 @@ parameters at recurrent depth 1 to 12. The paper reports three measurements:
 \item \textbf{Synthetic multi-server catalogs.} Routers with an exact-match token channel solve layered discovery tasks that BM25 and
 hand-written rules mostly fail, using about half the tool calls. Looped and recursive cores match a four-layer
 Transformer with a quarter of its non-embedding parameters, and deeper recurrence adds nothing measurable.
-\item \textbf{SWE-bench Lite.} On \McpThreeInstances{} tasks from ten repositories unseen in training, a 2,048-token
-packet that combines a BM25 path map with router-selected source snippets contains the gold files with recall
-\BmComposedFileRecallTwoK{} and the gold functions with recall \BmComposedSymRecallTwoK{}. SWE-bench's BM25 whole-file
-context reaches \BmFilesRecallTwentySeven{} file recall at \BmFilesTokensTwentySeven{} tokens.
+\item \textbf{SWE-bench Lite.} On \McpThreeInstances{} tasks from ten repositories unseen in training, a four-pass looped
+router places the gold files in a \CompactFirstTokens{}-token packet with recall \CompactFirstFileRecall{}. SWE-bench's
+BM25 whole-file context reaches \BmFilesRecallTwentySeven{} at \BmFilesTokensTwentySeven{} tokens. Learned routers
+read too few symbols, though. For function-level evidence, BM25 reading combined with a BM25 path map is still best
+(file recall \BmComposedFileRecallTwoK{}, function recall \BmComposedSymRecallTwoK{} at 2,048 tokens).
 \item \textbf{Cost.} Training a router fits in a few hundred megabytes of process memory, and inference adds megabytes on top of the
 runtime.
 \end{itemize}

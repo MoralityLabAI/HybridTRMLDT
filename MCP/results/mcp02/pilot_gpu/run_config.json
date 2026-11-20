@@ -1,0 +1,286 @@
+{
+ "gym_version": "mcp-02",
+ "config": {
+  "name": "mcp02-pilot-gpu",
+  "purpose": "Modest GPU pilot on the RTX 5080: width 128, about 2.4x the CPU pilot data, deeper recurrent variants; exact-match encoder channel, with one tokens-only anchor",
+  "dataset": {
+   "worlds": {
+    "train": 480,
+    "dev": 80
+   },
+   "seed": {
+    "train": 1101,
+    "dev": 2202
+   },
+   "catalog_size": 256,
+   "arm_configs": [
+    [
+     "search",
+     ""
+    ],
+    [
+     "layered",
+     "SCB"
+    ],
+    [
+     "layered",
+     "KBE"
+    ],
+    [
+     "layered_ldt",
+     "PSCB"
+    ]
+   ],
+   "epsilons": [
+    0.0,
+    0.35
+   ],
+   "max_candidates": 12,
+   "max_tool_calls": 40
+  },
+  "training": {
+   "epochs": 2,
+   "lr": 0.001,
+   "batch_states": 32,
+   "seed": 7,
+   "threads": 4
+  },
+  "models": {
+   "dense_d128": {
+    "config": {
+     "arch": "dense",
+     "d": 128,
+     "encoder": "match"
+    }
+   },
+   "transformer_l1_d128": {
+    "config": {
+     "arch": "transformer",
+     "d": 128,
+     "heads": 4,
+     "layers": 1,
+     "encoder": "match"
+    }
+   },
+   "transformer_l2_d128": {
+    "config": {
+     "arch": "transformer",
+     "d": 128,
+     "heads": 4,
+     "layers": 2,
+     "encoder": "match"
+    }
+   },
+   "transformer_l4_d128": {
+    "config": {
+     "arch": "transformer",
+     "d": 128,
+     "heads": 4,
+     "layers": 4,
+     "encoder": "match"
+    }
+   },
+   "looped_p4_d128": {
+    "config": {
+     "arch": "looped",
+     "d": 128,
+     "heads": 4,
+     "passes": 4,
+     "encoder": "match"
+    }
+   },
+   "trm_c2i1_d128": {
+    "config": {
+     "arch": "trm",
+     "d": 128,
+     "heads": 4,
+     "net_layers": 1,
+     "inner": 1,
+     "cycles": 2,
+     "encoder": "match"
+    }
+   },
+   "trm_ldt_c2i1_d128": {
+    "config": {
+     "arch": "trm_ldt",
+     "d": 128,
+     "heads": 4,
+     "net_layers": 1,
+     "inner": 1,
+     "cycles": 2,
+     "encoder": "match"
+    }
+   },
+   "hrm_h2l1_d128": {
+    "config": {
+     "arch": "hrm",
+     "d": 128,
+     "heads": 4,
+     "low_steps": 1,
+     "high_cycles": 2,
+     "encoder": "match"
+    }
+   },
+   "sham_shuffled_transformer_l2_d128": {
+    "config": {
+     "arch": "transformer",
+     "d": 128,
+     "heads": 4,
+     "layers": 2,
+     "encoder": "match"
+    },
+    "shuffle_labels": true
+   },
+   "trm_c4i2_d128": {
+    "config": {
+     "arch": "trm",
+     "d": 128,
+     "heads": 4,
+     "net_layers": 1,
+     "inner": 2,
+     "cycles": 4,
+     "encoder": "match"
+    }
+   },
+   "looped_p12_d128": {
+    "config": {
+     "arch": "looped",
+     "d": 128,
+     "heads": 4,
+     "passes": 12,
+     "encoder": "match"
+    }
+   },
+   "transformer_l2_d128_tokens": {
+    "config": {
+     "arch": "transformer",
+     "d": 128,
+     "heads": 4,
+     "layers": 2,
+     "encoder": "tokens"
+    },
+    "note": "encoder ablation anchor: tokens-only, otherwise transformer_l2_d128"
+   }
+  },
+  "evaluation": {
+   "split": "test",
+   "seed": 3303,
+   "worlds": 32,
+   "catalog_sizes": [
+    256,
+    1024
+   ],
+   "arm_configs": [
+    [
+     "search",
+     ""
+    ],
+    [
+     "layered",
+     "SCB"
+    ],
+    [
+     "layered",
+     "KBE"
+    ],
+    [
+     "layered_ldt",
+     "PSCB"
+    ],
+    [
+     "flat",
+     ""
+    ]
+   ],
+   "max_tool_calls": [
+    40
+   ],
+   "prefilter_k": 32,
+   "handoff_budget_bytes": 2048,
+   "controls": [
+    "deterministic_rules",
+    "lexical_bm25",
+    "sham_random",
+    "oracle_upper_bound"
+   ],
+   "depth_sweep": {
+    "models": [
+     "looped_p4_d128",
+     "trm_c2i1_d128",
+     "trm_ldt_c2i1_d128",
+     "hrm_h2l1_d128"
+    ],
+    "depths": [
+     1,
+     2,
+     4,
+     8
+    ],
+    "catalog_size": 256,
+    "arm_configs": [
+     [
+      "layered",
+      "SCB"
+     ],
+     [
+      "layered_ldt",
+      "PSCB"
+     ]
+    ]
+   },
+   "deliberation_sweep": {
+    "max_tool_calls": [
+     24,
+     64
+    ],
+    "catalog_size": 256,
+    "arm_configs": [
+     [
+      "layered",
+      "SCB"
+     ],
+     [
+      "search",
+      ""
+     ]
+    ],
+    "policies": [
+     "deterministic_rules",
+     "lexical_bm25",
+     "transformer_l4_d128",
+     "trm_c2i1_d128",
+     "looped_p4_d128",
+     "trm_c4i2_d128",
+     "looped_p12_d128"
+    ]
+   },
+   "layout_sweep": {
+    "layouts": [
+     "",
+     "S",
+     "SC",
+     "SCB",
+     "PSCB",
+     "KSB",
+     "KBE",
+     "PKBE"
+    ],
+    "catalog_size": 1024,
+    "policies": [
+     "deterministic_rules",
+     "oracle_upper_bound",
+     "trm_c2i1_d128",
+     "trm_ldt_c2i1_d128"
+    ],
+    "arms": [
+     "layered",
+     "layered_ldt"
+    ],
+    "worlds": 16
+   }
+  }
+ },
+ "config_path": "MCP/mcp02/configs/pilot_gpu.json",
+ "device": "cuda",
+ "transport": "inprocess"
+}

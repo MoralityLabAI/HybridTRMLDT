@@ -1,28 +1,58 @@
 \subsection{Synthetic multi-server catalogs (MCP-02)}
-\paragraph{Index depth.} At 1024 resources the layout sweep (Table~\ref{tab:mcp02-pilot_gpu-layout},
-Figure~\ref{fig:layout}) separates three regimes:
+Each cell has 32 held-out test worlds. Routers were trained on 256-resource worlds only.
+
+\paragraph{Index depth.} The layout sweep at 1024 resources (Table~\ref{tab:mcp02-pilot_gpu-layout},
+Figure~\ref{fig:layout}) shows that depth is necessary at this catalog size.
 \begin{itemize}
-\item paging a flat root or a single server facet exhausts the 40-call budget even for the oracle;
-\item two facets are not enough either;
-\item three or four facets (server, collection and name bucket, or kind, bucket and entity) let the oracle finish in
-14 to 20 calls while reading about half the tool-result bytes of a shallow walk.
+\item Paging a flat root, or a single server facet, exhausts the 40-call budget for every router, the oracle included.
+\item With three facets (server, collection, name bucket) or kind, bucket and entity, the oracle accepts 14--15 of 16
+worlds in 14--19 calls. It reads 39--44~KB of tool results, against 80--110~KB for the shallow layouts.
 \end{itemize}
-Deeper indices therefore pay for their traversal once the catalog no longer fits a few pages per node.
-Certified exclusions cost refine calls but prune whole provenance or capability subtrees. With the provenance
-facet first they remove archive and replica branches in one step, and no certified exclusion ever removed a
-required record.
+Deeper indices therefore pay for their extra traversal once a node no longer fits a few pages.
 
-\paragraph{Controls.} Search and eager flat listing are easy for BM25 and the deterministic rules at both catalog
-sizes. Layered discovery without search is hard: at 1024 resources both controls solve only a few episodes per cell,
-while the oracle solves nearly all of them. That gap is where learned routing can matter.
+Certified LDT exclusions prune large subtrees: 1,292 exclusions across 16 worlds at a flat root, and 85--158 per
+deep layout. Across all sweeps, no certified exclusion removed a required record. They help the hand-written rules
+on capability-first layouts (KBE: 0 to 5 of 16), but they do not raise learned routers, which already avoid the
+excluded branches.
 
-\paragraph{Learned routers.} Tables~\ref{tab:mcp02-pilot_cpu-success} and \ref{tab:mcp02-pilot_gpu-success} give
-accepted episodes per cell for the CPU pilot (width 48, tokens-only encoder) and the GPU pilot (width 128, exact-match
-channel). The encoder dominates. Tokens-only routers stay below BM25 in most cells, because they never learn to
-recognise that a candidate's identifier equals the needed one. Adding the exact-match channel lifts held-out dev
-ranking accuracy from 0.73 to 0.91 for the same Transformer-L2 and data, and it is what lets learned routers compete.
-Among tokens-only routers the TRM is the strongest learned family in the layered arms, consistent with recurrence
-helping when matching must be learned.
+\paragraph{Learned routers against controls.} Tables~\ref{tab:mcp02-pilot_gpu-success} (width 128, exact-match
+encoder) and \ref{tab:mcp02-pilot_cpu-success} (width 48, tokens-only encoder) report accepted episodes.
+
+Search and eager listing are easy for every non-sham router. Layered discovery separates them.
+\begin{itemize}
+\item \textbf{At 256 resources}, the match-encoder routers accept 22--32 of 32 episodes on the three layered
+configurations, against 7--22 for BM25 and 10--22 for the deterministic rules. They use 15--30 calls where the
+controls use 25--37.
+\item \textbf{At 1024 resources}, four times the training size, the attention-based routers degrade to 14--23 of 32
+on the kind-first index and 4--14 on the others, while the controls fall to 1--6. The oracle still accepts 26--31.
+\end{itemize}
+Catalog-size generalisation is therefore the main open gap.
+
+\paragraph{Encoder before architecture.} The tokens-only Transformer trained on the same data accepts 16 (SCB) and
+8 (PSCB) of 32 at 256 resources, where its match-encoder twin accepts 28 and 25. Its held-out ranking accuracy is
+0.73 against 0.91. The Transformer trained on shuffled labels accepts nothing on layered tasks.
+
+With the match channel, every architecture lands within a few episodes of every other. Dev ranking accuracy is
+0.904 to 0.915 for Transformers with 1--4 layers, looped cores with 4 or 12 passes, TRM, TRM+LDT and HRM. The dense
+dual encoder is the exception at 0.839, and it falls behind on layered tasks.
+
+\paragraph{Recurrence buys parameters, not accuracy.} At recurrent depth 4 the looped block, the TRM and the HRM match
+the four-layer Transformer with 0.21--0.41M non-embedding parameters instead of 0.80M. Training with 12 passes or
+12 TRM block applications adds nothing measurable over 4.
+
+\paragraph{Test-time depth.} Changing depth only at inference (Table~\ref{tab:mcp02-pilot_gpu-depth}) separates the
+recurrent families.
+\begin{itemize}
+\item The looped block, trained with 4 passes, improves monotonically when run with more passes: on layered/SCB it accepts
+25, 27, 29 and 30 of 32 at 1, 2, 4 and 8 passes, and on the certified PSCB arm 19, 25, 27 and 28.
+\item TRM, TRM+LDT and HRM are flat across test depths 1 to 8, while their FLOPs grow linearly. Their answer state
+settles within one cycle.
+\end{itemize}
+
+\paragraph{Local deliberation budget.} Raising the tool-call budget from 24 to 64 lifts the learned routers on layered/SCB
+from 26--28 to 30--31 of 32. They spend only 19--22 calls even when 64 are allowed. The hand-written rules go
+from 10 to 19 and BM25 from 5 to 15, both using most of the budget. Generous local exploration helps every router,
+but it does not close the gap.
 
 \IfFileExists{tables/mcp02_pilot_gpu_success.tex}{\input{tables/mcp02_pilot_gpu_success}}{}
 \IfFileExists{tables/mcp02_pilot_cpu_success.tex}{\input{tables/mcp02_pilot_cpu_success}}{}
@@ -31,5 +61,5 @@ helping when matching must be learned.
 \IfFileExists{figures/mcp02_layout_depth.pdf}{
 \begin{figure}[t]\centering
 \includegraphics[width=0.95\linewidth]{figures/mcp02_layout_depth.pdf}
-\caption{MCP-02 index depth against tool-result volume and accepted episodes (1024 resources).}\label{fig:layout}
+\caption{MCP-02 index depth against tool-result volume and accepted episodes at 1024 resources.}\label{fig:layout}
 \end{figure}}{}
