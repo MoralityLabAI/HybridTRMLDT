@@ -229,6 +229,22 @@ class RelayIntegrationTests(unittest.TestCase):
             self.assertEqual(receipt["compaction"]["recent_turns_kept"], 1)
             self.assertIsNone(receipt["retry_failure"])
 
+    def test_provider_token_parity_mismatch_blocks_later_inference(self):
+        backend = FakeBackend()
+        with TemporaryDirectory() as tmp:
+            relay = Relay("http://127.0.0.1:1", Path(tmp) / "mismatch.jsonl",
+                          None, 512, 1000, 1200, 2, 6000, 30)
+            relay.forward = backend.forward
+            body = json.dumps({"model": "m", "messages": episode(1), "tools": []}).encode()
+            first_status, _ = relay.chat("mcp04", "parity", body)
+            assert first_status == 200
+            assert relay.mcp04_parity_failure is not None
+            chat_calls = backend.paths.count("/v1/chat/completions")
+            second_status, second_body = relay.chat("mcp04", "parity", body)
+            assert second_status == 422
+            assert b"mcp04_template_parity_failed" in second_body
+            assert backend.paths.count("/v1/chat/completions") == chat_calls
+
     def test_proxy_blocks_missing_server_tokenizer_before_chat(self):
         backend = FakeBackend()
         backend.valid = False
