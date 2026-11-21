@@ -25,7 +25,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from . import features as FE
-from .agent import Policy
+from .agent import ITEM_TYPES, Policy
 from .textutil import digest
 
 ARCHES = ("dense", "transformer", "looped", "trm", "trm_ldt", "hrm")
@@ -73,6 +73,11 @@ class Router(nn.Module):
         if arch not in ARCHES:
             raise ValueError("unknown architecture")
         self.arch = arch
+        if config.get("utility_heads") not in (None, "expand_read"):
+            raise ValueError("unknown utility_heads mode")
+        self.utility_heads = config.get("utility_heads") == "expand_read"
+        if self.utility_heads and arch == "dense":
+            raise ValueError("dual utility heads require a pooled recurrent/transformer encoder")
         self.encoder = config.get("encoder", "tokens")
         if self.encoder not in FE.ENCODERS:
             raise ValueError("unknown encoder")
@@ -92,7 +97,9 @@ class Router(nn.Module):
             self.f_low, self.f_high = Block(d, heads), Block(d, heads)
             self.h0, self.l0 = nn.Parameter(torch.zeros(d)), nn.Parameter(torch.zeros(d))
         self.norm = nn.LayerNorm(d)
-        self.score_head = nn.Linear(d, 1)
+        self.score_head = None if self.utility_heads else nn.Linear(d, 1)
+        self.expand_head = nn.Linear(d, 1) if self.utility_heads else None
+        self.read_head = nn.Linear(d, 1) if self.utility_heads else None
         self.exclusion_head = nn.Linear(d, len(FE.EXCLUSION_LABELS)) if arch == "trm_ldt" else None
         self.depth_override: int | None = None
 
@@ -153,7 +160,13 @@ class Router(nn.Module):
             h = zh
         pooled = self.norm(h[:, 0])
         excl = self.exclusion_head(pooled) if self.exclusion_head is not None else None
-        return self.score_head(pooled).squeeze(-1), excl
+        if self.utility_heads:
+            is_read = structs[:, ITEM_TYPES.index("doc")] > 0.5
+            scores = torch.where(is_read, self.read_head(pooled).squeeze(-1),
+                                 self.expand_head(pooled).squeeze(-1))
+        else:
+            scores = self.score_head(pooled).squeeze(-1)
+        return scores, excl
 
 
 # -- measurement ---------------------------------------------------------------------------
@@ -229,6 +242,8 @@ class RouterPolicy(Policy):
 
     @torch.inference_mode()
     def score(self, obs: dict) -> list[float]:
+        if self.model.utility_heads:
+            obs = dict(obs, needs=FE.utility_needs(obs))
         ids, segs, structs = FE.encode_observation(obs, self.model.encoder)
         scores, _ = self.model(*self._tensors(ids, segs, structs))
         self._cost = {"flops": self._flops["flops"] * len(ids), "router_tokens": FE.router_tokens(ids),
