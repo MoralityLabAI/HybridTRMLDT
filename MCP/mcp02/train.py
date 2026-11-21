@@ -158,7 +158,7 @@ def evaluate_ranking(model, states, device, batch=64) -> dict:
                 best = scores[m].argmax()
                 hits += int(labels[m][best].item() == 1)
                 total += 1
-                if model.utility_heads and "utilities" in chunk[s]:
+                if (model.utility_heads or model.single_utility) and "utilities" in chunk[s]:
                     values = torch.tensor(chunk[s]["utilities"], device=device)
                     if float(values.max()) > 0:
                         utility_hits += int(values[best] >= values.max() - 1e-6)
@@ -166,7 +166,7 @@ def evaluate_ranking(model, states, device, batch=64) -> dict:
                         utility_states += 1
     model.train()
     result = {"top1_positive": hits / total if total else None, "states": total}
-    if model.utility_heads:
+    if model.utility_heads or model.single_utility:
         result.update({"utility_top1_optimal": utility_hits / utility_states if utility_states else None,
                        "utility_top1_mean_value": selected_utility / utility_states if utility_states else None,
                        "utility_states": utility_states})
@@ -183,14 +183,14 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
     model = Router(config).to(device)
     rng = random.Random(seed)
     decide = [dict(s) for s in data["decide"]]
-    if model.utility_heads and any("utilities" not in s for s in decide):
+    if (model.utility_heads or model.single_utility) and any("utilities" not in s for s in decide):
         raise ValueError("dual utility heads require states with private packet-marginal targets")
     if shuffle_labels:
         for s in decide:
             labels = list(s["labels"])
             rng.shuffle(labels)
             s["labels"] = labels
-            if model.utility_heads:
+            if model.utility_heads or model.single_utility:
                 utilities = list(s["utilities"])
                 rng.shuffle(utilities)
                 s["utilities"] = utilities
@@ -212,7 +212,7 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
             chunk = decide[b * batch_states:(b + 1) * batch_states]
             ids, seg, structs, owner, labels = _assemble(chunk, device, model.encoder)
             scores, _ = model(ids, seg, structs)
-            if model.utility_heads:
+            if model.utility_heads or model.single_utility:
                 values = torch.tensor([v for state in chunk for v in state["utilities"]],
                                       dtype=scores.dtype, device=device).clamp(0, 1)
                 loss = (_utility_listwise_loss(scores, owner, values, len(chunk))
@@ -246,7 +246,7 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
                "shuffle_labels": shuffle_labels, "device": device, "threads": threads,
                "train_seconds": time.perf_counter() - started, "steps": step, "loss_curve": curve,
                "train_states": len(decide), "train_row_states": len(rows),
-               "objective": "packet-marginal-utility-listwise+brier" if model.utility_heads else "binary-listwise",
+               "objective": "packet-marginal-utility-listwise+calibration" if (model.utility_heads or model.single_utility) else "binary-listwise",
                "train_flops_estimate": train_flops,
                "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen "
                                      "(upper bound; batches use shorter dynamic padding)",
