@@ -117,7 +117,8 @@ def _path(args: dict) -> str:
     for key in ("path", "file_path", "filename", "uri", "relative_path", "target"):
         val = args.get(key)
         if isinstance(val, str) and val:
-            return val[:240]
+            # A path is a mutable edit anchor. Preserve it exactly.
+            return val
     return "(unknown path)"
 
 
@@ -129,8 +130,8 @@ def _site(args: dict) -> str:
         val = args.get(field)
         if isinstance(val, (str, int, float)) and val != "":
             text = str(val)
-            bits.append(f"{field}={text[:180]}")
-    return " | ".join(bits)[:600]
+            bits.append(f"{field}={text}")
+    return " | ".join(bits)
 
 
 _READ = re.compile(r"(read|open|cat|fetch|inspect|search|query|list|expand)", re.I)
@@ -191,8 +192,14 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
         n_tools += 1
         status = "error" if result.get("isError") else "returned"
         if _EDIT.search(name):
-            edits.append(f"{name}({path}) result={status} args_sha={_hash(str(fn.get('arguments', '')))[:16]} "
-                         f"result_handle={handle} anchor={site or '(unavailable)'}")
+            original_args = fn.get("arguments") or "{}"
+            if not isinstance(original_args, str):
+                original_args = json.dumps(original_args, ensure_ascii=False, sort_keys=True)
+            args_handle = "mcp04:" + _hash(original_args)
+            store[args_handle] = original_args
+            edits.append(f"{name}({path}) result={status} args_sha={_hash(original_args)[:16]} "
+                         f"args_handle={args_handle} result_handle={handle} "
+                         f"anchor={site or '(unavailable)'}")
         elif _READ.search(name):
             reads[path] = f"{name}({path}) {status} handle={handle}"
             if _EMPTY.search(body):
