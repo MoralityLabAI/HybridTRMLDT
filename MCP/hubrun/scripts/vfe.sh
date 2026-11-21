@@ -12,6 +12,6 @@ opt=()
 if grep -q -- "--output-dir" <<<"$help"; then opt+=(-o "$out"); fi
 if grep -q -- "--timeout" <<<"$help"; then opt+=(--timeout "$timeout"); fi
 if grep -q -- "--disable-tui" <<<"$help"; then opt+=(-d); fi
-$H/venvs/$venv/bin/vf-eval $env -m bonsai-27b-ptq1 -b http://127.0.0.1:18130/$arm/$tag/v1 -k LOCAL_API_KEY \
+$H/venvs/$venv/bin/vf-eval $env -m bonsai-27b-ptq1 -b http://127.0.0.1:${MCP_HUB_RELAY_PORT:-18130}/$arm/$tag/v1 -k LOCAL_API_KEY \
   -n $n -r 1 -c $c -T 0.6 -a "$(cat $argsfile)" -s "${opt[@]}" "$@"
 echo "EXIT $? $tag"
