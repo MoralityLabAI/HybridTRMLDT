@@ -81,7 +81,7 @@ class Provider(BaseHTTPRequestHandler):
                                           "function": {"name": name, "arguments": json.dumps(arguments)}}]
                 reason = "tool_calls"
             else:
-                action = json.dumps({"name": name, "args": arguments})
+                action = json.dumps({"name": name, "args": {"arguments": arguments}})[:-1]
                 message["content"] = (f"<|message_model|><|content_invoke_tool_json|>{action}<|end_message|>")
         self.reply({"id": f"turn_{index}", "object": "chat.completion", "model": "stub",
                     "choices": [{"index": 0, "finish_reason": reason, "message": message}],

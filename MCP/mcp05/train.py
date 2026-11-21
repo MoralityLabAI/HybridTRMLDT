@@ -13,7 +13,7 @@ import torch
 from torch.nn import functional as F
 
 from .context import WorkingSet
-from .controller import VERSION, SetTRM, observation
+from .controller import VERSION, RU02, SetTRM, observation
 from .gym import clone, dump, source_root, verifier_manifest
 from .service import RepairWorkspace
 
@@ -141,7 +141,8 @@ def collect(stage: Path, case: dict, work: Path) -> dict:
 
 def fit(episodes: list[dict], mode: str, *, depth: int, epochs: int, seed: int):
     torch.manual_seed(seed)
-    model = SetTRM(mode, depth)
+    model_class = RU02 if mode in {"shared", "dual"} else SetTRM
+    model = model_class(mode, depth)
     optimizer = torch.optim.AdamW(model.parameters(), lr=0.003)
     chronology = random.Random(seed)
     shuffle = random.Random(seed + 1)
@@ -169,7 +170,7 @@ def fit(episodes: list[dict], mode: str, *, depth: int, epochs: int, seed: int):
     return model, losses
 
 
-def grade(model: SetTRM, episodes: list[dict], *, reset=False) -> dict:
+def grade(model: SetTRM | RU02, episodes: list[dict], *, reset=False) -> dict:
     model.eval()
     regret, total, hits = 0., 0, 0
     with torch.inference_mode():
@@ -214,10 +215,13 @@ def main():
                "models": {}}
     for mode in MODES:
         model, losses = fit(train, mode, depth=args.depth, epochs=args.epochs, seed=args.seed)
-        torch.save({"version": VERSION, "mode": mode, "depth": args.depth, "state": model.state_dict()},
+        architecture = "ru02" if isinstance(model, RU02) else "settrm"
+        torch.save({"version": VERSION, "mode": mode, "depth": args.depth, "state": model.state_dict(),
+                    "architecture": architecture},
                    args.out / f"{mode}.pt")
         metrics = grade(model, test)
-        receipt["models"][mode] = {"fit_updates": len(losses), "final_loss": losses[-1], **metrics}
+        receipt["models"][mode] = {"architecture": architecture,
+                                   "fit_updates": len(losses), "final_loss": losses[-1], **metrics}
         if mode == "recurrent":
             receipt["models"]["reset"] = grade(model, test, reset=True)
     receipt.update(peak_rss_bytes=check_ram(), ram_limit_bytes=RAM_LIMIT, seconds=time.monotonic()-started)

@@ -6,8 +6,9 @@ from functools import lru_cache
 import torch
 from torch import nn
 
-from MCP.mcp02.features import OFFSET, VOCAB_BUCKETS, encode_text
-from MCP.mcp02.models import Block
+from MCP.mcp02.agent import ITEM_TYPES
+from MCP.mcp02.features import OFFSET, STRUCT_DIM, VOCAB_BUCKETS, encode_pair, encode_text, utility_needs
+from MCP.mcp02.models import Block, Router
 from .context import candidate_features
 
 ACTIONS = ("expand", "read_symbol", "reuse_cached", "inspect_edit", "run_verifier", "submit_to_solver")
@@ -34,6 +35,9 @@ class SetTRM(nn.Module):
     def embed(self, text: str) -> torch.Tensor:
         ids = encode_text(text, 48)
         return self.tokens(torch.tensor(ids or [0])).mean(dim=0)
+
+    def cache_size(self) -> int:
+        return self._embeddings.cache_info().currsize
 
     def step(self, observation: dict, latent=None):
         context = observation["context"]
@@ -69,6 +73,43 @@ class SetTRM(nn.Module):
         return scores, z
 
 
+class RU02(nn.Module):
+    """The original MCP-02 looped encoder and RU02 heads on MCP-05 action slates."""
+
+    def __init__(self, mode: str, depth: int):
+        super().__init__()
+        self.mode = mode
+        self.router = Router({"arch": "looped", "d": 64, "heads": 4, "passes": depth, "encoder": "match",
+                              **({"single_utility": True} if mode == "shared"
+                                 else {"utility_heads": "expand_read"})})
+        self._pairs = lru_cache(maxsize=2048)(encode_pair)
+
+    def cache_size(self) -> int:
+        return self._pairs.cache_info().currsize
+
+    def step(self, observation: dict, _latent=None):
+        context = observation["context"]
+        needs = utility_needs({"remaining_calls": context["calls_left"],
+                               "needs": [context["task"], context["subgoal"], context["verifier_status"]]})
+        need = " ; ".join(needs)
+        ids, segments, structs = [], [], []
+        for item in observation["slate"]:
+            text, numeric = candidate_features(context["task"], item)
+            state = ("seen" if item.get("seen") else "unseen", "dirty" if context["dirty"] else "clean",
+                     "failed-verifier" if context["failed"] else "no-verifier-failure",
+                     f"tokens-{context['tokens_left'] // 256}")
+            pair = self._pairs(need, " ".join((item["action"], *state, text)), "match")
+            ids.append(pair[0])
+            segments.append(pair[1])
+            struct = [0.] * STRUCT_DIM
+            kind = "doc" if item["action"] in {"read_symbol", "reuse_cached"} else "branch"
+            struct[ITEM_TYPES.index(kind)] = 1.
+            struct[len(ITEM_TYPES):] = numeric[:STRUCT_DIM - len(ITEM_TYPES)]
+            structs.append(struct)
+        scores, _ = self.router(torch.tensor(ids), torch.tensor(segments), torch.tensor(structs))
+        return scores, scores.new_zeros(0)
+
+
 def observation(working, *, task: str, subgoal: str, calls_left: int, tokens_left: int,
                 dirty: bool, failed: bool, expanded: bool, verifier_status: str = "",
                 limit: int = 12) -> dict:
@@ -101,7 +142,8 @@ class Controller:
         data = torch.load(checkpoint, map_location="cpu", weights_only=True)
         if data["version"] != VERSION:
             raise ValueError("unsupported MCP-05 controller checkpoint")
-        self.model = SetTRM(data["mode"], depth or data["depth"])
+        model = RU02 if data.get("architecture") == "ru02" else SetTRM
+        self.model = model(data["mode"], depth or data["depth"])
         self.model.load_state_dict(data["state"])
         self.model.eval()
         self.reset = reset or data["mode"] in {"shared", "dual"}
@@ -115,4 +157,4 @@ class Controller:
         return dict(obs["slate"][int(scores.argmax())], utility=float(scores.max()),
                     candidates=len(scores), latent_bytes=latent.numel() * latent.element_size(),
                     weights_bytes=sum(p.numel() * p.element_size() for p in self.model.parameters()),
-                    cached_embeddings=self.model._embeddings.cache_info().currsize)
+                    cached_embeddings=self.model.cache_size())

@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import signal
 import subprocess
 import sys
 import time
@@ -62,6 +63,62 @@ def summarize(rows: list[dict]) -> dict:
     return groups
 
 
+def run_gdk(cmd: list[str], timeout: int) -> tuple[int, str, str]:
+    windows = os.name == "nt"
+    with subprocess.Popen(
+        cmd, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8",
+        errors="replace", start_new_session=not windows,
+        creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if windows else 0,
+    ) as child:
+        try:
+            stdout, stderr = child.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            if windows:
+                subprocess.run(["taskkill", "/PID", str(child.pid), "/T", "/F"],
+                               capture_output=True, timeout=10, check=False)
+            else:
+                try:
+                    os.killpg(child.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+            child.kill()
+            child.communicate()
+            raise
+        return child.returncode, stdout, stderr
+
+
+def fallback_usage(parent: Path, payload: dict) -> None:
+    if not payload.get("error") or payload.get("preflight"):
+        return
+    trace = parent / "session.preflight.jsonl"
+    if not trace.exists():
+        return
+    receipts = []
+    for line in trace.read_text(encoding="utf-8").splitlines():
+        try:
+            receipts.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    completed = [row for row in receipts if row.get("provider_status") == 200]
+    payload.update(preflight=receipts, inference_calls=len(completed),
+                   provider_input_tokens=sum(row.get("provider_prompt_tokens") or 0 for row in completed),
+                   provider_output_tokens=sum(row.get("provider_completion_tokens") or 0 for row in completed))
+
+
+def export_swe_predictions(root: Path, rows: list[dict], model: str) -> None:
+    official = [row for row in rows if row["suite"] == "swe-bench-lite"]
+    for arm in sorted({row["arm"] for row in official}):
+        predictions = []
+        for row in official:
+            if row["arm"] != arm:
+                continue
+            patch = root / row["id"] / arm / "final.patch"
+            predictions.append({"instance_id": row["id"], "model_name_or_path": f"mcp05-{model}-{arm}",
+                                "model_patch": patch.read_text(encoding="utf-8") if patch.exists() else ""})
+        path = root / f"predictions-{arm}.jsonl"
+        path.write_text("".join(json.dumps(row) + "\n" for row in predictions), encoding="utf-8")
+
+
 def episode(args, case: dict, arm: str, parent: Path) -> dict:
     import re
     started = time.monotonic()
@@ -95,13 +152,12 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
     if verifier:
         cmd += ["--verifier", str(parent / "verifier.json")]
     try:
-        completed = subprocess.run(cmd, cwd=ROOT, capture_output=True, encoding="utf-8", errors="replace",
-                                   timeout=args.episode_timeout)
-        (parent / "stderr.log").write_text(completed.stderr, encoding="utf-8")
-        payload = (json.loads(completed.stdout) if completed.returncode == 0 else
-                   {"error": completed.stderr[-2500:], "exit_code": completed.returncode})
+        code, stdout, stderr = run_gdk(cmd, args.episode_timeout)
+        (parent / "stderr.log").write_text(stderr, encoding="utf-8")
+        payload = json.loads(stdout) if code == 0 else {"error": stderr[-2500:], "exit_code": code}
     except (subprocess.TimeoutExpired, ValueError) as exc:
         payload = {"error": str(exc)}
+    fallback_usage(parent, payload)
     dump(parent / "gdk.json", payload)
     state = payload.get("state") or {}
     patch = state.get("patch", "")
@@ -209,6 +265,7 @@ def main():
                                                            "parity_failures", "rubric_pass", "error")}), flush=True)
             dump(args.out / "summary.json", {"plan": plan, "completed": len(rows),
                                              "assigned": len(cases) * len(args.arms), "summary": summarize(rows)})
+            export_swe_predictions(args.out, rows, args.model)
 
 
 if __name__ == "__main__":

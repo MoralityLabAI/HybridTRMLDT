@@ -109,7 +109,9 @@ def main():
                     usage = json.loads(raw).get("usage") or {}
                     reported = usage.get("prompt_tokens")
                     parity_failed = reported != receipt["preflight"]["prompt_tokens"]
-                    receipt.update(provider_prompt_tokens=reported, provider_preflight_parity=not parity_failed)
+                    receipt.update(provider_prompt_tokens=reported,
+                                   provider_completion_tokens=usage.get("completion_tokens"),
+                                   provider_preflight_parity=not parity_failed)
                 receipt["provider_status"] = status
             except (PreflightError, ValueError, OSError) as exc:
                 receipt["error"] = str(exc)

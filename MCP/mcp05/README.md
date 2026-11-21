@@ -20,7 +20,7 @@ Run these from the HybridTRMLDT root with PyTorch CPU installed.
 
 Every platformer repository starts from a frozen buggy commit. Generation executes the regression on the buggy tree and on the reference patch. Held-out roots use renamed symbols, a different source layout, unseen defect families, and multi-file repairs. The operator's sealed manifest holds gold patches and localization targets. Evaluation gives Goose a fresh copy of only the assigned buggy tree, the public task and the verifier command.
 
-All fitted heads consume the same verifier-grounded replay, including deliberately failing edits and their native results. The shared and dual models use RU02-style utility supervision on matched MCP-05 slates. The recurrent variant runs permutation-equivariant set attention and shared latent refinement, with optional resets across tool calls. A seeded target permutation controls for the relevance of utility labels. Training checks peak process RSS against 3 GiB and limits PyTorch to four threads by default.
+All fitted heads consume the same verifier-grounded replay, including deliberately failing edits and their native results. The shared and dual models reuse the original RU02 looped encoder and utility heads on matched MCP-05 slates. The recurrent variant runs permutation-equivariant set attention and shared latent refinement, with optional resets across tool calls. A seeded target permutation controls for the relevance of utility labels. Training checks peak process RSS against 3 GiB and limits PyTorch to four threads by default.
 
 ## Run matched evaluations
 

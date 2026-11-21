@@ -161,29 +161,51 @@ struct RepairOperation {
 }
 
 fn json_action(text: &str) -> Option<(String, serde_json::Map<String, Value>)> {
+    fn arguments(value: &Value) -> Option<serde_json::Map<String, Value>> {
+        let map = value.as_object()?;
+        if map.len() == 1 {
+            if let Some(nested) = map.get("arguments").and_then(Value::as_object) {
+                return Some(nested.clone());
+            }
+        }
+        Some(map.clone())
+    }
+
     let text = text.trim();
     if let Some((prefix, body)) = text.split_once("<|content_invoke_tool_json|>") {
-        let raw = body.split("<|end_message|>").next()?.trim();
-        let value: Value = serde_json::from_str(raw).ok()?;
+        let (raw, _terminator) = body.split_once("<|end_message|>")?;
+        let raw = raw.trim();
+        // Some Inkling turns terminate after closing the argument object. Accept
+        // a missing outer brace only when the explicit tool terminator was present.
+        let value: Value = serde_json::from_str(raw)
+            .or_else(|error| {
+                if error.is_eof() {
+                    serde_json::from_str(&format!("{raw}}}"))
+                } else {
+                    Err(error)
+                }
+            })
+            .ok()?;
         if let Some(name) = value["name"].as_str() {
-            let args = value
-                .get("arguments")
-                .or_else(|| value.get("args"))?
-                .as_object()?;
-            return Some((name.to_owned(), args.clone()));
+            let args = value.get("arguments").or_else(|| value.get("args"))?;
+            return Some((name.to_owned(), arguments(args)?));
         }
         let name = prefix.rsplit_once("<|message_model|>")?.1.trim();
-        return Some((name.to_owned(), value.as_object()?.clone()));
+        return Some((name.to_owned(), arguments(&value)?));
     }
+    let text = text
+        .rsplit_once("<|content_text|>")
+        .map_or(text, |(_, tail)| {
+            tail.split("<|end_message|>").next().unwrap_or(tail).trim()
+        });
     let text = text
         .strip_prefix("```json")
         .and_then(|body| body.strip_suffix("```"))
         .unwrap_or(text);
     let value: Value = serde_json::from_str(text.trim()).ok()?;
-    Some((
-        value["tool"].as_str()?.to_owned(),
-        value["arguments"].as_object()?.clone(),
-    ))
+    let name = value.get("tool").or_else(|| value.get("name"))?.as_str()?;
+    let args = value.get("arguments").or_else(|| value.get("args"))?;
+    Some((name.to_owned(), arguments(args)?))
 }
 
 fn schemas(can_edit: bool) -> Result<Vec<Tool>> {
@@ -662,7 +684,12 @@ pub(crate) async fn run(args: Args) -> Result<()> {
         calls = packet_stats["tool_calls"].as_u64().unwrap_or(0);
     }
     let id = format!("goblin-{}", uuid::Uuid::new_v4());
-    let trace = std::env::temp_dir().join(format!("{id}.jsonl"));
+    let cwd = std::env::current_dir()?;
+    let trace = options.checkpoint.as_ref().map_or_else(
+        || std::env::temp_dir().join(format!("{id}.jsonl")),
+        |path| cwd.join(path).with_extension("preflight.jsonl"),
+    );
+    std::fs::write(&trace, [])?;
     let (mut relay, proxy_url) = relay(&args, &trace, memory, window, completion).await?;
     let api = ApiClient::with_timeout_and_tls(
         proxy_url,
@@ -729,7 +756,9 @@ pub(crate) async fn run(args: Args) -> Result<()> {
         .lines()
         .filter_map(|line| serde_json::from_str(line).ok())
         .collect();
-    let _ = std::fs::remove_file(&trace);
+    if options.checkpoint.is_none() {
+        let _ = std::fs::remove_file(&trace);
+    }
     let final_state = operation
         .mcp
         .lock()
