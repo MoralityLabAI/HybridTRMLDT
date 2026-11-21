@@ -76,6 +76,10 @@ class Router(nn.Module):
         if config.get("utility_heads") not in (None, "expand_read"):
             raise ValueError("unknown utility_heads mode")
         self.utility_heads = config.get("utility_heads") == "expand_read"
+        self.single_utility = bool(config.get("single_utility", False))
+        if self.utility_heads and self.single_utility:
+            raise ValueError("use either dual utility heads or the single-utility ablation")
+        self.uses_horizon = self.utility_heads or self.single_utility or bool(config.get("use_horizon", False))
         if self.utility_heads and arch == "dense":
             raise ValueError("dual utility heads require a pooled recurrent/transformer encoder")
         self.encoder = config.get("encoder", "tokens")
@@ -242,7 +246,7 @@ class RouterPolicy(Policy):
 
     @torch.inference_mode()
     def score(self, obs: dict) -> list[float]:
-        if self.model.utility_heads:
+        if self.model.uses_horizon:
             obs = dict(obs, needs=FE.utility_needs(obs))
         ids, segs, structs = FE.encode_observation(obs, self.model.encoder)
         scores, _ = self.model(*self._tensors(ids, segs, structs))
