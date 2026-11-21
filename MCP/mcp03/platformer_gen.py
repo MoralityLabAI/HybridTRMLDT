@@ -227,22 +227,32 @@ def build_case(work: Path, split: str, index: int, *, seed: int, family: int,
             value = value.replace(repaired, broken)
         put(root, name, value)
     put(root, "tools/__init__.py", "")
-    for i, topic in enumerate(TOPICS):
-        tag = hashlib.sha256(f"{seed}/{split}/{index}/{topic}".encode()).hexdigest()[:8]
-        put(root, f"tools/{topic}_guide.py",
-            DISTRACTOR.format(topic=topic, tag=tag, name=topic))
+    n_variants = 1 if difficulty == "easy" else 6
+    for i in range(n_variants):
+        for topic in TOPICS:
+            tag = hashlib.sha256(f"{seed}/{split}/{index}/{topic}/{i}".encode()).hexdigest()[:8]
+            folder = "tools" if difficulty == "easy" else ("tools", "engine/plugins", "samples")[i % 3]
+            put(root, f"{folder}/{topic}_guide_{i}.py",
+                DISTRACTOR.format(topic=f"{topic} camera physics collision player sprite world",
+                                  tag=tag, name=f"{topic}_variant_{i}"))
     put(root, "docs/level_notes.py", '''"""Platformer tutorial notes about gravity collision cameras and sprite animations."""
 
 
 def describe_level() -> str:
     return "Platformer guides, not active gameplay code"
 ''')
+    imports = []
+    asserts = []
+    for f in families:
+        file_path, _broken, _repaired, assertion, _issue = DEFECTS[f]
+        imports.append(f"from {file_path[:-3].replace('/', '.')} import " +
+                       MODULES[file_path].split("def ")[1].split("(")[0])
+        asserts.append("        " + assertion)
     put(root, "tests/test_gameplay.py",
-        "import unittest\n"
-        f"from {file_path[:-3].replace('/', '.')} import {MODULES[file_path].split('def ')[1].split('(')[0]}\n\n"
-        "class GameplayRegression(unittest.TestCase):\n"
-        "    def test_regression(self):\n"
-        f"        {assertion}\n")
+        "import unittest\n" + "\n".join(imports) + "\n\n"
+        + "class GameplayRegression(unittest.TestCase):\n"
+        + "    def test_regression(self):\n"
+        + "\n".join(asserts) + "\n")
     put(root, "README.md",
         f"# Generated platformer engine\n\nScenario {split}-{index:03d}.\n"
         "Python source under engine/, UI helper modules under tools/.\n")
