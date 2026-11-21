@@ -325,7 +325,10 @@ def generate(out: Path, *, seed: int = 117, train: int = 12,
     }
     base_cfg["dataset"].update({"arms": ["search", "layered_ldt"],
                                 "epsilons": [0.0, 0.35], "max_candidates": 12})
-    base_cfg["evaluation"].update({"arms": ["search"], "controls": ["lexical_bm25", "identifier_rules"],
+    controls = ["lexical_bm25", "identifier_rules"]
+    if difficulty == "hard":
+        controls.append("oracle_upper_bound")  # private-gold-assisted diagnostic ceiling only
+    base_cfg["evaluation"].update({"arms": ["search"], "controls": controls,
                                    "max_tool_calls": [24], "budgets": [1024],
                                    "bm25_file_budgets": [1024], "prefilter_k": 32,
                                    "composed_packets": False})
