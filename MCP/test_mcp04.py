@@ -107,6 +107,17 @@ class PreflightTests(unittest.TestCase):
         with self.assertRaises(WorkingSetError):
             typed_packet(messages, budget_tokens=1800, keep_recent=1)
 
+    def test_tool_schema_must_change_applied_template(self):
+        class IgnoresTools(FakeBackend):
+            def forward(self, method, path, body):
+                if path == "/apply-template":
+                    data = json.loads(body)
+                    return 200, json.dumps({"prompt": json.dumps(data["messages"])}).encode()
+                return super().forward(method, path, body)
+        request = {"messages": episode(1), "tools": [{"name": "edit_file", "parameters": {}}]}
+        with self.assertRaisesRegex(PreflightError, "ignored tool schemas"):
+            exact_preflight(IgnoresTools().forward, request)
+
     def test_missing_upstream_template_endpoint_rejects(self):
         backend = FakeBackend()
         backend.valid = False
@@ -212,11 +223,16 @@ class RelayIntegrationTests(unittest.TestCase):
                 self.assertTrue(logs[0]["preflight_matches_provider"])
                 self.assertTrue(HttpUpstream.chats)
                 self.assertLess(len(HttpUpstream.chats[-1]["messages"]), len(episode()))
-                handle = next(iter(relay.mcp04_store))
+                handle = next(iter(relay.mcp04_store["t1"]))
                 with urllib.request.urlopen(
                     f"http://127.0.0.1:{proxy.server_port}/mcp04/t1/v1/working-set/{handle}",
                     timeout=30) as response:
                     self.assertEqual(json.load(response)["handle"], handle)
+                with self.assertRaises(urllib.error.HTTPError) as denied:
+                    urllib.request.urlopen(
+                        f"http://127.0.0.1:{proxy.server_port}/mcp04/other-tag/v1/working-set/{handle}",
+                        timeout=30)
+                self.assertEqual(denied.exception.code, 404)
             finally:
                 proxy.shutdown()
         upstream.shutdown()
