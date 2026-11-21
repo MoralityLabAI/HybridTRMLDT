@@ -242,6 +242,9 @@ struct Args {
     lean_context: bool,
     lean_request_byte_limit: usize,
     lean_history_turns: usize,
+    lean_profile: Option<String>,
+    working_set_root: Option<String>,
+    session_id: String,
 }
 
 fn parse_args() -> Result<Args> {
@@ -262,6 +265,9 @@ fn parse_args() -> Result<Args> {
         lean_context: false,
         lean_request_byte_limit: 32_768,
         lean_history_turns: 0,
+        lean_profile: None,
+        working_set_root: None,
+        session_id: "goblin".into(),
     };
     let mut it = std::env::args().skip(1);
     while let Some(flag) = it.next() {
@@ -284,11 +290,30 @@ fn parse_args() -> Result<Args> {
             "--lean-context" => args.lean_context = true,
             "--lean-request-byte-limit" => args.lean_request_byte_limit = value()?.parse()?,
             "--lean-history-turns" => args.lean_history_turns = value()?.parse()?,
+            "--lean-profile" => args.lean_profile = Some(value()?),
+            "--working-set-root" => args.working_set_root = Some(value()?),
+            "--session-id" => args.session_id = value()?,
             other => bail!("unknown flag {other}"),
         }
     }
     if args.task.is_empty() || (!args.no_packet && args.repo.is_empty()) {
         bail!("usage: goblin-gdk --task TEXT|--task-file PATH --repo PATH [--base-url URL] [--model ID] [--budget N] [--no-packet]");
+    }
+    if let Some(profile) = args.lean_profile.as_deref() {
+        if !matches!(profile, "inkling-2-mini" | "bonsai-8b" | "bonsai-27b") {
+            bail!("unsupported GDK model profile: {profile}");
+        }
+        // The exact token gate reserves 2048 output tokens for each profile.
+        // This guarantees the caller advertises an explicit generation cap.
+        let output = args.max_tokens.unwrap_or(2048);
+        if output <= 0 || output > 2048 {
+            bail!("GDK profile requires max-tokens in 1..=2048");
+        }
+        args.max_tokens = Some(output);
+        args.lean_context = true;
+    }
+    if args.session_id.trim().is_empty() {
+        bail!("session ID is required");
     }
     if !args.base_url.ends_with('/') {
         args.base_url.push('/');
@@ -316,9 +341,77 @@ fn initial_conversation(args: &Args) -> Result<Conversation> {
     Ok(Conversation::new_unvalidated(messages))
 }
 
+// Probe the opt-in loopback gate before fetching MCP evidence or invoking a
+// model. This prevents --lean-profile from silently using an unguarded server.
+async fn require_exact_gate(args: &Args) -> Result<Value> {
+    let Some(profile) = args.lean_profile.as_deref() else {
+        return Ok(Value::Null);
+    };
+    let output = Command::new(&args.python)
+        .args(["-m", "MCP.GDK.token_gate", "probe", "--base-url", &args.base_url,
+               "--profile", profile, "--served-model-id", &args.model])
+        .current_dir(&args.goblin_cwd)
+        .env("PYTHONPATH", &args.goblin_cwd)
+        .output()
+        .await
+        .context("running GDK exact-token gate probe")?;
+    if !output.status.success() {
+        bail!("GDK token gate unavailable/mismatched: {}",
+              String::from_utf8_lossy(&output.stderr).trim());
+    }
+    serde_json::from_slice(&output.stdout).context("decoding GDK token-gate health")
+}
+
+// Preserve the full compact MCP packet in an epoch-bound immutable blob.
+// It remains outside the inference-view history; later sessions can rehydrate
+// it through the store CLI after validating the exact worktree revision.
+async fn capture_working_set(args: &Args, packet: &str, stats: &Value) -> Result<Value> {
+    let Some(root) = args.working_set_root.as_deref() else {
+        return Ok(Value::Null);
+    };
+    if packet.is_empty() {
+        return Ok(Value::Null);
+    }
+    let epoch = stats.get("worktree_revision")
+        .and_then(Value::as_str)
+        .ok_or_else(|| anyhow!("MCP worktree revision required for durable capture"))?;
+    let body = serde_json::to_vec(&json!({
+        "packet": packet,
+        "metadata": {
+            "router": stats.get("router"),
+            "tokenizer": stats.get("tokenizer"),
+            "packet_tokens": stats.get("packet_tokens"),
+            "tool_calls": stats.get("tool_calls"),
+        }
+    }))?;
+    let mut child = Command::new(&args.python)
+        .args(["-m", "MCP.GDK.working_set", "capture",
+               "--root", root, "--session-id", &args.session_id,
+               "--catalog-epoch", epoch])
+        .current_dir(&args.goblin_cwd)
+        .env("PYTHONPATH", &args.goblin_cwd)
+        .stdin(std::process::Stdio::piped())
+        .stdout(std::process::Stdio::piped())
+        .stderr(std::process::Stdio::piped())
+        .kill_on_drop(true)
+        .spawn()
+        .context("spawning GDK working-set capture")?;
+    {
+        let mut stdin = child.stdin.take().ok_or_else(|| anyhow!("no stdin for GDK store"))?;
+        stdin.write_all(&body).await?;
+    }
+    let output = child.wait_with_output().await?;
+    if !output.status.success() {
+        bail!("GDK working-set capture rejected: {}",
+              String::from_utf8_lossy(&output.stderr).trim());
+    }
+    serde_json::from_slice(&output.stdout).context("decoding working-set receipt")
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
     let args = parse_args()?;
+    let exact_gate = require_exact_gate(&args).await?;
     let started = Instant::now();
     let (packet, packet_stats) = if args.no_packet {
         (String::new(), Value::Null)
@@ -338,6 +431,7 @@ async fn main() -> Result<()> {
         (packet, result)
     };
     let retrieval_seconds = started.elapsed().as_secs_f64();
+    let working_set_receipt = capture_working_set(&args, &packet, &packet_stats).await?;
 
     let api = ApiClient::with_timeout_and_tls(
         args.base_url.clone(),
@@ -374,7 +468,7 @@ async fn main() -> Result<()> {
     );
     let runtime = Runtime {
         session: Mutex::new(AppSession {
-            id: "goblin".into(),
+            id: args.session_id.clone(),
             conversation: initial_conversation(&args)?,
         }),
         usage: Mutex::new(Vec::new()),
@@ -383,7 +477,7 @@ async fn main() -> Result<()> {
     let emit = Emitter::new(tx, CancellationToken::new());
     tokio::spawn(async move { while rx.recv().await.is_some() {} });
     let inference_started = Instant::now();
-    let session = machine.run(&runtime, "goblin", &emit).await?;
+    let session = machine.run(&runtime, &args.session_id, &emit).await?;
     let lean_receipt = lean_handle.as_ref().and_then(|lean| lean.receipt());
     if let Some(report) = &lean_receipt {
         if report.blocked {
@@ -401,6 +495,8 @@ async fn main() -> Result<()> {
         "provider_input_tokens": input_tokens, "provider_output_tokens": output_tokens,
         "inference_calls": usage.len(), "max_tokens": args.max_tokens, "timeout_secs": args.timeout_secs,
         "lean_context": args.lean_context, "lean_request": lean_receipt,
+        "lean_profile": args.lean_profile, "exact_gate": exact_gate,
+        "working_set": working_set_receipt,
         "session_message_count": session.conversation.len(),
         "retrieval_seconds": retrieval_seconds,
         "inference_seconds": inference_started.elapsed().as_secs_f64(), "answer": answer,
