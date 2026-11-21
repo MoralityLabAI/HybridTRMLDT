@@ -81,6 +81,7 @@ class Relay:
                               "completion_reserve": completion_reserve,
                               "safety_margin": safety_margin}
         self.mcp04_store: dict[str, dict[str, str]] = {}
+        self.mcp04_parity_failure: str | None = None
 
     def forward(self, method: str, path: str, body: bytes | None) -> tuple[int, bytes]:
         url = self.upstream + path
@@ -105,6 +106,10 @@ class Relay:
             return 502, json.dumps({"error": {"message": f"relay: {exc}"}}).encode()
 
     def chat(self, arm: str, tag: str, body: bytes) -> tuple[int, bytes]:
+        if arm == "mcp04" and self.mcp04_parity_failure:
+            return 422, json.dumps({"error": {
+                "type": "mcp04_template_parity_failed",
+                "message": self.mcp04_parity_failure}}).encode()
         request = json.loads(body)
         messages = normalize_messages(request.get("messages", []))
         original_messages = messages
@@ -171,6 +176,12 @@ class Relay:
                 expected = receipt["preflight"]["prompt_tokens"]
                 record["preflight_vs_provider_delta"] = usage["prompt_tokens"] - expected
                 record["preflight_matches_provider"] = usage["prompt_tokens"] == expected
+                if usage["prompt_tokens"] != expected:
+                    # A completion already occurred, but prevent subsequent
+                    # template-parity-unsafe inference in this relay process.
+                    self.mcp04_parity_failure = (
+                        f"provider prompt_tokens={usage['prompt_tokens']} versus "
+                        f"applied template count={expected}; inspect pinned server chat formatting")
             record.update({"prompt_tokens": usage.get("prompt_tokens"),
                            "completion_tokens": usage.get("completion_tokens"),
                            "cached_tokens": (usage.get("prompt_tokens_details") or {}).get("cached_tokens"),
