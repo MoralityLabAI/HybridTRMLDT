@@ -14,6 +14,7 @@ router checkpoint (needs torch) to use a learned looped/TRM/HRM router instead.
 """
 from __future__ import annotations
 
+import hashlib
 import os
 import sys
 from pathlib import Path
@@ -22,10 +23,41 @@ from MCP.serve import serve
 
 from .agent import make_code_control, run_code_episode
 from .env import CodeEnv
-from .repo import snapshot_from_dir
+from .repo import SKIP_DIRS, snapshot_from_dir
 from .tokens import describe as tokenizer_name
 
-_CACHE: dict[str, tuple] = {}
+# Entries are tied to an observable working-tree revision, never just a
+# directory name. In-place file edits must invalidate both the AST index and
+# cached source text before a second MCP read.
+_CACHE: dict[str, tuple[str, object, object]] = {}
+
+
+def _worktree_revision(root: Path, *, max_files: int = 20000) -> str:
+    """Digest the tracked Python-path stat identity used by snapshot_from_dir.
+
+    Directory entries, size, nanosecond modification/change time and inode
+    detect normal edits, additions, deletes and atomic replacement cheaply.
+    This is a *freshness key*, not cryptographic attestation of file bytes.
+    Upstream content hashes belong in evaluation receipts.
+    """
+    h = hashlib.sha256()
+    count = 0
+    for path in sorted(root.rglob("*.py")):
+        rel = path.relative_to(root).as_posix()
+        if any(part in SKIP_DIRS for part in rel.split("/")[:-1]):
+            continue
+        try:
+            st = path.stat()
+        except OSError:
+            continue
+        h.update(rel.encode("utf-8"))
+        h.update(bytes([0]))
+        h.update(f"{st.st_size}:{st.st_mtime_ns}:{st.st_ctime_ns}:{st.st_ino}".encode("ascii"))
+        h.update(bytes([10]))
+        count += 1
+        if count >= max_files:
+            break
+    return h.hexdigest()
 
 
 def _router():
@@ -68,17 +100,24 @@ class GoblinService:
         if not root.is_dir():
             raise ValueError("repo_path is not a directory")
         key = str(root)
-        if key not in _CACHE:
+        revision = _worktree_revision(root)
+        entry = _CACHE.get(key)
+        if entry is None or entry[0] != revision:
             snap = snapshot_from_dir(root)
+            # Protect the cache from retaining a mixed source/index state
+            # when an agent edited the working tree during enumeration.
+            if _worktree_revision(root) != revision:
+                _CACHE.pop(key, None)
+                raise ValueError("repository changed during snapshot; retry the tool call")
             env = CodeEnv(snap, {}, {"files": [], "symbols": []}, "hybrid")
-            _CACHE[key] = (snap, env.index)
-        return _CACHE[key]
+            _CACHE[key] = (revision, snap, env.index)
+        return _CACHE[key][1], _CACHE[key][2], _CACHE[key][0]
 
     def call(self, name: str, arguments: dict) -> dict:
         import json
         try:
             if name == "compact_context":
-                snap, index = self._snapshot(arguments["repo_path"])
+                snap, index, worktree_revision = self._snapshot(arguments["repo_path"])
                 arm = arguments.get("arm", "hybrid")
                 budget = int(arguments.get("budget_tokens", 2048))
                 env = CodeEnv(snap, {}, {"files": [], "symbols": []}, arm, index=index)
@@ -91,11 +130,17 @@ class GoblinService:
                            "tokenizer": tokenizer_name(), "tool_calls": ep["tool_calls"],
                            "local_result_tokens": ep["compute"]["result_tokens"],
                            "router": getattr(self.router, "name", "router"), "router_flops": ep["compute"]["flops"],
-                           "files_indexed": len(snap.files), "reads": ep["reads"]}
+                           "files_indexed": len(snap.files), "reads": ep["reads"],
+                           "worktree_revision": worktree_revision}
             elif name == "read_symbol":
-                snap, index = self._snapshot(arguments["repo_path"])
+                snap, index, worktree_revision = self._snapshot(arguments["repo_path"])
                 env = CodeEnv(snap, {}, {"files": [], "symbols": []}, "hybrid", index=index)
-                payload = env.call("read_symbol", {"uri": arguments["uri"]})["structuredContent"]
+                underlying = env.call("read_symbol", {"uri": arguments["uri"]})
+                payload = dict(underlying["structuredContent"])
+                payload["worktree_revision"] = worktree_revision
+                if underlying.get("isError"):
+                    return {"content": [{"type": "text", "text": json.dumps(payload)}],
+                            "structuredContent": payload, "isError": True}
             else:
                 raise ValueError("unknown tool")
             return {"content": [{"type": "text", "text": json.dumps(payload)}], "structuredContent": payload,
