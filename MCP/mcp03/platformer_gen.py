@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import random
 import shutil
 import subprocess
@@ -22,8 +23,10 @@ from MCP.mcp02.textutil import digest
 from .repo import SnapshotStore, gold_symbols
 
 
-def run(*argv: str, cwd: Path | None = None, check: bool = True) -> subprocess.CompletedProcess:
-    return subprocess.run(argv, cwd=cwd, capture_output=True, text=True, check=check)
+def run(*argv: str, cwd: Path | None = None, check: bool = True,
+        env: dict[str, str] | None = None) -> subprocess.CompletedProcess:
+    return subprocess.run(argv, cwd=cwd, capture_output=True, text=True,
+                          check=check, env=env)
 
 
 # Path, failing expression, repaired expression, asserted behavior, problem statement.
@@ -260,8 +263,13 @@ def describe_level() -> str:
     check_suite(root, expected_success=False)
     run("git", "init", "-q", cwd=root)
     run("git", "add", "-A", cwd=root)
+    # Snapshot commit SHA enters episode_key for epsilon-oracle rollouts.
+    # Freeze author/committer clocks so a repeated seed reproduces training
+    # trajectories, not merely the visible patch and gold digest.
+    commit_env = dict(os.environ, GIT_AUTHOR_DATE="2001-01-01T00:00:00+0000",
+                      GIT_COMMITTER_DATE="2001-01-01T00:00:00+0000")
     run("git", "-c", "user.name=MCP Fixture", "-c", "user.email=mcp@example.invalid",
-        "commit", "-q", "-m", "generated platformer base", cwd=root)
+        "commit", "-q", "-m", "generated platformer base", cwd=root, env=commit_env)
     commit = run("git", "rev-parse", "HEAD", cwd=root).stdout.strip()
 
     originals = {}
@@ -343,7 +351,7 @@ def generate(out: Path, *, seed: int = 117, train: int = 12,
     eval_config["models"].update(old_config["models"])
     for name, cfg in (("readaware", read_config), ("binary", old_config), ("eval", eval_config)):
         put(out, f"config_{name}.json", json.dumps(cfg, indent=2) + "\n")
-    summary = {"generator": "platformer-gen-v2", "difficulty": difficulty, "seed": seed,
+    summary = {"generator": "platformer-gen-v3", "difficulty": difficulty, "seed": seed,
                "cases": {k: len(v) for k, v in splits.items()},
                "roots": {k: [r["repo"] for r in v] for k, v in splits.items()},
                "gold_receipts": receipts,
