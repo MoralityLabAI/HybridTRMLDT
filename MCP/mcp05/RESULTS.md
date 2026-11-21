@@ -13,9 +13,11 @@ On the first completed matched platformer task, both variants corrected the held
 
 All ten calls in this pair matched the upstream exact preflight count. D used one repeated read, while A used zero. Extra lookup and format-recovery rounds made D about 1.98 times as expensive on this case despite prefetching the right source. An earlier three-loop compatibility call returned thinking without an executable action. The retained matched protocol normalizes tool markers and rejects unresolved malformed arguments through the same Goose authorization boundary.
 
+Both arms also passed the held-out two-file regression with changes to the jump and health modules. Across the two matched platformer cases, D used 43,022 model tokens and A used 30,006. The second case stayed within the available prompt window in every round, so the raw-first compaction policy never invoked a typed fallback for that repair.
+
 ## CPU controller
 
-Four threads, 18 disjoint training roots, six held-out roots and 108 optimizer updates per learned condition. The matched replay occupied 774,068 serialized bytes and had SHA-256 `3b88c779665bdcf3121bdc9ad5e2aacd78217ae60c5b18c8c0a3f2eb4437761c`. Peak process RSS was 425,750,528 bytes against the 3 GiB cap. The learned runtime in the real repair recorded 587,140 bytes of SetTRM parameters and a 128-byte recurrent state. The Vulkan allocation log reported 10,316 MiB of model buffers, 356 MiB of KV cache and 557 MiB of compute buffers for the one-loop configuration, with about 11.0 GiB of total device use sampled during the run. CPU-offloaded weights use mapped host memory.
+Four threads, 18 disjoint training roots, six held-out roots and 108 optimizer updates per learned condition. The matched replay occupied 774,068 serialized bytes and had SHA-256 `3b88c779665bdcf3121bdc9ad5e2aacd78217ae60c5b18c8c0a3f2eb4437761c`. Peak process RSS was 425,750,528 bytes against the 3 GiB cap. The learned runtime in the real repair recorded 587,140 bytes of SetTRM parameters and a 128-byte recurrent state. The allocation log reported 10,316 MiB of model buffers, 356 MiB of KV cache and 557 MiB of compute buffers on Vulkan, with about 11.0 GiB of total device use sampled during the run. Host-mapped model buffers totaled 6,484 MiB.
 
 | Model | Top-target selections on recorded holdout slates | Mean utility regret |
 |---|---:|---:|
@@ -26,3 +28,7 @@ Four threads, 18 disjoint training roots, six held-out roots and 108 optimizer u
 | Shuffled utility targets | 24/46 | 0.3800 |
 
 These controller scores are from recorded localization and repair states. The shuffle control supports a useful target signal on those slates. The tied recurrent and reset scores leave the value of persistent recurrence unresolved. The health repair shows the end-to-end loop works and provides an example where adding the controller cost tokens at the same repair outcome.
+
+## Real tokenizer stress test
+
+The relay replayed a synthetic history of 20 closed tool interactions through the running Inkling server's template and tokenizer endpoints. Raw history required 36,297 prompt tokens against a 15,808-token prompt allowance. The typed packet and two original recent tool pairs required 1,878 tokens after exact remeasurement. This replay exercised the overflow path without requesting a model completion.
