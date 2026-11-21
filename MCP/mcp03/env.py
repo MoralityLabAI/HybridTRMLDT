@@ -68,7 +68,7 @@ class SymbolIndex:
 
     def search(self, query: str) -> list[tuple[float, str]]:
         scores: dict[int, float] = {}
-        for term in set(code_tokens(query)):
+        for term in sorted(set(code_tokens(query))):
             idf = self.idf.get(term)
             if idf is None:
                 continue

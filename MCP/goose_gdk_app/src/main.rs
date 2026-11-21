@@ -30,6 +30,8 @@ use tokio::process::{Child, ChildStdin, ChildStdout, Command};
 use tokio::sync::mpsc;
 use tokio_util::sync::CancellationToken;
 
+mod session;
+
 // ---- minimal MCP stdio client: newline-delimited JSON-RPC 2.0, protocol 2025-06-18 ----
 
 struct McpClient {
@@ -104,6 +106,7 @@ impl McpClient {
 struct AppSession {
     id: String,
     conversation: Conversation,
+    repair: Option<session::RepairState>,
 }
 
 impl MachineSession for AppSession {
@@ -117,12 +120,14 @@ impl MachineSession for AppSession {
 
 enum AppEffect {
     Append(Message),
+    NormalizeLast(Message),
     Usage(ProviderUsage),
+    Repair(session::RepairState),
 }
 
 impl MachineEffect for AppEffect {
     fn ensure_message_ids(&mut self) {
-        if let AppEffect::Append(message) = self {
+        if let AppEffect::Append(message) | AppEffect::NormalizeLast(message) = self {
             if message.id.is_none() {
                 message.id = Some(format!("msg_{}", uuid::Uuid::new_v4()));
             }
@@ -145,6 +150,7 @@ impl InferenceEffect for AppEffect {
 struct Runtime {
     session: Mutex<AppSession>,
     usage: Mutex<Vec<ProviderUsage>>,
+    checkpoint: Option<std::path::PathBuf>,
 }
 
 #[async_trait]
@@ -160,8 +166,32 @@ impl EffectHandler<AppSession, AppEffect> for Runtime {
         for effect in effects.iter() {
             match effect {
                 AppEffect::Append(message) => self.session.lock().unwrap().conversation.push(message.clone()),
-                AppEffect::Usage(usage) => self.usage.lock().unwrap().push(usage.clone()),
+                AppEffect::NormalizeLast(message) => {
+                    let mut session = self.session.lock().unwrap();
+                    let len = session.conversation.len();
+                    session.conversation = Conversation::new_unvalidated(
+                        session.conversation.iter().take(len.saturating_sub(1)).cloned()
+                            .chain([message.clone()]),
+                    );
+                }
+                AppEffect::Usage(usage) => {
+                    self.usage.lock().unwrap().push(usage.clone());
+                    if let Some(state) = &mut self.session.lock().unwrap().repair {
+                        state.iterations += 1;
+                        state.manager_steps = 0;
+                    }
+                }
+                AppEffect::Repair(repair) => self.session.lock().unwrap().repair = Some(repair.clone()),
             }
+        }
+        if let Some(path) = &self.checkpoint {
+            let session = self.session.lock().unwrap();
+            let temp = path.with_extension("tmp");
+            std::fs::write(&temp, serde_json::to_vec(&json!({
+                "conversation": session.conversation.messages(),
+                "session": session.repair.as_ref().map(session::RepairState::receipt),
+            }))?)?;
+            std::fs::rename(&temp, path)?;
         }
         Ok(())
     }
@@ -202,6 +232,7 @@ struct Args {
     no_packet: bool,
     max_tokens: Option<i32>,
     timeout_secs: u64,
+    session: session::Options,
 }
 
 fn parse_args() -> Result<Args> {
@@ -218,6 +249,7 @@ fn parse_args() -> Result<Args> {
         no_packet: false,
         max_tokens: None,
         timeout_secs: 600,
+        session: session::Options::default(),
     };
     let mut it = std::env::args().skip(1);
     while let Some(flag) = it.next() {
@@ -236,7 +268,7 @@ fn parse_args() -> Result<Args> {
             "--no-packet" => args.no_packet = true,
             "--max-tokens" => args.max_tokens = Some(value()?.parse()?),
             "--timeout-secs" => args.timeout_secs = value()?.parse()?,
-            other => bail!("unknown flag {other}"),
+            other => args.session.parse(other, &mut value)?,
         }
     }
     if args.task.is_empty() || (!args.no_packet && args.repo.is_empty()) {
@@ -251,6 +283,10 @@ fn parse_args() -> Result<Args> {
 #[tokio::main]
 async fn main() -> Result<()> {
     let args = parse_args()?;
+    if args.session.max_iterations.is_some() {
+        return session::run(args).await;
+    }
+    args.session.check_legacy()?;
     let started = Instant::now();
     let (packet, packet_stats) = if args.no_packet {
         (String::new(), Value::Null)
@@ -292,8 +328,10 @@ async fn main() -> Result<()> {
         session: Mutex::new(AppSession {
             id: "goblin".into(),
             conversation: Conversation::new_unvalidated([Message::user().with_text(args.task.clone())]),
+            repair: None,
         }),
         usage: Mutex::new(Vec::new()),
+        checkpoint: None,
     };
     let (tx, mut rx) = mpsc::unbounded_channel();
     let emit = Emitter::new(tx, CancellationToken::new());

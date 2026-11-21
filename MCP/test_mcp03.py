@@ -151,7 +151,9 @@ def test_goblin_server_over_stdio(repo):
     with StdioClient(command=[sys.executable, "-u", "-m", "MCP.mcp03.goblin_server"], timeout=60,
                      max_message_bytes=8 * 1024 * 1024) as client:
         client.initialize()
-        assert {t["name"] for t in client.tools()} == {"compact_context", "read_symbol"}
+        assert {t["name"] for t in client.tools()} == {
+            "compact_context", "read_symbol", "context.query", "context.expand", "context.read", "context.state",
+        }
         result = client.call("compact_context", {"task": "Ledger.post should round the amount",
                                                  "repo_path": str(repo["work"]), "budget_tokens": 256})
         payload = result["structuredContent"]

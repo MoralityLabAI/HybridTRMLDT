@@ -20,6 +20,7 @@ import sys
 from pathlib import Path
 
 from MCP.serve import serve
+from MCP.mcp05.context import WorkingSet
 
 from .agent import make_code_control, run_code_episode
 from .env import CodeEnv
@@ -76,12 +77,25 @@ class GoblinService:
 
     def __init__(self):
         self.router = _router()
+        self.working_sets: dict[Path, WorkingSet] = {}
+
+    def working_set(self, repo_path: str) -> WorkingSet:
+        root = Path(repo_path).resolve(strict=True)
+        if not root.is_dir():
+            raise ValueError("repo_path is not a directory")
+        if root not in self.working_sets:
+            self.working_sets[root] = WorkingSet(root)
+        return self.working_sets[root]
 
     def tools(self) -> list[dict]:
         def tool(name, desc, props, req):
             return {"name": name, "description": desc, "annotations": {"readOnlyHint": True},
                     "inputSchema": {"type": "object", "properties": props, "required": req,
                                     "additionalProperties": False}}
+        text = {"type": "string", "maxLength": 4096}
+        paged = {"limit": {"type": "integer", "minimum": 1, "maximum": 16},
+                 "cursor": {"type": "integer", "minimum": 0}}
+        repo = {"repo_path": text}
         return [
             tool("compact_context", "Explore a Python repository with a local router and return a compact, "
                  "token-budgeted context packet (ranked files plus source snippets) for the task.",
@@ -93,6 +107,16 @@ class GoblinService:
                  ["task", "repo_path"]),
             tool("read_symbol", "Read one symbol's source by path::qualname.",
                  {"repo_path": {"type": "string"}, "uri": {"type": "string"}}, ["repo_path", "uri"]),
+            tool("context.query", "Rank source candidates without reading their bodies.",
+                 {**repo, "query": text, **paged}, ["repo_path", "query"]),
+            tool("context.expand", "Expand an index node with optional verifier-certified path exclusions.",
+                 {**repo, "node_id": text, **paged, "predicate": {"enum": ["test_path", "doc_path"]},
+                  "exclude": {"type": "array", "items": text, "maxItems": 16}}, ["repo_path", "node_id"]),
+            tool("context.read", "Read a symbol by URI or reuse a revision-bound source handle.",
+                 {**repo, "uri": text, "handle": text, "start": {"type": "integer", "minimum": 1}},
+                 ["repo_path"]),
+            tool("context.state", "Return source revisions, read history and exclusion certificates.",
+                 repo, ["repo_path"]),
         ]
 
     def _snapshot(self, repo_path: str):
@@ -141,11 +165,23 @@ class GoblinService:
                 if underlying.get("isError"):
                     return {"content": [{"type": "text", "text": json.dumps(payload)}],
                             "structuredContent": payload, "isError": True}
+            elif name in ("context.query", "context.expand", "context.read", "context.state"):
+                working = self.working_set(arguments["repo_path"])
+                kwargs = {k: v for k, v in arguments.items() if k != "repo_path"}
+                if "record" in kwargs:
+                    raise ValueError("unexpected argument")
+                for key, minimum, maximum in (("limit", 1, 16), ("cursor", 0, 1_000_000),
+                                               ("start", 1, 1_000_000)):
+                    if key in kwargs and (type(kwargs[key]) is not int or not minimum <= kwargs[key] <= maximum):
+                        raise ValueError(f"invalid {key}")
+                handler = {"context.query": working.query, "context.expand": working.expand,
+                           "context.read": working.read, "context.state": working.state}[name]
+                payload = handler(**kwargs)
             else:
                 raise ValueError("unknown tool")
             return {"content": [{"type": "text", "text": json.dumps(payload)}], "structuredContent": payload,
                     "isError": False}
-        except (ValueError, KeyError, OSError) as error:
+        except (ValueError, KeyError, TypeError, OSError) as error:
             payload = {"error": str(error)}
             return {"content": [{"type": "text", "text": json.dumps(payload)}], "structuredContent": payload,
                     "isError": True}

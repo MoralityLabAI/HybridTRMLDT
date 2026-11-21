@@ -27,3 +27,16 @@ python -m MCP.mcp02.hf_server --model-dir SNAPSHOT --served-name qwen2.5-0.5b-in
 - retrieval and inference seconds.
 
 Set `MCP03_ROUTER_CHECKPOINT` in the goblin server's environment to swap the BM25 control for a trained looped, TRM, TRM+LDT or HRM router.
+
+## Multi-turn repair sessions
+
+Pass `--max-agent-iterations N` to activate the Pocket Goblin session. Set
+`--context-window 16384`, `--memory-mode raw|packet|typed`, and optionally
+`--controller-checkpoint PATH`, `--recurrence-depth N`, `--controller-reset`,
+`--session-file PATH`, and `--verifier PATH`. The verifier manifest is created by
+the experiment operator and controls the editable source paths and native
+verification command. Use `--json-actions` with the Inkling variable-loop
+checkpoint for typed parsing of textual or marker-encoded action proposals.
+
+See the [MCP-05 gym and experiment guide](../mcp05/README.md) for the pinned
+runtime, training and matched evaluation commands.

@@ -217,6 +217,8 @@ def snapshot_from_dir(root: Path, max_files: int = 20000) -> Snapshot:
         rel = path.relative_to(root).as_posix()
         if any(part in SKIP_DIRS for part in rel.split("/")[:-1]):
             continue
+        if path.resolve() != path.absolute():
+            continue
         try:
             text = path.read_text(encoding="utf-8", errors="replace")
         except OSError:

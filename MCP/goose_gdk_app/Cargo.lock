@@ -674,6 +674,7 @@ dependencies = [
  "goose-agent",
  "goose-provider-types",
  "goose-providers",
+ "rmcp",
  "serde_json",
  "tokio",
  "tokio-util",

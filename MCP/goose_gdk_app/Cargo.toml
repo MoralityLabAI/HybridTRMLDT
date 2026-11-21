@@ -14,6 +14,7 @@ path = "src/main.rs"
 goose-agent = "=0.1.0-alpha.14"
 goose-providers = "=0.1.0-alpha.14"
 goose-provider-types = "=0.1.0-alpha.14"
+rmcp = { version = "=3.11.0", default-features = false }
 anyhow = "1"
 async-trait = "0.1"
 serde_json = "1"
