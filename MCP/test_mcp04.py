@@ -58,6 +58,16 @@ class FakeBackend:
 
 
 class PreflightTests(unittest.TestCase):
+    def test_no_inference_probe_checks_tool_serialization(self):
+        from MCP.hubrun.preflight_probe import probe
+        backend = FakeBackend()
+        receipt = probe(backend.forward, context_window=5000,
+                        completion_reserve=100, safety_margin=200)
+        self.assertEqual(receipt["status"], "compatible_sample")
+        self.assertEqual(receipt["inference_calls"], 0)
+        self.assertGreater(receipt["tool_schema_delta"], 0)
+        self.assertNotIn("/v1/chat/completions", backend.paths)
+
     def test_raw_exact_template_includes_tool_schemas(self):
         backend = FakeBackend()
         request = {"messages": episode(1), "tools": [{"name": "edit_file", "parameters": {"path": "string"}}]}
