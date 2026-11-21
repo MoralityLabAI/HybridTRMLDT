@@ -29,7 +29,7 @@ from pathlib import Path
 
 from MCP.mcp02.textutil import digest
 from .packet import compact_messages
-from .mcp04 import PreflightError, WorkingSetError, adaptive_preflight
+from .mcp04 import PreflightError, WorkingSetError, adaptive_preflight, exact_preflight, typed_packet
 
 ARMS = ("raw", "goblin", "mcp04")
 STATUS_MARK = "\n__RELAY_STATUS__"
@@ -107,6 +107,7 @@ class Relay:
     def chat(self, arm: str, tag: str, body: bytes) -> tuple[int, bytes]:
         request = json.loads(body)
         messages = normalize_messages(request.get("messages", []))
+        original_messages = messages
         request["messages"] = messages
         receipt = {"compacted": False}
         if arm == "goblin":
@@ -133,12 +134,34 @@ class Relay:
         sent = json.dumps(request).encode()
         start = time.time()
         status, payload = self.forward("POST", "/v1/chat/completions", sent)
+        retry_failure = None
+        if arm == "mcp04" and status in (400, 413, 422):
+            lower = payload.decode("utf-8", errors="replace").lower()
+            if any(t in lower for t in ("context", "too many tokens", "exceed_context_size")):
+                try:
+                    shorter, compact_receipt = typed_packet(
+                        original_messages, budget_tokens=min(self.compaction["budget_tokens"], 900),
+                        keep_recent=1, store=self.mcp04_store)
+                    retry_request = dict(request, messages=shorter)
+                    retry_preflight = exact_preflight(self.forward, retry_request, **self.mcp04_context)
+                    if not retry_preflight["fits"]:
+                        raise PreflightError("context retry still exceeds exact prompt limit")
+                    request = retry_request
+                    messages = shorter
+                    receipt = dict(compact_receipt, preflight=retry_preflight,
+                                   retried_after_provider_context_error=True)
+                    sent = json.dumps(request).encode()
+                    status, payload = self.forward("POST", "/v1/chat/completions", sent)
+                except (PreflightError, WorkingSetError, ValueError) as exc:
+                    retry_failure = str(exc)
         elapsed = time.time() - start
         record = {"ts": round(start, 3), "arm": arm, "tag": tag, "status": status, "latency_s": round(elapsed, 3),
                   "n_messages": len(messages), "request_bytes": len(sent), "request_digest": digest(request),
                   "tools": len(request.get("tools") or []), "compaction": receipt}
         if arm == "mcp04":
             record["preflight"] = receipt.get("preflight")
+            record["retry_failure"] = retry_failure
+            record["retried_after_context_error"] = receipt.get("retried_after_provider_context_error", False)
         try:
             data = json.loads(payload)
             usage = data.get("usage") or {}
