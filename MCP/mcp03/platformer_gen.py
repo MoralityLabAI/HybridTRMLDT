@@ -276,7 +276,7 @@ def describe_level() -> str:
         if surface_shift:
             func = HOLDOUT_SYMBOLS.get(func, func)
         imports.append(f"from {file_path[:-3].replace('/', '.')} import " + func)
-        asserts.append("        " + assertion)
+        asserts.append("        " + (shifted_source(assertion) if surface_shift else assertion))
     put(root, "tests/test_gameplay.py",
         "import unittest\n" + "\n".join(imports) + "\n\n"
         + "class GameplayRegression(unittest.TestCase):\n"
