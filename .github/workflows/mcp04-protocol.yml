@@ -1,0 +1,43 @@
+name: MCP-04 CPU protocol and replay preflight
+
+on:
+  pull_request:
+    paths:
+      - 'MCP/hubrun/**'
+      - 'MCP/test_mcp04.py'
+      - '.github/workflows/mcp04-protocol.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fail-closed-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test harness
+        run: python -m pip install pytest
+      - name: Syntax and offline no-GPU probe import
+        run: |
+          python -m compileall -q MCP/hubrun
+          bash -n MCP/hubrun/scripts/mcp04_replay.sh
+          bash -n MCP/hubrun/scripts/vfe.sh
+          bash -n MCP/hubrun/scripts/v1e.sh
+          python -m MCP.hubrun.preflight_probe --help >/dev/null
+      - name: Strict template, numeric count, edit-state and relay tests
+        run: |
+          set -o pipefail
+          python -m pytest -q MCP/test_mcp04.py MCP/test_hubrun.py | tee /tmp/mcp04-protocol-tests.txt
+      - name: Save CPU-only test receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcp04-protocol-tests
+          path: /tmp/mcp04-protocol-tests.txt
+          if-no-files-found: warn
+          retention-days: 14
