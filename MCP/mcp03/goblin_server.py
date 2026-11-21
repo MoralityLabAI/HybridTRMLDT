@@ -51,9 +51,9 @@ def _worktree_revision(root: Path, *, max_files: int = 20000) -> str:
         except OSError:
             continue
         h.update(rel.encode("utf-8"))
-        h.update(b"\\0")
+        h.update(bytes([0]))
         h.update(f"{st.st_size}:{st.st_mtime_ns}:{st.st_ctime_ns}:{st.st_ino}".encode("ascii"))
-        h.update(b"\\n")
+        h.update(bytes([10]))
         count += 1
         if count >= max_files:
             break
@@ -133,7 +133,7 @@ class GoblinService:
                            "files_indexed": len(snap.files), "reads": ep["reads"],
                            "worktree_revision": worktree_revision}
             elif name == "read_symbol":
-                snap, index = self._snapshot(arguments["repo_path"])
+                snap, index, worktree_revision = self._snapshot(arguments["repo_path"])
                 env = CodeEnv(snap, {}, {"files": [], "symbols": []}, "hybrid", index=index)
                 underlying = env.call("read_symbol", {"uri": arguments["uri"]})
                 payload = dict(underlying["structuredContent"])
