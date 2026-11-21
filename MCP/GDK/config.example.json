@@ -1,0 +1,21 @@
+{
+  "schema": "gdk.lean_config.v0",
+  "enabled": false,
+  "mode": "deterministic",
+  "context_window_tokens": 12288,
+  "output_reserve_tokens": 2048,
+  "safety_reserve_tokens": 2048,
+  "max_packet_tokens": 2048,
+  "require_exact_tokenizer": true,
+  "persist_working_set": false,
+  "routing": {
+    "head": "reference",
+    "candidate_limit": 16,
+    "actions": ["code_search", "index_children", "read_symbol", "read_outline"]
+  },
+  "evaluation": {
+    "paired_arms": ["goose_default", "goose_code_mode", "goblin_gdk", "goose_lean_deterministic", "goose_lean_learned", "hermes_lite"],
+    "record_full_provider_request_hash": true,
+    "preserve_failure_receipts": true
+  }
+}
