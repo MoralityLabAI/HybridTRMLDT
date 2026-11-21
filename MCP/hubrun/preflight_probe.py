@@ -36,6 +36,10 @@ def probe(forward, *, context_window: int = 32768,
     with_tools = exact_preflight(forward, test, context_window=context_window,
                                  completion_reserve=completion_reserve,
                                  safety_margin=safety_margin)
+    if with_tools["prompt_tokens"] <= empty["prompt_tokens"]:
+        raise PreflightError("tool schema did not increase applied-template token count")
+    if not with_tools["fits"]:
+        raise PreflightError("tool-aware prompt exceeds the reserved model context")
     return {"status": "compatible_sample", "inference_calls": 0,
             "tool_free_prompt_tokens": empty["prompt_tokens"],
             "one_tool_prompt_tokens": with_tools["prompt_tokens"],
