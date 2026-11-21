@@ -15,6 +15,12 @@ All ten calls in this pair matched the upstream exact preflight count. D used on
 
 Both arms also passed the held-out two-file regression with changes to the jump and health modules. Across the two matched platformer cases, D used 43,022 model tokens and A used 30,006. The second case stayed within the available prompt window in every round, so the raw-first compaction policy never invoked a typed fallback for that repair.
 
+## GPTStoryworld building
+
+The targeted building exercise used the Tiny Diplomacy example at GPTStoryworld revision `c8d46591f983473023daf0232e9b413baaa02194`. D added the requested terminal council-accord node and connected the new outcome. After its first edit, the host rejected a proposal using the old source handle. A fresh read supplied the current handle for the second edit, and GPTStoryworld's validator plus the independent outcome check passed. The final patch SHA-256 was `934d31f5c3ae16824ea1109b6abd24d4d3449d533d8e58402b4c488c0bf6cae9`. D used 39,966 model tokens.
+
+A used 33,582 model tokens and produced no working-tree patch. The host rejected five A edit proposals because the supplied old string did not occur exactly once in the source span. The largest exact prompt was 5,996 tokens for D and 5,133 for A. This single building exercise supports measuring anchored edit success separately from retrieval and token cost.
+
 ## CPU controller
 
 Four threads, 18 disjoint training roots, six held-out roots and 108 optimizer updates per learned condition. The matched replay occupied 774,068 serialized bytes and had SHA-256 `3b88c779665bdcf3121bdc9ad5e2aacd78217ae60c5b18c8c0a3f2eb4437761c`. Peak process RSS was 425,750,528 bytes against the 3 GiB cap. The learned runtime in the real repair recorded 587,140 bytes of SetTRM parameters and a 128-byte recurrent state. The allocation log reported 10,316 MiB of model buffers, 356 MiB of KV cache and 557 MiB of compute buffers on Vulkan, with about 11.0 GiB of total device use sampled during the run. Host-mapped model buffers totaled 6,484 MiB.
