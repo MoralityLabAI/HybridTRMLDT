@@ -174,6 +174,8 @@ class LearnedCodePolicy:
             from .agent import symbolic_code_exclusions
             return symbolic_code_exclusions(rows)
         cands = [row_item(r, 1) for r in rows]
+        if model.utility_heads:
+            obs = dict(obs, needs=FE.utility_needs(obs))
         ids, segs, structs = FE.encode_observation(dict(obs, candidates=cands), model.encoder)
         with torch.inference_mode():
             _s, logits = model(*self.inner._tensors(ids, segs, structs))
