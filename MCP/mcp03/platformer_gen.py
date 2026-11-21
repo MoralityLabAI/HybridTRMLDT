@@ -264,20 +264,23 @@ def describe_level() -> str:
         "commit", "-q", "-m", "generated platformer base", cwd=root)
     commit = run("git", "rev-parse", "HEAD", cwd=root).stdout.strip()
 
-    base = (root / file_path).read_text(encoding="utf-8")
-    assert base.count(broken) == 1, (file_path, broken)
-    fixed = base.replace(broken, repaired)
-    put(root, file_path, fixed)
+    originals = {}
+    for name, (broken, repaired) in sorted(repairs.items()):
+        base = (root / name).read_text(encoding="utf-8")
+        assert base.count(broken) == 1, (name, broken)
+        originals[name] = base
+        put(root, name, base.replace(broken, repaired))
     check_suite(root, expected_success=True)
-    patch = run("git", "diff", "--", file_path, cwd=root).stdout
-    assert patch and "diff --git" in patch
-    put(root, file_path, base)
+    patch = run("git", "diff", "--", *sorted(repairs), cwd=root).stdout
+    assert patch.count("diff --git") == len(families)
+    for name, base in originals.items():
+        put(root, name, base)
     clone_path = work / "repos" / repo.replace("/", "__")
     run("git", "clone", "-q", "--bare", str(root), str(clone_path))
 
     snapshot = SnapshotStore(work / "repos", work / "cache").snapshot(repo, commit)
     gold = gold_symbols(snapshot, patch)
-    if gold["files"] != [file_path] or not gold["symbols"]:
+    if gold["files"] != sorted(repairs) or len(gold["symbols"]) < len(families):
         raise AssertionError(f"Invalid generated gold targets: {gold}")
     instance_id = f"platformer-{split}-{seed}-{index:03d}"
     return {"instance_id": instance_id, "repo": repo, "base_commit": commit,
@@ -286,11 +289,12 @@ def describe_level() -> str:
             "patch": patch,
             "_receipt": {"instance_id": instance_id, "root": repo, "family": family,
                          "base_commit": commit, "patch_sha256": hashlib.sha256(patch.encode()).hexdigest(),
+                         "difficulty": difficulty, "families": families,
                          "gold_digest": digest(gold), "gold_symbols": gold["symbols"]}}
 
 
 def generate(out: Path, *, seed: int = 117, train: int = 12,
-             dev: int = 4, test: int = 6) -> dict:
+             dev: int = 4, test: int = 6, difficulty: str = "easy") -> dict:
     if out.exists() and any(out.iterdir()):
         raise FileExistsError(f"Output must be a new empty directory: {out}")
     for name in ("data", "repos", "sources", "cache"):
@@ -303,7 +307,7 @@ def generate(out: Path, *, seed: int = 117, train: int = 12,
         receipts[split] = []
         for index in range(count):
             family = (index + rng.randrange(len(DEFECTS))) % len(DEFECTS)
-            case = build_case(out, split, index, seed=seed, family=family)
+            case = build_case(out, split, index, seed=seed, family=family, difficulty=difficulty)
             receipts[split].append(case.pop("_receipt"))
             rows.append(case)
         with (out / "data" / f"{split}.jsonl").open("w", encoding="utf-8") as stream:
@@ -336,7 +340,7 @@ def generate(out: Path, *, seed: int = 117, train: int = 12,
     eval_config["models"].update(old_config["models"])
     for name, cfg in (("readaware", read_config), ("binary", old_config), ("eval", eval_config)):
         put(out, f"config_{name}.json", json.dumps(cfg, indent=2) + "\n")
-    summary = {"generator": "platformer-gen-v1", "seed": seed,
+    summary = {"generator": "platformer-gen-v2", "difficulty": difficulty, "seed": seed,
                "cases": {k: len(v) for k, v in splits.items()},
                "roots": {k: [r["repo"] for r in v] for k, v in splits.items()},
                "gold_receipts": receipts,
@@ -349,14 +353,16 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=117)
+    parser.add_argument("--difficulty", choices=("easy", "hard"), default="easy")
     parser.add_argument("--train", type=int, default=12)
     parser.add_argument("--dev", type=int, default=4)
     parser.add_argument("--test", type=int, default=6)
     args = parser.parse_args(argv)
     if min(args.train, args.dev, args.test) < 1:
         parser.error("every split needs at least one root")
-    manifest = generate(args.out, seed=args.seed, train=args.train, dev=args.dev, test=args.test)
-    print(json.dumps({k: manifest[k] for k in ("generator", "seed", "cases", "condition")}, indent=2))
+    manifest = generate(args.out, seed=args.seed, train=args.train, dev=args.dev, test=args.test,
+                        difficulty=args.difficulty)
+    print(json.dumps({k: manifest[k] for k in ("generator", "difficulty", "seed", "cases", "condition")}, indent=2))
     return 0
 
 
