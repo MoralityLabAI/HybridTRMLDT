@@ -62,6 +62,19 @@ def exact_preflight(
     prompt = formatted.get("prompt")
     if not isinstance(prompt, str) or not prompt:
         raise PreflightError("/apply-template response lacks full 'prompt' string")
+    # Some llama.cpp builds document only `messages` for /apply-template.
+    # Detect silent ignoring of tool schemas before this count authorizes
+    # inference. If the same prompt appears with/without tools, the preflight
+    # cannot establish the model's actual chat-completion token footprint.
+    if template_request["tools"]:
+        without_tools = dict(template_request, tools=[])
+        status_base, raw_base = forward("POST", "/apply-template",
+                                        json.dumps(without_tools, ensure_ascii=False).encode())
+        if status_base != 200:
+            raise PreflightError("/apply-template cannot audit tool-schema serialization")
+        probe = _json_object(raw_base, "/apply-template no-tools control").get("prompt")
+        if not isinstance(probe, str) or probe == prompt:
+            raise PreflightError("/apply-template ignored tool schemas; exact chat preflight unsupported")
     status, raw = forward("POST", "/tokenize",
                           json.dumps({"content": prompt, "add_special": False}).encode())
     if status != 200:
