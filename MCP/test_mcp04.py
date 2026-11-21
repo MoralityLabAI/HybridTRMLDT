@@ -101,6 +101,41 @@ class PreflightTests(unittest.TestCase):
         if measured["recent_turns_kept"] >= 2:
             self.assertEqual(adapted["messages"][-4:], messages[-4:])
 
+    def test_edit_arguments_survive_as_a_complete_read_handle(self):
+        out, receipt = typed_packet(episode(7), budget_tokens=1800,
+                                    keep_recent=2, store=(store := {}))
+        packet = out[2]["content"]
+        assert "old_str=if x > width:" in packet
+        assert "new_str=if x >= width:" in packet
+        assert "args_handle=mcp04:" in packet
+        assert any('"old_str": "if x > width:"' in value for value in store.values())
+        assert receipt["archive_edit_calls"] == 1
+
+    def test_oversized_mutable_edit_anchor_fails_closed(self):
+        messages = episode(7)
+        edit = messages[4]["tool_calls"][0]["function"]
+        args = json.loads(edit["arguments"])
+        args["old_str"] = "A" * 9000
+        edit["arguments"] = json.dumps(args)
+        with self.assertRaisesRegex(WorkingSetError, "edit anchors exceed"):
+            typed_packet(messages, budget_tokens=500, keep_recent=2)
+
+    def test_numeric_outputs_use_upstream_exact_token_count(self):
+        backend = FakeBackend()
+        messages = episode(7)
+        request = {"messages": messages, "tools": []}
+        raw = exact_preflight(backend.forward, request, context_window=3000,
+                              completion_reserve=100, safety_margin=200)
+        self.assertFalse(raw["fits"])
+        wrapped, receipt = adaptive_preflight(
+            request, backend.forward, context_window=3000,
+            completion_reserve=100, safety_margin=200)
+        self.assertTrue(receipt["preflight"]["fits"])
+        self.assertTrue(receipt["compacted"])
+        self.assertLess(len(wrapped["messages"]), len(messages))
+        self.assertEqual(receipt["preflight"]["method"],
+                         "upstream:/apply-template+/tokenize")
+
     def test_unpaired_tool_or_mutable_history_fails_closed(self):
         messages = episode(5)
         del messages[5]   # tool result of t1 is now missing
