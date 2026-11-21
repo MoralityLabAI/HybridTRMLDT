@@ -180,8 +180,14 @@ def put(root: Path, path: str, value: str) -> None:
 
 
 def check_suite(root: Path, *, expected_success: bool) -> None:
-    proc = run(sys.executable, "-m", "unittest", "discover", "-s", "tests",
+    # Same-length edits within the filesystem timestamp granularity can reuse
+    # an old Python .pyc. A fixture must execute the exact current source.
+    for cache in root.rglob("__pycache__"):
+        shutil.rmtree(cache)
+    proc = run(sys.executable, "-B", "-m", "unittest", "discover", "-s", "tests",
                "-p", "test_*.py", cwd=root, check=False)
+    for cache in root.rglob("__pycache__"):
+        shutil.rmtree(cache)
     if (proc.returncode == 0) != expected_success:
         raise AssertionError(f"Unexpected test outcome: {root}\n{proc.stdout}\n{proc.stderr}")
 
