@@ -1,0 +1,111 @@
+name: MCP-03 read-aware CPU campaign
+
+on:
+  pull_request:
+    paths:
+      - 'MCP/mcp02/**'
+      - 'MCP/mcp03/**'
+      - 'MCP/test_mcp03_read_utility.py'
+      - 'MCP/test_platformer_gen.py'
+      - '.github/workflows/mcp-readaware-cpu.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generated-platformer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PYTHONHASHSEED: '0'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      OPENBLAS_NUM_THREADS: '4'
+      CAMPAIGN: MCP/runs/readaware-platformer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install pinned CPU training dependencies
+        run: |
+          python -m pip install pytest
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -c 'import torch; print("torch", torch.__version__, "cuda", torch.cuda.is_available())'
+      - name: Regenerate contract cases and run dual-head tests
+        run: python -m pytest -q MCP/test_platformer_gen.py MCP/test_mcp03_read_utility.py
+      - name: Generate fresh platformer roots and validate planted repairs
+        run: |
+          python -m MCP.mcp03.platformer_gen --out "$CAMPAIGN" --seed 117 --train 12 --dev 4 --test 8
+      - name: Collect train and dev read-aware and binary supervision
+        run: |
+          python -m MCP.mcp03.run dataset --config "$CAMPAIGN/config_readaware.json" --split train --out "$CAMPAIGN/read_train.json.gz"
+          python -m MCP.mcp03.run dataset --config "$CAMPAIGN/config_readaware.json" --split dev --out "$CAMPAIGN/read_dev.json.gz"
+          python -m MCP.mcp03.run dataset --config "$CAMPAIGN/config_binary.json" --split train --out "$CAMPAIGN/binary_train.json.gz"
+          python -m MCP.mcp03.run dataset --config "$CAMPAIGN/config_binary.json" --split dev --out "$CAMPAIGN/binary_dev.json.gz"
+      - name: CPU memory and throughput probe
+        run: |
+          python -m MCP.mcp02.train trainprobe --config "$CAMPAIGN/config_readaware.json" --model looped_p4_d64_readaware \
+            --train "$CAMPAIGN/read_train.json.gz" --steps 8 --device cpu | tee "$CAMPAIGN/probe.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("MCP/runs/readaware-platformer/probe.json").read_text())
+          rss = data["peak_rss_training"]
+          print("TRAINPROBE CPU peak process RSS", rss, "limit", 3 * 1024**3)
+          if rss > 3 * 1024**3:
+              raise SystemExit("3 GiB CPU training memory cap exceeded")
+          PY
+      - name: Fit independent binary and read-aware looped router controls
+        run: |
+          mkdir -p "$CAMPAIGN/checkpoints"
+          python -m MCP.mcp02.train fit --config "$CAMPAIGN/config_binary.json" --model looped_p4_d64_binary \
+            --train "$CAMPAIGN/binary_train.json.gz" --dev "$CAMPAIGN/binary_dev.json.gz" \
+            --out "$CAMPAIGN/checkpoints/looped_p4_d64_binary.pt" --device cpu
+          python -m MCP.mcp02.train fit --config "$CAMPAIGN/config_readaware.json" --model looped_p4_d64_readaware \
+            --train "$CAMPAIGN/read_train.json.gz" --dev "$CAMPAIGN/read_dev.json.gz" \
+            --out "$CAMPAIGN/checkpoints/looped_p4_d64_readaware.pt" --device cpu
+      - name: Matched sealed-root retrieval evaluation
+        run: |
+          python -m MCP.mcp03.run evaluate --config "$CAMPAIGN/config_eval.json" \
+            --checkpoints "$CAMPAIGN/checkpoints" --out "$CAMPAIGN/eval" --device cpu \
+            --policies lexical_bm25 identifier_rules looped_p4_d64_binary looped_p4_d64_readaware
+          python -m MCP.mcp03.platformer_report --run "$CAMPAIGN/eval" --out "$CAMPAIGN/report.json"
+          python -m MCP.mcp03.run replay --run "$CAMPAIGN/eval" --every 2
+      - name: Validate all assigned roots and audit reproducibility
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("MCP/runs/readaware-platformer")
+          report = json.loads((p / "report.json").read_text())
+          probe = json.loads((p / "probe.json").read_text())
+          manifests = json.loads((p / "manifest.json").read_text())
+          assert report["assigned_roots"] == manifests["cases"]["test"] == 8
+          assert set(report["groups"]) == {
+              "lexical_bm25", "identifier_rules", "looped_p4_d64_binary", "looped_p4_d64_readaware"}
+          assert report["matched_call_budget"] == 24
+          assert report["matched_packet_budget"] == 1024
+          assert probe["peak_rss_training"] <= 3 * 1024**3
+          for name in ("looped_p4_d64_binary", "looped_p4_d64_readaware"):
+              assert (p / "checkpoints" / (name + ".receipt.json")).is_file()
+          print("Matched corpus, models, budgets, receipts verified.")
+          PY
+      - name: Upload training and evaluation receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcp03-readaware-cpu-receipts
+          path: |
+            MCP/runs/readaware-platformer/manifest.json
+            MCP/runs/readaware-platformer/config_*.json
+            MCP/runs/readaware-platformer/probe.json
+            MCP/runs/readaware-platformer/checkpoints/*.receipt.json
+            MCP/runs/readaware-platformer/report.json
+            MCP/runs/readaware-platformer/eval/episodes.jsonl
+            MCP/runs/readaware-platformer/eval/host.json
+            MCP/runs/readaware-platformer/eval/run_config.json
+          if-no-files-found: warn
+          retention-days: 14
