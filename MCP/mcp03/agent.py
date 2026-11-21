@@ -274,7 +274,7 @@ def build_packet(env: CodeEnv, reads: list[tuple[float, str]], seen: dict[str, f
 def run_code_episode(env: CodeEnv, issue: str, *, policy: Policy, max_tool_calls: int = 24,
                      budgets: tuple[int, ...] = (1024, 2048, 4096), prefilter_k: int = 32,
                      record=None, tape: list | None = None, return_text: bool = False,
-                     compose: bool = False) -> dict:
+                     compose: bool = False, utility_packet_budget: int | None = None) -> dict:
     started = time.perf_counter()
     terms = salient_terms(issue)
     need = " ".join(terms) or issue.strip().split("\n")[0]
@@ -304,9 +304,18 @@ def run_code_episode(env: CodeEnv, issue: str, *, policy: Policy, max_tool_calls
         cands, ops = _prefilter(need, eligible, prefilter_k)
         totals["prefilter_ops"] += ops
         obs = {"task": task, "needs": [need], "need_terms": terms, "candidates": cands,
-               "step": env.stats["tool_calls"], "evidence": [u for _s, u in reads]}
+               "step": env.stats["tool_calls"], "remaining_calls": max_tool_calls - env.stats["tool_calls"],
+               "evidence": [u for _s, u in reads]}
         if record is not None:
-            record({"kind": "decide", "obs": obs, "labels": [view.label(c) for c in cands]})
+            labels = [view.label(c) for c in cands]
+            event = {"kind": "decide", "obs": obs, "labels": labels}
+            if utility_packet_budget is not None:
+                # Only dataset collection sees the private judge. Inference is unchanged.
+                from .utility import packet_utility_targets
+                event["utility_values"] = packet_utility_targets(
+                    env, obs, labels, reads, seen, packet_budget=utility_packet_budget,
+                    remaining_calls=obs["remaining_calls"])
+            record(event)
         t0 = time.perf_counter()
         if tape_iter is not None:
             entry = next(tape_iter)
