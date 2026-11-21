@@ -145,6 +145,48 @@ class HttpUpstream(BaseHTTPRequestHandler):
 
 
 class RelayIntegrationTests(unittest.TestCase):
+    def test_provider_context_error_gets_one_remeasured_retry(self):
+        class FlakyBackend(FakeBackend):
+            def __init__(self):
+                super().__init__()
+                self.chats = 0
+
+            def forward(self, method, path, body):
+                if path == "/v1/chat/completions":
+                    self.chats += 1
+                    if self.chats == 1:
+                        return 400, b'{"error":{"type":"exceed_context_size_error"}}'
+                return super().forward(method, path, body)
+
+        backend = FlakyBackend()
+        with TemporaryDirectory() as tmp:
+            log = Path(tmp) / "calls.jsonl"
+            relay = Relay("http://127.0.0.1:1", log, None, 512, 1000, 1200, 2, 6000, 30,
+                          context_window=12000, completion_reserve=100, safety_margin=200)
+            relay.forward = backend.forward
+            status, payload = relay.chat("mcp04", "retry-case", json.dumps({
+                "model": "m", "messages": episode(), "tools": []}).encode())
+            self.assertEqual(status, 200)
+            self.assertEqual(backend.chats, 2)
+            receipt = json.loads(log.read_text().splitlines()[0])
+            self.assertTrue(receipt["retried_after_context_error"])
+            self.assertEqual(receipt["compaction"]["recent_turns_kept"], 1)
+            self.assertIsNone(receipt["retry_failure"])
+
+    def test_proxy_blocks_missing_server_tokenizer_before_chat(self):
+        backend = FakeBackend()
+        backend.valid = False
+        with TemporaryDirectory() as tmp:
+            log = Path(tmp) / "calls.jsonl"
+            relay = Relay("http://127.0.0.1:1", log, None, 512, 1000, 1200, 2, 6000, 30)
+            relay.forward = backend.forward
+            status, payload = relay.chat("mcp04", "reject-case", json.dumps({
+                "model": "m", "messages": episode(1), "tools": []}).encode())
+            self.assertEqual(status, 422)
+            self.assertIn(b"preflight_rejected", payload)
+            self.assertNotIn("/v1/chat/completions", backend.paths)
+            self.assertFalse(json.loads(log.read_text())["forwarded"])
+
     def test_mcp04_proxy_compacts_and_exposes_stable_read_handles(self):
         HttpUpstream.chats.clear()
         upstream = ThreadingHTTPServer(("127.0.0.1", 0), HttpUpstream)
