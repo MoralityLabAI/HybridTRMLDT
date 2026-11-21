@@ -80,7 +80,7 @@ class Relay:
         self.mcp04_context = {"context_window": context_window,
                               "completion_reserve": completion_reserve,
                               "safety_margin": safety_margin}
-        self.mcp04_store: dict[str, str] = {}
+        self.mcp04_store: dict[str, dict[str, str]] = {}
 
     def forward(self, method: str, path: str, body: bytes | None) -> tuple[int, bytes]:
         url = self.upstream + path
@@ -119,7 +119,7 @@ class Relay:
                     request, self.forward, **self.mcp04_context,
                     keep_recent=self.compaction["keep_recent"],
                     packet_budget=self.compaction["budget_tokens"],
-                    store=self.mcp04_store)
+                    store=self.mcp04_store.setdefault(tag, {}))
                 messages = request["messages"]
             except (PreflightError, WorkingSetError, ValueError) as exc:
                 err = {"error": {"type": "mcp04_preflight_rejected", "message": str(exc)}}
@@ -141,7 +141,7 @@ class Relay:
                 try:
                     shorter, compact_receipt = typed_packet(
                         original_messages, budget_tokens=min(self.compaction["budget_tokens"], 900),
-                        keep_recent=1, store=self.mcp04_store)
+                        keep_recent=1, store=self.mcp04_store.setdefault(tag, {}))
                     retry_request = dict(request, messages=shorter)
                     retry_preflight = exact_preflight(self.forward, retry_request, **self.mcp04_context)
                     if not retry_preflight["fits"]:
@@ -216,7 +216,7 @@ def make_handler(relay: Relay):
             if arm == "mcp04" and rest.startswith("/v1/working-set/"):
                 from urllib.parse import unquote
                 handle = unquote(rest.removeprefix("/v1/working-set/"))
-                body = relay.mcp04_store.get(handle)
+                body = relay.mcp04_store.get(_tag, {}).get(handle)
                 if body is None:
                     return self._send(404, b'{"error":"unknown working-set handle"}')
                 return self._send(200, json.dumps({"handle": handle, "content": body}).encode())
