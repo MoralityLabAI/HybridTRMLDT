@@ -58,9 +58,11 @@ def packet_utility_targets(env, obs: dict, labels: list[int], reads: list[tuple[
             targets.append(0.0)
             continue
         grade = env.grade(candidate_packet)
-        symbol_gain = max(0.0, grade["symbol_recall"] - base_grade["symbol_recall"])
-        file_gain = max(0.0, grade["file_recall"] - base_grade["file_recall"])
-        gain = 0.8 * symbol_gain * grade["gold_symbols"] + 0.2 * file_gain * grade["gold_files"]
+        symbol_gain = grade["symbol_recall"] - base_grade["symbol_recall"]
+        file_gain = grade["file_recall"] - base_grade["file_recall"]
+        # Score net change: displacement of a gold snippet must count against a read.
+        gain = max(0.0, 0.8 * symbol_gain * grade["gold_symbols"]
+                   + 0.2 * file_gain * grade["gold_files"])
         token_cost = max(1, admitted["tokens"])
         targets.append(round(min(1.0, gain * 7.0 / math.log2(16.0 + token_cost)), 6))
     return targets
