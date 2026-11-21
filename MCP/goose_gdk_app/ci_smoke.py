@@ -59,12 +59,9 @@ def main() -> int:
     server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     port = server.server_address[1]
-    try:
-        with_packet = run(binary, port, "--repo", str(ROOT), "--budget", "1024")
-        n_with = len(REQUESTS)
-        without = run(binary, port, "--no-packet")
-    finally:
-        server.shutdown()
+    with_packet = run(binary, port, "--repo", str(ROOT), "--budget", "1024")
+    n_with = len(REQUESTS)
+    without = run(binary, port, "--no-packet")
     sent = json.dumps(REQUESTS[n_with - 1])
     stats = with_packet["packet_stats"]
     checks = {
@@ -109,6 +106,7 @@ def main() -> int:
             "over_budget_blocks_http": blocked.returncode != 0
                                        and len(REQUESTS) == before_block,
         })
+    server.shutdown()
     print(json.dumps({"checks": checks, "with_packet": with_packet, "without_packet": without,
                       "unfiltered": unfiltered, "lean": filtered}, indent=1))
     return 0 if all(checks.values()) else 1
