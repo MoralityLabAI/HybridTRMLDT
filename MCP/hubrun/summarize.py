@@ -103,6 +103,7 @@ def load_calls(log: Path) -> dict[str, dict[str, float]]:
         a["capped_messages"] += comp.get("capped_messages") or 0
         a["context_length_stops"] += int(r.get("finish_reason") == "length")
         a["http_errors"] += int((r.get("status") or 200) >= 400)
+        a["context_overflows"] += int((r.get("status") or 200) >= 400 and "exceed_context" in (r.get("error") or ""))
     return out
 
 
@@ -129,74 +130,94 @@ def summarize_run(tag: str, episodes: list[dict], calls: dict[str, float]) -> di
 
 
 def pairs(runs: dict[str, dict], episodes: dict[str, list[dict]]) -> dict[str, dict]:
+    """Raw against each packet arm on shared tasks: ``<stem>`` for goblin, ``<stem>-late`` for late compaction."""
     out = {}
     for tag in runs:
         if not tag.endswith("-raw"):
             continue
         stem = tag[: -len("-raw")]
-        gob = f"{stem}-goblin"
-        if gob not in runs:
-            continue
-        raw_by = {e["task"]: e["score"] for e in episodes[tag]}
-        gob_by = {e["task"]: e["score"] for e in episodes[gob]}
-        common = sorted(set(raw_by) & set(gob_by))
-        diffs = [gob_by[t] - raw_by[t] for t in common]
-        r, g = runs[tag]["provider"], runs[gob]["provider"]
-        out[stem] = {"paired_tasks": len(common),
-                     "raw_mean": _mean([raw_by[t] for t in common]), "goblin_mean": _mean([gob_by[t] for t in common]),
-                     "mean_diff_goblin_minus_raw": _mean(diffs),
-                     "goblin_better": sum(1 for d in diffs if d > 1e-9), "raw_better": sum(1 for d in diffs if d < -1e-9),
-                     "prompt_tokens_ratio_goblin_over_raw": (round(g.get("prompt_tokens", 0) / r["prompt_tokens"], 3)
-                                                             if r.get("prompt_tokens") else None),
-                     "prompt_peak_raw": r.get("prompt_peak"), "prompt_peak_goblin": g.get("prompt_peak"),
-                     "context_length_stops_raw": r.get("context_length_stops"),
-                     "context_length_stops_goblin": g.get("context_length_stops")}
+        for suffix, key in (("goblin", stem), ("late", f"{stem}-late")):
+            gob = f"{stem}-{suffix}"
+            if gob in runs:
+                out[key] = _pair(runs, episodes, tag, gob)
     return out
 
 
+def _pair(runs: dict[str, dict], episodes: dict[str, list[dict]], tag: str, gob: str) -> dict:
+    """Paired comparison of run ``tag`` (raw) and run ``gob`` (a packet arm); ``goblin_*`` keys name the packet arm."""
+    raw_by = {e["task"]: e["score"] for e in episodes[tag]}
+    gob_by = {e["task"]: e["score"] for e in episodes[gob]}
+    common = sorted(set(raw_by) & set(gob_by))
+    diffs = [gob_by[t] - raw_by[t] for t in common]
+    r, g = runs[tag]["provider"], runs[gob]["provider"]
+    return {"packet_arm": gob, "paired_tasks": len(common),
+            "raw_mean": _mean([raw_by[t] for t in common]), "goblin_mean": _mean([gob_by[t] for t in common]),
+            "mean_diff_goblin_minus_raw": _mean(diffs),
+            "goblin_better": sum(1 for d in diffs if d > 1e-9), "raw_better": sum(1 for d in diffs if d < -1e-9),
+            "prompt_tokens_ratio_goblin_over_raw": (round(g.get("prompt_tokens", 0) / r["prompt_tokens"], 3)
+                                                    if r.get("prompt_tokens") else None),
+            "prompt_peak_raw": r.get("prompt_peak"), "prompt_peak_goblin": g.get("prompt_peak"),
+            "context_length_stops_raw": r.get("context_length_stops"),
+            "context_length_stops_goblin": g.get("context_length_stops"),
+            "context_overflows_raw": r.get("context_overflows"),
+            "context_overflows_goblin": g.get("context_overflows"),
+            "episode_errors_raw": runs[tag]["episodes_with_errors"],
+            "episode_errors_goblin": runs[gob]["episodes_with_errors"]}
+
+
 def markdown(summary: dict) -> str:
-    lines = ["| run | episodes | mean score | solved (95% CI) | prompt tok/episode | completion tok/episode | "
-             "peak prompt | compacted calls | context-length stops |",
-             "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
+    lines = ["| run | episodes | mean score | solved (95% CI) | episodes with errors | prompt tok/episode | "
+             "completion tok/episode | peak prompt | compacted calls | context overflows |",
+             "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
     for tag, s in summary["runs"].items():
         p = s["provider"]
         ci = s["solved_wilson95"]
         lines.append(f"| {tag} | {s['episodes']} | {s['mean_score']} | {s['solved']} "
-                     f"({ci[0]:.2f}-{ci[1]:.2f}) | {p.get('prompt_tokens_per_episode')} | "
+                     f"({ci[0]:.2f}-{ci[1]:.2f}) | {s['episodes_with_errors']} | {p.get('prompt_tokens_per_episode')} | "
                      f"{p.get('completion_tokens_per_episode')} | {int(p.get('prompt_peak', 0))} | "
-                     f"{int(p.get('compacted_calls', 0))} | {int(p.get('context_length_stops', 0))} |"
-                     if ci else f"| {tag} | 0 | | | | | | | |")
+                     f"{int(p.get('compacted_calls', 0))} | {int(p.get('context_overflows', 0))} |"
+                     if ci else f"| {tag} | 0 | | | | | | | | |")
     if summary["pairs"]:
         lines += ["", "| pair | tasks | raw mean | goblin mean | goblin better / raw better | "
-                      "prompt tokens goblin/raw | peak raw / goblin | length stops raw / goblin |",
-                  "| --- | --- | --- | --- | --- | --- | --- | --- |"]
+                      "prompt tokens goblin/raw | peak raw / goblin | context overflows raw / goblin | "
+                      "episodes with errors raw / goblin |",
+                  "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
         for stem, p in summary["pairs"].items():
             lines.append(f"| {stem} | {p['paired_tasks']} | {p['raw_mean']} | {p['goblin_mean']} | "
                          f"{p['goblin_better']} / {p['raw_better']} | {p['prompt_tokens_ratio_goblin_over_raw']} | "
                          f"{int(p['prompt_peak_raw'] or 0)} / {int(p['prompt_peak_goblin'] or 0)} | "
-                         f"{int(p['context_length_stops_raw'] or 0)} / {int(p['context_length_stops_goblin'] or 0)} |")
+                         f"{int(p['context_overflows_raw'] or 0)} / {int(p['context_overflows_goblin'] or 0)} | "
+                         f"{p['episode_errors_raw']} / {p['episode_errors_goblin']} |")
+    for tag, reason in summary.get("skipped", {}).items():
+        lines.append(f"\nSkipped `{tag}`: {reason}")
     return "\n".join(lines) + "\n"
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--runs", required=True)
-    ap.add_argument("--calls", required=True)
+    ap.add_argument("--calls", required=True, nargs="+", help="one or more relay call logs")
     ap.add_argument("--out", required=True)
     ap.add_argument("--skip-prefix", action="append", default=None,
                     help="skip run directories with this prefix (repeatable; default: smoke)")
     args = ap.parse_args()
     args.skip_prefix = args.skip_prefix or ["smoke"]
-    calls = load_calls(Path(args.calls))
-    runs, episodes = {}, {}
+    calls: dict = {}
+    for log in args.calls:
+        calls.update(load_calls(Path(log)))
+    runs, episodes, skipped = {}, {}, {}
     for run_dir in sorted(Path(args.runs).iterdir()):
         tag = run_dir.name
         if not run_dir.is_dir() or tag.startswith(tuple(args.skip_prefix)):
             continue
+        done = run_dir / "DONE"
+        if done.exists() and done.read_text(encoding="utf-8").startswith("skipped"):
+            skipped[tag] = done.read_text(encoding="utf-8").strip()
+            continue
         episodes[tag] = load_episodes(run_dir, tag)
         runs[tag] = summarize_run(tag, episodes[tag], calls.get(tag, {}))
         runs[tag]["finished"] = (run_dir / "DONE").exists()
-    summary = {"runs": runs, "pairs": pairs(runs, episodes)}
+    summary = {"runs": runs, "pairs": pairs(runs, episodes), "skipped": skipped}
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     (out / "summary.json").write_text(json.dumps(summary, indent=1, sort_keys=True), encoding="utf-8")

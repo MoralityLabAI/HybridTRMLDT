@@ -12,6 +12,8 @@ Data Goblin's longer-term goal is to become a local retrieval specialist that sp
 
 [MCP-03](mcp03/README.md) applies the same routers to code-repository MCP surfaces on SWE-bench (training on django and sympy, testing on ten held-out SWE-bench Lite repositories) and measures token-budgeted context packets. [goblin-gdk](goose_gdk_app/README.md) is a Goose Development Kit app that injects the packet into a goose-agent state machine; `mcp03/goblin_server.py` exposes it as an MCP extension. Results: [`results/mcp02`](results/mcp02/README.md), [`results/mcp03`](results/mcp03/README.md); paper: [`papers/mcp_data_goblin`](../papers/mcp_data_goblin).
 
+[`hubrun`](hubrun/README.md) runs Prime Environments Hub agentic tasksets and the MoralityLab storyworld environments against local Ternary Bonsai 2 27B, through a relay with a raw arm and a goblin-packet arm. Results: [`results/hubrun`](results/hubrun/README.md).
+
 ## Run the gym
 
 Run from the repository root with Python 3.10 or newer. The gym's runtime uses the standard library and the repository's existing lattice kernel.

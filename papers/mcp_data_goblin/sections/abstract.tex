@@ -2,7 +2,7 @@ Frontier coding agents pay per token, while Model Context Protocol (MCP) servers
 larger than any useful prompt. We study small local routers that explore such MCP surfaces and hand the frontier model
 a compact, verifiable context packet. The routers are lexical, dense, feed-forward Transformer, shared-weight looped
 Transformer, Tiny Recursive Model (TRM), TRM with certified lattice refinement, and HRM, from about 0.15 to 1.3M
-parameters at recurrent depth 1 to 12. The paper reports three measurements:
+parameters at recurrent depth 1 to 12. The paper reports these measurements:
 \begin{itemize}
 \item \textbf{Synthetic multi-server catalogs.} Routers with an exact-match token channel solve layered discovery tasks that BM25 and
 hand-written rules mostly fail, using about half the tool calls. Looped and recursive cores match a four-layer
@@ -16,6 +16,11 @@ read too few symbols, though. For function-level evidence, BM25 reading combined
 official SWE-bench harness on 26 tasks, the goblin packet yields \EtoeGoblinPatches{} applicable patches and
 \EtoeGoblinResolved{} resolved task at \EtoeGoblinInput{} input tokens. BM25 whole-file context yields
 \EtoeBmPatches{} patches and \EtoeBmResolved{} resolved at \EtoeBmInput{} tokens, and the issue alone yields none.
+\item \textbf{Hub tasksets with a local 27B model.} Ternary Bonsai 2 27B, quantised to 5.9 GB on a laptop GPU, clears
+the held-out Jinn--Beast storyworld lanes (mean reward \HubJbmCrossDevEightZeroMean{} to \HubJbmMeshTwoDevMean{}), every
+hard-tier feishu-office task and \HubSqliteAllSolved{} of \HubSqliteAllN{} mcp-sqlite questions. Applied early to its
+growing history, the packet prevents context overflows on event-recon, but it lowers doc-edit success from
+\HubDoceditRawSolved{} to \HubDoceditGoblinSolved{} of 8 tasks.
 \item \textbf{Cost.} Training a router fits in a few hundred megabytes of process memory, and inference adds megabytes on top of the
 runtime.
 \end{itemize}

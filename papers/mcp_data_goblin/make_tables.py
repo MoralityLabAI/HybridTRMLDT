@@ -263,6 +263,102 @@ def e2e_table(numbers: dict) -> None:
 
 
 macros_e2e: dict = {}
+macros_hub: dict = {}
+
+RH = ROOT / "MCP" / "results" / "hubrun"
+HUB_STORYWORLD = {
+    # tag: (label, format metric, legal metric, best-action metric, critical metric)
+    "sw-constitution-eval": ("storyworld-constitution, eval", "strict_valid_option_metric", None,
+                             "exact_option_match", None),
+    "jbm-cross-dev80": ("jinn-beast-metta cross-frame, dev", "contract_valid", "legal_action",
+                        "highest_scoring_action", "critical_violation"),
+    "jbm-constructs-dev": ("jinn-beast-metta constructs, dev", "contract_valid", "legal_action",
+                           "highest_scoring_action", "critical_violation"),
+    "jbm-reasoner-dev": ("jinn-beast-metta moral reasoner, dev", "contract_valid", "legal_action",
+                         "highest_scoring_action", "critical_violation"),
+    "jbm-mesh2-dev": ("jinn-beast-metta control mesh v2 (tools), dev", "protocol_complete", "legal_final_action",
+                      "target_action", "critical_final_action"),
+}
+HUB_AGENTIC = [("er-t1", "event-recon tier 1"), ("er-t2", "event-recon tier 2"), ("docedit", "doc-edit"),
+               ("feishu-hard", "feishu-office hard"), ("feishu-expert", "feishu-office expert"),
+               ("sqlite-all", "mcp-sqlite (exact match)"), ("notebook-hardened", "durable-notebook (hardened)")]
+HUB_TAGS = list(HUB_STORYWORLD) + [f"{s}-{a}" for s, _ in HUB_AGENTIC[:5] for a in ("raw", "goblin")] + \
+    ["sqlite-all", "notebook-hardened", "er-t1-late"]
+HUB_PAIRS = [s for s, _ in HUB_AGENTIC[:5]] + ["er-t1-late"]
+_DIGITS = dict(zip("0123456789", ("Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine")))
+
+
+def hub_name(tag: str) -> str:
+    return "Hub" + "".join("".join(_DIGITS.get(ch, ch) for ch in part.capitalize()) for part in tag.split("-"))
+
+
+def hubrun_tables(numbers: dict) -> None:
+    """Bonsai 27B on hub tasksets and storyworlds, raw versus goblin packet (MCP/results/hubrun)."""
+    s = load(RH / "summary.json")
+    if not s:
+        return
+    runs, pairs = s["runs"], s["pairs"]
+    rows = []
+    for tag, (label, fmt_m, legal_m, best_m, crit_m) in HUB_STORYWORLD.items():
+        r = runs.get(tag)
+        if not r or not r["episodes"]:
+            continue
+        m = r["metric_means"]
+        rows.append([label, r["episodes"], r["mean_score"], m.get(fmt_m), m.get(legal_m) if legal_m else None,
+                     m.get(best_m), m.get(crit_m) if crit_m else None,
+                     r["provider"].get("completion_tokens_per_episode")])
+    if rows:
+        table("hub_storyworlds", ["Lane", "Tasks", "Mean reward", "Format valid", "Legal action", "Best action",
+                                  "Critical action", "Completion tok./task"], rows,
+              "Ternary Bonsai 2 27B (PTQ1\\_0) on the MoralityLab storyworld environments, held-out eval or "
+              "development splits only. Columns are means over tasks of the environment's own metrics. Best action: "
+              "the historical frontier option (storyworld-constitution), the highest-scoring legal action "
+              "(cross-frame, constructs, reasoner) or the registered target action (control mesh).",
+              "tab:hub-storyworlds")
+    rows = []
+    for stem, label in HUB_AGENTIC:
+        for arm in ("raw", "goblin", "late"):
+            tag = stem if stem in ("sqlite-all", "notebook-hardened") else f"{stem}-{arm}"
+            r = runs.get(tag)
+            if not r or not r["episodes"] or (tag == stem and arm != "raw"):
+                continue
+            p = r["provider"]
+            rows.append([label, arm, r["episodes"], r["mean_score"], r["solved"], r["episodes_with_errors"],
+                         round(p.get("prompt_tokens_per_episode") or 0), int(p.get("prompt_peak") or 0),
+                         int(p.get("compacted_calls") or 0), int(p.get("context_overflows") or 0)])
+    if rows:
+        table("hub_agentic", ["Environment", "Arm", "Episodes", "Mean score", "Solved", "Errored ep.",
+                              "Prompt tok./ep.", "Peak prompt", "Compacted calls", "Context overflows"], rows,
+              "Agentic hub tasksets with Bonsai 27B through the relay: raw history against the goblin packet "
+              "(compaction past 6,000 estimated tokens), run side by side on the same tasks, one 32,768-token "
+              "server slot each. late: compaction past 18,000 estimated tokens with a 6,000-token packet and four "
+              "kept turns, run after the main queue. Tokens are the server's exact counts. Context overflows: "
+              "requests the server refused because the prompt exceeded 32,768 tokens; "
+              "the environment then ends the episode with an error. mcp-sqlite and durable-notebook stay below the "
+              "packet threshold, so they ran in the raw arm only.", "tab:hub-agentic")
+    numbers["hubrun"] = {"runs": {t: {k: v for k, v in r.items() if k != "per_task"} for t, r in runs.items()},
+                         "pairs": pairs}
+    for tag in HUB_TAGS:
+        r = runs.get(tag)
+        if r and r["episodes"]:
+            macros_hub[hub_name(tag) + "Mean"] = r["mean_score"]
+            macros_hub[hub_name(tag) + "Solved"] = r["solved"]
+            macros_hub[hub_name(tag) + "N"] = r["episodes"]
+            macros_hub[hub_name(tag) + "Prompt"] = round(r["provider"].get("prompt_tokens_per_episode") or 0)
+    sw = runs.get("sw-constitution-eval")
+    if sw and sw["episodes"]:
+        macros_hub["HubSwcBracket"] = sw["metric_means"].get("bracket_stripped_choice_match")
+    for stem in HUB_PAIRS:
+        p = pairs.get(stem)
+        if p:
+            base = hub_name(stem)
+            macros_hub[base + "Ratio"] = p["prompt_tokens_ratio_goblin_over_raw"]
+            macros_hub[base + "GoblinBetter"] = p["goblin_better"]
+            macros_hub[base + "RawBetter"] = p["raw_better"]
+            macros_hub[base + "StopsRaw"] = int(p.get("context_overflows_raw") or 0)
+            macros_hub[base + "StopsGoblin"] = int(p.get("context_overflows_goblin") or 0)
+            macros_hub[base + "ErrRaw"] = p.get("episode_errors_raw")
+            macros_hub[base + "ErrGoblin"] = p.get("episode_errors_goblin")
 
 
 def gdk_table(numbers: dict) -> None:
@@ -296,7 +392,11 @@ MACRO_NAMES = (
     + [f"Etoe{c}{m}" for c in ("None", "Bm", "Goblin") for m in ("Resolved", "ResolvedValid", "Input", "Patches")]
     + [f"BmFiles{k}{n}" for k in ("Recall", "Tokens") for n in ("Two", "Four", "Thirteen", "TwentySeven")]
     + [f"BmMap{k}{n}" for k in ("Recall", "Tokens") for n in ("Five", "Twelve", "TwentyFive")]
-    + [f"Gdk{c}{k}" for c in ("Packet", "NoPacket") for k in ("Runs", "FileNamed", "FunctionNamed", "InputTokens")])
+    + [f"Gdk{c}{k}" for c in ("Packet", "NoPacket") for k in ("Runs", "FileNamed", "FunctionNamed", "InputTokens")]
+    + [hub_name(t) + k for t in HUB_TAGS for k in ("Mean", "Solved", "N", "Prompt")]
+    + [hub_name(s) + k for s in HUB_PAIRS
+       for k in ("Ratio", "GoblinBetter", "RawBetter", "StopsRaw", "StopsGoblin", "ErrRaw", "ErrGoblin")]
+    + ["HubSwcBracket"])
 
 
 def write_macro_defaults() -> None:
@@ -372,7 +472,7 @@ def macros(numbers: dict) -> None:
             put(f"Gdk{name}FileNamed", s.get("file_named"))
             put(f"Gdk{name}FunctionNamed", s.get("function_named"))
             put(f"Gdk{name}InputTokens", round(s.get("provider_input_tokens_mean", 0)))
-    for name, value in macros_e2e.items():
+    for name, value in list(macros_e2e.items()) + list(macros_hub.items()):
         put(name, value)
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "numbers.tex").write_text("\n".join(out) + "\n", encoding="utf-8")
@@ -384,6 +484,7 @@ def main() -> None:
     mcp03_tables(numbers)
     llm_table(numbers)
     e2e_table(numbers)
+    hubrun_tables(numbers)
     gdk_table(numbers)
     macros(numbers)
     (Path(__file__).resolve().parent / "numbers.json").write_text(json.dumps(numbers, indent=1) + "\n", encoding="utf-8")

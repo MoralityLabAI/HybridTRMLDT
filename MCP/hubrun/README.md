@@ -38,13 +38,13 @@ Every environment runs in its own uv venv in WSL. The verifiers version is pinne
 | --- | --- | --- | --- | --- |
 | moralitylab/storyworld-constitution 0.1.1 | 0.1.10 | single turn | `eval` (15) | private; aggregates only |
 | moralitylab/jinn-beast-metta 0.1.15 | 0.2.1 | single turn and tool lane | `development` only | private; aggregates only; `candidate_train`, `confirmatory` and the village replay gate are not run |
-| briahnloo/event-recon 1.0.0 | 0.3.1 | v1 MCP tool loop, up to 40 turns | public split, tiers 1 and 2 | agent and tools on the local subprocess runtime |
+| briahnloo/event-recon 1.0.0 | 0.3.1 | v1 MCP tool loop, up to 40 turns | public split, tier 1 (tier 2 dropped, see results) | agent and tools on the local subprocess runtime |
 | emerge/feishu-office-v1 0.4.1 | 0.3.1 | tool loop | hard and expert tiers, shuffled with seed 0 | |
 | dp-learning-rl/doc-edit 0.1.3 | 0.3.1 | tool loop | generated, seed 1234 | |
 | mikqu/mcp-sqlite 0.1.0 | 0.3.1 | v1 MCP tool loop, up to 20 turns | all 57 | the paid API judge is removed; the score is the taskset's `exact_match` metric |
 | aravind-k/durable-notebook 0.1.4 | 0.3.1 | tool loop with environment-side compaction | held-out episodes, hardened grader | |
 
-Each environment ran in two smoke runs first (one or two tasks). Prompts in mcp-sqlite (peak 1.4K tokens) and durable-notebook (1.6K) stay below the packet threshold, so the goblin arm would send identical requests. Those two run in the raw arm only. Each A/B pair runs its raw and goblin arms at the same time, one server slot each, on the same tasks.
+Each environment ran in two smoke runs first (one or two tasks). Prompts in mcp-sqlite (peak 1.4K tokens) and durable-notebook (1.6K) stay below the packet threshold, so the goblin arm would send identical requests. Those two run in the raw arm only. Each A/B pair runs its raw and goblin arms at the same time, one server slot each, on the same tasks. A third arm, `late` (`scripts/proxy_late.sh`, port 18131), compacts only past 18,000 estimated tokens with a 6,000-token packet and four kept turns; `scripts/followup.sh` ran it on event-recon tier 1 after the main queue.
 
 ## Relay fixes found in smoke runs
 
@@ -60,8 +60,13 @@ bash scripts/setup_wsl.sh <env>...            # copy pulled envs, one venv each
 bash scripts/pin.sh <verifiers-version> <env>...
 bash scripts/proxy_run.sh                     # relay on 127.0.0.1:18130
 bash scripts/queue.sh                         # resumable overnight queue
-python3 -m MCP.hubrun.summarize --runs /root/hub-overnight/runs \
-  --calls /root/hub-overnight/logs/calls.jsonl --out MCP/results/hubrun
+bash scripts/proxy_late.sh & bash scripts/followup.sh   # late-compaction arm after the queue
+python3 -m MCP.hubrun.publish --runs /root/hub-overnight/runs \
+  --calls /root/hub-overnight/logs/calls.jsonl /root/hub-overnight/logs/calls_late.jsonl \
+  --venvs /root/hub-overnight/venvs --queue-log /root/hub-overnight/logs/queue.log \
+  --server-config MCP/results/hubrun/server.json --out MCP/results/hubrun
 ```
+
+`publish` runs `summarize`, copies gzipped traces of the public environments, filters the relay call logs and writes `manifest.json`.
 
 Results and the write-up are in [`MCP/results/hubrun`](../results/hubrun).

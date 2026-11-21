@@ -156,6 +156,8 @@ class SummarizeTests(unittest.TestCase):
         calls.write_text("\n".join(json.dumps(r) for r in [
             {"tag": "er-t1-raw", "arm": "raw", "status": 200, "prompt_tokens": 30000, "completion_tokens": 10,
              "finish_reason": "length", "compaction": {"compacted": False}},
+            {"tag": "er-t1-raw", "arm": "raw", "status": 400, "compaction": {"compacted": False},
+             "error": '{"error": {"type": "exceed_context_size_error"}}'},
             {"tag": "er-t1-goblin", "arm": "goblin", "status": 200, "prompt_tokens": 9000, "completion_tokens": 10,
              "finish_reason": "stop", "compaction": {"compacted": True}}]))
         return calls
@@ -180,6 +182,8 @@ class SummarizeTests(unittest.TestCase):
         self.assertEqual((pair["goblin_better"], pair["raw_better"]), (1, 0))
         self.assertEqual(pair["prompt_tokens_ratio_goblin_over_raw"], 0.3)
         self.assertEqual(pair["context_length_stops_raw"], 1)
+        self.assertEqual(pair["context_overflows_raw"], 1)
+        self.assertEqual(pair["context_overflows_goblin"], 0)
 
 
 if __name__ == "__main__":

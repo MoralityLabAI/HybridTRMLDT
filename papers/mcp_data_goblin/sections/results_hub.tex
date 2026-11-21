@@ -1,0 +1,80 @@
+\subsection{Hub tasksets and storyworlds with a local 27B model}
+\label{sec:hub}
+The SWE-bench run used a 4B model. To see how the packet behaves with a stronger local agent on other long tasks, we
+ran Ternary Bonsai 2 27B for one night on the RTX 5080. The model is quantised to PTQ1\_0 (5.9 GB) and served by the
+PrismML llama-server fork:
+\begin{itemize}
+\item two slots of 32,768 tokens each;
+\item a thinking budget of 1,536 tokens per turn;
+\item temperature 0.6.
+\end{itemize}
+The environments are verifiers packages from the Prime Intellect Environments Hub plus the MoralityLab storyworld
+environments. Each ran unmodified in its own virtual environment, through a relay that records the server's exact
+token counts.
+
+Two relay arms differ only in what the model sees:
+\begin{itemize}
+\item \textbf{raw} forwards the history unchanged;
+\item \textbf{goblin} applies the MCP-03 packet scorer to the growing history once it passes 6,000 estimated tokens. The
+task and the last two assistant turns stay verbatim. Earlier turns become an action ledger plus the 1,800 tokens of
+earlier lines that score highest under BM25 and the exact-match channel.
+\end{itemize}
+The two arms ran side by side on the same tasks. The learned routers are not used here, because no environment exposes
+a code repository.
+
+\paragraph{Storyworlds.}
+Table~\ref{tab:hub-storyworlds} covers the held-out lanes; no training or confirmatory rows were run:
+\begin{itemize}
+\item \textbf{Jinn--Beast lanes.} Bonsai 27B clears all four:
+  \begin{itemize}
+  \item cross-frame decisions: mean reward \HubJbmCrossDevEightZeroMean{} on \HubJbmCrossDevEightZeroN{} tasks;
+  \item construct and moral-reasoner lanes: \HubJbmConstructsDevMean{} and \HubJbmReasonerDevMean{};
+  \item the tool-using control mesh: \HubJbmMeshTwoDevMean{} on \HubJbmMeshTwoDevN{} tasks, with the registered target
+  action every time.
+  \end{itemize}
+  No lane produced a critical action.
+\item \textbf{storyworld-constitution.} The model fails it, with reward \HubSwConstitutionEvalMean{} on
+\HubSwConstitutionEvalN{} tasks:
+  \begin{itemize}
+  \item the prompt specifies the output as \texttt{<option\_id>}, and the model wrapped every answer in angle brackets,
+  which the environment's strict parser rejects;
+  \item with the brackets removed, its choices match the frontier option on \HubSwcBracket{} of tasks, close to chance
+  over three options.
+  \end{itemize}
+\end{itemize}
+
+\paragraph{Agentic tasksets.}
+Table~\ref{tab:hub-agentic} gives the outcomes. Bonsai 27B solves:
+\begin{itemize}
+\item every hard-tier feishu-office task in both arms;
+\item \HubNotebookHardenedSolved{} of \HubNotebookHardenedN{} durable-notebook episodes;
+\item \HubSqliteAllSolved{} of \HubSqliteAllN{} mcp-sqlite questions, scored by the taskset's exact match because its
+API judge was removed.
+\end{itemize}
+The packet result is mixed and mostly negative:
+\begin{itemize}
+\item \textbf{event-recon (tier 1).} The raw history overflowed the 32K context in all \HubErTOneRawN{} episodes, so the
+environment ended each one with an error. The goblin arm never overflowed and ran every episode to the 40-turn cap,
+but it never filed a report either. Instead it re-read files the packet had dropped. Both arms scored zero, and the
+goblin arm used \HubErTOneRatio{} times the raw arm's prompt tokens because its episodes ran four times longer.
+\item \textbf{doc-edit.} Here the history fits in context, and compaction hurt. The raw arm solved
+\HubDoceditRawSolved{} of \HubDoceditRawN{} tasks, the goblin arm \HubDoceditGoblinSolved{}. Raw was better on
+\HubDoceditRawBetter{} tasks and goblin on \HubDoceditGoblinBetter{}. The goblin arm re-read pages, left stale edit sites
+and ran out of turns, using \HubDoceditRatio{} times the prompt tokens.
+\item \textbf{feishu-office and mcp-sqlite.} Prompts stayed under the threshold, so the packet never engaged. The
+feishu pairs (7/7 against 7/7 on the hard tier, and 7/7 against 6/7 on the expert tier) therefore measure sampling
+variation only.
+\item \textbf{Late compaction (event-recon, tier 1).} After the main queue, a third arm compacted only past 18,000
+estimated tokens, with a 6,000-token packet and four kept turns. It overflowed in all \HubErTOneLateN{} episodes
+anyway:
+  \begin{itemize}
+  \item the character estimate (3.2 characters per token) undercounts the number-heavy tool output, so real prompts
+  passed 32,768 tokens before the estimate reached the threshold;
+  \item four kept turns of large file reads were enough to overflow on their own.
+  \end{itemize}
+\end{itemize}
+Compacting early trades away detail that a 27B agent still needs. On these tasks it does not save tokens, because the
+agent spends more turns recovering that detail. Compacting late, without an exact token count, does not stop
+overflows. A packet for an agent near its context limit needs the server's exact token count, and it should keep the
+specific items the agent has already acted on, such as files read and sites edited, not only the lines that score
+highest against the task.

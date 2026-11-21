@@ -1,0 +1,126 @@
+{
+ "call_lines": 1466,
+ "environments": {
+  "doc-edit": {
+   "freeze_sha256": "1261a01d7731b0bb167932f47a721218a59292b4c162c811e9760a30ede322ab",
+   "packages": 112,
+   "verifiers": "0.3.1"
+  },
+  "durable-notebook": {
+   "freeze_sha256": "b16169de9a305684fef6ac3a89e86df3cbb3bcfc6206876af1e203465a0bee9a",
+   "packages": 102,
+   "verifiers": "0.3.1"
+  },
+  "event-recon": {
+   "freeze_sha256": "07e765afa096f8ca084bf2c6b4d59c03381615b1e21ed74ad377ea7a94aeb25e",
+   "packages": 102,
+   "verifiers": "0.3.1"
+  },
+  "feishu-office-v1": {
+   "freeze_sha256": "364166d1035ea64cc0c23b8099b3f6382e1885aebf53bb9419065cdd3be93607",
+   "packages": 112,
+   "verifiers": "0.3.1"
+  },
+  "jinn-beast-metta": {
+   "freeze_sha256": "9442d524b24281bd3e1ec84d462d66ac44bdea8dfdfc84219e1746e0c76c4208",
+   "packages": 102,
+   "verifiers": "0.2.1"
+  },
+  "mcp-sqlite": {
+   "freeze_sha256": "6b36e0d2e2a7763505e9c4ef88ef3f4290c709a2610e34be4183294f1e03ff9d",
+   "packages": 112,
+   "verifiers": "0.3.1"
+  },
+  "storyworld-constitution": {
+   "freeze_sha256": "69abd6103a390f8c4fbba5894e83db4d36e3b72a533658596c55b6e10bf0e134",
+   "packages": 118,
+   "verifiers": "0.1.10"
+  }
+ },
+ "private_runs_aggregate_only": [
+  "jbm-constructs-dev",
+  "jbm-cross-dev80",
+  "jbm-mesh2-dev",
+  "jbm-reasoner-dev",
+  "sw-constitution-eval"
+ ],
+ "server": {
+  "args": "-ngl 99 -c 65536 -np 2 --jinja --reasoning-format deepseek --reasoning-budget 1536 --alias bonsai-27b-ptq1",
+  "bytes": 5946648928,
+  "dates": "server up 2026-11-21 02:22, queue 03:39 to 13:50, late arm 13:50 to 14:31 (UTC+8)",
+  "file": "Ternary-Bonsai-2-27B-PTQ1_0.gguf",
+  "model": "prism-ml/Ternary-Bonsai-2-27B-gguf",
+  "relay": {
+   "goblin": {
+    "budget_tokens_est": 1800,
+    "keep_recent": 2,
+    "per_message_cap_est": 6000,
+    "port": 18130,
+    "threshold_tokens_est": 6000
+   },
+   "late": {
+    "budget_tokens_est": 6000,
+    "keep_recent": 4,
+    "per_message_cap_est": 6000,
+    "port": 18131,
+    "threshold_tokens_est": 18000
+   },
+   "reasoning_content": "stripped from replies returned to environments; length logged"
+  },
+  "revision": "94dd51cdbbec5309ed8b76a12f3268bc4fdceb93",
+  "runtime": "PrismML llama-server b10743 (adfffbe41), CUDA, RTX 5080 Laptop GPU 16 GB, 80 W limit",
+  "sampling": {
+   "max_tokens_cap_per_call": 4096,
+   "temperature": 0.6
+  },
+  "sha256": "53107f530aa52eb00912263ab1ee29bd199261c87cd7b4ad4ca1318c1fe33ee3",
+  "slot_context_tokens": 32768,
+  "vram_mib_held": 10313
+ },
+ "traces": {
+  "docedit-goblin": {
+   "file": "docedit-goblin.results.jsonl.gz",
+   "source_sha256": "d3a03a8d3daf68b5e80aa7bdffe9385eb6ee3af4cd7ecc5199f56057ec82cebd"
+  },
+  "docedit-raw": {
+   "file": "docedit-raw.results.jsonl.gz",
+   "source_sha256": "f0a9019a41ee87b0d7598c8e863f0bd759e44386f8dc62c418cfdf78e2fe09d4"
+  },
+  "er-t1-goblin": {
+   "file": "er-t1-goblin.traces.jsonl.gz",
+   "source_sha256": "b7c8e97cc0ca0838043e0755c1d6ff358ffceb3c33567ce4083470a41b286d33"
+  },
+  "er-t1-late": {
+   "file": "er-t1-late.traces.jsonl.gz",
+   "source_sha256": "63fe051dd6a8244f650b2fbd720ddab3717e7284eca31a85f6c86b5f87713a32"
+  },
+  "er-t1-raw": {
+   "file": "er-t1-raw.traces.jsonl.gz",
+   "source_sha256": "324d380be1b5b1699905c59f920af19405b4fa09a78fe4c57e4aa2d2aac340f4"
+  },
+  "feishu-expert-goblin": {
+   "file": "feishu-expert-goblin.results.jsonl.gz",
+   "source_sha256": "0ba622c9866589bd66c7baafa7bd977fdfcbaeea385996d91ef0cdb9427947cb"
+  },
+  "feishu-expert-raw": {
+   "file": "feishu-expert-raw.results.jsonl.gz",
+   "source_sha256": "e6a21d5fb0783c43e3c6a2b50abe2b864fc1be6da27199cd369affb7884c4009"
+  },
+  "feishu-hard-goblin": {
+   "file": "feishu-hard-goblin.results.jsonl.gz",
+   "source_sha256": "9277b7ebe6125a4599ec70aa50ef1dde68fcd8001b7a9755018a070b6536d528"
+  },
+  "feishu-hard-raw": {
+   "file": "feishu-hard-raw.results.jsonl.gz",
+   "source_sha256": "1fd8b191fa6309b030d3e2aa9cbfca376cc2e7310d483aff03de93f74af1f9b3"
+  },
+  "notebook-hardened": {
+   "file": "notebook-hardened.results.jsonl.gz",
+   "source_sha256": "cb5e7a023fb7bfd7c8c7a227a209a8e17073323c865650df9eb07593bac40170"
+  },
+  "sqlite-all": {
+   "file": "sqlite-all.traces.jsonl.gz",
+   "source_sha256": "acbe87f3772255f70ab9b8d842def5f0293c77a267ae95e7446924be907ce365"
+  }
+ }
+}

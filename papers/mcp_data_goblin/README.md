@@ -14,5 +14,7 @@ cd papers/mcp_data_goblin && pdflatex main.tex && pdflatex main.tex
 | `MCP/results/mcp03/gdk_demo` | goblin-gdk with a local model, with and without packets |
 | `MCP/results/mcp02/pilot_gpu`, `pilot_cpu` | Synthetic multi-server catalogs: success, sweeps, receipts |
 | `MCP/results/mcp02/llm_pilot` | Local LLM as an end-to-end MCP controller |
+| `MCP/results/mcp03/swebench_e2e` | End-to-end SWE-bench Lite resolution through goblin-gdk |
+| `MCP/results/hubrun` | Bonsai 27B on Prime Hub tasksets and storyworlds, raw against goblin packet |
 
-The code is in `MCP/mcp02`, `MCP/mcp03` and `MCP/goose_gdk_app`. Episode tapes replay without torch through `python -m MCP.mcp02.run replay` and `python -m MCP.mcp03.run replay`.
+The code is in `MCP/mcp02`, `MCP/mcp03`, `MCP/hubrun` and `MCP/goose_gdk_app`. Episode tapes replay without torch through `python -m MCP.mcp02.run replay` and `python -m MCP.mcp03.run replay`.
