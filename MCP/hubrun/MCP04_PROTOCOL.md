@@ -11,7 +11,16 @@ requests whenever the *actual applied template* fits within the reserved
 window. On overflow it produces a typed working-set packet from completed tool
 turns and remeasures the full request after packing.
 
-The upstream must support these exact response contracts:
+The upstream must support these exact response contracts. Current llama.cpp
+server documentation advertises `messages` for `/apply-template` and a
+`prompt` string in its response. When a tool schema is present, this arm
+issues a no-tools control to verify that the applied template includes the
+schema's contribution. A server that silently ignores `tools` fails the
+preflight rather than giving a false token-safety receipt:
+
+https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md
+
+
 
 - `POST /apply-template` with `{messages, tools, add_generation_prompt: true}`
   returns `{"prompt": "<entire applied template>"}`.
@@ -42,9 +51,11 @@ handles (`mcp04:<sha256>`). A local retrieval endpoint can return it:
 
 `GET /mcp04/<tag>/v1/working-set/mcp04:<sha256>`
 
-The handle store resides in relay process memory. Restart durability, per-agent
-namespace isolation, and cross-machine handle retrieval are still future
-engineering work. "Observed empty" is a tool output fact; it does not
+The handle store is scoped to the relay task tag and resides in process
+memory. Requests using another tag receive a 404 for that handle.
+Restart durability, authorization of tags and cross-machine handle retrieval
+remain future engineering work. Keep the relay on loopback until stronger
+authentication is introduced. "Observed empty" is a tool output fact; it does not
 constitute an LDT certificate for ruling out entire subtrees. Compaction
 refuses unpaired tool calls or missing essential edit anchors/constraints
 at the imposed packet budget. No approximate count grants admission to
