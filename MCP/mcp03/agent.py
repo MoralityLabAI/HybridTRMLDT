@@ -294,7 +294,9 @@ def run_code_episode(env: CodeEnv, issue: str, *, policy: Policy, max_tool_calls
     tape_out: list = []
     tape_iter = iter(tape) if tape is not None else None
     totals = {"flops": 0, "router_tokens": 0, "lexical_ops": 0, "prefilter_ops": 0, "router_seconds": 0.0,
-              "decisions": 0, "candidates_scored": 0, "result_bytes": 0, "result_tokens": 0}
+              "decisions": 0, "candidates_scored": 0, "read_candidate_steps": 0,
+              "read_candidates_scored": 0, "read_symbol_actions": 0, "expand_actions": 0,
+              "result_bytes": 0, "result_tokens": 0}
     result_digests = []
     task = {"request": issue}
     while env.stats["tool_calls"] < max_tool_calls:
@@ -336,7 +338,12 @@ def run_code_episode(env: CodeEnv, issue: str, *, policy: Policy, max_tool_calls
             totals[k] += int(cost.get(k, 0))
         totals["decisions"] += 1
         totals["candidates_scored"] += len(cands)
+        read_candidates = sum(c["type"] == "doc" for c in cands)
+        totals["read_candidate_steps"] += int(read_candidates > 0)
+        totals["read_candidates_scored"] += read_candidates
         item = cands[best]
+        totals["read_symbol_actions"] += int(item["tool"] == "read_symbol")
+        totals["expand_actions"] += int(item["tool"] != "read_symbol")
         tape_out.append(["d", best, norm, int(cost.get("flops", 0)), int(cost.get("router_tokens", 0)),
                          int(cost.get("lexical_ops", 0))])
         # Normalised scores within this decision order the packet's snippets and file map.
