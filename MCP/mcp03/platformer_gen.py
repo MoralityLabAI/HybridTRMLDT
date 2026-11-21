@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 import random
+import re
 import shutil
 import subprocess
 import sys
@@ -195,6 +196,25 @@ def check_suite(root: Path, *, expected_success: bool) -> None:
         raise AssertionError(f"Unexpected test outcome: {root}\n{proc.stdout}\n{proc.stderr}")
 
 
+HOLDOUT_SYMBOLS = {
+    "advance_vertical": "integrate_fall",
+    "camera_target": "focus_viewport",
+    "blocking": "tile_is_solid",
+    "frame_index": "sprite_frame_at",
+    "award_pickup": "collect_reward",
+    "friction_step": "slow_on_ground",
+    "jump_when_grounded": "begin_ground_jump",
+    "apply_damage": "take_player_hit",
+}
+
+
+def shifted_source(text: str) -> str:
+    """Apply a consistent holdout naming change without modifying behavior."""
+    for old, new in HOLDOUT_SYMBOLS.items():
+        text = re.sub(r"\b" + re.escape(old) + r"\b", new, text)
+    return text
+
+
 HARD_SYMPTOMS = (
     "A character jumps but falls in the wrong direction during frame integration.",
     "The scrolling viewport shows empty tiles after reaching the far right of a level.",
@@ -208,7 +228,7 @@ HARD_SYMPTOMS = (
 
 
 def build_case(work: Path, split: str, index: int, *, seed: int, family: int,
-               difficulty: str = "easy") -> dict:
+               difficulty: str = "easy", surface_shift: bool = False) -> dict:
     repo = f"platformer-seeded/{split}-{seed}-{index:03d}"
     root = work / "sources" / f"{split}-{seed}-{index:03d}"
     root.mkdir(parents=True, exist_ok=False)
@@ -221,9 +241,13 @@ def build_case(work: Path, split: str, index: int, *, seed: int, family: int,
     issue = (primary_issue if difficulty == "easy" else
              primary_issue + " Two other related core engine failures are observed: " +
              " ".join(HARD_SYMPTOMS[f] for f in families[1:]))
+    if surface_shift:
+        issue = shifted_source(issue)
 
     put(root, "engine/__init__.py", "")
     for name, value in sorted(MODULES.items()):
+        if surface_shift:
+            value = shifted_source(value)
         if name in repairs:
             broken, repaired = repairs[name]
             assert value.count(repaired) == 1, (name, repaired)
@@ -248,8 +272,10 @@ def describe_level() -> str:
     asserts = []
     for f in families:
         file_path, _broken, _repaired, assertion, _issue = DEFECTS[f]
-        imports.append(f"from {file_path[:-3].replace('/', '.')} import " +
-                       MODULES[file_path].split("def ")[1].split("(")[0])
+        func = MODULES[file_path].split("def ")[1].split("(")[0]
+        if surface_shift:
+            func = HOLDOUT_SYMBOLS.get(func, func)
+        imports.append(f"from {file_path[:-3].replace('/', '.')} import " + func)
         asserts.append("        " + assertion)
     put(root, "tests/test_gameplay.py",
         "import unittest\n" + "\n".join(imports) + "\n\n"
@@ -298,11 +324,13 @@ def describe_level() -> str:
             "_receipt": {"instance_id": instance_id, "root": repo, "family": family,
                          "base_commit": commit, "patch_sha256": hashlib.sha256(patch.encode()).hexdigest(),
                          "difficulty": difficulty, "families": families,
+                         "surface_shift": surface_shift,
                          "gold_digest": digest(gold), "gold_symbols": gold["symbols"]}}
 
 
 def generate(out: Path, *, seed: int = 117, train: int = 12,
-             dev: int = 4, test: int = 6, difficulty: str = "easy") -> dict:
+             dev: int = 4, test: int = 6, difficulty: str = "easy",
+             holdout_symbol_names: bool = False) -> dict:
     if out.exists() and any(out.iterdir()):
         raise FileExistsError(f"Output must be a new empty directory: {out}")
     for name in ("data", "repos", "sources", "cache"):
@@ -315,7 +343,8 @@ def generate(out: Path, *, seed: int = 117, train: int = 12,
         receipts[split] = []
         for index in range(count):
             family = (index + rng.randrange(len(DEFECTS))) % len(DEFECTS)
-            case = build_case(out, split, index, seed=seed, family=family, difficulty=difficulty)
+            case = build_case(out, split, index, seed=seed, family=family, difficulty=difficulty,
+                              surface_shift=holdout_symbol_names and split == "test")
             receipts[split].append(case.pop("_receipt"))
             rows.append(case)
         with (out / "data" / f"{split}.jsonl").open("w", encoding="utf-8") as stream:
@@ -351,7 +380,8 @@ def generate(out: Path, *, seed: int = 117, train: int = 12,
     eval_config["models"].update(old_config["models"])
     for name, cfg in (("readaware", read_config), ("binary", old_config), ("eval", eval_config)):
         put(out, f"config_{name}.json", json.dumps(cfg, indent=2) + "\n")
-    summary = {"generator": "platformer-gen-v3", "difficulty": difficulty, "seed": seed,
+    summary = {"generator": "platformer-gen-v4", "difficulty": difficulty, "seed": seed,
+               "holdout_symbol_names": holdout_symbol_names,
                "cases": {k: len(v) for k, v in splits.items()},
                "roots": {k: [r["repo"] for r in v] for k, v in splits.items()},
                "gold_receipts": receipts,
@@ -365,6 +395,7 @@ def main(argv=None) -> int:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=117)
     parser.add_argument("--difficulty", choices=("easy", "hard"), default="easy")
+    parser.add_argument("--holdout-symbol-names", action="store_true")
     parser.add_argument("--train", type=int, default=12)
     parser.add_argument("--dev", type=int, default=4)
     parser.add_argument("--test", type=int, default=6)
@@ -372,7 +403,7 @@ def main(argv=None) -> int:
     if min(args.train, args.dev, args.test) < 1:
         parser.error("every split needs at least one root")
     manifest = generate(args.out, seed=args.seed, train=args.train, dev=args.dev, test=args.test,
-                        difficulty=args.difficulty)
+                        difficulty=args.difficulty, holdout_symbol_names=args.holdout_symbol_names)
     print(json.dumps({k: manifest[k] for k in ("generator", "difficulty", "seed", "cases", "condition")}, indent=2))
     return 0
 
