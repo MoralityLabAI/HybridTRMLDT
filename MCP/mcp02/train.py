@@ -174,7 +174,8 @@ def evaluate_ranking(model, states, device, batch=64) -> dict:
 
 
 def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, device: str, seed: int,
-        shuffle_labels: bool = False, dev: dict | None = None, threads: int = 6, log=print,
+        shuffle_labels: bool = False, shuffle_utilities_only: bool = False,
+        dev: dict | None = None, threads: int = 6, log=print,
         max_steps: int | None = None) -> tuple:
     import torch
     from .models import Router, flops_per_candidate, parameter_counts
@@ -185,6 +186,16 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
     decide = [dict(s) for s in data["decide"]]
     if (model.utility_heads or model.single_utility) and any("utilities" not in s for s in decide):
         raise ValueError("dual utility heads require states with private packet-marginal targets")
+    if shuffle_utilities_only:
+        if not (model.utility_heads or model.single_utility):
+            raise ValueError("utility-shuffle control requires utility supervision")
+        # A separate RNG preserves the exact state order and AdamW schedule
+        # of the unshuffled arms; only target-to-candidate binding changes.
+        target_rng = random.Random(f"utility-sham/{seed}")
+        for state in decide:
+            targets = list(state["utilities"])
+            target_rng.shuffle(targets)
+            state["utilities"] = targets
     if shuffle_labels:
         for s in decide:
             labels = list(s["labels"])
@@ -243,7 +254,9 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
         if max_steps is not None and step >= max_steps:
             break
     receipt = {"config": config, "epochs": epochs, "lr": lr, "batch_states": batch_states, "seed": seed,
-               "shuffle_labels": shuffle_labels, "device": device, "threads": threads,
+               "shuffle_labels": shuffle_labels,
+               "shuffle_utilities_only": shuffle_utilities_only,
+               "device": device, "threads": threads,
                "train_seconds": time.perf_counter() - started, "steps": step, "loss_curve": curve,
                "train_states": len(decide), "train_row_states": len(rows),
                "objective": "packet-marginal-utility-listwise+calibration" if (model.utility_heads or model.single_utility) else "binary-listwise",
@@ -337,6 +350,7 @@ def main(argv=None) -> int:
     model, receipt = fit(spec["config"], data, epochs=spec.get("epochs", train["epochs"]),
                          lr=spec.get("lr", train["lr"]), batch_states=train["batch_states"], device=args.device,
                          seed=spec.get("seed", train["seed"]), shuffle_labels=spec.get("shuffle_labels", False),
+                         shuffle_utilities_only=spec.get("shuffle_utilities_only", False),
                          dev=dev, threads=train.get("threads", 6))
     receipt["model_name"] = args.model
     sha = save_checkpoint(model, receipt, args.out)
