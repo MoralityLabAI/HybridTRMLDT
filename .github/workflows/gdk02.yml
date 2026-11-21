@@ -1,0 +1,32 @@
+name: GDK-02 model profiles and working sets
+
+on:
+  pull_request:
+    paths:
+      - 'MCP/GDK/**'
+      - 'MCP/goose_gdk_app/**'
+      - '.github/workflows/gdk02.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'MCP/GDK/**'
+      - 'MCP/goose_gdk_app/**'
+      - '.github/workflows/gdk02.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: GDK token proxy and persistent capture regression tests
+        run: python -m unittest MCP.GDK.test_token_gate MCP.GDK.test_working_set MCP.GDK.test_lean_context -v
+      - name: Compile Python modules
+        run: python -m py_compile MCP/GDK/token_gate.py MCP/GDK/profiles.py MCP/GDK/working_set.py
