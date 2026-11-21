@@ -192,15 +192,40 @@ def check_suite(root: Path, *, expected_success: bool) -> None:
         raise AssertionError(f"Unexpected test outcome: {root}\n{proc.stdout}\n{proc.stderr}")
 
 
-def build_case(work: Path, split: str, index: int, *, seed: int, family: int) -> dict:
+HARD_SYMPTOMS = (
+    "A character jumps but falls in the wrong direction during frame integration.",
+    "The scrolling viewport shows empty tiles after reaching the far right of a level.",
+    "Touching a boundary tile can crash the world collision query.",
+    "The running sprite occasionally looks up a frame past its animation sheet.",
+    "Coins collected from a platform change the HUD total in the wrong direction.",
+    "Ground drag changes the avatar's horizontal direction at low speed.",
+    "Jumping from a solid floor produces a downward kick.",
+    "An enemy strike makes the player health counter negative.",
+)
+
+
+def build_case(work: Path, split: str, index: int, *, seed: int, family: int,
+               difficulty: str = "easy") -> dict:
     repo = f"platformer-seeded/{split}-{seed}-{index:03d}"
     root = work / "sources" / f"{split}-{seed}-{index:03d}"
     root.mkdir(parents=True, exist_ok=False)
-    file_path, broken, repaired, assertion, issue = DEFECTS[family]
+    if difficulty not in ("easy", "hard"):
+        raise ValueError("difficulty must be easy or hard")
+    families = [family] if difficulty == "easy" else [
+        family, (family + 3) % len(DEFECTS), (family + 5) % len(DEFECTS)]
+    repairs = {DEFECTS[f][0]: (DEFECTS[f][1], DEFECTS[f][2]) for f in families}
+    primary_issue = DEFECTS[family][4]
+    issue = (primary_issue if difficulty == "easy" else
+             primary_issue + " Two other related core engine failures are observed: " +
+             " ".join(HARD_SYMPTOMS[f] for f in families[1:]))
 
     put(root, "engine/__init__.py", "")
     for name, value in sorted(MODULES.items()):
-        put(root, name, value.replace(repaired, broken) if name == file_path else value)
+        if name in repairs:
+            broken, repaired = repairs[name]
+            assert value.count(repaired) == 1, (name, repaired)
+            value = value.replace(repaired, broken)
+        put(root, name, value)
     put(root, "tools/__init__.py", "")
     for i, topic in enumerate(TOPICS):
         tag = hashlib.sha256(f"{seed}/{split}/{index}/{topic}".encode()).hexdigest()[:8]
