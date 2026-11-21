@@ -91,7 +91,8 @@ def test_generator_seed_reproducibly_selects_families(tmp_path):
     second = generate(tmp_path / "second", seed=89, train=1, dev=1, test=1)
     for split in ("train", "dev", "test"):
         def receipts(data):
-            return [(r["family"], r["patch_sha256"], r["gold_digest"]) for r in data["gold_receipts"][split]]
+            return [(r["family"], r["base_commit"], r["patch_sha256"], r["gold_digest"])
+                    for r in data["gold_receipts"][split]]
         assert receipts(first) == receipts(second)
 
 
