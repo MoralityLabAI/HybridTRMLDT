@@ -212,6 +212,7 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
         "compacted": True,
         "method": "typed-working-set",
         "archive_messages": len(middle),
+        "recent_turns_kept": keep_recent,
         "archive_paired_calls": n_tools,
         "archive_edit_calls": len(edits),
         "read_handles": len(reads),
