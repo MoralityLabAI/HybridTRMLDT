@@ -40,6 +40,10 @@ def test_private_targets_only_in_recording_and_horizon_is_public(ledger_repo):
                           utility_packet_budget=1024)
     decisions = [e for e in events if e["kind"] == "decide"]
     assert decisions and ep["tool_calls"] <= 8
+    stats = ep["compute"]
+    assert stats["read_symbol_actions"] + stats["expand_actions"] == stats["decisions"]
+    assert 0 <= stats["read_candidate_steps"] <= stats["decisions"]
+    assert stats["read_symbol_actions"] >= len(ep["reads"])
     for event in decisions:
         obs = event["obs"]
         assert "remaining_calls" in obs
