@@ -378,7 +378,21 @@ def generate(out: Path, *, seed: int = 117, train: int = 12,
     read_config["models"] = {"looped_p4_d64_readaware": base_cfg["models"]["looped_p4_d64_readaware"]}
     eval_config = json.loads(json.dumps(read_config))
     eval_config["models"].update(old_config["models"])
-    for name, cfg in (("readaware", read_config), ("binary", old_config), ("eval", eval_config)):
+    # RU02 matched-state controls. All four models receive *exactly* the
+    # same encoded training slates from read_train.json.gz, including the
+    # public remaining-call horizon marker. Only the head and loss differ.
+    matched_config = json.loads(json.dumps(base_cfg))
+    core = {"arch": "looped", "d": 64, "heads": 4, "passes": 4, "encoder": "match"}
+    matched_config["models"] = {
+        "looped_binary_matched": {"config": dict(core, use_horizon=True)},
+        "looped_shared_utility": {"config": dict(core, single_utility=True)},
+        "looped_dual_utility": {"config": dict(core, utility_heads="expand_read")},
+        "looped_dual_shuffled": {"config": dict(core, utility_heads="expand_read"),
+                                 "shuffle_utilities_only": True},
+    }
+    matched_config["evaluation"]["controls"] = ["lexical_bm25", "identifier_rules"]
+    for name, cfg in (("readaware", read_config), ("binary", old_config),
+                      ("eval", eval_config), ("matched", matched_config)):
         put(out, f"config_{name}.json", json.dumps(cfg, indent=2) + "\n")
     summary = {"generator": "platformer-gen-v4", "difficulty": difficulty, "seed": seed,
                "holdout_symbol_names": holdout_symbol_names,
