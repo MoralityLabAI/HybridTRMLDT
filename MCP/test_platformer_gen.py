@@ -106,3 +106,39 @@ def test_hard_corpus_has_three_verified_target_symbols(tmp_path):
         assert len(rows[0]["gold_symbols"]) >= 3
     cfg = json.loads((out / "config_eval.json").read_text(encoding="utf-8"))
     assert "oracle_upper_bound" in cfg["evaluation"]["controls"]
+
+
+def test_shifted_holdout_renames_test_symbols_and_retains_gold(tmp_path):
+    from MCP.mcp03.platformer_gen import HOLDOUT_SYMBOLS
+    out = tmp_path / "shifted"
+    manifest = generate(out, seed=173, train=1, dev=1, test=1,
+                        difficulty="hard", holdout_symbol_names=True)
+    assert manifest["holdout_symbol_names"] is True
+    store = SnapshotStore(out / "repos", out / "cache")
+    train = load_instances(out / "data" / "train.jsonl")[0]
+    test = load_instances(out / "data" / "test.jsonl")[0]
+    old = store.snapshot(train["repo"], train["base_commit"])
+    new = store.snapshot(test["repo"], test["base_commit"])
+    old_names = {s.qualname for s in old.all_symbols()}
+    new_names = {s.qualname for s in new.all_symbols()}
+    renamed = set(HOLDOUT_SYMBOLS.values())
+    assert not old_names.intersection(renamed)
+    assert len(new_names.intersection(renamed)) >= 1
+    assert gold_symbols(new, test["patch"])["files"]
+    assert manifest["gold_receipts"]["test"][0]["surface_shift"] is True
+    assert manifest["gold_receipts"]["train"][0]["surface_shift"] is False
+
+
+def test_matched_ablation_config_has_same_training_split_and_four_arms(tmp_path):
+    out = tmp_path / "matched"
+    generate(out, seed=179, train=1, dev=1, test=1, difficulty="easy")
+    cfg = json.loads((out / "config_matched.json").read_text(encoding="utf-8"))
+    assert cfg["dataset"]["utility_targets"] is True
+    assert set(cfg["models"]) == {
+        "looped_binary_matched", "looped_shared_utility",
+        "looped_dual_utility", "looped_dual_shuffled"}
+    assert cfg["models"]["looped_binary_matched"]["config"]["use_horizon"]
+    assert cfg["models"]["looped_shared_utility"]["config"]["single_utility"]
+    assert cfg["models"]["looped_dual_shuffled"]["shuffle_utilities_only"]
+    assert cfg["evaluation"]["max_tool_calls"] == [24]
+    assert cfg["evaluation"]["budgets"] == [1024]
