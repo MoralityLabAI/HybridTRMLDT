@@ -97,7 +97,10 @@ def run(binary: str, profile: str, backend_port: int, work: str):
         result = json.loads(output.stdout)
         assert result["exact_gate"]["profile"] == profile
         assert result["working_set"]["handle"].startswith("sha256:")
-        assert result["provider_input_tokens"] == 320
+        assert result["provider_input_tokens"] == 320, json.dumps({
+            "profile": profile, "result": result,
+            "gate_receipts": Path(work, f"{profile}.jsonl").read_text()
+        }, indent=2)
         assert result["lean_request"]["visible_messages"] == 1
         stored = WorkingSetStore(work).load(
             session_id=f"gdk02-{profile}",
