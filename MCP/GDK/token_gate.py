@@ -190,8 +190,8 @@ class ExactGate:
                 for message in messages
             ):
                 raise GateError("chat completion requires nonempty messages")
-            if payload.get("stream") is not False:
-                raise GateError("only explicitly non-streaming chat is supported")
+            if payload.get("stream", False) is not False:
+                raise GateError("only non-streaming chat is supported")
             if any(isinstance(msg.get("content"), list) for msg in messages):
                 raise GateError("multimodal content requires a separate preflight contract")
             if "max_tokens" in payload and "max_completion_tokens" in payload:
