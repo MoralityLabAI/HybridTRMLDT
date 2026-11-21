@@ -1,0 +1,49 @@
+\subsection{MCP-02: compositional multi-server catalogs}
+Each case is one synthetic organisation served by seven MCP servers with overlapping capabilities: a service
+catalog, an org directory, finance, procurement, observability, a replica mirror and an archive. A task names a
+service by display name and region. It asks for a value reached through zero to three relation hops (owner team,
+cost center, vendor, nested budget section), and may combine two chains by sum or difference. The eight families
+each isolate one difficulty:
+\begin{itemize}
+\item ambiguous names, where a twin service shares the display name in another region;
+\item multi-hop joins;
+\item arithmetic over two chains;
+\item moved records whose old copy is superseded;
+\item a catalog epoch change after a hidden number of calls;
+\item replica and archive conflicts, including a lexical bait;
+\item a value missing from the system of record, which requires abstention;
+\item a target placed late in a long paginated collection.
+\end{itemize}
+Every world also carries confusable names, unit variants, registry entries with unknown metadata (about 12\%), and
+unrelated distractors up to the catalog size (256 or 1024 resources).
+
+Splits are grouped. Entity and server names come from disjoint word pools, and each request template belongs
+to exactly one split. Only training worlds produce training data. The private judge requires the exact answer, the
+abstention flag, and a citation of every required record by a reference issued in the same episode for that
+record's current revision.
+
+The four discovery arms share each world. \texttt{flat} returns every descriptor in one call. \texttt{search}
+offers paginated BM25. \texttt{layered} walks a facet hierarchy whose layout is a string over server, collection,
+record kind, registered provenance, name bucket and entity. \texttt{layered\_ldt} adds explicit per-node
+candidate sets bound to the catalog epoch. Every exclusion proposed in that arm passes through
+\texttt{certify\_and\_apply\_verified}. Its verifier accepts only when registered metadata proves that every record
+below the child serves no record kind the task can cite. Unknown metadata never proves a violation.
+
+\subsection{MCP-03: code-repository MCP on SWE-bench}
+Each task is an issue and a repository at the instance's base commit, read from a bare clone. The MCP surface offers:
+\begin{itemize}
+\item BM25 code search over symbol documents (path, name, signature, docstring and body identifiers);
+\item a layered index over directories, modules, classes and methods;
+\item symbol reads of at most 80 lines;
+\item in the \texttt{layered\_ldt} arm, certified exclusion of subtrees whose every file carries a registered test or
+documentation path flag. The public task constraint places edits in library source.
+\end{itemize}
+The packet is a ranked file map followed by source snippets of the symbols the router read, cut to a budget of
+512, 1024, 2048 or 4096 tokens under the pinned Qwen2.5-0.5B-Instruct tokenizer.
+
+Gold targets come from the patch: the changed files, and the innermost function, method or class around each
+changed line of the old file. The split is grouped by repository. Training uses 160 django and sympy instances from
+SWE-bench minus Lite; one, whose patch touches no Python file, is skipped. The 32 django and sympy instances from Lite
+form the dev set. The test set is all 109 SWE-bench Lite
+instances from the ten other repositories. The non-agentic reference is SWE-bench's BM25 retrieval: whole files
+ranked by BM25 of the issue and packed until the budget.

@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp03-work/ckpt/hrm_h2l1_d64.pt", "device": "cpu", "peak_rss_before_forward": 519655424, "peak_rss_after_forward": 543469568, "forward_peak_rss_delta": 23814144, "weights_bytes_fp32": 1474308, "candidates": 32, "sequence_length": 74}

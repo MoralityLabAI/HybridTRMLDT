@@ -1,0 +1,18 @@
+{
+ "model": "prism-ml/Ternary-Bonsai-2-27B-gguf",
+ "revision": "94dd51cdbbec5309ed8b76a12f3268bc4fdceb93",
+ "file": "Ternary-Bonsai-2-27B-PTQ1_0.gguf",
+ "bytes": 5946648928,
+ "sha256": "53107f530aa52eb00912263ab1ee29bd199261c87cd7b4ad4ca1318c1fe33ee3",
+ "runtime": "PrismML llama-server b10743 (adfffbe41), CUDA, RTX 5080 Laptop GPU 16 GB, 80 W limit",
+ "args": "-ngl 99 -c 65536 -np 2 --jinja --reasoning-format deepseek --reasoning-budget 1536 --alias bonsai-27b-ptq1",
+ "slot_context_tokens": 32768,
+ "vram_mib_held": 10313,
+ "sampling": {"temperature": 0.6, "max_tokens_cap_per_call": 4096},
+ "relay": {
+  "goblin": {"port": 18130, "threshold_tokens_est": 6000, "budget_tokens_est": 1800, "keep_recent": 2, "per_message_cap_est": 6000},
+  "late": {"port": 18131, "threshold_tokens_est": 18000, "budget_tokens_est": 6000, "keep_recent": 4, "per_message_cap_est": 6000},
+  "reasoning_content": "stripped from replies returned to environments; length logged"
+ },
+ "dates": "server up 2026-11-21 02:22, queue 03:39 to 13:50, late arm 13:50 to 14:31 (UTC+8)"
+}

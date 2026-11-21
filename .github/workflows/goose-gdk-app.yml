@@ -1,0 +1,37 @@
+name: Goose GDK app
+
+on:
+  pull_request:
+    paths:
+      - 'MCP/goose_gdk_app/**'
+      - 'MCP/mcp03/**'
+      - '.github/workflows/goose-gdk-app.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'MCP/goose_gdk_app/**'
+      - 'MCP/mcp03/**'
+      - '.github/workflows/goose-gdk-app.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: MCP/goose_gdk_app
+      - name: Build goblin-gdk against goose-agent 0.1.0-alpha.14
+        working-directory: MCP/goose_gdk_app
+        run: cargo build --release --locked || cargo build --release
+      - name: Goblin MCP server and GDK app against a scripted OpenAI-compatible endpoint
+        run: python MCP/goose_gdk_app/ci_smoke.py MCP/goose_gdk_app/target/release/goblin-gdk

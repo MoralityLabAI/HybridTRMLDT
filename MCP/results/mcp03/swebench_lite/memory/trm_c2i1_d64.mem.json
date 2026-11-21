@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp03-work/ckpt/trm_c2i1_d64.pt", "device": "cpu", "peak_rss_before_forward": 519114752, "peak_rss_after_forward": 542314496, "forward_peak_rss_delta": 23199744, "weights_bytes_fp32": 1274372, "candidates": 32, "sequence_length": 74}

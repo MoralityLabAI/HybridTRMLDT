@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Lane & Tasks & Mean reward & Format valid & Legal action & Best action & Critical action & Completion tok./task \\
+\midrule
+storyworld-constitution, eval & 15 & 0.00 & 0.00 & -- & 0.00 & -- & 1085.70 \\
+jinn-beast-metta cross-frame, dev & 80 & 0.80 & 0.96 & 0.95 & 0.95 & 0.00 & 1131.20 \\
+jinn-beast-metta constructs, dev & 4 & 0.88 & 1.00 & 1.00 & 1.00 & 0.00 & 903.50 \\
+jinn-beast-metta moral reasoner, dev & 16 & 0.87 & 1.00 & 1.00 & 0.94 & 0.00 & 810.20 \\
+jinn-beast-metta control mesh v2 (tools), dev & 48 & 0.93 & 1.00 & 1.00 & 1.00 & 0.00 & 1909.80 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Ternary Bonsai 2 27B (PTQ1\_0) on the MoralityLab storyworld environments, held-out eval or development splits only. Columns are means over tasks of the environment's own metrics. Best action: the historical frontier option (storyworld-constitution), the highest-scoring legal action (cross-frame, constructs, reasoner) or the registered target action (control mesh).}
+\label{tab:hub-storyworlds}
+\end{table}

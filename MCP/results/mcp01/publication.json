@@ -1,0 +1,9 @@
+{
+  "execution_source_commit": "dfde1d9dbbeb3fc5e2ae982fecfad6d30b164969",
+  "published_source_commit": "1794c31f4e5f72a2458422e360227611b44c8390",
+  "identical_git_tree": "692a4084525fa2635917454fabc7dd6525aae5bc",
+  "source_files_match": true,
+  "raw_episodes_sha256": "b65dd001461be50750500e17a34735c494c52dbc541ea47b861ed3e3e088088e",
+  "compressed_episodes_sha256": "c040a8cfe9569a500066cc71ffcd1263eaa1044ad3be52fe8023df4f7dac9985",
+  "compression": "gzip; mtime=0; decompression reproduces original episodes.jsonl exactly"
+}

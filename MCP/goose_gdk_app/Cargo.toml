@@ -1,0 +1,22 @@
+[package]
+name = "goblin-gdk"
+version = "0.1.0"
+edition = "2021"
+description = "Goose GDK app: a goose-agent state machine whose context comes from the Data Goblin compact-packet MCP server"
+license = "MIT"
+publish = false
+
+[[bin]]
+name = "goblin-gdk"
+path = "src/main.rs"
+
+[dependencies]
+goose-agent = "=0.1.0-alpha.14"
+goose-providers = "=0.1.0-alpha.14"
+goose-provider-types = "=0.1.0-alpha.14"
+anyhow = "1"
+async-trait = "0.1"
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "process", "io-util", "sync", "time"] }
+tokio-util = "0.7"
+uuid = { version = "1", features = ["v4"] }

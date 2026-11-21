@@ -1,0 +1,495 @@
+"""Generate the paper's LaTeX tables and headline numbers from committed MCP-02/MCP-03 results.
+
+    python papers/mcp_data_goblin/make_tables.py
+
+Reads MCP/results/mcp02/*/summary.json, model_receipts.json and memory probes,
+MCP/results/mcp03/*/summary.json and the GDK demo receipts, then writes
+papers/mcp_data_goblin/tables/*.tex and numbers.json. Every number in the
+paper's tables comes from these files.
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+OUT = Path(__file__).resolve().parent / "tables"
+R2 = ROOT / "MCP" / "results" / "mcp02"
+R3 = ROOT / "MCP" / "results" / "mcp03"
+
+
+def tex(s: str) -> str:
+    return str(s).replace("_", r"\_").replace("%", r"\%").replace("&", r"\&")
+
+
+def fmt(x, d=2):
+    if x is None:
+        return "--"
+    if isinstance(x, float):
+        return f"{x:.{d}f}"
+    return str(x)
+
+
+def load(path: Path):
+    return json.loads(path.read_text(encoding="utf-8")) if path.is_file() else None
+
+
+def table(name: str, header: list[str], rows: list[list], caption: str, label: str, align: str | None = None):
+    align = align or ("l" + "r" * (len(header) - 1))
+    lines = [r"\begin{table}[t]", r"\centering", r"\small", r"\begin{adjustbox}{max width=\linewidth}",
+             rf"\begin{{tabular}}{{{align}}}", r"\toprule",
+             " & ".join(tex(h) for h in header) + r" \\", r"\midrule"]
+    for row in rows:
+        lines.append(" & ".join(tex(fmt(c)) for c in row) + r" \\")
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{adjustbox}", rf"\caption{{{caption}}}",
+              rf"\label{{{label}}}", r"\end{table}"]
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / f"{name}.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def mcp02_tables(numbers: dict) -> None:
+    for run_name in ("pilot_cpu", "pilot_gpu"):
+        run = R2 / run_name
+        summary = load(run / "summary.json")
+        if summary is None:
+            continue
+        receipts = load(run / "model_receipts.json") or {}
+        groups = summary["groups"]
+        main = [g for g in groups if g["experiment"] == "main"]
+        cells = sorted({(g["catalog_size"], g["arm"], g["layout"]) for g in main})
+        policies = sorted({g["policy"] for g in main})
+        idx = {(g["catalog_size"], g["arm"], g["layout"], g["policy"]): g for g in main}
+        rows = []
+        for p in policies:
+            row = [p]
+            for c in cells:
+                g = idx.get((*c, p))
+                row.append(f"{g['accepted']}/{g['episodes']}" if g else "--")
+            rows.append(row)
+        header = ["Router"] + [f"{a}{('/' + l) if l else ''}@{s}" for s, a, l in cells]
+        table(f"mcp02_{run_name}_success", header, rows,
+              f"MCP-02 {run_name.replace('_', ' ')}: accepted episodes per arm and catalog size "
+              "(32 held-out test worlds per cell, 40-call budget).", f"tab:mcp02-{run_name}-success",
+              "l" + "c" * len(cells))
+        # model receipts: parameters, depth, FLOPs, latency, memory
+        mem = {}
+        for path in (run / "memory").glob("*.mem.json") if (run / "memory").is_dir() else []:
+            mem[path.name[:-9]] = load(path)
+        ms = {}
+        for g in main:
+            if g["router_ms_per_decision"] is not None:
+                ms.setdefault(g["policy"], []).append(g["router_ms_per_decision"])
+        rows = []
+        for name, rec in sorted(receipts.items()):
+            params = rec.get("parameters") or {}
+            if not isinstance(params, dict) or "total" not in params:
+                continue
+            training = rec.get("training") or {}
+            m = mem.get(name, {})
+            delta = m.get("forward_peak_rss_delta")
+            train_mem = (training.get("memory") or {})
+            rows.append([name, rec.get("family"), params.get("total"), params.get("non_embedding"),
+                         rec.get("recurrent_depth"), (rec.get("flops_per_candidate") or {}).get("flops"),
+                         sum(ms.get(name, [0])) / max(1, len(ms.get(name, []))) if ms.get(name) else None,
+                         round(delta / 2**20, 1) if delta else None,
+                         round(train_mem["process_peak_rss_bytes"] / 2**20) if train_mem.get("process_peak_rss_bytes") else None,
+                         round(train_mem["cuda_max_memory_allocated"] / 2**20) if train_mem.get("cuda_max_memory_allocated") else None,
+                         (training.get("dev_ranking") or {}).get("top1_positive")])
+        table(f"mcp02_{run_name}_receipts",
+              ["Router", "Family", "Params", "Non-emb.", "Depth", "FLOPs/cand.", "ms/decision", "Infer RSS MiB",
+               "Train RSS MiB", "Train CUDA MiB", "Dev top-1"], rows,
+              f"MCP-02 {run_name.replace('_', ' ')} router receipts: measured parameters, recurrent depth "
+              "(block applications), FLOPs per candidate (FlopCounterMode), router latency, peak memory.",
+              f"tab:mcp02-{run_name}-receipts")
+        depth = [g for g in groups if g["experiment"] == "depth"]
+        if depth:
+            rows = [[g["policy"], f"{g['arm']}/{g['layout']}", g["depth"], f"{g['accepted']}/{g['episodes']}",
+                     g["tool_calls_mean"], (g["router_flops_total"] / max(1, g["episodes"])) / 1e9]
+                    for g in sorted(depth, key=lambda g: (g["policy"], g["arm"], g["depth"]))]
+            table(f"mcp02_{run_name}_depth", ["Router", "Arm", "Test depth", "Accepted", "Calls/ep", "GFLOPs/ep"],
+                  rows, "Recurrent depth changed at test time only (trained depth in the router name).",
+                  f"tab:mcp02-{run_name}-depth")
+        layout = [g for g in groups if g["experiment"] == "layout"]
+        if layout:
+            rows = [[g["policy"], g["arm"], g["layout"] or "-", len(g["layout"]) + 1, f"{g['accepted']}/{g['episodes']}",
+                     g["tool_calls_mean"], g["tool_result_bytes_mean"] / 1024, g["ldt_excluded"]]
+                    for g in sorted(layout, key=lambda g: (g["policy"], g["arm"], len(g["layout"]), g["layout"]))]
+            table(f"mcp02_{run_name}_layout", ["Router", "Arm", "Layout", "Depth", "Accepted", "Calls/ep",
+                                               "Result KB/ep", "Certified excl."], rows,
+                  "Index layout and depth at 1024 resources: deeper facet hierarchies against traversal cost.",
+                  f"tab:mcp02-{run_name}-layout")
+        best = max(main, key=lambda g: (g["accepted"], -g["tool_calls_mean"]))
+        numbers[f"mcp02_{run_name}"] = {"episodes": summary["episodes"], "best_main": [best["policy"], best["arm"],
+                                                                                      best["catalog_size"]]}
+
+
+def mcp03_tables(numbers: dict) -> None:
+    run = R3 / "swebench_lite"
+    summary = load(run / "summary.json")
+    if summary is None:
+        return
+    rows = []
+    for g in summary["groups"]:
+        if g["policy"] == "sham_random" and g["arm"] == "layered":
+            continue
+        for b in ("c512", "c2048", "512", "2048"):
+            if b not in g["budgets"]:
+                continue
+            x = g["budgets"][b]
+            label = g["arm"] + (" +map" if b.startswith("c") else "")
+            rows.append([g["policy"], label, int(b.lstrip("c")), x["packet_tokens_mean"], x["file_recall_mean"],
+                         f"{x['all_files_hit']}/{g['instances']}", x["symbol_recall_mean"],
+                         g["tool_calls_mean"], g["retrieval_result_tokens_mean"]])
+    for b, x in sorted(summary["bm25_file_baseline"].items(), key=lambda kv: int(kv[0])):
+        rows.append(["bm25_whole_files", "direct", int(b), x["tokens_mean"], x["file_recall_mean"],
+                     f"{x['all_files_hit']}/{x['instances']}", None, 0, None])
+    for k, x in sorted(summary.get("bm25_path_map_baseline", {}).items(), key=lambda kv: int(kv[0])):
+        rows.append([f"bm25_path_map_top{k}", "direct", None, x["tokens_mean"], x["file_recall_mean"],
+                     f"{x['all_files_hit']}/{x['instances']}", None, 0, None])
+    table("mcp03_packets", ["Router", "Arm", "Budget", "Packet tok.", "File recall", "All files", "Symbol recall",
+                            "Calls", "Local tok. read"], rows,
+          "MCP-03 on 109 SWE-bench Lite instances from ten repositories unseen in training: packet size "
+          "(Qwen2.5 tokenizer) against localisation of the gold patch, with the tokens the router read locally.",
+          "tab:mcp03-packets")
+    numbers["mcp03"] = {"instances": summary["instances"], "context": summary["context"]}
+    receipts = load(run / "model_receipts.json") or {}
+    mem_dir = run / "memory"
+    by_policy = {}
+    for g in summary["groups"]:
+        by_policy.setdefault(g["policy"], {})[g["arm"]] = g
+    rows = []
+    for name, rec in sorted(receipts.items()):
+        params = rec.get("parameters") or {}
+        if not isinstance(params, dict) or "non_embedding" not in params:
+            continue
+        inf = load(mem_dir / f"{name}.mem.json") or {}
+        tcuda = load(mem_dir / f"{name}.train_cuda.json") or {}
+        tcpu = load(mem_dir / f"{name}.train_cpu.json") or {}
+        ldt = by_policy.get(name, {}).get("layered_ldt") or by_policy.get(name, {}).get("search")
+        mib = lambda b: round(b / 2**20) if b else None  # noqa: E731
+        rows.append([name, rec.get("family"), params["total"], params["non_embedding"], rec.get("recurrent_depth"),
+                     (rec.get("flops_per_candidate") or {}).get("flops"),
+                     ldt["router_ms_per_decision"] if ldt else None,
+                     mib(inf.get("forward_peak_rss_delta")),
+                     mib((tcpu.get("peak_rss_training") or 0) - (tcpu.get("peak_rss_after_dataset_and_torch_load") or 0)),
+                     mib(tcuda.get("cuda_max_memory_allocated")),
+                     tcuda.get("seconds_per_step"),
+                     ldt["budgets"].get("c2048", ldt["budgets"]["2048"])["file_recall_mean"] if ldt else None,
+                     ldt["budgets"]["2048"]["symbol_recall_mean"] if ldt else None])
+    if rows:
+        table("mcp03_receipts", ["Router", "Family", "Params", "Non-emb.", "Depth", "FLOPs/cand.", "ms/dec.",
+                                 "Infer +MiB", "Train CPU +MiB", "Train CUDA MiB", "s/step GPU", "File R@2K+map",
+                                 "Sym R@2K"], rows,
+              "MCP-03 router modules: measured size, recurrent depth, FLOPs per candidate, latency, inference memory "
+              "delta around a 32-candidate forward, training memory over 15 CPU / 40 GPU steps (CPU: growth above the "
+              "loaded dataset and runtime; GPU: peak allocation), and held-out localisation in the LDT arm.",
+              "tab:mcp03-receipts")
+
+
+def llm_table(numbers: dict) -> None:
+    """LLM end-to-end controllers against small routers on the same MCP-02 test worlds (size 256)."""
+    llm = load(R2 / "llm_pilot" / "summary.json")
+    gpu = load(R2 / "pilot_gpu" / "summary.json")
+    if not llm:
+        return
+    rows = []
+    for g in llm["groups"]:
+        episodes = g["episodes"]
+        rows.append([g["policy"], f"{g['arm']}{('/' + g['layout']) if g['layout'] else ''}",
+                     f"{g['accepted']}/{episodes}", g["tool_calls_mean"], g["router_tokens_total"] / episodes,
+                     g["router_seconds_total"] / episodes])
+    worlds = {g["catalog_size"] for g in llm["groups"]}
+    cells = {(g["arm"], g["layout"]) for g in llm["groups"]}
+    if gpu:
+        for g in gpu["groups"]:
+            if (g["experiment"] == "main" and g["catalog_size"] in worlds and (g["arm"], g["layout"]) in cells
+                    and g["policy"] in ("looped_p4_d128", "trm_c2i1_d128", "lexical_bm25")):
+                rows.append([g["policy"], f"{g['arm']}{('/' + g['layout']) if g['layout'] else ''}",
+                             f"{g['accepted']}/{g['episodes']}", g["tool_calls_mean"],
+                             g["router_tokens_total"] / g["episodes"], g["router_seconds_total"] / g["episodes"]])
+    table("llm_controllers", ["Controller", "Arm", "Accepted", "Calls/ep", "Local tokens/ep", "Local s/ep"], rows,
+          "Local LLMs as end-to-end MCP controllers (JSON actions through MCP.local\\_model.LocalModel, RTX 5080) "
+          "against small routers on MCP-02 test worlds at 256 resources. LLM tokens are server-counted prompt plus "
+          "completion tokens; router tokens are encoder positions scored. Router rows cover 32 worlds, LLM rows 8.",
+          "tab:llm-controllers")
+    numbers["llm"] = {g["policy"]: {"accepted": g["accepted"], "episodes": g["episodes"]} for g in llm["groups"]}
+
+
+def e2e_table(numbers: dict) -> None:
+    """End-to-end SWE-bench Lite resolution through goblin-gdk, scored by the official harness."""
+    run = R3 / "swebench_e2e"
+    gold = load(run / "report_gold.json")
+    if not gold:
+        return
+    valid = set(gold.get("resolved_ids", []))
+    labels = {"none": "issue only", "bm25_13k": "BM25 whole files (13K)", "goblin": "goblin packet (4K)"}
+    rows, summary = [], {}
+    for cond in ("none", "bm25_13k", "goblin"):
+        rec, rep = load(run / f"receipts_{cond}.json"), load(run / f"report_{cond}.json")
+        if not rec or not rep:
+            continue
+        runs = list(rec["runs"].values())
+        n = len(runs)
+        resolved = set(rep.get("resolved_ids", []))
+        mean = lambda key: sum((r.get(key) or 0) for r in runs) / n if n else None  # noqa: E731
+        nonempty = sum(bool(r.get("patch")) for r in runs)
+        packet = [((r.get("packet") or {}).get("packet_tokens")) for r in runs if r.get("packet")]
+        local = [((r.get("packet") or {}).get("local_result_tokens")) for r in runs if r.get("packet")]
+        calls = [((r.get("packet") or {}).get("tool_calls")) for r in runs if r.get("packet")]
+        rows.append([labels[cond], f"{len(resolved)}/{n}", f"{len(resolved & valid)}/{len(valid)}", nonempty,
+                     mean("provider_input_tokens"), mean("provider_output_tokens"),
+                     sum(packet) / len(packet) if packet else None, sum(local) / len(local) if local else None,
+                     sum(calls) / len(calls) if calls else None])
+        summary[cond] = {"resolved": len(resolved), "resolved_valid": len(resolved & valid), "n": n,
+                         "nonempty_patches": nonempty, "input_tokens_mean": mean("provider_input_tokens")}
+    rows.append(["gold patches (harness check)", f"{len(valid)}/{gold.get('total_instances', 26)}", "--", "--", None,
+                 None, None, None, None])
+    table("swebench_e2e", ["Context", "Resolved", "Resolved (gold-valid)", "Non-empty patches", "Provider in",
+                           "Provider out", "Packet tok.", "Local tok. read", "Local calls"], rows,
+          "End-to-end SWE-bench Lite (requests, flask, pytest; all from repositories unseen by the routers). "
+          "Qwen3-4B-Instruct-2507 writes search/replace edits through the goblin-gdk Goose GDK app; the official "
+          "harness runs the FAIL\\_TO\\_PASS and PASS\\_TO\\_PASS tests in Docker. Gold-valid: instances whose gold "
+          "patch resolves on this host.", "tab:swebench-e2e")
+    numbers["swebench_e2e"] = summary
+    names = {"none": "None", "bm25_13k": "Bm", "goblin": "Goblin"}
+    for cond, d in summary.items():
+        tag = names[cond]
+        macros_e2e[f"Etoe{tag}Resolved"] = d["resolved"]
+        macros_e2e[f"Etoe{tag}ResolvedValid"] = d["resolved_valid"]
+        macros_e2e[f"Etoe{tag}Input"] = round(d["input_tokens_mean"] or 0)
+        macros_e2e[f"Etoe{tag}Patches"] = d["nonempty_patches"]
+        macros_e2e["EtoeN"] = d["n"]
+    macros_e2e["EtoeValid"] = len(valid)
+
+
+macros_e2e: dict = {}
+macros_hub: dict = {}
+
+RH = ROOT / "MCP" / "results" / "hubrun"
+HUB_STORYWORLD = {
+    # tag: (label, format metric, legal metric, best-action metric, critical metric)
+    "sw-constitution-eval": ("storyworld-constitution, eval", "strict_valid_option_metric", None,
+                             "exact_option_match", None),
+    "jbm-cross-dev80": ("jinn-beast-metta cross-frame, dev", "contract_valid", "legal_action",
+                        "highest_scoring_action", "critical_violation"),
+    "jbm-constructs-dev": ("jinn-beast-metta constructs, dev", "contract_valid", "legal_action",
+                           "highest_scoring_action", "critical_violation"),
+    "jbm-reasoner-dev": ("jinn-beast-metta moral reasoner, dev", "contract_valid", "legal_action",
+                         "highest_scoring_action", "critical_violation"),
+    "jbm-mesh2-dev": ("jinn-beast-metta control mesh v2 (tools), dev", "protocol_complete", "legal_final_action",
+                      "target_action", "critical_final_action"),
+}
+HUB_AGENTIC = [("er-t1", "event-recon tier 1"), ("er-t2", "event-recon tier 2"), ("docedit", "doc-edit"),
+               ("feishu-hard", "feishu-office hard"), ("feishu-expert", "feishu-office expert"),
+               ("sqlite-all", "mcp-sqlite (exact match)"), ("notebook-hardened", "durable-notebook (hardened)")]
+HUB_TAGS = list(HUB_STORYWORLD) + [f"{s}-{a}" for s, _ in HUB_AGENTIC[:5] for a in ("raw", "goblin")] + \
+    ["sqlite-all", "notebook-hardened", "er-t1-late"]
+HUB_PAIRS = [s for s, _ in HUB_AGENTIC[:5]] + ["er-t1-late"]
+_DIGITS = dict(zip("0123456789", ("Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine")))
+
+
+def hub_name(tag: str) -> str:
+    return "Hub" + "".join("".join(_DIGITS.get(ch, ch) for ch in part.capitalize()) for part in tag.split("-"))
+
+
+def hubrun_tables(numbers: dict) -> None:
+    """Bonsai 27B on hub tasksets and storyworlds, raw versus goblin packet (MCP/results/hubrun)."""
+    s = load(RH / "summary.json")
+    if not s:
+        return
+    runs, pairs = s["runs"], s["pairs"]
+    rows = []
+    for tag, (label, fmt_m, legal_m, best_m, crit_m) in HUB_STORYWORLD.items():
+        r = runs.get(tag)
+        if not r or not r["episodes"]:
+            continue
+        m = r["metric_means"]
+        rows.append([label, r["episodes"], r["mean_score"], m.get(fmt_m), m.get(legal_m) if legal_m else None,
+                     m.get(best_m), m.get(crit_m) if crit_m else None,
+                     r["provider"].get("completion_tokens_per_episode")])
+    if rows:
+        table("hub_storyworlds", ["Lane", "Tasks", "Mean reward", "Format valid", "Legal action", "Best action",
+                                  "Critical action", "Completion tok./task"], rows,
+              "Ternary Bonsai 2 27B (PTQ1\\_0) on the MoralityLab storyworld environments, held-out eval or "
+              "development splits only. Columns are means over tasks of the environment's own metrics. Best action: "
+              "the historical frontier option (storyworld-constitution), the highest-scoring legal action "
+              "(cross-frame, constructs, reasoner) or the registered target action (control mesh).",
+              "tab:hub-storyworlds")
+    rows = []
+    for stem, label in HUB_AGENTIC:
+        for arm in ("raw", "goblin", "late"):
+            tag = stem if stem in ("sqlite-all", "notebook-hardened") else f"{stem}-{arm}"
+            r = runs.get(tag)
+            if not r or not r["episodes"] or (tag == stem and arm != "raw"):
+                continue
+            p = r["provider"]
+            rows.append([label, arm, r["episodes"], r["mean_score"], r["solved"], r["episodes_with_errors"],
+                         round(p.get("prompt_tokens_per_episode") or 0), int(p.get("prompt_peak") or 0),
+                         int(p.get("compacted_calls") or 0), int(p.get("context_overflows") or 0)])
+    if rows:
+        table("hub_agentic", ["Environment", "Arm", "Episodes", "Mean score", "Solved", "Errored ep.",
+                              "Prompt tok./ep.", "Peak prompt", "Compacted calls", "Context overflows"], rows,
+              "Agentic hub tasksets with Bonsai 27B through the relay: raw history against the goblin packet "
+              "(compaction past 6,000 estimated tokens), run side by side on the same tasks, one 32,768-token "
+              "server slot each. late: compaction past 18,000 estimated tokens with a 6,000-token packet and four "
+              "kept turns, run after the main queue. Tokens are the server's exact counts. Context overflows: "
+              "requests the server refused because the prompt exceeded 32,768 tokens; "
+              "the environment then ends the episode with an error. mcp-sqlite and durable-notebook stay below the "
+              "packet threshold, so they ran in the raw arm only.", "tab:hub-agentic")
+    numbers["hubrun"] = {"runs": {t: {k: v for k, v in r.items() if k != "per_task"} for t, r in runs.items()},
+                         "pairs": pairs}
+    for tag in HUB_TAGS:
+        r = runs.get(tag)
+        if r and r["episodes"]:
+            macros_hub[hub_name(tag) + "Mean"] = r["mean_score"]
+            macros_hub[hub_name(tag) + "Solved"] = r["solved"]
+            macros_hub[hub_name(tag) + "N"] = r["episodes"]
+            macros_hub[hub_name(tag) + "Prompt"] = round(r["provider"].get("prompt_tokens_per_episode") or 0)
+    sw = runs.get("sw-constitution-eval")
+    if sw and sw["episodes"]:
+        macros_hub["HubSwcBracket"] = sw["metric_means"].get("bracket_stripped_choice_match")
+    for stem in HUB_PAIRS:
+        p = pairs.get(stem)
+        if p:
+            base = hub_name(stem)
+            macros_hub[base + "Ratio"] = p["prompt_tokens_ratio_goblin_over_raw"]
+            macros_hub[base + "GoblinBetter"] = p["goblin_better"]
+            macros_hub[base + "RawBetter"] = p["raw_better"]
+            macros_hub[base + "StopsRaw"] = int(p.get("context_overflows_raw") or 0)
+            macros_hub[base + "StopsGoblin"] = int(p.get("context_overflows_goblin") or 0)
+            macros_hub[base + "ErrRaw"] = p.get("episode_errors_raw")
+            macros_hub[base + "ErrGoblin"] = p.get("episode_errors_goblin")
+
+
+def gdk_table(numbers: dict) -> None:
+    demo = load(R3 / "gdk_demo" / "receipts.json")
+    if not demo:
+        return
+    rows = []
+    for flag, label in ((True, "with goblin packet"), (False, "without packet")):
+        runs = [r for r in demo["runs"] if r["used_packet"] is flag and "score" in r]
+        n = len(runs)
+        mean = lambda key: sum(r[key] or 0 for r in runs) / n if n else None  # noqa: E731
+        rows.append([label, n, mean("packet_tokens") if flag else None, mean("provider_input_tokens"),
+                     mean("provider_output_tokens"), sum(r["score"]["file_named"] for r in runs),
+                     sum(bool(r["score"]["function_named"]) for r in runs), mean("inference_seconds")])
+    table("gdk_demo", ["Run", "Tasks", "Packet tok.", "Provider in", "Provider out", "File named", "Function named",
+                       "Inference s"], rows,
+          "goblin-gdk with Qwen2.5-0.5B-Instruct on CPU: SWE-bench Lite tasks from requests, flask and seaborn. "
+          "The model must name the file and function to edit; answers are scored against the hidden gold patch.",
+          "tab:gdk-demo")
+    numbers["gdk_demo"] = demo.get("summary", {})
+
+
+MACRO_NAMES = (
+    ["McpThreeInstances", "BmRouterFileRecallFiveTwelve", "BmComposedFileRecallTwoK", "BmComposedSymRecallTwoK",
+     "OracleLdtComposedFileRecallTwoK", "BmRouterFileRecallTwoK", "BmRouterSymRecallTwoK", "OracleLdtFileRecallTwoK",
+     "OracleLdtSymRecallTwoK", "GoldFilesTokens", "RepoPythonFiles", "BestLearnedRouter", "BestLearnedArm",
+     "BestLearnedFileRecallTwoK", "BestLearnedSymRecallTwoK", "BestLearnedComposedFileRecallTwoK",
+     "BestLearnedComposedSymRecallTwoK", "CompactFirstRouter", "CompactFirstTokens", "CompactFirstFileRecall",
+     "CompactSecondRouter", "CompactSecondTokens", "CompactSecondFileRecall", "LearnedLocalTokens",
+     "BmRouterLocalTokens", "EtoeN", "EtoeValid"]
+    + [f"Etoe{c}{m}" for c in ("None", "Bm", "Goblin") for m in ("Resolved", "ResolvedValid", "Input", "Patches")]
+    + [f"BmFiles{k}{n}" for k in ("Recall", "Tokens") for n in ("Two", "Four", "Thirteen", "TwentySeven")]
+    + [f"BmMap{k}{n}" for k in ("Recall", "Tokens") for n in ("Five", "Twelve", "TwentyFive")]
+    + [f"Gdk{c}{k}" for c in ("Packet", "NoPacket") for k in ("Runs", "FileNamed", "FunctionNamed", "InputTokens")]
+    + [hub_name(t) + k for t in HUB_TAGS for k in ("Mean", "Solved", "N", "Prompt")]
+    + [hub_name(s) + k for s in HUB_PAIRS
+       for k in ("Ratio", "GoblinBetter", "RawBetter", "StopsRaw", "StopsGoblin", "ErrRaw", "ErrGoblin")]
+    + ["HubSwcBracket"])
+
+
+def write_macro_defaults() -> None:
+    """Fallback definitions so the paper compiles before every result exists."""
+    lines = ["% Generated by make_tables.py: defaults for data macros not defined in tables/numbers.tex."]
+    lines += [r"\providecommand{\%s}{--}" % name for name in MACRO_NAMES]
+    (Path(__file__).resolve().parent / "macro_defaults.tex").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def macros(numbers: dict) -> None:
+    """LaTeX macros for headline numbers quoted in the prose."""
+    write_macro_defaults()
+    out = []
+
+    def put(name: str, value) -> None:
+        out.append(rf"\newcommand{{\{name}}}{{{tex(fmt(value))}}}")
+
+    s3 = load(R3 / "swebench_lite" / "summary.json")
+    if s3:
+        groups = {(g["arm"], g["policy"]): g for g in s3["groups"]}
+        def recall(arm, policy, budget, key="file_recall_mean"):
+            g = groups.get((arm, policy))
+            return round(g["budgets"][budget][key], 3) if g and budget in g["budgets"] else None
+        put("McpThreeInstances", s3["instances"])
+        put("BmRouterFileRecallFiveTwelve", recall("search", "lexical_bm25", "512"))
+        put("BmComposedFileRecallTwoK", recall("search", "lexical_bm25", "c2048"))
+        put("BmComposedSymRecallTwoK", recall("search", "lexical_bm25", "c2048", "symbol_recall_mean"))
+        put("OracleLdtComposedFileRecallTwoK", recall("layered_ldt", "oracle_upper_bound", "c2048"))
+        put("BmRouterFileRecallTwoK", recall("search", "lexical_bm25", "2048"))
+        put("BmRouterSymRecallTwoK", recall("search", "lexical_bm25", "2048", "symbol_recall_mean"))
+        put("OracleLdtFileRecallTwoK", recall("layered_ldt", "oracle_upper_bound", "2048"))
+        put("OracleLdtSymRecallTwoK", recall("layered_ldt", "oracle_upper_bound", "2048", "symbol_recall_mean"))
+        b = s3["bm25_file_baseline"]
+        for key, name in (("2048", "Two"), ("4096", "Four"), ("13000", "Thirteen"), ("27000", "TwentySeven")):
+            if key in b:
+                put(f"BmFilesRecall{name}", round(b[key]["file_recall_mean"], 3))
+                put(f"BmFilesTokens{name}", round(b[key]["tokens_mean"]))
+        maps = s3.get("bm25_path_map_baseline", {})
+        for key, name in (("5", "Five"), ("12", "Twelve"), ("25", "TwentyFive")):
+            if key in maps:
+                put(f"BmMapRecall{name}", round(maps[key]["file_recall_mean"], 3))
+                put(f"BmMapTokens{name}", round(maps[key]["tokens_mean"]))
+        put("GoldFilesTokens", round(s3["context"]["gold_files_tokens_mean"]))
+        put("RepoPythonFiles", round(s3["context"]["repo_python_files_mean"]))
+        learned = [g for g in s3["groups"] if g["family"] not in ("lexical", "deterministic", "sham", "oracle")]
+        compact = [g for g in learned if g["arm"] == "search" and "512" in g["budgets"]
+                   and not g["policy"].endswith("_tokens")]
+        if compact:
+            for rank, g in enumerate(sorted(compact, key=lambda g: -g["budgets"]["512"]["file_recall_mean"])[:2]):
+                tag = ("First", "Second")[rank]
+                put(f"Compact{tag}Router", g["policy"])
+                put(f"Compact{tag}Tokens", round(g["budgets"]["512"]["packet_tokens_mean"]))
+                put(f"Compact{tag}FileRecall", round(g["budgets"]["512"]["file_recall_mean"], 3))
+            reads = {g["policy"]: g for g in learned}
+            put("LearnedLocalTokens", round(sum(g["retrieval_result_tokens_mean"] for g in compact) / len(compact)))
+        bm = groups.get(("search", "lexical_bm25"))
+        if bm:
+            put("BmRouterLocalTokens", round(bm["retrieval_result_tokens_mean"]))
+        if learned:
+            best = max(learned, key=lambda g: g["budgets"]["2048"]["symbol_recall_mean"])
+            put("BestLearnedRouter", best["policy"])
+            put("BestLearnedArm", best["arm"].replace("_", " "))
+            put("BestLearnedFileRecallTwoK", round(best["budgets"]["2048"]["file_recall_mean"], 3))
+            put("BestLearnedSymRecallTwoK", round(best["budgets"]["2048"]["symbol_recall_mean"], 3))
+            if "c2048" in best["budgets"]:
+                put("BestLearnedComposedFileRecallTwoK", round(best["budgets"]["c2048"]["file_recall_mean"], 3))
+                put("BestLearnedComposedSymRecallTwoK", round(best["budgets"]["c2048"]["symbol_recall_mean"], 3))
+    demo = load(R3 / "gdk_demo" / "receipts.json")
+    if demo and demo.get("summary"):
+        for key, name in (("packet", "Packet"), ("no_packet", "NoPacket")):
+            s = demo["summary"].get(key, {})
+            put(f"Gdk{name}Runs", s.get("runs"))
+            put(f"Gdk{name}FileNamed", s.get("file_named"))
+            put(f"Gdk{name}FunctionNamed", s.get("function_named"))
+            put(f"Gdk{name}InputTokens", round(s.get("provider_input_tokens_mean", 0)))
+    for name, value in list(macros_e2e.items()) + list(macros_hub.items()):
+        put(name, value)
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "numbers.tex").write_text("\n".join(out) + "\n", encoding="utf-8")
+
+
+def main() -> None:
+    numbers: dict = {}
+    mcp02_tables(numbers)
+    mcp03_tables(numbers)
+    llm_table(numbers)
+    e2e_table(numbers)
+    hubrun_tables(numbers)
+    gdk_table(numbers)
+    macros(numbers)
+    (Path(__file__).resolve().parent / "numbers.json").write_text(json.dumps(numbers, indent=1) + "\n", encoding="utf-8")
+    print("tables:", sorted(p.name for p in OUT.glob("*.tex")) if OUT.is_dir() else [])
+
+
+if __name__ == "__main__":
+    main()

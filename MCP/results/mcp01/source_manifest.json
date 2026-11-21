@@ -1,0 +1,30 @@
+{
+  "git_commit": "dfde1d9dbbeb3fc5e2ae982fecfad6d30b164969",
+  "working_tree_dirty": false,
+  "files": {
+    "MCP/__init__.py": "c714cd4257bf14e994748725b2636b2d1110490310129b8d87b4784152a324e0",
+    "MCP/environment.py": "fef66af8d301d521df892b4dcec3646e18060611b7cde7b6b2d57ce23e76fc11",
+    "MCP/local_model.py": "97283aa01ae03642640a9245ffedf12fcb197ed0ed81735ce0b7859c023d7914",
+    "MCP/metrics.py": "d1ca297f4865eb58d0b96c6dfb91b6885ae6fa2b13cbad1d622ba14b2b080b30",
+    "MCP/run.py": "27dba399ca9483134a202b7be63c5211b3bc4bc997f0d40b29d133554101a776",
+    "MCP/serve.py": "6aa2ee806d8db02aa1b7f602e5e14919fb498579a26ec2a4036453d4f434a4ec",
+    "MCP/test_environment.py": "b18317810bc8af4e1587bbaaa4c66e956f6fa0180e87f1eb7caea05d6d38a433",
+    "MCP/test_local_model.py": "16923fece5868ad9d35c30e7f01e725179d52862cc155c48af7adb98cf59cd98",
+    "MCP/test_metrics.py": "8f8ee3f1b0eef117ea67b32a238d41b0a3aea4622e8d7b01fa4b7e6518b7c778",
+    "MCP/test_runner.py": "aa38bc78c058b124ef4f39ee834b95dbef925034233b5f394e8fc63c7b2deea7",
+    "MCP/test_transport.py": "fb889e6a0acb6981b67ed3abd4beeb65da29d55281d54acff48024be7d740dc0",
+    "MCP/transport.py": "5f7c679910920cd520942a3f83eb90c18d23bbe345cc9126f1b6ca9651120079",
+    "MCP/ARCHITECTURE.md": "9204184b1a4c73400559b84125435c6e93ffa137f3b8f92859a21cb8afd5189a",
+    "MCP/PROTOCOL.md": "0c0c2e217ca25014cc4b0d0f1ce3ad9b9fbcd71509809f015d1987f66a9b9f02",
+    "MCP/README.md": "c96417eb0f4c50f3ca6edf284c284f82ea6a92212245329733836d6bf901929b",
+    "research_gym/__init__.py": "20da09a159760f59cc5752c99a2f596026871cb91bd6f55d4624ea79b72335c1",
+    "research_gym/core/__init__.py": "643341bc45b912ab5f63662637434b9196f5938885500ae6aa5ad66751e8d0cd",
+    "research_gym/core/hybrid.py": "8dda86f447de9910d89c2a59dc562dfb9a9c91d3e96698aeb153bb46b7407bca",
+    "research_gym/core/typed_soundness.py": "1a74ebe44a1dace8c735e893a54b5eb2de747347b4f6ceac11f450a92a909c09",
+    "research_gym/core/frames.py": "712b4fe3d3ac1fc2552976cd3b9c3ec9c050764d63f56d2bb7e59b16b056c69c",
+    "research_gym/core/metta_frames.py": "e2dee01e4a797e6c919b75e43b6c39e545b5afdfa8a0c72d7ac1d9814bfc22f2",
+    "pyproject.toml": "adc1ee91df88ff7bed0329cae14efa74a88fb3cb7d64caebd53f2a6d793b0f09"
+  },
+  "source_digest": "e0dd403cbc4e01f76db1c849a6d2e0bde78dfcfb97232f853a4269a1a67e08c2",
+  "authoritative_identity": "file SHA-256s"
+}

@@ -1,0 +1,17 @@
+The code is in \texttt{MCP/mcp02}, \texttt{MCP/mcp03} and \texttt{MCP/goose\_gdk\_app} of the HybridTRMLDT repository,
+on branch \texttt{gym/mcp-local-retrieval-20261119}. Configurations are in \texttt{MCP/mcp02/configs} and
+\texttt{MCP/mcp03/configs}.
+
+Result directories under \texttt{MCP/results} hold:
+\begin{itemize}
+\item compressed episode records;
+\item decision tapes (observation digest, chosen index, normalised scores, cost);
+\item model receipts (parameters, FLOPs per candidate, checkpoint SHA-256, training receipt with peak memory);
+\item host and source manifests.
+\end{itemize}
+\texttt{python -m MCP.mcp02.run replay} and \texttt{python -m MCP.mcp03.run replay} re-execute episodes from their tapes
+without torch, and the CI workflow \texttt{mcp-gym.yml} does so on every push. Checkpoints stay outside Git; their
+hashes identify them.
+
+\texttt{goose-gdk-app.yml} builds the GDK app and runs \texttt{ci\_smoke.py} against a scripted OpenAI-compatible
+endpoint. The tables in this paper are produced by \texttt{papers/mcp\_data\_goblin/make\_tables.py} from those files.

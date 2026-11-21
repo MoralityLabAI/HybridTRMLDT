@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Run & Tasks & Packet tok. & Provider in & Provider out & File named & Function named & Inference s \\
+\midrule
+with goblin packet & 11 & 1508.82 & 2012.27 & 128.73 & 5 & 3 & 374.52 \\
+without packet & 11 & -- & 503.45 & 107.91 & 1 & 2 & 307.08 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{goblin-gdk with Qwen2.5-0.5B-Instruct on CPU: SWE-bench Lite tasks from requests, flask and seaborn. The model must name the file and function to edit; answers are scored against the hidden gold patch.}
+\label{tab:gdk-demo}
+\end{table}

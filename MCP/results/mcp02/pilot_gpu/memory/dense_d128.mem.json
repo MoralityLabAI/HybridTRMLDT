@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp02-work/pilot_gpu/ckpt/dense_d128.pt", "device": "cuda", "peak_rss_before_forward": 645554176, "peak_rss_after_forward": 1021063168, "forward_peak_rss_delta": 375508992, "weights_bytes_fp32": 2675204, "candidates": 32, "sequence_length": 74, "cuda_max_memory_allocated": 14772736}

@@ -1,0 +1,26 @@
+\begin{table}[t]
+\centering
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrrrrr}
+\toprule
+Router & Family & Params & Non-emb. & Depth & FLOPs/cand. & ms/decision & Infer RSS MiB & Train RSS MiB & Train CUDA MiB & Dev top-1 \\
+\midrule
+dense\_d128 & dense & 668801 & 143489 & 0 & 264448 & 15.54 & 358.10 & -- & -- & 0.84 \\
+hrm\_h2l1\_d128 & hrm & 933761 & 408449 & 16 & 510429696 & 34.77 & 426.00 & 2470 & 927 & 0.92 \\
+looped\_p12\_d128 & looped & 739329 & 214017 & 12 & 382822912 & 66.98 & 427.30 & 2446 & 2579 & 0.91 \\
+looped\_p4\_d128 & looped & 739329 & 214017 & 4 & 127609344 & 36.22 & 427.90 & -- & 913 & 0.91 \\
+sham\_shuffled\_transformer\_l2\_d128 & transformer & 933505 & 408193 & 2 & 63805952 & 20.84 & 427.30 & 2478 & 507 & 0.14 \\
+transformer\_l1\_d128 & transformer & 735233 & 209921 & 1 & 31904256 & 15.91 & 427.10 & -- & -- & 0.91 \\
+transformer\_l2\_d128 & transformer & 933505 & 408193 & 2 & 63805952 & 21.57 & 426.90 & -- & -- & 0.91 \\
+transformer\_l2\_d128\_tokens & transformer & 933249 & 407937 & 2 & 63805952 & 21.69 & 427.60 & -- & -- & 0.73 \\
+transformer\_l4\_d128 & transformer & 1330049 & 804737 & 4 & 127609344 & 30.53 & 427.00 & -- & -- & 0.91 \\
+trm\_c2i1\_d128 & trm & 735489 & 210177 & 4 & 127609344 & 38.14 & 427.50 & -- & 924 & 0.91 \\
+trm\_c4i2\_d128 & trm & 735489 & 210177 & 12 & 382822912 & 67.73 & 429.30 & 2458 & 2595 & 0.91 \\
+trm\_ldt\_c2i1\_d128 & trm\_ldt & 736134 & 210822 & 4 & 127610624 & 37.38 & 427.40 & 2498 & 922 & 0.90 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{MCP-02 pilot gpu router receipts: measured parameters, recurrent depth (block applications), FLOPs per candidate (FlopCounterMode), router latency, peak memory.}
+\label{tab:mcp02-pilot_gpu-receipts}
+\end{table}

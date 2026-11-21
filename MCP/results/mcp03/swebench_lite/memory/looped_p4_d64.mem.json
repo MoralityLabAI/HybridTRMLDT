@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp03-work/ckpt/looped_p4_d64.pt", "device": "cpu", "peak_rss_before_forward": 519118848, "peak_rss_after_forward": 542162944, "forward_peak_rss_delta": 23044096, "weights_bytes_fp32": 1282052, "candidates": 32, "sequence_length": 74}

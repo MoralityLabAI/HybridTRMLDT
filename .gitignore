@@ -5,3 +5,8 @@ __pycache__/
 data/*.jsonl
 data/*.md
 papers/*.pdf
+MCP/runs/
+MCP/goose_gdk_app/target/
+papers/mcp_data_goblin/*.aux
+papers/mcp_data_goblin/*.log
+papers/mcp_data_goblin/*.out

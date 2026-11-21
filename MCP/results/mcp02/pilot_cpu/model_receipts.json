@@ -1,0 +1,860 @@
+{
+ "deterministic_rules": {
+  "name": "deterministic_rules",
+  "family": "deterministic",
+  "parameters": 0,
+  "recurrent_depth": 0,
+  "proposer": "symbolic",
+  "uses_private_oracle": false
+ },
+ "lexical_bm25": {
+  "name": "lexical_bm25",
+  "family": "lexical",
+  "parameters": 0,
+  "recurrent_depth": 0,
+  "proposer": "symbolic",
+  "uses_private_oracle": false
+ },
+ "sham_random": {
+  "name": "sham_random",
+  "family": "sham",
+  "parameters": 0,
+  "recurrent_depth": 0,
+  "proposer": "symbolic",
+  "uses_private_oracle": false
+ },
+ "oracle_upper_bound": {
+  "name": "oracle_upper_bound",
+  "family": "oracle",
+  "parameters": 0,
+  "recurrent_depth": 0,
+  "proposer": "symbolic",
+  "uses_private_oracle": true
+ },
+ "dense_d48": {
+  "name": "dense_d48",
+  "family": "dense",
+  "config": {
+   "arch": "dense",
+   "d": 48
+  },
+  "parameters": {
+   "total": 219985,
+   "non_embedding": 22993,
+   "embedding": 196992,
+   "bytes_fp32": 879940
+  },
+  "recurrent_depth": 0,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 37728,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 0
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "3743af971ee111359ce38220dbc8be86710f9548308e2725f06c79219212e746",
+  "encoder": "mcp02-hash4096-seq74-v1/tokens",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "dense",
+    "d": 48
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 84.89182989997789,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 1.3804984950611734
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.9236983224876926
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 0,
+   "train_flops_estimate": 44129536128,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 219985,
+    "non_embedding": 22993,
+    "embedding": 196992,
+    "bytes_fp32": 879940
+   },
+   "dev_ranking": {
+    "top1_positive": 0.48366701791359323,
+    "states": 3796
+   },
+   "model_name": "dense_d48",
+   "checkpoint_sha256": "3743af971ee111359ce38220dbc8be86710f9548308e2725f06c79219212e746"
+  }
+ },
+ "transformer_l1_d48": {
+  "name": "transformer_l1_d48",
+  "family": "transformer",
+  "config": {
+   "arch": "transformer",
+   "d": 48,
+   "heads": 4,
+   "layers": 1
+  },
+  "parameters": {
+   "total": 229537,
+   "non_embedding": 32545,
+   "embedding": 196992,
+   "bytes_fp32": 918148
+  },
+  "recurrent_depth": 1,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 5144256,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 1
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "5d93eadffee201ff902a74e49ddc9122ef0de30814d49f70a5b4f840cb6135d4",
+  "encoder": "mcp02-hash4096-seq74-v1/tokens",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "transformer",
+    "d": 48,
+    "heads": 4,
+    "layers": 1
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 325.6609286000021,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 1.2846392961139352
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.8487284174841694
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 0,
+   "train_flops_estimate": 6017112781056,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 229537,
+    "non_embedding": 32545,
+    "embedding": 196992,
+    "bytes_fp32": 918148
+   },
+   "dev_ranking": {
+    "top1_positive": 0.5621707060063225,
+    "states": 3796
+   },
+   "model_name": "transformer_l1_d48",
+   "checkpoint_sha256": "5d93eadffee201ff902a74e49ddc9122ef0de30814d49f70a5b4f840cb6135d4"
+  }
+ },
+ "transformer_l2_d48": {
+  "name": "transformer_l2_d48",
+  "family": "transformer",
+  "config": {
+   "arch": "transformer",
+   "d": 48,
+   "heads": 4,
+   "layers": 2
+  },
+  "parameters": {
+   "total": 257809,
+   "non_embedding": 60817,
+   "embedding": 196992,
+   "bytes_fp32": 1031236
+  },
+  "recurrent_depth": 2,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 10287552,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 2
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "27568f7aa51f47e8a53a458d2a2e5a99ce4de82197d91d5cfcfd632f02e51f1e",
+  "encoder": "mcp02-hash4096-seq74-v1/tokens",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "transformer",
+    "d": 48,
+    "heads": 4,
+    "layers": 2
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 601.9743039000314,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 1.0926320270085945
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.626865382759999
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 0,
+   "train_flops_estimate": 12033102673152,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 257809,
+    "non_embedding": 60817,
+    "embedding": 196992,
+    "bytes_fp32": 1031236
+   },
+   "dev_ranking": {
+    "top1_positive": 0.6180189673340358,
+    "states": 3796
+   },
+   "model_name": "transformer_l2_d48",
+   "checkpoint_sha256": "27568f7aa51f47e8a53a458d2a2e5a99ce4de82197d91d5cfcfd632f02e51f1e"
+  }
+ },
+ "trm_c2i1_d48": {
+  "name": "trm_c2i1_d48",
+  "family": "trm",
+  "config": {
+   "arch": "trm",
+   "d": 48,
+   "heads": 4,
+   "net_layers": 1,
+   "inner": 1,
+   "cycles": 2
+  },
+  "parameters": {
+   "total": 229633,
+   "non_embedding": 32641,
+   "embedding": 196992,
+   "bytes_fp32": 918532
+  },
+  "recurrent_depth": 4,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 20574144,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 4
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "cedbbe3de43800f7b60092c97bd7bd7aa0074d6d89c07c311584986fbfd85b83",
+  "encoder": "mcp02-hash4096-seq74-v1/tokens",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "trm",
+    "d": 48,
+    "heads": 4,
+    "net_layers": 1,
+    "inner": 1,
+    "cycles": 2
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 1275.7839615999255,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 1.199839540475454
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.7269700162940556
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 0,
+   "train_flops_estimate": 24065082457344,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 229633,
+    "non_embedding": 32641,
+    "embedding": 196992,
+    "bytes_fp32": 918532
+   },
+   "dev_ranking": {
+    "top1_positive": 0.6148577449947313,
+    "states": 3796
+   },
+   "model_name": "trm_c2i1_d48",
+   "checkpoint_sha256": "cedbbe3de43800f7b60092c97bd7bd7aa0074d6d89c07c311584986fbfd85b83"
+  }
+ },
+ "transformer_l4_d48": {
+  "name": "transformer_l4_d48",
+  "family": "transformer",
+  "config": {
+   "arch": "transformer",
+   "d": 48,
+   "heads": 4,
+   "layers": 4
+  },
+  "parameters": {
+   "total": 314353,
+   "non_embedding": 117361,
+   "embedding": 196992,
+   "bytes_fp32": 1257412
+  },
+  "recurrent_depth": 4,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 20574144,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 4
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "a2f7344730bc54965e79b9205e4e547f2041595156bcfb75ac30fdd85301541f",
+  "encoder": "mcp02-hash4096-seq74-v1/tokens",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "transformer",
+    "d": 48,
+    "heads": 4,
+    "layers": 4
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 2317.0373672000133,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 1.0378556485868926
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.5271202582197312
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 0,
+   "train_flops_estimate": 24065082457344,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 314353,
+    "non_embedding": 117361,
+    "embedding": 196992,
+    "bytes_fp32": 1257412
+   },
+   "dev_ranking": {
+    "top1_positive": 0.6485774499473129,
+    "states": 3796
+   },
+   "model_name": "transformer_l4_d48",
+   "checkpoint_sha256": "a2f7344730bc54965e79b9205e4e547f2041595156bcfb75ac30fdd85301541f"
+  }
+ },
+ "sham_shuffled_transformer_l2_d48": {
+  "name": "sham_shuffled_transformer_l2_d48",
+  "family": "transformer",
+  "config": {
+   "arch": "transformer",
+   "d": 48,
+   "heads": 4,
+   "layers": 2
+  },
+  "parameters": {
+   "total": 257809,
+   "non_embedding": 60817,
+   "embedding": 196992,
+   "bytes_fp32": 1031236
+  },
+  "recurrent_depth": 2,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 10287552,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 2
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "55ddbb5843329832db015e9dbaf02428418ee112d9f9c7c7fa0611e382b3ce4c",
+  "encoder": "mcp02-hash4096-seq74-v1/tokens",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "transformer",
+    "d": 48,
+    "heads": 4,
+    "layers": 2
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": true,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 904.582050499972,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 2.1536960813734267
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 2.1532956096861096
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 0,
+   "train_flops_estimate": 12033102673152,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 257809,
+    "non_embedding": 60817,
+    "embedding": 196992,
+    "bytes_fp32": 1031236
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1377218560,
+    "scope": "whole training process, including the in-memory dataset"
+   },
+   "dev_ranking": {
+    "top1_positive": 0.16385669125395153,
+    "states": 3796
+   },
+   "model_name": "sham_shuffled_transformer_l2_d48",
+   "checkpoint_sha256": "55ddbb5843329832db015e9dbaf02428418ee112d9f9c7c7fa0611e382b3ce4c"
+  }
+ },
+ "looped_p4_d48": {
+  "name": "looped_p4_d48",
+  "family": "looped",
+  "config": {
+   "arch": "looped",
+   "d": 48,
+   "heads": 4,
+   "passes": 4
+  },
+  "parameters": {
+   "total": 231073,
+   "non_embedding": 34081,
+   "embedding": 196992,
+   "bytes_fp32": 924292
+  },
+  "recurrent_depth": 4,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 20574144,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 4
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "c51e5f2628473f614307a5f4b6a56649812c1290d8e18d95880a813f915216fa",
+  "encoder": "mcp02-hash4096-seq74-v1/tokens",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "looped",
+    "d": 48,
+    "heads": 4,
+    "passes": 4
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 1278.6315470999107,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 1.2254727050279959
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.7192690325598431
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 0,
+   "train_flops_estimate": 24065082457344,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 231073,
+    "non_embedding": 34081,
+    "embedding": 196992,
+    "bytes_fp32": 924292
+   },
+   "dev_ranking": {
+    "top1_positive": 0.5634878819810326,
+    "states": 3796
+   },
+   "model_name": "looped_p4_d48",
+   "checkpoint_sha256": "c51e5f2628473f614307a5f4b6a56649812c1290d8e18d95880a813f915216fa"
+  }
+ },
+ "transformer_l2_d48_match": {
+  "name": "transformer_l2_d48_match",
+  "family": "transformer",
+  "config": {
+   "arch": "transformer",
+   "d": 48,
+   "heads": 4,
+   "layers": 2,
+   "encoder": "match"
+  },
+  "parameters": {
+   "total": 257905,
+   "non_embedding": 60913,
+   "embedding": 196992,
+   "bytes_fp32": 1031620
+  },
+  "recurrent_depth": 2,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 10287552,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 2
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "aa6090248890fa90c0b68feb7f40f60e64e2393b85e5bc112fd5ddedfe494c88",
+  "encoder": "mcp02-hash4096-seq74-v1/match",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "transformer",
+    "d": 48,
+    "heads": 4,
+    "layers": 2,
+    "encoder": "match"
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 1174.45900539984,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 0.5572671278793778
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.19480857065854928
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 0,
+   "train_flops_estimate": 12033102673152,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 257905,
+    "non_embedding": 60913,
+    "embedding": 196992,
+    "bytes_fp32": 1031620
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1352921088,
+    "scope": "whole training process, including the in-memory dataset"
+   },
+   "dev_ranking": {
+    "top1_positive": 0.8819810326659642,
+    "states": 3796
+   },
+   "model_name": "transformer_l2_d48_match",
+   "checkpoint_sha256": "aa6090248890fa90c0b68feb7f40f60e64e2393b85e5bc112fd5ddedfe494c88"
+  }
+ },
+ "trm_ldt_c2i1_d48": {
+  "name": "trm_ldt_c2i1_d48",
+  "family": "trm_ldt",
+  "config": {
+   "arch": "trm_ldt",
+   "d": 48,
+   "heads": 4,
+   "net_layers": 1,
+   "inner": 1,
+   "cycles": 2
+  },
+  "parameters": {
+   "total": 229878,
+   "non_embedding": 32886,
+   "embedding": 196992,
+   "bytes_fp32": 919512
+  },
+  "recurrent_depth": 4,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 20574624,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 4
+  },
+  "proposer": "learned",
+  "checkpoint_sha256": "a860c632afd5325ea3e8dac63b07419b8a1c4dc2d56ca98858dccb33e418a674",
+  "encoder": "mcp02-hash4096-seq74-v1/tokens",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "trm_ldt",
+    "d": 48,
+    "heads": 4,
+    "net_layers": 1,
+    "inner": 1,
+    "cycles": 2
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 9012.376021099975,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 1.488750069263654
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.8261035603845222
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 5132,
+   "train_flops_estimate": 26173082063520,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 229878,
+    "non_embedding": 32886,
+    "embedding": 196992,
+    "bytes_fp32": 919512
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1555046400,
+    "scope": "whole training process, including the in-memory dataset"
+   },
+   "dev_ranking": {
+    "top1_positive": 0.6109062170706007,
+    "states": 3796
+   },
+   "model_name": "trm_ldt_c2i1_d48",
+   "checkpoint_sha256": "a860c632afd5325ea3e8dac63b07419b8a1c4dc2d56ca98858dccb33e418a674"
+  }
+ },
+ "hrm_h2l1_d48": {
+  "name": "hrm_h2l1_d48",
+  "family": "hrm",
+  "config": {
+   "arch": "hrm",
+   "d": 48,
+   "heads": 4,
+   "low_steps": 1,
+   "high_cycles": 2
+  },
+  "parameters": {
+   "total": 257905,
+   "non_embedding": 60913,
+   "embedding": 196992,
+   "bytes_fp32": 1031620
+  },
+  "recurrent_depth": 16,
+  "depth_override": 8,
+  "flops_per_candidate": {
+   "flops": 82293696,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 16
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "172cc212ae69ed21cef40d876538bd3b92a546cc1a6a8ed95f5b1d1ff1c59708",
+  "encoder": "mcp02-hash4096-seq74-v1/tokens",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "hrm",
+    "d": 48,
+    "heads": 4,
+    "low_steps": 1,
+    "high_cycles": 2
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 1995.446513300063,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 1.1070931310327643
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.6379684679528587
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 0,
+   "train_flops_estimate": 24065082457344,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 257905,
+    "non_embedding": 60913,
+    "embedding": 196992,
+    "bytes_fp32": 1031620
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1554124800,
+    "scope": "whole training process, including the in-memory dataset"
+   },
+   "dev_ranking": {
+    "top1_positive": 0.6093256059009484,
+    "states": 3796
+   },
+   "model_name": "hrm_h2l1_d48",
+   "checkpoint_sha256": "172cc212ae69ed21cef40d876538bd3b92a546cc1a6a8ed95f5b1d1ff1c59708"
+  }
+ },
+ "trm_c2i1_d48_match": {
+  "name": "trm_c2i1_d48_match",
+  "family": "trm",
+  "config": {
+   "arch": "trm",
+   "d": 48,
+   "heads": 4,
+   "net_layers": 1,
+   "inner": 1,
+   "cycles": 2,
+   "encoder": "match"
+  },
+  "parameters": {
+   "total": 229729,
+   "non_embedding": 32737,
+   "embedding": 196992,
+   "bytes_fp32": 918916
+  },
+  "recurrent_depth": 4,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 20574144,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 4
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "22026b3c54c41f89d465a2ce551fe0c84babba516df5744e7e689159471a2846",
+  "encoder": "mcp02-hash4096-seq74-v1/match",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "trm",
+    "d": 48,
+    "heads": 4,
+    "net_layers": 1,
+    "inner": 1,
+    "cycles": 2,
+    "encoder": "match"
+   },
+   "epochs": 2,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cpu",
+   "threads": 6,
+   "train_seconds": 1977.9400669999886,
+   "steps": 1170,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 0.5810522970536517
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.223924622621037
+    }
+   ],
+   "train_states": 18694,
+   "train_row_states": 0,
+   "train_flops_estimate": 24065082457344,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 229729,
+    "non_embedding": 32737,
+    "embedding": 196992,
+    "bytes_fp32": 918916
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1585094656,
+    "scope": "whole training process, including the in-memory dataset"
+   },
+   "dev_ranking": {
+    "top1_positive": 0.8577449947312961,
+    "states": 3796
+   },
+   "model_name": "trm_c2i1_d48_match",
+   "checkpoint_sha256": "22026b3c54c41f89d465a2ce551fe0c84babba516df5744e7e689159471a2846"
+  }
+ }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "mcp02-llm-pilot",
+  "purpose": "Locally served instruct LLMs as end-to-end JSON-action controllers through MCP.local_model.LocalModel",
+  "evaluation": {
+    "split": "test",
+    "seed": 3303,
+    "worlds": 8,
+    "catalog_sizes": [
+      256
+    ],
+    "arm_configs": [
+      [
+        "search",
+        ""
+      ],
+      [
+        "layered",
+        "SCB"
+      ]
+    ],
+    "max_tool_calls": [
+      40
+    ],
+    "prefilter_k": 32,
+    "handoff_budget_bytes": 2048,
+    "max_context_bytes": 400000
+  },
+  "models": {
+    "qwen2.5-0.5b-instruct": {
+      "snapshot": "D:/huggingface_cache/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775"
+    },
+    "qwen3-1.7b": {
+      "snapshot": "D:/huggingface_cache/hub/models--Qwen--Qwen3-1.7B/snapshots/70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+      "note": "thinking disabled through enable_thinking=False"
+    }
+  }
+}

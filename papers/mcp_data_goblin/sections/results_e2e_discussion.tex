@@ -1,0 +1,18 @@
+Without code context the model never produced an applicable edit: none of its 19 parsed edits matched the file,
+because it quoted code it had not been shown.
+
+With the BM25 whole-file context it produced \EtoeBmPatches{} patches and resolved none. With the goblin packet it
+produced \EtoeGoblinPatches{} patches and resolved one task (pytest-7373, gold-valid). The packet condition used
+\EtoeGoblinInput{} provider input tokens per task against \EtoeBmInput{}, a 3.3-fold reduction, at about the same
+output length (336 against 370 tokens) and generation time (49 against 48 s).
+
+The sample is small and the 4B model is weak, so one resolved task against none is not a significant difference.
+What the run does establish:
+\begin{itemize}
+\item the full agentic path works end to end: Goose GDK app, local MCP router, packet, model, patch, official
+harness;
+\item the compact packet gives a model enough exact code to write applicable patches at under a third of the
+standard retrieval context;
+\item resolution, the headline SWE-bench metric, is now measured for this pipeline and can be re-run with a stronger
+model on the same harness.
+\end{itemize}

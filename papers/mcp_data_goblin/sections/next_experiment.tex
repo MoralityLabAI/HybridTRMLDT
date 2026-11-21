@@ -1,0 +1,20 @@
+\paragraph{Next experiment.} The experiment with the highest expected information gain is a \emph{read-aware} router on
+MCP-03, evaluated on the same 109 held-out tasks. The learned routers already rank files better than BM25 in a quarter
+of the tokens, but they read too few symbols. The oracle shows that 24 calls are enough to place most gold
+functions in a 2K-token packet.
+
+The design:
+\begin{itemize}
+\item Keep the best file-ranking core (the four-pass looped block or the TRM; both cheap) for the exploration phase.
+\item Label states on-policy, with DAgger-style relabelling of the router's own trajectories, instead of only the oracle's.
+\item Add a packet-level objective: symbol recall within the token budget, charged for every local call.
+\end{itemize}
+
+The decisive measurement is whether gold-symbol recall at 1K tokens exceeds BM25's 0.41 at 2K tokens while file
+recall stays at or above 0.85. If it does, the next step is a downstream run in which a frontier model receives only
+the packet and its resource handles, and resolves the SWE-bench tasks. That run turns token savings into measured
+cost per resolved issue.
+
+For the synthetic catalogs, the matching experiment trains on mixed catalog sizes (256 and 1024). It would test
+whether the four-fold size drop seen here is a training-distribution effect or a capacity limit of 0.2M-parameter
+cores.

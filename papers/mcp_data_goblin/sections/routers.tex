@@ -1,0 +1,31 @@
+All routers share one observation and one action. The observation holds the open evidence needs and a frontier of
+candidate expansions: index branches, result pages, resources or symbols, links, and search queries. In MCP-02 the
+needs come from a public plan tracker; in MCP-03 they are the salient code terms of the issue. The action is a score
+per candidate, and the loop expands the best one with exactly one MCP tool call. In the LDT arm a router may also
+propose exclusions, and the environment certifies each one. When more than 32 non-query candidates are open, the same
+BM25 prefilter applies to every router.
+
+\paragraph{Encoder.} Each candidate becomes a hashed word-token sequence \texttt{[CLS] needs [SEP] candidate} (4096
+buckets, at most 74 positions), plus a nine-value structural vector: item type, depth, page cursor and log count. The
+\texttt{tokens} encoder uses two segment ids. The \texttt{match} encoder also flags tokens that occur in both segments
+(segment ids 2 and 3), which is an exact-match channel. It supplies no BM25 score.
+
+\paragraph{Modules.}
+\begin{itemize}
+\item \textbf{Dense}: a dual encoder with mean-pooled embeddings and MLP towers.
+\item \textbf{Transformer}: $L$ distinct pre-LN blocks as a cross-encoder.
+\item \textbf{Looped}: one shared block applied $T$ times with a pass embedding.
+\item \textbf{TRM}: a shared block updates a latent $z$ from $(x, y, z)$ $n$ times, then the answer state $y$ from
+$(y, z)$, repeated for $c$ cycles; the recurrent depth is $c(n+1)$.
+\item \textbf{TRM+LDT}: TRM plus an exclusion head whose proposals pass through the certified membrane.
+\item \textbf{HRM}: a fast block runs $k$ updates per slow update of a second block, for $h$ slow cycles.
+\end{itemize}
+The combinations studied are encoder (\texttt{tokens}/\texttt{match}) $\times$ core (distinct, looped, TRM, HRM)
+$\times$ LDT (on/off) $\times$ depth (1 to 12 block applications), plus test-time depth changes for the recurrent
+cores. Controls are hand-written deterministic rules, BM25, sham random scores, a Transformer trained on shuffled
+labels, and an oracle bound that reads private labels.
+
+\paragraph{Training.} Routers imitate oracle labels collected from training worlds. The behaviour policies are the
+oracle with no exploration and the oracle with random exploration at $\varepsilon=0.35$. The loss is a listwise softmax
+over each state's candidates, with every positive counted. The exclusion head adds a cross-entropy term on certifiable
+predicates. Epochs, learning rate and seed are fixed in the configuration; there is no early stopping.

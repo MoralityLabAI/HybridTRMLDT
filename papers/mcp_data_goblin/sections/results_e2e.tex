@@ -1,0 +1,33 @@
+\subsection{End-to-end SWE-bench Lite resolution}
+To measure task completion, not just localisation, we ran a complete agentic pipeline on the \EtoeN{} SWE-bench Lite
+tasks from requests, flask and pytest, all from repositories the routers never saw in training. The pipeline:
+\begin{itemize}
+\item The goblin-gdk app (Section~\ref{sec:goose}) drives Qwen3-4B-Instruct-2507, served in bf16 on the RTX 5080
+under WSL.
+\item The model must answer with search/replace edits. These are applied to the repository at the base commit and
+turned into a git diff.
+\item The official SWE-bench harness (version 5.0.2) applies the diff in each instance's Docker image and runs the
+FAIL\_TO\_PASS and PASS\_TO\_PASS tests.
+\end{itemize}
+
+Only the context differs between conditions:
+\begin{enumerate}
+\item the issue alone;
+\item SWE-bench's BM25 retrieval of whole files, packed to 13,000 tokens and appended to the task;
+\item the goblin packet: \texttt{compact\_context} runs 24 local MCP calls over the working tree and returns a
+composed 4,096-token packet, which the GDK operation adds as a prompt part.
+\end{enumerate}
+
+Before scoring, the harness was checked with the gold patches: they resolve \EtoeValid{} of the \EtoeN{} instances on
+this host. The five requests instances that fail with the gold patch need network access in their tests.
+
+Table~\ref{tab:swebench-e2e} gives the outcomes:
+\begin{itemize}
+\item issue only: \EtoeNoneResolved{} resolved (\EtoeNonePatches{} non-empty patches);
+\item BM25 whole files: \EtoeBmResolved{} resolved (\EtoeBmPatches{} patches) at \EtoeBmInput{} provider input tokens per task;
+\item goblin packet: \EtoeGoblinResolved{} resolved (\EtoeGoblinPatches{} patches) at \EtoeGoblinInput{} tokens.
+\end{itemize}
+
+\IfFileExists{sections/results_e2e_discussion.tex}{\input{sections/results_e2e_discussion}}{}
+
+\IfFileExists{tables/swebench_e2e.tex}{\input{tables/swebench_e2e}}{}

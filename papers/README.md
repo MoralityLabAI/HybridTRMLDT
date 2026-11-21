@@ -15,3 +15,7 @@ topology-control diagram, and the Verifiers `0.1.14` v1 replay package boundary.
 
 The AIRIS/DAS extension adds a paired 6,670-trial forecast-integrity experiment. It distinguishes semantic
 topology authorization from rule transport integrity and does not claim learned AIRIS or native DAS robustness.
+
+## MCP retrieval: Data Goblin
+
+`mcp_data_goblin/` holds the paper on compact context packets from complex MCP catalogs with small looped routers (MCP-02 synthetic catalogs, MCP-03 SWE-bench Lite, the goblin-gdk Goose GDK app). Tables and numbers are generated from `MCP/results`; see `mcp_data_goblin/README.md`.

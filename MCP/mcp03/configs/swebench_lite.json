@@ -1,0 +1,184 @@
+{
+  "name": "mcp03-swebench-lite",
+  "purpose": "Compact context packets from code-repository MCP retrieval; train on django+sympy, test on ten held-out SWE-bench Lite repositories",
+  "work_dir": "C:/Users/patri/Documents/Codex/mcp03-work",
+  "seed": 3,
+  "splits": {
+    "train": {
+      "source": "data/full_test.jsonl",
+      "repos": [
+        "django/django",
+        "sympy/sympy"
+      ],
+      "exclude_ids_from": [
+        "data/lite_test.jsonl"
+      ],
+      "per_repo": {
+        "django/django": 100,
+        "sympy/sympy": 60
+      }
+    },
+    "dev": {
+      "source": "data/lite_test.jsonl",
+      "repos": [
+        "django/django",
+        "sympy/sympy"
+      ],
+      "per_repo": {
+        "django/django": 20,
+        "sympy/sympy": 12
+      }
+    },
+    "test": {
+      "source": "data/lite_test.jsonl",
+      "repos": [
+        "scikit-learn/scikit-learn",
+        "matplotlib/matplotlib",
+        "pytest-dev/pytest",
+        "sphinx-doc/sphinx",
+        "astropy/astropy",
+        "psf/requests",
+        "pylint-dev/pylint",
+        "pydata/xarray",
+        "mwaskom/seaborn",
+        "pallets/flask"
+      ]
+    }
+  },
+  "dataset": {
+    "arms": [
+      "search",
+      "layered",
+      "layered_ldt"
+    ],
+    "epsilons": [
+      0.0,
+      0.35
+    ],
+    "max_tool_calls": 24,
+    "max_candidates": 12
+  },
+  "training": {
+    "epochs": 3,
+    "lr": 0.0015,
+    "batch_states": 32,
+    "seed": 7,
+    "threads": 6
+  },
+  "models": {
+    "dense_d64": {
+      "config": {
+        "arch": "dense",
+        "d": 64,
+        "encoder": "match"
+      }
+    },
+    "transformer_l2_d64": {
+      "config": {
+        "arch": "transformer",
+        "d": 64,
+        "heads": 4,
+        "layers": 2,
+        "encoder": "match"
+      }
+    },
+    "transformer_l4_d64": {
+      "config": {
+        "arch": "transformer",
+        "d": 64,
+        "heads": 4,
+        "layers": 4,
+        "encoder": "match"
+      }
+    },
+    "looped_p4_d64": {
+      "config": {
+        "arch": "looped",
+        "d": 64,
+        "heads": 4,
+        "passes": 4,
+        "encoder": "match"
+      }
+    },
+    "looped_p8_d64": {
+      "config": {
+        "arch": "looped",
+        "d": 64,
+        "heads": 4,
+        "passes": 8,
+        "encoder": "match"
+      }
+    },
+    "trm_c2i1_d64": {
+      "config": {
+        "arch": "trm",
+        "d": 64,
+        "heads": 4,
+        "net_layers": 1,
+        "inner": 1,
+        "cycles": 2,
+        "encoder": "match"
+      }
+    },
+    "trm_ldt_c2i1_d64": {
+      "config": {
+        "arch": "trm_ldt",
+        "d": 64,
+        "heads": 4,
+        "net_layers": 1,
+        "inner": 1,
+        "cycles": 2,
+        "encoder": "match"
+      }
+    },
+    "hrm_h2l1_d64": {
+      "config": {
+        "arch": "hrm",
+        "d": 64,
+        "heads": 4,
+        "low_steps": 1,
+        "high_cycles": 2,
+        "encoder": "match"
+      }
+    },
+    "transformer_l2_d64_tokens": {
+      "config": {
+        "arch": "transformer",
+        "d": 64,
+        "heads": 4,
+        "layers": 2,
+        "encoder": "tokens"
+      }
+    }
+  },
+  "evaluation": {
+    "arms": [
+      "search",
+      "layered",
+      "layered_ldt"
+    ],
+    "controls": [
+      "identifier_rules",
+      "lexical_bm25",
+      "sham_random",
+      "oracle_upper_bound"
+    ],
+    "max_tool_calls": [
+      24
+    ],
+    "budgets": [
+      512,
+      1024,
+      2048,
+      4096
+    ],
+    "bm25_file_budgets": [
+      2048,
+      4096,
+      13000,
+      27000
+    ],
+    "prefilter_k": 32,
+    "composed_packets": true
+  }
+}
