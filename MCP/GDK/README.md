@@ -61,6 +61,12 @@ The smoke prints an example compact packet and a receipt using an **explicitly l
 - [`test_lean_context.py`](test_lean_context.py): stdlib regression tests.
 - [`config.example.json`](config.example.json): an illustrative opt-in policy for the future Goose adapter.
 
+## GDK-02 model profiles and epoch-bound capture
+
+[GDK02.md](GDK02.md) provides a local exact-preflight proxy for `inkling-2-mini` (vLLM chat rendering), `bonsai-8b` (1-bit GGUF llama.cpp token counting), and `bonsai-27b` (1-bit GGUF llama.cpp token counting). Each serves its own model and backend context setting. The Rust `--lean-profile` flag probes the sidecar before retrieval, while `--working-set-root` captures MCP-03 context packets as SHA-256-addressed blobs tied to their worktree revision.
+
+Python and Rust integration tests use **scripted** backends. Real checkpoint weights, tokenizer parity and end-task performance require later hardware runs.
+
 ## GDK-01 runtime integration
 
 [GDK01.md](GDK01.md) documents the opt-in Rust `LeanRequestPreparer` and provider-boundary `LeanProvider` added to `MCP/goose_gdk_app`. The provider view omits older user turns while the session remains complete. The byte gate accounts for internal JSON serialization including schemas; model-specific chat-template/tokenizer preflight remains a further milestone. CI tests cover history selection and a rejected request reaching zero HTTP calls.
