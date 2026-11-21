@@ -61,6 +61,10 @@ The smoke prints an example compact packet and a receipt using an **explicitly l
 - [`test_lean_context.py`](test_lean_context.py): stdlib regression tests.
 - [`config.example.json`](config.example.json): an illustrative opt-in policy for the future Goose adapter.
 
+## GDK-01 runtime integration
+
+[GDK01.md](GDK01.md) documents the opt-in Rust `LeanRequestPreparer` and provider-boundary `LeanProvider` added to `MCP/goose_gdk_app`. The provider view omits older user turns while the session remains complete. The byte gate accounts for internal JSON serialization including schemas; model-specific chat-template/tokenizer preflight remains a further milestone. CI tests cover history selection and a rejected request reaching zero HTTP calls.
+
 ## Proposed milestones
 
 1. **GDK-00 (this change)**: freeze packet and phase contracts; baseline tested builder; no changes to Goose runtime.
