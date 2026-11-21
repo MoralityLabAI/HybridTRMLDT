@@ -93,3 +93,15 @@ def test_generator_seed_reproducibly_selects_families(tmp_path):
         def receipts(data):
             return [(r["family"], r["patch_sha256"], r["gold_digest"]) for r in data["gold_receipts"][split]]
         assert receipts(first) == receipts(second)
+
+
+def test_hard_corpus_has_three_verified_target_symbols(tmp_path):
+    out = tmp_path / "hard"
+    manifest = generate(out, seed=137, train=1, dev=1, test=1, difficulty="hard")
+    assert manifest["difficulty"] == "hard"
+    for split, rows in manifest["gold_receipts"].items():
+        assert len(rows) == 1
+        assert len(rows[0]["families"]) == 3
+        assert len(rows[0]["gold_symbols"]) >= 3
+    cfg = json.loads((out / "config_eval.json").read_text(encoding="utf-8"))
+    assert "oracle_upper_bound" in cfg["evaluation"]["controls"]
