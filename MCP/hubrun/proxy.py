@@ -29,8 +29,9 @@ from pathlib import Path
 
 from MCP.mcp02.textutil import digest
 from .packet import compact_messages
+from .mcp04 import PreflightError, WorkingSetError, adaptive_preflight
 
-ARMS = ("raw", "goblin")
+ARMS = ("raw", "goblin", "mcp04")
 STATUS_MARK = "\n__RELAY_STATUS__"
 
 
@@ -65,7 +66,8 @@ def normalize_messages(messages: list[dict]) -> list[dict]:
 class Relay:
     def __init__(self, upstream: str, log_path: Path, via_curl: str | None, max_tokens_cap: int,
                  threshold: int, budget: int, keep_recent: int, per_message_cap: int, timeout: int,
-                 strip_reasoning: bool = True):
+                 strip_reasoning: bool = True, context_window: int = 32768,
+                 completion_reserve: int = 4096, safety_margin: int = 1024):
         self.upstream = upstream.rstrip("/")
         self.strip_reasoning = strip_reasoning
         self.log_path = log_path
@@ -75,6 +77,10 @@ class Relay:
                            "per_message_cap": per_message_cap}
         self.timeout = timeout
         self.lock = threading.Lock()
+        self.mcp04_context = {"context_window": context_window,
+                              "completion_reserve": completion_reserve,
+                              "safety_margin": safety_margin}
+        self.mcp04_store: dict[str, str] = {}
 
     def forward(self, method: str, path: str, body: bytes | None) -> tuple[int, bytes]:
         url = self.upstream + path
@@ -106,6 +112,20 @@ class Relay:
         if arm == "goblin":
             messages, receipt = compact_messages(messages, **self.compaction)
             request["messages"] = messages
+        elif arm == "mcp04":
+            try:
+                request, receipt = adaptive_preflight(
+                    request, self.forward, **self.mcp04_context,
+                    keep_recent=self.compaction["keep_recent"],
+                    packet_budget=self.compaction["budget_tokens"],
+                    store=self.mcp04_store)
+                messages = request["messages"]
+            except (PreflightError, WorkingSetError, ValueError) as exc:
+                err = {"error": {"type": "mcp04_preflight_rejected", "message": str(exc)}}
+                with self.lock, self.log_path.open("a", encoding="utf-8") as fh:
+                    fh.write(json.dumps({"arm": arm, "tag": tag, "status": 422,
+                                         "error": str(exc), "forwarded": False}) + "\n")
+                return 422, json.dumps(err).encode()
         cap = request.get("max_tokens") or request.get("max_completion_tokens")
         if not cap or cap > self.max_tokens_cap:
             request["max_tokens"] = self.max_tokens_cap
@@ -117,11 +137,17 @@ class Relay:
         record = {"ts": round(start, 3), "arm": arm, "tag": tag, "status": status, "latency_s": round(elapsed, 3),
                   "n_messages": len(messages), "request_bytes": len(sent), "request_digest": digest(request),
                   "tools": len(request.get("tools") or []), "compaction": receipt}
+        if arm == "mcp04":
+            record["preflight"] = receipt.get("preflight")
         try:
             data = json.loads(payload)
             usage = data.get("usage") or {}
             choice = (data.get("choices") or [{}])[0]
             message = choice.get("message") or {}
+            if arm == "mcp04" and isinstance(usage.get("prompt_tokens"), int):
+                expected = receipt["preflight"]["prompt_tokens"]
+                record["preflight_vs_provider_delta"] = usage["prompt_tokens"] - expected
+                record["preflight_matches_provider"] = usage["prompt_tokens"] == expected
             record.update({"prompt_tokens": usage.get("prompt_tokens"),
                            "completion_tokens": usage.get("completion_tokens"),
                            "cached_tokens": (usage.get("prompt_tokens_details") or {}).get("cached_tokens"),
@@ -162,8 +188,16 @@ def make_handler(relay: Relay):
         def do_GET(self) -> None:  # noqa: N802
             route = self._route()
             if route is None:
-                return self._send(404, b'{"error":"use /<raw|goblin>/<tag>/v1/..."}')
-            self._send(*relay.forward("GET", route[2], None))
+                return self._send(404, b'{"error":"use /<raw|goblin|mcp04>/<tag>/v1/..."}')
+            arm, _tag, rest = route
+            if arm == "mcp04" and rest.startswith("/v1/working-set/"):
+                from urllib.parse import unquote
+                handle = unquote(rest.removeprefix("/v1/working-set/"))
+                body = relay.mcp04_store.get(handle)
+                if body is None:
+                    return self._send(404, b'{"error":"unknown working-set handle"}')
+                return self._send(200, json.dumps({"handle": handle, "content": body}).encode())
+            self._send(*relay.forward("GET", rest, None))
 
         def do_POST(self) -> None:  # noqa: N802
             route = self._route()
@@ -193,11 +227,16 @@ def main() -> None:
     ap.add_argument("--keep-recent", type=int, default=2)
     ap.add_argument("--per-message-cap", type=int, default=6000)
     ap.add_argument("--timeout", type=int, default=1800)
+    ap.add_argument("--context-window", type=int, default=32768)
+    ap.add_argument("--completion-reserve", type=int, default=4096)
+    ap.add_argument("--safety-margin", type=int, default=1024)
     ap.add_argument("--keep-reasoning", action="store_true",
                     help="return reasoning_content to the client (default: strip it; its length is still logged)")
     args = ap.parse_args()
     relay = Relay(args.upstream, Path(args.log), args.via_curl, args.max_tokens_cap, args.threshold, args.budget,
-                  args.keep_recent, args.per_message_cap, args.timeout, strip_reasoning=not args.keep_reasoning)
+                  args.keep_recent, args.per_message_cap, args.timeout, strip_reasoning=not args.keep_reasoning,
+                  context_window=args.context_window, completion_reserve=args.completion_reserve,
+                  safety_margin=args.safety_margin)
     server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(relay))
     print(json.dumps({"listening": args.port, "upstream": args.upstream, "via_curl": bool(args.via_curl),
                       "compaction": relay.compaction, "max_tokens_cap": args.max_tokens_cap}), flush=True)
