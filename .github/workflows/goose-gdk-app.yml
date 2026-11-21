@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - 'MCP/goose_gdk_app/**'
+      - 'MCP/GDK/**'
       - 'MCP/mcp03/**'
       - '.github/workflows/goose-gdk-app.yml'
   push:
     branches: [master]
     paths:
       - 'MCP/goose_gdk_app/**'
+      - 'MCP/GDK/**'
       - 'MCP/mcp03/**'
       - '.github/workflows/goose-gdk-app.yml'
   workflow_dispatch:
@@ -30,6 +32,9 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: MCP/goose_gdk_app
+      - name: Test GDK-01 provider view and byte preflight
+        working-directory: MCP/goose_gdk_app
+        run: cargo test --locked
       - name: Build goblin-gdk against goose-agent 0.1.0-alpha.14
         working-directory: MCP/goose_gdk_app
         run: cargo build --release --locked || cargo build --release
