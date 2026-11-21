@@ -92,3 +92,46 @@ def test_dual_head_forward_and_fit_cpu_if_torch_available():
     assert torch.isfinite(_utility_listwise_loss(
         torch.tensor([1.0, -1.0]), torch.tensor([0, 0]),
         torch.tensor([0.0, 1.0]), 1))
+
+
+def test_matched_binary_shared_utility_and_shuffled_controls_cpu():
+    torch = pytest.importorskip("torch")
+    from MCP.mcp02.models import Router, RouterPolicy
+    from MCP.mcp02.train import fit
+
+    core = {"arch": "looped", "d": 16, "heads": 4, "passes": 1, "encoder": "match"}
+    obs = {"needs": ["floor drag regression"], "remaining_calls": 6,
+           "candidates": [
+               {"text": "branch engine collision", "struct": [0, 0, 1, 0, 0, 0, 0, 0, 0]},
+               {"text": "symbol speed movement", "struct": [0, 0, 0, 0, 1, 0, 0, 0, 0]},
+           ]}
+    state = {
+        "need": FE.encode_text(" ; ".join(FE.utility_needs(obs)), FE.NEED_TOKENS),
+        "cands": [FE.encode_text(c["text"], FE.CAND_TOKENS) for c in obs["candidates"]],
+        "structs": [c["struct"] for c in obs["candidates"]],
+        "labels": [1, 1], "utilities": [0.3, 0.9],
+    }
+    dataset = {"decide": [dict(state), dict(state)], "rows": [],
+               "meta": {"split": "train", "matched": True}}
+    configs = [
+        dict(core, use_horizon=True),
+        dict(core, single_utility=True),
+        dict(core, utility_heads="expand_read"),
+    ]
+    for config in configs:
+        model = Router(config)
+        assert model.uses_horizon
+        policy = RouterPolicy("test", model, device="cpu")
+        assert len(policy.score(obs)) == 2
+        trained, receipt = fit(config, dataset, epochs=1, lr=0.002,
+                               batch_states=1, device="cpu", seed=9,
+                               threads=1, max_steps=2,
+                               shuffle_utilities_only=bool(config.get("single_utility")),
+                               log=lambda *_: None)
+        assert receipt["steps"] == 2
+        assert receipt["train_states"] == 2
+        assert trained.uses_horizon
+    with pytest.raises(ValueError):
+        fit(dict(core, use_horizon=True), dataset, epochs=1, lr=0.002,
+            batch_states=1, device="cpu", seed=9, threads=1,
+            shuffle_utilities_only=True, max_steps=1, log=lambda *_: None)
