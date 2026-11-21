@@ -30,8 +30,10 @@ https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md
 The model's actual chat-template implementation must use the **same** tool
 schema serialization and beginning/end-of-message tokens as the preflight
 endpoint. Otherwise the raw token count can diverge. On a provider reply,
-the relay records `preflight_vs_provider_delta`, and a nonzero discrepancy is
-a provider-specific contract failure to audit before deployment. If either
+the relay records `preflight_vs_provider_delta`. A nonzero discrepancy
+latches a provider-parity failure and causes subsequent MCP-04 requests to
+return HTTP 422 until the relay is restarted after a corrected server
+template/tokenizer preflight. The first reply remains logged for diagnosis. If either
 endpoint is missing, malformed or unsupported, the new arm returns HTTP 422
 and does not send the chat-completion call.
 
@@ -51,17 +53,40 @@ handles (`mcp04:<sha256>`). A local retrieval endpoint can return it:
 
 `GET /mcp04/<tag>/v1/working-set/mcp04:<sha256>`
 
-The handle store is scoped to the relay task tag and resides in process
+The handle store is scoped to the relay URL tag and resides in process
 memory. Requests using another tag receive a 404 for that handle.
-Restart durability, authorization of tags and cross-machine handle retrieval
-remain future engineering work. Keep the relay on loopback until stronger
-authentication is introduced. "Observed empty" is a tool output fact; it does not
+A tag may cover multiple native evaluation episodes in a campaign, so
+tag isolation is not per-episode authorization. Restart durability,
+episode-level isolation, authentication of tags and cross-machine handle
+retrieval remain future engineering work. Keep the relay on loopback until
+stronger authentication is introduced. "Observed empty" is a tool output fact; it does not
 constitute an LDT certificate for ruling out entire subtrees. Compaction
 refuses unpaired tool calls or missing essential edit anchors/constraints
 at the imposed packet budget. No approximate count grants admission to
 model inference.
 
 ## Regression and replay
+
+A no-inference compatibility probe for the pinned local server is also
+available:
+
+```bash
+python -m MCP.hubrun.preflight_probe --upstream http://127.0.0.1:18127 \
+  --via-curl /mnt/c/Windows/System32/curl.exe \
+  --out /root/hub-overnight/logs/mcp04_preflight.json
+```
+
+It requires a positive observed tool-schema token cost and verifies the
+27,648-token reserved context. The native runner uses fresh proxy ports
+18132/18133, leaving historical 18130/18131 untouched:
+
+```bash
+bash MCP/hubrun/scripts/mcp04_replay.sh smoke
+bash MCP/hubrun/scripts/mcp04_replay.sh full
+```
+
+A complete agent handoff is in
+[`BONSAI27B_REPLAY_AGENT_PROMPT.md`](BONSAI27B_REPLAY_AGENT_PROMPT.md).
 
 Run stdlib contracts on a CPU checkout:
 
