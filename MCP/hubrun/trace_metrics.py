@@ -123,6 +123,7 @@ def event_recon_audit(rows: list[dict]) -> dict:
             seen: Counter[str] = Counter()
             paths: Counter[str] = Counter()
             tool_calls = 0
+            tool_names: Counter[str] = Counter()
             tool_results = 0
             for node in trace["nodes"]:
                 if not isinstance(node, dict):
@@ -140,6 +141,8 @@ def event_recon_audit(rows: list[dict]) -> dict:
                         continue
                     tool_calls += 1
                     name = _call_name(call)
+                    if name:
+                        tool_names[name] += 1
                     if name not in READ_NAMES:
                         continue
                     reads += 1
@@ -159,6 +162,7 @@ def event_recon_audit(rows: list[dict]) -> dict:
                         paths[hashlib.sha256(path.encode()).hexdigest()] += 1
             cases[key] = {
                 "tool_calls": tool_calls, "tool_result_messages": tool_results,
+                "tool_names": dict(sorted(tool_names.items())),
                 "read_file_calls": reads, "read_args_parsed": valid_read_args,
                 "read_args_missing": unparsable_reads,
                 "repeat_exact_requests": (sum(n - 1 for n in seen.values() if n > 1)
@@ -166,8 +170,12 @@ def event_recon_audit(rows: list[dict]) -> dict:
                 "repeat_same_path": (sum(n - 1 for n in paths.values() if n > 1)
                                      if unparsable_reads == 0 and sum(paths.values()) == reads else None),
             }
+    observed_names: Counter[str] = Counter()
+    for case in cases.values():
+        observed_names.update(case["tool_names"])
     summary = {"basis": "event-recon-structured-node-tool-calls", "episodes": len(cases),
-               "errors": errors, "cases": cases}
+               "errors": errors, "tool_name_counts": dict(sorted(observed_names.items())),
+               "cases": cases}
     for metric in ("tool_calls", "tool_result_messages", "read_file_calls", "read_args_parsed",
                    "read_args_missing", "repeat_exact_requests", "repeat_same_path"):
         values = [case[metric] for case in cases.values()]
@@ -218,7 +226,8 @@ def main() -> None:
                                       "goblin_minus_raw": receipt["docedit_pair"]["goblin_minus_raw"]},
                       "event_recon": {a: {"episodes": v["episodes"], "reads": v["read_file_calls_total"],
                                           "exact_repeats": v["repeat_exact_requests_total"],
-                                          "unknown_read_args": v["read_args_missing_total"]}
+                                          "unknown_read_args": v["read_args_missing_total"],
+                                          "tool_names": v["tool_name_counts"]}
                                       for a, v in receipt["event_recon"].items()},
                       "receipt": str(args.out)}, sort_keys=True))
 
