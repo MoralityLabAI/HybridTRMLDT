@@ -16,7 +16,7 @@ from unittest.mock import patch
 from MCP.mcp03.goblin_server import GoblinService
 from MCP.serve import Session
 from .context import WorkingSet
-from .evaluate import episode
+from .evaluate import episode, main as evaluate
 from .gym import ROOT, clone, dump, verifier_manifest
 from .preflight import deduplicate_read_sources, prepare
 
@@ -142,6 +142,31 @@ class Provider(BaseHTTPRequestHandler):
 
 
 class Contracts(unittest.TestCase):
+    def test_gpu_yield_preserves_attempt_but_does_not_score_it(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            cases = root / "cases.json"
+            out = root / "campaign"
+            marker = root / "gpu-yield"
+            dump(cases, [{"id": "fixture"}])
+            argv = ["evaluate", "--cases", str(cases), "--out", str(out),
+                    "--binary", sys.executable, "--arms", "A", "--gpu-yield-file", str(marker)]
+
+            def interrupted(_, case, arm, parent):
+                parent.mkdir(parents=True)
+                dump(parent / "result.json", {"id": case["id"], "arm": arm})
+                marker.touch()
+                return {"id": case["id"], "arm": arm}
+
+            with patch.object(sys, "argv", argv), \
+                    patch("MCP.mcp05.evaluate.episode", side_effect=interrupted):
+                evaluate()
+            self.assertTrue((out / "plan.json").exists())
+            self.assertFalse((out / "summary.json").exists())
+            self.assertFalse((out / "fixture" / "A" / "result.json").exists())
+            archived, = (out / "interrupted" / "gpu-yield").glob("fixture-A-*/result.json")
+            self.assertEqual(json.loads(archived.read_text(encoding="utf-8")), {"id": "fixture", "arm": "A"})
+
     def test_episode_grades_authorized_patch_after_provider_timeout(self):
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)

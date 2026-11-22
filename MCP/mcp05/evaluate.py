@@ -247,6 +247,7 @@ def main():
     parser.add_argument("--iterations", type=int, default=10)
     parser.add_argument("--request-timeout", type=int, default=300)
     parser.add_argument("--episode-timeout", type=int, default=2400)
+    parser.add_argument("--gpu-yield-file", type=Path)
     parser.add_argument("--limit", type=int)
     parser.add_argument("--case-ids", nargs="+")
     parser.add_argument("--json-actions", action="store_true")
@@ -284,6 +285,7 @@ def main():
     if plan_file.exists() and json.loads(plan_file.read_text(encoding="utf-8")) != plan:
         parser.error("output directory contains a different evaluation plan")
     dump(plan_file, plan)
+    yield_file = args.gpu_yield_file
     rows = []
     for case in cases:
         for arm in args.arms:
@@ -293,9 +295,20 @@ def main():
             if (parent / "result.json").exists():
                 result = json.loads((parent / "result.json").read_text(encoding="utf-8"))
             else:
+                if yield_file and yield_file.exists():
+                    print("GPU yielded before the next episode", file=sys.stderr)
+                    return
                 if parent.exists():
                     parent.rename(parent.with_name(f"{arm}-interrupted-{time.time_ns()}"))
                 result = episode(args, case, arm, parent)
+                if yield_file and yield_file.exists():
+                    archive = args.out / "interrupted" / "gpu-yield"
+                    if not parent.resolve().is_relative_to(args.out) or not archive.resolve().is_relative_to(args.out):
+                        raise ValueError("GPU yield attempt and archive must stay in the campaign directory")
+                    archive.mkdir(parents=True, exist_ok=True)
+                    parent.rename(archive / f"{case['id']}-{arm}-{time.time_ns()}")
+                    print("GPU yielded during the episode; saved the unscored attempt", file=sys.stderr)
+                    return
             rows.append(result)
             print(json.dumps({key: result[key] for key in ("id", "arm", "verified", "input_tokens", "output_tokens",
                                                            "parity_failures", "rubric_pass", "error")}), flush=True)

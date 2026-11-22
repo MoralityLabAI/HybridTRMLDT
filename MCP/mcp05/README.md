@@ -67,3 +67,5 @@ In read-only sessions, an exact repeated search after a source read triggers one
 Per-episode receipts record provider prompt and completion tokens, retrieval postings, controller time, repeated reads, invalidated source handles, verifier calls, patch digests and wall time. On a timeout the evaluator recovers completed source reads and verifier calls from the session checkpoint. The summary indicates how many episodes supplied final runtime metrics. Token cost per verified repair includes tokens from failed episodes. A repair result and a localization or rubric result have separate denominators.
 
 Use `--goblin-cwd` to evaluate Goose with a specific checkout of the MCP service. This lets the host-side evaluator change while a matched run retains its chosen source lookup behavior. The alternate checkout path is recorded in the evaluation plan.
+
+For a shared GPU, pass the same local path as `--yield-file` to the guarded CUDA provider and `--gpu-yield-file` to the evaluator. When the scheduler creates that file, the provider stops at a generation boundary and the evaluator archives any interrupted episode outside the scored campaign.
