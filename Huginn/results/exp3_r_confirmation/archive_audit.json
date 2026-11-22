@@ -1,0 +1,316 @@
+{
+  "by_kind": {
+    "factor_early": {
+      "accepted": 9,
+      "full_cases": 0,
+      "total": 32
+    },
+    "factor_late": {
+      "accepted": 21,
+      "full_cases": 2,
+      "total": 32
+    },
+    "remainder_early": {
+      "accepted": 4,
+      "full_cases": 1,
+      "total": 8
+    },
+    "remainder_late": {
+      "accepted": 4,
+      "full_cases": 1,
+      "total": 8
+    },
+    "svd_early": {
+      "accepted": 22,
+      "full_cases": 4,
+      "total": 32
+    },
+    "svd_late": {
+      "accepted": 21,
+      "full_cases": 2,
+      "total": 32
+    }
+  },
+  "candidate_feasibility_posthoc": [
+    {
+      "case": "core1_factor19_early",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 47
+    },
+    {
+      "case": "core1_factor19_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 0,
+      "verification_pass_pool": 84
+    },
+    {
+      "case": "core1_factor26_early",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 17
+    },
+    {
+      "case": "core1_factor26_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 54
+    },
+    {
+      "case": "core1_factor31_early",
+      "four_available_in_pool": false,
+      "pool_size": 512,
+      "selected_passed": 0,
+      "verification_pass_pool": 1
+    },
+    {
+      "case": "core1_factor31_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 1,
+      "verification_pass_pool": 37
+    },
+    {
+      "case": "core1_factor58_early",
+      "four_available_in_pool": false,
+      "pool_size": 512,
+      "selected_passed": 0,
+      "verification_pass_pool": 0
+    },
+    {
+      "case": "core1_factor58_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 84
+    },
+    {
+      "case": "core1_remainder_early",
+      "four_available_in_pool": true,
+      "pool_size": 32,
+      "selected_passed": 4,
+      "verification_pass_pool": 32
+    },
+    {
+      "case": "core1_remainder_late",
+      "four_available_in_pool": true,
+      "pool_size": 32,
+      "selected_passed": 4,
+      "verification_pass_pool": 32
+    },
+    {
+      "case": "core1_svd0_early",
+      "four_available_in_pool": false,
+      "pool_size": 512,
+      "selected_passed": 0,
+      "verification_pass_pool": 0
+    },
+    {
+      "case": "core1_svd0_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 2,
+      "verification_pass_pool": 47
+    },
+    {
+      "case": "core1_svd15_early",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 6
+    },
+    {
+      "case": "core1_svd15_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 1,
+      "verification_pass_pool": 39
+    },
+    {
+      "case": "core1_svd29_early",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 16
+    },
+    {
+      "case": "core1_svd29_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 31
+    },
+    {
+      "case": "core1_svd2_early",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 4,
+      "verification_pass_pool": 141
+    },
+    {
+      "case": "core1_svd2_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 4,
+      "verification_pass_pool": 48
+    },
+    {
+      "case": "core3_factor17_early",
+      "four_available_in_pool": false,
+      "pool_size": 512,
+      "selected_passed": 0,
+      "verification_pass_pool": 0
+    },
+    {
+      "case": "core3_factor17_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 4,
+      "verification_pass_pool": 19
+    },
+    {
+      "case": "core3_factor1_early",
+      "four_available_in_pool": false,
+      "pool_size": 512,
+      "selected_passed": 0,
+      "verification_pass_pool": 0
+    },
+    {
+      "case": "core3_factor1_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 4
+    },
+    {
+      "case": "core3_factor44_early",
+      "four_available_in_pool": false,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 3
+    },
+    {
+      "case": "core3_factor44_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 12
+    },
+    {
+      "case": "core3_factor60_early",
+      "four_available_in_pool": false,
+      "pool_size": 512,
+      "selected_passed": 0,
+      "verification_pass_pool": 0
+    },
+    {
+      "case": "core3_factor60_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 4,
+      "verification_pass_pool": 7
+    },
+    {
+      "case": "core3_remainder_early",
+      "four_available_in_pool": false,
+      "pool_size": 32,
+      "selected_passed": 0,
+      "verification_pass_pool": 0
+    },
+    {
+      "case": "core3_remainder_late",
+      "four_available_in_pool": false,
+      "pool_size": 32,
+      "selected_passed": 0,
+      "verification_pass_pool": 0
+    },
+    {
+      "case": "core3_svd0_early",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 4,
+      "verification_pass_pool": 6
+    },
+    {
+      "case": "core3_svd0_late",
+      "four_available_in_pool": false,
+      "pool_size": 512,
+      "selected_passed": 1,
+      "verification_pass_pool": 2
+    },
+    {
+      "case": "core3_svd1_early",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 4,
+      "verification_pass_pool": 4
+    },
+    {
+      "case": "core3_svd1_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 5
+    },
+    {
+      "case": "core3_svd2_early",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 4,
+      "verification_pass_pool": 20
+    },
+    {
+      "case": "core3_svd2_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 4,
+      "verification_pass_pool": 67
+    },
+    {
+      "case": "core3_svd4_early",
+      "four_available_in_pool": false,
+      "pool_size": 512,
+      "selected_passed": 0,
+      "verification_pass_pool": 1
+    },
+    {
+      "case": "core3_svd4_late",
+      "four_available_in_pool": true,
+      "pool_size": 512,
+      "selected_passed": 3,
+      "verification_pass_pool": 31
+    }
+  ],
+  "provenance": {
+    "calibration_norms_sha256": "cf01f347a90e4d4cc24a4e503159c986957cebae20b3a4da7b65afdd3e1da585",
+    "calibration_sha256": "9ab50b63ed04657b6b69c5ae76237a53d67fecc5584c4e776fb4c2f37d489d8d",
+    "factor_sha256": "86f90a1c9403240e4f69fdfad1f9f88a2410a85edfb2cfef2302fc74959f4a50",
+    "model": "tomg-group-umd/huginn-0125",
+    "model_revision": "bb6621b65e90b6a4b9b29ef88dc83866d450470c",
+    "registration_generated_programs_sha256": "818312e22ac48361371fe1d553cd44f0a45acd2667859f0f325a91f3a931f165"
+  },
+  "recomputed": {
+    "candidate_pool_cases_with_fewer_than_four": 11,
+    "candidate_pool_cases_with_four_or_more_oracle_feasible": 25,
+    "fully_matched_cases": 10,
+    "max_abs_saved_candidate_quantile_discrepancy": 0.0,
+    "p10_only_failures_among_selected_factor_controls": 17,
+    "selected_controls_passed": 81,
+    "selected_controls_total": 144,
+    "selected_verification_norm_samples": 414720,
+    "total_cases": 36,
+    "window_pairs_reusing_same_four_control_ids": 0,
+    "window_pairs_total": 18
+  },
+  "status": "retrospective_archive_audit_only",
+  "warnings": [
+    "Oracle feasibility inspects verification labels and cannot authorize new confirmation.",
+    "Earlier early/late control pools use different seeds and sampled directions. A new temporal estimand should reuse one matrix across windows.",
+    "Saved per-control norms cannot reproduce input covariance or causally test factor ablations.",
+    "The old calibration verification partition has been inspected; use a fresh calibration split before prospective acceptance."
+  ]
+}

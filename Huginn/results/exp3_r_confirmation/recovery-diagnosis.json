@@ -1,0 +1,39 @@
+{
+  "controls_npz_sha256": "abfae19211f55f0092ef470a786e64acb901ee4f4ad8beec903b4fb149768cb2",
+  "fixed_only": "1e-8 relative norm equality of float32 original u vs float64 orthogonal write u relaxed to float32-roundoff-scale 1e-6; preregistered p10/p50/p90 15%, p95 25% unchanged",
+  "original_factor_sha256": "86f90a1c9403240e4f69fdfad1f9f88a2410a85edfb2cfef2302fc74959f4a50",
+  "original_r_receipt_exists": false,
+  "original_w_all_selected_and_verified_quantiles_pass": true,
+  "original_w_mismatched_construction_checks": {
+    "core1_factor19": [
+      "control 0 has different immediate write norm",
+      "control 1 has different immediate write norm",
+      "control 2 has different immediate write norm",
+      "control 3 has different immediate write norm"
+    ],
+    "core1_factor26": [
+      "control 0 has different immediate write norm",
+      "control 1 has different immediate write norm",
+      "control 2 has different immediate write norm",
+      "control 3 has different immediate write norm"
+    ],
+    "core1_factor58": [
+      "control 0 has different immediate write norm",
+      "control 1 has different immediate write norm",
+      "control 2 has different immediate write norm",
+      "control 3 has different immediate write norm"
+    ],
+    "core3_factor60": [
+      "control 0 has different immediate write norm",
+      "control 1 has different immediate write norm",
+      "control 2 has different immediate write norm",
+      "control 3 has different immediate write norm"
+    ]
+  },
+  "original_w_receipt_sha256": "462dae2b7aba3722e8d399c23be35add1686e2ebd5d036f91feb756eaca38da7",
+  "original_w_status": "STOP",
+  "source_job": "974557304808",
+  "source_manifest_sha256": "9b85edd57893b35e310f75a1d02cbdcf9e79ee430a8486d9069db3a86f496a0c",
+  "states_npz_sha256": "71745c9dbee968b2c6f3c3cbab2b104db631af28dfb5901a16d190adfaa55e0a",
+  "status": "instrument_numerical_check_repaired"
+}

@@ -1,0 +1,119 @@
+{
+  "checks": {
+    "factor": {
+      "bytes": 22095250,
+      "sha256": "86f90a1c9403240e4f69fdfad1f9f88a2410a85edfb2cfef2302fc74959f4a50"
+    },
+    "instrument": {
+      "bytes": 38713,
+      "sha256": "3847f0fec6ba0975ce42d7341fdf2d26586bbc8ceebb5b834145a4d6f1e334f2"
+    },
+    "new_programs": {
+      "bytes": 170940,
+      "sha256": "fd21fb7d63aa4b441b67df1da8e699624a763561537f108e77b0065552a00309"
+    },
+    "old_programs": {
+      "bytes": 673006,
+      "sha256": "818312e22ac48361371fe1d553cd44f0a45acd2667859f0f325a91f3a931f165"
+    }
+  },
+  "cpu_tests": [
+    "----------------------------------------------------------------------",
+    "Ran 17 tests in 0.745s",
+    "",
+    "OK"
+  ],
+  "elapsed_seconds": 278.42569588599997,
+  "model": "tomg-group-umd/huginn-0125",
+  "model_cache_relative": ".cache/huginn/model",
+  "model_files": {
+    "config.json": {
+      "bytes": 1447,
+      "cached": false,
+      "sha256": "e9fe79df06a783ca33a76038c59a715b6a62f15c4a5b17b9681e697fea46c79c"
+    },
+    "generation_config.json": {
+      "bytes": 178,
+      "cached": false,
+      "sha256": "3ed2b71c39d566df6ab667a2b843322cbafd2dd7dace7a27bc39dc7c3c3627ee"
+    },
+    "model-00001-of-00004.safetensors": {
+      "bytes": 4771970936,
+      "cached": false,
+      "sha256": "5b461584b74249e87eabec34b59a13e188791dd8a7ccf2c7be95bb7fa8383e43"
+    },
+    "model-00002-of-00004.safetensors": {
+      "bytes": 4744780096,
+      "cached": false,
+      "sha256": "44bac332b204abb687b2820eb0fadcb5795fdb0cfc06b3b6f2ac5241eec5c591"
+    },
+    "model-00003-of-00004.safetensors": {
+      "bytes": 4744737616,
+      "cached": false,
+      "sha256": "07160dce9da01918d0b0bf2159ffe11d007e1fbe661d687ad4a7b0e65bde4e84"
+    },
+    "model-00004-of-00004.safetensors": {
+      "bytes": 1384120448,
+      "cached": false,
+      "sha256": "40ce4f159938857dbbfa1020962045e1b96303ff902cfa76051ce54d2d51dea4"
+    },
+    "model.safetensors.index.json": {
+      "bytes": 6188,
+      "cached": false,
+      "sha256": "a28061573e97ba3645b482c11d82ba903b40942de0113472b30afb5a3cf4c1eb"
+    },
+    "raven_config_minimal.py": {
+      "bytes": 3913,
+      "cached": false,
+      "sha256": "36a39939e76dc9e8f7563187c6498e012ca7f64a3d86b32ff1daa7f4c41a4278"
+    },
+    "raven_modeling_minimal.py": {
+      "bytes": 88021,
+      "cached": false,
+      "sha256": "a1d447da93c605a6dc11fbc17cbc7185663f4a41ae12335b34b5847edf0f84aa"
+    },
+    "special_tokens_map.json": {
+      "bytes": 435,
+      "cached": false,
+      "sha256": "1291ad5fcb7b7628c3885a2d973f165d006cb87530ca368db90374dc9942224e"
+    },
+    "tokenizer.json": {
+      "bytes": 2726482,
+      "cached": false,
+      "sha256": "9cc201a5061b70aba0d227ef9766fcfe21e0989e0c0ba442b4d7732c4de12308"
+    },
+    "tokenizer_config.json": {
+      "bytes": 6624,
+      "cached": false,
+      "sha256": "ff9e171e16f200e7865c27fa38e661722848ab665af1610d5bb2b62502d6cdcf"
+    }
+  },
+  "model_revision": "bb6621b65e90b6a4b9b29ef88dc83866d450470c",
+  "new_split_counts": {
+    "confirmation": 480,
+    "selection": 120,
+    "verification": 120
+  },
+  "new_split_hashes_sha256": "2bf15817ba5036c4fd7085f309265dca485a9524866ab33973f7e6d1a60a982f",
+  "old_audit_recomputed": {
+    "candidate_pool_cases_with_fewer_than_four": 11,
+    "candidate_pool_cases_with_four_or_more_oracle_feasible": 25,
+    "fully_matched_cases": 10,
+    "max_abs_saved_candidate_quantile_discrepancy": 0.0,
+    "p10_only_failures_among_selected_factor_controls": 17,
+    "selected_controls_passed": 81,
+    "selected_controls_total": 144,
+    "selected_verification_norm_samples": 414720,
+    "total_cases": 36,
+    "window_pairs_reusing_same_four_control_ids": 0,
+    "window_pairs_total": 18
+  },
+  "old_calibration_analysis_sha256": "09fa851c586e1430d0b652f588dec76477540da3e028a5df19f04d8dc6e4f73e",
+  "old_calibration_sha256": "9ab50b63ed04657b6b69c5ae76237a53d67fecc5584c4e776fb4c2f37d489d8d",
+  "old_confirmation_deck_source_only": true,
+  "old_norms_sha256": "cf01f347a90e4d4cc24a4e503159c986957cebae20b3a4da7b65afdd3e1da585",
+  "old_pilot_source_hashes_subset_of_pilot": true,
+  "prior_eid": "exp_01m6qn9g9sevsrc0mzszsna4gq",
+  "source_pr_commit": "c86481508971987ffef78fc1846b44b7b0180b59",
+  "status": "recovered"
+}
