@@ -137,13 +137,16 @@ class CodeEnv:
             prefix = d + "/" if d else ""
             self._dir_files[d] = [p for p in self.snapshot.files if p.startswith(prefix)]
         for path, table in self.snapshot.symbols.items():
-            top = [s for s in table if s.kind in ("class", "function")]
+            top = [s for s in table if s.kind in ("class", "function", "section")]
             self._children["f:" + path] = [("s", "s:" + s.uri) for s in top]
+            structured = any(s.kind == "section" for s in top)
             for s in table:
                 if s.kind == "class":
                     self._children["s:" + s.uri] = [("s", "s:" + m.uri) for m in table
                                                     if m.kind == "method" and m.qualname.startswith(s.qualname + ".")
                                                     and m.qualname.count(".") == s.qualname.count(".") + 1]
+                elif s.kind == "module" and structured:
+                    self._children["s:" + s.uri] = self._children["f:" + path]
 
     def files_under(self, node: str) -> list[str]:
         if node.startswith("d:"):

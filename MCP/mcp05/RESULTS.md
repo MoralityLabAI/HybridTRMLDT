@@ -68,3 +68,7 @@ The SWE-bench Lite test data was pinned at revision `b0dde1093fe417d83b7184254ed
 | `pallets__flask-4992` | 0/1 passed | 1/1 passed | 18/18 passed |
 
 These rows establish the Windows grading controls. Agent-produced patches are graded separately. Ubuntu's WSL disk could not attach because Windows reported a sharing violation, leaving the container-based SWE-bench grader pending.
+
+## Storyworld JSON section lookup
+
+The 5.4 GB CUDA agent spent several calls paging through the 163-line Tiny Diplomacy JSON fixture. The JSON index returned `/nodes` first for “nodes terminal id” and `/rules/outcomes` first for “rules outcomes terminal node.” The two sections covered 24 and 15 source lines respectively. In a replay of the earlier verified edits, changing `/nodes` invalidated the old outcomes handle. Reading `/rules/outcomes` again found its shifted lines, and the independent verifier passed with the same patch digest as the earlier rollout. This replay measured lookup and edit anchoring with known edits. A fresh model run is needed to measure the impact on repair success and token cost.

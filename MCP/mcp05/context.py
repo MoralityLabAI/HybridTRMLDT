@@ -7,6 +7,7 @@ from pathlib import Path
 
 from MCP.mcp03.env import CodeEnv, PREDICATES, code_tokens
 from MCP.mcp03.repo import SKIP_DIRS, Snapshot, Symbol, parse_symbols
+from .json_sections import sections
 
 TEXT_SUFFIXES = {".py", ".rs", ".js", ".ts", ".tsx", ".jsx", ".json", ".md", ".toml",
                  ".yaml", ".yml", ".txt", ".cu", ".cpp", ".c", ".h", ".html", ".css"}
@@ -73,9 +74,14 @@ class WorkingSet:
             source = raw.decode("utf-8", errors="replace")
             snapshot.files[rel] = sha(raw)
             snapshot.sources[rel] = source
-            snapshot.symbols[rel] = (
-                parse_symbols(rel, source) if path.suffix.lower() == ".py" else
-                [Symbol(rel, "<module>", "module", 1, max(1, len(source.splitlines())), "", "")])
+            suffix = path.suffix.lower()
+            if suffix == ".py":
+                snapshot.symbols[rel] = parse_symbols(rel, source)
+            else:
+                module = Symbol(rel, "<module>", "module", 1, max(1, len(source.splitlines())), "", "")
+                snapshot.symbols[rel] = [module]
+                if suffix == ".json":
+                    snapshot.symbols[rel].extend(sections(rel, source))
         if identity != inventory(self.root):
             raise ValueError("working tree changed during indexing; retry")
         snapshot.commit = sha(repr(sorted(snapshot.files.items())).encode())
@@ -94,7 +100,7 @@ class WorkingSet:
         before = env.index.operations
         rows = env.index.search(query)
         self.postings += env.index.operations - before
-        # Non-Python files have module-only symbols. Search whole-file identifiers too.
+        # Whole-file identifiers remain searchable alongside structural sections.
         if any(Path(path).suffix.lower() != ".py" for path in env.snapshot.files):
             before = env.file_index.operations
             other = [(score, uri) for score, uri in env.file_index.search(query)

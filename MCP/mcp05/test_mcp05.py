@@ -13,6 +13,7 @@ from pathlib import Path
 
 from MCP.mcp03.goblin_server import GoblinService
 from MCP.serve import Session
+from .context import WorkingSet
 from .gym import ROOT, clone, dump, verifier_manifest
 from .preflight import prepare
 
@@ -103,6 +104,31 @@ class Provider(BaseHTTPRequestHandler):
 
 
 class Contracts(unittest.TestCase):
+    def test_json_sections_use_current_exact_source_lines(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            path = root / "world.json"
+            source = json.dumps({
+                "nodes": [{"id": "accord_end"}],
+                "rules": {"outcomes": {"victory": "accord_end"}, "event/name~alias": {"enabled": True}},
+            }, indent=2)
+            path.write_bytes(source.replace("\n", "\r\n").encode())
+            working = WorkingSet(root)
+            uri = "world.json::/rules/outcomes"
+            found = working.query("rules outcomes victory")["candidates"]
+            self.assertIn(uri, {row["uri"] for row in found})
+            expanded = working.expand("s:world.json")["children"]
+            self.assertIn("world.json::/rules/event~1name~0alias", {row["uri"] for row in expanded})
+            current = working.read(uri=uri)
+            self.assertEqual(current["source"], '    "outcomes": {\n      "victory": "accord_end"\n    },')
+            self.assertEqual(current["source"], "\n".join(source.splitlines()[current["start"] - 1:current["end"]]))
+            self.assertEqual(working.read(uri="world.json")["start"], 1)
+            path.write_bytes(b'{"rules":')
+            with self.assertRaisesRegex(ValueError, "stale"):
+                working.read(handle=current["handle"])
+            self.assertEqual(working.read(uri="world.json")["source"], '{"rules":')
+            self.assertNotIn(uri, {row["uri"] for row in working.query("rules outcomes")["candidates"]})
+
     def test_exact_compaction_preserves_recent_tool_pair(self):
         def forward(_, path, raw):
             request = json.loads(raw)
