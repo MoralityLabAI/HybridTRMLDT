@@ -31,7 +31,7 @@ from MCP.mcp02.textutil import digest
 from .packet import compact_messages
 from .mcp04 import PreflightError, WorkingSetError, adaptive_preflight, exact_preflight, typed_packet
 
-ARMS = ("raw", "goblin", "mcp04")
+ARMS = ("raw", "goblin", "mcp04", "mcp05")
 STATUS_MARK = "\n__RELAY_STATUS__"
 
 
@@ -106,7 +106,7 @@ class Relay:
             return 502, json.dumps({"error": {"message": f"relay: {exc}"}}).encode()
 
     def chat(self, arm: str, tag: str, body: bytes) -> tuple[int, bytes]:
-        if arm == "mcp04" and self.mcp04_parity_failure:
+        if arm in ("mcp04", "mcp05") and self.mcp04_parity_failure:
             return 422, json.dumps({"error": {
                 "type": "mcp04_template_parity_failed",
                 "message": self.mcp04_parity_failure}}).encode()
@@ -118,16 +118,16 @@ class Relay:
         if arm == "goblin":
             messages, receipt = compact_messages(messages, **self.compaction)
             request["messages"] = messages
-        elif arm == "mcp04":
+        elif arm in ("mcp04", "mcp05"):
             try:
                 request, receipt = adaptive_preflight(
                     request, self.forward, **self.mcp04_context,
                     keep_recent=self.compaction["keep_recent"],
                     packet_budget=self.compaction["budget_tokens"],
-                    store=self.mcp04_store.setdefault(tag, {}))
+                    store=self.mcp04_store.setdefault(tag, {}), policy=arm)
                 messages = request["messages"]
             except (PreflightError, WorkingSetError, ValueError) as exc:
-                err = {"error": {"type": "mcp04_preflight_rejected", "message": str(exc)}}
+                err = {"error": {"type": f"{arm}_preflight_rejected", "message": str(exc)}}
                 with self.lock, self.log_path.open("a", encoding="utf-8") as fh:
                     fh.write(json.dumps({"arm": arm, "tag": tag, "status": 422,
                                          "error": str(exc), "forwarded": False}) + "\n")
@@ -140,13 +140,13 @@ class Relay:
         start = time.time()
         status, payload = self.forward("POST", "/v1/chat/completions", sent)
         retry_failure = None
-        if arm == "mcp04" and status in (400, 413, 422):
+        if arm in ("mcp04", "mcp05") and status in (400, 413, 422):
             lower = payload.decode("utf-8", errors="replace").lower()
             if any(t in lower for t in ("context", "too many tokens", "exceed_context_size")):
                 try:
                     shorter, compact_receipt = typed_packet(
                         original_messages, budget_tokens=min(self.compaction["budget_tokens"], 900),
-                        keep_recent=1, store=self.mcp04_store.setdefault(tag, {}))
+                        keep_recent=1, store=self.mcp04_store.setdefault(tag, {}), policy=arm)
                     retry_request = dict(request, messages=shorter)
                     retry_preflight = exact_preflight(self.forward, retry_request, **self.mcp04_context)
                     if not retry_preflight["fits"]:
@@ -163,7 +163,7 @@ class Relay:
         record = {"ts": round(start, 3), "arm": arm, "tag": tag, "status": status, "latency_s": round(elapsed, 3),
                   "n_messages": len(messages), "request_bytes": len(sent), "request_digest": digest(request),
                   "tools": len(request.get("tools") or []), "compaction": receipt}
-        if arm == "mcp04":
+        if arm in ("mcp04", "mcp05"):
             record["preflight"] = receipt.get("preflight")
             record["retry_failure"] = retry_failure
             record["retried_after_context_error"] = receipt.get("retried_after_provider_context_error", False)
@@ -172,7 +172,7 @@ class Relay:
             usage = data.get("usage") or {}
             choice = (data.get("choices") or [{}])[0]
             message = choice.get("message") or {}
-            if arm == "mcp04" and isinstance(usage.get("prompt_tokens"), int):
+            if arm in ("mcp04", "mcp05") and isinstance(usage.get("prompt_tokens"), int):
                 expected = receipt["preflight"]["prompt_tokens"]
                 record["preflight_vs_provider_delta"] = usage["prompt_tokens"] - expected
                 record["preflight_matches_provider"] = usage["prompt_tokens"] == expected
@@ -224,7 +224,7 @@ def make_handler(relay: Relay):
             if route is None:
                 return self._send(404, b'{"error":"use /<raw|goblin|mcp04>/<tag>/v1/..."}')
             arm, _tag, rest = route
-            if arm == "mcp04" and rest.startswith("/v1/working-set/"):
+            if arm in ("mcp04", "mcp05") and rest.startswith("/v1/working-set/"):
                 from urllib.parse import unquote
                 handle = unquote(rest.removeprefix("/v1/working-set/"))
                 body = relay.mcp04_store.get(_tag, {}).get(handle)

@@ -19,6 +19,7 @@ import re
 from typing import Any, Callable
 
 from .packet import _content_text, _split_regions, estimate_tokens
+from .attention import explicit_empty_result, observe_read, rank_read_atoms
 
 class PreflightError(RuntimeError):
     """Refuse to forward when the real applied template cannot be measured."""
@@ -140,7 +141,7 @@ _EMPTY = re.compile(r"\b(?:no matches?|no results?|0 results?|not found)\b", re.
 
 
 def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent: int = 2,
-                 store: dict[str, str] | None = None) -> tuple[list[dict], dict]:
+                 store: dict[str, str] | None = None, policy: str = "mcp04") -> tuple[list[dict], dict]:
     """Build an episode working-set packet from complete history.
 
     Every older assistant tool call must be followed by its result before it
@@ -149,6 +150,8 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
     """
     if budget_tokens < 200 or keep_recent < 1:
         raise ValueError("bad packet budget or recent-turn count")
+    if policy not in ("mcp04", "mcp05"):
+        raise ValueError("unknown typed working-set policy")
     if store is None:
         store = {}
     head_end, tail_start = _split_regions(messages, keep_recent)
@@ -158,8 +161,11 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
     calls: dict[str, dict] = {}
     edits: list[str] = []
     user_constraints: list[str] = []
-    reads: dict[str, str] = {}
-    empty: list[str] = []
+    reads: dict = {}
+    legacy_reads: dict[str, str] = {}
+    legacy_empty: list[str] = []
+    edit_epochs: dict[str, int] = {}
+    edit_paths: set[str] = set()
     n_tools = 0
     for m in middle:
         role = m.get("role")
@@ -200,10 +206,24 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
             edits.append(f"{name}({path}) result={status} args_sha={_hash(original_args)[:16]} "
                          f"args_handle={args_handle} result_handle={handle} "
                          f"anchor={site or '(unavailable)'}")
+            edit_paths.add(path)
+            if status == "returned":
+                edit_epochs[path] = edit_epochs.get(path, 0) + 1
         elif _READ.search(name):
-            reads[path] = f"{name}({path}) {status} handle={handle}"
-            if _EMPTY.search(body):
-                empty.append(f"observed-empty {name}({path}) handle={handle}")
+            if policy == "mcp04":
+                legacy_reads[path] = f"{name}({path}) {status} handle={handle}"
+                if _EMPTY.search(body):
+                    legacy_empty.append(f"observed-empty {name}({path}) handle={handle}")
+            else:
+                observe_read(reads, name=name, path=path, args=args, handle=handle,
+                             status=status, is_empty=(status == "returned" and explicit_empty_result(body)),
+                             step=n_tools, local_epoch=edit_epochs.get(path, 0))
+    pinned_empty, ranked_reads = (rank_read_atoms(
+        reads.values(),
+        task_text="\n".join(_content_text(m) for m in head if m.get("role") == "user"),
+        tail_text="\n".join(_content_text(m) for m in tail),
+        edit_paths=edit_paths,
+    ) if policy == "mcp05" else ([], []))
     # A later user instruction is essential mutable state, retained in full.
     task_constraints = "\n".join(user_constraints)
     essential = [
@@ -214,12 +234,21 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
         "Applied edit calls and exact available anchors (chronological):",
         "\n".join(edits) if edits else "(none)",
     ]
+    if policy == "mcp05":
+        essential.extend([
+            "Historical observed-empty reads (not LDT certificates; never permission to prune):",
+            "\n".join(a.line() for a in pinned_empty) if pinned_empty else "(none)",
+        ])
     base = "\n".join(essential)
     if estimate_tokens(base) > budget_tokens:
         raise WorkingSetError("user constraints or edit anchors exceed bounded packet; preserve raw history")
-    optional = ["Observed empty queries (not certified irrelevant):"] + (empty or ["(none)"])
-    optional += ["Recent read handles (full text recoverable):"]
-    optional += list(reads.values())[::-1] or ["(none)"]
+    if policy == "mcp04":
+        optional = ["Observed empty queries (not certified irrelevant):"] + (legacy_empty or ["(none)"])
+        optional += ["Recent read handles (full text recoverable):"]
+        optional += list(legacy_reads.values())[::-1] or ["(none)"]
+    else:
+        optional = ["Attention-ranked read handles (full text recoverable):"]
+        optional += [a.line() for a in ranked_reads] or ["(none)"]
     optional += [f"Archived paired tool calls: {n_tools}",
                  "Keep original task and recent turns authoritative; validate edit anchors against current source."]
     packet = base
@@ -230,13 +259,15 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
     new_messages = [*head, {"role": "user", "content": packet}, *tail]
     return new_messages, {
         "compacted": True,
-        "method": "typed-working-set",
+        "method": "typed-working-set" if policy == "mcp04" else "typed-working-set-ecan",
         "archive_messages": len(middle),
         "recent_turns_kept": keep_recent,
         "archive_paired_calls": n_tools,
         "archive_edit_calls": len(edits),
-        "read_handles": len(reads),
-        "observed_empty_queries": len(empty),
+        "read_handles": len(legacy_reads) if policy == "mcp04" else len(reads),
+        "observed_empty_queries": len(legacy_empty) if policy == "mcp04" else len(pinned_empty),
+        **({"attention_ranked_reads": len(ranked_reads),
+            "pinned_negative_atoms": len(pinned_empty)} if policy == "mcp05" else {}),
         "durable_user_constraints": len(user_constraints),
         "packet_tokens_est": estimate_tokens(packet),
         "packet_sha256": _hash(packet),
@@ -247,7 +278,8 @@ def adaptive_preflight(
     request: dict, forward: Callable[[str, str, bytes], tuple[int, bytes]],
     *, context_window: int = 32768, completion_reserve: int = 4096,
     safety_margin: int = 1024, keep_recent: int = 2,
-    packet_budget: int = 1800, store: dict[str, str] | None = None
+    packet_budget: int = 1800, store: dict[str, str] | None = None,
+    policy: str = "mcp04",
 ) -> tuple[dict, dict]:
     """Raw-first preflight; compress closed history only when the exact prompt exceeds limit."""
     request = dict(request)
@@ -261,7 +293,7 @@ def adaptive_preflight(
                            (1, min(500, packet_budget))):
         try:
             messages, receipt = typed_packet(request["messages"], budget_tokens=budget,
-                                             keep_recent=recent, store=store)
+                                             keep_recent=recent, store=store, policy=policy)
             candidate = dict(request, messages=messages)
             measured = exact_preflight(forward, candidate, context_window=context_window,
                                        completion_reserve=completion_reserve, safety_margin=safety_margin)
