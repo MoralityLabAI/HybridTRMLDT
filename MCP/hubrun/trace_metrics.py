@@ -164,7 +164,7 @@ def event_recon_audit(rows: list[dict]) -> dict:
                 "repeat_exact_requests": (sum(n - 1 for n in seen.values() if n > 1)
                                           if unparsable_reads == 0 else None),
                 "repeat_same_path": (sum(n - 1 for n in paths.values() if n > 1)
-                                     if unparsable_reads == 0 and len(paths) == reads else None),
+                                     if unparsable_reads == 0 and sum(paths.values()) == reads else None),
             }
     summary = {"basis": "event-recon-structured-node-tool-calls", "episodes": len(cases),
                "errors": errors, "cases": cases}
