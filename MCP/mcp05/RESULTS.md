@@ -97,4 +97,8 @@ Score the existing automated rubric and review the final answer against the froz
 
 The recurrent CUDA RAM-training arm tried to expand `s:RU02_MATCHED_RESULTS.md`, read the report successfully, and retried the same failed expansion. It continued issuing lookup calls and timed out at 1,200.4 seconds with no final answer. Its nine completed inference calls used 39,291 provider tokens with exact preflight parity. The automated rubric scored 0/8, and there was no final answer to review.
 
-A deterministic native-tool replay tested the failed-expansion sequence. Goose returned the collected evidence to an answer-only turn on the exact retry. A lookup with a different cursor remained eligible. The matched read-only model follow-up is queued on the isolated build.
+The raw RAM-training arm resumed with the optimized DSpark server. It read the same RU02 report and ended with “I'll inspect the repository for the RU02 results and related files.” It used 7,924 provider tokens over four calls with exact preflight parity, and both the automated rubric and the source-grounded review found no proposed experiment. This pair spans two runtime revisions and both replies scored 0/8.
+
+The optimized CUDA server stopped at the first text frame after a tool response. A deterministic frame replay reproduced the truncation when a valid tool call followed a preamble. CUDA commit `c9c0fa8` waits for a complete tool call or end-of-generation when tools are declared. That replay verifies the transport fix. The live research follow-up will test the revised app and CUDA server together.
+
+A deterministic native-tool replay tested the failed-expansion sequence. Goose returned the collected evidence to an answer-only turn on the exact retry. A lookup with a different cursor remained eligible. The read-only model follow-up is queued for both raw and recurrent arms on the isolated build.
