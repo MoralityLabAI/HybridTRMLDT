@@ -292,6 +292,8 @@ class Contracts(unittest.TestCase):
                     self.assertEqual(observations["state"]["invalidated_handles"], 1)
                     self.assertEqual(observations["state"]["verifier_calls"], 1)
                     self.assertTrue(all(x["provider_preflight_parity"] for x in observations["preflight"]))
+                    for call in observations["preflight"]:
+                        self.assertGreaterEqual(call["provider_seconds"], 0)
                     self.assertEqual(observations["provider_output_tokens"], 115)
                     observed = observations["session"]["receipts"]
                     self.assertTrue(observed[3]["error"])

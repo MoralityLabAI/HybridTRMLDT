@@ -104,7 +104,9 @@ def main():
                 measured, receipt = prepare(forward, request, window=args.window, reserve=args.reserve,
                                            budget=args.budget, memory=args.memory)
                 receipt["preflight_seconds"] = time.monotonic() - started
+                provider_started = time.monotonic()
                 status, raw = forward("POST", chat_path, json.dumps(measured, ensure_ascii=False).encode())
+                receipt["provider_seconds"] = time.monotonic() - provider_started
                 if status == 200:
                     usage = json.loads(raw).get("usage") or {}
                     reported = usage.get("prompt_tokens")
