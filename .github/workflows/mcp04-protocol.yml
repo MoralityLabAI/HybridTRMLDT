@@ -6,6 +6,7 @@ on:
       - 'MCP/hubrun/**'
       - 'MCP/test_mcp04.py'
       - 'MCP/test_mcp05_attention.py'
+      - 'MCP/test_mcp05_replay.py'
       - '.github/workflows/mcp04-protocol.yml'
   workflow_dispatch:
 
@@ -34,7 +35,7 @@ jobs:
       - name: Strict template, numeric count, edit-state and relay tests
         run: |
           set -o pipefail
-          python -m pytest -q MCP/test_mcp05_attention.py MCP/test_mcp04.py MCP/test_hubrun.py | tee /tmp/mcp04-protocol-tests.txt
+          python -m pytest -q MCP/test_mcp05_attention.py MCP/test_mcp05_replay.py MCP/test_mcp04.py MCP/test_hubrun.py | tee /tmp/mcp04-protocol-tests.txt
       - name: Save CPU-only test receipt
         if: always()
         uses: actions/upload-artifact@v4
