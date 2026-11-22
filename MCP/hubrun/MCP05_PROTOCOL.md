@@ -1,6 +1,6 @@
 # MCP-05: ECAN-inspired attention ledger for MCP-04 working sets
 
-**Status:** experimental CPU-only policy. No Bonsai 27B, Inky Mini, native Goose, or SWE-bench model gains are claimed. This is a child of the MCP-04 typed-working-set branch (PR #18). Raw and historical goblin arms remain untouched.
+**Status:** experimental CPU-only policy. No Bonsai 27B, Inky Mini, native Goose, or SWE-bench model gains are claimed. This is a child of the MCP-04 typed-working-set branch (PR #18). Its dedicated `mcp05` relay arm leaves `raw`, `goblin` and the frozen `mcp04` policy unchanged.
 
 ## Evidence custody and memory bands
 
@@ -12,11 +12,11 @@ The existing verifier membrane holds sole authority for eligibility, pruning, ed
 
 ## Tests
 
-CPU regression file: MCP/test_mcp05_attention.py. It covers same-path distinct queries, repeat deduplication, changed-result lineages, supplied snapshots, observed local edit epochs, negative pinning, error-vs-empty separation, and deterministic ranking. The parent test_mcp04.py covers call/result closure, anchors, exact token preflight and provider parity.
+CPU regression files: MCP/test_mcp05_attention.py and MCP/test_mcp05_replay.py. It covers same-path distinct queries, repeat deduplication, changed-result lineages, supplied snapshots, observed local edit epochs, negative pinning, error-vs-empty separation, and deterministic ranking. The parent test_mcp04.py covers call/result closure, anchors, exact token preflight and provider parity.
 
-    python -m pytest -q MCP/test_mcp05_attention.py MCP/test_mcp04.py MCP/test_hubrun.py
+    python -m pytest -q MCP/test_mcp05_attention.py MCP/test_mcp05_replay.py MCP/test_mcp04.py MCP/test_hubrun.py
 
-Isolated unit tests passed locally before pushing integration. Full integrated suite, live server parity and native-model replay still need verification.
+The original seven isolated attention tests passed locally. The integration and strict-pairing regression suite is checked by GitHub Actions. Native model replay still needs the pinned Bonsai server and verifiers environments.
 
 ## Paired evaluation
 
@@ -29,3 +29,18 @@ Measure solved cases, edit-site correctness, finalization, exact upstream prompt
 ## Follow-ons
 
 After held-out evaluation, compare a native Hyperon frame producer against research_gym/adapters/metta_adapter.py and its FakeMettaAdapter. Train AIRIS-style causal suggestions and read/expand utility heads on eligible training traces only; route any proposed exclusions through ResearchMembrane and the existing LDT checker. This branch does not implement those follow-ons.
+
+## Native Bonsai paired replay
+
+Run on the pinned Windows/WSL environment with the same local model checkpoint and server contract already used by MCP-04:
+
+    bash MCP/hubrun/scripts/mcp05_replay.sh smoke
+    bash MCP/hubrun/scripts/mcp05_replay.sh full
+
+The script invokes an upstream no-inference template/tokenizer probe, starts a loopback relay on port 18134, then evaluates each arm sequentially on 1+1 smoke tasks or 8 doc-edit and 5 event-recon tasks. It writes distinct arm tags and passes the resulting native verifiers outputs to the strict scorer:
+
+    python -m MCP.hubrun.paired_replay --runs /root/hub-overnight/runs --calls /root/hub-overnight/logs/calls_mcp05_full.jsonl --mode full --out /root/hub-overnight/reports/mcp05_full.json
+
+The scorer refuses incomplete task allocations, missing DONE markers, absent relay calls, duplicate task IDs, mismatched task identities, and provider token parity failures. It retains per-task score differences, total provider token usage, HTTP failures and measured packet metadata. Historical Goblin numbers remain historical baselines, not contemporaneous control outcomes.
+
+The relay's recorded call logs omit raw tool actions, so repeat-read counts and stale-edit spans require a separate trace extractor and independent grader. Compare solution success before promoting any memory policy. This is a model-backed procedure, not a claim of model-backed results.
