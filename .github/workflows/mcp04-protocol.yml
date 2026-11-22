@@ -7,6 +7,8 @@ on:
       - 'MCP/test_mcp04.py'
       - 'MCP/test_mcp05_attention.py'
       - 'MCP/test_mcp05_replay.py'
+      - 'MCP/test_mcp05_trace_schema.py'
+      - 'MCP/test_mcp05_trace_metrics.py'
       - '.github/workflows/mcp04-protocol.yml'
   workflow_dispatch:
 
@@ -35,12 +37,21 @@ jobs:
       - name: Strict template, numeric count, edit-state and relay tests
         run: |
           set -o pipefail
-          python -m pytest -q MCP/test_mcp05_attention.py MCP/test_mcp05_replay.py MCP/test_mcp04.py MCP/test_hubrun.py | tee /tmp/mcp04-protocol-tests.txt
+          python -m pytest -q MCP/test_mcp05_attention.py MCP/test_mcp05_replay.py MCP/test_mcp05_trace_schema.py MCP/test_mcp05_trace_metrics.py MCP/test_mcp04.py MCP/test_hubrun.py | tee /tmp/mcp04-protocol-tests.txt
+      - name: Census committed public archive tool-trace schemas (no contents)
+        run: |
+          python -m MCP.hubrun.trace_schema --root MCP/results/hubrun/traces --limit 3 --out /tmp/mcp05-trace-schema.json
+      - name: Audit historical public reads and edit-site counters
+        run: |
+          python -m MCP.hubrun.trace_metrics --root MCP/results/hubrun/traces --out /tmp/mcp05-trace-metrics.json
       - name: Save CPU-only test receipt
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mcp04-protocol-tests
-          path: /tmp/mcp04-protocol-tests.txt
+          path: |
+            /tmp/mcp04-protocol-tests.txt
+            /tmp/mcp05-trace-schema.json
+            /tmp/mcp05-trace-metrics.json
           if-no-files-found: warn
           retention-days: 14
