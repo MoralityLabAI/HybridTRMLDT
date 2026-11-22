@@ -19,6 +19,7 @@ import re
 from typing import Any, Callable
 
 from .packet import _content_text, _split_regions, estimate_tokens
+from .attention import observe_read, rank_read_atoms
 
 class PreflightError(RuntimeError):
     """Refuse to forward when the real applied template cannot be measured."""
@@ -158,8 +159,9 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
     calls: dict[str, dict] = {}
     edits: list[str] = []
     user_constraints: list[str] = []
-    reads: dict[str, str] = {}
-    empty: list[str] = []
+    reads: dict = {}
+    edit_epochs: dict[str, int] = {}
+    edit_paths: set[str] = set()
     n_tools = 0
     for m in middle:
         role = m.get("role")
@@ -200,10 +202,19 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
             edits.append(f"{name}({path}) result={status} args_sha={_hash(original_args)[:16]} "
                          f"args_handle={args_handle} result_handle={handle} "
                          f"anchor={site or '(unavailable)'}")
+            edit_paths.add(path)
+            if status == "returned":
+                edit_epochs[path] = edit_epochs.get(path, 0) + 1
         elif _READ.search(name):
-            reads[path] = f"{name}({path}) {status} handle={handle}"
-            if _EMPTY.search(body):
-                empty.append(f"observed-empty {name}({path}) handle={handle}")
+            observe_read(reads, name=name, path=path, args=args, handle=handle,
+                         status=status, is_empty=(status == "returned" and bool(_EMPTY.search(body))),
+                         step=n_tools, local_epoch=edit_epochs.get(path, 0))
+    pinned_empty, ranked_reads = rank_read_atoms(
+        reads.values(),
+        task_text="\n".join(_content_text(m) for m in head if m.get("role") == "user"),
+        tail_text="\n".join(_content_text(m) for m in tail),
+        edit_paths=edit_paths,
+    )
     # A later user instruction is essential mutable state, retained in full.
     task_constraints = "\n".join(user_constraints)
     essential = [
@@ -213,13 +224,14 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
         task_constraints if task_constraints else "(none)",
         "Applied edit calls and exact available anchors (chronological):",
         "\n".join(edits) if edits else "(none)",
+        "Historical observed-empty reads (not LDT certificates; never permission to prune):",
+        "\n".join(a.line() for a in pinned_empty) if pinned_empty else "(none)",
     ]
     base = "\n".join(essential)
     if estimate_tokens(base) > budget_tokens:
         raise WorkingSetError("user constraints or edit anchors exceed bounded packet; preserve raw history")
-    optional = ["Observed empty queries (not certified irrelevant):"] + (empty or ["(none)"])
-    optional += ["Recent read handles (full text recoverable):"]
-    optional += list(reads.values())[::-1] or ["(none)"]
+    optional = ["Attention-ranked read handles (full text recoverable):"]
+    optional += [a.line() for a in ranked_reads] or ["(none)"]
     optional += [f"Archived paired tool calls: {n_tools}",
                  "Keep original task and recent turns authoritative; validate edit anchors against current source."]
     packet = base
@@ -236,7 +248,9 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
         "archive_paired_calls": n_tools,
         "archive_edit_calls": len(edits),
         "read_handles": len(reads),
-        "observed_empty_queries": len(empty),
+        "observed_empty_queries": len(pinned_empty),
+        "attention_ranked_reads": len(ranked_reads),
+        "pinned_negative_atoms": len(pinned_empty),
         "durable_user_constraints": len(user_constraints),
         "packet_tokens_est": estimate_tokens(packet),
         "packet_sha256": _hash(packet),
