@@ -124,5 +124,44 @@ class WorkingSetIntegrationTests(unittest.TestCase):
         self.assertEqual(receipt["pinned_negative_atoms"], 0)
 
 
+class RelayArmTests(unittest.TestCase):
+    def test_frozen_and_attention_arms_share_exact_preflight_contract(self):
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+
+        from MCP.hubrun.proxy import Relay
+        from MCP.test_mcp04 import FakeBackend
+
+        class ParityBackend(FakeBackend):
+            def forward(self, method, path, body):
+                if path == "/v1/chat/completions":
+                    request = json.loads(body)
+                    prompt = json.dumps({"messages": request["messages"],
+                                         "tools": request.get("tools", [])}, sort_keys=True)
+                    reply = {"choices": [{"message": {"content": "ok"}, "finish_reason": "stop"}],
+                             "usage": {"prompt_tokens": len(prompt.encode("utf-8")),
+                                       "completion_tokens": 1}}
+                    return 200, json.dumps(reply).encode()
+                return super().forward(method, path, body)
+
+        backend = ParityBackend()
+        with TemporaryDirectory() as tmp:
+            log = Path(tmp) / "calls.jsonl"
+            relay = Relay("http://127.0.0.1:1", log, None, 512, 1000, 1800, 2, 6000, 30,
+                          context_window=3000, completion_reserve=100, safety_margin=200)
+            relay.forward = backend.forward
+            payload = json.dumps({"model": "fixture", "messages": episode(7), "tools": []}).encode()
+            for arm in ("mcp04", "mcp05"):
+                status, response = relay.chat(arm, arm + "-fixture", payload)
+                self.assertEqual(status, 200, response)
+            rows = [json.loads(line) for line in log.read_text().splitlines()]
+            self.assertEqual([r["arm"] for r in rows], ["mcp04", "mcp05"])
+            self.assertEqual(rows[0]["compaction"]["method"], "typed-working-set")
+            self.assertEqual(rows[1]["compaction"]["method"], "typed-working-set-ecan")
+            self.assertTrue(all(r["preflight_matches_provider"] for r in rows))
+            self.assertIsNone(relay.mcp04_parity_failure)
+
+
+
 if __name__ == "__main__":
     unittest.main()
