@@ -57,3 +57,14 @@ The 5.4 GB pack also failed the Storyworld replay. The 8.9 GB run reached the de
 On the matched health edit, the 5.4 GB pack reasoned out the correct clamp and repeated its thinking until it reached the completion cap. CUDA runtime commit `52dc6ecb642f65744017dd9e52287a6bb28bc49d` adds a local provider with explicit thinking-channel suppression and native tool-call serialization. The provider continued past a prose preamble to accept the following native tool frame. With that mode, the 5.4 GB pack passed the same exact-source replay in 84 completion tokens and reproduced the original Q4 patch SHA-256. The provider matched all 305 preflight prompt tokens. All 14 CUDA runtime tests passed.
 
 On a fresh end-to-end 5.4 GB Goose D health rollout, the native repair prompt directed the model to reuse a current source handle when the required code was already visible. Goose applied the model's edit and the independent regression passed. Five provider calls used 9,756 prompt tokens and 468 completion tokens with exact preflight parity throughout. This episode used 10,224 total tokens versus 12,146 in the earlier variable-loop Q4 Goose D episode. The two runs used different runtimes, model depths, and tool protocols.
+
+## Published SWE-bench test controls
+
+The SWE-bench Lite test data was pinned at revision `b0dde1093fe417d83b7184254edf8199c1f0dff5`. Both Flask fixtures matched the dataset's recorded base revisions. On Windows with Python 3.12 and pytest 7.4.4, the published tests distinguished each base worktree from its published reference patch. The test runs filtered four Python 3.12 deprecation messages for compatibility with the older Flask suites. [Pinned SWE-bench Lite dataset](https://huggingface.co/datasets/SWE-bench/SWE-bench_Lite/tree/b0dde1093fe417d83b7184254edf8199c1f0dff5/data)
+
+| SWE-bench Lite instance | Target tests on base | Target tests with reference patch | Preserved tests on both |
+|---|---:|---:|---:|
+| `pallets__flask-4045` | 0/2 passed | 2/2 passed | 50/50 passed |
+| `pallets__flask-4992` | 0/1 passed | 1/1 passed | 18/18 passed |
+
+These rows establish the Windows grading controls. Agent-produced patches are graded separately. Ubuntu's WSL disk could not attach because Windows reported a sharing violation, leaving the container-based SWE-bench grader pending.
