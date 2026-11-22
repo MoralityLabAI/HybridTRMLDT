@@ -36,6 +36,8 @@ The A arm uses raw history and the existing no-packet control. B uses BM25 and t
 
 Use MCP.mcp05.benchmarks to stage a native GPTStoryworld building exercise, SWE-bench Lite cases from the local dataset and bare repos, and evidence-grounded research planning cases. The Storyworld case invokes the repository's own validator and checks reachability of an added outcome. SWE-bench Lite uses targeted host regressions for interactive correction. Export the resulting final.patch as a prediction for the official SWE-bench harness when reporting benchmark resolution. Research planning scores are rubric checks on the written design.
 
+For the two Flask assignments on Windows, run `grade_swe_wsl.ps1` after the A and D prediction files are complete. Set `-Campaign` to the evaluation directory and `-DatasetDirectory` to the directory containing the pinned `swe-bench-lite-test.parquet` and DuckDB under `reader`. The launcher projects the two pinned rows, checks for both local container images, and runs the existing WSL evaluator with one worker. Use `-ProbeOnly` to check the dataset and container availability before predictions arrive. [Official SWE-bench harness](https://github.com/SWE-bench/SWE-bench/tree/main/swebench/harness)
+
 ## Execution and accounting
 
 The session sends the actual Goose wire request through a loopback preflight relay. It applies the upstream chat template, tokenizes with special tokens recognized, and checks for tool-schema serialization when schemas are present. It forwards raw messages if they fit. Packet and typed modes may condense closed history and remeasure it. Each provider completion records preflight parity. A mismatch prevents further completions in that session.

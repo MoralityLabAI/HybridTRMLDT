@@ -73,6 +73,19 @@ These rows establish the Windows grading controls. Agent-produced patches are gr
 
 The 5.4 GB CUDA agent spent several calls paging through the 163-line Tiny Diplomacy JSON fixture. The JSON index returned `/nodes` first for “nodes terminal id” and `/rules/outcomes` first for “rules outcomes terminal node.” The two sections covered 24 and 15 source lines respectively. In a replay of the earlier verified edits, changing `/nodes` invalidated the old outcomes handle. Reading `/rules/outcomes` again found its shifted lines, and the independent verifier passed with the same patch digest as the earlier rollout. This replay measured lookup and edit anchoring with known edits. A fresh model run is needed to measure the impact on repair success and token cost.
 
+The frozen 5.4 GB CUDA Storyworld pair used the original file-level lookup. Both worktrees were clean at exit and no repair patch was produced.
+
+| Arm | Completed inference calls | Provider tokens | Wall time | Exit |
+|---|---:|---:|---:|---|
+| A / raw | 10 | 32,474 | 1,023.5 s | Iteration limit |
+| D / recurrent typed | 8 | 34,751 | 1,200.6 s | Episode timeout |
+
+All 18 completed requests matched exact preflight. The indexed follow-up uses the same task, model and inference limits on the JSON lookup checkout.
+
+## Official SWE-bench grading readiness
+
+The WSL launcher uses the two Flask rows from the checksum-verified dataset and the existing local container images. Its probe projected both recorded base commits successfully. Windows Restart Manager listed System and Microsoft Defender Antivirus as users of the Ubuntu virtual disk. WSL continues to report a sharing violation on attach, so container grading is pending. [Windows Restart Manager](https://learn.microsoft.com/en-us/windows/win32/api/restartmanager/nf-restartmanager-rmgetlist)
+
 ## Research planning review criteria
 
 Score the existing automated rubric and review the final answer against the frozen source. Count missing answers as failures. For a source-grounded review, record one supporting excerpt per criterion and flag factual errors or unresolved controls. Use the same criteria for raw and controller-assisted answers.
