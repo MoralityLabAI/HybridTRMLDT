@@ -62,6 +62,8 @@ The DSpark block-size-2 provider stopped responding during the typed CUDA interp
 
 After the driver reported 136 W again, the deadline-enabled runtime `89439a2` passed the same repair in 12.20 seconds at the configured 16,384-token context window. The test matched the earlier patch digest and tokenized all 305 prompt tokens exactly. Two device samples measured up to 7.16 GiB dedicated to Inky. The host reported zero GPU memory in use after unloading it.
 
+The next CUDA interpretation run completed three consecutive requests in 36.30, 43.09, and 52.06 seconds, all with exact preflight parity. The driver returned to a 15 W limit during the fourth request while Inky was the only process with more than 512 MiB of dedicated GPU memory. The cooperative guard returned HTTP 504 and archived that attempt outside the model scores. The next phase retains the same task budgets and adds a 40-second idle interval between completion requests to test whether spacing avoids the cap.
+
 The saved typed RU02 research rollout read the same 4,270-character excerpt five times. Replaying its recorded conversation with the cached Inkling tokenizer and minimal matching tool declarations reduced the final prompt from 9,471 to 4,119 tokens. The replay retained all tool IDs and the full newest excerpt. It did not run generation or measure answer quality.
 
 The read-only session now switches to an answer turn after the third successive successful read of the same source handle and revision. On the saved RU02 trace, the handoff condition is reached at receipt 8, after three of the five identical reads. The deterministic Goose replay verifies that the model receives the original task and source evidence with all further lookup tools withdrawn.
