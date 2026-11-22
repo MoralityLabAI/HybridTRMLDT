@@ -70,6 +70,8 @@ The driver reported a successful return from the command requesting its 80 W def
 
 The saved typed RU02 research rollout read the same 4,270-character excerpt five times. Replaying its recorded conversation with the cached Inkling tokenizer and minimal matching tool declarations reduced the final prompt from 9,471 to 4,119 tokens. The replay retained all tool IDs and the full newest excerpt. It did not run generation or measure answer quality.
 
+A larger replay across eight saved conversation snapshots found repeated source text in one snapshot, the RU02 case above. The other seven submitted the same token counts under this replay. The intervention targets episodes that repeatedly read identical source spans.
+
 The read-only session now switches to an answer turn after the third successive successful read of the same source handle and revision. On the saved RU02 trace, the handoff condition is reached at receipt 8, after three of the five identical reads. The deterministic Goose replay verifies that the model receives the original task and source evidence with all further lookup tools withdrawn.
 
 ## Published SWE-bench test controls
