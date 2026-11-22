@@ -82,6 +82,7 @@ pub(crate) struct Options {
     checkpoint: Option<PathBuf>,
     controller_reset: bool,
     json_actions: bool,
+    deduplicate_reads: bool,
 }
 
 impl Options {
@@ -101,6 +102,7 @@ impl Options {
             "--session-file" => self.checkpoint = Some(PathBuf::from(value()?)),
             "--controller-reset" => self.controller_reset = true,
             "--json-actions" => self.json_actions = true,
+            "--deduplicate-reads" => self.deduplicate_reads = true,
             _ => bail!("unknown flag {flag}"),
         }
         Ok(())
@@ -116,6 +118,7 @@ impl Options {
             || self.checkpoint.is_some()
             || self.controller_reset
             || self.json_actions
+            || self.deduplicate_reads
         {
             bail!("multi-turn options require --max-agent-iterations");
         }
@@ -661,7 +664,8 @@ async fn relay(
     window: u32,
     completion: i32,
 ) -> Result<(Child, String)> {
-    let mut child = Command::new(&args.python)
+    let mut command = Command::new(&args.python);
+    command
         .args([
             "-B",
             "-m",
@@ -680,7 +684,11 @@ async fn relay(
             &args.timeout_secs.to_string(),
         ])
         .arg("--trace")
-        .arg(trace)
+        .arg(trace);
+    if args.session.deduplicate_reads {
+        command.arg("--deduplicate-reads");
+    }
+    let mut child = command
         .current_dir(&args.goblin_cwd)
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::inherit())
@@ -710,6 +718,7 @@ pub(crate) async fn run(args: Args) -> Result<()> {
         .unwrap_or(if args.no_packet { "raw" } else { "typed" });
     if args.repo.is_empty()
         || !matches!(memory, "raw" | "packet" | "typed")
+        || (options.deduplicate_reads && memory != "typed")
         || !(1..=128).contains(&max_iterations)
         || !(1..=200).contains(&args.max_tool_calls)
         || !(200..=32_768).contains(&args.budget)

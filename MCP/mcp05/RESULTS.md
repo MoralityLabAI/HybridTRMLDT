@@ -60,6 +60,8 @@ On a fresh end-to-end 5.4 GB Goose D health rollout, the native repair prompt di
 
 The DSpark block-size-2 provider stopped responding during the typed CUDA interpretation episode. The driver reported a 15 W power limit and 180 MHz during the timeout. That attempt was archived for infrastructure review. After the stalled provider exited, the driver reported a power limit above 15 W. CUDA runtime `c9c0fa8` then passed the 16,384-context HTTP repair control with 305 prompt tokens, 84 completion tokens, and exact preflight parity in 12.55 seconds. The verified patch digest matched the earlier run. This timing covers the HTTP request, including prompt processing, for the short control.
 
+The saved typed RU02 research rollout read the same 4,270-character excerpt five times. Replaying its recorded conversation with the cached Inkling tokenizer and minimal matching tool declarations reduced the final prompt from 9,471 to 4,119 tokens. The replay retained all tool IDs and the full newest excerpt. It did not run generation or measure answer quality.
+
 ## Published SWE-bench test controls
 
 The SWE-bench Lite test data was pinned at revision `b0dde1093fe417d83b7184254edf8199c1f0dff5`. Both Flask fixtures matched the dataset's recorded base revisions. On Windows with Python 3.12 and pytest 7.4.4, the published tests distinguished each base worktree from its published reference patch. The test runs filtered four Python 3.12 deprecation messages for compatibility with the older Flask suites. [Pinned SWE-bench Lite dataset](https://huggingface.co/datasets/SWE-bench/SWE-bench_Lite/tree/b0dde1093fe417d83b7184254edf8199c1f0dff5/data)

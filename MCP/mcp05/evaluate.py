@@ -163,6 +163,8 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
         cmd.append("--no-packet")
     if args.json_actions:
         cmd.append("--json-actions")
+    if args.deduplicate_reads and memory == "typed":
+        cmd.append("--deduplicate-reads")
     if controller:
         cmd += ["--controller-checkpoint", str(args.checkpoints / f"{controller}.pt")]
     if arm == "E":
@@ -248,6 +250,7 @@ def main():
     parser.add_argument("--limit", type=int)
     parser.add_argument("--case-ids", nargs="+")
     parser.add_argument("--json-actions", action="store_true")
+    parser.add_argument("--deduplicate-reads", action="store_true")
     args = parser.parse_args()
     if not args.stage and not args.cases:
         parser.error("supply a frozen platformer stage or external case manifest")
@@ -275,6 +278,8 @@ def main():
             "cases": [case["id"] for case in cases]}
     if args.goblin_cwd != ROOT:
         plan["goblin_cwd"] = str(args.goblin_cwd)
+    if args.deduplicate_reads:
+        plan["deduplicate_reads"] = True
     plan_file = args.out / "plan.json"
     if plan_file.exists() and json.loads(plan_file.read_text(encoding="utf-8")) != plan:
         parser.error("output directory contains a different evaluation plan")

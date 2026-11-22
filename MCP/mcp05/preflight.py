@@ -19,8 +19,44 @@ def measure(forward, request, *, window: int, reserve: int):
                            completion_reserve=reserve, safety_margin=64)
 
 
-def prepare(forward, request, *, window: int, reserve: int, budget: int, memory: str):
+def deduplicate_read_sources(messages: list[dict]) -> tuple[list[dict], int]:
+    updated = list(messages)
+    seen = set()
+    removed = 0
+    for index in range(len(messages) - 1, -1, -1):
+        message = messages[index]
+        content = message.get("content")
+        if message.get("role") != "tool" or not isinstance(content, str):
+            continue
+        try:
+            body = json.loads(content)
+        except ValueError:
+            continue
+        if not isinstance(body, dict):
+            continue
+        identity = tuple(body.get(key) for key in ("handle", "source_digest", "revision", "source"))
+        if not all(isinstance(value, str) and value for value in identity) or not identity[0].startswith("source:"):
+            continue
+        if identity in seen:
+            del body["source"]
+            body["source_in_later_result"] = True
+            updated[index] = dict(message, content=json.dumps(body, ensure_ascii=False, separators=(",", ":")))
+            removed += 1
+        else:
+            seen.add(identity)
+    return updated, removed
+
+
+def prepare(forward, request, *, window: int, reserve: int, budget: int, memory: str, deduplicate_reads: bool = False):
     raw = measure(forward, request, window=window, reserve=reserve)
+    if deduplicate_reads and memory == "typed":
+        messages, removed = deduplicate_read_sources(request["messages"])
+        if removed:
+            candidate = dict(request, messages=messages)
+            checked = measure(forward, candidate, window=window, reserve=reserve)
+            if checked["fits"] and checked["prompt_tokens"] < raw["prompt_tokens"]:
+                return candidate, {"preflight": checked, "compacted": True, "method": "duplicate-source-reads",
+                                   "raw_prompt_tokens": raw["prompt_tokens"], "duplicate_sources_removed": removed}
     if raw["fits"]:
         return request, {"preflight": raw, "compacted": False}
     archived = {}
@@ -50,6 +86,7 @@ def main():
     parser.add_argument("--reserve", required=True, type=int)
     parser.add_argument("--budget", required=True, type=int)
     parser.add_argument("--memory", choices=("raw", "packet", "typed"), required=True)
+    parser.add_argument("--deduplicate-reads", action="store_true")
     parser.add_argument("--trace", type=Path, required=True)
     parser.add_argument("--timeout", type=int, required=True)
     args = parser.parse_args()
@@ -106,7 +143,8 @@ def main():
                 if request.get("stream"):
                     raise PreflightError("session preflight requires non-streaming inference")
                 measured, receipt = prepare(forward, request, window=args.window, reserve=args.reserve,
-                                           budget=args.budget, memory=args.memory)
+                                           budget=args.budget, memory=args.memory,
+                                           deduplicate_reads=args.deduplicate_reads)
                 receipt["preflight_seconds"] = time.monotonic() - started
                 provider_started = time.monotonic()
                 status, raw = forward("POST", chat_path, json.dumps(measured, ensure_ascii=False).encode())

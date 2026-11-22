@@ -18,7 +18,7 @@ from MCP.serve import Session
 from .context import WorkingSet
 from .evaluate import episode
 from .gym import ROOT, clone, dump, verifier_manifest
-from .preflight import prepare
+from .preflight import deduplicate_read_sources, prepare
 
 TASK = "The player falls upward. Correct vertical gravity in physics."
 SOURCE = "def fall(speed, gravity):\n    return speed - gravity\n"
@@ -64,7 +64,7 @@ class Provider(BaseHTTPRequestHandler):
         history = request["messages"]
         tools = [m for m in history if m["role"] == "tool"]
         index = len(tools)
-        research = request["model"] in ("stub-research", "stub-research-expand")
+        research = request["model"].startswith("stub-research")
         if request["model"] == "stub-research-expand":
             uri = "engine/physics.py::fall"
             lookup = ("context_expand", {"node_id": f"s:{uri}", "limit": 8})
@@ -80,6 +80,16 @@ class Provider(BaseHTTPRequestHandler):
             call = ("context_query", {"query": "fall gravity"})
         elif index == 1:
             call = ("context_read", {"uri": "engine/physics.py::fall"})
+        elif request["model"] == "stub-research-duplicates":
+            if index == 2:
+                call = ("context_read", {"uri": "engine/physics.py::fall"})
+            else:
+                earlier, later = (json.loads(tool["content"]) for tool in tools[1:])
+                if (not earlier.get("source_in_later_result") or "source" in earlier
+                        or earlier["handle"] != later["handle"] or "return speed - gravity" not in later["source"]):
+                    self.send_error(400, "Repeated source history was not reduced correctly")
+                    return
+                call = None
         elif research:
             call = (None if "Tool use has ended." in json.dumps(history) else
                     ("context_query", {"query": "fall gravity"}))
@@ -131,6 +141,7 @@ class Contracts(unittest.TestCase):
                 binary="stub", base_url="http://localhost", model="stub", packet_budget=512,
                 completion=128, calls=10, iterations=4, context=1024, request_timeout=1,
                 episode_timeout=1, python=sys.executable, json_actions=False, goblin_cwd=source,
+                deduplicate_reads=False,
             )
             case = {"id": "fixture", "suite": "test", "repo": source, "task": TASK,
                     "verifier": verifier_manifest(), "gold_symbols": ["engine/physics.py::fall"]}
@@ -208,6 +219,12 @@ class Contracts(unittest.TestCase):
         self.assertEqual(forwarded["messages"][0], original)
         self.assertEqual(forwarded["messages"][-2:], latest)
 
+    def test_deduplication_preserves_source_reads_from_distinct_revisions(self):
+        body = {"handle": "source:preview", "source_digest": "same-digest", "source": "return speed"}
+        messages = [{"role": "tool", "tool_call_id": revision, "content": json.dumps(dict(body, revision=revision))}
+                    for revision in ("before", "after")]
+        self.assertEqual(deduplicate_read_sources(messages), (messages, 0))
+
     def test_mcp_protocol_and_source_revision(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -258,7 +275,7 @@ class Contracts(unittest.TestCase):
             thread.start()
             receipts = []
             try:
-                for variant in ("native", "marker", "research", "research-expand"):
+                for variant in ("native", "marker", "research", "research-expand", "research-duplicates"):
                     root = base / variant
                     clone(stage, root)
                     research = variant.startswith("research")
@@ -273,16 +290,32 @@ class Contracts(unittest.TestCase):
                         action.extend(["--verifier", str(base / "verifier.json")])
                     if variant in ("marker", "research"):
                         action.append("--json-actions")
+                    if variant == "research-duplicates":
+                        docstring = "Read this expression to check the vertical gravity behavior. " * 8
+                        (root / "engine/physics.py").write_text(
+                            SOURCE.replace("    return", f'    """{docstring}"""\n    return'), encoding="utf-8",
+                        )
+                        action.append("--deduplicate-reads")
                     result = subprocess.run(action, capture_output=True, text=True, encoding="utf-8",
                                             timeout=120, check=True)
                     observations = json.loads(result.stdout)
                     self.assertIsNone(observations["error"], observations)
                     if research:
                         self.assertEqual(observations["inference_calls"], 6 if variant == "research-expand" else 4)
+                        self.assertEqual(observations["answer"], "The return subtracts gravity in engine/physics.py.")
+                        if variant == "research-duplicates":
+                            last_request = observations["preflight"][-1]
+                            self.assertTrue(last_request["provider_preflight_parity"])
+                            self.assertEqual(last_request["duplicate_sources_removed"], 1)
+                            self.assertLess(last_request["provider_prompt_tokens"], last_request["raw_prompt_tokens"])
+                            source_receipts = [row["output"]["source"] for row in observations["session"]["receipts"]
+                                               if row["tool"] == "context_read"]
+                            self.assertEqual(len(source_receipts), 2)
+                            self.assertEqual(source_receipts[0], source_receipts[1])
+                            continue
                         self.assertTrue(observations["session"]["answer_only"])
                         self.assertEqual(observations["state"]["read_history"], ["engine/physics.py::fall"])
                         self.assertTrue(observations["session"]["receipts"][-1]["error"])
-                        self.assertEqual(observations["answer"], "The return subtracts gravity in engine/physics.py.")
                         if variant == "research-expand":
                             errors = [row["output"]["error"] for row in observations["session"]["receipts"]
                                       if row["error"]]
