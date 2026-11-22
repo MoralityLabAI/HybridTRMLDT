@@ -67,11 +67,33 @@ class WorkingSetIntegrationTests(unittest.TestCase):
         for idx, query in [(2, "collision boundary"), (6, "collision velocity")]:
             messages[idx]["tool_calls"][0]["function"]["arguments"] = json.dumps(
                 {"path": "engine/collision.py", "query": query})
-        packet, receipt = typed_packet(messages, keep_recent=2, budget_tokens=1800)
+        packet, receipt = typed_packet(messages, keep_recent=2, budget_tokens=1800, policy="mcp05")
         text = packet[2]["content"]
         self.assertIn("collision boundary", text)
         self.assertIn("collision velocity", text)
         self.assertEqual(receipt["attention_ranked_reads"], 4)
+
+    def test_frozen_mcp04_control_vs_mcp05_same_history(self):
+        messages = episode(7)
+        for idx, query in [(2, "collision boundary"), (6, "collision velocity")]:
+            messages[idx]["tool_calls"][0]["function"]["arguments"] = json.dumps(
+                {"path": "engine/collision.py", "query": query})
+        baseline, baseline_receipt = typed_packet(messages, budget_tokens=1800, keep_recent=2)
+        improved, attention_receipt = typed_packet(
+            messages, budget_tokens=1800, keep_recent=2, policy="mcp05")
+        self.assertEqual(baseline_receipt["method"], "typed-working-set")
+        self.assertEqual(attention_receipt["method"], "typed-working-set-ecan")
+        self.assertNotIn("attention_ranked_reads", baseline_receipt)
+        self.assertEqual(baseline_receipt["read_handles"], 3)
+        self.assertEqual(attention_receipt["read_handles"], 4)
+        self.assertNotIn("query='collision velocity'", baseline[2]["content"])
+        self.assertIn("query='collision velocity'", improved[2]["content"])
+        self.assertEqual(improved[-4:], baseline[-4:])
+        self.assertEqual(improved[:2], baseline[:2])
+
+    def test_unknown_policy_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "unknown typed working-set policy"):
+            typed_packet(episode(7), policy="unknown")
 
     def test_negative_evidence_pinned_across_observed_edit(self):
         messages = episode(7)
@@ -80,7 +102,7 @@ class WorkingSetIntegrationTests(unittest.TestCase):
                 {"path": "engine/collision.py", "query": "missing collider"})
         for idx in (3, 7):
             messages[idx]["content"] = "0 results"
-        packet, receipt = typed_packet(messages, keep_recent=2, budget_tokens=1800)
+        packet, receipt = typed_packet(messages, keep_recent=2, budget_tokens=1800, policy="mcp05")
         text = packet[2]["content"]
         self.assertEqual(receipt["pinned_negative_atoms"], 2)
         self.assertIn("local_edit_epoch=0", text)
@@ -92,13 +114,13 @@ class WorkingSetIntegrationTests(unittest.TestCase):
         for idx in (3, 7, 9, 12):
             messages[idx]["content"] = "no results"
         with self.assertRaises(WorkingSetError):
-            typed_packet(messages, keep_recent=2, budget_tokens=200)
+            typed_packet(messages, keep_recent=2, budget_tokens=200, policy="mcp05")
 
     def test_error_message_does_not_become_negative_evidence(self):
         messages = episode(7)
         messages[3]["content"] = "file not found"
         messages[3]["isError"] = True
-        _, receipt = typed_packet(messages, keep_recent=2, budget_tokens=1800)
+        _, receipt = typed_packet(messages, keep_recent=2, budget_tokens=1800, policy="mcp05")
         self.assertEqual(receipt["pinned_negative_atoms"], 0)
 
 
