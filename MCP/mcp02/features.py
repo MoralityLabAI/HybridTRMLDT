@@ -65,6 +65,15 @@ def encode_pair(need: str, candidate: str, encoder: str = "tokens") -> tuple[lis
     return ids + [SPECIALS["pad"]] * pad, seg + [0] * pad
 
 
+def utility_needs(obs: dict) -> list[str]:
+    """Horizon marker prepended only for MCP-03 dual-head checkpoints."""
+    remaining = obs.get("remaining_calls")
+    if not isinstance(remaining, int) or remaining < 0:
+        raise ValueError("dual-utility router needs a public remaining_calls count")
+    marker = "budgetlast" if remaining <= 2 else "budgetlate" if remaining <= 6 else "budgetearly"
+    return [marker] + list(obs["needs"])
+
+
 def encode_observation(obs: dict, encoder: str = "tokens") -> tuple[list[list[int]], list[list[int]], list[list[float]]]:
     need = " ; ".join(obs["needs"])
     ids, segs, structs = [], [], []

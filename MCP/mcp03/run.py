@@ -100,22 +100,39 @@ def build_dataset(cfg: dict, split: str, shard: str | None = None) -> dict:
         rows = rows[k::n]
     decide, excl, skipped = [], [], 0
     rng = random.Random(f"mcp03-dataset/{split}")
+    utility_mode = bool(spec.get("utility_targets", False))
+    utility_budget = int(spec.get("utility_packet_budget", 1024))
+    if utility_mode and utility_budget <= 0:
+        raise ValueError("utility_packet_budget must be positive")
 
     def keep(event):
         obs, labels = event["obs"], event["labels"]
-        need = FE.encode_text(" ; ".join(obs["needs"]), FE.NEED_TOKENS)
+        needs = FE.utility_needs(obs) if utility_mode else obs["needs"]
+        need = FE.encode_text(" ; ".join(needs), FE.NEED_TOKENS)
         if event["kind"] == "decide":
-            if not any(labels) or len(labels) < 2:
+            if len(labels) < 2:
                 return
-            idx = list(range(len(labels)))
-            pos = [i for i in idx if labels[i]]
-            neg = [i for i in idx if not labels[i]]
+            values = event.get("utility_values") if utility_mode else None
+            if utility_mode:
+                if values is None or len(values) != len(labels):
+                    raise ValueError("missing private utility labels in training event")
+                pos = sorted((i for i, v in enumerate(values) if v > 0),
+                             key=lambda i: (-values[i], i))
+                neg = [i for i, v in enumerate(values) if v <= 0]
+            else:
+                pos = [i for i, value in enumerate(labels) if value]
+                neg = [i for i, value in enumerate(labels) if not value]
+            if not pos:
+                return
             rng.shuffle(neg)
             k = spec["max_candidates"]
             chosen = sorted(pos[:k // 2] + neg[:k - min(len(pos), k // 2)])
             cands = [obs["candidates"][i] for i in chosen]
-            decide.append({"need": need, "cands": [FE.encode_text(c["text"], FE.CAND_TOKENS) for c in cands],
-                           "structs": [c["struct"] for c in cands], "labels": [labels[i] for i in chosen]})
+            state = {"need": need, "cands": [FE.encode_text(c["text"], FE.CAND_TOKENS) for c in cands],
+                     "structs": [c["struct"] for c in cands], "labels": [labels[i] for i in chosen]}
+            if utility_mode:
+                state["utilities"] = [values[i] for i in chosen]
+            decide.append(state)
         else:
             cands = [row_item(r, 1) for r in event["rows"]]
             excl.append({"need": need, "cands": [FE.encode_text(c["text"], FE.CAND_TOKENS) for c in cands],
@@ -130,12 +147,14 @@ def build_dataset(cfg: dict, split: str, shard: str | None = None) -> dict:
         for arm in spec["arms"]:
             for eps in spec["epsilons"]:
                 run_code_episode(envs[arm](), inst["problem_statement"], policy=EpsilonCodeOracle(eps, cfg["seed"]),
-                                 max_tool_calls=spec["max_tool_calls"], budgets=(), record=keep)
+                                 max_tool_calls=spec["max_tool_calls"], budgets=(), record=keep,
+                                 utility_packet_budget=utility_budget if utility_mode else None)
                 episodes += 1
     return {"decide": decide, "rows": excl, "meta": {
         "split": split, "shard": shard, "instances": len(rows), "skipped_no_python_gold": skipped, "episodes": episodes,
         "repos": sorted({r["repo"] for r in rows}), "instance_ids": [r["instance_id"] for r in rows],
-        "decide_states": len(decide), "row_states": len(excl), "encoder": FE.ENCODER_VERSION}}
+        "decide_states": len(decide), "row_states": len(excl), "encoder": FE.ENCODER_VERSION,
+        "utility_targets": utility_mode, "utility_packet_budget": utility_budget if utility_mode else None}}
 
 
 class LearnedCodePolicy:
@@ -155,6 +174,8 @@ class LearnedCodePolicy:
             from .agent import symbolic_code_exclusions
             return symbolic_code_exclusions(rows)
         cands = [row_item(r, 1) for r in rows]
+        if model.utility_heads:
+            obs = dict(obs, needs=FE.utility_needs(obs))
         ids, segs, structs = FE.encode_observation(dict(obs, candidates=cands), model.encoder)
         with torch.inference_mode():
             _s, logits = model(*self.inner._tensors(ids, segs, structs))

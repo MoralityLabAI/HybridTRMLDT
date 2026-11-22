@@ -123,10 +123,31 @@ def _listwise_loss(scores, owner, labels, n_states):
     return (lse_all.log() - lse_pos.clamp(min=1e-30).log()).mean()
 
 
+def _utility_listwise_loss(scores, owner, utilities, n_states):
+    """Soft listwise targets from counterfactual packet utility, skipping empty slates."""
+    import torch
+    utilities = utilities.clamp(min=0)
+    sums = torch.zeros(n_states, device=scores.device, dtype=scores.dtype).index_add(0, owner, utilities)
+    valid = sums > 0
+    if not bool(valid.any()):
+        return scores.sum() * 0.0
+    neg_inf = torch.finfo(scores.dtype).min
+    maxes = torch.full((n_states,), neg_inf, device=scores.device, dtype=scores.dtype)
+    maxes = maxes.scatter_reduce(0, owner, scores.detach(), reduce="amax")
+    exp_sums = torch.zeros(n_states, device=scores.device, dtype=scores.dtype)
+    exp_sums = exp_sums.index_add(0, owner, (scores - maxes[owner]).exp())
+    log_probs = scores - maxes[owner] - exp_sums[owner].clamp_min(1e-30).log()
+    targets = utilities / sums[owner].clamp_min(1e-30)
+    losses = torch.zeros(n_states, device=scores.device, dtype=scores.dtype)
+    losses = losses.index_add(0, owner, -targets * log_probs)
+    return losses[valid].mean()
+
+
 def evaluate_ranking(model, states, device, batch=64) -> dict:
     import torch
     model.eval()
-    hits = total = 0
+    hits = total = utility_hits = utility_states = 0
+    selected_utility = 0.0
     with torch.no_grad():
         for i in range(0, len(states), batch):
             chunk = states[i:i + batch]
@@ -137,12 +158,24 @@ def evaluate_ranking(model, states, device, batch=64) -> dict:
                 best = scores[m].argmax()
                 hits += int(labels[m][best].item() == 1)
                 total += 1
+                if (model.utility_heads or model.single_utility) and "utilities" in chunk[s]:
+                    values = torch.tensor(chunk[s]["utilities"], device=device)
+                    if float(values.max()) > 0:
+                        utility_hits += int(values[best] >= values.max() - 1e-6)
+                        selected_utility += float(values[best])
+                        utility_states += 1
     model.train()
-    return {"top1_positive": hits / total if total else None, "states": total}
+    result = {"top1_positive": hits / total if total else None, "states": total}
+    if model.utility_heads or model.single_utility:
+        result.update({"utility_top1_optimal": utility_hits / utility_states if utility_states else None,
+                       "utility_top1_mean_value": selected_utility / utility_states if utility_states else None,
+                       "utility_states": utility_states})
+    return result
 
 
 def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, device: str, seed: int,
-        shuffle_labels: bool = False, dev: dict | None = None, threads: int = 6, log=print,
+        shuffle_labels: bool = False, shuffle_utilities_only: bool = False,
+        dev: dict | None = None, threads: int = 6, log=print,
         max_steps: int | None = None) -> tuple:
     import torch
     from .models import Router, flops_per_candidate, parameter_counts
@@ -151,11 +184,27 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
     model = Router(config).to(device)
     rng = random.Random(seed)
     decide = [dict(s) for s in data["decide"]]
+    if (model.utility_heads or model.single_utility) and any("utilities" not in s for s in decide):
+        raise ValueError("dual utility heads require states with private packet-marginal targets")
+    if shuffle_utilities_only:
+        if not (model.utility_heads or model.single_utility):
+            raise ValueError("utility-shuffle control requires utility supervision")
+        # A separate RNG preserves the exact state order and AdamW schedule
+        # of the unshuffled arms; only target-to-candidate binding changes.
+        target_rng = random.Random(f"utility-sham/{seed}")
+        for state in decide:
+            targets = list(state["utilities"])
+            target_rng.shuffle(targets)
+            state["utilities"] = targets
     if shuffle_labels:
         for s in decide:
             labels = list(s["labels"])
             rng.shuffle(labels)
             s["labels"] = labels
+            if model.utility_heads or model.single_utility:
+                utilities = list(s["utilities"])
+                rng.shuffle(utilities)
+                s["utilities"] = utilities
     rows = [dict(s) for s in data["rows"]] if model.exclusion_head is not None else []
     opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01)
     steps_per_epoch = math.ceil(len(decide) / batch_states)
@@ -174,7 +223,13 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
             chunk = decide[b * batch_states:(b + 1) * batch_states]
             ids, seg, structs, owner, labels = _assemble(chunk, device, model.encoder)
             scores, _ = model(ids, seg, structs)
-            loss = _listwise_loss(scores, owner, labels, len(chunk))
+            if model.utility_heads or model.single_utility:
+                values = torch.tensor([v for state in chunk for v in state["utilities"]],
+                                      dtype=scores.dtype, device=device).clamp(0, 1)
+                loss = (_utility_listwise_loss(scores, owner, values, len(chunk))
+                        + 0.2 * torch.nn.functional.smooth_l1_loss(scores.sigmoid(), values))
+            else:
+                loss = _listwise_loss(scores, owner, labels, len(chunk))
             train_flops += 3 * per_cand * ids.shape[0]
             if rows:
                 rchunk = rows[b * row_batch:(b + 1) * row_batch]
@@ -199,9 +254,12 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
         if max_steps is not None and step >= max_steps:
             break
     receipt = {"config": config, "epochs": epochs, "lr": lr, "batch_states": batch_states, "seed": seed,
-               "shuffle_labels": shuffle_labels, "device": device, "threads": threads,
+               "shuffle_labels": shuffle_labels,
+               "shuffle_utilities_only": shuffle_utilities_only,
+               "device": device, "threads": threads,
                "train_seconds": time.perf_counter() - started, "steps": step, "loss_curve": curve,
                "train_states": len(decide), "train_row_states": len(rows),
+               "objective": "packet-marginal-utility-listwise+calibration" if (model.utility_heads or model.single_utility) else "binary-listwise",
                "train_flops_estimate": train_flops,
                "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen "
                                      "(upper bound; batches use shorter dynamic padding)",
@@ -292,6 +350,7 @@ def main(argv=None) -> int:
     model, receipt = fit(spec["config"], data, epochs=spec.get("epochs", train["epochs"]),
                          lr=spec.get("lr", train["lr"]), batch_states=train["batch_states"], device=args.device,
                          seed=spec.get("seed", train["seed"]), shuffle_labels=spec.get("shuffle_labels", False),
+                         shuffle_utilities_only=spec.get("shuffle_utilities_only", False),
                          dev=dev, threads=train.get("threads", 6))
     receipt["model_name"] = args.model
     sha = save_checkpoint(model, receipt, args.out)
