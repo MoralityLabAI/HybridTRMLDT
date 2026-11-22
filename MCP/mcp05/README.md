@@ -24,6 +24,20 @@ All fitted heads consume the same verifier-grounded replay, including deliberate
 
 ## Run matched evaluations
 
+### Thinking Machines Lab variable-loop GGUF
+
+Start the existing `TML-d24-varloop-research-IQ4_NL.gguf` with llama.cpp b12602 and Vulkan. The RTX 5080 tests use model revision `618c48f1e3c54094333e3e652a92b1d99c52e34d`, a fixed 16,384-token slot, one loop, and greedy decoding. The separate three-loop compatibility probe is excluded from the matched comparison.
+
+    llama-server --model PATH_TO_EXISTING_GGUF --host 127.0.0.1 --port 8097 --alias inky-mini-varloop --ctx-size 16384 --parallel 1 --threads 4 --threads-batch 4 -b 256 -ub 64 -ngl 99 --n-cpu-moe 17 --fit off --no-mmproj --no-context-shift --cache-ram 0 --reasoning off --reasoning-budget 0 --no-reasoning-preserve --seed 523 --temp 0 --override-kv inkling2_loop.loop.count=int:1
+
+The shared-GPU profile keeps the first 17 layers' expert weights in system RAM and measured about 7.8 GiB on the GPU with the full slot allocated. The earlier 11-layer CPU profile used about 11 GiB. The Windows pilot set `GGML_VK_VISIBLE_DEVICES=1` after verifying the device inventory. Use the actual memory reported for the other workload when choosing a profile.
+
+    python -m MCP.mcp05.evaluate --binary MCP/goose_gdk_app/target/debug/goblin-gdk --stage work/mcp05-cases --checkpoints work/mcp05-controller --out work/mcp05-inky --json-actions --context 16384 --completion 512 --arms A B C D E shuffled
+
+For the external cases, replace `--stage` with `--cases PATH_TO_EXTERNAL_CASES_JSON` and use `--arms D A`. Use a separate output directory when comparing `--deduplicate-reads` so each result points to its generation settings.
+
+### Earlier native CUDA comparison
+
 For native CUDA, start the LookAtMyQuant provider from its `runtime_cuda` directory. The tested provider commit is `89439a2d63d1bdef0a19fba0ce5c2eeb5bd9488a`. Use the existing 5.4 GB model pack and DSpark drafter with a CUDA-enabled Python environment.
 
     python -m inkling_cuda serve PATH_TO_CACHED_INKY_5_4 --port 8101 --context 16384 --no-thinking --drafter PATH_TO_CACHED_DRAFTER --draft-block-size 2
@@ -31,18 +45,6 @@ For native CUDA, start the LookAtMyQuant provider from its `runtime_cuda` direct
 From the HybridTRMLDT root, run the same cases across the raw, packet, learned, recurrent, reset, and shuffled arms. Set `--binary` to the executable built above. The model ID is the cached pack's directory name. Every arm uses the native tool protocol and the same inference limits.
 
     python -m MCP.mcp05.evaluate --binary PATH_TO_GOBLIN_GDK --stage work/mcp05-cases --checkpoints work/mcp05-controller --out work/mcp05-inky-cuda --base-url http://127.0.0.1:8101/v1/ --model inky-5.4 --context 16384 --completion 512 --iterations 10 --calls 18 --packet-budget 1024 --request-timeout 480 --episode-timeout 1200 --arms A B C D E shuffled
-
-For the external cases, replace `--stage` with `--cases PATH_TO_EXTERNAL_CASES_JSON` and use `--arms D A`. Use a different output directory when comparing `--deduplicate-reads`, so each result points to the exact settings used to generate it.
-
-### Earlier Vulkan pilot
-
-Start a loopback OpenAI-compatible endpoint with a known 16,384-token slot. For the RTX 5080 run, we used the existing TML-d24-varloop-research IQ4_NL GGUF, revision 618c48f1e3c54094333e3e652a92b1d99c52e34d, and llama.cpp b12602 with Vulkan. The matched sweep holds the solver at one loop with greedy decoding and leaves its parameters frozen. The separate three-loop compatibility probe is excluded from the comparison.
-
-    llama-server --model PATH_TO_EXISTING_GGUF --host 127.0.0.1 --port 8097 --alias inky-mini-varloop --ctx-size 16384 --parallel 1 --threads 4 --threads-batch 4 -b 256 -ub 64 -ngl 99 --n-cpu-moe 11 --fit off --no-mmproj --no-context-shift --cache-ram 0 --reasoning off --reasoning-budget 0 --no-reasoning-preserve --seed 523 --temp 0 --override-kv inkling2_loop.loop.count=int:1
-
-Select the RTX device with the runtime's device selector. The Windows pilot set GGML_VK_VISIBLE_DEVICES=1 after checking the Vulkan inventory. The CPU workflow's optional real-model job uses a prepared loopback endpoint on a labeled runner.
-
-    python -m MCP.mcp05.evaluate --binary MCP/goose_gdk_app/target/debug/goblin-gdk --stage work/mcp05-cases --checkpoints work/mcp05-controller --out work/mcp05-inky --json-actions --arms A B C D E shuffled
 
 ### Benchmark arms and grading
 
