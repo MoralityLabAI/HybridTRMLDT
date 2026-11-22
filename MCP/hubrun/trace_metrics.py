@@ -25,7 +25,8 @@ ARCHIVES = (
 )
 DOCEDIT_COUNTERS = ("read_page_calls", "stale_sites", "edit_text_calls", "submit_calls",
                     "search_doc_calls", "site_recall")
-READ_NAMES = {"read_file", "read_page", "open_file", "cat_file", "read_symbol"}
+READ_NAMES = {"read_file", "read_page", "open_file", "cat_file", "read_symbol",
+              "workspace_read_file"}
 
 
 def archive_rows(path: Path) -> tuple[list[dict], dict]:
@@ -191,8 +192,18 @@ def build_report(root: Path) -> dict:
                   "Event-recon exact read-request repeats require fully observable tool arguments.",
                   "Tool-call counts measure requests; repeated reads may be intentional.",
               ]}
+    manifest_file = root.parent / "manifest.json"
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8")) if manifest_file.is_file() else None
+    result["source_manifest_verified"] = manifest is not None
     for filename in ARCHIVES:
         rows, provenance = archive_rows(root / filename)
+        if manifest is not None:
+            key = filename.split(".")[0]
+            entry = (manifest.get("traces") or {}).get(key)
+            if not isinstance(entry, dict) or entry.get("file") != filename:
+                raise ValueError("manifest entry missing or file mismatch: " + filename)
+            if provenance["source_sha256"] != entry.get("source_sha256"):
+                raise ValueError("manifest source digest mismatch: " + filename)
         result["sources"][filename] = provenance
         if filename.startswith("docedit-"):
             arm = filename.split("-")[1].split(".")[0]
@@ -204,6 +215,12 @@ def build_report(root: Path) -> dict:
     common = set(a) & set(b)
     result["docedit_pair"]["task_ids_matched"] = len(common) == len(a) == len(b)
     result["docedit_pair"]["n_matched"] = len(common)
+    event_sets = [set(result["event_recon"][arm]["cases"]) for arm in ("raw", "goblin", "late")]
+    common_event = set.intersection(*event_sets)
+    result["event_recon_pair"] = {
+        "task_ids_matched": all(group == event_sets[0] for group in event_sets[1:]),
+        "n_matched": len(common_event),
+    }
     result["docedit_pair"]["goblin_minus_raw"] = {
         key: round(sum(b[c]["counters"][key] - a[c]["counters"][key] for c in common) / len(common), 4)
         if common and all(a[c]["counters"][key] is not None and b[c]["counters"][key] is not None
@@ -229,6 +246,8 @@ def main() -> None:
                                           "unknown_read_args": v["read_args_missing_total"],
                                           "tool_names": v["tool_name_counts"]}
                                       for a, v in receipt["event_recon"].items()},
+                      "event_task_ids_matched": receipt["event_recon_pair"]["task_ids_matched"],
+                      "source_manifest_verified": receipt["source_manifest_verified"],
                       "receipt": str(args.out)}, sort_keys=True))
 
 
