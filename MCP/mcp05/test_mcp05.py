@@ -177,13 +177,13 @@ class Contracts(unittest.TestCase):
                 binary="stub", base_url="http://localhost", model="stub", packet_budget=512,
                 completion=128, calls=10, iterations=4, context=1024, request_timeout=1,
                 episode_timeout=1, python=sys.executable, json_actions=False, goblin_cwd=source,
-                deduplicate_reads=False,
+                deduplicate_reads=False, provider_prefix_id=None,
             )
             case = {"id": "fixture", "suite": "test", "repo": source, "task": TASK,
                     "verifier": verifier_manifest(), "gold_symbols": ["engine/physics.py::fall"]}
             for filename, expected in (("engine/physics.py", True), ("tests/test_fall.py", False)):
                 with self.subTest(filename=filename):
-                    def timeout(cmd, limit):
+                    def timeout(cmd, limit, *, env):
                         root = Path(cmd[cmd.index("--repo") + 1])
                         self.assertEqual(Path(cmd[cmd.index("--goblin-cwd") + 1]), source)
                         path = root / filename
@@ -208,6 +208,71 @@ class Contracts(unittest.TestCase):
                         self.assertEqual(outcome["independent_verifier"]["exit_code"], 0)
                     else:
                         self.assertIsNone(outcome["independent_verifier"])
+
+    def test_interrupted_episode_reuses_only_its_successful_provider_prefix(self):
+        binary = os.environ.get("GOBLIN_GDK_BINARY")
+        if not binary:
+            self.skipTest("GOBLIN_GDK_BINARY is not set")
+
+        class InterruptAfterReads(Provider):
+            def do_POST(self):
+                if self.path == "/v1/chat/completions":
+                    if self.server.interrupt and self.server.completed == 2:
+                        self.send_response(504)
+                        self.send_header("Content-Type", "application/json")
+                        self.end_headers()
+                        self.wfile.write(b'{"error":{"message":"GPU yielded"}}')
+                        return
+                    self.server.completed += 1
+                super().do_POST()
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source"
+            commit_fixture(source)
+            case = {"id": "fixture", "suite": "test", "repo": source, "task": TASK,
+                    "verifier": verifier_manifest(), "gold_symbols": ["engine/physics.py::fall"]}
+            parent = root / "campaign" / case["id"] / "A"
+            journal = parent.with_name("A.provider-prefix.json")
+            with ThreadingHTTPServer(("127.0.0.1", 0), InterruptAfterReads) as server:
+                server.interrupt = True
+                server.completed = 0
+                thread = threading.Thread(target=server.serve_forever, daemon=True)
+                thread.start()
+                args = SimpleNamespace(
+                    binary=str(Path(binary).resolve()), base_url=f"http://127.0.0.1:{server.server_port}/v1/",
+                    model="stub", packet_budget=1024, completion=256, calls=10, iterations=8, context=16_384,
+                    request_timeout=10, episode_timeout=90, python=sys.executable, json_actions=False,
+                    goblin_cwd=ROOT, deduplicate_reads=False, provider_prefix_id="stub-v1",
+                )
+                try:
+                    interrupted = episode(args, case, "A", parent)
+                    self.assertFalse(interrupted["verified"])
+                    self.assertEqual(interrupted["inference_calls"], 2)
+                    self.assertEqual(len(json.loads(journal.read_bytes())), 2)
+                    parent.rename(parent.with_name("interrupted"))
+
+                    server.interrupt = False
+                    resumed = episode(args, case, "A", parent)
+                    self.assertTrue(resumed["verified"], resumed)
+                    self.assertEqual(resumed["replayed_inference_calls"], 2)
+                    self.assertEqual(resumed["parity_failures"], 0)
+                    self.assertEqual(server.completed, resumed["inference_calls"])
+                    self.assertTrue(all(x.get("original_provider_seconds", -1) >= 0
+                                        for x in resumed["provider_preflight"][:2]))
+                    self.assertTrue((parent / "final.patch").exists())
+                    records = json.loads(journal.read_bytes())
+                    ids = [record["response"]["id"] for record in records]
+                    self.assertEqual(len(set(ids)), len(ids))
+
+                    parent.rename(parent.with_name("resumed"))
+                    changed = episode(args, dict(case, task=TASK + " Preserve the existing signature."), "A", parent)
+                    self.assertTrue(changed["verified"])
+                    self.assertEqual(changed["replayed_inference_calls"], 0)
+                    self.assertNotEqual(json.loads(journal.read_bytes())[0]["request_key"], records[0]["request_key"])
+                finally:
+                    server.shutdown()
+                    thread.join()
 
     def test_json_sections_use_current_exact_source_lines(self):
         with tempfile.TemporaryDirectory() as temp:

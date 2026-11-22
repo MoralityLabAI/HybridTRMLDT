@@ -56,6 +56,7 @@ def summarize(rows: list[dict]) -> dict:
             "invalidated_handles": sum(row["invalidated_handles"] for row in results),
             "verifier_calls": sum(row["verifier_calls"] for row in results),
             "episodes_with_final_runtime_metrics": sum(row.get("final_runtime_metrics") is True for row in results),
+            "replayed_inference_calls": sum(row.get("replayed_inference_calls", 0) for row in results),
             "controller_seconds": sum(row["controller_seconds"] for row in results),
             "retrieval_seconds": sum(row.get("retrieval_seconds", 0) for row in results),
             "retrieval_postings": sum(row["retrieval_postings"] for row in results),
@@ -66,11 +67,11 @@ def summarize(rows: list[dict]) -> dict:
     return groups
 
 
-def run_gdk(cmd: list[str], timeout: int) -> tuple[int, str, str]:
+def run_gdk(cmd: list[str], timeout: int, *, env: dict | None = None) -> tuple[int, str, str]:
     windows = os.name == "nt"
     with subprocess.Popen(
         cmd, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8",
-        errors="replace", start_new_session=not windows,
+        errors="replace", start_new_session=not windows, env=env,
         creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if windows else 0,
     ) as child:
         try:
@@ -171,8 +172,13 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
         cmd.append("--controller-reset")
     if verifier:
         cmd += ["--verifier", str(parent / "verifier.json")]
+    env = dict(os.environ)
+    env.pop("MCP05_EPISODE_PREFIX_PATH", None)
+    if args.provider_prefix_id:
+        prefix_path = parent.with_name(f"{parent.name}.provider-prefix.json")
+        env["MCP05_EPISODE_PREFIX_PATH"] = str(prefix_path)
     try:
-        code, stdout, stderr = run_gdk(cmd, args.episode_timeout)
+        code, stdout, stderr = run_gdk(cmd, args.episode_timeout, env=env)
         (parent / "stderr.log").write_text(stderr, encoding="utf-8")
         payload = json.loads(stdout) if code == 0 else {"error": stderr[-2500:], "exit_code": code}
     except (subprocess.TimeoutExpired, ValueError) as exc:
@@ -211,6 +217,7 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
               "input_tokens": payload.get("provider_input_tokens", 0),
               "output_tokens": payload.get("provider_output_tokens", 0),
               "inference_calls": payload.get("inference_calls", 0),
+              "replayed_inference_calls": sum(item.get("provider_replayed") is True for item in preflight),
               "context_overflows": sum("context overflow:" in item.get("error", "") for item in preflight),
               "repeated_reads": state.get("repeated_reads", 0),
               "invalidated_handles": state.get("invalidated_handles", 0),
@@ -248,6 +255,7 @@ def main():
     parser.add_argument("--request-timeout", type=int, default=300)
     parser.add_argument("--episode-timeout", type=int, default=2400)
     parser.add_argument("--gpu-yield-file", type=Path)
+    parser.add_argument("--provider-prefix-id", help="Pin the provider revision and generation settings for optional episode resumption")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--case-ids", nargs="+")
     parser.add_argument("--json-actions", action="store_true")
@@ -281,6 +289,8 @@ def main():
         plan["goblin_cwd"] = str(args.goblin_cwd)
     if args.deduplicate_reads:
         plan["deduplicate_reads"] = True
+    if args.provider_prefix_id:
+        plan["provider_prefix_id"] = args.provider_prefix_id
     plan_file = args.out / "plan.json"
     if plan_file.exists() and json.loads(plan_file.read_text(encoding="utf-8")) != plan:
         parser.error("output directory contains a different evaluation plan")

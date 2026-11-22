@@ -70,4 +70,6 @@ Use `--goblin-cwd` to evaluate Goose with a specific checkout of the MCP service
 
 For a shared GPU, pass the same local path as `--yield-file` to the guarded CUDA provider and `--gpu-yield-file` to the evaluator. When the scheduler creates that file, the provider stops at a generation boundary and the evaluator archives any interrupted episode outside the scored campaign.
 
+Start a campaign with `--provider-prefix-id` set to the fixed model, provider revision, and generation settings to enable resumption. On a restart, the evaluator recreates the worktree and reruns its tools. The relay retokenizes each request and reuses a recorded completion only when both the complete outbound request and rendered prompt match at the same turn. It requests a fresh completion when they differ. Each arm has its own provider response journal. Replayed turns retain their original token counts and inference times, with replay separately identified in the receipts.
+
 If the device needs to release CUDA allocations between turns, the recycling build of the provider accepts `--recycle-completions`. Goose still uses one stable loopback URL and 16K context. Each request reloads the model, so compare those request times separately from a resident model. The provider log reports load, inference, and release time for each worker.

@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
 import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
@@ -12,6 +14,36 @@ from urllib.request import ProxyHandler, Request, build_opener
 
 from MCP.hubrun.mcp04 import PreflightError, WorkingSetError, exact_preflight, typed_packet
 from MCP.hubrun.packet import compact_messages
+
+
+class ProviderPrefix:
+    """Reuse an episode's ordered, exactly matched completions after interruption."""
+
+    def __init__(self, path: Path):
+        self.path = path
+        self.records = json.loads(path.read_bytes()) if path.exists() else []
+        self.turn = 0
+
+    def match(self, request_key: str):
+        if self.turn < len(self.records):
+            record = self.records[self.turn]
+            if record["request_key"] == request_key:
+                return record
+        return None
+
+    def record(self, request_key: str, response: dict, seconds: float):
+        # Keep application-facing IDs unique even when a fresh worker restarts its counter.
+        response["id"] = f"chatcmpl-mcp05-{self.turn}"
+        for choice_index, choice in enumerate(response.get("choices", [])):
+            calls = choice.get("message", {}).get("tool_calls") or []
+            for call_index, call in enumerate(calls):
+                call["id"] = f"call_mcp05_{self.turn}_{choice_index}_{call_index}"
+        records = [*self.records[:self.turn],
+                   {"request_key": request_key, "response": response, "provider_seconds": seconds}]
+        pending = self.path.with_suffix(".tmp")
+        pending.write_text(json.dumps(records, ensure_ascii=False), encoding="utf-8")
+        pending.replace(self.path)
+        self.records = records
 
 
 def measure(forward, request, *, window: int, reserve: int):
@@ -98,6 +130,8 @@ def main():
     chat_path = upstream.path.rstrip("/") + "/chat/completions"
     opener = build_opener(ProxyHandler({}))
     parity_failed = False
+    prefix_file = os.environ.get("MCP05_EPISODE_PREFIX_PATH")
+    prefix = ProviderPrefix(Path(prefix_file)) if prefix_file else None
 
     def forward(method, path, raw):
         headers = {"Content-Type": "application/json"}
@@ -146,16 +180,32 @@ def main():
                                            budget=args.budget, memory=args.memory,
                                            deduplicate_reads=args.deduplicate_reads)
                 receipt["preflight_seconds"] = time.monotonic() - started
+                body = json.dumps(measured, ensure_ascii=False).encode()
+                saved = None
+                if prefix is not None:
+                    template = receipt["preflight"]["formatted_prompt_sha256"].encode()
+                    request_key = hashlib.sha256(template + b"\0" + body).hexdigest()
+                    saved = prefix.match(request_key)
                 provider_started = time.monotonic()
-                status, raw = forward("POST", chat_path, json.dumps(measured, ensure_ascii=False).encode())
+                if saved is None:
+                    status, raw = forward("POST", chat_path, body)
+                else:
+                    status, raw = 200, json.dumps(saved["response"], ensure_ascii=False).encode()
+                    receipt.update(provider_replayed=True, original_provider_seconds=saved["provider_seconds"])
                 receipt["provider_seconds"] = time.monotonic() - provider_started
                 if status == 200:
-                    usage = json.loads(raw).get("usage") or {}
+                    response = json.loads(raw)
+                    usage = response.get("usage") or {}
                     reported = usage.get("prompt_tokens")
                     parity_failed = reported != receipt["preflight"]["prompt_tokens"]
                     receipt.update(provider_prompt_tokens=reported,
                                    provider_completion_tokens=usage.get("completion_tokens"),
                                    provider_preflight_parity=not parity_failed)
+                    if prefix is not None and not parity_failed:
+                        if saved is None:
+                            prefix.record(request_key, response, receipt["provider_seconds"])
+                            raw = json.dumps(response, ensure_ascii=False).encode()
+                        prefix.turn += 1
                 receipt["provider_status"] = status
             except (PreflightError, ValueError, OSError) as exc:
                 receipt["error"] = str(exc)
