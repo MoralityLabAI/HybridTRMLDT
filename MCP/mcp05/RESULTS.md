@@ -67,7 +67,7 @@ The SWE-bench Lite test data was pinned at revision `b0dde1093fe417d83b7184254ed
 | `pallets__flask-4045` | 0/2 passed | 2/2 passed | 50/50 passed |
 | `pallets__flask-4992` | 0/1 passed | 1/1 passed | 18/18 passed |
 
-These rows establish the Windows grading controls. Agent-produced patches are graded separately. Ubuntu's WSL disk could not attach because Windows reported a sharing violation, leaving the container-based SWE-bench grader pending.
+These rows establish the Windows grading controls. The official container-based reference run reproduced these results. Agent-produced patches are graded separately.
 
 ## Storyworld JSON section lookup
 
@@ -84,7 +84,7 @@ All 18 completed requests matched exact preflight. The indexed follow-up uses th
 
 ## Official SWE-bench grading readiness
 
-The WSL launcher uses the two Flask rows from the checksum-verified dataset and the existing local container images. Its probe projected both recorded base commits successfully. Windows Restart Manager listed System and Microsoft Defender Antivirus as users of the Ubuntu virtual disk. WSL continues to report a sharing violation on attach, so container grading is pending. [Windows Restart Manager](https://learn.microsoft.com/en-us/windows/win32/api/restartmanager/nf-restartmanager-rmgetlist)
+The WSL launcher uses the two Flask rows from the checksum-verified dataset and the existing local container images. After the virtual disk became available, the probe confirmed both images and the official SWE-bench harness resolved both published Flask reference patches. All three target tests and 68 preserved tests passed, with zero infrastructure failures. The same harness grades the agent predictions after the cross-suite run.
 
 ## Research planning review criteria
 
