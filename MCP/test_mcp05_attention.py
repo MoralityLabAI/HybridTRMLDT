@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import unittest
 
-from MCP.hubrun.attention import observe_read, rank_read_atoms
+from MCP.hubrun.attention import explicit_empty_result, observe_read, rank_read_atoms
 from MCP.hubrun.mcp04 import WorkingSetError, typed_packet
 from MCP.test_mcp04 import episode
 
@@ -23,6 +23,16 @@ class AttentionUnitTests(unittest.TestCase):
         self.assertEqual(len(ranked), 3)
         self.assertEqual(ranked[0].hint, "collision")
         self.assertEqual(len({a.lineage for a in ranked}), 3)
+
+    def test_empty_result_classifier_requires_complete_negative(self):
+        self.assertTrue(explicit_empty_result("No results"))
+        self.assertTrue(explicit_empty_result("0 results"))
+        self.assertTrue(explicit_empty_result('{"results": [], "total_count": 0}'))
+        self.assertTrue(explicit_empty_result("[]"))
+        self.assertFalse(explicit_empty_result('{"results": [], "total_count": 4}'))
+        self.assertFalse(explicit_empty_result("log: no results\nthen the program returned 3 valid rows"))
+        self.assertFalse(explicit_empty_result("the source code contains a string 'not found'"))
+        self.assertFalse(explicit_empty_result(""))
 
     def test_repeated_identical_read_is_one_evidential_lineage(self):
         table = {}
@@ -115,6 +125,13 @@ class WorkingSetIntegrationTests(unittest.TestCase):
             messages[idx]["content"] = "no results"
         with self.assertRaises(WorkingSetError):
             typed_packet(messages, keep_recent=2, budget_tokens=200, policy="mcp05")
+
+    def test_embedded_no_results_text_never_becomes_negative(self):
+        messages = episode(7)
+        messages[3]["content"] = "diagnostic example: no results\nvalid object count 7"
+        _, receipt = typed_packet(messages, budget_tokens=1800, keep_recent=2,
+                                  policy="mcp05")
+        self.assertEqual(receipt["pinned_negative_atoms"], 0)
 
     def test_error_message_does_not_become_negative_evidence(self):
         messages = episode(7)
