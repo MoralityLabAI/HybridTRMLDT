@@ -10,10 +10,13 @@ import threading
 import unittest
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from MCP.mcp03.goblin_server import GoblinService
 from MCP.serve import Session
 from .context import WorkingSet
+from .evaluate import episode
 from .gym import ROOT, clone, dump, verifier_manifest
 from .preflight import prepare
 
@@ -104,6 +107,39 @@ class Provider(BaseHTTPRequestHandler):
 
 
 class Contracts(unittest.TestCase):
+    def test_episode_grades_authorized_patch_after_provider_timeout(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            source = base / "source"
+            source.mkdir()
+            commit_fixture(source)
+            args = SimpleNamespace(
+                binary="stub", base_url="http://localhost", model="stub", packet_budget=512,
+                completion=128, calls=10, iterations=4, context=1024, request_timeout=1,
+                episode_timeout=1, python=sys.executable, json_actions=False,
+            )
+            case = {"id": "fixture", "suite": "test", "repo": source, "task": TASK,
+                    "verifier": verifier_manifest()}
+            for filename, expected in (("engine/physics.py", True), ("tests/test_fall.py", False)):
+                with self.subTest(filename=filename):
+                    def timeout(cmd, limit):
+                        root = Path(cmd[cmd.index("--repo") + 1])
+                        path = root / filename
+                        replacement = SOURCE.replace("-", "+") if expected else "# out of scope\n"
+                        path.write_text(replacement, encoding="utf-8")
+                        raise subprocess.TimeoutExpired(cmd[0], limit)
+
+                    parent = base / filename.split("/")[0]
+                    with patch("MCP.mcp05.evaluate.run_gdk", side_effect=timeout):
+                        outcome = episode(args, case, "A", parent)
+                    self.assertIn("timed out", outcome["error"])
+                    self.assertEqual(outcome["verified"], expected)
+                    self.assertEqual((parent / "final.patch").is_file(), expected)
+                    if expected:
+                        self.assertEqual(outcome["independent_verifier"]["exit_code"], 0)
+                    else:
+                        self.assertIsNone(outcome["independent_verifier"])
+
     def test_json_sections_use_current_exact_source_lines(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

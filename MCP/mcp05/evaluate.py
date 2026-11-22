@@ -10,7 +10,9 @@ import sys
 import time
 from pathlib import Path
 
+from .context import WorkingSet
 from .gym import ROOT, clone, dump, source_root, verifier_manifest
+from .service import RepairWorkspace
 
 ARMS = {
     "A": ("raw", None), "B": ("packet", None), "C": ("typed", "shared"),
@@ -126,8 +128,10 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
     parent.mkdir(parents=True)
     root = parent / "worktree"
     verifier = case.get("verifier")
+    workspace = None
     if verifier:
         clone(Path(case["repo"]), root)
+        workspace = RepairWorkspace(WorkingSet(root), verifier)
         before = native(verifier, root)
         dump(parent / "verifier.json", verifier)
     else:
@@ -160,11 +164,15 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
     fallback_usage(parent, payload)
     dump(parent / "gdk.json", payload)
     state = payload.get("state") or {}
-    patch = state.get("patch", "")
     after = None
-    if verifier and patch:
-        (parent / "final.patch").write_bytes(patch.encode())
+    patch = workspace.patch() if workspace else {}
+    approved = patch.get("approved") and state.get("patch_sha256") in (None, patch["patch_sha256"])
+    if approved:
         after = native(verifier, root)
+        after_patch = workspace.patch()
+        approved = after_patch["approved"] and after_patch["patch_sha256"] == patch["patch_sha256"]
+        if approved:
+            (parent / "final.patch").write_bytes(patch["patch"].encode())
     preflight = payload.get("preflight", [])
     parity_failures = sum(item.get("provider_preflight_parity") is False for item in preflight)
     seen = set(state.get("read_history") or [])
@@ -178,8 +186,8 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
                    if re.search(criterion, payload.get("answer") or "", re.IGNORECASE | re.MULTILINE)]
     result = {"id": case["id"], "suite": case["suite"], "arm": arm,
               "verified": bool(before and before["exit_code"] != 0 and after and after["exit_code"] == 0
-                               and state.get("approved")),
-              "before": before, "independent_verifier": after, "patch_sha256": state.get("patch_sha256"),
+                               and approved),
+              "before": before, "independent_verifier": after, "patch_sha256": patch.get("patch_sha256"),
               "input_tokens": payload.get("provider_input_tokens", 0),
               "output_tokens": payload.get("provider_output_tokens", 0),
               "inference_calls": payload.get("inference_calls", 0),
