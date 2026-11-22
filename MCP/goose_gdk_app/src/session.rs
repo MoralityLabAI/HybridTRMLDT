@@ -146,6 +146,27 @@ pub(crate) struct RepairState {
 }
 
 impl RepairState {
+    fn last_two_solver_reads_match(&self, source: &Value) -> bool {
+        let (Some(handle), Some(revision)) = (source["handle"].as_str(), source["revision"].as_str())
+        else {
+            return false;
+        };
+        self.receipts
+            .iter()
+            .rev()
+            .filter(|receipt| {
+                receipt["origin"] == "solver"
+                    && receipt["tool"] == "context_read"
+                    && receipt["error"] == false
+            })
+            .take(2)
+            .filter(|receipt| {
+                receipt["output"]["handle"] == handle && receipt["output"]["revision"] == revision
+            })
+            .count()
+            == 2
+    }
+
     fn repeated_unavailable_expansion(&self, arguments: &Value) -> bool {
         let Some(uri) = arguments["node_id"]
             .as_str()
@@ -339,6 +360,14 @@ impl RepairOperation {
             if !state.dirty {
                 state.subgoal = "Propose a minimal edit for the relevant source just read.".into();
             }
+        } else if !self.can_edit
+            && !error
+            && origin == "solver"
+            && tool == "context_read"
+            && state.last_two_solver_reads_match(&payload)
+        {
+            state.answer_only = true;
+            payload["next_action_hint"] = json!("This source span is unchanged. Answer the original task using the evidence already collected.");
         }
         if !error && tool == "apply_edit" {
             state.dirty = true;

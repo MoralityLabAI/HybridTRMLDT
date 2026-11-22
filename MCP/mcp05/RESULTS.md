@@ -62,6 +62,8 @@ The DSpark block-size-2 provider stopped responding during the typed CUDA interp
 
 The saved typed RU02 research rollout read the same 4,270-character excerpt five times. Replaying its recorded conversation with the cached Inkling tokenizer and minimal matching tool declarations reduced the final prompt from 9,471 to 4,119 tokens. The replay retained all tool IDs and the full newest excerpt. It did not run generation or measure answer quality.
 
+The read-only session now switches to an answer turn after the third successive successful read of the same source handle and revision. On the saved RU02 trace, the handoff condition is reached at receipt 8, after three of the five identical reads. The deterministic Goose replay verifies that the model receives the original task and source evidence with all further lookup tools withdrawn.
+
 ## Published SWE-bench test controls
 
 The SWE-bench Lite test data was pinned at revision `b0dde1093fe417d83b7184254edf8199c1f0dff5`. Both Flask fixtures matched the dataset's recorded base revisions. On Windows with Python 3.12 and pytest 7.4.4, the published tests distinguished each base worktree from its published reference patch. The test runs filtered four Python 3.12 deprecation messages for compatibility with the older Flask suites. [Pinned SWE-bench Lite dataset](https://huggingface.co/datasets/SWE-bench/SWE-bench_Lite/tree/b0dde1093fe417d83b7184254edf8199c1f0dff5/data)

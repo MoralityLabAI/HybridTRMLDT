@@ -24,6 +24,18 @@ All fitted heads consume the same verifier-grounded replay, including deliberate
 
 ## Run matched evaluations
 
+For native CUDA, start the LookAtMyQuant provider from its `runtime_cuda` directory. The tested provider commit is `89439a2d63d1bdef0a19fba0ce5c2eeb5bd9488a`. Use the existing 5.4 GB model pack and DSpark drafter with a CUDA-enabled Python environment.
+
+    python -m inkling_cuda serve PATH_TO_CACHED_INKY_5_4 --port 8101 --context 16384 --no-thinking --drafter PATH_TO_CACHED_DRAFTER --draft-block-size 2
+
+From the HybridTRMLDT root, run the same cases across the raw, packet, learned, recurrent, reset, and shuffled arms. Set `--binary` to the executable built above. The model ID is the cached pack's directory name. Every arm uses the native tool protocol and the same inference limits.
+
+    python -m MCP.mcp05.evaluate --binary PATH_TO_GOBLIN_GDK --stage work/mcp05-cases --checkpoints work/mcp05-controller --out work/mcp05-inky-cuda --base-url http://127.0.0.1:8101/v1/ --model inky-5.4 --context 16384 --completion 512 --iterations 10 --calls 18 --packet-budget 1024 --request-timeout 480 --episode-timeout 1200 --arms A B C D E shuffled
+
+For the external cases, replace `--stage` with `--cases PATH_TO_EXTERNAL_CASES_JSON` and use `--arms D A`. Use a different output directory when comparing `--deduplicate-reads`, so each result points to the exact settings used to generate it.
+
+### Earlier Vulkan pilot
+
 Start a loopback OpenAI-compatible endpoint with a known 16,384-token slot. For the RTX 5080 run, we used the existing TML-d24-varloop-research IQ4_NL GGUF, revision 618c48f1e3c54094333e3e652a92b1d99c52e34d, and llama.cpp b12602 with Vulkan. The matched sweep holds the solver at one loop with greedy decoding and leaves its parameters frozen. The separate three-loop compatibility probe is excluded from the comparison.
 
     llama-server --model PATH_TO_EXISTING_GGUF --host 127.0.0.1 --port 8097 --alias inky-mini-varloop --ctx-size 16384 --parallel 1 --threads 4 --threads-batch 4 -b 256 -ub 64 -ngl 99 --n-cpu-moe 11 --fit off --no-mmproj --no-context-shift --cache-ram 0 --reasoning off --reasoning-budget 0 --no-reasoning-preserve --seed 523 --temp 0 --override-kv inkling2_loop.loop.count=int:1
@@ -31,6 +43,8 @@ Start a loopback OpenAI-compatible endpoint with a known 16,384-token slot. For 
 Select the RTX device with the runtime's device selector. The Windows pilot set GGML_VK_VISIBLE_DEVICES=1 after checking the Vulkan inventory. The CPU workflow's optional real-model job uses a prepared loopback endpoint on a labeled runner.
 
     python -m MCP.mcp05.evaluate --binary MCP/goose_gdk_app/target/debug/goblin-gdk --stage work/mcp05-cases --checkpoints work/mcp05-controller --out work/mcp05-inky --json-actions --arms A B C D E shuffled
+
+### Benchmark arms and grading
 
 The A arm uses raw history and the existing no-packet control. B uses BM25 and the current packet history. C uses the shared utility model. D keeps the SetTRM latent state, E resets it at every step, and the shuffled arm uses permuted utilities. All arms share the same solver, assignments, iteration limit, context allowance and tool-call cap. B spends some of those calls on its initial packet.
 
@@ -48,7 +62,7 @@ For a JSON object, the working set indexes multiline array and object members at
 
 GDK controls which tool names, action budgets and workspace edits are authorized. A replacement requires a current digest-bound source handle and an exact unique match within the read span and file. Host-certified LDT exclusions carry the current revision and are reset on source changes. A native repair receipt is tied to the final patch digest. The harness derives the final patch from the worktree and independently reruns the verifier, including after an episode timeout. The patch must stay within the host-approved paths and retain its digest through verification. Verifier manifests are operator-supplied. The Python verifier guard limits routine Python filesystem mutations and blocks subprocess and socket creation. Use an OS sandbox when executing untrusted third-party code or grading general SWE-bench tasks.
 
-In read-only sessions, an exact repeated search after a source read triggers one final answer turn using the collected evidence. Retrying the same failed expansion also triggers this handoff once the matching source has been read. Goose suppresses further lookup dispatch for that final turn.
+In read-only sessions, an exact repeated search after a source read triggers one final answer turn using the collected evidence. Retrying the same failed expansion also triggers this handoff once the matching source has been read. Three successive successful solver reads of the same source handle and revision trigger the same handoff. Goose suppresses further lookup dispatch for that final turn.
 
 Per-episode receipts record provider prompt and completion tokens, retrieval postings, controller time, repeated reads, invalidated source handles, verifier calls, patch digests and wall time. On a timeout the evaluator recovers completed source reads and verifier calls from the session checkpoint. The summary indicates how many episodes supplied final runtime metrics. Token cost per verified repair includes tokens from failed episodes. A repair result and a localization or rubric result have separate denominators.
 

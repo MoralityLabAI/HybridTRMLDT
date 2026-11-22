@@ -90,6 +90,17 @@ class Provider(BaseHTTPRequestHandler):
                     self.send_error(400, "Repeated source history was not reduced correctly")
                     return
                 call = None
+        elif request["model"] == "stub-research-repeat-read":
+            if index in (2, 3):
+                call = ("context_read", {"uri": "engine/physics.py::fall"})
+            else:
+                rendered = json.dumps(history)
+                if (request.get("tools") or "Tool use has ended." not in rendered
+                        or "Which expression causes upward fall?" not in rendered
+                        or "return speed - gravity" not in rendered):
+                    self.send_error(400, "Expected an answer turn after three identical reads")
+                    return
+                call = None
         elif research:
             call = (None if "Tool use has ended." in json.dumps(history) else
                     ("context_query", {"query": "fall gravity"}))
@@ -275,7 +286,8 @@ class Contracts(unittest.TestCase):
             thread.start()
             receipts = []
             try:
-                for variant in ("native", "marker", "research", "research-expand", "research-duplicates"):
+                for variant in ("native", "marker", "research", "research-expand", "research-duplicates",
+                                "research-repeat-read"):
                     root = base / variant
                     clone(stage, root)
                     research = variant.startswith("research")
@@ -301,7 +313,8 @@ class Contracts(unittest.TestCase):
                     observations = json.loads(result.stdout)
                     self.assertIsNone(observations["error"], observations)
                     if research:
-                        self.assertEqual(observations["inference_calls"], 6 if variant == "research-expand" else 4)
+                        expected_calls = {"research-expand": 6, "research-repeat-read": 5}
+                        self.assertEqual(observations["inference_calls"], expected_calls.get(variant, 4))
                         self.assertEqual(observations["answer"], "The return subtracts gravity in engine/physics.py.")
                         if variant == "research-duplicates":
                             last_request = observations["preflight"][-1]
@@ -314,6 +327,14 @@ class Contracts(unittest.TestCase):
                             self.assertEqual(source_receipts[0], source_receipts[1])
                             continue
                         self.assertTrue(observations["session"]["answer_only"])
+                        if variant == "research-repeat-read":
+                            reads = [row for row in observations["session"]["receipts"]
+                                     if row["tool"] == "context_read" and not row["error"]]
+                            self.assertEqual(len(reads), 3)
+                            self.assertEqual(observations["state"]["read_history"], ["engine/physics.py::fall"] * 3)
+                            self.assertEqual(len({row["output"]["handle"] for row in reads}), 1)
+                            self.assertIn("unchanged", reads[-1]["output"]["next_action_hint"])
+                            continue
                         self.assertEqual(observations["state"]["read_history"], ["engine/physics.py::fall"])
                         self.assertTrue(observations["session"]["receipts"][-1]["error"])
                         if variant == "research-expand":
