@@ -19,7 +19,7 @@ import re
 from typing import Any, Callable
 
 from .packet import _content_text, _split_regions, estimate_tokens
-from .attention import observe_read, rank_read_atoms
+from .attention import explicit_empty_result, observe_read, rank_read_atoms
 
 class PreflightError(RuntimeError):
     """Refuse to forward when the real applied template cannot be measured."""
@@ -216,7 +216,7 @@ def typed_packet(messages: list[dict], *, budget_tokens: int = 1800, keep_recent
                     legacy_empty.append(f"observed-empty {name}({path}) handle={handle}")
             else:
                 observe_read(reads, name=name, path=path, args=args, handle=handle,
-                             status=status, is_empty=(status == "returned" and bool(_EMPTY.search(body))),
+                             status=status, is_empty=(status == "returned" and explicit_empty_result(body)),
                              step=n_tools, local_epoch=edit_epochs.get(path, 0))
     pinned_empty, ranked_reads = (rank_read_atoms(
         reads.values(),
