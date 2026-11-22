@@ -69,3 +69,5 @@ Per-episode receipts record provider prompt and completion tokens, retrieval pos
 Use `--goblin-cwd` to evaluate Goose with a specific checkout of the MCP service. This lets the host-side evaluator change while a matched run retains its chosen source lookup behavior. The alternate checkout path is recorded in the evaluation plan.
 
 For a shared GPU, pass the same local path as `--yield-file` to the guarded CUDA provider and `--gpu-yield-file` to the evaluator. When the scheduler creates that file, the provider stops at a generation boundary and the evaluator archives any interrupted episode outside the scored campaign.
+
+If the device needs to release CUDA allocations between turns, the recycling build of the provider accepts `--recycle-completions`. Goose still uses one stable loopback URL and 16K context. Each request reloads the model, so compare those request times separately from a resident model. The provider log reports load, inference, and release time for each worker.
