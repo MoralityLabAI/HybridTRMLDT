@@ -116,17 +116,22 @@ class Contracts(unittest.TestCase):
             args = SimpleNamespace(
                 binary="stub", base_url="http://localhost", model="stub", packet_budget=512,
                 completion=128, calls=10, iterations=4, context=1024, request_timeout=1,
-                episode_timeout=1, python=sys.executable, json_actions=False,
+                episode_timeout=1, python=sys.executable, json_actions=False, goblin_cwd=source,
             )
             case = {"id": "fixture", "suite": "test", "repo": source, "task": TASK,
-                    "verifier": verifier_manifest()}
+                    "verifier": verifier_manifest(), "gold_symbols": ["engine/physics.py::fall"]}
             for filename, expected in (("engine/physics.py", True), ("tests/test_fall.py", False)):
                 with self.subTest(filename=filename):
                     def timeout(cmd, limit):
                         root = Path(cmd[cmd.index("--repo") + 1])
+                        self.assertEqual(Path(cmd[cmd.index("--goblin-cwd") + 1]), source)
                         path = root / filename
                         replacement = SOURCE.replace("-", "+") if expected else "# out of scope\n"
                         path.write_text(replacement, encoding="utf-8")
+                        dump(root.parent / "session.json", {"session": {"receipts": [
+                            {"tool": "context_read", "error": False, "output": {"uri": "engine/physics.py::fall"}},
+                            {"tool": "run_verifier", "error": True, "output": {}},
+                        ]}})
                         raise subprocess.TimeoutExpired(cmd[0], limit)
 
                     parent = base / filename.split("/")[0]
@@ -135,6 +140,9 @@ class Contracts(unittest.TestCase):
                     self.assertIn("timed out", outcome["error"])
                     self.assertEqual(outcome["verified"], expected)
                     self.assertEqual((parent / "final.patch").is_file(), expected)
+                    self.assertEqual(outcome["gold_symbol_recall"], 1)
+                    self.assertEqual(outcome["verifier_calls"], 0)
+                    self.assertFalse(outcome["final_runtime_metrics"])
                     if expected:
                         self.assertEqual(outcome["independent_verifier"]["exit_code"], 0)
                     else:

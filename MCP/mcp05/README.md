@@ -46,4 +46,6 @@ GDK controls which tool names, action budgets and workspace edits are authorized
 
 In read-only sessions, an exact repeated search after a source read triggers one final answer turn using the collected evidence. Goose suppresses further lookup dispatch for that turn.
 
-Per-episode receipts record provider prompt and completion tokens, retrieval postings, controller time, repeated reads, invalidated source handles, verifier calls, patch digests and wall time. Token cost per verified repair includes tokens from failed episodes. A repair result and a localization or rubric result have separate denominators.
+Per-episode receipts record provider prompt and completion tokens, retrieval postings, controller time, repeated reads, invalidated source handles, verifier calls, patch digests and wall time. On a timeout the evaluator recovers completed source reads and verifier calls from the session checkpoint. The summary indicates how many episodes supplied final runtime metrics. Token cost per verified repair includes tokens from failed episodes. A repair result and a localization or rubric result have separate denominators.
+
+Use `--goblin-cwd` to evaluate Goose with a specific checkout of the MCP service. This lets the host-side evaluator change while a matched run retains its chosen source lookup behavior. The alternate checkout path is recorded in the evaluation plan.

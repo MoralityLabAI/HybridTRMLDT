@@ -55,6 +55,7 @@ def summarize(rows: list[dict]) -> dict:
             "repeated_reads": sum(row["repeated_reads"] for row in results),
             "invalidated_handles": sum(row["invalidated_handles"] for row in results),
             "verifier_calls": sum(row["verifier_calls"] for row in results),
+            "episodes_with_final_runtime_metrics": sum(row.get("final_runtime_metrics") is True for row in results),
             "controller_seconds": sum(row["controller_seconds"] for row in results),
             "retrieval_seconds": sum(row.get("retrieval_seconds", 0) for row in results),
             "retrieval_postings": sum(row["retrieval_postings"] for row in results),
@@ -90,7 +91,7 @@ def run_gdk(cmd: list[str], timeout: int) -> tuple[int, str, str]:
 
 
 def fallback_usage(parent: Path, payload: dict) -> None:
-    if not payload.get("error") or payload.get("preflight"):
+    if not (payload.get("error") or payload.get("exit_code")) or payload.get("preflight"):
         return
     trace = parent / "session.preflight.jsonl"
     if not trace.exists():
@@ -105,6 +106,19 @@ def fallback_usage(parent: Path, payload: dict) -> None:
     payload.update(preflight=receipts, inference_calls=len(completed),
                    provider_input_tokens=sum(row.get("provider_prompt_tokens") or 0 for row in completed),
                    provider_output_tokens=sum(row.get("provider_completion_tokens") or 0 for row in completed))
+
+
+def recover_session(parent: Path, payload: dict) -> list[dict]:
+    session = payload.get("session")
+    if session is None and (payload.get("error") or payload.get("exit_code")):
+        try:
+            session = json.loads((parent / "session.json").read_text(encoding="utf-8"))["session"]
+        except (OSError, ValueError, KeyError, TypeError):
+            return []
+        if isinstance(session, dict):
+            payload["session"] = session
+    receipts = session.get("receipts") if isinstance(session, dict) else None
+    return [row for row in receipts if isinstance(row, dict)] if isinstance(receipts, list) else []
 
 
 def export_swe_predictions(root: Path, rows: list[dict], model: str) -> None:
@@ -143,7 +157,7 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
            "--max-tokens", str(args.completion), "--max-tool-calls", str(args.calls),
            "--max-agent-iterations", str(args.iterations), "--context-window", str(args.context),
            "--timeout-secs", str(args.request_timeout), "--memory-mode", memory,
-           "--python", args.python, "--goblin-cwd", str(ROOT),
+           "--python", args.python, "--goblin-cwd", str(args.goblin_cwd),
            "--session-file", str(parent / "session.json")]
     if arm == "A":
         cmd.append("--no-packet")
@@ -162,6 +176,7 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
     except (subprocess.TimeoutExpired, ValueError) as exc:
         payload = {"error": str(exc)}
     fallback_usage(parent, payload)
+    completed_tools = [tool for tool in recover_session(parent, payload) if tool.get("error") is False]
     dump(parent / "gdk.json", payload)
     state = payload.get("state") or {}
     after = None
@@ -176,6 +191,9 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
     preflight = payload.get("preflight", [])
     parity_failures = sum(item.get("provider_preflight_parity") is False for item in preflight)
     seen = set(state.get("read_history") or [])
+    if "read_history" not in state:
+        seen.update(tool["output"]["uri"] for tool in completed_tools if tool.get("tool") == "context_read"
+                    and isinstance(tool.get("output"), dict) and isinstance(tool["output"].get("uri"), str))
     for read in (payload.get("packet_stats") or {}).get("reads", []):
         uri = read if isinstance(read, str) else read.get("uri") if isinstance(read, dict) else None
         if uri:
@@ -194,7 +212,8 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
               "context_overflows": sum("context overflow:" in item.get("error", "") for item in preflight),
               "repeated_reads": state.get("repeated_reads", 0),
               "invalidated_handles": state.get("invalidated_handles", 0),
-              "verifier_calls": state.get("verifier_calls", 0),
+              "verifier_calls": state.get("verifier_calls", sum(tool.get("tool") == "run_verifier" for tool in completed_tools)),
+              "final_runtime_metrics": "controller_seconds" in state and "search_postings_ops" in state,
               "controller_seconds": state.get("controller_seconds", 0),
               "retrieval_seconds": state.get("retrieval_seconds", 0),
               "retrieval_postings": state.get("search_postings_ops", 0),
@@ -214,6 +233,7 @@ def main():
     parser.add_argument("--checkpoints", type=Path)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--binary", required=True)
+    parser.add_argument("--goblin-cwd", type=Path, default=ROOT, help="Goose service source checkout")
     parser.add_argument("--base-url", default="http://127.0.0.1:8097/v1/")
     parser.add_argument("--model", default="inky-mini-varloop")
     parser.add_argument("--python", default=sys.executable)
@@ -234,6 +254,7 @@ def main():
     if any(ARMS[arm][1] for arm in args.arms) and not args.checkpoints:
         parser.error("learned arms require --checkpoints")
     args.binary = str(Path(args.binary).resolve(strict=True))
+    args.goblin_cwd = args.goblin_cwd.resolve(strict=True)
     args.out = args.out.resolve()
     if args.checkpoints:
         args.checkpoints = args.checkpoints.resolve(strict=True)
@@ -252,6 +273,8 @@ def main():
             "completion": args.completion, "packet_budget": args.packet_budget, "arms": args.arms,
             "json_actions": args.json_actions,
             "cases": [case["id"] for case in cases]}
+    if args.goblin_cwd != ROOT:
+        plan["goblin_cwd"] = str(args.goblin_cwd)
     plan_file = args.out / "plan.json"
     if plan_file.exists() and json.loads(plan_file.read_text(encoding="utf-8")) != plan:
         parser.error("output directory contains a different evaluation plan")

@@ -72,3 +72,12 @@ These rows establish the Windows grading controls. Agent-produced patches are gr
 ## Storyworld JSON section lookup
 
 The 5.4 GB CUDA agent spent several calls paging through the 163-line Tiny Diplomacy JSON fixture. The JSON index returned `/nodes` first for “nodes terminal id” and `/rules/outcomes` first for “rules outcomes terminal node.” The two sections covered 24 and 15 source lines respectively. In a replay of the earlier verified edits, changing `/nodes` invalidated the old outcomes handle. Reading `/rules/outcomes` again found its shifted lines, and the independent verifier passed with the same patch digest as the earlier rollout. This replay measured lookup and edit anchoring with known edits. A fresh model run is needed to measure the impact on repair success and token cost.
+
+## Research planning review criteria
+
+Score the existing automated rubric and review the final answer against the frozen source. Count missing answers as failures. For a source-grounded review, record one supporting excerpt per criterion and flag factual errors or unresolved controls. Use the same criteria for raw and controller-assisted answers.
+
+| Task | Evidence and experimental controls | Falsifiable result |
+|---|---|---|
+| RAM-trained SetTRM | Correctly cite a numeric RU02 localization result. Compare persistent state with resetting the same architecture on every tool step and retain a shuffled-utility control. Match slates, seeds, optimizer updates, and action budgets across arms. Use four CPU threads and measure peak RSS against the 3 GiB cap. | Use disjoint held-out roots and distinguish symbol recall from independently verified repairs and model-token cost. State what would overturn the expected persistent-state benefit. |
+| CUDA loop-state interpretation | Cite the frozen Inkling report and identify its observational or calibration evidence. Specify the aligned activation and pass to intervene on under a fixed number of layer visits. Include two concrete negative controls that control for effects such as position, perturbation norm, or compute depth. | Use paired held-out roots and a task or logit criterion. Specify how the result would distinguish reused state from extra compute and when to stop for GPU memory or runtime limits. |
