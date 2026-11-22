@@ -439,6 +439,17 @@ impl Operation<AppSession, AppEffect> for RepairOperation {
             }
             protocol.push_str("Return a plain-text answer only when finished.");
             parts.push(("json_action_protocol".into(), protocol));
+        } else if self.can_edit && !state.answer_only {
+            parts.push((
+                "native_repair_protocol".into(),
+                concat!(
+                    "When the requested code and its current source handle appear in controller evidence ",
+                    "or a tool result, your next action is apply_edit with that handle. Copy the old ",
+                    "substring exactly, including indentation, and give the complete replacement in new. ",
+                    "Search or read again only if the needed source or a current handle is missing. ",
+                    "After applying the edit, call run_verifier."
+                ).into(),
+            ));
         }
         if !state.admitted.is_empty() {
             parts.push((

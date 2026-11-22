@@ -41,4 +41,19 @@ The relay replayed a synthetic history of 20 closed tool interactions through th
 
 ## Research lookup failure and handoff
 
-The recurrent arm read the RU02 results for its RAM-training preregistration, then repeated the same lookup five times. It exhausted all ten rounds without an answer and used 57,650 model tokens. Goose now hands a read-only session back for a final answer when an exact search repeats after an accepted source read. A deterministic replay confirmed that the repeated query receives a typed error and the next turn can answer from the previously retrieved source. The original benchmark uses the unchanged executable. A separate follow-up runs the revised behavior on the same research assignments.
+The recurrent arm read the RU02 results for its RAM-training preregistration, then repeated the same lookup five times. It exhausted all ten rounds without an answer and used 57,650 model tokens. Goose now hands a read-only session back for a final answer when an exact search repeats after an accepted source read. A deterministic replay confirmed that the repeated query receives a typed error and the next turn can answer from the previously retrieved source. The original benchmark uses the unchanged executable. The longer Vulkan runs were stopped to evaluate the cached CUDA packs.
+
+## CUDA quant replay and tool-call fix
+
+The two cached CUDA packs ran on the same RTX 5080 Laptop GPU using Inkling CUDA commit `f8acdaea8230181e9f7772a0c1f3d165a49b17cc`, greedy decoding, 48 logical visits per token, and 16,384-token sessions. Each matched replay provided the original task and source locations from the successful recurrent Goose rollout. The original patch was withheld. Each edit had a 768-token limit, and the same independent verifier graded both packs.
+
+| Pack | Matched platformer passes | Accepted edits | Peak tracked CUDA memory |
+|---|---:|---:|---:|
+| 5.4 GB | 0/2 | 1/3 | 6.48 GiB |
+| 8.9 GB | 2/2 | 3/3 | 9.73 GiB |
+
+The 5.4 GB pack also failed the Storyworld replay. The 8.9 GB run reached the device memory limit with another workload active. Its first Storyworld edit reached the token cap, and the second was stopped to free the GPU for the fix. The original variable-loop Q4 recurrent Goose episodes passed all three tasks under a full retrieval and repair protocol.
+
+On the matched health edit, the 5.4 GB pack reasoned out the correct clamp and repeated its thinking until it reached the completion cap. CUDA runtime commit `52dc6ecb642f65744017dd9e52287a6bb28bc49d` adds a local provider with explicit thinking-channel suppression and native tool-call serialization. The provider continued past a prose preamble to accept the following native tool frame. With that mode, the 5.4 GB pack passed the same exact-source replay in 84 completion tokens and reproduced the original Q4 patch SHA-256. The provider matched all 305 preflight prompt tokens. All 14 CUDA runtime tests passed.
+
+On a fresh end-to-end 5.4 GB Goose D health rollout, the native repair prompt directed the model to reuse a current source handle when the required code was already visible. Goose applied the model's edit and the independent regression passed. Five provider calls used 9,756 prompt tokens and 468 completion tokens with exact preflight parity throughout. This episode used 10,224 total tokens versus 12,146 in the earlier variable-loop Q4 Goose D episode. The two runs used different runtimes, model depths, and tool protocols.
