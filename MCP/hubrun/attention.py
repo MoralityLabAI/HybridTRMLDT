@@ -48,6 +48,37 @@ def _terms(text: str) -> set[str]:
     return {s.lower() for s in _TERM.findall(text) if len(s) > 2}
 
 
+_EXPLICIT_EMPTY = re.compile(
+    r"(?:no (?:matches|results)(?: found)?|0 (?:matches|results)|not found)[.!]?",
+    re.IGNORECASE,
+)
+
+
+def explicit_empty_result(body: str) -> bool:
+    """Conservatively tag a complete negative result, not an embedded phrase.
+
+    The marker remains only a historical observation, never an LDT exclusion.
+    """
+    body = body.strip()
+    if not body or len(body) > 1024:
+        return False
+    if _EXPLICIT_EMPTY.fullmatch(body):
+        return True
+    try:
+        record = json.loads(body)
+    except (ValueError, TypeError):
+        return False
+    if record == []:
+        return True
+    if isinstance(record, dict):
+        for field in ("results", "matches", "items"):
+            if record.get(field) == []:
+                counts = [record[k] for k in ("count", "total", "total_count")
+                          if isinstance(record.get(k), (int, float)) and type(record.get(k)) is not bool]
+                return not counts or all(count == 0 for count in counts)
+    return False
+
+
 @dataclass(frozen=True)
 class ReadAtom:
     name: str
