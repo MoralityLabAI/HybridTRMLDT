@@ -38,3 +38,7 @@ These controller scores are from recorded localization and repair states. The sh
 ## Real tokenizer stress test
 
 The relay replayed a synthetic history of 20 closed tool interactions through the running Inkling server's template and tokenizer endpoints. Raw history required 36,297 prompt tokens against a 15,808-token prompt allowance. The typed packet and two original recent tool pairs required 1,878 tokens after exact remeasurement. This replay exercised the overflow path without requesting a model completion.
+
+## Research lookup failure and handoff
+
+The recurrent arm read the RU02 results for its RAM-training preregistration, then repeated the same lookup five times. It exhausted all ten rounds without an answer and used 57,650 model tokens. Goose now hands a read-only session back for a final answer when an exact search repeats after an accepted source read. A deterministic replay confirmed that the repeated query receives a typed error and the next turn can answer from the previously retrieved source. The original benchmark uses the unchanged executable. A separate follow-up runs the revised behavior on the same research assignments.

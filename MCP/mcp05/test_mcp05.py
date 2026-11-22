@@ -57,10 +57,14 @@ class Provider(BaseHTTPRequestHandler):
         history = request["messages"]
         tools = [m for m in history if m["role"] == "tool"]
         index = len(tools)
+        research = request["model"] == "stub-research"
         if index == 0:
             call = ("context_query", {"query": "fall gravity"})
         elif index == 1:
             call = ("context_read", {"uri": "engine/physics.py::fall"})
+        elif research:
+            call = (None if "Tool use has ended." in json.dumps(history) else
+                    ("context_query", {"query": "fall gravity"}))
         elif index == 2:
             handle = json.loads(tools[1]["content"])["handle"]
             call = ("apply_edit", {"handle": handle, "old": "return speed - gravity",
@@ -72,7 +76,8 @@ class Provider(BaseHTTPRequestHandler):
             call = ("run_verifier", {})
         else:
             call = None
-        message = {"role": "assistant", "content": "Native regression passed." if call is None else None}
+        answer = "The return subtracts gravity in engine/physics.py." if research else "Native regression passed."
+        message = {"role": "assistant", "content": answer if call is None else None}
         reason = "stop"
         if call:
             name, arguments = call
@@ -169,20 +174,32 @@ class Contracts(unittest.TestCase):
             thread.start()
             receipts = []
             try:
-                for variant in range(2):
-                    root = base / str(variant)
+                for variant in ("native", "marker", "research"):
+                    root = base / variant
                     clone(stage, root)
-                    action = [str(Path(binary).resolve()), "--task", TASK, "--repo", str(root), "--no-packet",
-                              "--model", "stub", "--python", sys.executable, "--goblin-cwd", str(ROOT),
+                    research = variant == "research"
+                    task = "Which expression causes upward fall? Cite the source." if research else TASK
+                    action = [str(Path(binary).resolve()), "--task", task, "--repo", str(root), "--no-packet",
+                              "--model", "stub-research" if research else "stub",
+                              "--python", sys.executable, "--goblin-cwd", str(ROOT),
                               "--base-url", f"http://127.0.0.1:{server.server_port}/v1/",
                               "--max-agent-iterations", "8", "--memory-mode", "typed",
-                              "--max-tool-calls", "10", "--verifier", str(base / "verifier.json")]
-                    if variant:
+                              "--max-tool-calls", "10"]
+                    if not research:
+                        action.extend(["--verifier", str(base / "verifier.json")])
+                    if variant != "native":
                         action.append("--json-actions")
                     result = subprocess.run(action, capture_output=True, text=True, encoding="utf-8",
                                             timeout=120, check=True)
                     observations = json.loads(result.stdout)
                     self.assertIsNone(observations["error"], observations)
+                    if research:
+                        self.assertEqual(observations["inference_calls"], 4)
+                        self.assertTrue(observations["session"]["answer_only"])
+                        self.assertEqual(observations["state"]["read_history"], ["engine/physics.py::fall"])
+                        self.assertTrue(observations["session"]["receipts"][-1]["error"])
+                        self.assertEqual(observations["answer"], "The return subtracts gravity in engine/physics.py.")
+                        continue
                     self.assertTrue(observations["state"]["verified"], observations)
                     self.assertEqual(observations["state"]["invalidated_handles"], 1)
                     self.assertEqual(observations["state"]["verifier_calls"], 1)

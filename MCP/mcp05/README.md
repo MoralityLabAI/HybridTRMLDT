@@ -42,4 +42,6 @@ The session sends the actual Goose wire request through a loopback preflight rel
 
 GDK controls which tool names, action budgets and workspace edits are authorized. A replacement requires a current digest-bound source handle and an exact unique match within the read span and file. Host-certified LDT exclusions carry the current revision and are reset on source changes. A native repair receipt is tied to the final patch digest. The harness also reruns the verifier independently for grading, including after the agent runs out of iterations. Verifier manifests are operator-supplied. The Python verifier guard limits routine Python filesystem mutations and blocks subprocess and socket creation. Use an OS sandbox when executing untrusted third-party code or grading general SWE-bench tasks.
 
+In read-only sessions, an exact repeated search after a source read triggers one final answer turn using the collected evidence. Goose suppresses further lookup dispatch for that turn.
+
 Per-episode receipts record provider prompt and completion tokens, retrieval postings, controller time, repeated reads, invalidated source handles, verifier calls, patch digests and wall time. Token cost per verified repair includes tokens from failed episodes. A repair result and a localization or rubric result have separate denominators.
