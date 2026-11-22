@@ -68,6 +68,10 @@ The paced attempt completed the first two requests in 35.61 and 80.39 seconds, i
 
 The driver reported a successful return from the command requesting its 80 W default, but subsequent reads showed requested and enforced limits above 130 W. In the separate greedy control with the same weights, prompt budgets, and 16,384-token context, the first two requests took 37.59 and 47.25 seconds with exact token-count parity. The power guard again observed a 15 W cap during the third request and archived the result outside the scores. The cap therefore also occurs with the drafter disabled.
 
+The batched DSpark tap transfer preserves activation bits in the native CUDA fixture. With 1.2-second pauses after every four prefill blocks, the live case matched exact preflight on two requests in 66.50 and 77.81 seconds. The 15 W cap returned during the third request. Both successful requests produced the same initial tool actions as the corresponding greedy control.
+
+The one-completion CUDA worker passed two consecutive repair controls at the configured 16,384-token context window, each using a fresh process. Both controls reproduced the original patch and matched 305 prompt tokens exactly. The requests took 13.28 and 12.33 seconds after their workers were ready. Both workers exited with status zero and released all reported GPU memory between requests. The cold-worker control timings exclude model load, and a multi-turn Goose episode with worker recycling remains to be measured.
+
 The saved typed RU02 research rollout read the same 4,270-character excerpt five times. Replaying its recorded conversation with the cached Inkling tokenizer and minimal matching tool declarations reduced the final prompt from 9,471 to 4,119 tokens. The replay retained all tool IDs and the full newest excerpt. It did not run generation or measure answer quality.
 
 A larger replay across eight saved conversation snapshots found repeated source text in one snapshot, the RU02 case above. The other seven submitted the same token counts under this replay. The intervention targets episodes that repeatedly read identical source spans.
