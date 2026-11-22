@@ -72,7 +72,8 @@ class AuditTests(unittest.TestCase):
 
     def test_paired_archive_report_and_provenance(self):
         with TemporaryDirectory() as tmp:
-            root = Path(tmp)
+            root = Path(tmp) / "traces"
+            root.mkdir()
             for filename in ARCHIVES:
                 if filename.startswith("docedit-"):
                     rows = [doc_case(0, reads=7 if "goblin" in filename else 3)]
