@@ -58,6 +58,9 @@ class Provider(BaseHTTPRequestHandler):
         if self.path != "/v1/chat/completions":
             self.send_error(404)
             return
+        if float(self.headers.get("X-Inkling-Timeout-Seconds", 0)) <= 0:
+            self.send_error(400, "Missing upstream request deadline")
+            return
         history = request["messages"]
         tools = [m for m in history if m["role"] == "tool"]
         index = len(tools)

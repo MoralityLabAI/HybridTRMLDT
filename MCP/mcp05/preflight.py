@@ -63,7 +63,11 @@ def main():
     parity_failed = False
 
     def forward(method, path, raw):
-        request = Request(base + path, data=raw, method=method, headers={"Content-Type": "application/json"})
+        headers = {"Content-Type": "application/json"}
+        if path == chat_path:
+            # Leave time for an upstream deadline response before the relay closes the socket.
+            headers["X-Inkling-Timeout-Seconds"] = str(max(args.timeout - 2, args.timeout / 2))
+        request = Request(base + path, data=raw, method=method, headers=headers)
         try:
             with opener.open(request, timeout=args.timeout) as response:
                 return response.status, response.read(16 * 1024 * 1024)
