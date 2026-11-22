@@ -143,6 +143,25 @@ pub(crate) struct RepairState {
 }
 
 impl RepairState {
+    fn repeated_unavailable_expansion(&self, arguments: &Value) -> bool {
+        let Some(uri) = arguments["node_id"]
+            .as_str()
+            .and_then(|node| node.strip_prefix("s:").or_else(|| node.strip_prefix("f:")))
+        else {
+            return false;
+        };
+        self.receipts.iter().any(|receipt| {
+            receipt["tool"] == "context_read"
+                && receipt["error"] == false
+                && (receipt["output"]["uri"] == uri || receipt["output"]["path"] == uri)
+        }) && self.receipts.iter().any(|receipt| {
+            receipt["origin"] == "solver"
+                && receipt["tool"] == "context_expand"
+                && receipt.get("arguments") == Some(arguments)
+                && receipt["error"] == true
+        })
+    }
+
     pub(crate) fn receipt(&self) -> Value {
         json!({
             "task": self.task, "receipts": self.receipts, "evidence": self.admitted,
@@ -282,6 +301,13 @@ impl RepairOperation {
                 } else if repeated_query {
                     state.answer_only = true;
                     Err(anyhow!("This search already returned results. Answer the original task using the source evidence already collected."))
+                } else if !self.can_edit
+                    && origin == "solver"
+                    && tool == "context_expand"
+                    && state.repeated_unavailable_expansion(&arguments)
+                {
+                    state.answer_only = true;
+                    Err(anyhow!("This expansion was already unavailable, and its source is already in the session. Answer the original task using the collected evidence."))
                 } else {
                     self.mcp
                         .lock()

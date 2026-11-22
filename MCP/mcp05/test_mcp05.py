@@ -61,8 +61,19 @@ class Provider(BaseHTTPRequestHandler):
         history = request["messages"]
         tools = [m for m in history if m["role"] == "tool"]
         index = len(tools)
-        research = request["model"] == "stub-research"
-        if index == 0:
+        research = request["model"] in ("stub-research", "stub-research-expand")
+        if request["model"] == "stub-research-expand":
+            uri = "engine/physics.py::fall"
+            lookup = ("context_expand", {"node_id": f"s:{uri}", "limit": 8})
+            trace = [
+                ("context_query", {"query": "fall gravity"}),
+                lookup,
+                ("context_read", {"uri": uri}),
+                ("context_expand", {**lookup[1], "cursor": 1}),
+                lookup,
+            ]
+            call = None if "Tool use has ended." in json.dumps(history) else trace[min(index, len(trace) - 1)]
+        elif index == 0:
             call = ("context_query", {"query": "fall gravity"})
         elif index == 1:
             call = ("context_read", {"uri": "engine/physics.py::fall"})
@@ -244,31 +255,38 @@ class Contracts(unittest.TestCase):
             thread.start()
             receipts = []
             try:
-                for variant in ("native", "marker", "research"):
+                for variant in ("native", "marker", "research", "research-expand"):
                     root = base / variant
                     clone(stage, root)
-                    research = variant == "research"
+                    research = variant.startswith("research")
                     task = "Which expression causes upward fall? Cite the source." if research else TASK
                     action = [str(Path(binary).resolve()), "--task", task, "--repo", str(root), "--no-packet",
-                              "--model", "stub-research" if research else "stub",
+                              "--model", f"stub-{variant}" if research else "stub",
                               "--python", sys.executable, "--goblin-cwd", str(ROOT),
                               "--base-url", f"http://127.0.0.1:{server.server_port}/v1/",
                               "--max-agent-iterations", "8", "--memory-mode", "typed",
                               "--max-tool-calls", "10"]
                     if not research:
                         action.extend(["--verifier", str(base / "verifier.json")])
-                    if variant != "native":
+                    if variant in ("marker", "research"):
                         action.append("--json-actions")
                     result = subprocess.run(action, capture_output=True, text=True, encoding="utf-8",
                                             timeout=120, check=True)
                     observations = json.loads(result.stdout)
                     self.assertIsNone(observations["error"], observations)
                     if research:
-                        self.assertEqual(observations["inference_calls"], 4)
+                        self.assertEqual(observations["inference_calls"], 6 if variant == "research-expand" else 4)
                         self.assertTrue(observations["session"]["answer_only"])
                         self.assertEqual(observations["state"]["read_history"], ["engine/physics.py::fall"])
                         self.assertTrue(observations["session"]["receipts"][-1]["error"])
                         self.assertEqual(observations["answer"], "The return subtracts gravity in engine/physics.py.")
+                        if variant == "research-expand":
+                            errors = [row["output"]["error"] for row in observations["session"]["receipts"]
+                                      if row["error"]]
+                            self.assertEqual(len(errors), 3)
+                            self.assertIn("unknown", errors[0])
+                            self.assertIn("unknown", errors[1])
+                            self.assertIn("already unavailable", errors[2])
                         continue
                     self.assertTrue(observations["state"]["verified"], observations)
                     self.assertEqual(observations["state"]["invalidated_handles"], 1)
