@@ -1,0 +1,46 @@
+\begin{table}[t]
+\centering
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrr}
+\toprule
+Router & Arm & Test depth & Accepted & Calls/ep & GFLOPs/ep \\
+\midrule
+hrm\_h2l1\_d128 & layered/SCB & 1 & 30/32 & 18.28 & 26.06 \\
+hrm\_h2l1\_d128 & layered/SCB & 2 & 30/32 & 18.34 & 52.32 \\
+hrm\_h2l1\_d128 & layered/SCB & 4 & 30/32 & 18.47 & 105.19 \\
+hrm\_h2l1\_d128 & layered/SCB & 8 & 30/32 & 18.41 & 209.26 \\
+hrm\_h2l1\_d128 & layered\_ldt/PSCB & 1 & 25/32 & 26.62 & 29.94 \\
+hrm\_h2l1\_d128 & layered\_ldt/PSCB & 2 & 27/32 & 25.12 & 56.33 \\
+hrm\_h2l1\_d128 & layered\_ldt/PSCB & 4 & 27/32 & 25.41 & 115.21 \\
+hrm\_h2l1\_d128 & layered\_ldt/PSCB & 8 & 27/32 & 25.56 & 232.96 \\
+looped\_p4\_d128 & layered/SCB & 1 & 25/32 & 25.31 & 20.32 \\
+looped\_p4\_d128 & layered/SCB & 2 & 27/32 & 22.84 & 36.25 \\
+looped\_p4\_d128 & layered/SCB & 4 & 29/32 & 19.06 & 54.79 \\
+looped\_p4\_d128 & layered/SCB & 8 & 30/32 & 18.31 & 101.94 \\
+looped\_p4\_d128 & layered\_ldt/PSCB & 1 & 19/32 & 31.72 & 20.35 \\
+looped\_p4\_d128 & layered\_ldt/PSCB & 2 & 25/32 & 28.75 & 37.83 \\
+looped\_p4\_d128 & layered\_ldt/PSCB & 4 & 27/32 & 24.84 & 55.22 \\
+looped\_p4\_d128 & layered\_ldt/PSCB & 8 & 28/32 & 25.44 & 106.32 \\
+trm\_c2i1\_d128 & layered/SCB & 1 & 31/32 & 18.19 & 25.50 \\
+trm\_c2i1\_d128 & layered/SCB & 2 & 31/32 & 18.47 & 52.14 \\
+trm\_c2i1\_d128 & layered/SCB & 4 & 31/32 & 17.81 & 99.10 \\
+trm\_c2i1\_d128 & layered/SCB & 8 & 31/32 & 17.81 & 198.08 \\
+trm\_c2i1\_d128 & layered\_ldt/PSCB & 1 & 27/32 & 25.72 & 28.09 \\
+trm\_c2i1\_d128 & layered\_ldt/PSCB & 2 & 28/32 & 25.34 & 53.95 \\
+trm\_c2i1\_d128 & layered\_ldt/PSCB & 4 & 28/32 & 25.34 & 108.52 \\
+trm\_c2i1\_d128 & layered\_ldt/PSCB & 8 & 28/32 & 25.25 & 215.54 \\
+trm\_ldt\_c2i1\_d128 & layered/SCB & 1 & 31/32 & 17.94 & 24.88 \\
+trm\_ldt\_c2i1\_d128 & layered/SCB & 2 & 32/32 & 16.88 & 45.53 \\
+trm\_ldt\_c2i1\_d128 & layered/SCB & 4 & 32/32 & 16.81 & 90.47 \\
+trm\_ldt\_c2i1\_d128 & layered/SCB & 8 & 32/32 & 16.84 & 181.47 \\
+trm\_ldt\_c2i1\_d128 & layered\_ldt/PSCB & 1 & 27/32 & 26.56 & 32.32 \\
+trm\_ldt\_c2i1\_d128 & layered\_ldt/PSCB & 2 & 27/32 & 25.59 & 61.92 \\
+trm\_ldt\_c2i1\_d128 & layered\_ldt/PSCB & 4 & 28/32 & 24.75 & 119.49 \\
+trm\_ldt\_c2i1\_d128 & layered\_ldt/PSCB & 8 & 28/32 & 24.69 & 240.16 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Recurrent depth changed at test time only (trained depth in the router name).}
+\label{tab:mcp02-pilot_gpu-depth}
+\end{table}

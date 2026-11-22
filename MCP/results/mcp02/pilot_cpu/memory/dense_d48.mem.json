@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp02-work/pilot_cpu/ckpt/dense_d48.pt", "device": "cpu", "peak_rss_before_forward": 517451776, "peak_rss_after_forward": 520892416, "forward_peak_rss_delta": 3440640, "weights_bytes_fp32": 879940, "candidates": 32, "sequence_length": 74}

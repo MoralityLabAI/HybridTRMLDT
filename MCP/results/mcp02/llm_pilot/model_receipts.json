@@ -1,0 +1,29 @@
+{
+ "llm:qwen2.5-0.5b-instruct": {
+  "name": "llm:qwen2.5-0.5b-instruct",
+  "family": "llm",
+  "model_id": "qwen2.5-0.5b-instruct",
+  "parameters": {
+   "total": 494032768,
+   "source": "server-measured"
+  },
+  "server_identity": {
+   "ready": true,
+   "port": 8093,
+   "parameter_count": 494032768,
+   "weights_sha256": {
+    "model.safetensors": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe"
+   },
+   "dtype": "bfloat16",
+   "device": "cuda",
+   "architecture": "Qwen2ForCausalLM",
+   "model_dir": "D:\\huggingface_cache\\hub\\models--Qwen--Qwen2.5-0.5B-Instruct\\snapshots\\7ae557604adf67be50417f59c2c2f167def9a775"
+  },
+  "checkpoint_sha256": {
+   "model.safetensors": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe"
+  },
+  "max_output_tokens": 256,
+  "adapter": "MCP.local_model.LocalModel (json-action)",
+  "uses_private_oracle": false
+ }
+}

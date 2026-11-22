@@ -1,0 +1,134 @@
+name: MCP-RU02 matched-slate CPU ablations
+
+on:
+  pull_request:
+    paths:
+      - 'MCP/mcp02/**'
+      - 'MCP/mcp03/**'
+      - 'MCP/test_mcp03_read_utility.py'
+      - 'MCP/test_platformer_gen.py'
+      - '.github/workflows/mcp-ru02-matched.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  matched-heldout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [211, 223]
+    env:
+      PYTHONHASHSEED: '0'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      OPENBLAS_NUM_THREADS: '4'
+      CAMPAIGN: MCP/runs/ru02-matched-${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install CPU-only training requirements
+        run: |
+          python -m pip install pytest numpy==1.26.4
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+      - name: Test matched controls and holdout generation
+        run: python -m pytest -q MCP/test_platformer_gen.py MCP/test_mcp03_read_utility.py
+      - name: Generate seeded issue families and renamed test-only symbols
+        run: |
+          python -m MCP.mcp03.platformer_gen --out "$CAMPAIGN" --seed ${{ matrix.seed }} \
+            --difficulty hard --holdout-symbol-names --train 24 --dev 8 --test 16
+      - name: Collect one set of oracle rollouts for every model
+        run: |
+          python -m MCP.mcp03.run dataset --config "$CAMPAIGN/config_matched.json" \
+            --split train --out "$CAMPAIGN/train.json.gz"
+          python -m MCP.mcp03.run dataset --config "$CAMPAIGN/config_matched.json" \
+            --split dev --out "$CAMPAIGN/dev.json.gz"
+      - name: Fit four models with shared states, schedules and seed
+        run: |
+          mkdir -p "$CAMPAIGN/checkpoints"
+          for model in looped_binary_matched looped_shared_utility looped_dual_utility looped_dual_shuffled; do
+            python -m MCP.mcp02.train fit --config "$CAMPAIGN/config_matched.json" \
+              --model "$model" --train "$CAMPAIGN/train.json.gz" \
+              --dev "$CAMPAIGN/dev.json.gz" \
+              --out "$CAMPAIGN/checkpoints/$model.pt" --device cpu
+          done
+      - name: Verify matched training receipts
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ["CAMPAIGN"])
+          rows = [json.loads((p / "checkpoints" / (name + ".receipt.json")).read_text())
+                  for name in ("looped_binary_matched", "looped_shared_utility",
+                               "looped_dual_utility", "looped_dual_shuffled")]
+          assert len({(r["train_states"],r["steps"],r["epochs"],r["seed"],r["batch_states"])
+                      for r in rows}) == 1
+          assert rows[0]["train_states"] > 0
+          assert all(r["memory"]["process_peak_rss_bytes"] < 3 * 1024**3 for r in rows)
+          assert rows[0]["objective"] == "binary-listwise"
+          assert all(r["objective"].startswith("packet-marginal") for r in rows[1:])
+          assert rows[-1]["shuffle_utilities_only"] is True
+          (p / "matching.json").write_text(json.dumps({
+              "matched_slates": True, "train_states": rows[0]["train_states"],
+              "steps_per_model": rows[0]["steps"],
+              "max_fullfit_rss_bytes": max(r["memory"]["process_peak_rss_bytes"] for r in rows),
+              "model_names": [r["model_name"] for r in rows],
+              "different_objectives": [r["objective"] for r in rows],
+          }, indent=2) + "\n")
+          PY
+      - name: Run same-call, same-packet holdout retrieval and paired reports
+        run: |
+          python -m MCP.mcp03.run evaluate --config "$CAMPAIGN/config_matched.json" \
+            --checkpoints "$CAMPAIGN/checkpoints" --out "$CAMPAIGN/eval" --device cpu \
+            --policies lexical_bm25 identifier_rules looped_binary_matched \
+              looped_shared_utility looped_dual_utility looped_dual_shuffled
+          python -m MCP.mcp03.platformer_report --run "$CAMPAIGN/eval" \
+            --baseline looped_binary_matched --experimental looped_dual_utility \
+            --out "$CAMPAIGN/dual_vs_binary.json"
+          python -m MCP.mcp03.platformer_report --run "$CAMPAIGN/eval" \
+            --baseline looped_shared_utility --experimental looped_dual_utility \
+            --out "$CAMPAIGN/dual_vs_shared.json"
+          python -m MCP.mcp03.platformer_report --run "$CAMPAIGN/eval" \
+            --baseline looped_dual_shuffled --experimental looped_dual_utility \
+            --out "$CAMPAIGN/dual_vs_shuffled.json"
+          python -m MCP.mcp03.run replay --run "$CAMPAIGN/eval" --every 2
+      - name: Audit denominator, unseen symbol names, packet and memory budget
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ["CAMPAIGN"])
+          manifest = json.loads((p / "manifest.json").read_text())
+          assert manifest["holdout_symbol_names"] is True
+          assert manifest["cases"] == {"train": 24, "dev": 8, "test": 16}
+          for row in manifest["gold_receipts"]["test"]:
+              assert row["surface_shift"] is True and len(row["gold_symbols"]) >= 3
+          for filename in ("dual_vs_binary.json", "dual_vs_shared.json", "dual_vs_shuffled.json"):
+              report = json.loads((p / filename).read_text())
+              assert report["assigned_roots"] == 16
+              assert report["matched_call_budget"] == 24
+              assert report["matched_packet_budget"] == 1024
+              assert len(report["groups"]) == 6
+          print("Matched-slate and held-out-name controls complete; no automatic promotion.")
+          PY
+      - name: Upload complete small CPU receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcp-ru02-matched-${{ matrix.seed }}
+          path: |
+            MCP/runs/ru02-matched-${{ matrix.seed }}/manifest.json
+            MCP/runs/ru02-matched-${{ matrix.seed }}/config_matched.json
+            MCP/runs/ru02-matched-${{ matrix.seed }}/matching.json
+            MCP/runs/ru02-matched-${{ matrix.seed }}/dual_vs_*.json
+            MCP/runs/ru02-matched-${{ matrix.seed }}/checkpoints/*.receipt.json
+            MCP/runs/ru02-matched-${{ matrix.seed }}/eval/episodes.jsonl
+            MCP/runs/ru02-matched-${{ matrix.seed }}/eval/host.json
+          if-no-files-found: warn
+          retention-days: 14

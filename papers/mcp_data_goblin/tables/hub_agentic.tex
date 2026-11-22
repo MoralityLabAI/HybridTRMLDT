@@ -1,0 +1,25 @@
+\begin{table}[t]
+\centering
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+Environment & Arm & Episodes & Mean score & Solved & Errored ep. & Prompt tok./ep. & Peak prompt & Compacted calls & Context overflows \\
+\midrule
+event-recon tier 1 & raw & 5 & 0.00 & 0 & 5 & 159908 & 31066 & 0 & 5 \\
+event-recon tier 1 & goblin & 5 & 0.00 & 0 & 0 & 294898 & 32248 & 185 & 0 \\
+event-recon tier 1 & late & 5 & 0.00 & 0 & 5 & 210853 & 32119 & 39 & 5 \\
+doc-edit & raw & 8 & 0.70 & 5 & 0 & 48088 & 9468 & 0 & 0 \\
+doc-edit & goblin & 8 & 0.33 & 1 & 0 & 60187 & 6650 & 87 & 0 \\
+feishu-office hard & raw & 7 & 1.00 & 7 & 0 & 24820 & 6612 & 0 & 0 \\
+feishu-office hard & goblin & 7 & 1.00 & 7 & 0 & 21992 & 5402 & 0 & 0 \\
+feishu-office expert & raw & 7 & 1.00 & 7 & 0 & 22045 & 5659 & 0 & 0 \\
+feishu-office expert & goblin & 7 & 0.86 & 6 & 0 & 19537 & 5240 & 0 & 0 \\
+mcp-sqlite (exact match) & raw & 57 & 0.39 & 22 & 0 & 14199 & 8916 & 0 & 0 \\
+durable-notebook (hardened) & raw & 8 & 0.95 & 6 & 0 & 22044 & 1751 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Agentic hub tasksets with Bonsai 27B through the relay: raw history against the goblin packet (compaction past 6,000 estimated tokens), run side by side on the same tasks, one 32,768-token server slot each. late: compaction past 18,000 estimated tokens with a 6,000-token packet and four kept turns, run after the main queue. Tokens are the server's exact counts. Context overflows: requests the server refused because the prompt exceeded 32,768 tokens; the environment then ends the episode with an error. mcp-sqlite and durable-notebook stay below the packet threshold, so they ran in the raw arm only.}
+\label{tab:hub-agentic}
+\end{table}

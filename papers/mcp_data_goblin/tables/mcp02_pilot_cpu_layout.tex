@@ -1,0 +1,78 @@
+\begin{table}[t]
+\centering
+\small
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Router & Arm & Layout & Depth & Accepted & Calls/ep & Result KB/ep & Certified excl. \\
+\midrule
+deterministic\_rules & layered & - & 1 & 0/16 & 40.00 & 82.60 & 0 \\
+deterministic\_rules & layered & S & 2 & 0/16 & 40.00 & 111.37 & 0 \\
+deterministic\_rules & layered & SC & 3 & 0/16 & 40.00 & 79.23 & 0 \\
+deterministic\_rules & layered & KBE & 4 & 0/16 & 40.00 & 103.58 & 0 \\
+deterministic\_rules & layered & KSB & 4 & 1/16 & 38.06 & 85.82 & 0 \\
+deterministic\_rules & layered & SCB & 4 & 3/16 & 34.94 & 81.71 & 0 \\
+deterministic\_rules & layered & PKBE & 5 & 1/16 & 38.94 & 94.73 & 0 \\
+deterministic\_rules & layered & PSCB & 5 & 1/16 & 38.75 & 130.26 & 0 \\
+deterministic\_rules & layered\_ldt & - & 1 & 0/16 & 40.00 & 111.89 & 1292 \\
+deterministic\_rules & layered\_ldt & S & 2 & 0/16 & 40.00 & 103.49 & 700 \\
+deterministic\_rules & layered\_ldt & SC & 3 & 0/16 & 40.00 & 79.41 & 5 \\
+deterministic\_rules & layered\_ldt & KBE & 4 & 5/16 & 38.00 & 92.45 & 85 \\
+deterministic\_rules & layered\_ldt & KSB & 4 & 1/16 & 38.25 & 77.62 & 96 \\
+deterministic\_rules & layered\_ldt & SCB & 4 & 3/16 & 35.12 & 80.09 & 141 \\
+deterministic\_rules & layered\_ldt & PKBE & 5 & 1/16 & 38.81 & 79.05 & 92 \\
+deterministic\_rules & layered\_ldt & PSCB & 5 & 1/16 & 38.75 & 103.28 & 92 \\
+oracle\_upper\_bound & layered & - & 1 & 0/16 & 40.00 & 83.64 & 0 \\
+oracle\_upper\_bound & layered & S & 2 & 1/16 & 39.06 & 103.91 & 0 \\
+oracle\_upper\_bound & layered & SC & 3 & 6/16 & 30.44 & 80.67 & 0 \\
+oracle\_upper\_bound & layered & KBE & 4 & 14/16 & 16.56 & 38.79 & 0 \\
+oracle\_upper\_bound & layered & KSB & 4 & 13/16 & 20.31 & 64.14 & 0 \\
+oracle\_upper\_bound & layered & SCB & 4 & 15/16 & 14.06 & 40.86 & 0 \\
+oracle\_upper\_bound & layered & PKBE & 5 & 13/16 & 19.50 & 38.60 & 0 \\
+oracle\_upper\_bound & layered & PSCB & 5 & 10/16 & 23.94 & 49.16 & 0 \\
+oracle\_upper\_bound & layered\_ldt & - & 1 & 0/16 & 40.00 & 116.96 & 1292 \\
+oracle\_upper\_bound & layered\_ldt & S & 2 & 1/16 & 39.06 & 109.34 & 467 \\
+oracle\_upper\_bound & layered\_ldt & SC & 3 & 5/16 & 31.50 & 82.82 & 48 \\
+oracle\_upper\_bound & layered\_ldt & KBE & 4 & 15/16 & 19.19 & 40.13 & 97 \\
+oracle\_upper\_bound & layered\_ldt & KSB & 4 & 14/16 & 20.62 & 59.78 & 96 \\
+oracle\_upper\_bound & layered\_ldt & SCB & 4 & 15/16 & 15.69 & 44.02 & 7 \\
+oracle\_upper\_bound & layered\_ldt & PKBE & 5 & 14/16 & 21.69 & 39.73 & 153 \\
+oracle\_upper\_bound & layered\_ldt & PSCB & 5 & 15/16 & 20.56 & 46.15 & 158 \\
+trm\_c2i1\_d48 & layered & - & 1 & 0/16 & 40.00 & 84.13 & 0 \\
+trm\_c2i1\_d48 & layered & S & 2 & 0/16 & 40.00 & 107.45 & 0 \\
+trm\_c2i1\_d48 & layered & SC & 3 & 0/16 & 40.00 & 80.45 & 0 \\
+trm\_c2i1\_d48 & layered & KBE & 4 & 1/16 & 39.88 & 82.76 & 0 \\
+trm\_c2i1\_d48 & layered & KSB & 4 & 0/16 & 40.00 & 81.02 & 0 \\
+trm\_c2i1\_d48 & layered & SCB & 4 & 0/16 & 40.00 & 75.91 & 0 \\
+trm\_c2i1\_d48 & layered & PKBE & 5 & 0/16 & 40.00 & 72.92 & 0 \\
+trm\_c2i1\_d48 & layered & PSCB & 5 & 0/16 & 40.00 & 81.48 & 0 \\
+trm\_c2i1\_d48 & layered\_ldt & - & 1 & 0/16 & 40.00 & 116.95 & 1292 \\
+trm\_c2i1\_d48 & layered\_ldt & S & 2 & 1/16 & 40.00 & 103.56 & 149 \\
+trm\_c2i1\_d48 & layered\_ldt & SC & 3 & 0/16 & 40.00 & 80.25 & 13 \\
+trm\_c2i1\_d48 & layered\_ldt & KBE & 4 & 0/16 & 40.00 & 76.73 & 98 \\
+trm\_c2i1\_d48 & layered\_ldt & KSB & 4 & 0/16 & 40.00 & 80.42 & 82 \\
+trm\_c2i1\_d48 & layered\_ldt & SCB & 4 & 0/16 & 40.00 & 76.34 & 52 \\
+trm\_c2i1\_d48 & layered\_ldt & PKBE & 5 & 0/16 & 40.00 & 70.78 & 106 \\
+trm\_c2i1\_d48 & layered\_ldt & PSCB & 5 & 0/16 & 40.00 & 74.77 & 102 \\
+trm\_ldt\_c2i1\_d48 & layered & - & 1 & 0/16 & 40.00 & 84.14 & 0 \\
+trm\_ldt\_c2i1\_d48 & layered & S & 2 & 0/16 & 40.00 & 101.65 & 0 \\
+trm\_ldt\_c2i1\_d48 & layered & SC & 3 & 0/16 & 40.00 & 82.80 & 0 \\
+trm\_ldt\_c2i1\_d48 & layered & KBE & 4 & 1/16 & 39.81 & 83.30 & 0 \\
+trm\_ldt\_c2i1\_d48 & layered & KSB & 4 & 0/16 & 40.00 & 88.25 & 0 \\
+trm\_ldt\_c2i1\_d48 & layered & SCB & 4 & 0/16 & 40.00 & 76.40 & 0 \\
+trm\_ldt\_c2i1\_d48 & layered & PKBE & 5 & 0/16 & 40.00 & 74.42 & 0 \\
+trm\_ldt\_c2i1\_d48 & layered & PSCB & 5 & 0/16 & 40.00 & 75.43 & 0 \\
+trm\_ldt\_c2i1\_d48 & layered\_ldt & - & 1 & 0/16 & 40.00 & 85.04 & 0 \\
+trm\_ldt\_c2i1\_d48 & layered\_ldt & S & 2 & 0/16 & 40.00 & 101.74 & 2 \\
+trm\_ldt\_c2i1\_d48 & layered\_ldt & SC & 3 & 0/16 & 40.00 & 83.57 & 2 \\
+trm\_ldt\_c2i1\_d48 & layered\_ldt & KBE & 4 & 0/16 & 40.00 & 74.07 & 2 \\
+trm\_ldt\_c2i1\_d48 & layered\_ldt & KSB & 4 & 0/16 & 40.00 & 89.02 & 4 \\
+trm\_ldt\_c2i1\_d48 & layered\_ldt & SCB & 4 & 0/16 & 40.00 & 77.00 & 2 \\
+trm\_ldt\_c2i1\_d48 & layered\_ldt & PKBE & 5 & 0/16 & 40.00 & 65.26 & 56 \\
+trm\_ldt\_c2i1\_d48 & layered\_ldt & PSCB & 5 & 0/16 & 40.00 & 72.96 & 55 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Index layout and depth at 1024 resources: deeper facet hierarchies against traversal cost.}
+\label{tab:mcp02-pilot_cpu-layout}
+\end{table}

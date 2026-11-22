@@ -1,0 +1,37 @@
+2026-11-21T03:39:26 QUEUE BEGIN
+2026-11-21T03:39:26 START sw-constitution-eval
+2026-11-21T03:52:18 END sw-constitution-eval rc=0
+2026-11-21T03:52:18 START jbm-cross-dev80
+2026-11-21T05:03:00 END jbm-cross-dev80 rc=0
+2026-11-21T05:03:00 START jbm-constructs-dev
+2026-11-21T05:06:43 END jbm-constructs-dev rc=0
+2026-11-21T05:06:43 START jbm-reasoner-dev
+2026-11-21T05:17:34 END jbm-reasoner-dev rc=0
+2026-11-21T05:17:34 START jbm-mesh2-dev
+2026-11-21T06:29:46 END jbm-mesh2-dev rc=0
+2026-11-21T06:29:46 START er-t1-goblin
+2026-11-21T06:29:46 START er-t1-raw
+2026-11-21T07:37:04 END er-t1-raw rc=0
+2026-11-21T07:53:30 END er-t1-goblin rc=0
+2026-11-21T07:53:30 START docedit-raw
+2026-11-21T07:53:30 START docedit-goblin
+2026-11-21T09:35:10 END docedit-raw rc=0
+2026-11-21T09:55:46 END docedit-goblin rc=0
+2026-11-21T09:55:46 START sqlite-all
+2026-11-21T12:18:40 END sqlite-all rc=0
+2026-11-21T12:18:40 START feishu-hard-raw
+2026-11-21T12:18:40 START feishu-hard-goblin
+2026-11-21T12:47:18 END feishu-hard-goblin rc=0
+2026-11-21T12:50:17 END feishu-hard-raw rc=0
+2026-11-21T12:50:17 SKIP er-t2-goblin
+2026-11-21T12:50:17 SKIP er-t2-raw
+2026-11-21T12:50:17 START notebook-hardened
+2026-11-21T13:12:19 END notebook-hardened rc=0
+2026-11-21T13:12:19 START feishu-expert-goblin
+2026-11-21T13:12:19 START feishu-expert-raw
+2026-11-21T13:49:08 END feishu-expert-goblin rc=0
+2026-11-21T13:49:57 END feishu-expert-raw rc=0
+2026-11-21T13:49:57 QUEUE END
+2026-11-21T13:50:05 START er-t1-late
+2026-11-21T14:30:55 END er-t1-late rc=0
+2026-11-21T14:30:55 FOLLOWUP END

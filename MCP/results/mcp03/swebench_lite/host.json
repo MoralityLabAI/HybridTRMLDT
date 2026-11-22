@@ -1,0 +1,19 @@
+{
+ "platform": "Windows-11-10.0.26200-SP0",
+ "python": "3.12.14",
+ "processor": "AMD64 Family 26 Model 36 Stepping 0, AuthenticAMD",
+ "logical_cpus": 20,
+ "device": "cpu",
+ "torch": "2.11.0+cu128",
+ "torch_threads": 2,
+ "gpu": "NVIDIA GeForce RTX 5080 Laptop GPU, 16303 MiB, 577.05, 80.00 W",
+ "peak_rss_bytes": 1145417728,
+ "tokenizer": "tokenizers:Qwen2.5-0.5B-Instruct@7ae5576",
+ "shards": 4,
+ "peak_rss_bytes_by_shard": [
+  1145417728,
+  1153171456,
+  1114497024,
+  1105002496
+ ]
+}

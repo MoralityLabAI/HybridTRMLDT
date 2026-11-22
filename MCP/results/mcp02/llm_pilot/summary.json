@@ -1,0 +1,108 @@
+{
+ "gym_version": "mcp-02",
+ "episodes": 6,
+ "groups": [
+  {
+   "arm": "search",
+   "catalog_size": 256,
+   "depth": null,
+   "experiment": "llm",
+   "layout": "",
+   "max_tool_calls": 40,
+   "policy": "llm:qwen2.5-0.5b-instruct",
+   "worlds": 8,
+   "policy_family": "llm",
+   "recurrent_depth": null,
+   "episodes": 6,
+   "accepted": 0,
+   "success_rate": 0.0,
+   "success_ci95_wilson": [
+    0.0,
+    0.3903
+   ],
+   "evidence_recall_mean": 0.0,
+   "answer_correct": 0,
+   "abstentions_submitted": 0,
+   "abstained_on_failure": 6,
+   "failures": {
+    "step_budget_exhausted": 6
+   },
+   "retries": {
+    "revalidation_reads": 0,
+    "rejected_reads": 0,
+    "tool_errors": 239
+   },
+   "tool_calls_mean": 39.833333333333336,
+   "tool_calls_per_success": null,
+   "refine_calls": 0,
+   "ldt_excluded": 0,
+   "ldt_rejected": 0,
+   "ldt_metadata_checks": 0,
+   "certified_exclusions_containing_required": 0,
+   "handoff_bytes_mean": 69.0,
+   "handoff_bytes_max": 69,
+   "handoff_budget_exceeded": 0,
+   "tool_result_bytes_mean": 7780.5,
+   "router_decisions": 240,
+   "router_flops_total": 465499411451392,
+   "router_flops_per_success": null,
+   "router_tokens_total": 471122,
+   "candidates_scored": 0,
+   "router_seconds_total": 2008.4530000004452,
+   "router_ms_per_decision": 8368.554166668522,
+   "episode_seconds_p50": 288.82913179998286,
+   "episode_seconds_p95": 564.8604997000657,
+   "cost_total_usd": {
+    "downstream_usd": 0.0003105,
+    "local_usd": 0.16737108333337042,
+    "tools_usd": 0.00239,
+    "verification_usd": 0.0,
+    "total_usd": 0.17007158333337044,
+    "handoff_tokens_estimate": 103.5,
+    "counterfactual_frontier_reads_results_usd": 0.03501225
+   },
+   "cost_per_success_usd": null,
+   "cost_breakdown_per_success_usd": null,
+   "cost_per_success_by_scenario": {
+    "frontier_cheap": null,
+    "default": null,
+    "frontier_expensive": null,
+    "local_expensive": null
+   }
+  }
+ ],
+ "paired": [],
+ "success_by_family_main": {},
+ "prices": {
+  "label": "MCP-02 price assumptions (calculation inputs, not measured bills)",
+  "bytes_per_token_estimate": 4.0,
+  "bytes_per_token_note": "Estimator: 4 UTF-8 bytes per token for the downstream handoff. Exact handoff bytes are reported separately.",
+  "frontier_input_usd_per_mtok": 3.0,
+  "local_cpu_usd_per_hour": 0.05,
+  "local_gpu_usd_per_hour": 0.3,
+  "local_price_note": "Amortised laptop hardware plus power at roughly 0.30 USD/h for the RTX 5080 laptop GPU and 0.05 USD/h for CPU router inference.",
+  "tool_call_usd": 1e-05,
+  "verification_check_usd": 1e-09,
+  "scenarios": {
+   "frontier_cheap": {
+    "frontier_input_usd_per_mtok": 0.25
+   },
+   "default": {},
+   "frontier_expensive": {
+    "frontier_input_usd_per_mtok": 15.0
+   },
+   "local_expensive": {
+    "local_cpu_usd_per_hour": 1.0,
+    "local_gpu_usd_per_hour": 3.0
+   }
+  }
+ },
+ "device": "cuda",
+ "episodes_sha256": "69a105ea2921679e711170768490d3dd33bcdedea2bd42e72f1956a9f9bb469f",
+ "accounting": {
+  "failure_accounting": "every assigned episode contributes cost; cost per success divides by accepted episodes",
+  "token_source": "router tokens are hashed-word tokens of the shared encoder; handoff tokens use the configured bytes-per-token estimator",
+  "flops_source": "torch FlopCounterMode per candidate times candidates scored",
+  "latency_source": "wall clock per router decision on the recorded host"
+ }
+}

@@ -1,0 +1,32 @@
+The packet reaches a Goose agent in two ways.
+
+\paragraph{MCP extension.} \texttt{MCP/mcp03/goblin\_server.py} is an MCP stdio server with two tools:
+\begin{itemize}
+\item \texttt{compact\_context(task, repo\_path, budget\_tokens, max\_tool\_calls, arm)} runs a router over a live
+working tree and returns the packet with its accounting: packet tokens, tokens read locally, tool calls, router FLOPs.
+\item \texttt{read\_symbol} returns one symbol's source.
+\end{itemize}
+Goose loads it as an extension with \texttt{--with-extension}.
+
+\paragraph{GDK app.} \texttt{goblin-gdk} is a Rust binary on \texttt{goose-agent} and \texttt{goose-providers}
+0.1.0-alpha.14, the Goose Development Kit's agent loop and provider layer. Its state machine has two steps:
+\begin{enumerate}
+\item \texttt{CompactContextOperation}, a GDK \texttt{Operation}, contributes the goblin packet as the prompt part
+\texttt{retrieved\_code\_context}. The machine collects it into the next inference request.
+\item \texttt{InferenceRunner} calls an OpenAI-compatible endpoint through \texttt{OpenAiCompatibleProvider}.
+\end{enumerate}
+The app talks to the goblin server over MCP stdio JSON-RPC. With \texttt{--no-packet} it runs the same machine
+without the operation's contribution. Provider-reported token usage is recorded through a custom
+\texttt{InferenceEffect}. Continuous integration builds the app and checks it against a scripted endpoint: the packet
+must appear in the provider request, stay within its budget, and be smaller than what the router read.
+Table~\ref{tab:gdk-demo} reports a run with a real local model: Qwen2.5-0.5B-Instruct on CPU, asked to name the
+file and function to edit for SWE-bench Lite tasks from three held-out repositories.
+\begin{itemize}
+\item With the 1.5K-token packet it named a gold file in \GdkPacketFileNamed{} of \GdkPacketRuns{} tasks and a gold
+function in \GdkPacketFunctionNamed{}, at \GdkPacketInputTokens{} provider input tokens per task.
+\item Without the packet it managed \GdkNoPacketFileNamed{} and \GdkNoPacketFunctionNamed{}, at \GdkNoPacketInputTokens{}
+tokens.
+\end{itemize}
+The sample is small and the model weak, so this shows the integration path rather than a frontier-scale effect.
+
+\IfFileExists{tables/gdk_demo.tex}{\input{tables/gdk_demo}}{}

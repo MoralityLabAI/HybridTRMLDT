@@ -1,0 +1,32 @@
+{
+ "git_commit": "e9b7e4ae5fdba250910b8d4bd78bed3548cddb61",
+ "mcp_tree_dirty": false,
+ "files": {
+  "MCP/mcp02/__init__.py": "56ac302037581fa3b6af3d722ae504a713665fc837abe8806243426a36640bda",
+  "MCP/mcp02/agent.py": "8ecf56064b2cb74faea5c2098bdbe0c85a962dab20f814fde557f12122ad3634",
+  "MCP/mcp02/economics.py": "32c7db993afdf76d3833ab28a8c794d1f835ba17d721bc50a4bc444d9e9761d9",
+  "MCP/mcp02/env.py": "d911b08e39839b510780285a6442ae8757bc9876184956dd3363aa9c8a90127f",
+  "MCP/mcp02/features.py": "22282a971d3df8ed831406963d7e588a3694c9c85003de252c01649921eafd3b",
+  "MCP/mcp02/hf_server.py": "983d4f3be91319fd2c8419297f465990e26fadeb484aa7c5d1aa856538eafb18",
+  "MCP/mcp02/llm.py": "48a55cf7c265a2ea3f538977ae33fc9851ef89e1e7db0555f04d1e3cd15276d5",
+  "MCP/mcp02/models.py": "8323995ee08bcf175b2ae5bab3a2f93be54b11bed2cbdb71dfe48940bf6be327",
+  "MCP/mcp02/report.py": "0b700f358f7c446629bd67ff2737b03a697daea37a84b20f024c13d540d06566",
+  "MCP/mcp02/run.py": "1d597d6e15ea48dd989e878a7188784bd6dcbd27a21083aa9eb9ae5e31543542",
+  "MCP/mcp02/serve.py": "2e605bbaa124c6b476c1f2f40c3afe36457fa7be641e8c1b4826ff93d3f3724e",
+  "MCP/mcp02/textutil.py": "e037ddf381f96c435c639f42f248d2f9cba1dde88fabbaee67165b74d76a944c",
+  "MCP/mcp02/train.py": "b67de502f8cd437f7562adcf8c87c83ffb0ecd63e0c44d53d134af0db1650b8f",
+  "MCP/mcp02/world.py": "dd45f42ed2ed328587ceae01612c680ef8f27fff5beb2d85a3eb94dfc19e4c7e",
+  "MCP/mcp02/configs/economics.json": "b5d1f0a5cdd2d5cc4f7b2c120fe704e64944d91affce244269c8dda516d093f8",
+  "MCP/mcp02/configs/llm_pilot.json": "5f1b6ddd965c19d9ec01f5188cbc7eb48bdfc2d88315dcfbd3f69a1f34da29fe",
+  "MCP/mcp02/configs/pilot_cpu.json": "2691cc547b97603f296ce1dde8bae1d52014c6848d4ef5b18d647d6915695636",
+  "MCP/mcp02/configs/pilot_gpu.json": "51b3d262c7b46b7b34d024e66bf6ec43e91c0352c6ee2e6123b097f75b9c902c",
+  "MCP/mcp02/configs/smoke_cpu.json": "d7369b83303a8ad5cc5211d81927c4f4538f92637b72343380f0165b956702d9",
+  "research_gym/core/hybrid.py": "8dda86f447de9910d89c2a59dc562dfb9a9c91d3e96698aeb153bb46b7407bca",
+  "research_gym/core/typed_soundness.py": "1a74ebe44a1dace8c735e893a54b5eb2de747347b4f6ceac11f450a92a909c09",
+  "MCP/transport.py": "5f7c679910920cd520942a3f83eb90c18d23bbe345cc9126f1b6ca9651120079",
+  "MCP/serve.py": "6aa2ee806d8db02aa1b7f602e5e14919fb498579a26ec2a4036453d4f434a4ec",
+  "MCP/local_model.py": "97283aa01ae03642640a9245ffedf12fcb197ed0ed81735ce0b7859c023d7914"
+ },
+ "hash": "sha256 of LF-normalised bytes",
+ "source_digest": "566eca1c1149e41c08aa19751189893649aa3588dc32a47e124143b42e04a616"
+}

@@ -1,0 +1,1 @@
+{"checkpoint": "C:/Users/patri/Documents/Codex/mcp02-work/pilot_gpu/ckpt/trm_c4i2_d128.pt", "device": "cuda", "peak_rss_before_forward": 646086656, "peak_rss_after_forward": 1096237056, "forward_peak_rss_delta": 450150400, "weights_bytes_fp32": 2941956, "candidates": 32, "sequence_length": 74, "cuda_max_memory_allocated": 39877120}

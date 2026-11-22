@@ -1,0 +1,35 @@
+\subsection{Compute and memory of the router modules}
+Table~\ref{tab:mcp03-receipts} lists, per MCP-03 module:
+\begin{itemize}
+\item measured parameters and recurrent depth;
+\item FLOPs per scored candidate and router latency;
+\item peak memory, measured in fresh processes with fixed step counts (15 CPU steps, 40 GPU steps, 32 states per batch).
+\end{itemize}
+Tables~\ref{tab:mcp02-pilot_gpu-receipts} and \ref{tab:mcp02-pilot_cpu-receipts} give the same receipts for the MCP-02 pilots.
+
+\paragraph{Parameters.} Every router has 0.15 to 1.3 million parameters. Most of them sit in the hashed embedding, and the weights
+occupy 1.2 to 1.8 MiB in fp32.
+
+\paragraph{Inference.} One forward over 32 candidates adds about 21 to 23 MiB to the process working set for the
+attention-based cores, and 2.7 MiB for the dense dual encoder, on top of a framework runtime of about 0.5 GiB.
+
+\paragraph{Training.} The MCP-03 training process holds the runtime and the decision dataset in about 615 MiB before
+the first step. From there, peak memory grows with the number of block applications, not with the parameter count:
+\begin{itemize}
+\item dense: +0.13 GiB (CUDA peak 43 MiB);
+\item two-layer Transformer: +0.44 GiB (342 MiB);
+\item every depth-4 core (four-layer Transformer, four-pass looped block, TRM, TRM+LDT, HRM): +0.72 to +0.77 GiB
+(627 to 710 MiB);
+\item eight-pass looped block: +1.29 GiB (1,203 MiB).
+\end{itemize}
+Recurrence therefore saves parameters but not training activations when gradients flow through every pass, as in
+our implementation. Truncating gradients to the last recursion cycle, as the original TRM does, is the obvious lever
+for training deeper recursions in less memory.
+
+\paragraph{Throughput.} On the shared RTX 5080 laptop GPU a training step over 32 states takes 0.46 to 0.96 s,
+dominated by Python-side batch assembly. On the contended CPU it takes 1.0 to 5.8 s. The routers are therefore cheap
+enough to train and run on a laptop CPU, and the GPU mainly shortens training.
+
+\IfFileExists{tables/mcp03_receipts.tex}{\input{tables/mcp03_receipts}}{}
+\IfFileExists{tables/mcp02_pilot_gpu_receipts.tex}{\input{tables/mcp02_pilot_gpu_receipts}}{}
+\IfFileExists{tables/mcp02_pilot_cpu_receipts.tex}{\input{tables/mcp02_pilot_cpu_receipts}}{}

@@ -1,0 +1,58 @@
+\subsection{Compact packets on SWE-bench Lite (MCP-03)}
+Table~\ref{tab:mcp03-packets} and Figure~\ref{fig:mcp03} report packet size against localisation on
+\McpThreeInstances{} SWE-bench Lite tasks from ten repositories that contributed no training data. A held-out
+repository has \RepoPythonFiles{} Python files on average, and its gold files alone average \GoldFilesTokens{} tokens.
+Routers trained on django and sympy were evaluated without change. Each router had 24 local tool calls.
+
+\paragraph{Baselines.} SWE-bench's BM25 whole-file retrieval places the gold files in context with recall
+\BmFilesRecallTwo{} at \BmFilesTokensTwo{} tokens, \BmFilesRecallThirteen{} at \BmFilesTokensThirteen{} tokens and
+\BmFilesRecallTwentySeven{} at \BmFilesTokensTwentySeven{} tokens. Listing the same ranking as file paths is far
+cheaper: the top 12 paths (\BmMapTokensTwelve{} tokens) reach \BmMapRecallTwelve{}, and the top 25 paths
+(\BmMapTokensTwentyFive{} tokens) reach \BmMapRecallTwentyFive{}. Whole-file content is a poor use of a handoff
+budget when localisation is the goal.
+
+\paragraph{Learned routers rank files best in the fewest tokens.} With search access, the learned routers place gold
+files in a 512-token packet at higher rates than any lexical router:
+\begin{itemize}
+\item \texttt{\CompactFirstRouter}: file recall \CompactFirstFileRecall{} in \CompactFirstTokens{} tokens;
+\item \texttt{\CompactSecondRouter}: \CompactSecondFileRecall{} in \CompactSecondTokens{} tokens;
+\item BM25 as router: \BmRouterFileRecallFiveTwelve{}.
+\end{itemize}
+Their file maps list at most 12 files and beat the 12-path BM25 list. They match the 25-path list, which has twice the
+entries. Against whole-file BM25 at \BmFilesTokensTwentySeven{} tokens, the learned packet is about a hundred times smaller
+and localises more gold files. To get there, the learned routers read about \LearnedLocalTokens{} tokens of tool results
+locally, against \BmRouterLocalTokens{} for BM25. They spend their calls on search queries, result pages and index
+expansion, not on reading symbol bodies.
+
+\paragraph{Symbol evidence still favours reading.} Learned routers read only 1.4 to 4 symbols per task, so their
+gold-symbol recall stays between 0.08 and 0.22. BM25 reads its top 20 hits. With a 2,048-token packet it reaches
+symbol recall \BmRouterSymRecallTwoK{}. Adding the whole-file BM25 path map (composed packet) raises its file recall
+to \BmComposedFileRecallTwoK{} at the same symbol recall \BmComposedSymRecallTwoK{}.
+
+The oracle bound in the certified LDT arm, which mixes search with index navigation, reaches file recall
+\OracleLdtFileRecallTwoK{} and symbol recall \OracleLdtSymRecallTwoK{}. A router that ranked files like the learned models and read symbols like BM25 might close much of that gap.
+Section~\ref{sec:next} proposes that as the next experiment.
+
+\paragraph{Index-only navigation.} Without the search tool, directory names carry too little signal. Every non-oracle
+router, learned or lexical, reaches a gold-file recall of at most 0.21, while the oracle reaches 0.92.
+
+\IfFileExists{tables/mcp03_packets.tex}{\input{tables/mcp03_packets}}{}
+\IfFileExists{figures/mcp03_tokens_vs_recall.pdf}{
+\begin{figure}[t]\centering
+\includegraphics[width=0.85\linewidth]{figures/mcp03_tokens_vs_recall.pdf}
+\caption{Handoff tokens against gold-file recall on held-out SWE-bench Lite repositories. Router packets at 512 to
+4,096 tokens; BM25 whole files at 2K to 27K tokens.}\label{fig:mcp03}
+\end{figure}}{}
+
+\IfFileExists{sections/results_e2e.tex}{\input{sections/results_e2e}}{}
+
+\IfFileExists{sections/results_hub.tex}{\input{sections/results_hub}}{}
+\IfFileExists{tables/hub_storyworlds.tex}{\input{tables/hub_storyworlds}}{}
+\IfFileExists{tables/hub_agentic.tex}{\input{tables/hub_agentic}}{}
+
+\IfFileExists{sections/results_mcp02.tex}{\input{sections/results_mcp02}}{}
+
+\subsection{Local LLM controllers}
+\IfFileExists{sections/results_llm.tex}{\input{sections/results_llm}}{}
+
+\IfFileExists{sections/results_resources.tex}{\input{sections/results_resources}}{}

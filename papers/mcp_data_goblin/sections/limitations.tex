@@ -1,0 +1,26 @@
+\begin{itemize}
+\item \textbf{Synthetic worlds.} MCP-02 tasks are generated. Their exact judge makes accounting precise, but descriptor
+language and catalog structure are simpler than real MCP deployments.
+\item \textbf{Resolution with a small local model.} The end-to-end SWE-bench run used Qwen3-4B-Instruct on 26 tasks
+from three repositories, because no frontier-model API key was available on the host. Its resolve rates (at most 1
+of 26) are too low to separate the context conditions statistically. The main localisation study covers all 109
+held-out tasks, but it measures whether the packet contains the edited code, not whether a patch passes the tests.
+\item \textbf{One night of hub runs.} The Bonsai 27B runs took one night on one GPU, with one rollout per task and 5 to
+57 tasks per set. Further limits:
+  \begin{itemize}
+  \item the packet threshold (6,000 estimated tokens) was fixed before the runs;
+  \item the late-compaction arm ran only on event-recon tier 1;
+  \item event-recon tier 2 was dropped once tier 1 scored zero in both arms;
+  \item verifiers versions were pinned per environment (Section~\ref{sec:hub} and \texttt{MCP/hubrun/README.md}), and
+  mcp-sqlite was scored without its API judge;
+  \item the storyworld environments are private, so only aggregate scores are published.
+  \end{itemize}
+\item \textbf{Small training budgets.} Routers saw at most tens of thousands of decision states for two or three epochs.
+Architecture differences of a few points are within noise at 32 to 109 tasks per cell. The paper reports Wilson
+intervals and paired bootstrap intervals rather than significance claims.
+\item \textbf{Shared hardware.} The GPU and CPU served concurrent jobs, so latencies are upper bounds and comparisons
+across runs taken at different times are not exact. FLOPs, tokens and memory peaks are not affected.
+\item \textbf{Encoder amendment.} The exact-match channel was added after inspecting dev-world decision traces of a
+tokens-only router, and before any test-set evaluation of a learned router. The CPU pilot keeps the registered tokens-only
+encoder for comparison.
+\end{itemize}

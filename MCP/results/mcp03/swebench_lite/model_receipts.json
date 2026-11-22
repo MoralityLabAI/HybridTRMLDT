@@ -1,0 +1,787 @@
+{
+ "identifier_rules": {
+  "name": "identifier_rules",
+  "family": "deterministic",
+  "parameters": 0,
+  "recurrent_depth": 0,
+  "proposer": "symbolic",
+  "uses_private_oracle": false
+ },
+ "lexical_bm25": {
+  "name": "lexical_bm25",
+  "family": "lexical",
+  "parameters": 0,
+  "recurrent_depth": 0,
+  "proposer": "symbolic",
+  "uses_private_oracle": false
+ },
+ "sham_random": {
+  "name": "sham_random",
+  "family": "sham",
+  "parameters": 0,
+  "recurrent_depth": 0,
+  "proposer": "symbolic",
+  "uses_private_oracle": false
+ },
+ "oracle_upper_bound": {
+  "name": "oracle_upper_bound",
+  "family": "oracle",
+  "parameters": 0,
+  "recurrent_depth": 0,
+  "proposer": "symbolic",
+  "uses_private_oracle": true
+ },
+ "dense_d64": {
+  "name": "dense_d64",
+  "family": "dense",
+  "config": {
+   "arch": "dense",
+   "d": 64,
+   "encoder": "match"
+  },
+  "parameters": {
+   "total": 301633,
+   "non_embedding": 38977,
+   "embedding": 262656,
+   "bytes_fp32": 1206532
+  },
+  "recurrent_depth": 0,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 66688,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 0
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "83ef5fc4c9e36ea1ef609d0b247cd44f2f57650e0912c3a1ade2aee0a9fe0162",
+  "encoder": "mcp02-hash4096-seq74-v1/match",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "dense",
+    "d": 64,
+    "encoder": "match"
+   },
+   "epochs": 3,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cuda",
+   "threads": 6,
+   "train_seconds": 83.44941719993949,
+   "steps": 762,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 0.8952192552681044
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.4704898958072418
+    },
+    {
+     "epoch": 3,
+     "mean_loss": 0.38736111682465696
+    }
+   ],
+   "train_states": 8118,
+   "train_row_states": 0,
+   "train_flops_estimate": 54394200576,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 301633,
+    "non_embedding": 38977,
+    "embedding": 262656,
+    "bytes_fp32": 1206532
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1738878976,
+    "scope": "whole training process, including the in-memory dataset",
+    "cuda_max_memory_allocated": 46027264
+   },
+   "dev_ranking": {
+    "top1_positive": 0.7861818181818182,
+    "states": 1375
+   },
+   "model_name": "dense_d64",
+   "checkpoint_sha256": "83ef5fc4c9e36ea1ef609d0b247cd44f2f57650e0912c3a1ade2aee0a9fe0162"
+  }
+ },
+ "transformer_l2_d64": {
+  "name": "transformer_l2_d64",
+  "family": "transformer",
+  "config": {
+   "arch": "transformer",
+   "d": 64,
+   "heads": 4,
+   "layers": 2,
+   "encoder": "match"
+  },
+  "parameters": {
+   "total": 368449,
+   "non_embedding": 105793,
+   "embedding": 262656,
+   "bytes_fp32": 1473796
+  },
+  "recurrent_depth": 2,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 17353984,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 2
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "3e4ebca66d42797ab919a2a8641240247973fa17313bc3505910e227ae7d8805",
+  "encoder": "mcp02-hash4096-seq74-v1/match",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "transformer",
+    "d": 64,
+    "heads": 4,
+    "layers": 2,
+    "encoder": "match"
+   },
+   "epochs": 3,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cuda",
+   "threads": 6,
+   "train_seconds": 78.6438524001278,
+   "steps": 762,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 0.8526846456128782
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.31656376771100864
+    },
+    {
+     "epoch": 3,
+     "mean_loss": 0.15747617696609906
+    }
+   ],
+   "train_states": 8118,
+   "train_row_states": 0,
+   "train_flops_estimate": 14154811757568,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 368449,
+    "non_embedding": 105793,
+    "embedding": 262656,
+    "bytes_fp32": 1473796
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1835634688,
+    "scope": "whole training process, including the in-memory dataset",
+    "cuda_max_memory_allocated": 364969984
+   },
+   "dev_ranking": {
+    "top1_positive": 0.7323636363636363,
+    "states": 1375
+   },
+   "model_name": "transformer_l2_d64",
+   "checkpoint_sha256": "3e4ebca66d42797ab919a2a8641240247973fa17313bc3505910e227ae7d8805"
+  }
+ },
+ "transformer_l4_d64": {
+  "name": "transformer_l4_d64",
+  "family": "transformer",
+  "config": {
+   "arch": "transformer",
+   "d": 64,
+   "heads": 4,
+   "layers": 4,
+   "encoder": "match"
+  },
+  "parameters": {
+   "total": 468417,
+   "non_embedding": 205761,
+   "embedding": 262656,
+   "bytes_fp32": 1873668
+  },
+  "recurrent_depth": 4,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 34706688,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 4
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "17f371148eb584fafe5937fcaf0b7b7b09267d7aef76a625499bcf4f8bef1b0f",
+  "encoder": "mcp02-hash4096-seq74-v1/match",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "transformer",
+    "d": 64,
+    "heads": 4,
+    "layers": 4,
+    "encoder": "match"
+   },
+   "epochs": 3,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cuda",
+   "threads": 6,
+   "train_seconds": 102.79303689999506,
+   "steps": 762,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 0.8247280993212865
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.287697331011882
+    },
+    {
+     "epoch": 3,
+     "mean_loss": 0.11876664157978839
+    }
+   ],
+   "train_states": 8118,
+   "train_row_states": 0,
+   "train_flops_estimate": 28308579480576,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 468417,
+    "non_embedding": 205761,
+    "embedding": 262656,
+    "bytes_fp32": 1873668
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1788276736,
+    "scope": "whole training process, including the in-memory dataset",
+    "cuda_max_memory_allocated": 667482112
+   },
+   "dev_ranking": {
+    "top1_positive": 0.7258181818181818,
+    "states": 1375
+   },
+   "model_name": "transformer_l4_d64",
+   "checkpoint_sha256": "17f371148eb584fafe5937fcaf0b7b7b09267d7aef76a625499bcf4f8bef1b0f"
+  }
+ },
+ "looped_p4_d64": {
+  "name": "looped_p4_d64",
+  "family": "looped",
+  "config": {
+   "arch": "looped",
+   "d": 64,
+   "heads": 4,
+   "passes": 4,
+   "encoder": "match"
+  },
+  "parameters": {
+   "total": 320513,
+   "non_embedding": 57857,
+   "embedding": 262656,
+   "bytes_fp32": 1282052
+  },
+  "recurrent_depth": 4,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 34706688,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 4
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "397def3838ad25e6b73971db47c3710d3e7157d3ef520c441910b7e8522310da",
+  "encoder": "mcp02-hash4096-seq74-v1/match",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "looped",
+    "d": 64,
+    "heads": 4,
+    "passes": 4,
+    "encoder": "match"
+   },
+   "epochs": 3,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cuda",
+   "threads": 6,
+   "train_seconds": 107.81145890010521,
+   "steps": 762,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 0.8877752809308646
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.3868644532901565
+    },
+    {
+     "epoch": 3,
+     "mean_loss": 0.23652884642058236
+    }
+   ],
+   "train_states": 8118,
+   "train_row_states": 0,
+   "train_flops_estimate": 28308579480576,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 320513,
+    "non_embedding": 57857,
+    "embedding": 262656,
+    "bytes_fp32": 1282052
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1805848576,
+    "scope": "whole training process, including the in-memory dataset",
+    "cuda_max_memory_allocated": 676999680
+   },
+   "dev_ranking": {
+    "top1_positive": 0.7592727272727273,
+    "states": 1375
+   },
+   "model_name": "looped_p4_d64",
+   "checkpoint_sha256": "397def3838ad25e6b73971db47c3710d3e7157d3ef520c441910b7e8522310da"
+  }
+ },
+ "looped_p8_d64": {
+  "name": "looped_p8_d64",
+  "family": "looped",
+  "config": {
+   "arch": "looped",
+   "d": 64,
+   "heads": 4,
+   "passes": 8,
+   "encoder": "match"
+  },
+  "parameters": {
+   "total": 320513,
+   "non_embedding": 57857,
+   "embedding": 262656,
+   "bytes_fp32": 1282052
+  },
+  "recurrent_depth": 8,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 69412096,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 8
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "ab29b28caf2b80f8d3c43a7025083ba17357cf7c9b1b0e9eb17008d2e18b3c0e",
+  "encoder": "mcp02-hash4096-seq74-v1/match",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "looped",
+    "d": 64,
+    "heads": 4,
+    "passes": 8,
+    "encoder": "match"
+   },
+   "epochs": 3,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cuda",
+   "threads": 6,
+   "train_seconds": 111.53518889984116,
+   "steps": 762,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 0.9364840395924613
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.37924681419110673
+    },
+    {
+     "epoch": 3,
+     "mean_loss": 0.21568687220551366
+    }
+   ],
+   "train_states": 8118,
+   "train_row_states": 0,
+   "train_flops_estimate": 56616114926592,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 320513,
+    "non_embedding": 57857,
+    "embedding": 262656,
+    "bytes_fp32": 1282052
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1792106496,
+    "scope": "whole training process, including the in-memory dataset",
+    "cuda_max_memory_allocated": 1280084480
+   },
+   "dev_ranking": {
+    "top1_positive": 0.7505454545454545,
+    "states": 1375
+   },
+   "model_name": "looped_p8_d64",
+   "checkpoint_sha256": "ab29b28caf2b80f8d3c43a7025083ba17357cf7c9b1b0e9eb17008d2e18b3c0e"
+  }
+ },
+ "trm_c2i1_d64": {
+  "name": "trm_c2i1_d64",
+  "family": "trm",
+  "config": {
+   "arch": "trm",
+   "d": 64,
+   "heads": 4,
+   "net_layers": 1,
+   "inner": 1,
+   "cycles": 2,
+   "encoder": "match"
+  },
+  "parameters": {
+   "total": 318593,
+   "non_embedding": 55937,
+   "embedding": 262656,
+   "bytes_fp32": 1274372
+  },
+  "recurrent_depth": 4,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 34706688,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 4
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "f7c8d0f52c73f52072ebed53804469b2d8af3ab3977c41709e7d3f99154ae975",
+  "encoder": "mcp02-hash4096-seq74-v1/match",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "trm",
+    "d": 64,
+    "heads": 4,
+    "net_layers": 1,
+    "inner": 1,
+    "cycles": 2,
+    "encoder": "match"
+   },
+   "epochs": 3,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cuda",
+   "threads": 6,
+   "train_seconds": 177.835844400106,
+   "steps": 762,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 0.9339546331270473
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.384207546945632
+    },
+    {
+     "epoch": 3,
+     "mean_loss": 0.23655868969916358
+    }
+   ],
+   "train_states": 8118,
+   "train_row_states": 0,
+   "train_flops_estimate": 28308579480576,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 318593,
+    "non_embedding": 55937,
+    "embedding": 262656,
+    "bytes_fp32": 1274372
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1806036992,
+    "scope": "whole training process, including the in-memory dataset",
+    "cuda_max_memory_allocated": 684245504
+   },
+   "dev_ranking": {
+    "top1_positive": 0.776,
+    "states": 1375
+   },
+   "model_name": "trm_c2i1_d64",
+   "checkpoint_sha256": "f7c8d0f52c73f52072ebed53804469b2d8af3ab3977c41709e7d3f99154ae975"
+  }
+ },
+ "trm_ldt_c2i1_d64": {
+  "name": "trm_ldt_c2i1_d64",
+  "family": "trm_ldt",
+  "config": {
+   "arch": "trm_ldt",
+   "d": 64,
+   "heads": 4,
+   "net_layers": 1,
+   "inner": 1,
+   "cycles": 2,
+   "encoder": "match"
+  },
+  "parameters": {
+   "total": 318918,
+   "non_embedding": 56262,
+   "embedding": 262656,
+   "bytes_fp32": 1275672
+  },
+  "recurrent_depth": 4,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 34707328,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 4
+  },
+  "proposer": "learned",
+  "checkpoint_sha256": "b225f45e17450407d71d93509c28a5bb36b7db7c17f9318ac753b8a22314ea36",
+  "encoder": "mcp02-hash4096-seq74-v1/match",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "trm_ldt",
+    "d": 64,
+    "heads": 4,
+    "net_layers": 1,
+    "inner": 1,
+    "cycles": 2,
+    "encoder": "match"
+   },
+   "epochs": 3,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cuda",
+   "threads": 6,
+   "train_seconds": 156.51191690005362,
+   "steps": 762,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 1.118526715286604
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.42343925147896677
+    },
+    {
+     "epoch": 3,
+     "mean_loss": 0.261929011720372
+    }
+   ],
+   "train_states": 8118,
+   "train_row_states": 2580,
+   "train_flops_estimate": 33527591213952,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 318918,
+    "non_embedding": 56262,
+    "embedding": 262656,
+    "bytes_fp32": 1275672
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1820905472,
+    "scope": "whole training process, including the in-memory dataset",
+    "cuda_max_memory_allocated": 760442368
+   },
+   "dev_ranking": {
+    "top1_positive": 0.7541818181818182,
+    "states": 1375
+   },
+   "model_name": "trm_ldt_c2i1_d64",
+   "checkpoint_sha256": "b225f45e17450407d71d93509c28a5bb36b7db7c17f9318ac753b8a22314ea36"
+  }
+ },
+ "hrm_h2l1_d64": {
+  "name": "hrm_h2l1_d64",
+  "family": "hrm",
+  "config": {
+   "arch": "hrm",
+   "d": 64,
+   "heads": 4,
+   "low_steps": 1,
+   "high_cycles": 2,
+   "encoder": "match"
+  },
+  "parameters": {
+   "total": 368577,
+   "non_embedding": 105921,
+   "embedding": 262656,
+   "bytes_fp32": 1474308
+  },
+  "recurrent_depth": 4,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 34706688,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 4
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "c7dfec394e6ffc6222c66a0492b0e76da9cbd9dd52dac58760d41da2985aab1b",
+  "encoder": "mcp02-hash4096-seq74-v1/match",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "hrm",
+    "d": 64,
+    "heads": 4,
+    "low_steps": 1,
+    "high_cycles": 2,
+    "encoder": "match"
+   },
+   "epochs": 3,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cuda",
+   "threads": 6,
+   "train_seconds": 162.38364429981448,
+   "steps": 762,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 0.8845209113256199
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.30817834810009154
+    },
+    {
+     "epoch": 3,
+     "mean_loss": 0.1546008840907277
+    }
+   ],
+   "train_states": 8118,
+   "train_row_states": 0,
+   "train_flops_estimate": 28308579480576,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 368577,
+    "non_embedding": 105921,
+    "embedding": 262656,
+    "bytes_fp32": 1474308
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1784651776,
+    "scope": "whole training process, including the in-memory dataset",
+    "cuda_max_memory_allocated": 685052416
+   },
+   "dev_ranking": {
+    "top1_positive": 0.7330909090909091,
+    "states": 1375
+   },
+   "model_name": "hrm_h2l1_d64",
+   "checkpoint_sha256": "c7dfec394e6ffc6222c66a0492b0e76da9cbd9dd52dac58760d41da2985aab1b"
+  }
+ },
+ "transformer_l2_d64_tokens": {
+  "name": "transformer_l2_d64_tokens",
+  "family": "transformer",
+  "config": {
+   "arch": "transformer",
+   "d": 64,
+   "heads": 4,
+   "layers": 2,
+   "encoder": "tokens"
+  },
+  "parameters": {
+   "total": 368321,
+   "non_embedding": 105665,
+   "embedding": 262656,
+   "bytes_fp32": 1473284
+  },
+  "recurrent_depth": 2,
+  "depth_override": null,
+  "flops_per_candidate": {
+   "flops": 17353984,
+   "method": "torch.utils.flop_counter.FlopCounterMode",
+   "scope": "one candidate, fixed sequence length; padded positions included",
+   "sequence_length": 74,
+   "recurrent_depth": 2
+  },
+  "proposer": "symbolic",
+  "checkpoint_sha256": "59165c4eb736cb9b2288c849e651e4ddc45638ead135f116d0c163185adfc3c6",
+  "encoder": "mcp02-hash4096-seq74-v1/tokens",
+  "uses_private_oracle": false,
+  "training": {
+   "config": {
+    "arch": "transformer",
+    "d": 64,
+    "heads": 4,
+    "layers": 2,
+    "encoder": "tokens"
+   },
+   "epochs": 3,
+   "lr": 0.0015,
+   "batch_states": 32,
+   "seed": 7,
+   "shuffle_labels": false,
+   "device": "cuda",
+   "threads": 6,
+   "train_seconds": 258.72946289996617,
+   "steps": 762,
+   "loss_curve": [
+    {
+     "epoch": 1,
+     "mean_loss": 0.8723531866988797
+    },
+    {
+     "epoch": 2,
+     "mean_loss": 0.36055150830487565
+    },
+    {
+     "epoch": 3,
+     "mean_loss": 0.1953856485939812
+    }
+   ],
+   "train_states": 8118,
+   "train_row_states": 0,
+   "train_flops_estimate": 14154811757568,
+   "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen (upper bound; batches use shorter dynamic padding)",
+   "parameters": {
+    "total": 368321,
+    "non_embedding": 105665,
+    "embedding": 262656,
+    "bytes_fp32": 1473284
+   },
+   "memory": {
+    "process_peak_rss_bytes": 1821409280,
+    "scope": "whole training process, including the in-memory dataset",
+    "cuda_max_memory_allocated": 364968448
+   },
+   "dev_ranking": {
+    "top1_positive": 0.6901818181818182,
+    "states": 1375
+   },
+   "model_name": "transformer_l2_d64_tokens",
+   "checkpoint_sha256": "59165c4eb736cb9b2288c849e651e4ddc45638ead135f116d0c163185adfc3c6"
+  }
+ }
+}

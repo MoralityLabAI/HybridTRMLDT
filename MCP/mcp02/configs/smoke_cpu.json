@@ -1,0 +1,137 @@
+{
+  "name": "mcp02-smoke-cpu",
+  "purpose": "CPU-compatible pipeline smoke: tiny data, one epoch, every architecture",
+  "dataset": {
+    "worlds": {
+      "train": 24,
+      "dev": 8
+    },
+    "seed": {
+      "train": 1101,
+      "dev": 2202
+    },
+    "catalog_size": 128,
+    "arm_configs": [
+      [
+        "search",
+        ""
+      ],
+      [
+        "layered",
+        "SCB"
+      ],
+      [
+        "layered_ldt",
+        "PSCB"
+      ]
+    ],
+    "epsilons": [
+      0.0,
+      0.3
+    ],
+    "max_candidates": 12,
+    "max_tool_calls": 40
+  },
+  "training": {
+    "epochs": 1,
+    "lr": 0.002,
+    "batch_states": 32,
+    "seed": 7,
+    "threads": 4
+  },
+  "models": {
+    "dense_d32": {
+      "config": {
+        "arch": "dense",
+        "d": 32
+      }
+    },
+    "transformer_l2_d32": {
+      "config": {
+        "arch": "transformer",
+        "d": 32,
+        "heads": 2,
+        "layers": 2
+      }
+    },
+    "looped_p2_d32": {
+      "config": {
+        "arch": "looped",
+        "d": 32,
+        "heads": 2,
+        "passes": 2
+      }
+    },
+    "trm_c1i1_d32": {
+      "config": {
+        "arch": "trm",
+        "d": 32,
+        "heads": 2,
+        "net_layers": 1,
+        "inner": 1,
+        "cycles": 1
+      }
+    },
+    "trm_ldt_c1i1_d32": {
+      "config": {
+        "arch": "trm_ldt",
+        "d": 32,
+        "heads": 2,
+        "net_layers": 1,
+        "inner": 1,
+        "cycles": 1
+      }
+    },
+    "hrm_h1l1_d32": {
+      "config": {
+        "arch": "hrm",
+        "d": 32,
+        "heads": 2,
+        "low_steps": 1,
+        "high_cycles": 1
+      }
+    },
+    "transformer_l2_d32_match": {
+      "config": {
+        "arch": "transformer",
+        "d": 32,
+        "heads": 2,
+        "layers": 2,
+        "encoder": "match"
+      }
+    }
+  },
+  "evaluation": {
+    "split": "test",
+    "seed": 3303,
+    "worlds": 8,
+    "catalog_sizes": [
+      128
+    ],
+    "arm_configs": [
+      [
+        "search",
+        ""
+      ],
+      [
+        "layered",
+        "SCB"
+      ],
+      [
+        "layered_ldt",
+        "PSCB"
+      ]
+    ],
+    "max_tool_calls": [
+      40
+    ],
+    "prefilter_k": 32,
+    "handoff_budget_bytes": 2048,
+    "controls": [
+      "deterministic_rules",
+      "lexical_bm25",
+      "sham_random",
+      "oracle_upper_bound"
+    ]
+  }
+}
