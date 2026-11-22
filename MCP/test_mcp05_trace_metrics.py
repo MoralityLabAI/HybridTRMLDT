@@ -95,6 +95,19 @@ class AuditTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "manifest source digest mismatch"):
                 build_report(root)
 
+    def test_committed_public_baseline_remains_reproducible(self):
+        root = Path(__file__).resolve().parent / "results" / "hubrun" / "traces"
+        receipt = build_report(root)
+        self.assertTrue(receipt["source_manifest_verified"])
+        self.assertTrue(receipt["docedit_pair"]["task_ids_matched"])
+        self.assertTrue(receipt["event_recon_pair"]["task_ids_matched"])
+        self.assertEqual(receipt["docedit_pair"]["raw"]["solved_reward_ge_0_999"], 5)
+        self.assertEqual(receipt["docedit_pair"]["goblin"]["solved_reward_ge_0_999"], 1)
+        for arm, count, repeats in (("raw", 14, 0), ("late", 24, 3), ("goblin", 166, 53)):
+            self.assertEqual(receipt["event_recon"][arm]["read_file_calls_total"], count)
+            self.assertEqual(receipt["event_recon"][arm]["repeat_exact_requests_total"], repeats)
+            self.assertEqual(receipt["event_recon"][arm]["read_args_missing_total"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()
