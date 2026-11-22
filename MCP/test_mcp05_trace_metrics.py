@@ -20,7 +20,7 @@ def doc_case(n: int, *, reads: int = 5, stale: int = 1) -> dict:
 
 
 def event_case(name="evt-0", *, missing_args=False):
-    call = lambda args: {"name": "read_file", **(
+    call = lambda args: {"name": "workspace_read_file", **(
         {} if args is None else {"arguments": args})}
     return {"task": {"data": {"name": name}},
             "traces": [{"nodes": [
@@ -85,7 +85,14 @@ class AuditTests(unittest.TestCase):
             self.assertTrue(report["docedit_pair"]["task_ids_matched"])
             self.assertEqual(report["docedit_pair"]["goblin_minus_raw"]["read_page_calls"], 4.0)
             self.assertEqual(len(report["sources"]), 5)
+            self.assertTrue(report["event_recon_pair"]["task_ids_matched"])
+            self.assertFalse(report["source_manifest_verified"])
             self.assertEqual(len(report["sources"][ARCHIVES[0]]["source_sha256"]), 64)
+            forged = {"traces": {filename.split(".")[0]: {
+                "file": filename, "source_sha256": "0" * 64} for filename in ARCHIVES}}
+            (root.parent / "manifest.json").write_text(json.dumps(forged))
+            with self.assertRaisesRegex(ValueError, "manifest source digest mismatch"):
+                build_report(root)
 
 
 if __name__ == "__main__":
