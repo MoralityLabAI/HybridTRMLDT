@@ -30,7 +30,7 @@ Start the existing `TML-d24-varloop-research-IQ4_NL.gguf` with llama.cpp b12602 
 
     llama-server --model PATH_TO_EXISTING_GGUF --host 127.0.0.1 --port 8097 --alias inky-mini-varloop --ctx-size 16384 --parallel 1 --threads 4 --threads-batch 4 -b 256 -ub 64 -ngl 99 --n-cpu-moe 17 --fit off --no-mmproj --no-context-shift --cache-ram 0 --reasoning off --reasoning-budget 0 --no-reasoning-preserve --seed 523 --temp 0 --override-kv inkling2_loop.loop.count=int:1
 
-The shared-GPU profile keeps the first 17 layers' expert weights in system RAM and measured about 7.8 GiB on the GPU with the full slot allocated. The earlier 11-layer CPU profile used about 11 GiB. The Windows pilot set `GGML_VK_VISIBLE_DEVICES=1` after verifying the device inventory. Use the actual memory reported for the other workload when choosing a profile.
+The shared-GPU profile keeps the first 17 layers' expert weights in system RAM and measured about 7.8 GiB on the GPU with the full slot allocated. When system RAM is the tighter constraint, `--n-cpu-moe 16` moves one expert layer back to the GPU. That configuration generated successfully at 16K and used 8.3 GiB of dedicated GPU memory in a shared sample. The earlier 11-layer CPU profile used about 11 GiB. The Windows pilot set `GGML_VK_VISIBLE_DEVICES=1` after verifying the device inventory. Use measured host and device memory when choosing a profile.
 
     python -m MCP.mcp05.evaluate --binary MCP/goose_gdk_app/target/debug/goblin-gdk --stage work/mcp05-cases --checkpoints work/mcp05-controller --out work/mcp05-inky --json-actions --context 16384 --completion 512 --arms A B C D E shuffled
 
@@ -59,6 +59,8 @@ For the two Flask assignments on Windows, run `grade_swe_wsl.ps1` after the A an
 The session sends the actual Goose wire request through a loopback preflight relay. It applies the upstream chat template, tokenizes with special tokens recognized, and checks for tool-schema serialization when schemas are present. It forwards raw messages if they fit. Packet and typed modes may condense closed history and remeasure it. Each provider completion records preflight parity. A mismatch prevents further completions in that session.
 
 Use `--deduplicate-reads` with typed memory to keep the full text of the newest copy of an identical source read. Older copies retain their tool IDs, source handles, and other metadata. The relay rechecks the provider token count and only uses the shorter request if it fits. The evaluator accepts the same flag and applies it to typed arms. The raw baseline keeps its original wire history.
+
+The controller packet retains the newest complete source receipts that fit its budget. When a newly selected source fits, earlier receipts can leave the packet while remaining in the session audit trail. A proposal to reuse a handle already in the packet avoids another source read.
 
 For a JSON object, the working set indexes multiline array and object members at the top two levels. Use `context.query` to find a section or expand the JSON file's candidate node to list its sections. A URI such as `world/diplomacy_min.json::/rules/outcomes` reads the original lines with the normal digest-bound source handle. Reading the file URI still supports line-based pagination.
 

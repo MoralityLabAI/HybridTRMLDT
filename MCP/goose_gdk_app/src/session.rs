@@ -198,6 +198,28 @@ impl RepairState {
     }
 }
 
+fn admit_controller_evidence(admitted: &mut Vec<Value>, entry: Value, budget_bytes: usize) {
+    let Some(handle) = entry["handle"].as_str() else {
+        return;
+    };
+    let mut packet_bytes = 2 + entry.to_string().len();
+    if packet_bytes > budget_bytes || admitted.iter().any(|item| item["handle"] == handle) {
+        return;
+    }
+
+    // Keep the newest complete receipts that fit alongside the new source.
+    let mut first_kept = admitted.len();
+    for item in admitted.iter().rev() {
+        packet_bytes += 1 + item.to_string().len();
+        if packet_bytes > budget_bytes {
+            break;
+        }
+        first_kept -= 1;
+    }
+    admitted.drain(..first_kept);
+    admitted.push(entry);
+}
+
 struct RepairOperation {
     mcp: AsyncMutex<McpClient>,
     auto: bool,
@@ -395,19 +417,14 @@ impl RepairOperation {
 
     async fn manager(&self, state: &mut RepairState) -> Result<()> {
         state.manager_steps += 1;
-        let bytes: usize = state
-            .admitted
-            .iter()
-            .map(|entry| entry.to_string().len())
-            .sum();
-        let chars_left = (state.budget as usize * 3).saturating_sub(bytes);
-        if chars_left < 200 {
+        let budget_bytes = (state.budget as usize).saturating_mul(3);
+        if budget_bytes < 200 {
             state.manager_steps = 2;
             return Ok(());
         }
         let choice = self.mcp.lock().await.call_tool("host.propose", json!({
             "task": state.task, "subgoal": state.subgoal, "calls_left": state.call_limit - state.calls,
-            "tokens_left": chars_left / 3,
+            "tokens_left": budget_bytes / 3,
         })).await?;
         let (tool, args) = match choice["action"].as_str() {
             Some("expand") => ("context_expand", json!({"node_id": choice["node_id"]})),
@@ -424,19 +441,19 @@ impl RepairOperation {
             state.manager_steps = 2;
             return Ok(());
         }
+        if tool == "context_read"
+            && args["handle"].as_str().is_some_and(|handle| {
+                state.admitted.iter().any(|entry| entry["handle"] == handle)
+            })
+        {
+            return Ok(());
+        }
         let (result, error) = self.execute(state, "controller", tool, args).await;
         if let Some(last) = state.receipts.last_mut() {
             last["proposal"] = choice;
         }
-        if !error
-            && result.to_string().len() <= chars_left
-            && tool == "context_read"
-            && !state
-                .admitted
-                .iter()
-                .any(|known| known["handle"] == result["handle"])
-        {
-            state.admitted.push(result);
+        if !error && tool == "context_read" {
+            admit_controller_evidence(&mut state.admitted, result, budget_bytes);
         }
         Ok(())
     }
@@ -919,4 +936,38 @@ pub(crate) async fn run(args: Args) -> Result<()> {
         }))?
     );
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn new_source_replaces_older_full_packet_evidence() {
+        let early = json!({"handle": "source:early", "source": "First broad result."});
+        let recent = json!({"handle": "source:recent", "source": "Recent exact result."});
+        let incoming = json!({"handle": "source:new", "source": "New result for the current task."});
+        let expected = vec![recent.clone(), incoming.clone()];
+        let budget = serde_json::to_string(&expected).unwrap().len();
+        let mut admitted = vec![early, recent];
+        assert!(serde_json::to_string(&admitted).unwrap().len() <= budget);
+
+        admit_controller_evidence(&mut admitted, incoming, budget);
+
+        assert_eq!(admitted, expected);
+        assert_eq!(serde_json::to_string(&admitted).unwrap().len(), budget);
+    }
+
+    #[test]
+    fn duplicate_or_oversized_source_does_not_discard_existing_evidence() {
+        let mut admitted = vec![json!({"handle": "source:kept", "source": "Current source."})];
+        let expected = admitted.clone();
+        let duplicate = json!({"handle": "source:kept", "source": "Current source."});
+        let oversized = json!({"handle": "source:large", "source": "large".repeat(40)});
+
+        admit_controller_evidence(&mut admitted, duplicate, 80);
+        admit_controller_evidence(&mut admitted, oversized, 80);
+
+        assert_eq!(admitted, expected);
+    }
 }
