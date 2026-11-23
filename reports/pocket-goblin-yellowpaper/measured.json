@@ -1,0 +1,422 @@
+{
+  "date": "23 November 2026",
+  "plan": {
+    "project_commit": "eb02038fc8f1ea95266ba4aee44463f306215543",
+    "index_revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+    "router_sha256": "718e86fcc819e12490ac62b87dfd0984519beea0c33c48e22621c02872938fc1",
+    "gdk_sha256": "8d358a42e24ee5bc868bbf42ce260f9f227694bfd489e54027115fb23d565ea5",
+    "model": "inky-mini-varloop",
+    "completion_cap": 448
+  },
+  "runtime": {
+    "schema": "pocket-goblin-creative-trace-v1",
+    "records": 6,
+    "groups": 2,
+    "verified": 2,
+    "raw_index_sha256": "99afcfcbaacd492181f9f161d43a2a2c45f97b25c7a1d39c6b38c88255ab7d52",
+    "normalized_records_sha256": "490d0361f8c2ac4f05baa3c5cced6948e2e7f648c1922d1eaca4af2ee2626e9f",
+    "runtime_receipt_sha256": "cceef58379847a041051800ce8a055c99459a8d1f4ad42b9bcdb243016c2da12",
+    "checkpoint_revision": "618c48f1e3c54094333e3e652a92b1d99c52e34d",
+    "checkpoint_sha256": "e9f70a167e54794bebce2d456b2118730b74fa7c35e23cb1abd4378f66b17bb2",
+    "context": 100096,
+    "cpu_moe_layers": 10
+  },
+  "archive_sha256": "ff07971ddf37f0a6ec89d26d0ec977131ca7e0c589e00b1efe184aa6ddc08b90",
+  "summary_sha256": "4b90c8dcbc893bffb8983155125992b82ba404cd79b39eddc2a59a71492cb725",
+  "screenshots": {
+    "lantern-assisted.png": {
+      "sha256": "56a9a6d7a53cf81aef2fff36d659bcfd45831d7fc77b32ce966f6f8f743740a4",
+      "source": "visual-checks-final/lantern-assisted.png"
+    },
+    "tide-assisted.png": {
+      "sha256": "30351193626ded38b6ed1fad765abea8a6a10f4fc81371d28aa77717198b907b",
+      "source": "visual-checks-final/tide-assisted.png"
+    }
+  },
+  "primary": [
+    {
+      "project": "lantern",
+      "arm": "assisted",
+      "attempt": "01-lantern-assisted/attempt-01",
+      "input_tokens": 2448,
+      "output_tokens": 142,
+      "chunks": 6,
+      "routes": [
+        {
+          "searched": [
+            "looped-transformers",
+            "datagoblin"
+          ],
+          "deferred": [
+            "pocket-goblin",
+            "storyworld",
+            "compactification",
+            "evalmath",
+            "bpd"
+          ],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "procedural",
+            "canvas",
+            "action",
+            "rpg",
+            "arena",
+            "movement",
+            "combat",
+            "verifier"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "settrm"
+        }
+      ],
+      "retrieval_seconds": 2.747942400004831,
+      "gdk_seconds": 33.564847100002225,
+      "prefill_ms": 27266.058,
+      "decode_ms": 5574.018,
+      "cached_tokens": 0,
+      "verdict": "verified",
+      "passed": 8,
+      "assigned": 8,
+      "reason": "stop"
+    },
+    {
+      "project": "tide",
+      "arm": "wide",
+      "attempt": "02-tide-wide/attempt-01",
+      "input_tokens": 11921,
+      "output_tokens": 448,
+      "chunks": 13,
+      "routes": [
+        {
+          "searched": [
+            "looped-transformers"
+          ],
+          "deferred": [],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "storyworld",
+            "procedural",
+            "scene",
+            "branch",
+            "inventory",
+            "evidence",
+            "hypergame",
+            "choices"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "lexical"
+        },
+        {
+          "searched": [
+            "storyworld"
+          ],
+          "deferred": [],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "storyworld",
+            "procedural",
+            "scene",
+            "branch",
+            "inventory",
+            "evidence",
+            "hypergame",
+            "choices"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "lexical"
+        },
+        {
+          "searched": [
+            "datagoblin"
+          ],
+          "deferred": [],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "storyworld",
+            "procedural",
+            "scene",
+            "branch",
+            "inventory",
+            "evidence",
+            "hypergame",
+            "choices"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "lexical"
+        },
+        {
+          "searched": [
+            "pocket-goblin"
+          ],
+          "deferred": [],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "storyworld",
+            "procedural",
+            "scene",
+            "branch",
+            "inventory",
+            "evidence",
+            "hypergame",
+            "choices"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "lexical"
+        }
+      ],
+      "retrieval_seconds": 0.46150209999177605,
+      "gdk_seconds": 159.37399349999032,
+      "prefill_ms": 135697.773,
+      "decode_ms": 22970.551,
+      "cached_tokens": 0,
+      "verdict": "invalid-model-output",
+      "passed": null,
+      "assigned": null,
+      "reason": "length"
+    },
+    {
+      "project": "tide",
+      "arm": "assisted",
+      "attempt": "03-tide-assisted/attempt-01",
+      "input_tokens": 2823,
+      "output_tokens": 270,
+      "chunks": 6,
+      "routes": [
+        {
+          "searched": [
+            "looped-transformers",
+            "datagoblin"
+          ],
+          "deferred": [
+            "storyworld",
+            "pocket-goblin",
+            "compactification",
+            "evalmath",
+            "bpd"
+          ],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "storyworld",
+            "procedural",
+            "scene",
+            "branch",
+            "inventory",
+            "evidence",
+            "hypergame",
+            "choices"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "settrm"
+        }
+      ],
+      "retrieval_seconds": 3.464204499992775,
+      "gdk_seconds": 45.59049669999513,
+      "prefill_ms": 32656.345,
+      "decode_ms": 11819.53,
+      "cached_tokens": 0,
+      "verdict": "incorrect",
+      "passed": 5,
+      "assigned": 7,
+      "reason": "stop"
+    },
+    {
+      "project": "lantern",
+      "arm": "wide",
+      "attempt": "04-lantern-wide/attempt-01",
+      "input_tokens": 11389,
+      "output_tokens": 129,
+      "chunks": 13,
+      "routes": [
+        {
+          "searched": [
+            "looped-transformers"
+          ],
+          "deferred": [],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "procedural",
+            "canvas",
+            "action",
+            "rpg",
+            "arena",
+            "movement",
+            "combat",
+            "verifier"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "lexical"
+        },
+        {
+          "searched": [
+            "storyworld"
+          ],
+          "deferred": [],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "procedural",
+            "canvas",
+            "action",
+            "rpg",
+            "arena",
+            "movement",
+            "combat",
+            "verifier"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "lexical"
+        },
+        {
+          "searched": [
+            "datagoblin"
+          ],
+          "deferred": [],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "procedural",
+            "canvas",
+            "action",
+            "rpg",
+            "arena",
+            "movement",
+            "combat",
+            "verifier"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "lexical"
+        },
+        {
+          "searched": [
+            "pocket-goblin"
+          ],
+          "deferred": [],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "procedural",
+            "canvas",
+            "action",
+            "rpg",
+            "arena",
+            "movement",
+            "combat",
+            "verifier"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "lexical"
+        }
+      ],
+      "retrieval_seconds": 0.48165860000881366,
+      "gdk_seconds": 130.5665086999943,
+      "prefill_ms": 124080.504,
+      "decode_ms": 5664.229,
+      "cached_tokens": 0,
+      "verdict": "invalid-model-output",
+      "passed": null,
+      "assigned": null,
+      "reason": "stop"
+    }
+  ],
+  "followups": [
+    {
+      "project": "tide",
+      "arm": "assisted",
+      "attempt": "05-tide-assisted/attempt-01",
+      "input_tokens": 3267,
+      "output_tokens": 236,
+      "chunks": 6,
+      "routes": [
+        {
+          "searched": [
+            "looped-transformers",
+            "datagoblin"
+          ],
+          "deferred": [
+            "storyworld",
+            "pocket-goblin",
+            "compactification",
+            "evalmath",
+            "bpd"
+          ],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "storyworld",
+            "procedural",
+            "scene",
+            "branch",
+            "inventory",
+            "evidence",
+            "hypergame",
+            "choices"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "settrm"
+        }
+      ],
+      "retrieval_seconds": 3.3445810999983223,
+      "gdk_seconds": 48.062531400006264,
+      "prefill_ms": 36625.432,
+      "decode_ms": 10533.517,
+      "cached_tokens": 0,
+      "verdict": "incorrect",
+      "passed": 5,
+      "assigned": 7,
+      "reason": "stop"
+    },
+    {
+      "project": "tide",
+      "arm": "assisted",
+      "attempt": "06-tide-assisted/attempt-01",
+      "input_tokens": 3249,
+      "output_tokens": 258,
+      "chunks": 6,
+      "routes": [
+        {
+          "searched": [
+            "looped-transformers",
+            "datagoblin"
+          ],
+          "deferred": [
+            "storyworld",
+            "pocket-goblin",
+            "compactification",
+            "evalmath",
+            "bpd"
+          ],
+          "excluded": [],
+          "proof": "no exact OR-term postings",
+          "terms": [
+            "storyworld",
+            "procedural",
+            "scene",
+            "branch",
+            "inventory",
+            "evidence",
+            "hypergame",
+            "choices"
+          ],
+          "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+          "policy": "settrm"
+        }
+      ],
+      "retrieval_seconds": 6.17799009999726,
+      "gdk_seconds": 50.738945000004605,
+      "prefill_ms": 38115.392,
+      "decode_ms": 11430.509,
+      "cached_tokens": 0,
+      "verdict": "verified",
+      "passed": 7,
+      "assigned": 7,
+      "reason": "stop"
+    }
+  ]
+}
