@@ -82,26 +82,46 @@ def deduplicate_read_sources(messages: list[dict]) -> tuple[list[dict], int]:
 def compact_create_history(messages: list[dict]) -> tuple[list[dict], int]:
     """Keep the completed request and tool receipt while dropping old authored bytes from the next prompt."""
     results = {m.get("tool_call_id"): m for m in messages if m.get("role") == "tool"}
+    result_bodies = {}
+    for id_, result in results.items():
+        try:
+            body = json.loads(result["content"])
+            if isinstance(body, dict):
+                result_bodies[id_] = body
+        except (KeyError, TypeError, ValueError):
+            continue
+    latest_success = next((call["id"] for message in reversed(messages)
+                           for call in reversed(message.get("tool_calls") or [])
+                           if call.get("function", {}).get("name") == "create_file"
+                           and result_bodies.get(call["id"], {}).get("after")), None)
+    archive = {}
     updated = []
     removed = 0
     for message in messages:
         calls = []
         for call in message.get("tool_calls") or []:
             function = call.get("function", {})
-            if function.get("name") == "create_file" and call.get("id") in results:
+            id_ = call.get("id")
+            if function.get("name") == "create_file" and id_ in result_bodies and id_ != latest_success:
                 try:
                     args = json.loads(function["arguments"])
                     source = args["content"]
                     if isinstance(source, str) and len(source) > 150:
                         digest = hashlib.sha256(source.encode("utf-8")).hexdigest()
-                        args["content"] = f"[Prior proposal archived; SHA-256 {digest}. See the tool result for acceptance.]"
+                        args["content"] = ""
+                        archive[id_] = digest
                         function = dict(function, arguments=json.dumps(args, ensure_ascii=False, separators=(",", ":")))
                         call = dict(call, function=function)
                         removed += 1
                 except (KeyError, ValueError, TypeError):
                     pass
             calls.append(call)
-        updated.append(dict(message, tool_calls=calls) if calls else message)
+        result_id = message.get("tool_call_id")
+        if result_id in archive:
+            body = dict(result_bodies[result_id], archived_create_sha256=archive[result_id])
+            updated.append(dict(message, content=json.dumps(body, ensure_ascii=False, separators=(",", ":"))))
+        else:
+            updated.append(dict(message, tool_calls=calls) if calls else message)
     return updated, removed
 
 

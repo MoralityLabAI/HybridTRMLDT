@@ -150,12 +150,16 @@ class Contracts(unittest.TestCase):
                 "path": "fixture.js", "content": content})}}
 
         receipt = {"role": "tool", "tool_call_id": "done", "content": '{"path":"fixture.js","after":"digest"}'}
+        exemplar = {"role": "tool", "tool_call_id": "latest", "content": '{"path":"fixture2.js","after":"digest2"}'}
         messages = [{"role": "assistant", "tool_calls": [action("done")]}, receipt,
+                    {"role": "assistant", "tool_calls": [action("latest")]}, exemplar,
                     {"role": "assistant", "tool_calls": [action("pending")]}]
         compact, removed = compact_create_history(messages)
         self.assertEqual(removed, 1)
-        self.assertIn(sha(content.encode()), compact[0]["tool_calls"][0]["function"]["arguments"])
-        self.assertEqual(compact[1:], messages[1:])
+        self.assertEqual(json.loads(compact[0]["tool_calls"][0]["function"]["arguments"])["content"], "")
+        expected = {**json.loads(receipt["content"]), "archived_create_sha256": sha(content.encode())}
+        self.assertEqual(json.loads(compact[1]["content"]), expected)
+        self.assertEqual(compact[2:], messages[2:])
         self.assertEqual(json.loads(messages[0]["tool_calls"][0]["function"]["arguments"])["content"], content)
 
     def test_rejected_proposal_leaves_source_and_git_index_clean(self):

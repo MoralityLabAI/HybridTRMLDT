@@ -106,6 +106,44 @@ def groups(card):
     return [(start, min(start + 3, playable)) for start in range(1, playable + 1, 4)] + [(playable + 1, 20)]
 
 
+def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path) -> list[dict]:
+    roster = world_ids(card)
+    prior, sources = [], {}
+    for start, end in groups(card):
+        ids = roster[start - 1:end]
+        prefix = f"{start:02}-{end:02}-encounters"
+        attempts = [root / prefix, *sorted(root.glob(f"{prefix}-retry-*"))]
+        ready = {}
+        for phase in attempts:
+            for id_ in ids:
+                if (phase / "workspace" / scene_path(id_)).is_file():
+                    ready[id_] = (check_scenes(card, phase / "workspace", [id_])[0], phase.name)
+        previous_count = -1
+        while len(ready) < len(ids):
+            require(previous_count != len(ready), f"no new valid encounter files in {phase}")
+            previous_count = len(ready)
+            missing = [id_ for id_ in ids if id_ not in ready]
+            phase = root / (prefix if not attempts[0].exists() else f"{prefix}-retry-{len(attempts):02}")
+            previous = ready.get(roster[roster.index(missing[0]) - 1]) if missing[0] != roster[0] else None
+            last = previous[0] if previous else (prior[-1] if prior else None)
+            recent = f"{last['title']}: {last['text'][:135]}" if last else ""
+            run_phase(phase, gdk, scene_brief(card, missing, recent), [scene_path(id_) for id_ in missing],
+                      [sys.executable, str(Path(__file__).resolve()), "check-scenes", str(phase / "workspace"),
+                       "--card", str(card_path), "--ids", *missing], max_tokens=1408, iterations=14,
+                      validate_create=[sys.executable, str(Path(__file__).resolve()), "check-proposed", "--card", str(card_path)],
+                      allow_basename=True)
+            if phase != attempts[0]:
+                attempts.append(phase)
+            for id_ in missing:
+                if (phase / "workspace" / scene_path(id_)).is_file():
+                    ready[id_] = (check_scenes(card, phase / "workspace", [id_])[0], phase.name)
+        for id_ in ids:
+            scene, sources[id_] = ready[id_]
+            prior.append(scene)
+        save(root / "scene-sources.json", sources)
+    return prior
+
+
 def check_scenes(card: dict, workspace: Path, ids: list[str]) -> list[dict]:
     scenes, errors = [], []
     for scene_id in ids:
@@ -131,6 +169,7 @@ def scene_brief(card, ids, recent):
              f"Prior scene: {recent or 'Opening'}\n"
              "Each card is a JSON object with title, text, art and options. Write 2–4 vivid sentences of scene prose, "
              "a distinct drawable visual cue, dialogue and a consequence that fits your story. Your cards compile to SWMD. "
+             "An empty content field in earlier tool history means those bytes were archived. Always write fresh JSON. "
              "Call run_verifier after all requested files exist.\n")
     if ids[0] in terminal_ids:
         endings = " / ".join(f"{e['id']}: {e['condition']}" for e in card["endings"])
@@ -223,13 +262,18 @@ def export(root: Path, card_file: Path, gptstoryworld: Path) -> dict:
     receipts[card_phase.name] = replay_writes(card_phase, [card_file.name], require_verified=False)
     if card.get("profiles"):
         receipts["00-math"] = replay_writes(root / "00-math", ["reaction-model.json"])
-    for start, end in groups(card):
-        phase = root / f"{start:02}-{end:02}-encounters"
-        ids = roster[start - 1:end]
-        paths = [scene_path(id_) for id_ in ids]
-        receipts[phase.name] = replay_writes(phase, paths)
-        scenes.extend(check_scenes(card, phase / "workspace", ids))
-        blocks.extend(render_card(read_json(phase / "workspace" / name), card, id_) for name, id_ in zip(paths, ids, strict=True))
+    catalog_file = root / "scene-sources.json"
+    catalog = read_json(catalog_file) if catalog_file.exists() else {
+        id_: f"{start:02}-{end:02}-encounters"
+        for start, end in groups(card) for id_ in roster[start - 1:end]
+    }
+    for id_ in roster:
+        phase = root / catalog[id_]
+        if phase.name not in receipts:
+            paths = [name.name for name in sorted((phase / "workspace").glob("*.card.json"))]
+            receipts[phase.name] = replay_writes(phase, paths, require_verified=False)
+        scenes.extend(check_scenes(card, phase / "workspace", [id_]))
+        blocks.append(render_card(read_json(phase / "workspace" / scene_path(id_)), card, id_))
     require(reachable(scenes) == set(roster), "encounter graph has unreachable scenes")
     require(len({scene["art"] for scene in scenes}) == 20, "every encounter must have distinct art direction")
     require(len({scene["text"] for scene in scenes}) == 20, "every encounter must contain original scene prose")
@@ -330,7 +374,10 @@ def main() -> int:
         id_ = filename.removesuffix(".card.json")
         card = with_profiles(check_card(args.card), args.card.resolve().parents[2])
         require(filename == scene_path(id_) and id_ in world_ids(card), "write an authorized encounter file")
-        source = json.loads(sys.stdin.buffer.read())
+        raw = sys.stdin.buffer.read()
+        require(not raw.startswith(b"[Prior proposal archived;"),
+                "that text is a history placeholder. Author fresh JSON for this encounter's actual content")
+        source = json.loads(raw)
         scene = parse_scene(render_card(source, card, id_), card, id_)
         print(f"{id_} accepted. Continuity card: {scene['title'][:72]} / {scene['text'][:170]}")
         return 0
@@ -378,23 +425,7 @@ Author your own mechanics. Close the tool call. Then call run_verifier with empt
     if args.command == "scenes":
         card_path = args.card.resolve() if args.card else phase / "00-world/workspace/world-card.json"
         card = with_profiles(check_card(card_path), phase)
-        preceding = []
-        roster = world_ids(card)
-        for start, end in groups(card):
-            ids = roster[start - 1:end]
-            target = phase / f"{start:02}-{end:02}-encounters"
-            if target.exists():
-                result = read_json(target / "gdk.json")
-            else:
-                recent = f"{preceding[-1]['title']}: {preceding[-1]['text'][:135]}" if preceding else ""
-                result = run_phase(target, gdk, scene_brief(card, ids, recent), [scene_path(id_) for id_ in ids],
-                                   [sys.executable, str(Path(__file__).resolve()), "check-scenes", str(target / "workspace"),
-                                    "--card", str(card_path), "--ids", *ids], max_tokens=1408, iterations=14,
-                                   validate_create=[sys.executable, str(Path(__file__).resolve()), "check-proposed", "--card", str(card_path)],
-                                   allow_basename=True)
-            require(result["state"].get("verified"), f"Goose did not finish verification in {target}")
-            preceding.extend(check_scenes(card, target / "workspace", ids))
-        save(phase / "parsed-scenes.json", preceding)
+        save(phase / "parsed-scenes.json", collect_scenes(phase, card, card_path, gdk))
         return 0
     target = phase / "workspace/world-card.json"
     result = run_phase(phase, gdk, CARD_BRIEF, [target.name],
