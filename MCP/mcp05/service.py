@@ -275,8 +275,9 @@ def main() -> None:
     parser.add_argument("--depth", type=int)
     parser.add_argument("--reset", action="store_true")
     parser.add_argument("--threads", type=int, choices=range(1, 5), default=4)
+    wire_log = os.environ.get("MCP05_SERVER_WIRE_LOG")
     serve(Service(parser.parse_args()), sys.stdin.buffer, sys.stdout.buffer,
-          max_message_bytes=8 * 1024 * 1024)
+          max_message_bytes=8 * 1024 * 1024, wire_log=Path(wire_log) if wire_log else None)
 
 
 if __name__ == "__main__":

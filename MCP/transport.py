@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import json
 from pathlib import Path
 import queue
@@ -58,6 +59,18 @@ def validate_call_result(result: Any) -> dict[str, Any]:
     return result
 
 
+def append_wire(path: Path | None, direction: str, wire: bytes) -> None:
+    if path is None:
+        return
+    entry = {"direction": direction, "bytes": len(wire), "monotonic_seconds": time.monotonic()}
+    try:
+        entry["body"] = wire.decode("utf-8")
+    except UnicodeError:
+        entry["body_base64"] = base64.b64encode(wire).decode("ascii")
+    with path.open("a", encoding="utf-8", newline="\n") as journal:
+        journal.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+
 class StdioClient:
     def __init__(
         self,
@@ -73,6 +86,7 @@ class StdioClient:
         cwd: str | Path | None = None,
         timeout: float = 10.0,
         max_message_bytes: int = 1048576,
+        wire_log: Path | None = None,
     ):
         if timeout <= 0 or max_message_bytes <= 0:
             raise ValueError("timeout and max_message_bytes must be positive")
@@ -87,6 +101,7 @@ class StdioClient:
         self.cwd = str(cwd or Path(__file__).resolve().parent.parent)
         self.timeout = float(timeout)
         self.max_message_bytes = max_message_bytes
+        self.wire_log = wire_log
         self.process: subprocess.Popen[bytes] | None = None
         self._queue: queue.Queue[bytes | Exception | None] = queue.Queue(maxsize=8)
         self._stderr = bytearray()
@@ -173,11 +188,12 @@ class StdioClient:
         try:
             error = done.get(timeout=max(0.001, deadline - time.monotonic()))
         except queue.Empty as exc:
-            self.close()
+            self.close(abort=True)
             raise TransportError(f"MCP request timed out writing after {self.timeout:g}s") from exc
         if error is not None:
             self.close()
             raise TransportError(f"server input closed: {error}") from error
+        append_wire(self.wire_log, "client_to_mcp", wire)
         return len(wire)
 
     def request(self, method: str, params: dict[str, Any] | None = None) -> Any:
@@ -196,6 +212,7 @@ class StdioClient:
         if line is None or isinstance(line, Exception):
             self.close()
             raise TransportError(str(line) if line else "MCP server exited before responding")
+        append_wire(self.wire_log, "mcp_to_client", line)
         self.last_exchange = {"request_bytes": sent, "response_bytes": len(line),
                               "latency_seconds": time.monotonic() - started, "id": request_id}
         try:
@@ -251,7 +268,7 @@ class StdioClient:
             raise TransportError("initialize must complete before tools/call")
         return validate_call_result(self.request("tools/call", {"name": name, "arguments": arguments}))
 
-    def close(self) -> None:
+    def close(self, *, abort: bool = False) -> None:
         if self._closed:
             return
         self._closed = True
@@ -259,6 +276,9 @@ class StdioClient:
         process = self.process
         if process is None:
             return
+        # On Windows, closing stdin can wait for a blocked pipe writer.
+        if abort and process.poll() is None:
+            process.terminate()
         if process.stdin is not None:
             try:
                 process.stdin.close()

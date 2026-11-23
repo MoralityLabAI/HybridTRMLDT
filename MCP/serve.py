@@ -10,10 +10,11 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from pathlib import Path
 from typing import Any, BinaryIO
 
 from .local_model import strict_json_loads
-from .transport import PROTOCOL_VERSION, validate_call_result, validate_tools
+from .transport import PROTOCOL_VERSION, append_wire, validate_call_result, validate_tools
 
 
 def _error(request_id: Any, code: int, message: str) -> dict[str, Any]:
@@ -130,12 +131,14 @@ class Session:
         return {"jsonrpc": "2.0", "id": request_id, "result": result}
 
 
-def serve(env: Any, source: BinaryIO, destination: BinaryIO, max_message_bytes: int = 1048576) -> None:
+def serve(env: Any, source: BinaryIO, destination: BinaryIO, max_message_bytes: int = 1048576,
+          *, wire_log: Path | None = None) -> None:
     session = Session(env)
     while True:
         line = source.readline(max_message_bytes + 1)
         if not line:
             return
+        append_wire(wire_log, "client_to_mcp", line)
         if len(line) > max_message_bytes or not line.endswith(b"\n"):
             while line and not line.endswith(b"\n"):
                 line = source.readline(max_message_bytes + 1)
@@ -151,6 +154,7 @@ def serve(env: Any, source: BinaryIO, destination: BinaryIO, max_message_bytes: 
                 wire = json.dumps(_error(response.get("id"), -32603, "Response exceeds message byte limit"), separators=(",", ":")).encode("utf-8") + b"\n"
             destination.write(wire)
             destination.flush()
+            append_wire(wire_log, "mcp_to_client", wire)
 
 
 def main(argv: list[str] | None = None) -> None:

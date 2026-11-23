@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lantern Below · Pocket Goblin</title><link rel="stylesheet" href="../field.css"></head>
+<body><main class="shell"><header class="mast"><a href="../"><span class="mark">PG</span></a><a href="../">Field Tests</a><span aria-hidden="true">/</span><span>Action RPG</span></header>
+<section class="page-title"><h1>Lantern Below</h1><button class="control" id="restart">Restart run</button></section>
+<div class="layout"><figure class="stage">
+<canvas id="arena" width="960" height="580" role="img" aria-label="A top-down, hand-drawn marsh ruin. Guide the lantern bearer through its causeways to the tide gate."></canvas>
+<figcaption class="hud"><span>Vigor <span class="meter" aria-hidden="true"><span id="hp-bar"></span></span> <output id="hp"></output></span><span id="embers"></span><span id="threat"></span></figcaption>
+<div class="controls" aria-label="Touch controls">
+<div class="pad"><button class="control" data-key="a" aria-label="Move left">←</button><button class="control" data-key="w" aria-label="Move up">↑</button><button class="control" data-key="s" aria-label="Move down">↓</button><button class="control" data-key="d" aria-label="Move right">→</button></div>
+<div class="combat"><button class="control" data-key=" ">Strike</button><button class="control" data-key="shift">Dash</button><button class="control" data-key="e">Gate</button></div>
+</div></figure>
+<aside class="side"><span class="kicker">The Saltfen</span><h2>Restore the tide gate</h2>
+<p class="quiet">The marsh sentries hold the embers that light the gate. Recover them and reach the arch in the east.</p>
+<p id="objective" role="status" aria-live="polite"></p>
+<dl class="key-list"><dt>Move</dt><dd><kbd>WASD</kbd> <kbd>↑↓←→</kbd></dd><dt>Strike</dt><dd><kbd>Space</kbd></dd><dt>Dash</dt><dd><kbd>Shift</kbd></dd><dt>Open gate</dt><dd><kbd>E</kbd></dd></dl>
+</aside></div></main><script type="module" src="./play.mjs"></script></body></html>
