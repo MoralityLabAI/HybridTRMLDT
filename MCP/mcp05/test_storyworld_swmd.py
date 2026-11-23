@@ -1,10 +1,18 @@
 import unittest
 
-from .inky_storyworld import check_profiles
+from .inky_storyworld import check_profiles, encounter_card
 from .storyworld_swmd import evaluate, parse_scene, profile_pair, rehearse, render_card, world_ids
 
 
 class CompactCards(unittest.TestCase):
+    def test_compact_encounter_expands_text_and_targets_verbatim(self):
+        source = ["title", "scene", "art", [["choice", "test profile", "enc_02", "reply A", "enc_03", "reply B"]]]
+        card = encounter_card(source)
+        self.assertEqual(card["text"], "scene")
+        self.assertEqual(card["options"][0]["model"], "test profile")
+        self.assertEqual(card["options"][0]["reactions"], [
+            {"next": "enc_02", "reply": "reply A"}, {"next": "enc_03", "reply": "reply B"}])
+
     def test_profile_guard_preserves_state_dependence(self):
         data = [[[0, 25, 0, 0], [5, -4, 0]], [[0, -25, 0, 0], [-5, 4, 0]]]
         self.assertEqual(profile_pair(data), ((-5, 4, 0), (5, -4, 0)))

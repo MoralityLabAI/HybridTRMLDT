@@ -101,6 +101,23 @@ def scene_path(scene_id):
     return f"{scene_id}.card.json"
 
 
+def encounter_card(source) -> dict:
+    if isinstance(source, dict):
+        return source
+    require(isinstance(source, list) and len(source) == 4,
+            "write [title, sceneText, artCue, options] as one JSON array")
+    title, text, art, rows = source
+    require(isinstance(rows, list), "options must be a list")
+    options = []
+    for row in rows:
+        require(isinstance(row, list) and len(row) == 6,
+                "each option must be [label, profile, nextA, replyA, nextB, replyB]")
+        label, model, next_a, reply_a, next_b, reply_b = row
+        options.append({"label": label, "model": model, "reactions": [
+            {"next": next_a, "reply": reply_a}, {"next": next_b, "reply": reply_b}]})
+    return {"title": title, "text": text, "art": art, "options": options}
+
+
 def groups(card):
     playable = 20 - len(card["endings"])
     return [(start, min(start + 3, playable)) for start in range(1, playable + 1, 4)] + [(playable + 1, 20)]
@@ -148,7 +165,7 @@ def check_scenes(card: dict, workspace: Path, ids: list[str]) -> list[dict]:
     scenes, errors = [], []
     for scene_id in ids:
         try:
-            block = render_card(read_json(workspace / scene_path(scene_id)), card, scene_id)
+            block = render_card(encounter_card(read_json(workspace / scene_path(scene_id))), card, scene_id)
             scenes.append(parse_scene(block, card, scene_id))
         except (OSError, ValueError, TypeError, KeyError) as error:
             errors.append(f"{scene_id}: {error}")
@@ -167,13 +184,13 @@ def scene_brief(card, ids, recent):
     brief = (f"Use create_file, one JSON encounter card per tool call, in order: {names}.\n"
              f"World: {card['title']}. {card['premise'][:240]}\nCast: {cast}\nAct goal: {act}\n"
              f"Prior scene: {recent or 'Opening'}\n"
-             "Each card is a JSON object with title, text, art and options. Write 2–4 vivid sentences of scene prose, "
-             "a distinct drawable visual cue, dialogue and a consequence that fits your story. Your cards compile to SWMD. "
+             "Write two concise sentences of scene prose, a distinctive drawable art cue, and consequential responses. "
+             "Your card compiles to SWMD. "
              "An empty content field in earlier tool history means those bytes were archived. Always write fresh JSON. "
              "Call run_verifier after all requested files exist.\n")
     if ids[0] in terminal_ids:
         endings = " / ".join(f"{e['id']}: {e['condition']}" for e in card["endings"])
-        return brief + f"All are terminal. Set options to []. Pay off these endings: {endings}"
+        return brief + f"Each file is [title, sceneText, artCue, []]. Pay off these endings: {endings}"
     routes = []
     for id_ in ids:
         i = roster.index(id_)
@@ -182,13 +199,12 @@ def scene_brief(card, ids, recent):
         else:
             routes.append(f"{id_} -> {', '.join(terminal_ids)}")
     if profiles := card.get("profiles"):
-        return brief + """Each ordinary card has three distinct options. Atomically write exactly one card.
-An option is {"label":"YOUR CHOICE","model":"PROFILE_NAME","reactions":[{"next":"ENCOUNTER_ID","reply":"YOUR REPLY"},{"next":"ENCOUNTER_ID","reply":"ANOTHER REPLY"}]}
-Give each option a different profile from your authored rulebook. A reaction's next value is an actual
-encounter ID. Use the first permitted target at least once per scene; the finale uses every listed target.
-Keep encounter prose, artwork directions, and replies vivid and concise.
+        return brief + """Write minified JSON with no keys. The entire card is [title, sceneText, artCue, options].
+Each option is [label, profile, nextA, replyA, nextB, replyB]. Use three distinct options and three distinct profiles.
+Keep each reply to one short line. Use real encounter IDs as both targets. Include the required route for each scene.
+The finale uses every listed ending target. Finish one card per tool call.
 Your named profiles: """ + json.dumps(list(profiles), ensure_ascii=False) + "\nPermitted routes: " + " / ".join(routes)
-    return brief + """Use objects with named fields. The JSON shape for a single option is:
+    return brief + """Use a JSON object with title, text, art, and options. The shape for a single option is:
 {"label":"YOUR CHOICE","reactions":[{"next":"ENCOUNTER_ID","reply":"YOUR RESPONSE","score":[0,0,0,0],"delta":[0,0,0]}, {"next":"ENCOUNTER_ID","reply":"A DIFFERENT RESPONSE","score":[0,0,0,0],"delta":[0,0,0]}]}
 Write exactly 3 options. Replace every placeholder, including all-zero vectors. The `next` field is an
 encounter ID from the route list, never a speaker. `score` is four integer hundredths [bias,trust,nerve,care],
@@ -274,7 +290,7 @@ def export(root: Path, card_file: Path, gptstoryworld: Path) -> dict:
             paths = [name.name for name in sorted((phase / "workspace").glob("*.card.json"))]
             receipts[phase.name] = replay_writes(phase, paths, require_verified=False)
         scenes.extend(check_scenes(card, phase / "workspace", [id_]))
-        blocks.append(render_card(read_json(phase / "workspace" / scene_path(id_)), card, id_))
+        blocks.append(render_card(encounter_card(read_json(phase / "workspace" / scene_path(id_))), card, id_))
     require(reachable(scenes) == set(roster), "encounter graph has unreachable scenes")
     require(len({scene["art"] for scene in scenes}) == 20, "every encounter must have distinct art direction")
     require(len({scene["text"] for scene in scenes}) == 20, "every encounter must contain original scene prose")
@@ -378,7 +394,7 @@ def main() -> int:
         raw = sys.stdin.buffer.read()
         require(not raw.startswith(b"[Prior proposal archived;"),
                 "that text is a history placeholder. Author fresh JSON for this encounter's actual content")
-        source = json.loads(raw)
+        source = encounter_card(json.loads(raw))
         scene = parse_scene(render_card(source, card, id_), card, id_)
         print(f"{id_} accepted. Continuity card: {scene['title'][:72]} / {scene['text'][:170]}")
         return 0
