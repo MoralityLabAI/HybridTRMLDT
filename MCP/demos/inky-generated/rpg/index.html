@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Emberfall Ruins — inky-web-game</title>
+<style>
+  html,body{margin:0;padding:0;background:#0d0a14;height:100%;overflow:hidden;font-family:Georgia,serif;}
+  #wrap{position:relative;width:100vw;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 35%, #241a2e 0%, #0d0a14 75%);}
+  #title{color:#f2c14e;font-size:clamp(18px,3vw,30px);letter-spacing:4px;margin:6px 0 2px;text-shadow:0 0 18px #ff7b2f55;}
+  #subtitle{color:#c9a0ff;font-size:clamp(9px,1.2vw,12px);letter-spacing:2px;margin-bottom:6px;}
+  #hud{display:flex;gap:18px;align-items:center;color:#e8dcc8;font-size:clamp(10px,1.4vw,14px);background:#1a1226cc;border:1px solid #5a3a7a;border-radius:8px;padding:5px 14px;margin-bottom:6px;}
+  #hud b{color:#ffd166;}
+  #arena{position:relative;border:2px solid #7a4a2a;border-radius:10px;box-shadow:0 0 40px #ff7b2f33, inset 0 0 60px #000;}
+  canvas{display:block;background:#141020;}
+  #controls{color:#b8a8d8;font-size:clamp(9px,1.2vw,12px);margin-top:6px;letter-spacing:1px;}
+  #controls b{color:#ffd166;}
+  #restart{position:absolute;top:10px;right:12px;display:none;background:#3a1c10;color:#ffd166;border:2px solid #f2c14e;border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;font-family:Georgia,serif;letter-spacing:1px;}
+  #restart:hover{background:#5a2a14;}
+  #msg{position:absolute;top:12px;left:50%;transform:translateX(-50%);color:#ffe9a8;font-size:clamp(11px,1.6vw,15px);background:#00000088;padding:4px 14px;border-radius:6px;border:1px solid #f2c14e;display:none;letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="title">EMBERFALL RUINS</div>
+  <div id="subtitle">A Ruined Place of Cinders &amp; Echoes</div>
+  <div id="hud">
+    <span>HP <b id="hpv">100</b>/100</span>
+    <span>Hits <b id="hitsv">0</b></span>
+    <span>Kills <b id="killsv">0</b></span>
+    <span>Foes <b id="foesv">3</b></span>
+    <span>Goal <b>The Cinder Gate</b></span>
+  </div>
+  <div id="arena">
+    <canvas id="game" width="760" height="430"></canvas>
+    <button id="restart">RESTART</button>
+    <div id="msg"></div>
+  </div>
+  <div id="controls"><b>WASD / Arrows</b> move &nbsp;•&nbsp; <b>Space</b> fight &nbsp;•&nbsp; Reach the <b>Cinder Gate</b> to win</div>
+</div>
+<script>
+(function(){
+  var canvas=document.getElementById('game'), ctx=canvas.getContext('2d');
+  var W=canvas.width, H=canvas.height;
+  var keys={};
+  window.addEventListener('keydown',function(e){keys[e.code]=true; if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].indexOf(e.code)>=0) e.preventDefault();});
+  window.addEventListener('keyup',function(e){keys[e.code]=false;});
+
+  var state='playing';
+  var player, foes, goal, particles, swingT, swingCd, msgT;
+  var hp, hits, kills;
+
+  function reset(){
+    player={x:90,y:H-70,r:16,hp:100,maxhp:100,speed:2.6,face:1,swing:0,swingCd:0,hurt:0};
+    foes=[
+      {x:230,y:H-90,r:15,hp:40,maxhp:40,speed:1.5,type:'cinder',hitCd:0,hurt:0,phase:0},
+      {x:430,y:120,r:17,hp:70,maxhp:70,speed:1.9,type:'ember',hitCd:0,hurt:0,phase:1.5},
+      {x:600,y:H-110,r:19,hp:110,maxhp:110,speed:2.2,type:'golem',hitCd:0,hurt:0,phase:3}
+    ];
+    goal={x:W-70,y:H/2,r:26};
+    particles=[]; swingT=0; swingCd=0; msgT=0;
+    hp=100; hits=0; kills=0; state='playing';
+    document.getElementById('restart').style.display='none';
+    document.getElementById('msg').style.display='none';
+    updateHUD();
+  }
+
+  function updateHUD(){
+    document.getElementById('hpv').textContent=Math.max(0,Math.round(player.hp));
+    document.getElementById('hitsv').textContent=hits;
+    document.getElementById('killsv').textContent=kills;
+    document.getElementById('foesv').textContent=foes.filter(function(f){return f.hp>0;}).length;
+  }
+
+  function showMsg(t){var m=document.getElementById('msg');m.textContent=t;m.style.display='block';msgT=2.2;}
+
+  function spawnParticles(x,y,color,n){
+    for(var i=0;i<n;i++){
+      var a=Math.random()*Math.PI*2, s=1+Math.random()*3;
+      particles.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:0.6+Math.random()*0.4,color:color,r:2+Math.random()*3});
+    }
+  }
+
+  function damagePlayer(amount){
+    if(player.hurt>0) return;
+    player.hp-=amount; player.hurt=0.35;
+    spawnParticles(player.x,player.y,'#ff5a3c',8);
+    if(player.hp<=0){player.hp=0; state='lost'; document.getElementById('restart').style.display='block'; showMsg('THE EMBER FALLS...');}
+    updateHUD();
+  }
+
+  function damageFoe(f,amount){
+    f.hp-=amount; f.hurt=0.25;
+    spawnParticles(f.x,f.y,'#ffd166',10);
+    hits++;
+    if(f.hp<=0){
+      kills++;
+      spawnParticles(f.x,f.y,'#ff8c2f',22);
+      showMsg(f.type==='golem'?'THE GOLEM FALLS!':'FOE VANQUISHED!');
+    }
+    updateHUD();
+  }
+
+  function update(dt){
+    if(state!=='playing') return;
+    // movement
+    var dx=0,dy=0;
+    if(keys['KeyW']||keys['ArrowUp'])dy-=1;
+    if(keys['KeyS']||keys['ArrowDown'])dy+=1;
+    if(keys['KeyA']||keys['ArrowLeft'])dx-=1;
+    if(keys['KeyD']||keys['ArrowRight'])dx+=1;
+    if(dx||dy){
+      var len=Math.sqrt(dx*dx+dy*dy); dx/=len; dy/=len;
+      player.x+=dx*player.speed; player.y+=dy*player.speed;
+      if(dx!==0) player.face=dx>0?1:-1;
+    }
+    player.x=Math.max(20,Math.min(W-20,player.x));
+    player.y=Math.max(20,Math.min(H-20,player.y));
+    if(player.swingCd>0)player.swingCd-=dt;
+    if(player.swing>0)player.swing-=dt;
+    if(player.hurt>0)player.hurt-=dt;
+
+    // attack
+    if(keys['Space'] && player.swingCd<=0){
+      player.swing=0.22; player.swingCd=0.38;
+      var reach=34;
+      for(var i=0;i<foes.length;i++){
+        var f=foes[i];
+        if(f.hp<=0)continue;
+        var ddx=f.x-player.x, ddy=f.y-player.y;
+        if(Math.sqrt(ddx*ddx+ddy*ddy) < reach + f.r){
+          damageFoe(f, 25);
+          f.hitCd=0.5;
+        }
+      }
+      spawnParticles(player.x+player.face*20,player.y,'#ffe9a8',6);
+    }
+
+    // foes AI
+    for(var j=0;j<foes.length;j++){
+      var fo=foes[j];
+      if(fo.hp<=0)continue;
+      if(fo.hurt>0)fo.hurt-=dt;
+      if(fo.hitCd>0)fo.hitCd-=dt;
+      var pdx=player.x-fo.x, pdy=player.y-fo.y;
+      var dist=Math.sqrt(pdx*pdx+pdy*pdy);
+      var aggro=dist<170;
+      if(aggro){
+        var ang=Math.atan2(pdy,pdx);
+        fo.x+=Math.cos(ang)*fo.speed;
+        fo.y+=Math.sin(ang)*fo.speed;
+        // attack player
+        if(dist < fo.r + player.r + 4 && fo.hitCd<=0){
+          damagePlayer(fo.type==='golem'?18:10);
+          fo.hitCd=1.1;
+        }
+      } else {
+        // idle patrol / react
+        fo.phase+=dt;
+        fo.x+=Math.cos(fo.phase*1.7)*0.4;
+        fo.y+=Math.sin(fo.phase*1.3)*0.4;
+      }
+      fo.x=Math.max(20,Math.min(W-20,fo.x));
+      fo.y=Math.max(20,Math.min(H-20,fo.y));
+    }
+
+    // particles
+    for(var k=particles.length-1;k>=0;k--){
+      var p=particles[k];
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.life-=dt;
+      if(p.life<=0)particles.splice(k,1);
+    }
+
+    // goal check
+    var gd=Math.sqrt((player.x-goal.x)*(player.x-goal.x)+(player.y-goal.y)*(player.y-goal.y));
+    if(gd < goal.r + player.r){
+      state='won';
+      document.getElementById('restart').style.display='block';
+      showMsg('THE CINDER GATE IS YOURS!');
+      updateHUD();
+    }
+
+    if(msgT>0){msgT-=dt; if(msgT<=0)document.getElementById('msg').style.display='none';}
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // background: ruined sky gradient
+    var g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#2a1030'); g.addColorStop(0.5,'#3d1a2a'); g.addColorStop(1,'#120a18');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    // distant ruined silhouettes
+    ctx.fillStyle='#1c0f22';
+    var ruins=[[30,150,60,120],[150,110,45,160],[330,140,80,130],[520,95,55,165],[690,150,50,120]];
+    for(var i=0;i<ruins.length;i++){
+      var r=ruins[i];
+      ctx.beginPath();
+      ctx.moveTo(r[0],H); ctx.lineTo(r[0],r[1]); ctx.lineTo(r[0]+r[2]*0.5,r[1]-r[3]*0.35); ctx.lineTo(r[0]+r[2],r[1]); ctx.lineTo(r[0]+r[2],H); ctx.closePath(); ctx.fill();
+    }
+    // ground
+    ctx.fillStyle='#241722'; ctx.fillRect(0,H-70,W,70);
+    ctx.fillStyle='#2e1f2b'; ctx.fillRect(0,H-70,W,6);
+    // cracks
+    ctx.strokeStyle='#3a2a33'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(60,H-30); ctx.lineTo(110,H-18); ctx.lineTo(150,H-34); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(420,H-40); ctx.lineTo(470,H-22); ctx.lineTo(520,H-38); ctx.stroke();
+    // goal gate: glowing cinder arch
+    var gg=ctx.createRadialGradient(goal.x,goal.y,4,goal.x,goal.y,goal.r+18);
+    gg.addColorStop(0,'#ffd166'); gg.addColorStop(0.4,'#ff7b2f'); gg.addColorStop(1,'rgba(255,123,47,0)');
+    ctx.fillStyle=gg; ctx.beginPath(); ctx.arc(goal.x,goal.y,goal.r+18,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#3a1c10';
+    ctx.beginPath(); ctx.arc(goal.x,goal.y,goal.r,Math.PI,0); ctx.fill();
+    ctx.fillRect(goal.x-goal.r,goal.y,goal.r*2,goal.r*0.9);
+    ctx.strokeStyle='#f2c14e'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.arc(goal.x,goal.y,goal.r,Math.PI,0); ctx.stroke();
+    ctx.fillStyle='#ffd166'; ctx.font='bold 11px Georgia'; ctx.textAlign='center';
+    ctx.fillText('CINDER',goal.x,goal.y-goal.r-6);
+    ctx.fillText('GATE',goal.x,goal.y-goal.r-18);
+
+    // foes
+    for(var j=0;j<foes.length;j++){
+      var f=foes[j];
+      if(f.hp<=0){
+        // scorch mark
+        ctx.fillStyle='rgba(20,10,10,0.7)';
+        ctx.beginPath(); ctx.ellipse(f.x,f.y+f.r*0.6,f.r*1.3,f.r*0.5,0,0,Math.PI*2); ctx.fill();
+        continue;
+      }
+      var flash=f.hurt>0;
+      if(f.type==='cinder'){
+        ctx.fillStyle=flash?'#ffffff':'#ff8c2f';
+        ctx.beginPath(); ctx.arc(f.x,f.y,f.r,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle=flash?'#fff':'#c23a1a';
+        ctx.beginPath(); ctx.arc(f.x,f.y+3,f.r*0.55,0,Math.PI*2); ctx.fill();
+        // eyes
+        ctx.fillStyle='#ffe9a8';
+        ctx.beginPath(); ctx.arc(f.x-5,f.y-2,2.4,0,Math.PI*2); ctx.arc(f.x+5,f.y-2,2.4,0,Math.PI*2); ctx.fill();
+      } else if(f.type==='ember'){
+        ctx.fillStyle=flash?'#ffffff':'#e04a1a';
+        ctx.beginPath(); ctx.moveTo(f.x,f.y-f.r-4); ctx.lineTo(f.x+f.r,f.y+f.r*0.7); ctx.lineTo(f.x-f.r,f.y+f.r*0.7); ctx.closePath(); ctx.fill();
+        ctx.fillStyle=flash?'#fff':'#7a1a0a';
+        ctx.beginPath(); ctx.arc(f.x,f.y+2,f.r*0.5,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='#ffd166';
+        ctx.beginPath(); ctx.arc(f.x-4,f.y-1,2,0,Math.PI*2); ctx.arc(f.x+4,f.y-1,2,0,Math.PI*2); ctx.fill();
+      } else { // golem
+        ctx.fillStyle=flash?'#ffffff':'#5a4a6a';
+        ctx.fillRect(f.x-f.r,f.y-f.r*0.6,f.r*2,f.r*1.6);
+        ctx.fillStyle=flash?'#fff':'#3a2a4a';
+        ctx.fillRect(f.x-f.r*0.7,f.y-f.r*1.5,f.r*1.4,f.r*1.1);
+        // glowing core
+        var cg=ctx.createRadialGradient(f.x,f.y+f.r*0.2,1,f.x,f.y+f.r*0.2,f.r*0.5);
+        cg.addColorStop(0,'#ffd166'); cg.addColorStop(1,'rgba(255,123,47,0)');
+        ctx.fillStyle=cg; ctx.beginPath(); ctx.arc(f.x,f.y+f.r*0.2,f.r*0.5,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='#ffd166';
+        ctx.fillRect(f.x-f.r*0.55,f.y-f.r*1.15,f.r*0.3,f.r*0.3);
+        ctx.fillRect(f.x+f.r*0.25,f.y-f.r*1.15,f.r*0.3,f.r*0.3);
+      }
+      // hp bar
+      ctx.fillStyle='#000'; ctx.fillRect(f.x-f.r,f.y-f.r-9,f.r*2,4);
+      ctx.fillStyle='#ff5a3c'; ctx.fillRect(f.x-f.r,f.y-f.r-9,f.r*2*(f.hp/f.maxhp),4);
+    }
+
+    // player
+    var flash=player.hurt>0;
+    ctx.save();
+    ctx.translate(player.x,player.y);
+    // shadow
+    ctx.fillStyle='rgba(0,0,0,0.4)';
+    ctx.beginPath(); ctx.ellipse(0,player.r*0.8,player.r,player.r*0.4,0,0,Math.PI*2); ctx.fill();
+    // body (cloak)
+    ctx.fillStyle=flash?'#ffffff':'#2f6f4f';
+    ctx.beginPath(); ctx.moveTo(0,-player.r); ctx.lineTo(player.r*0.9,player.r*0.7); ctx.lineTo(-player.r*0.9,player.r*0.7); ctx.closePath(); ctx.fill();
+    // head
+    ctx.fillStyle=flash?'#fff':'#e8c39a';
+    ctx.beginPath(); ctx.arc(0,-player.r*0.55,player.r*0.55,0,Math.PI*2); ctx.fill();
+    // hood
+    ctx.fillStyle=flash?'#fff':'#1f4a34';
+    ctx.beginPath(); ctx.moveTo(0,-player.r*1.15); ctx.lineTo(player.r*0.6,-player.r*0.35); ctx.lineTo(-player.r*0.6,-player.r*0.35); ctx.closePath(); ctx.fill();
+    // eyes
+    ctx.fillStyle='#ffd166';
+    ctx.beginPath(); ctx.arc(-3,-player.r*0.55,1.6,0,Math.PI*2); ctx.arc(3,-player.r*0.55,1.6,0,Math.PI*2); ctx.fill();
+    // sword swing
+    if(player.swing>0){
+      var prog=1-(player.swing/0.22);
+      var ang=player.face>0 ? (-1.2 + prog*2.2) : (Math.PI+1.2 - prog*2.2);
+      ctx.save();
+      ctx.rotate(ang);
+      ctx.strokeStyle='#e8e8f0'; ctx.lineWidth=4;
+      ctx.beginPath(); ctx.moveTo(player.r*0.5,0); ctx.lineTo(player.r+16,0); ctx.stroke();
+      ctx.strokeStyle='#f2c14e'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(player.r*0.5,-3); ctx.lineTo(player.r*0.5,3); ctx.stroke();
+      ctx.restore();
+    } else {
+      ctx.strokeStyle='#e8e8f0'; ctx.lineWidth=3;
+      ctx.beginPath(); ctx.moveTo(player.r*0.6,2); ctx.lineTo(player.r+9,-player.r*0.5); ctx.stroke();
+    }
+    ctx.restore();
+
+    // particles
+    for(var k=0;k<particles.length;k++){
+      var p=particles[k];
+      ctx.globalAlpha=Math.max(0,p.life);
+      ctx.fillStyle=p.color;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+
+    // win/lose overlay
+    if(state==='won'){
+      ctx.fillStyle='rgba(20,10,5,0.55)'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='#ffd166'; ctx.font='bold 30px Georgia'; ctx.textAlign='center';
+      ctx.fillText('THE CINDER GATE IS YOURS',W/2,H/2-10);
+      ctx.fillStyle='#e8dcc8'; ctx.font='15px Georgia';
+      ctx.fillText('Hits: '+hits+'   Kills: '+kills,W/2,H/2+18);
+    } else if(state==='lost'){
+      ctx.fillStyle='rgba(10,0,0,0.6)'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='#ff5a3c'; ctx.font='bold 30px Georgia'; ctx.textAlign='center';
+      ctx.fillText('THE EMBER FALLS',W/2,H/2-10);
+      ctx.fillStyle='#e8dcc8'; ctx.font='15px Georgia';
+      ctx.fillText('Hits: '+hits+'   Kills: '+kills,W/2,H/2+18);
+    }
+  }
+
+  var last=0;
+  function loop(t){
+    var dt=Math.min(0.05,(t-last)/1000||0.016); last=t;
+    update(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  document.getElementById('restart').addEventListener('click',reset);
+  reset();
+  requestAnimationFrame(loop);
+
+  window.gameState=function(){
+    return {x:Math.round(player.x),y:Math.round(player.y),hp:Math.round(player.hp),hits:hits,kills:kills,status:state};
+  };
+})();
+</script>
+</body>
+</html>

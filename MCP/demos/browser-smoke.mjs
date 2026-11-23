@@ -7,9 +7,9 @@ import { extname, join, resolve, sep } from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 
-const [chrome, target, mode, gameDirectory] = process.argv.slice(2);
+const [chrome, target, mode, gameDirectory, goalX, goalY] = process.argv.slice(2);
 if (!chrome || !target || (mode && (!['rpg','story'].includes(mode) || !gameDirectory))) {
-  throw new Error("Usage: node browser-smoke.mjs /path/to/chrome /capture-directory [rpg|story /game-directory]");
+  throw new Error("Usage: node browser-smoke.mjs /path/to/chrome /capture-directory [rpg|story /game-directory [goal-x goal-y]]");
 }
 const out=resolve(target);
 await mkdir(out,{recursive:true});
@@ -33,8 +33,8 @@ const profile=await mkdtemp(join(tmpdir(),"pocket-goblin-smoke-"));
 const browser=spawn(chrome,["--headless=new","--disable-gpu","--no-first-run","--disable-background-networking",
   "--remote-debugging-port=0",`--user-data-dir=${profile}`,"about:blank"],{stdio:"ignore",windowsHide:true});
 
-async function poll(read,message){
-  for(let i=0;i<100;i++){
+async function poll(read,message,attempts=100){
+  for(let i=0;i<attempts;i++){
     try{const value=await read();if(value)return value;}catch{}
     await sleep(100);
   }
@@ -85,6 +85,7 @@ try{
   if(mode){
     await visit("/","typeof window.gameState === 'function' && !!document.querySelector('canvas')");
     const state=()=>evaluate("window.gameState()");
+    const art=()=>evaluate("document.querySelector('canvas').toDataURL()");
     const initial=await state();
     const reset=()=>evaluate("document.querySelector('#restart').click()");
     const checks=[];
@@ -92,15 +93,38 @@ try{
     if(mode==="rpg"){
       assert.equal(initial.status,"playing");
       assert.ok(Number.isFinite(initial.x) && Number.isFinite(initial.y) && initial.hp>0);
+      const hold=async(keys,action)=>{
+        for(const [key,code] of keys) await press("keyDown",key,code);
+        try { return await action(); }
+        finally { for(const [key,code] of keys) await press("keyUp",key,code); }
+      };
+      const sword=[" ","Space"];
       await reset();
-      await press("keyDown"," ","Space");await sleep(250);await press("keyUp"," ","Space");
-      assert.ok((await state()).hits>initial.hits,"Space should damage a nearby enemy");
-      checks.push("keyboard attack caused damage");
-      await press("keyDown","d","KeyD");await sleep(240);await press("keyUp","d","KeyD");
+      await hold([["d","KeyD"],sword],()=>poll(async()=> (await state()).hits>initial.hits,
+        "Moving toward the first foe and swinging should cause damage"));
       const moved=await state();
       assert.ok(Math.hypot(moved.x-initial.x,moved.y-initial.y)>5,"movement should change player position");
-      checks.push("keyboard movement changed player position");
+      checks.push("keyboard movement and combat damaged an enemy");
       await screenshot("gameplay.png");
+      if(goalX && goalY){
+        const navigate=async(axis,target,negative,positive)=>{
+          const current=(await state())[axis];
+          if(Math.abs(current-target)<14)return;
+          const direction=current>target?-1:1;
+          await hold([direction<0?negative:positive,sword],()=>poll(async()=>{
+            const now=await state();
+            return now.status==="won" || direction*(target-now[axis])<14;
+          },`Could not reach ${axis}=${target}`));
+        };
+        await navigate("y",Number(goalY),["w","KeyW"],["s","KeyS"]);
+        await navigate("x",Number(goalX),["a","KeyA"],["d","KeyD"]);
+        assert.equal((await state()).status,"won");
+        await screenshot("victory.png");
+        await reset();
+        await poll(async()=> (await state()).status==="lost","Idle enemies never caused a loss",210);
+        await screenshot("defeat.png");
+        checks.push("public controls reached victory and enemy attacks caused defeat");
+      }
       await reset();
       assert.equal((await state()).hits,initial.hits);
       assert.equal((await state()).hp,initial.hp);
@@ -112,6 +136,7 @@ try{
       checks.push("crossing is gated before study");
       await click("rush");
       assert.equal((await state()).ending,"bad");
+      const badArt=await art();
       await screenshot("bad-ending.png");
       await reset();
       assert.equal((await state()).scene,"start");
@@ -121,14 +146,14 @@ try{
       assert.notEqual((await state()).scene,"start");
       await click("cross");
       assert.equal((await state()).ending,"good");
+      assert.notEqual(await art(),badArt,"ending choices should change the Canvas scene");
       await screenshot("good-ending.png");
-      checks.push("public controls reached both endings and reset the clue");
+      checks.push("public controls reached both endings with distinct Canvas art and reset the clue");
     }
     assert.deepEqual(failures,[]);
     const receipt={status:"verified",game:mode,title:await evaluate("document.title"),checks};
     await writeFile(join(out,"browser-receipt.json"),JSON.stringify(receipt,null,2)+"\n");
     console.log(JSON.stringify(receipt));
-    process.exitCode=0;
   }else{
   await visit("/",`document.querySelector('h1')?.textContent.includes('field tests') && document.querySelectorAll('.project').length===2`);
   await screenshot("field-tests.png");

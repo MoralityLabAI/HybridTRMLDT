@@ -54,7 +54,13 @@ def extract(wire: Path, target: Path) -> dict:
     choice = response["choices"][0]
     content = choice["message"].get("content") or ""
     raw = content.encode("utf-8")
-    match = re.search(rb"<!doctype html\s*>[\s\S]+?</html\s*>", raw, flags=re.IGNORECASE)
+    boundaries = [start.start() for start in re.finditer(rb"<!doctype html\s*>", raw, re.IGNORECASE)]
+    document = re.compile(rb"<!doctype html\s*>[\s\S]+?</html\s*>", re.IGNORECASE)
+    match = None
+    for start, end in zip(boundaries, [*boundaries[1:], len(raw)], strict=False):
+        candidate = document.match(raw, start, end)
+        if candidate and b"<canvas" in candidate.group() and b"gameState" in candidate.group():
+            match = candidate
     receipt = {"status": "incomplete-document", "model": response["model"], "requested_model": request["model"],
                "finish_reason": choice["finish_reason"], "usage": response.get("usage"), "timings": response.get("timings"),
                "reply_sha256": sha(raw), "wire_sha256": sha(wire.read_bytes())}
@@ -65,7 +71,7 @@ def extract(wire: Path, target: Path) -> dict:
     return receipt
 
 
-def run(game, output, binary, feedback):
+def run(game, output, binary, feedback, max_tokens):
     folder = output / game
     folder.mkdir(exist_ok=True)
     attempt = folder / f"attempt-{len(list(folder.glob('attempt-*'))) + 1:02d}"
@@ -74,7 +80,8 @@ def run(game, output, binary, feedback):
     empty.mkdir()
     skill = SKILL.read_bytes()
     (attempt / "skill.md").write_bytes(skill)
-    task = BRIEFS[game]
+    task = ("Return one finished HTML game. Begin immediately with <!doctype html>. "
+            "Apply the attached inky-web-game workflow.\n\n" + BRIEFS[game])
     if feedback:
         task += "\n\nRevise the previous attempt using this independent browser feedback:\n" + feedback
     (attempt / "brief.txt").write_text(task, encoding="utf-8", newline="\n")
@@ -87,7 +94,7 @@ def run(game, output, binary, feedback):
         str(binary), "--repo", str(empty), "--goblin-cwd", str(ROOT), "--python", sys.executable,
         "--task-file", str(attempt / "brief.txt"), "--evidence-file", str(attempt / "skill.md"),
         "--session-file", str(attempt / "session.json"), "--base-url", "http://127.0.0.1:18097/v1/",
-        "--model", MODEL, "--context-window", "100096", "--max-tokens", "5120",
+        "--model", MODEL, "--context-window", "100096", "--max-tokens", str(max_tokens),
         "--max-agent-iterations", "1", "--max-tool-calls", "4", "--budget", "1024", "--no-packet",
         "--memory-mode", "raw", "--answer-only", "--timeout-secs", "840",
     ]
@@ -108,12 +115,15 @@ def main():
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--games", choices=sorted(BRIEFS), nargs="+", default=list(BRIEFS))
     parser.add_argument("--feedback", type=Path)
+    parser.add_argument("--max-tokens", type=int, default=5120)
     args = parser.parse_args()
+    if not 0 < args.max_tokens < 100096:
+        parser.error("--max-tokens must be positive and smaller than the model slot")
     output = args.out.resolve()
     output.mkdir(parents=True, exist_ok=True)
     feedback = args.feedback.read_text(encoding="utf-8") if args.feedback else None
     for game in args.games:
-        run(game, output, args.gdk.resolve(strict=True), feedback)
+        run(game, output, args.gdk.resolve(strict=True), feedback, args.max_tokens)
 
 
 if __name__ == "__main__":
