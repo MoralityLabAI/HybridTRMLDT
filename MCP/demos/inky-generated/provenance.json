@@ -1,0 +1,60 @@
+{
+  "schema": "inky-game-source-proof-v1",
+  "preparation_commit": "6bb0abf",
+  "checkpoint_sha256": "e9f70a167e54794bebce2d456b2118730b74fa7c35e23cb1abd4378f66b17bb2",
+  "verified": {
+    "rpg": {
+      "file": "rpg/index.html",
+      "model": "inky-mini-varloop",
+      "bytes": 14472,
+      "sha256": "4264e291e288a78ebaaf48ff54d3889a99d04c66cc14b1dee9f22a0867187f95",
+      "source_spans": [
+        {
+          "wire": "rpg/attempt-02/inky-wire.jsonl",
+          "start": 0,
+          "end": 14472,
+          "wire_sha256": "b0b431d3310b5122cafe9edadd0849e8cb6bf7b4c04c714db61c6ba58e27561a"
+        }
+      ],
+      "browser": {
+        "status": "verified",
+        "game": "rpg",
+        "title": "Emberfall Ruins — inky-web-game",
+        "checks": [
+          "keyboard movement and combat damaged an enemy",
+          "public controls reached victory and enemy attacks caused defeat",
+          "restart restored initial combat state"
+        ]
+      }
+    },
+    "story": {
+      "file": "story/index.html",
+      "model": "inky-mini-varloop",
+      "bytes": 11570,
+      "sha256": "5e3b8e0a394c5c8da413b20b5ec624e2cc9419bc50c87a48899765f50f683444",
+      "source_spans": [
+        {
+          "wire": "story/attempt-02/inky-wire.jsonl",
+          "start": 0,
+          "end": 7404,
+          "wire_sha256": "3effbc99949201dfc401ab2dc7f4e85598457796de3196e788e0e2c492697e23"
+        },
+        {
+          "wire": "story/attempt-05/inky-wire.jsonl",
+          "start": 0,
+          "end": 4166,
+          "wire_sha256": "6d7c3db6a7327812305c7911e0a3f2960b2c48e5ce0c866b355e8c94158f11c6"
+        }
+      ],
+      "browser": {
+        "status": "verified",
+        "game": "story",
+        "title": "The Lantern Hollow — A Choice of Three",
+        "checks": [
+          "crossing is gated before study",
+          "public controls reached both endings with distinct Canvas art and reset the clue"
+        ]
+      }
+    }
+  }
+}

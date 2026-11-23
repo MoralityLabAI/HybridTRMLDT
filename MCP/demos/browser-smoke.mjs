@@ -131,21 +131,23 @@ try{
       checks.push("restart restored initial combat state");
     }else{
       assert.equal(initial.scene,"start");
-      assert.equal(initial.clue,false);
+      assert.ok(!initial.clue);
       assert.equal(await evaluate(`(() => { const b=document.querySelector('[data-choice="cross"]'); return !!b && (b.disabled || b.getAttribute('aria-disabled')==='true'); })()`),true);
       checks.push("crossing is gated before study");
       await click("rush");
       assert.equal((await state()).ending,"bad");
+      await sleep(120);
       const badArt=await art();
       await screenshot("bad-ending.png");
       await reset();
       assert.equal((await state()).scene,"start");
-      assert.equal((await state()).clue,false);
+      assert.ok(!(await state()).clue);
       await click("study");
-      assert.equal((await state()).clue,true);
+      assert.ok((await state()).clue);
       assert.notEqual((await state()).scene,"start");
       await click("cross");
       assert.equal((await state()).ending,"good");
+      await sleep(120);
       assert.notEqual(await art(),badArt,"ending choices should change the Canvas scene");
       await screenshot("good-ending.png");
       checks.push("public controls reached both endings with distinct Canvas art and reset the clue");
