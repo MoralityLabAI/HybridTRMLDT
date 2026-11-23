@@ -66,8 +66,13 @@ class RepairWorkspace:
                     for item in self.manifest["editable"]))
 
     def create(self, path: str, content: str) -> dict:
+        requested_path = path
+        if self.manifest and self.manifest.get("allow_create_basename") and path not in self.creatable:
+            parts = path.replace("\\", "/").split("/")
+            if all(part and not part.startswith(".") and ":" not in part for part in parts):
+                path = parts[-1]
         if path not in self.creatable or not isinstance(content, str):
-            raise ValueError("provide source for a host-authorized new path")
+            raise ValueError(f"create_file needs a text content value and a path from {list(self.creatable)}")
         raw = content.encode("utf-8")
         if not 0 < len(raw) <= MAX_SOURCE_BYTES:
             raise ValueError("new source must fit the source-size limit")
@@ -88,6 +93,8 @@ class RepairWorkspace:
             raise
         self.working.refresh()
         receipt = {"path": path, "before": None, "after": sha(raw), "revision": self.working.revision}
+        if requested_path != path:
+            receipt["requested_path"] = requested_path
         if len(self.creatable) > 1:
             receipt["remaining_to_create"] = [name for name in self.creatable if not (self.root / name).is_file()]
         self.edits.append(receipt)

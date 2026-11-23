@@ -70,8 +70,8 @@ def profile_pair(profile):
     diff = [a - b for a, b in zip(profile[0][0], profile[1][0], strict=True)]
     require(sum(map(abs, diff[1:])) > abs(diff[0]), "each reaction must be favored somewhere on the state cube")
     require(profile[0][1] != profile[1][1], "alternate reactions need distinct effects")
-    require(any(any(x > 0 for x in delta) and any(x < 0 for x in delta) for _, delta in profile),
-            "at least one response must trade one stat for another")
+    deltas = [value for _, effects in profile for value in effects]
+    require(min(deltas) < 0 < max(deltas), "a reaction pair needs both gains and costs")
     return tuple(sorted(tuple(delta) for _, delta in profile))
 
 

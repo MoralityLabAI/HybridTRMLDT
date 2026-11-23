@@ -122,7 +122,7 @@ def replay_writes(root: Path, paths: list[str], *, require_verified: bool = True
         require(output["before"] == (sha(source.encode("utf-8")) if source is not None else None),
                 "before hash does not match replay")
         if name == "create_file":
-            require(source is None and args["path"] == path, "unexpected create target")
+            require(source is None and args["path"] == output.get("requested_path", path), "unexpected create target")
             source = args["content"]
         else:
             old, new = args["old"], args["new"]

@@ -163,6 +163,7 @@ class Contracts(unittest.TestCase):
             root = Path(temp)
             commit_fixture(root)
             manifest = {"argv": [sys.executable, "-V"], "editable": ["new.js"], "creatable": ["new.js"],
+                        "allow_create_basename": True,
                         "validate_create_argv": [sys.executable, "-c", "import sys; "
                                                  "assert sys.stdin.buffer.read() == b'valid', 'bad source'"]}
             workspace = RepairWorkspace(WorkingSet(root), manifest)
@@ -170,7 +171,11 @@ class Contracts(unittest.TestCase):
                 workspace.create("new.js", "invalid")
             self.assertEqual(workspace.git("status", "--porcelain"), "")
             self.assertFalse((root / "new.js").exists())
-            workspace.create("new.js", "valid")
+            with self.assertRaises(ValueError):
+                workspace.create("../new.js", "valid")
+            accepted = workspace.create("draft/new.js", "valid")
+            self.assertEqual(accepted["requested_path"], "draft/new.js")
+            self.assertEqual(accepted["path"], "new.js")
             self.assertEqual((root / "new.js").read_bytes(), b"valid")
 
     def test_new_source_is_exact_readable_and_verified(self):

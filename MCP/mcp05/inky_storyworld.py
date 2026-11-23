@@ -18,7 +18,7 @@ if __package__ is None:
 
 from .context import sha
 from .creative_bench import save
-from .inky_goose_game import MODEL, ROOT, git, read_json, replay_writes
+from .inky_goose_game import MODEL, ROOT, events, git, read_json, replay_writes
 from .storyworld_swmd import parse_scene, profile_pair, reachable, rehearse, render_card, sweepweave_document, swmd_document, world_ids
 
 CARD_BRIEF = """Use create_file to write world-card.json. Plan an original illustrated interactive fable
@@ -71,11 +71,14 @@ def check_profiles(source: dict) -> dict:
     fingerprints = set()
     accepted = {}
     for name, profile in profiles.items():
-        require(re.fullmatch(r"[a-z][a-z0-9_]{1,22}", name), f"invalid profile name: {name}")
+        require(isinstance(name, str) and name.strip() and len(name) <= 64 and name.isprintable(),
+                f"invalid profile name: {name}")
         try:
-            if isinstance(profile, dict):
+            if isinstance(profile, dict) and set(profile) == {"weights", "effectsA", "effectsB"}:
+                profile = [profile["weights"], profile["effectsA"], profile["effectsB"]]
+            elif isinstance(profile, dict):
                 profile = [[profile[arm]["score"], profile[arm]["delta"]] for arm in ("a", "b")]
-            elif len(profile) == 3 and all(isinstance(row, list) and len(row) == 3 for row in profile):
+            if len(profile) == 3 and all(isinstance(row, list) and len(row) == 3 for row in profile):
                 weights, delta_a, delta_b = profile
                 profile = [[[0, *weights], delta_a], [[0, *(-x for x in weights)], delta_b]]
             require(len(profile) == 2,
@@ -143,7 +146,7 @@ An option is {"label":"YOUR CHOICE","model":"PROFILE_NAME","reactions":[{"next":
 Give each option a different profile from your authored rulebook. A reaction's next value is an actual
 encounter ID. Use the first permitted target at least once per scene; the finale uses every listed target.
 Keep encounter prose, artwork directions, and replies vivid and concise.
-Your named profiles: """ + ", ".join(profiles) + "\nPermitted routes: " + " / ".join(routes)
+Your named profiles: """ + json.dumps(list(profiles), ensure_ascii=False) + "\nPermitted routes: " + " / ".join(routes)
     return brief + """Use objects with named fields. The JSON shape for a single option is:
 {"label":"YOUR CHOICE","reactions":[{"next":"ENCOUNTER_ID","reply":"YOUR RESPONSE","score":[0,0,0,0],"delta":[0,0,0]}, {"next":"ENCOUNTER_ID","reply":"A DIFFERENT RESPONSE","score":[0,0,0,0],"delta":[0,0,0]}]}
 Write exactly 3 options. Replace every placeholder, including all-zero vectors. The `next` field is an
@@ -156,7 +159,9 @@ Use exactly these permitted targets: """ + " / ".join(routes)
 
 
 def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: list[str], *,
-              max_tokens: int = 2304, iterations: int = 7, context: int = 8192, validate_create: list[str] | None = None) -> dict:
+              max_tokens: int = 2304, iterations: int = 7, context: int = 8192,
+              validate_create: list[str] | None = None, first_reply_from: Path | None = None,
+              allow_basename: bool = False) -> dict:
     root.mkdir(parents=True)
     workspace = root / "workspace"
     workspace.mkdir()
@@ -167,6 +172,7 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
     task.write_text(brief + "\n", encoding="utf-8", newline="\n")
     manifest = root / "verifier.json"
     save(manifest, {"argv": verifier, "editable": paths, "creatable": paths, "timeout_seconds": 45,
+                    **({"allow_create_basename": True} if allow_basename else {}),
                     **({"validate_create_argv": validate_create} if validate_create else {})})
     command = [str(gdk), "--repo", str(workspace), "--goblin-cwd", str(ROOT), "--python", sys.executable,
                "--task-file", str(task), "--verifier", str(manifest), "--session-file", str(root / "session.json"),
@@ -186,6 +192,19 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
         env["MCP05_COMPACT_CREATE_HISTORY"] = "1"
     for key in ("MCP05_FRESH_PROMPT", "MCP05_EPISODE_PREFIX_PATH", "MCP05_FEDERATION", "MCP05_INDEX_ROUTER"):
         env.pop(key, None)
+    if first_reply_from:
+        provider_events = events(first_reply_from / "inky-wire.jsonl")
+        first = events(first_reply_from / "session.preflight.jsonl")[0]
+        require(provider_events[0]["event"] == "request" and provider_events[1]["event"] == "response"
+                and provider_events[1]["status"] == 200, "replay needs a successful initial exchange")
+        key = sha(first["preflight"]["formatted_prompt_sha256"].encode() + b"\0" + provider_events[0]["body"].encode())
+        prefix = root / "replayed-prefix.json"
+        save(prefix, [{"request_key": key, "response": json.loads(provider_events[1]["body"]),
+                       "provider_seconds": first["provider_seconds"]}])
+        env["MCP05_EPISODE_PREFIX_PATH"] = str(prefix)
+        invocation["replayed_first_reply"] = {"trace_sha256": sha((first_reply_from / "inky-wire.jsonl").read_bytes()),
+                                             "request_key": key}
+        save(root / "invocation.json", invocation)
     print(f"Inkling phase {root.name}", flush=True)
     with (root / "gdk.json").open("wb") as stdout, (root / "gdk.stderr.log").open("wb") as stderr:
         subprocess.run(command, cwd=ROOT, env=env, stdout=stdout, stderr=stderr, check=True)
@@ -298,6 +317,7 @@ def main() -> int:
     parser.add_argument("--gptstoryworld", type=Path)
     parser.add_argument("--node", type=Path)
     parser.add_argument("--chrome", type=Path)
+    parser.add_argument("--first-reply-from", type=Path)
     args = parser.parse_args()
     if args.command in ("check-math", "check-proposed-math"):
         profiles = check_profiles(read_json(args.path) if args.command == "check-math" else json.loads(sys.stdin.buffer.read()))
@@ -342,7 +362,8 @@ with signed changes under 24 hundredths. Include a tradeoff within each pair. Us
 Author your own mechanics. Close the tool call. Then call run_verifier with empty arguments."""
         result = run_phase(target, gdk, math_brief, ["reaction-model.json"],
                            [sys.executable, script, "check-math", str(target / "workspace/reaction-model.json")],
-                           validate_create=[sys.executable, script, "check-proposed-math"], max_tokens=1024)
+                           validate_create=[sys.executable, script, "check-proposed-math"], max_tokens=1024,
+                           first_reply_from=args.first_reply_from, allow_basename=True)
         return 0 if result["state"].get("verified") else 1
     if args.command == "play":
         if not (args.gptstoryworld and args.node and args.chrome):
@@ -366,7 +387,8 @@ Author your own mechanics. Close the tool call. Then call run_verifier with empt
                 result = run_phase(target, gdk, scene_brief(card, ids, recent), [scene_path(id_) for id_ in ids],
                                    [sys.executable, str(Path(__file__).resolve()), "check-scenes", str(target / "workspace"),
                                     "--card", str(card_path), "--ids", *ids], max_tokens=1408, iterations=14,
-                                   validate_create=[sys.executable, str(Path(__file__).resolve()), "check-proposed", "--card", str(card_path)])
+                                   validate_create=[sys.executable, str(Path(__file__).resolve()), "check-proposed", "--card", str(card_path)],
+                                   allow_basename=True)
             require(result["state"].get("verified"), f"Goose did not finish verification in {target}")
             preceding.extend(check_scenes(card, target / "workspace", ids))
         save(phase / "parsed-scenes.json", preceding)
