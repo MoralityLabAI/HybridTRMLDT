@@ -38,7 +38,7 @@ jobs:
       - name: Deterministic provider, MCP stdio and revision invalidation
         run: |
           export GOBLIN_GDK_BINARY="$PWD/MCP/goose_gdk_app/target/debug/goblin-gdk"
-          python -m unittest -v MCP.mcp05.test_mcp05
+          python -m unittest -v MCP.mcp05.test_mcp05 MCP.mcp05.test_federation
           python MCP/goose_gdk_app/ci_smoke.py "$GOBLIN_GDK_BINARY"
       - name: Native curriculum and matched CPU training
         run: |

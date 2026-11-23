@@ -228,8 +228,18 @@ struct RepairOperation {
 }
 
 fn json_action(text: &str) -> Option<(String, serde_json::Map<String, Value>)> {
-    fn arguments(value: &Value) -> Option<serde_json::Map<String, Value>> {
+    fn arguments(value: &Value, name: &str) -> Option<serde_json::Map<String, Value>> {
         let map = value.as_object()?;
+        if map.len() == 2 {
+            if let Some(nested_name) = value.get("tool").or_else(|| value.get("name")) {
+                let nested = value.get("arguments").or_else(|| value.get("args"))?;
+                return if nested_name.as_str()? == name {
+                    nested.as_object().cloned()
+                } else {
+                    None
+                };
+            }
+        }
         if map.len() == 1 {
             if let Some(nested) = map.get("arguments").and_then(Value::as_object) {
                 return Some(nested.clone());
@@ -253,12 +263,19 @@ fn json_action(text: &str) -> Option<(String, serde_json::Map<String, Value>)> {
                 }
             })
             .ok()?;
-        if let Some(name) = value["name"].as_str() {
+        if let Some(name) = value
+            .get("name")
+            .or_else(|| value.get("tool"))
+            .and_then(Value::as_str)
+        {
             let args = value.get("arguments").or_else(|| value.get("args"))?;
-            return Some((name.to_owned(), arguments(args)?));
+            return Some((name.to_owned(), arguments(args, name)?));
         }
         let name = prefix.rsplit_once("<|message_model|>")?.1.trim();
-        return Some((name.to_owned(), arguments(&value)?));
+        if name.is_empty() {
+            return None;
+        }
+        return Some((name.to_owned(), arguments(&value, name)?));
     }
     let text = text
         .rsplit_once("<|content_text|>")
@@ -272,7 +289,7 @@ fn json_action(text: &str) -> Option<(String, serde_json::Map<String, Value>)> {
     let value: Value = serde_json::from_str(text.trim()).ok()?;
     let name = value.get("tool").or_else(|| value.get("name"))?.as_str()?;
     let args = value.get("arguments").or_else(|| value.get("args"))?;
-    Some((name.to_owned(), arguments(args)?))
+    Some((name.to_owned(), arguments(args, name)?))
 }
 
 fn schemas(can_edit: bool) -> Result<Vec<Tool>> {
@@ -941,6 +958,27 @@ pub(crate) async fn run(args: Args) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn inkling_marker_accepts_direct_and_matching_nested_envelopes() {
+        let prefix = "<|message_model|><|content_thinking|><|end_message|><|message_model|>";
+        let marker = "<|content_invoke_tool_json|>";
+        let end = "<|end_message|>";
+        let args = json!({"uri": "index:datagoblin:576"});
+        let direct = json!({"tool": "context_read", "arguments": args});
+        let wrapped = json!({"name": "context_read", "args": direct});
+
+        for action in [direct.to_string(), wrapped.to_string()] {
+            let text = format!("{prefix}{marker}{action}{end}");
+            let (name, found) = json_action(&text).unwrap();
+            assert_eq!(name, "context_read");
+            assert_eq!(found, args.as_object().unwrap().clone());
+        }
+
+        let different =
+            json!({"name": "context_read", "args": {"tool": "apply_edit", "arguments": args}});
+        assert!(json_action(&format!("{prefix}{marker}{different}{end}")).is_none());
+    }
 
     #[test]
     fn new_source_replaces_older_full_packet_evidence() {

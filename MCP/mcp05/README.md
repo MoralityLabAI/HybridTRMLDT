@@ -7,7 +7,7 @@ The original one-shot CLI remains available. Pass the new iteration flag to acti
 ## Build
 
     cargo +1.99.0 build --locked --manifest-path MCP/goose_gdk_app/Cargo.toml
-    python -m unittest -v MCP.mcp05.test_mcp05
+    python -m unittest -v MCP.mcp05.test_mcp05 MCP.mcp05.test_federation
 
 Set GOBLIN_GDK_BINARY to the built binary to include the deterministic provider replay in the unittest run. The two replays exercise native tool calls and Inkling's marker-encoded actions and verify a real test fixture after the same edit. The CPU workflow pins the Rust toolchain, the cargo lockfile, and the CPU PyTorch version.
 
