@@ -137,9 +137,12 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
                "--max-tokens", str(max_tokens), "--max-agent-iterations", str(iterations), "--max-tool-calls", "24",
                "--budget", "1024", "--no-packet", "--memory-mode", "raw", "--allow-create", "--json-actions",
                "--timeout-secs", "840"]
-    save(root / "invocation.json", {"argv": command, "base_commit": git(workspace, "rev-parse", "HEAD"),
-                                    "verifier_sha256": sha(manifest.read_bytes()),
-                                    "brief_sha256": sha(task.read_bytes()), "gdk_sha256": sha(gdk.read_bytes())})
+    invocation = {"argv": command, "base_commit": git(workspace, "rev-parse", "HEAD"),
+                  "verifier_sha256": sha(manifest.read_bytes()),
+                  "brief_sha256": sha(task.read_bytes()), "gdk_sha256": sha(gdk.read_bytes())}
+    if runtime_file := os.environ.get("INKY_STORYWORLD_RUNTIME"):
+        invocation["model_runtime"] = read_json(Path(runtime_file))
+    save(root / "invocation.json", invocation)
     env = {**os.environ, "MCP05_WIRE_LOG": str(root / "inky-wire.jsonl"),
            "MCP05_SERVER_WIRE_LOG": str(root / "mcp-wire.jsonl")}
     for key in ("MCP05_FRESH_PROMPT", "MCP05_EPISODE_PREFIX_PATH", "MCP05_FEDERATION", "MCP05_INDEX_ROUTER"):
