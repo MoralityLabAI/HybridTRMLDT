@@ -497,11 +497,97 @@ def play(root: Path, gdk: Path, data: dict, node: Path, chrome: Path) -> None:
     save(out / "manifest.json", manifest)
 
 
+def apply_player_fixes(source: str, patch: dict) -> str:
+    replacements = patch["replacements"]
+    require(isinstance(replacements, list) and 1 <= len(replacements) <= 8, "provide one to eight exact replacements")
+    for change in replacements:
+        old, new, count = change["old"], change["new"], change.get("count", 1)
+        require(isinstance(old, str) and isinstance(new, str) and old and old != new,
+                "each replacement must have nonempty exact old text and different new text")
+        require(type(count) is int and count > 0 and source.count(old) == count,
+                f"expected {count} exact occurrences, saw {source.count(old)} for {old[:80]!r}")
+        source = source.replace(old, new)
+    return source
+
+
+def browser_command(out, scene_root, captures, node, chrome):
+    return [str(node), str(ROOT / "MCP/demos/browser-smoke.mjs"), str(chrome), str(captures),
+            "storyworld", str(scene_root), str(out / "world-data.js"), str(out / "balance.json")]
+
+
+def verify_player_patch(root, source_root, art_root, patch, node, chrome):
+    bundle = root / "player-check"
+    bundle.mkdir(exist_ok=True)
+    workspace = source_root / "workspace"
+    fixed = apply_player_fixes((workspace / "player.js").read_bytes().decode("utf-8"), patch)
+    shutil.copyfile(workspace / "index.html", bundle / "index.html")
+    shutil.copyfile(art_root / "workspace/art.js", bundle / "art.js")
+    (bundle / "player.js").write_bytes(fixed.encode("utf-8"))
+    return subprocess.run(browser_command(root / "export", bundle, root / "player-browser", node, chrome),
+                          check=False, timeout=40).returncode
+
+
+def finish_player(root, data, gdk, node, chrome):
+    source_root = root / "21-player-parts"
+    source = replay_writes(source_root, ["index.html", "player.js"], require_verified=False)
+    art_root = root / "22-art"
+    if not (art_root / "workspace/art.js").is_file():
+        cues = "\n".join(f"{s['id']}: {s['art']}" for s in data["scenes"])
+        cast = "\n".join(f"{c['name']}: {c['visual']}" for c in data["cast"])
+        brief = f"""Use create_file to write exactly art.js for your illustrated fable {data['title']}.
+Only write the Canvas illustration module. Other files already implement the HTML, layout and gameplay.
+Define window.drawScene(canvas,scene,cast). Draw with canvas paths, strokes, fills and gradients.
+Each of the twenty scenes uses its own drawable composition. Use a short palette and reusable primitives,
+with distinct designs for the recurring cast. Aim for a compact program under 150 lines. Keep your own
+color choices, scene details, and character silhouettes. Do not write markup, gameplay, or external asset URLs.
+Cast designs you authored:\n{cast}\nScene art cues you authored:\n{cues}"""
+        run_phase(art_root, gdk, brief, ["art.js"], [str(node), "--check", str(art_root / "workspace/art.js")],
+                  max_tokens=6400, iterations=1, context=16384, allow_basename=True)
+    art = replay_writes(art_root, ["art.js"], require_verified=False)
+    subprocess.run([str(node), "--check", str(art_root / "workspace/art.js")], check=True, timeout=10)
+    fix_root = root / "23-player-check"
+    original = (source_root / "workspace/player.js").read_bytes().decode("utf-8")
+    score_start = original.index("      var score = ")
+    score_end = original.index("      if (computed > bestScore)", score_start)
+    excerpt = original[score_start:score_end]
+    fix_brief = f"""Create player-fixes.json. Correct your player.js using exact old/new text replacements.
+Write a JSON object {{"replacements":[{{"old":"the exact old string","new":"your replacement","count":1}}]}}.
+Count must cover all exact occurrences you intend to replace. Author the replacement JavaScript yourself.
+The current player initializes and resets stats with this exact string, which occurs twice:
+stats = {{ trust: 0, nerve: 0, care: 0 }};
+Both points must copy the nonzero authored WORLD.stats. The actual WORLD reaction.score is an array in
+[bias, trust, nerve, care] order. Select the first maximum score evaluated before effects on option click.
+This exact scoring block currently reads named fields that the real data does not have:
+---\n{excerpt}---
+Keep the page, artwork, visible controls and other player behavior. Write player-fixes.json through the tool,
+then call run_verifier to run the browser on your corrected program. Only change the two contract mismatches.
+"""
+    if not (fix_root / "workspace/player-fixes.json").is_file():
+        script = str(Path(__file__).resolve())
+        check = [sys.executable, script, "check-player", str(fix_root / "workspace/player-fixes.json"),
+                 "--world", str(root), "--node", str(node), "--chrome", str(chrome)]
+        run_phase(fix_root, gdk, fix_brief, ["player-fixes.json"], check,
+                  max_tokens=2304, iterations=8, context=8192, allow_basename=True, compact_writes=True)
+    fixes = replay_writes(fix_root, ["player-fixes.json"], require_verified=False)
+    patch = read_json(fix_root / "workspace/player-fixes.json")
+    require(verify_player_patch(root, source_root, art_root, patch, node, chrome) == 0,
+            "the authored player code did not pass browser verification")
+    out = root / "export"
+    for name in ("index.html", "art.js", "player.js"):
+        shutil.copyfile(root / "player-check" / name, out / name)
+    save(root / "player-source-receipt.json", {"page_and_original_player": source, "art": art, "player_corrections": fixes,
+                                             "browser": read_json(root / "player-browser/browser-receipt.json")})
+    manifest = read_json(out / "manifest.json")
+    manifest["artifacts"].update({name: sha((out / name).read_bytes()) for name in ("index.html", "art.js", "player.js")})
+    manifest["browser_check"] = read_json(root / "player-browser/browser-receipt.json")
+    save(out / "manifest.json", manifest)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("plan", "check-card", "math", "check-math", "check-proposed-math",
                         "outline", "check-outline", "check-proposed-outline", "balance", "check-balance", "check-proposed-balance",
-                        "scenes", "check-scenes", "check-proposed", "export", "play"))
+                        "scenes", "check-scenes", "check-proposed", "export", "play", "finish-player", "check-player"))
     parser.add_argument("path", type=Path)
     parser.add_argument("--gdk", type=Path)
     parser.add_argument("--card", type=Path)
@@ -512,6 +598,10 @@ def main() -> int:
     parser.add_argument("--first-reply-from", type=Path)
     parser.add_argument("--world", type=Path)
     args = parser.parse_args()
+    if args.command == "check-player":
+        phase = args.world.resolve()
+        return verify_player_patch(phase, phase / "21-player-parts", phase / "22-art", read_json(args.path),
+                                   args.node, args.chrome)
     if args.command in ("check-balance", "check-proposed-balance"):
         root = args.world.resolve()
         card = with_authoring_cards(check_card(root / "00-world/workspace/world-card.json"), root)
@@ -564,6 +654,12 @@ def main() -> int:
         parser.error("a rollout requires --gdk")
     gdk = args.gdk.resolve(strict=True)
     phase = args.path.resolve()
+    if args.command == "finish-player":
+        if not (args.gptstoryworld and args.node and args.chrome):
+            parser.error("finish-player requires --gptstoryworld, --node, and --chrome")
+        data = export(phase, phase / "00-world/workspace/world-card.json", args.gptstoryworld)
+        finish_player(phase, data, gdk, args.node.resolve(strict=True), args.chrome.resolve(strict=True))
+        return 0
     if args.command == "balance":
         card = with_authoring_cards(check_card(phase / "00-world/workspace/world-card.json"), phase)
         script = str(Path(__file__).resolve())
