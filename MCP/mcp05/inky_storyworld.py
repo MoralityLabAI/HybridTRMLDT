@@ -559,6 +559,8 @@ Cast: {cast}. Your scene cues: {cues}."""
                   validate_create=[sys.executable, script, "check-proposed-art-map", "--card", str(card_file)])
     authored = check_art_map(read_json(map_file), check_card(card_file))
     paint_root = root / "22-art-renderer"
+    if paint_root.exists() and not (paint_root / "workspace/renderer.js").is_file():
+        paint_root = root / "22-art-renderer-extended"
     render_file = paint_root / "workspace/renderer.js"
     if not render_file.is_file():
         landmarks = sorted({row[6] for row in authored.values()})
@@ -570,7 +572,7 @@ shapes and your own palette. Use shared primitives. The renderer should be under
 no scene-by-scene tables, HTML, gameplay logic or external assets. Return one exact create_file action.
 Your landmark motifs: {', '.join(landmarks)}. Your character designs: {cast}."""
         run_phase(paint_root, gdk, task, ["renderer.js"], [str(node), "--check", str(render_file)],
-                  max_tokens=4000, iterations=1, context=8192, allow_basename=True)
+                  max_tokens=12000, iterations=1, context=16384, allow_basename=True)
     bridge = "window.INKY_ART = " + json.dumps(authored, ensure_ascii=False, separators=(",", ":")) + ";\n"
     composed = root / "art-composition.js"
     composed.write_bytes(bridge.encode("utf-8") + render_file.read_bytes())
