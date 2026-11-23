@@ -1,0 +1,65 @@
+{
+  "model": "inky-mini-varloop",
+  "title": "The Lantern Keeper's Ledger",
+  "game": "story",
+  "base_commit": "01cf45eb868f2c44e486885f446c24038cfbd33d",
+  "gdk_sha256": "029fd9b8659f5529cece5c0e98e67338305e22aaae6e3c97e935046585486faa",
+  "writes": [
+    {
+      "action": 0,
+      "sha256": "4b45d00e40fcfa3c6fb928421944f9cc1ee63df40ec394b476cee05af65155cd"
+    }
+  ],
+  "verifications": [
+    {
+      "action": 1,
+      "passed": true,
+      "seconds": 1.5789999999979043
+    }
+  ],
+  "browser_checks": [
+    "crossing is gated before study",
+    "public controls reached both endings with distinct Canvas art and reset the clue"
+  ],
+  "provider_calls": 2,
+  "provider_timings": [
+    {
+      "cache_n": 0,
+      "prompt_n": 832,
+      "prompt_ms": 10120.546,
+      "prompt_per_token_ms": 12.164117788461539,
+      "prompt_per_second": 82.20900334823833,
+      "predicted_n": 4245,
+      "predicted_ms": 175277.997,
+      "predicted_per_token_ms": 41.30018779453346,
+      "predicted_per_second": 24.21296496216807
+    },
+    {
+      "cache_n": 0,
+      "prompt_n": 5797,
+      "prompt_ms": 59523.839,
+      "prompt_per_token_ms": 10.26804191823357,
+      "prompt_per_second": 97.38955177269398,
+      "predicted_n": 25,
+      "predicted_ms": 877.128,
+      "predicted_per_token_ms": 36.547000000000004,
+      "predicted_per_second": 27.362026978958596
+    }
+  ],
+  "wall_seconds": 249.2756826,
+  "sha256": {
+    "brief.txt": "e9efb28fd8c7337cdda5c9c467c120f85c61b833e5e6b060b8445795b71bcfbe",
+    "verifier.json": "9b8c15b8dfd44837667faa6dca3604105cdca7bc14732acc980ee9c5b04f0411",
+    "inky-wire.jsonl": "a2cc3534418e86f07cd96b6103a2343ab853f88f43412e237b556e9cc878136a",
+    "mcp-wire.jsonl": "fa81984982b4a98f9c2bbd41f97fe1ecf9d5bc34316bfaedaf26291fdf1d489e",
+    "invocation.json": "64b5df75a337b20c3f1c27a670f93b3203633dbd139c7e6cc01e1ca58b564615",
+    "gdk.json": "2950c47663b85dc18c566cc338d9984f1d7d8de75b2b0add4c7012afca45b4ca",
+    "session.json": "d54138d23744d4012367030ac54482b382537e8a6fb0e24d913e0f9f262acfea",
+    "session.preflight.jsonl": "afd30b294506f89bc44f8d2110581d169d590324ddccab325e6d2c83e3740165",
+    "workspace/index.html": "4b45d00e40fcfa3c6fb928421944f9cc1ee63df40ec394b476cee05af65155cd",
+    "browser/bad-ending.png": "f06e73d1377364858ad08f3e3746553d36a0bb1967b87b7527df1f805b20758a",
+    "browser/browser-receipt.json": "dc1de234d72c7f29af671f908c186d1cb17bd8e235a6103957cff5359bc034f4",
+    "browser/good-ending.png": "f1efb015c7feb4226f2467888860996b26374b70ad68cd816896ca6fa5269611",
+    "browser/start.png": "5189908e24d9d90a0c9789594bdd372f2517034c5b21a0203241e1dbc912b851"
+  }
+}

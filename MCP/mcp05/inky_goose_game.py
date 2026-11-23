@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import subprocess
 import sys
@@ -103,9 +104,13 @@ def audit(root: Path, mode: str) -> dict:
             require((response is None or response["isError"]) == receipt["error"], "MCP error status differs")
         if receipt["error"]:
             continue
+        require(response is not None, "successful solver action has no matching MCP call")
         mcp_output = {key: value for key, value in output.items() if key != "next_action_hint"}
-        require(response is not None and response["structuredContent"] == mcp_output,
-                "MCP result differs from solver receipt")
+        actual = response["structuredContent"].copy()
+        if name == "run_verifier":
+            require(math.isclose(actual.pop("seconds"), mcp_output.pop("seconds"), abs_tol=1e-12, rel_tol=1e-12),
+                    "MCP verifier duration differs from solver receipt")
+        require(actual == mcp_output, "MCP result differs from solver receipt")
         if name == "run_verifier":
             checks.append({"action": receipt["index"], "passed": output["passed"], "seconds": output["seconds"]})
             continue
