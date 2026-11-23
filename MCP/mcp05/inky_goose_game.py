@@ -64,16 +64,18 @@ def provider_actions(replies: list[dict]):
             yield function["name"], json.loads(function["arguments"])
 
 
-def audit(root: Path, mode: str) -> dict:
+def replay_writes(root: Path, paths: list[str], *, require_verified: bool = True) -> dict:
     """Replay tool writes and match their receipts to the raw model and MCP exchanges."""
     invocation = read_json(root / "invocation.json")
     verify_config = root / "verifier.json"
     brief = root / "brief.txt"
     require(sha(brief.read_bytes()) == invocation["brief_sha256"], "brief hash changed")
-    require(sha(verify_config.read_bytes()) == invocation["verifier_sha256"], "verifier hash changed")
+    if "verifier_sha256" in invocation:
+        require(sha(verify_config.read_bytes()) == invocation["verifier_sha256"], "verifier hash changed")
     workspace = root / "workspace"
     require(not git(workspace, "ls-tree", "-r", invocation["base_commit"]), "base workspace was populated")
-    gdk = read_json(root / "gdk.json")
+    final_report = root / "gdk.json"
+    gdk = read_json(final_report if final_report.stat().st_size else root / "session.json")
     wire = root / "inky-wire.jsonl"
     mcp = root / "mcp-wire.jsonl"
     replies = [json.loads(event["body"]) for event in events(wire)
@@ -85,7 +87,7 @@ def audit(root: Path, mode: str) -> dict:
     calls = iter(frame for frame in frames if frame.get("method") == "tools/call"
                  and frame["params"]["name"] in names.values())
     frame = next(calls, None)
-    source = None
+    sources = {}
     writes, checks = [], []
     for receipt in gdk["session"]["receipts"]:
         require(receipt["origin"] == "solver", "a tool was called by an actor other than Inkling")
@@ -114,11 +116,13 @@ def audit(root: Path, mode: str) -> dict:
         if name == "run_verifier":
             checks.append({"action": receipt["index"], "passed": output["passed"], "seconds": output["seconds"]})
             continue
-        require(output["path"] == "index.html", "unexpected file write")
+        path = output["path"]
+        require(path in paths, "unexpected file write")
+        source = sources.get(path)
         require(output["before"] == (sha(source.encode("utf-8")) if source is not None else None),
                 "before hash does not match replay")
         if name == "create_file":
-            require(source is None and args["path"] == "index.html", "unexpected create target")
+            require(source is None and args["path"] == path, "unexpected create target")
             source = args["content"]
         else:
             old, new = args["old"], args["new"]
@@ -127,24 +131,32 @@ def audit(root: Path, mode: str) -> dict:
             require(source.count(old) == 1, "replacement is not unique in replay")
             source = source.replace(old, new, 1)
         require(sha(source.encode("utf-8")) == output["after"], "after hash does not match replay")
-        writes.append({"action": receipt["index"], "sha256": output["after"]})
+        sources[path] = source
+        writes.append({"action": receipt["index"], "path": path, "sha256": output["after"]})
     require(frame is None, "unattributed MCP operation")
-    raw_file = workspace / "index.html"
-    require(source is not None and source.encode("utf-8") == raw_file.read_bytes(),
-            "live artifact does not match the replayed model writes")
-    require(gdk["state"]["verified"] and checks[-1]["passed"] and checks[-1]["action"] > writes[-1]["action"],
-            "no solver-triggered passing verification of the final write")
+    require(set(sources) == set(paths), "replay did not write each requested source file")
+    for path, source in sources.items():
+        require(source.encode("utf-8") == (workspace / path).read_bytes(),
+                f"{path} does not match the replayed model writes")
+    verified = bool(gdk.get("state", {}).get("verified") and checks and checks[-1]["passed"]
+                    and checks[-1]["action"] > writes[-1]["action"])
+    require(verified or not require_verified, "no solver-triggered passing verification of the final write")
+    files = [brief, verify_config, wire, mcp, root / "invocation.json", final_report,
+             root / "session.json", root / "session.preflight.jsonl", *(workspace / p for p in paths)]
+    return {"model": gdk.get("model", MODEL), "base_commit": invocation["base_commit"],
+            "gdk_sha256": invocation["gdk_sha256"], "writes": writes, "verifications": checks,
+            "solver_verified": verified, "provider_calls": len(replies),
+            "provider_timings": [reply.get("timings") for reply in replies], "wall_seconds": gdk.get("wall_seconds"),
+            "sha256": {file.relative_to(root).as_posix(): sha(file.read_bytes()) for file in files}}
+
+
+def audit(root: Path, mode: str) -> dict:
+    receipt = replay_writes(root, ["index.html"])
     browser = read_json(root / "browser/browser-receipt.json")
     require(browser["game"] == mode and browser["status"] == "verified", "missing matching browser verification")
-    files = [brief, verify_config, wire, mcp, root / "invocation.json", root / "gdk.json",
-             root / "session.json", root / "session.preflight.jsonl", raw_file,
-             *sorted((root / "browser").iterdir())]
-    return {"model": gdk["model"], "title": browser["title"], "game": mode, "base_commit": invocation["base_commit"],
-            "gdk_sha256": invocation["gdk_sha256"],
-            "writes": writes, "verifications": checks, "browser_checks": browser["checks"],
-            "provider_calls": len(replies), "provider_timings": [reply.get("timings") for reply in replies],
-            "wall_seconds": gdk["wall_seconds"],
-            "sha256": {file.relative_to(root).as_posix(): sha(file.read_bytes()) for file in files}}
+    receipt["sha256"].update({file.relative_to(root).as_posix(): sha(file.read_bytes())
+                              for file in sorted((root / "browser").iterdir())})
+    return {**receipt, "title": browser["title"], "game": mode, "browser_checks": browser["checks"]}
 
 
 def run(root: Path, mode: str, gdk: Path, node: Path, chrome: Path, base_url: str) -> int:

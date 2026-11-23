@@ -359,6 +359,12 @@ fn schemas(can_edit: bool, can_create: bool) -> Result<Vec<Tool>> {
 }
 
 impl RepairOperation {
+    fn pending_files(state: &RepairState) -> Option<&Vec<Value>> {
+        state.receipts.iter().rev()
+            .find(|receipt| receipt["tool"] == "create_file" && receipt["error"] == false)?
+            .get("output")?.get("remaining_to_create")?.as_array().filter(|paths| !paths.is_empty())
+    }
+
     async fn execute(
         &self,
         state: &mut RepairState,
@@ -453,7 +459,11 @@ impl RepairOperation {
                 .retain(|entry| entry["path"] != payload["path"]);
             state.subgoal = "Verify the current patch against the native regression tests.".into();
             if self.can_create {
-                payload["next_action_hint"] = json!("Call run_verifier with empty arguments to check the current file.");
+                payload["next_action_hint"] = if let Some(next) = payload["remaining_to_create"].get(0) {
+                    json!(format!("Create the next requested file {next} in its own create_file action."))
+                } else {
+                    json!("Call run_verifier with empty arguments to check the current files.")
+                };
             }
         }
         if !error && tool == "run_verifier" {
@@ -528,7 +538,7 @@ impl Operation<AppSession, AppEffect> for RepairOperation {
             return Ok(Vec::new());
         }
         let mut tools = schemas(self.can_edit, self.can_create)?;
-        if self.can_create && !state.dirty {
+        if self.can_create && (!state.dirty || Self::pending_files(state).is_some()) {
             tools.retain(|tool| tool.name == "create_file");
         }
         Ok(tools)
@@ -566,6 +576,11 @@ impl Operation<AppSession, AppEffect> for RepairOperation {
                     "If you emit text, return one JSON action and escape newlines, quotes, and backslashes in source."
                 ).into(),
             ));
+        } else if let Some(paths) = Self::pending_files(state).filter(|_| self.can_create && !state.answer_only) {
+            parts.push(("new_workspace_protocol".into(), format!(
+                "Create exactly one more file now. Your next create_file path is {}. Remaining paths: {}. Put complete source for only that file inside the action, then wait for its receipt.",
+                paths[0], serde_json::to_string(paths)?
+            )));
         } else if self.can_create && !state.answer_only {
             parts.push((
                 "new_workspace_protocol".into(),
@@ -963,7 +978,11 @@ pub(crate) async fn run(args: Args) -> Result<()> {
                 dirty: false,
                 verified: false,
                 verification: Value::Null,
-                subgoal: args.task.clone(),
+                subgoal: if options.allow_create {
+                    "Create the requested source files.".into()
+                } else {
+                    args.task.clone()
+                },
                 reminders: 0,
                 answer_only: options.answer_only,
             }),

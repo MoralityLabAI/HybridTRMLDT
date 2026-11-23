@@ -40,6 +40,9 @@ class RepairWorkspace:
             if not isinstance(creatable, list) or not all(isinstance(rel, str) and rel for rel in creatable):
                 raise ValueError("verifier requires a list of exact creatable paths")
             self.creatable = tuple(creatable)
+            check_create = manifest.get("validate_create_argv", [])
+            if not isinstance(check_create, list) or not all(isinstance(arg, str) and arg for arg in check_create):
+                raise ValueError("creation validator requires host-supplied argv")
             for rel in self.creatable:
                 path = self.root / rel
                 if (path.relative_to(self.root).as_posix() != rel or path.resolve() != path
@@ -57,7 +60,8 @@ class RepairWorkspace:
 
     def allowed(self, path: str) -> bool:
         flags = path_flags(path)
-        return (not flags["is_doc"] and not flags["is_test"] and
+        is_swmd = path in self.creatable and path.endswith(".swmd.min.md")
+        return ((is_swmd or not flags["is_doc"]) and not flags["is_test"] and
                 any(path == item.rstrip("/") or (item.endswith("/") and path.startswith(item))
                     for item in self.manifest["editable"]))
 
@@ -67,6 +71,10 @@ class RepairWorkspace:
         raw = content.encode("utf-8")
         if not 0 < len(raw) <= MAX_SOURCE_BYTES:
             raise ValueError("new source must fit the source-size limit")
+        if argv := self.manifest.get("validate_create_argv"):
+            checked = subprocess.run([*argv, path], cwd=self.root, input=raw, capture_output=True, timeout=20)
+            if checked.returncode:
+                raise ValueError(checked.stderr[-1100:].decode("utf-8", "replace").strip() or "creation validator rejected source")
         target = self.root / path
         if target.resolve() != target:
             raise ValueError("workspace path is outside the creatable source set")
@@ -80,6 +88,8 @@ class RepairWorkspace:
             raise
         self.working.refresh()
         receipt = {"path": path, "before": None, "after": sha(raw), "revision": self.working.revision}
+        if len(self.creatable) > 1:
+            receipt["remaining_to_create"] = [name for name in self.creatable if not (self.root / name).is_file()]
         self.edits.append(receipt)
         return receipt
 

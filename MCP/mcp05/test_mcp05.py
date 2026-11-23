@@ -143,6 +143,21 @@ class Provider(BaseHTTPRequestHandler):
 
 
 class Contracts(unittest.TestCase):
+    def test_rejected_proposal_leaves_source_and_git_index_clean(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            commit_fixture(root)
+            manifest = {"argv": [sys.executable, "-V"], "editable": ["new.js"], "creatable": ["new.js"],
+                        "validate_create_argv": [sys.executable, "-c", "import sys; "
+                                                 "assert sys.stdin.buffer.read() == b'valid', 'bad source'"]}
+            workspace = RepairWorkspace(WorkingSet(root), manifest)
+            with self.assertRaisesRegex(ValueError, "bad source"):
+                workspace.create("new.js", "invalid")
+            self.assertEqual(workspace.git("status", "--porcelain"), "")
+            self.assertFalse((root / "new.js").exists())
+            workspace.create("new.js", "valid")
+            self.assertEqual((root / "new.js").read_bytes(), b"valid")
+
     def test_new_source_is_exact_readable_and_verified(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

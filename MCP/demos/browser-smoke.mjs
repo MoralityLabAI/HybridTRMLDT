@@ -8,22 +8,24 @@ import { setTimeout as sleep } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 
 const [chrome, target, mode, gameDirectory, goalX, goalY] = process.argv.slice(2);
-if (!chrome || !target || (mode && (!['rpg','story'].includes(mode) || !gameDirectory))) {
-  throw new Error("Usage: node browser-smoke.mjs /path/to/chrome /capture-directory [rpg|story /game-directory [goal-x goal-y]]");
+if (!chrome || !target || (mode && (!['rpg','story','storyworld'].includes(mode) || !gameDirectory))) {
+  throw new Error("Usage: node browser-smoke.mjs CHROME CAPTURE_DIRECTORY [rpg|story GAME_DIRECTORY [GOAL_X GOAL_Y] | storyworld GAME_DIRECTORY WORLD_DATA BALANCE_JSON]");
 }
+const storyworld=mode==="storyworld";
 const out=resolve(target);
 await mkdir(out,{recursive:true});
 const root=mode?resolve(gameDirectory):fileURLToPath(new URL(".",import.meta.url));
-const types={".html":"text/html; charset=utf-8",".css":"text/css; charset=utf-8",".mjs":"text/javascript; charset=utf-8",".json":"application/json"};
+const types={".html":"text/html; charset=utf-8",".css":"text/css; charset=utf-8",".mjs":"text/javascript; charset=utf-8",".js":"text/javascript; charset=utf-8",".json":"application/json"};
 const server=createServer(async (req,res)=>{
   try{
     const path=decodeURIComponent(new URL(req.url,"http://127.0.0.1").pathname);
-    if(mode && path!=="/") {res.writeHead(404).end();return;}
+    if(mode && path!=="/" && !(storyworld && ["/art.js","/world-data.js"].includes(path))) {res.writeHead(404).end();return;}
     const file=resolve(root,"."+path+(path.endsWith("/")?"index.html":""));
     if(!file.startsWith(root.endsWith(sep)?root:root+sep)) {res.writeHead(403).end();return;}
-    const body=await readFile(file);
+    const body=await readFile(storyworld && path==="/world-data.js" ? goalX : file);
     const headers={"Content-Type":types[extname(file)]??"application/octet-stream"};
     if(mode) headers["Content-Security-Policy"]="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'";
+    if(storyworld) headers["Content-Security-Policy"]="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'";
     res.writeHead(200,headers).end(body);
   }catch{res.writeHead(404).end();}
 });
@@ -129,6 +131,35 @@ try{
       assert.equal((await state()).hits,initial.hits);
       assert.equal((await state()).hp,initial.hp);
       checks.push("restart restored initial combat state");
+    }else if(storyworld){
+      const balance=JSON.parse(await readFile(goalY,"utf8"));
+      const snapshots=new Set();
+      for(const [destination,path] of Object.entries(balance.scene_witnesses)){
+        await reset();
+        for(const step of path){
+          assert.equal((await state()).scene,step.scene);
+          assert.equal(await evaluate("document.querySelectorAll('button[data-option]:not(:disabled)').length"),3);
+          await evaluate(`document.querySelector('button[data-option="${step.option}"]').click()`);
+          const changed=await state();
+          assert.equal(changed.reaction,step.reaction);
+          for (const [stat,value] of Object.entries(step.after)) {
+            assert.ok(Math.abs(changed.stats[stat]-value)<1e-9,`${stat} differs from the reference rule`);
+          }
+          await evaluate("document.querySelector('#continue').click()");
+        }
+        const arrived=await state();
+        assert.equal(arrived.scene,destination);
+        snapshots.add(await art());
+        if(destination in balance.endings){
+          assert.equal(arrived.ending,destination);
+          assert.equal(await evaluate("document.querySelectorAll('button[data-option]:not(:disabled)').length"),0);
+          await screenshot(`${destination}.png`);
+        }
+      }
+      assert.equal(snapshots.size,20,"every reachable encounter should render distinct Canvas pixels");
+      await reset();
+      assert.deepEqual(await state(),initial);
+      checks.push("20 distinct Canvas scenes through player controls", "response formulas and bounded effects match independent replay", "all endings and restart work");
     }else{
       assert.equal(initial.scene,"start");
       assert.ok(!initial.clue);

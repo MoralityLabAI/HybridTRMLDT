@@ -24,6 +24,18 @@ The run directory retains the full provider request and response journal, the MC
 
 ## Generate and train
 
+### Twenty-encounter GPTStoryworld rollout
+
+The `inky_storyworld` runner follows GPTStoryworld's `small-storyworld-builder` with a world card, bounded encounter batches, and a single encounter write per Goose tool call. Inky authors the prose, route IDs, reaction coefficients, effect deltas, and art directions. The compiler expands the compact JSON cards into `SWMD-0-MIN` blocks and SweepWeave JSON. GPTStoryworld's parser and validator check both exports. Each source stage retains the raw provider and MCP exchanges.
+
+    python -m MCP.mcp05.inky_storyworld plan RUN/00-world --gdk GOBLIN_GDK
+    python -m MCP.mcp05.inky_storyworld scenes RUN --gdk GOBLIN_GDK
+    python -m MCP.mcp05.inky_storyworld play RUN --gdk GOBLIN_GDK --gptstoryworld GPTSTORYWORLD --node NODE --chrome CHROME
+
+Authoring uses 8,192-token request windows. The browser-player and Canvas-art phase uses a 16,384-token window. A seeded rehearsal measures encounter and ending reachability, response selection and effect saturation. Browser verification drives the actual controls along rehearsal witnesses and compares every reaction and state change to the independent calculation.
+
+### Repair training
+
 Run these from the HybridTRMLDT root with PyTorch CPU installed.
 
     python -m MCP.mcp05.gym --out work/mcp05-cases --seed 523 --train 18 --test 6
