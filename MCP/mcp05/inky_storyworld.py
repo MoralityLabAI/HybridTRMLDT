@@ -329,7 +329,8 @@ def main() -> int:
         card = with_profiles(check_card(args.card), args.card.resolve().parents[2])
         require(filename == scene_path(id_) and id_ in world_ids(card), "write an authorized encounter file")
         source = json.loads(sys.stdin.buffer.read())
-        parse_scene(render_card(source, card, id_), card, id_)
+        scene = parse_scene(render_card(source, card, id_), card, id_)
+        print(f"{id_} accepted. Continuity card: {scene['title'][:72]} / {scene['text'][:170]}")
         return 0
     if args.command == "check-card":
         card = check_card(args.path)

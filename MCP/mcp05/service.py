@@ -76,10 +76,12 @@ class RepairWorkspace:
         raw = content.encode("utf-8")
         if not 0 < len(raw) <= MAX_SOURCE_BYTES:
             raise ValueError("new source must fit the source-size limit")
+        validation_note = ""
         if argv := self.manifest.get("validate_create_argv"):
             checked = subprocess.run([*argv, path], cwd=self.root, input=raw, capture_output=True, timeout=20)
             if checked.returncode:
                 raise ValueError(checked.stderr[-1100:].decode("utf-8", "replace").strip() or "creation validator rejected source")
+            validation_note = checked.stdout[:512].decode("utf-8", "replace").strip()
         target = self.root / path
         if target.resolve() != target:
             raise ValueError("workspace path is outside the creatable source set")
@@ -95,6 +97,8 @@ class RepairWorkspace:
         receipt = {"path": path, "before": None, "after": sha(raw), "revision": self.working.revision}
         if requested_path != path:
             receipt["requested_path"] = requested_path
+        if validation_note:
+            receipt["validation_note"] = validation_note
         if len(self.creatable) > 1:
             receipt["remaining_to_create"] = [name for name in self.creatable if not (self.root / name).is_file()]
         self.edits.append(receipt)
