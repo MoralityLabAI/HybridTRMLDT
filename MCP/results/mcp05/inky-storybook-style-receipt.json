@@ -1,0 +1,65 @@
+{
+  "storyworld": "The Hat That Held the Moon",
+  "edition": "picture-book",
+  "model": "inky-mini-varloop",
+  "run_directory": "inky-cat-hat-20261123",
+  "base_manifest_sha256": "f5b63f3e5802bf387cda8cda2864e263696507a0b8639325e58db65cf2d4a081",
+  "edition_manifest_sha256": "4a2e3e72f66104e7eb4e0e5c7a591ebeaaf2231c35a257a6a3e7f127178d073a",
+  "unchanged_gameplay_files": [
+    "player.js",
+    "world-data.js",
+    "balance.json"
+  ],
+  "authoring": {
+    "24-storybook-art-retry-01": {
+      "writes": [
+        {
+          "action": 0,
+          "path": "storybook-scene.js",
+          "sha256": "e9cd58d83680082be970688568d538f167cc58c1af08ad9be54aa3da83d80787"
+        }
+      ],
+      "provider_calls": 1
+    },
+    "recovered_style": {
+      "provider_reply_sha256": "bf351d4fa7b7e79d8616fcf91e31cb4a4c053d81ba0a724f1189a42e80aa3563",
+      "style_file_sha256": "236f155422ff9cc18b97be31ba9463b74d16ac4dd924d41edb506e3131b8b0bc",
+      "provider_trace_sha256": "4e3ef434f8c76be8a0f13b9669139cdbcbb466c832919ff2d62d3f5138ed8975",
+      "tool_write_completed": false
+    },
+    "26-storybook-ink-retry-02": {
+      "writes": [
+        {
+          "action": 0,
+          "path": "storybook-ink.css",
+          "sha256": "9a4a3167ed3ac1191e4e1040988153e165e29c291c556090d094b03641999ff9"
+        }
+      ],
+      "provider_calls": 1
+    }
+  },
+  "browser": {
+    "status": "verified",
+    "game": "storyworld",
+    "title": "The Hat That Held the Moon \u2014 A Village Tale",
+    "checks": [
+      "20 distinct Canvas scenes through player controls",
+      "response formulas and bounded effects match independent replay",
+      "all endings and restart work"
+    ]
+  },
+  "browser_screenshots_sha256": {
+    "end_fallback.png": "8221d49ee695d802354f8c8140e463296c0149a4b1c1fcf11a260090af4289ee",
+    "end_keep.png": "f3c3a2817c5cc7e79bdc372ef292a08dd82360dcf27a57993d332884eab3aa28",
+    "end_return.png": "8be9b8bd73e9fe55c79c55479d696402cd903f0c87368223fb9a0017996e5395",
+    "end_share.png": "276e227be84577f2bb376a47dc800d2f7311f1189bf28a11ea5aff1de0d3d558",
+    "start.png": "a32a594cde4b7377e2156720428ac0539d06fc55708ab825aa777b09dd9c6208"
+  },
+  "edition_sha256": {
+    "art.js": "f83539818861132408eff088492148751ede1b18080adfe076b69369c87305a2",
+    "balance.json": "60fb43d3ea7fb04debbdd21154c788293d71ce22b9d8124ee210d4d6e754537e",
+    "index.html": "147d7341910e43f15b65d8ebf25db389ca654805b820574a5723948e6b75933c",
+    "player.js": "58d52d933a574d00e7131335e99356319d18f8ebf4eba551c0264742bb32766e",
+    "world-data.js": "ee05da52d6e2bddf92877e1e2348c152620b6aab5a89f5608403fcf9b8890ed3"
+  }
+}
