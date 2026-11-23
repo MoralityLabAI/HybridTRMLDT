@@ -83,7 +83,8 @@ def render_card(source: dict, card: dict, scene_id: str) -> str:
         return value
 
     hero = card["cast"][0]["id"]
-    ordinal = world_ids(card).index(scene_id) + 1
+    roster = world_ids(card)
+    ordinal = roster.index(scene_id) + 1
     title = card.get("outline", {}).get(scene_id, (source["title"],))[0]
     rows = [f"ENC {scene_id} turn=0..999", f"# T: {text(source['text'])}",
             f"# TITLE: {text(title)}", f"# ART: {text(source['art'])}"]
@@ -105,6 +106,8 @@ def render_card(source: dict, card: dict, scene_id: str) -> str:
                 require(isinstance(reaction, list) and len(reaction) == 4,
                         "a reaction is an object with next, reply, score and delta")
                 target, reply, scores, deltas = reaction
+            require(isinstance(target, str) and target in roster,
+                    f"target {target!r} must be an encounter ID from the route card, not a title or speaker")
             require(len(scores) == 4 and len(deltas) == 3 and all(type(x) is int for x in [*scores, *deltas]),
                     "reaction scores and deltas must be four and three integer hundredths respectively")
             require(sum(map(abs, scores)) <= 100 and all(abs(delta) <= 24 for delta in deltas),
