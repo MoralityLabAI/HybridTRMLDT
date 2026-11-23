@@ -12,6 +12,8 @@ class CompactCards(unittest.TestCase):
         self.assertEqual(card["options"][0]["model"], "test profile")
         self.assertEqual(card["options"][0]["reactions"], [
             {"next": "enc_02", "reply": "reply A"}, {"next": "enc_03", "reply": "reply B"}])
+        self.assertEqual(card, encounter_card({"title": "title", "sceneText": "scene", "artCue": "art",
+                                              "options": source[3]}))
 
     def test_profile_guard_preserves_state_dependence(self):
         data = [[[0, 25, 0, 0], [5, -4, 0]], [[0, -25, 0, 0], [-5, 4, 0]]]

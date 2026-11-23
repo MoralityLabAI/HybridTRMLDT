@@ -103,13 +103,20 @@ def scene_path(scene_id):
 
 def encounter_card(source) -> dict:
     if isinstance(source, dict):
-        return source
-    require(isinstance(source, list) and len(source) == 4,
-            "write [title, sceneText, artCue, options] as one JSON array")
-    title, text, art, rows = source
+        title = source["title"]
+        text = source.get("text", source.get("sceneText"))
+        art = source.get("art", source.get("artCue"))
+        rows = source["options"]
+    else:
+        require(isinstance(source, list) and len(source) == 4,
+                "write [title, sceneText, artCue, options] as one JSON array")
+        title, text, art, rows = source
     require(isinstance(rows, list), "options must be a list")
     options = []
     for row in rows:
+        if isinstance(row, dict):
+            options.append(row)
+            continue
         require(isinstance(row, list) and len(row) == 6,
                 "each option must be [label, profile, nextA, replyA, nextB, replyB]")
         label, model, next_a, reply_a, next_b, reply_b = row
@@ -123,7 +130,7 @@ def groups(card):
     return [(start, min(start + 3, playable)) for start in range(1, playable + 1, 4)] + [(playable + 1, 20)]
 
 
-def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path) -> list[dict]:
+def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path, first_reply_from: Path | None = None) -> list[dict]:
     roster = world_ids(card)
     prior, sources = [], {}
     for start, end in groups(card):
@@ -148,7 +155,8 @@ def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path) -> list[d
                       [sys.executable, str(Path(__file__).resolve()), "check-scenes", str(phase / "workspace"),
                        "--card", str(card_path), "--ids", *missing], max_tokens=1408, iterations=14,
                       validate_create=[sys.executable, str(Path(__file__).resolve()), "check-proposed", "--card", str(card_path)],
-                      allow_basename=True)
+                      allow_basename=True, first_reply_from=first_reply_from)
+            first_reply_from = None
             if phase != attempts[0]:
                 attempts.append(phase)
             for id_ in missing:
@@ -442,7 +450,7 @@ Author your own mechanics. Close the tool call. Then call run_verifier with empt
     if args.command == "scenes":
         card_path = args.card.resolve() if args.card else phase / "00-world/workspace/world-card.json"
         card = with_profiles(check_card(card_path), phase)
-        save(phase / "parsed-scenes.json", collect_scenes(phase, card, card_path, gdk))
+        save(phase / "parsed-scenes.json", collect_scenes(phase, card, card_path, gdk, args.first_reply_from))
         return 0
     target = phase / "workspace/world-card.json"
     result = run_phase(phase, gdk, CARD_BRIEF, [target.name],
