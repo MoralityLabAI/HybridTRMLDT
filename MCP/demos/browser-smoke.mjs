@@ -77,7 +77,7 @@ try{
   await send("Runtime.enable");
   await send("Page.enable");
   await send("Emulation.setDeviceMetricsOverride",{width:1280,height:950,deviceScaleFactor:1,mobile:false});
-  await visit("/",`document.querySelector('h1')?.textContent.includes('Two worlds') && document.querySelectorAll('.project').length===2`);
+  await visit("/",`document.querySelector('h1')?.textContent.includes('field tests') && document.querySelectorAll('.project').length===2`);
   await screenshot("field-tests.png");
   await visit("/lantern/",`document.querySelector('#hp')?.textContent==='7'`);
   const initial=await evaluate(`document.getElementById('arena').getContext('2d').getImageData(92,253,120,55).data.join(',')`);
@@ -98,9 +98,32 @@ try{
   await visit("/tide/",`document.querySelector('#scene-title')?.textContent==='A harbor holding its breath'`);
   assert.equal(await evaluate("document.documentElement.scrollWidth <= innerWidth"),true);
   await screenshot("tide-mobile.png");
+  await send("Emulation.setDeviceMetricsOverride",{width:1280,height:950,deviceScaleFactor:1,mobile:false});
+  const variants=[];
+  for(const arm of ["assisted","wide"]){
+    for(const project of ["lantern","tide"]){
+      let data;
+      try{data=JSON.parse(await readFile(join(root,"variants",`${project}-${arm}.json`),"utf8"));}
+      catch(error){if(error.code==="ENOENT")continue;throw error;}
+      if(project==="lantern"){
+        await visit(`/lantern/?variant=${arm}`,`document.querySelector('.side .kicker')?.textContent===${JSON.stringify(data.name)}`);
+        assert.equal(await evaluate("document.querySelector('#hp').textContent"),"6");
+        assert.equal(await evaluate("document.querySelector('#threat').textContent"),"4 sentries");
+      }else{
+        await visit(`/tide/?variant=${arm}`,`document.querySelector('#scene-title')?.textContent==='A harbor holding its breath'`);
+        await click("causeway");
+        assert.equal(await evaluate(`document.querySelector('[data-choice=\"drowned-observatory\"]')?.disabled`),true);
+        await click("back");await click("archive");await click("study");await click("tower");await click("listen");
+        await click("causeway");await click("drowned-observatory");await click("shutter");
+        assert.equal(await evaluate("document.getElementById('scene-title').textContent"),data.ending.title);
+      }
+      variants.push(`${project}-${arm}`);
+      await screenshot(`${project}-${arm}.png`);
+    }
+  }
   assert.deepEqual(failures,[]);
   console.log(JSON.stringify({status:"verified",checks:["project navigation","canvas input","locked story route","evidence-based ending","mobile viewport"],
-    captures:out}));
+    captures:out,variants}));
 }finally{
   socket?.close();browser.kill();server.close();
 }

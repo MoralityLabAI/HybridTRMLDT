@@ -30,6 +30,10 @@ p { line-height: 1.55; }
 .project h2 { font-size: clamp(1.55rem, 3.1vw, 2.55rem); }
 .project p { color: var(--quiet); margin: 0; font-size: .76rem; text-transform: uppercase; letter-spacing: .13em; }
 .project span { color: var(--aqua); margin-top: 5px; }
+.release { margin-top: 27px; padding: 20px 0 0; border-top: 1px solid var(--line); }
+.release h2 { margin-bottom: 12px; font-size: 1.45rem; }
+.release > div { display: flex; flex-wrap: wrap; gap: 9px; }
+.release a { text-decoration: none; }
 .page-title { margin: 32px 0 22px; display: flex; justify-content: space-between; align-items: end; gap: 16px; }
 .page-title h1 { font-size: clamp(2.75rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -.075em; }
 .quiet { color: var(--quiet); }

@@ -1,0 +1,27 @@
+{
+  "name": "Saltglass patrol",
+  "required": 3,
+  "vigor": 6,
+  "foes": [
+    {
+      "kind": "wisp",
+      "x": 215,
+      "y": 265
+    },
+    {
+      "kind": "skulk",
+      "x": 545,
+      "y": 200
+    },
+    {
+      "kind": "wisp",
+      "x": 551,
+      "y": 403
+    },
+    {
+      "kind": "guard",
+      "x": 783,
+      "y": 283
+    }
+  ]
+}

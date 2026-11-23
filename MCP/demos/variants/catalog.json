@@ -1,0 +1,12 @@
+[
+  {
+    "project": "lantern",
+    "arm": "assisted",
+    "label": "Play Saltglass Patrol"
+  },
+  {
+    "project": "tide",
+    "arm": "assisted",
+    "label": "Visit the Drowned Observatory"
+  }
+]

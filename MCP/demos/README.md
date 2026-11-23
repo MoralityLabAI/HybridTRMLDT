@@ -7,6 +7,7 @@ From the repository root, serve `MCP/demos` and open the local URL printed by Py
 ```sh
 python -m http.server 8765 --bind 127.0.0.1 --directory MCP/demos
 node --test MCP/demos/smoke.test.mjs
+node MCP/demos/playthrough.mjs
 node MCP/demos/browser-smoke.mjs /path/to/chrome /path/to/captures
 ```
 
@@ -21,3 +22,11 @@ python -m MCP.mcp05.creative_bench --indexes "$INDEXES" --router "$ROUTER" --gdk
 ```
 
 Each archived attempt includes the exact Inky exchange, retrieval MCP and Goose MCP wire logs, chunk digests and route metadata, verifier verdict, and candidate where parseable. The local training index labels the attempts and retains both successes and failures. Its development rows carry `training_ready=false` pending admission. The game imports validated data only.
+
+[Read the pilot results](RESULTS.md).
+
+Open the approved patrol and passage from the local portal’s benchmark variants. To validate and normalize the local training archive, supply the frozen Q4 runtime receipt used during the campaign.
+
+```sh
+python -m MCP.mcp05.creative_trace "$CAMPAIGN" --runtime "$RUNTIME_RECEIPT"
+```

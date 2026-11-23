@@ -1,0 +1,19 @@
+{
+  "entryLabel": "Follow the amber lamps to the chart room",
+  "entryRequires": [
+    "lens",
+    "bell"
+  ],
+  "interior": {
+    "title": "The chart room",
+    "text": "Unbound charts turn in a draft. The old map marks three guiding lights; the new chart marks four. The extra light describes a reflection, drawn deliberately by a hand that knew the water. The lens and bell rest together on the keeper's table, and the water keeps its own counsel.",
+    "palette": "archive"
+  },
+  "ending": {
+    "title": "Dawn over the drowned observatory",
+    "text": "Dawn breaks over the drowned observatory as the bell rings its full measure. The lens and bell rest together on the keeper's table, and the water keeps its own counsel. The chart and the bell beat are yours, and the dawn keeps the rest.",
+    "palette": "arrive"
+  },
+  "returnLabel": "Return to the causeway",
+  "forwardLabel": "Follow the shutter to the ending"
+}
