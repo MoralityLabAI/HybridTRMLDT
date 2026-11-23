@@ -140,7 +140,7 @@ def encounter_card(source) -> dict:
         title = source["title"]
         text = source.get("text", source.get("sceneText"))
         art = source.get("art", source.get("artCue"))
-        rows = source["options"]
+        rows = source.get("options", [])
     else:
         require(isinstance(source, list) and len(source) == 4,
                 "write [title, sceneText, artCue, options] as one JSON array")
@@ -161,7 +161,8 @@ def encounter_card(source) -> dict:
 
 def groups(card):
     playable = 20 - len(card["endings"])
-    return [(start, min(start + 3, playable)) for start in range(1, playable + 1, 4)] + [(playable + 1, 20)]
+    return ([(start, min(start + 3, playable)) for start in range(1, playable + 1, 4)]
+            + [(end, end) for end in range(playable + 1, 21)])
 
 
 def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path, first_reply_from: Path | None = None) -> list[dict]:
@@ -190,7 +191,8 @@ def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path, first_rep
             recent = f"{last['title']}: {last['text'][:135]}" if last else ""
             run_phase(phase, gdk, scene_brief(card, missing, recent), [scene_path(id_) for id_ in missing],
                       [sys.executable, str(Path(__file__).resolve()), "check-scenes", str(phase / "workspace"),
-                       "--card", str(card_path), "--ids", *missing], max_tokens=1408, iterations=len(missing),
+                       "--card", str(card_path), "--ids", *missing], max_tokens=640 if start > 20-len(card["endings"]) else 1408,
+                      iterations=len(missing),
                       validate_create=[sys.executable, str(Path(__file__).resolve()), "check-proposed", "--card", str(card_path)],
                       allow_basename=True, first_reply_from=first_reply_from)
             first_reply_from = None
@@ -224,6 +226,13 @@ def check_scenes(card: dict, workspace: Path, ids: list[str]) -> list[dict]:
 def scene_brief(card, ids, recent):
     names = ", ".join(scene_path(id_) for id_ in ids)
     terminal_ids = [e["id"] for e in card["endings"]]
+    if ids[0] in terminal_ids:
+        ending = next(e for e in card["endings"] if e["id"] == ids[0])
+        return (f"Call create_file now with exact path {names}. Write only this ending for your story {card['title']}. "
+                f"The authored ending condition is {ending['condition']}. "
+                "Put four values in the JSON content array: [title, sceneText, artCue, []]. "
+                "Write two vivid sentences that resolve what happened. Include a short drawable visual motif. "
+                f"Use the exact authorized filename {names}, and close the tool call.")
     roster = world_ids(card)
     playable = 20 - len(terminal_ids)
     act_indices = {(roster.index(id_)) // 4 for id_ in ids}
@@ -239,9 +248,6 @@ def scene_brief(card, ids, recent):
              "Each write receives an immediate structural and math check.\n")
     if outline := card.get("outline"):
         brief += "Your planned events to develop now: " + " / ".join(f"{id_}: {outline[id_][0]} — {outline[id_][1]}" for id_ in ids) + "\n"
-    if ids[0] in terminal_ids:
-        endings = " / ".join(f"{e['id']}: {e['condition']}" for e in card["endings"])
-        return brief + f"Each file is [title, sceneText, artCue, []]. Pay off these endings: {endings}"
     routes = []
     for id_ in ids:
         i = roster.index(id_)
