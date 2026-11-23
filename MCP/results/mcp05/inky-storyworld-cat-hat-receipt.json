@@ -1,0 +1,95 @@
+{
+  "storyworld": "The Hat That Held the Moon",
+  "run_directory": "inky-cat-hat-20261123",
+  "finishing_runtime": {
+    "model": "inky-mini-varloop",
+    "checkpoint": "TML-d24-varloop-research-IQ4_NL.gguf",
+    "context_tokens": 16384,
+    "loop_count": 2,
+    "cpu_moe_layers": 11,
+    "backend": "Vulkan1"
+  },
+  "content_phase_loop_counts": {
+    "2": 16,
+    "unrecorded": 1
+  },
+  "finishing_first_provider_calls": {
+    "22-art-renderer-extended": {
+      "provider_prompt_tokens": 646,
+      "provider_completion_tokens": 6117,
+      "provider_seconds": 716.4059999999881
+    },
+    "23-player-check-compact": {
+      "provider_prompt_tokens": 457,
+      "provider_completion_tokens": 140,
+      "provider_seconds": 33.969000000011874
+    },
+    "22-art-renderer-fix-retry-03": {
+      "provider_prompt_tokens": 587,
+      "provider_completion_tokens": 307,
+      "provider_seconds": 68.0
+    }
+  },
+  "gptstoryworld": {
+    "source_commit": "c8d46591f983473023daf0232e9b413baaa02194",
+    "skill_sha256": "75735d3dd0091f2240ef4aa90fe15eef8c5699b94a73afa67f4fa4a22c29d1e4",
+    "validator_sha256": "282d3a9988ba8305caf18a73d824497fd7fff0494f491a341caf6872bb9299d3",
+    "swmd_index_sha256": "7bd50a31acc05b2a00e125aad028852b066fce37d1c5220ba975332973d32d50"
+  },
+  "story_shape": {
+    "scenes": 20,
+    "choice_scenes": 16,
+    "choices": 48,
+    "reactions": 96,
+    "endings": 4
+  },
+  "seeded_uniform_choice_rehearsal": {
+    "seed": 523,
+    "runs": 5000,
+    "timeouts": 0,
+    "endings": {
+      "end_fallback": 1596,
+      "end_keep": 33,
+      "end_return": 1685,
+      "end_share": 1686
+    },
+    "clamped_effects": 26113,
+    "distinct_scenes_visited": 20,
+    "reactions_observed": 67,
+    "decisions_per_route": [
+      10,
+      16
+    ]
+  },
+  "browser": {
+    "status": "verified",
+    "game": "storyworld",
+    "title": "The Hat That Held the Moon — A Village Tale",
+    "checks": [
+      "20 distinct Canvas scenes through player controls",
+      "response formulas and bounded effects match independent replay",
+      "all endings and restart work"
+    ]
+  },
+  "export_sha256": {
+    "world.swmd.min.md": "7b03b4403882608207cebf44aab43c9833c490e04e945b1da5d14b64a0b0473e",
+    "storyworld.json": "1d1695918e81c9f09e201b9765f56ce032b6d1b924da0614452412e531311c75",
+    "balance.json": "60fb43d3ea7fb04debbdd21154c788293d71ce22b9d8124ee210d4d6e754537e",
+    "world-data.js": "ee05da52d6e2bddf92877e1e2348c152620b6aab5a89f5608403fcf9b8890ed3",
+    "index.html": "49751c700c45354cb729d10abaa5070cf718c3145c27665f73254bcfb6214c08",
+    "art.js": "ad6f47e3c2efbd6e9fce5ade44c38a75859183e09baa12627c93f8af2354f2d0",
+    "player.js": "58d52d933a574d00e7131335e99356319d18f8ebf4eba551c0264742bb32766e"
+  },
+  "trace_receipts_sha256": {
+    "authoring-receipts.json": "6b554edc3d590b1b9a5a7ed0162b5136ecf05c6d539ae0e00432cd6ab3d68286",
+    "player-source-receipt.json": "c8636addd3f8c8318479992fa4737652cdfdc095c2d2876e0dbb8a22d48b2e17",
+    "scene-sources.json": "20a2b0a958fad760d4778e2b9a03d9b093a321ea4d2cc299101f85130f8af2b4"
+  },
+  "browser_screenshots_sha256": {
+    "end_fallback.png": "91b67eb931db63ec0613ad607e8b922926575e2a154d71802c05bf96b5fed8ce",
+    "end_keep.png": "396067814510b9a5aeb44dca1319cbfa0d80768da91640b76c1a5c7677ef686b",
+    "end_return.png": "4028167619aab52455ac60b8a6207ed19082963f005c70ac13a53e5409a44292",
+    "end_share.png": "ca37476d75b678659370bde6215a12f7d128b89ec65e93f4c7a221d9aec3c19f",
+    "start.png": "db0897b3cf05b7198bed0b24cbc16ca33e9b022db6fc5bc9e2bf508e2f5637fd"
+  }
+}

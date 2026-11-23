@@ -497,7 +497,7 @@ def play(root: Path, gdk: Path, data: dict, node: Path, chrome: Path) -> None:
     save(out / "manifest.json", manifest)
 
 
-def apply_player_fixes(source: str, patch: dict) -> str:
+def apply_source_replacements(source: str, patch: dict) -> str:
     replacements = patch["replacements"]
     require(isinstance(replacements, list) and 1 <= len(replacements) <= 8, "provide one to eight exact replacements")
     for change in replacements:
@@ -518,6 +518,48 @@ def browser_command(out, scene_root, captures, node, chrome):
 def art_source_path(root):
     standalone = root / "22-art/workspace/art.js"
     return standalone if standalone.is_file() else root / "art-composition.js"
+
+
+def art_renderer_root(root):
+    initial = root / "22-art-renderer"
+    if initial.exists() and not (initial / "workspace/renderer.js").is_file():
+        return root / "22-art-renderer-extended"
+    return initial
+
+
+def check_renderer_patch(renderer, patch, node):
+    source = apply_source_replacements(renderer.read_bytes().decode("utf-8"), patch)
+    subprocess.run([str(node), "--check", "-"], input=source.encode("utf-8"), check=True, timeout=10)
+    return source
+
+
+def art_patch_attempts(root):
+    prefix = "22-art-renderer-fix"
+    return [root / prefix, *sorted(root.glob(f"{prefix}-retry-*"))]
+
+
+def repair_art(root, gdk, node):
+    renderer = art_renderer_root(root) / "workspace/renderer.js"
+    source = renderer.read_bytes().decode("utf-8")
+    map_assignment = next(line.strip() for line in source.splitlines() if "window.INKY_ART =" in line)
+    landmark = next(line.strip() for line in source.splitlines() if "kind === 'bakery window'" in line)
+    scale = next(line.strip() for line in source.splitlines() if "sc = art[5]" in line)
+    attempts = art_patch_attempts(root)
+    patch_root = root / f"22-art-renderer-fix-retry-{len(attempts):02}" if attempts[0].exists() else attempts[0]
+    patch_file = patch_root / "workspace/renderer-fixes.json"
+    brief = f"""Create renderer-fixes.json with three exact JavaScript replacements.
+1. At startup window.INKY_ART already contains your real 20-scene art map. drawScene reads the local INKY_ART.
+Change `{map_assignment}` so the local variable receives the real map and the global stays intact.
+2. Extend `{landmark}` to accept this exact value: "Mara's bakery window". Use that ASCII apostrophe.
+3. In `{scale}`, increase the illustrated landmark and characters' scale so they are easier to read in the
+browser. The current sprites are about 20 pixels tall in a 530x330 display. Keep the relative scale authored in each scene.
+Keep all other art. One create_file action. Its content string is JSON: {{"replacements":[{{"old":"exact text","new":"replacement","count":1}},...]}}.
+"""
+    script = str(Path(__file__).resolve())
+    run_phase(patch_root, gdk, brief, [patch_file.name],
+              [sys.executable, script, "check-art-repair", str(patch_file), "--world", str(root), "--node", str(node)],
+              max_tokens=620, iterations=1, context=8192, allow_basename=True, compact_writes=True)
+    check_renderer_patch(renderer, read_json(patch_file), node)
 
 
 def check_art_map(source, card):
@@ -558,9 +600,7 @@ Cast: {cast}. Your scene cues: {cues}."""
                   max_tokens=3400, iterations=3, context=8192, allow_basename=True,
                   validate_create=[sys.executable, script, "check-proposed-art-map", "--card", str(card_file)])
     authored = check_art_map(read_json(map_file), check_card(card_file))
-    paint_root = root / "22-art-renderer"
-    if paint_root.exists() and not (paint_root / "workspace/renderer.js").is_file():
-        paint_root = root / "22-art-renderer-extended"
+    paint_root = art_renderer_root(root)
     render_file = paint_root / "workspace/renderer.js"
     if not render_file.is_file():
         landmarks = sorted({row[6] for row in authored.values()})
@@ -575,17 +615,37 @@ Your landmark motifs: {', '.join(landmarks)}. Your character designs: {cast}."""
                   max_tokens=12000, iterations=1, context=16384, allow_basename=True)
     bridge = "window.INKY_ART = " + json.dumps(authored, ensure_ascii=False, separators=(",", ":")) + ";\n"
     composed = root / "art-composition.js"
-    composed.write_bytes(bridge.encode("utf-8") + render_file.read_bytes())
-    return {"scene_compositions": replay_writes(art_root, [map_file.name], require_verified=False),
-            "canvas_renderer": replay_writes(paint_root, [render_file.name], require_verified=False),
-            "composition_sha256": sha(composed.read_bytes())}
+    art = {"scene_compositions": replay_writes(art_root, [map_file.name], require_verified=False),
+           "canvas_renderer": replay_writes(paint_root, [render_file.name], require_verified=False)}
+    patch_root = next((attempt for attempt in reversed(art_patch_attempts(root))
+                       if (attempt / "workspace/renderer-fixes.json").is_file()), None)
+    if patch_root is not None:
+        patch = patch_root / "workspace/renderer-fixes.json"
+        art["renderer_corrections"] = replay_writes(patch_root, [patch.name], require_verified=False)
+        renderer = check_renderer_patch(render_file, read_json(patch), node).encode("utf-8")
+    else:
+        renderer = render_file.read_bytes()
+    composed.write_bytes(bridge.encode("utf-8") + renderer)
+    art["composition_sha256"] = sha(composed.read_bytes())
+    return art
+
+
+def player_score_block(source):
+    start = source.index("      var score = ")
+    return source[start:source.index("      if (computed > bestScore)", start)]
 
 
 def verify_player_patch(root, source_root, patch, node, chrome):
     bundle = root / "player-check"
     bundle.mkdir(exist_ok=True)
     workspace = source_root / "workspace"
-    fixed = apply_player_fixes((workspace / "player.js").read_bytes().decode("utf-8"), patch)
+    original = (workspace / "player.js").read_bytes().decode("utf-8")
+    if "replacements" not in patch:
+        patch = {"replacements": [
+            {"old": "stats = { trust: 0, nerve: 0, care: 0 };", "new": patch["initialize"], "count": 2},
+            {"old": player_score_block(original), "new": patch["score"].rstrip() + "\n", "count": 1},
+        ]}
+    fixed = apply_source_replacements(original, patch)
     shutil.copyfile(workspace / "index.html", bundle / "index.html")
     shutil.copyfile(art_source_path(root), bundle / "art.js")
     (bundle / "player.js").write_bytes(fixed.encode("utf-8"))
@@ -604,9 +664,7 @@ def finish_player(root, data, gdk, node, chrome):
     subprocess.run([str(node), "--check", str(art_source_path(root))], check=True, timeout=10)
     fix_root = root / "23-player-check"
     original = (source_root / "workspace/player.js").read_bytes().decode("utf-8")
-    score_start = original.index("      var score = ")
-    score_end = original.index("      if (computed > bestScore)", score_start)
-    excerpt = original[score_start:score_end]
+    excerpt = player_score_block(original)
     fix_brief = f"""Create player-fixes.json. Correct your player.js using exact old/new text replacements.
 Write a JSON object {{"replacements":[{{"old":"the exact old string","new":"your replacement","count":1}}]}}.
 Count must cover all exact occurrences you intend to replace. Author the replacement JavaScript yourself.
@@ -619,12 +677,23 @@ This exact scoring block currently reads named fields that the real data does no
 Keep the page, artwork, visible controls and other player behavior. Write player-fixes.json through the tool,
 then call run_verifier to run the browser on your corrected program. Only change the two contract mismatches.
 """
+    max_tokens = 2304
+    if fix_root.exists() and not (fix_root / "workspace/player-fixes.json").is_file():
+        fix_root = root / "23-player-check-compact"
+        max_tokens = 480
+        fix_brief = """Create player-fixes.json in one tool call, with two JSON string fields `initialize` and `score`.
+Author the JavaScript for both. `initialize` replaces the incorrect zero stats assignment at start and Restart.
+It should assign a fresh copy of WORLD.stats to stats. `score` replaces the old score calculation inside the
+reaction loop. It should define computed as the dot product of r.score [bias, trust, nerve, care] and
+[1, stats.trust, stats.nerve, stats.care]. The surrounding loop already selects the first maximum computed.
+Provide the two new snippets only. Then call run_verifier.
+"""
     if not (fix_root / "workspace/player-fixes.json").is_file():
         script = str(Path(__file__).resolve())
         check = [sys.executable, script, "check-player", str(fix_root / "workspace/player-fixes.json"),
                  "--world", str(root), "--node", str(node), "--chrome", str(chrome)]
         run_phase(fix_root, gdk, fix_brief, ["player-fixes.json"], check,
-                  max_tokens=2304, iterations=8, context=8192, allow_basename=True, compact_writes=True)
+                  max_tokens=max_tokens, iterations=8, context=8192, allow_basename=True, compact_writes=True)
     fixes = replay_writes(fix_root, ["player-fixes.json"], require_verified=False)
     patch = read_json(fix_root / "workspace/player-fixes.json")
     require(verify_player_patch(root, source_root, patch, node, chrome) == 0,
@@ -645,7 +714,7 @@ def main() -> int:
     parser.add_argument("command", choices=("plan", "check-card", "math", "check-math", "check-proposed-math",
                         "outline", "check-outline", "check-proposed-outline", "balance", "check-balance", "check-proposed-balance",
                         "scenes", "check-scenes", "check-proposed", "export", "play", "finish-player", "check-player",
-                        "check-art-map", "check-proposed-art-map"))
+                        "check-art-map", "check-proposed-art-map", "repair-art", "check-art-repair"))
     parser.add_argument("path", type=Path)
     parser.add_argument("--gdk", type=Path)
     parser.add_argument("--card", type=Path)
@@ -656,6 +725,10 @@ def main() -> int:
     parser.add_argument("--first-reply-from", type=Path)
     parser.add_argument("--world", type=Path)
     args = parser.parse_args()
+    if args.command == "check-art-repair":
+        renderer = art_renderer_root(args.world) / "workspace/renderer.js"
+        check_renderer_patch(renderer, read_json(args.path), args.node)
+        return 0
     if args.command in ("check-art-map", "check-proposed-art-map"):
         source = read_json(args.path) if args.command == "check-art-map" else json.loads(sys.stdin.buffer.read())
         check_art_map(source, check_card(args.card))
@@ -717,6 +790,11 @@ def main() -> int:
         parser.error("a rollout requires --gdk")
     gdk = args.gdk.resolve(strict=True)
     phase = args.path.resolve()
+    if args.command == "repair-art":
+        if args.node is None:
+            parser.error("repair-art requires --node")
+        repair_art(phase, gdk, args.node.resolve(strict=True))
+        return 0
     if args.command == "finish-player":
         if not (args.gptstoryworld and args.node and args.chrome):
             parser.error("finish-player requires --gptstoryworld, --node, and --chrome")

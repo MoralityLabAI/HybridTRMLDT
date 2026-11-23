@@ -1,6 +1,6 @@
 import unittest
 
-from .inky_storyworld import apply_player_fixes, check_art_map, check_outline, check_profiles, duplicated, encounter_card
+from .inky_storyworld import apply_source_replacements, check_art_map, check_outline, check_profiles, duplicated, encounter_card
 from .storyworld_swmd import evaluate, parse_scene, profile_pair, rehearse, render_card, world_ids
 
 
@@ -17,10 +17,10 @@ class CompactCards(unittest.TestCase):
 
     def test_player_replacements_require_exact_counts(self):
         original = "a\r\na\r\nb\r\n"
-        self.assertEqual(apply_player_fixes(original, {"replacements": [
+        self.assertEqual(apply_source_replacements(original, {"replacements": [
             {"old": "a", "new": "c", "count": 2}]}), "c\r\nc\r\nb\r\n")
         with self.assertRaisesRegex(ValueError, "expected 1 exact occurrences"):
-            apply_player_fixes(original, {"replacements": [{"old": "a", "new": "c"}]})
+            apply_source_replacements(original, {"replacements": [{"old": "a", "new": "c"}]})
 
     def test_outline_requires_distinct_beats_and_scene_cues(self):
         card = {"endings": [{"id": f"end_{i}"} for i in range(4)]}
