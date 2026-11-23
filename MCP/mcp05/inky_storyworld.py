@@ -363,6 +363,8 @@ def export(root: Path, card_file: Path, gptstoryworld: Path) -> dict:
     balance = rehearse(scenes, card["stats"])
     save(out / "balance.json", balance)
     require(balance["timeouts"] == 0, "a local retry route stalled in seeded rehearsal")
+    missing = sorted(set(roster) - set(balance["encounter_visits"]))
+    require(not missing, f"seeded rehearsal did not reach {', '.join(missing)}")
     data = {"title": card["title"], "premise": card["premise"], "cast": card["cast"], "stats": card["stats"],
             "endings": card["endings"], "scenes": scenes}
     (out / "world-data.js").write_text("window.WORLD = " + json.dumps(data, ensure_ascii=False) + ";\n",
