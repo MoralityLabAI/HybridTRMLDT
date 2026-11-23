@@ -133,6 +133,7 @@ def main():
     prefix_file = os.environ.get("MCP05_EPISODE_PREFIX_PATH")
     prefix = ProviderPrefix(Path(prefix_file)) if prefix_file else None
     wire_log = os.environ.get("MCP05_WIRE_LOG")
+    fresh_prompt = os.environ.get("MCP05_FRESH_PROMPT") == "1"
 
     def forward(method, path, raw):
         headers = {"Content-Type": "application/json"}
@@ -174,6 +175,7 @@ def main():
                 return
             started = time.monotonic()
             receipt = {}
+            provider_body = None
             try:
                 if parity_failed:
                     raise PreflightError("provider/preflight parity failed earlier in this session")
@@ -183,6 +185,8 @@ def main():
                 request = json.loads(self.rfile.read(size))
                 if request.get("stream"):
                     raise PreflightError("session preflight requires non-streaming inference")
+                if fresh_prompt:
+                    request["cache_prompt"] = False
                 measured, receipt = prepare(forward, request, window=args.window, reserve=args.reserve,
                                            budget=args.budget, memory=args.memory,
                                            deduplicate_reads=args.deduplicate_reads)
@@ -197,6 +201,7 @@ def main():
                 provider_started = time.monotonic()
                 if saved is None:
                     status, raw = forward("POST", chat_path, body)
+                    provider_body = raw
                 else:
                     status, raw = 200, json.dumps(saved["response"], ensure_ascii=False).encode()
                     receipt.update(provider_replayed=True, original_provider_seconds=saved["provider_seconds"])
@@ -219,7 +224,7 @@ def main():
                 receipt["error"] = str(exc)
                 status, raw = 422, json.dumps({"error": {"message": str(exc)}}).encode()
             emit_trace(receipt)
-            emit_wire("response", raw, status)
+            emit_wire("response", raw if provider_body is None else provider_body, status)
             self.respond(status, raw)
 
     with HTTPServer(("127.0.0.1", 0), Handler) as server:

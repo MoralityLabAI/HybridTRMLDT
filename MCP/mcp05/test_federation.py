@@ -3,10 +3,13 @@ import json
 import subprocess
 import tempfile
 import unittest
+from collections import deque
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from .federation import Federation, build
+from .routed_context import candidate_stream
 from .service import Service
 
 
@@ -84,6 +87,23 @@ class FederationContracts(unittest.TestCase):
         self.assertIn(indexed["candidates"][0]["uri"], packet["packet"])
         self.assertTrue(service.call("host.edit", {"handle": found["handle"], "old": "current",
                                                    "new": "changed"})["isError"])
+
+
+    def test_routed_context_shares_a_deduplicated_candidate_stream(self):
+        federation = Federation(self.indexes)
+        lanes = [{"index": name, "query": "specialbeacon theorembeacon", "prefixes": ("",)} for name in ("a", "b")]
+
+        def packets(_, spec, *, required):
+            self.assertFalse(required)
+            name = spec["index"]
+            return deque({"index": name, "path": "same.md", "uri": f"index:{name}:{i}"} for i in range(5))
+
+        with patch("MCP.mcp05.routed_context.sections", side_effect=packets):
+            pool, traces = candidate_stream(federation, lanes)
+        self.assertEqual({item["uri"] for item in pool}, {f"index:{name}:{i}" for name in ("a", "b") for i in range(3)})
+        self.assertEqual(len(pool), 6)
+        self.assertEqual(len(traces), 2)
+        self.assertTrue(all(trace["revision"] == federation.revision for trace in traces))
 
 
 if __name__ == "__main__":

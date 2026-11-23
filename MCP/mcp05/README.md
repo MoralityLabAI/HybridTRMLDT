@@ -88,6 +88,8 @@ actual context and output reserve. Set `MCP05_WIRE_LOG` to a fresh local file wh
 operator wants the exact forwarded messages and the provider's response. Keep these
 transcripts with the local run records.
 
+Use `--answer-only` for a session whose repository evidence has already been assembled. The app requests a final answer without advertising or dispatching tools. For cold context comparisons, `MCP05_FRESH_PROMPT=1` asks the llama.cpp relay to disable prefix reuse. Verify `cache_n` and `prompt_n` in the response timing record.
+
 ## Execution and accounting
 
 The session sends the actual Goose wire request through a loopback preflight relay. It applies the upstream chat template, tokenizes with special tokens recognized, and checks for tool-schema serialization when schemas are present. It forwards raw messages if they fit. Packet and typed modes may condense closed history and remeasure it. Each provider completion records preflight parity. A mismatch prevents further completions in that session.

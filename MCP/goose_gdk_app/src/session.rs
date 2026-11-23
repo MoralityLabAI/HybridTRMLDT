@@ -8,7 +8,7 @@ use async_trait::async_trait;
 use goose_agent::inference::InferenceRunner;
 use goose_agent::machine::{StateMachine, Step};
 use goose_agent::operation::{
-    applied, not_applicable, yielded, yielded_with, Emitter, Operation, OperationResult,
+    applied, not_applicable, yielded, Emitter, Operation, OperationResult,
 };
 use goose_provider_types::conversation::message::Message;
 use goose_provider_types::conversation::Conversation;
@@ -81,6 +81,7 @@ pub(crate) struct Options {
     verifier: Option<String>,
     checkpoint: Option<PathBuf>,
     evidence_file: Option<PathBuf>,
+    answer_only: bool,
     controller_reset: bool,
     json_actions: bool,
     deduplicate_reads: bool,
@@ -102,6 +103,7 @@ impl Options {
             "--verifier" => self.verifier = Some(value()?),
             "--session-file" => self.checkpoint = Some(PathBuf::from(value()?)),
             "--evidence-file" => self.evidence_file = Some(PathBuf::from(value()?)),
+            "--answer-only" => self.answer_only = true,
             "--controller-reset" => self.controller_reset = true,
             "--json-actions" => self.json_actions = true,
             "--deduplicate-reads" => self.deduplicate_reads = true,
@@ -119,6 +121,7 @@ impl Options {
             || self.verifier.is_some()
             || self.checkpoint.is_some()
             || self.evidence_file.is_some()
+            || self.answer_only
             || self.controller_reset
             || self.json_actions
             || self.deduplicate_reads
@@ -590,6 +593,13 @@ impl Operation<AppSession, AppEffect> for RepairOperation {
         _: &Emitter,
     ) -> Result<OperationResult<AppEffect>> {
         let mut state = session.repair.clone().context("missing repair state")?;
+        if state.answer_only {
+            let ended = state.iterations >= state.iteration_limit
+                || conversation
+                    .last()
+                    .is_some_and(|message| message.role == rmcp::model::Role::Assistant);
+            return if ended { yielded() } else { not_applicable() };
+        }
         let seen: HashSet<_> = conversation
             .iter()
             .flat_map(|message| message.get_tool_response_ids())
@@ -604,7 +614,6 @@ impl Operation<AppSession, AppEffect> for RepairOperation {
                 }
             }
         }
-        let answer_only = state.answer_only;
         if !requests.is_empty() {
             let mut response = Message::user();
             for request in requests {
@@ -629,19 +638,7 @@ impl Operation<AppSession, AppEffect> for RepairOperation {
                 response = response.with_tool_response(request.id.clone(), Ok(result));
             }
             let effects = [AppEffect::Append(response), AppEffect::Repair(state)];
-            return if answer_only {
-                yielded_with(effects)
-            } else {
-                applied(effects)
-            };
-        }
-
-        if answer_only {
-            let ended = state.iterations >= state.iteration_limit
-                || conversation
-                    .last()
-                    .is_some_and(|message| message.role == rmcp::model::Role::Assistant);
-            return if ended { yielded() } else { not_applicable() };
+            return applied(effects);
         }
 
         let exhausted =
@@ -841,7 +838,11 @@ pub(crate) async fn run(args: Args) -> Result<()> {
     let mut packet = String::new();
     let mut packet_stats = Value::Null;
     let mut calls = 0;
-    if !args.no_packet && options.controller.is_none() && args.max_tool_calls > 3 {
+    if !options.answer_only
+        && !args.no_packet
+        && options.controller.is_none()
+        && args.max_tool_calls > 3
+    {
         packet_stats = mcp.call_tool("compact_context", json!({
             "task": args.task, "budget_tokens": args.budget, "max_tool_calls": args.max_tool_calls / 2, "arm": args.arm,
         })).await?;
@@ -910,7 +911,7 @@ pub(crate) async fn run(args: Args) -> Result<()> {
                 verification: Value::Null,
                 subgoal: args.task.clone(),
                 reminders: 0,
-                answer_only: false,
+                answer_only: options.answer_only,
             }),
         }),
         usage: Mutex::new(Vec::new()),
@@ -982,6 +983,17 @@ pub(crate) async fn run(args: Args) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn answer_only_is_an_explicit_session_option() {
+        let mut options = Options::default();
+        assert!(!options.answer_only);
+        options
+            .parse("--answer-only", &mut || panic!("flag has no argument"))
+            .unwrap();
+        assert!(options.answer_only);
+        assert!(options.check_legacy().is_err());
+    }
 
     #[test]
     fn evidence_is_attached_once_to_the_initial_message() {

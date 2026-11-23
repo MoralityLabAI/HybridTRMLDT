@@ -12,7 +12,7 @@ from pathlib import Path
 from .federation import Federation, readonly, terms
 
 
-def sections(federation: Federation, lane: dict) -> deque:
+def sections(federation: Federation, lane: dict, *, required: bool = True) -> deque:
     name = lane["index"]
     queries = tuple(lane["prefixes"])
     if not queries:
@@ -40,7 +40,7 @@ def sections(federation: Federation, lane: dict) -> deque:
                 "index": name, "uri": f"index:{name}:{rowid}", "path": path, "start": start,
                 "commit": federation.repos[name]["commit"], "body": body,
             })
-    if not result:
+    if required and not result:
         raise ValueError(f"no evidence sections in {name}")
     return result
 
@@ -83,6 +83,11 @@ def count(text: str, port: int) -> int:
 
 def pack(federation: Federation, lanes: list[dict], output: Path, target: int, port: int) -> dict:
     pool = order_sections(federation, lanes)
+    return pack_ordered(federation, pool, output, target, port, required={lane["index"] for lane in lanes})
+
+
+def pack_ordered(federation: Federation, pool: list[dict], output: Path, target: int, port: int,
+                 *, lead: str = "", required: set[str] | None = None) -> dict:
     search = []
     nonspecial_bytes = 0
     for item in pool:
@@ -93,15 +98,17 @@ def pack(federation: Federation, lanes: list[dict], output: Path, target: int, p
     low, high = 0, len(search)
     while low < high:
         mid = (low + high + 1) // 2
-        if count(payload(search[:mid]), port) <= target:
+        if count(lead + payload(search[:mid]), port) <= target:
             low = mid
         else:
             high = mid - 1
     picked = search[:low]
-    text = payload(picked)
+    text = lead + payload(picked)
     tokens = count(text, port)
-    if tokens < target * 0.95 or {item["index"] for item in picked} != {lane["index"] for lane in lanes}:
-        raise ValueError("eligible sections do not fill the requested prompt across all lanes")
+    if not picked or tokens < target * 0.95:
+        raise ValueError("eligible sections do not fill the requested prompt")
+    if required is not None and {item["index"] for item in picked} != required:
+        raise ValueError("eligible sections do not cover the required lanes")
     raw = text.encode("utf-8")
     manifest = {
         "index_revision": federation.revision, "target_evidence_tokens": target, "evidence_tokens": tokens,

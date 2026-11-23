@@ -164,6 +164,8 @@ def episode(args, case: dict, arm: str, parent: Path) -> dict:
         cmd.append("--no-packet")
     if args.json_actions:
         cmd.append("--json-actions")
+    if getattr(args, "answer_only", False):
+        cmd.append("--answer-only")
     if args.deduplicate_reads and memory == "typed":
         cmd.append("--deduplicate-reads")
     if controller:
@@ -259,6 +261,7 @@ def main():
     parser.add_argument("--limit", type=int)
     parser.add_argument("--case-ids", nargs="+")
     parser.add_argument("--json-actions", action="store_true")
+    parser.add_argument("--answer-only", action="store_true", help="Use the supplied evidence in one final answer turn")
     parser.add_argument("--deduplicate-reads", action="store_true")
     args = parser.parse_args()
     if not args.stage and not args.cases:
@@ -289,6 +292,8 @@ def main():
         plan["goblin_cwd"] = str(args.goblin_cwd)
     if args.deduplicate_reads:
         plan["deduplicate_reads"] = True
+    if args.answer_only:
+        plan["answer_only"] = True
     if args.provider_prefix_id:
         plan["provider_prefix_id"] = args.provider_prefix_id
     plan_file = args.out / "plan.json"
