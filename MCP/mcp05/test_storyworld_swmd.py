@@ -34,8 +34,8 @@ class CompactCards(unittest.TestCase):
         reaction = scene["options"][0]["reactions"][0]
         self.assertEqual(reaction["effects"], {"trust": 0.08, "nerve": -0.04})
         self.assertAlmostEqual(evaluate(reaction["score"], {"trust": 0.5, "nerve": 0, "care": 0}), .04)
-        with self.assertRaisesRegex(ValueError, "invalid forward target"):
-            parse_scene(compiled.replace("-> enc_02", "-> enc_01", 1), card, "enc_01")
+        with self.assertRaisesRegex(ValueError, "invalid route"):
+            parse_scene(compiled.replace("-> enc_02", "-> enc_04", 1), card, "enc_01")
 
     def test_rehearsal_replays_clamped_effects_and_records_a_witness(self):
         yes = {"id": "positive", "to": "end", "score": [0, .2, 0, 0], "effects": {"trust": .2}}

@@ -144,8 +144,8 @@ def parse_scene(text: str, card: dict, scene_id: str) -> dict:
         require(opt.startswith(f"opt_{idx:02}_") and rxn.startswith(f"rxn_{idx:02}_")
                 and rxn not in reaction_ids and reaction_text[1] == rxn, "encounter-specific option/reaction IDs must match")
         reaction_ids.add(rxn)
-        allowed = ids[idx:min(idx + 2, playable)] if idx < playable else ids[playable:]
-        require(target in allowed, f"invalid forward target {target}, expected one of {allowed}")
+        allowed = ids[idx - 1:min(idx + 2, playable)] if idx < playable else ids[playable:]
+        require(target in allowed, f"invalid route {target}, expected one of {allowed}")
         row = opts.setdefault(opt, {"id": opt, "text": choice, "reactions": []})
         require(choice.strip() and row["text"] == choice, "repeat the same nonempty option text on both ORX lines")
         row["reactions"].append({"id": rxn, "to": target, "text": reaction_text[2],
@@ -178,6 +178,7 @@ def rehearse(scenes: list[dict], initial: dict, *, runs: int = 5000, seed: int =
     by_id = {s["id"]: s for s in scenes}
     endings, visits, hits, steps = Counter(), Counter(), Counter(), Counter()
     saturated = 0
+    timeouts = 0
     rng = Random(seed)
     witnesses, scene_witnesses = {}, {}
     for _ in range(runs):
@@ -185,7 +186,7 @@ def rehearse(scenes: list[dict], initial: dict, *, runs: int = 5000, seed: int =
         node = scenes[0]
         turn = 0
         path = []
-        while node["options"]:
+        while node["options"] and turn < 4 * len(scenes):
             visits[node["id"]] += 1
             scene_witnesses.setdefault(node["id"], path.copy())
             option = rng.choice(node["options"])
@@ -199,6 +200,9 @@ def rehearse(scenes: list[dict], initial: dict, *, runs: int = 5000, seed: int =
             path[-1]["after"] = dict(state)
             node = by_id[reply["to"]]
             turn += 1
+        if node["options"]:
+            timeouts += 1
+            continue
         visits[node["id"]] += 1
         scene_witnesses.setdefault(node["id"], path)
         endings[node["id"]] += 1
@@ -206,7 +210,7 @@ def rehearse(scenes: list[dict], initial: dict, *, runs: int = 5000, seed: int =
         steps[turn] += 1
     return {"runs": runs, "seed": seed, "endings": dict(sorted(endings.items())),
             "encounter_visits": dict(sorted(visits.items())), "reaction_hits": dict(sorted(hits.items())),
-            "lengths": dict(sorted(steps.items())), "clamped_effects": saturated, "witnesses": witnesses,
+            "lengths": dict(sorted(steps.items())), "clamped_effects": saturated, "timeouts": timeouts, "witnesses": witnesses,
             "scene_witnesses": scene_witnesses}
 
 

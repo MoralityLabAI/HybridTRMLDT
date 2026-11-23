@@ -139,7 +139,8 @@ def scene_brief(card, ids, recent):
     for id_ in ids:
         i = roster.index(id_)
         choices = roster[i + 1:min(i + 3, playable)] if i < playable - 1 else terminal_ids
-        routes.append(f"{id_} -> {', '.join(choices)}")
+        allowed = [*choices, id_] if i < playable - 1 else choices
+        routes.append(f"{id_} -> {', '.join(allowed)}")
     if profiles := card.get("profiles"):
         return brief + """Each ordinary card has three distinct options. Atomically write exactly one card.
 An option is {"label":"YOUR CHOICE","model":"PROFILE_NAME","reactions":[{"next":"ENCOUNTER_ID","reply":"YOUR REPLY"},{"next":"ENCOUNTER_ID","reply":"ANOTHER REPLY"}]}
@@ -247,6 +248,7 @@ def export(root: Path, card_file: Path, gptstoryworld: Path) -> dict:
     require(not errors, "\n".join(errors))
     balance = rehearse(scenes, card["stats"])
     save(out / "balance.json", balance)
+    require(balance["timeouts"] == 0, "a local retry route stalled in seeded rehearsal")
     data = {"title": card["title"], "premise": card["premise"], "cast": card["cast"], "stats": card["stats"],
             "endings": card["endings"], "scenes": scenes}
     (out / "world-data.js").write_text("window.WORLD = " + json.dumps(data, ensure_ascii=False) + ";\n",
