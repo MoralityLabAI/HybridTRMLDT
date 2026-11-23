@@ -19,7 +19,7 @@ const types={".html":"text/html; charset=utf-8",".css":"text/css; charset=utf-8"
 const server=createServer(async (req,res)=>{
   try{
     const path=decodeURIComponent(new URL(req.url,"http://127.0.0.1").pathname);
-    if(mode && path!=="/" && !(storyworld && ["/art.js","/world-data.js"].includes(path))) {res.writeHead(404).end();return;}
+    if(mode && path!=="/" && !(storyworld && ["/art.js","/player.js","/world-data.js"].includes(path))) {res.writeHead(404).end();return;}
     const file=resolve(root,"."+path+(path.endsWith("/")?"index.html":""));
     if(!file.startsWith(root.endsWith(sep)?root:root+sep)) {res.writeHead(403).end();return;}
     const body=await readFile(storyworld && path==="/world-data.js" ? goalX : file);

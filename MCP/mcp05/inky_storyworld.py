@@ -277,7 +277,7 @@ Use exactly these permitted targets: """ + " / ".join(routes)
 def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: list[str], *,
               max_tokens: int = 2304, iterations: int = 7, context: int = 8192,
               validate_create: list[str] | None = None, first_reply_from: Path | None = None,
-              allow_basename: bool = False) -> dict:
+              allow_basename: bool = False, compact_writes: bool = False) -> dict:
     root.mkdir(parents=True)
     workspace = root / "workspace"
     workspace.mkdir()
@@ -304,7 +304,7 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
     save(root / "invocation.json", invocation)
     env = {**os.environ, "MCP05_WIRE_LOG": str(root / "inky-wire.jsonl"),
            "MCP05_SERVER_WIRE_LOG": str(root / "mcp-wire.jsonl")}
-    if validate_create:
+    if validate_create or compact_writes:
         env["MCP05_COMPACT_CREATE_HISTORY"] = "1"
     for key in ("MCP05_FRESH_PROMPT", "MCP05_EPISODE_PREFIX_PATH", "MCP05_FEDERATION", "MCP05_INDEX_ROUTER"):
         env.pop(key, None)
@@ -447,11 +447,16 @@ def balance_brief(root, card):
 def play_brief(data):
     art = "\n".join(f"{item['id']} {item['art']}" for item in data["scenes"])
     cast = "\n".join(f"{item['name']}: {item['visual']}" for item in data["cast"])
-    return f"""Build the original {data['title']} browser edition. Use Goose create_file for index.html first,
-then for art.js. The world-data.js export is provided at runtime. You author all player code, Canvas
-art, colors, typography, layout, and interaction. Use inline CSS and no external resources.
+    return f"""Build your {data['title']} browser edition in three separate Goose create_file turns:
+index.html, then player.js, then art.js. Each turn creates only that file. Use one complete action at a time.
+The world-data.js export is provided at runtime. You author all view code, Canvas art, and interaction.
 
-index.html must load world-data.js and art.js with script src. window.WORLD contains title, premise,
+First index.html: only the page markup and concise inline CSS, no inline application script. Make a readable
+page with a title, intro, play area, art, and controls. Give divs IDs scene-title, scene-text, choices, reaction,
+and meters, a canvas id art, and buttons with IDs continue and restart. At the end load external local scripts
+world-data.js, art.js, and player.js in that order. Use original typography, layout and colors. No remote assets.
+
+player.js owns the interaction. window.WORLD contains title, premise,
 cast:[{{id,name,voice,visual}}], stats:{{trust,nerve,care}}, endings:[{{id,type,condition,expected_critic_score}}],
 scenes:[{{id,title,text,art,options:[{{id,text,reactions:[{{id,to,text,effects,score}}]}}]}}].
 Start on the first scene. For each visible choice, use button[data-option=OPTION_ID]. On its click
@@ -465,7 +470,8 @@ for the first scene and after navigation. Use accessible, legible controls and r
 In art.js define window.drawScene(canvas,scene,cast). Draw your own character portraits using paths,
 fill/stroke, and a coherent palette. Draw setting-specific composition and props for each of these
 20 scenes through Canvas code. Give landmark and ending illustrations distinct silhouettes and geometry.
-Use the prose cues below as your art direction. Keep each file within one action. Call run_verifier after both.
+Use the prose cues below as your art direction. Use a compact shared drawing vocabulary plus distinct
+scene compositions and character silhouettes. Call run_verifier when all three files are written.
 
 Your character designs:\n{cast}\n\nYour scene cues:\n{art}"""
 
@@ -474,12 +480,12 @@ def play(root: Path, gdk: Path, data: dict, node: Path, chrome: Path) -> None:
     out = root / "export"
     target = root / "21-player"
     captures = target / "browser"
-    files = ["index.html", "art.js"]
+    files = ["index.html", "player.js", "art.js"]
     browser_check = [str(node), str(ROOT / "MCP/demos/browser-smoke.mjs"), str(chrome), str(captures),
                      "storyworld", str(target / "workspace"), str(out / "world-data.js"), str(out / "balance.json")]
     if not target.exists():
         result = run_phase(target, gdk, play_brief(data), files, browser_check,
-                           max_tokens=4608, context=16384, iterations=10)
+                           max_tokens=5200, context=16384, iterations=11, compact_writes=True, allow_basename=True)
         require(result["state"].get("verified"), f"Inkling's browser verification failed: {target}")
     receipt = replay_writes(target, files)
     for name in files:
