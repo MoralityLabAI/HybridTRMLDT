@@ -134,6 +134,10 @@ try{
     }else if(storyworld){
       const balance=JSON.parse(await readFile(goalY,"utf8"));
       const snapshots=new Set();
+      const authoredInitial=await evaluate("window.WORLD.stats");
+      assert.deepEqual(initial.stats,authoredInitial,"initialize the player from a copy of WORLD.stats");
+      await reset();
+      assert.deepEqual((await state()).stats,authoredInitial,"restart must restore WORLD.stats, including nonzero values");
       for(const [destination,path] of Object.entries(balance.scene_witnesses)){
         await reset();
         for(const step of path){
@@ -141,7 +145,8 @@ try{
           assert.equal(await evaluate("document.querySelectorAll('button[data-option]:not(:disabled)').length"),3);
           await evaluate(`document.querySelector('button[data-option="${step.option}"]').click()`);
           const changed=await state();
-          assert.equal(changed.reaction,step.reaction);
+          assert.equal(changed.reaction,step.reaction,
+            `${step.scene}/${step.option} must select the maximum reaction.score array [bias, trust, nerve, care] dot product before effects`);
           for (const [stat,value] of Object.entries(step.after)) {
             assert.ok(Math.abs(changed.stats[stat]-value)<1e-9,`${stat} differs from the reference rule`);
           }
