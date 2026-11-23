@@ -325,6 +325,40 @@ def describe(arm, candidate, target):
     }
 
 
+def write_report(root, arms, errors):
+    lines = ["# Inky Mini Hilbert Storyworld Benchmark", "",
+             "Each condition uses the same staged task, checkpoint, two loops, and output budgets. The long",
+             "turns use increasingly long prefixes of the same Pocket Goblin reference packet. The comparison",
+             "therefore measures the effect of supplying more retrieved material in this run.", "",
+             "The model owns the story and the choice rules. The numerical replay treats the amplitude vector",
+             "as a pure state. It applies authored sequences in order and reads Born weights at the ending.",
+             "The route probabilities below assume uniformly random available choices.", "",
+             "## Sized prompts", "", "| Arm | Stage | Actual input | Output | Provider seconds |",
+             "|---|---|---:|---:|---:|"]
+    for arm in arms:
+        for trace in arm["traces"]:
+            if trace.get("target_input_tokens") and trace.get("provider_preflight_parity"):
+                lines.append(f"| {arm['input_target']:,} | {trace['stage']} | {trace['provider_prompt_tokens']:,} | "
+                             f"{trace['provider_completion_tokens']:,} | {trace['provider_seconds']:.2f} |")
+    lines.extend(("", "## Story and routes", "", "| Arm | Encounters | Scene words | Distinct choice labels | Decisions per route |",
+                  "|---|---:|---:|---:|---:|"))
+    for arm in arms:
+        lengths = sorted(map(int, arm["route_lengths"]))
+        lines.append(f"| {arm['input_target']:,} | {arm['encounters']} | {arm['scene_words']:,} | "
+                     f"{arm['unique_choice_labels']} | {lengths[0]}–{lengths[-1]} |")
+    lines.extend(("", "## Secret gates", "", "| Arm | Ending | Draft access | Final access | Swap closed gate |",
+                  "|---|---|---:|---:|---|"))
+    for arm in arms:
+        for end, row in arm["secrets"].items():
+            lines.append(f"| {arm['input_target']:,} | `{end}` | {row['draft_probability']:.3%} | "
+                         f"{row['final_probability']:.3%} | {'Yes' if row['order_sensitive'] else 'Unobserved'} |")
+    if errors:
+        lines.extend(("", "## Unfinished phases", ""))
+        for item in errors:
+            lines.append(f"- {item['input_target']:,} tokens, {item['stage']}. {item['error']}")
+    (root / "benchmark-results.md").write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("plan", "develop", "all", "check-plan", "play"))
@@ -376,6 +410,7 @@ def main():
                 if (root / f"{target // 1024:02d}k/result.json").is_file()]
         save(root / "benchmark-results.json", {"targets": TARGETS, "arms": rows, "errors": errors,
              "design": "Matched authoring stages at one seed. Long prompts use increasing prefixes of one retrieved reference packet."})
+        write_report(root, rows, errors)
     if errors:
         raise SystemExit(1)
 
