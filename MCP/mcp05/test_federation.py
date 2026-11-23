@@ -78,6 +78,10 @@ class FederationContracts(unittest.TestCase):
         self.assertEqual(found["source"], "(specialbeacon current)")
         workspace = service.call("context.query", {"query": "@workspace specialbeacon"})["structuredContent"]
         self.assertEqual(workspace["candidates"][0]["uri"], "source.metta")
+        packet = service.call("compact_context", {"task": "specialbeacon",
+                                                  "budget_tokens": 128})["structuredContent"]
+        self.assertEqual(packet["tool_calls"], 1)
+        self.assertIn(indexed["candidates"][0]["uri"], packet["packet"])
         self.assertTrue(service.call("host.edit", {"handle": found["handle"], "old": "current",
                                                    "new": "changed"})["isError"])
 

@@ -169,6 +169,9 @@ class Service(GoblinService):
             schema["properties"].pop("repo_path", None)
             if "repo_path" in schema["required"]:
                 schema["required"].remove("repo_path")
+            if self.federation and tool["name"] == "context.query":
+                tool["description"] = ("Rank source across repository indexes. Prefix the query with @index-id "
+                                       "to scope a repository or @workspace to find editable sources.")
         text = {"type": "string"}
         integer = {"type": "integer", "minimum": 0}
         schemas = {
@@ -258,7 +261,7 @@ class Service(GoblinService):
             entries = [f"{row['uri']} {row['path']} (line {row['start']})" for row in found["candidates"]]
             packet = "\n".join(entries).encode("utf-8")[:budget * 4].decode("utf-8", errors="ignore")
             return {"packet": packet, "packet_tokens": (len(packet.encode("utf-8")) + 3) // 4,
-                    "tokenizer": "estimate:utf8_bytes_div_4", "routing": found["routing"]}
+                    "tokenizer": "estimate:utf8_bytes_div_4", "tool_calls": 1, "routing": found["routing"]}
         return None
 
 
