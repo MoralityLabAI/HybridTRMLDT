@@ -54,6 +54,32 @@ Use MCP.mcp05.benchmarks to stage a native GPTStoryworld building exercise, SWE-
 
 For the two Flask assignments on Windows, run `grade_swe_wsl.ps1` after the A and D prediction files are complete. Set `-Campaign` to the evaluation directory and `-DatasetDirectory` to the directory containing the pinned `swe-bench-lite-test.parquet` and DuckDB under `reader`. The launcher projects the selected rows, checks for the corresponding local container images, and runs the WSL evaluator with one worker. For a single-case pilot, set `-InstanceIds` and `-Arms` to the pilot assignments and choose a separate `-OutputName`. Use `-ProbeOnly` to check the dataset and container availability before predictions arrive. [Official SWE-bench harness](https://github.com/SWE-bench/SWE-bench/tree/main/swebench/harness)
 
+## Cross-repository Data Goblin lookup
+
+Build an immutable index from committed source blobs. The input JSON contains a `repositories`
+array. Each object has an `id`, the local checkout `path`, an optional display `label`, and an
+optional pinned `commit` (defaults to that checkout's HEAD). The builder never indexes uncommitted
+work, symlinks, Git LFS placeholders, or paths matching its protected-data exclusions.
+
+    python -m MCP.mcp05.federation --spec repositories.json --out work/repo-indexes
+    python -m MCP.mcp05.index_router --indexes work/repo-indexes --out work/index-router
+
+The first command creates one on-disk FTS index per repository plus a compact vocabulary catalog.
+The second fits a three-pass CPU SetTRM with two threads and a 3 GiB process RSS cap. It reports
+lexical, recurrent, and reset recall on disjoint source-path probes. This is a routing proxy.
+Use a live rollout to test whether the retrieved evidence actually helps a solver.
+
+For a normal Goose multi-turn session, set `MCP05_FEDERATION` to the built index directory and,
+optionally, `MCP05_INDEX_ROUTER` to its `router.pt`. Both can also be supplied directly to
+`python -m MCP.mcp05.service --repo WORKSPACE` as `--federation` and `--index-router`.
+The `--repo` workspace still controls edits and verification. Indexed sources are read-only.
+
+Use `context.query` for a cross-repository search. The receipt records queried, deferred,
+and independently excluded indexes. An exclusion is certified for the query's exact OR-term
+postings at the catalog revision. Semantic relevance remains open. Use `@index-id terms` to
+search a deferred repository, `@workspace terms` to find editable sources, and
+`context.expand(node_id="indexes")` to inspect the catalog. Pass returned URIs to `context.read`.
+
 ## Execution and accounting
 
 The session sends the actual Goose wire request through a loopback preflight relay. It applies the upstream chat template, tokenizes with special tokens recognized, and checks for tool-schema serialization when schemas are present. It forwards raw messages if they fit. Packet and typed modes may condense closed history and remeasure it. Each provider completion records preflight parity. A mismatch prevents further completions in that session.

@@ -9,7 +9,7 @@ from MCP.mcp03.env import CodeEnv, PREDICATES, code_tokens
 from MCP.mcp03.repo import SKIP_DIRS, Snapshot, Symbol, parse_symbols
 from .json_sections import sections
 
-TEXT_SUFFIXES = {".py", ".rs", ".js", ".ts", ".tsx", ".jsx", ".json", ".md", ".toml",
+TEXT_SUFFIXES = {".py", ".rs", ".js", ".ts", ".tsx", ".jsx", ".json", ".md", ".toml", ".lean", ".metta",
                  ".yaml", ".yml", ".txt", ".cu", ".cpp", ".c", ".h", ".html", ".css"}
 MAX_SOURCE_BYTES = 512 * 1024
 

@@ -150,6 +150,16 @@ class Service(GoblinService):
         if args.controller:
             from .controller import Controller
             self.controller = Controller(args.controller, args.depth, args.reset, args.threads)
+        self.federation = None
+        if args.federation:
+            from .federation import Federation
+            router = None
+            if args.index_router:
+                from .index_router import IndexRouter
+                router = IndexRouter(args.index_router, args.threads)
+            self.federation = Federation(Path(args.federation), router)
+        elif args.index_router:
+            raise ValueError("an index router requires a federation")
         self.expanded = False
 
     def tools(self) -> list[dict]:
@@ -185,6 +195,7 @@ class Service(GoblinService):
                 return envelope(summary)
             if name == "host.final":
                 return envelope({**self.working.state(), **self.workspace.state(),
+                                 **({"federation": self.federation.state()} if self.federation else {}),
                                  "controller_calls": self.controller_calls,
                                  "controller_seconds": self.controller_seconds,
                                  "retrieval_seconds": self.retrieval_seconds})
@@ -207,6 +218,11 @@ class Service(GoblinService):
             if name == "context.expand":
                 self.expanded = True
             started = time.monotonic()
+            if self.federation:
+                indexed = self.federated_call(name, arguments)
+                if indexed is not None:
+                    self.retrieval_seconds += time.monotonic() - started
+                    return envelope(indexed)
             result = super().call(name, {**arguments, "repo_path": self.root})
             if name in {"context.query", "context.expand", "context.read", "compact_context"}:
                 self.retrieval_seconds += time.monotonic() - started
@@ -214,12 +230,45 @@ class Service(GoblinService):
         except (OSError, TypeError, ValueError, KeyError, UnicodeError, subprocess.SubprocessError) as exc:
             return envelope({"error": str(exc)}, error=True)
 
+    def federated_call(self, name: str, arguments: dict) -> dict | None:
+        if name == "context.query":
+            query = arguments["query"]
+            if query.startswith("@workspace "):
+                payload = super().call(name, {**arguments, "query": query.removeprefix("@workspace "),
+                                              "repo_path": self.root})
+                if payload.get("isError"):
+                    raise ValueError(payload["structuredContent"]["error"])
+                return payload["structuredContent"]
+            return self.federation.query(**arguments)
+        if name == "context.read":
+            reference = arguments.get("uri") or arguments.get("handle") or ""
+            if reference.startswith(("index:", "indexed:")):
+                return self.federation.read(**arguments)
+        if name == "context.state":
+            return {**self.working.state(), "federation": self.federation.state()}
+        if name == "context.expand" and arguments.get("node_id") == "indexes":
+            if arguments.get("predicate") or arguments.get("exclude"):
+                raise ValueError("index exclusions are computed from the exact query")
+            return self.federation.state()
+        if name == "compact_context":
+            found = self.federation.query(arguments["task"], limit=4)
+            budget = int(arguments.get("budget_tokens", 1024))
+            if not 128 <= budget <= 32768:
+                raise ValueError("invalid packet budget")
+            entries = [f"{row['uri']} {row['path']} (line {row['start']})" for row in found["candidates"]]
+            packet = "\n".join(entries).encode("utf-8")[:budget * 4].decode("utf-8", errors="ignore")
+            return {"packet": packet, "packet_tokens": (len(packet.encode("utf-8")) + 3) // 4,
+                    "tokenizer": "estimate:utf8_bytes_div_4", "routing": found["routing"]}
+        return None
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", required=True)
     parser.add_argument("--verifier")
     parser.add_argument("--controller")
+    parser.add_argument("--federation", default=os.environ.get("MCP05_FEDERATION"))
+    parser.add_argument("--index-router", default=os.environ.get("MCP05_INDEX_ROUTER"))
     parser.add_argument("--depth", type=int)
     parser.add_argument("--reset", action="store_true")
     parser.add_argument("--threads", type=int, choices=range(1, 5), default=4)
