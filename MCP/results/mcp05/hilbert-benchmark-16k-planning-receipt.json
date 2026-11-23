@@ -23,5 +23,9 @@
   "included_reference_sha256": "feac152f4c4c2ecfe6376a8fadab6e08f9fa8d56b3f930dc996b299884626449",
   "formatted_prompt_sha256": "bc46897ca32443c66ae9a7200d0871562495fdf287fc547014be64c0b1229a1b",
   "provider_wire_sha256": "d89a7eeac857724bd072ef5457ac5ff6a3b6db1c668680a800710b552452e793",
-  "receipt_sha256": "8311009483561a3797c26c1460e5a1c3c216b87b54f7cfd3df3df020450576b2"
+  "receipt_sha256": "8311009483561a3797c26c1460e5a1c3c216b87b54f7cfd3df3df020450576b2",
+  "draft_title": "The Hollow Ledger",
+  "premise_drift": "Missing ledger-keeper instead of the requested missing sound of the night bell",
+  "related_reference": "Archived murder-mystery authoring prompts were present in the exact input.",
+  "draft_character_name_found_in_input": false
 }
