@@ -325,25 +325,24 @@ def export(root: Path, card_file: Path, gptstoryworld: Path) -> dict:
     ifid = "SW-INKY-CAT-HAT-20261123"
     (root / "export").mkdir(exist_ok=True)
     out = root / "export"
-    receipts, blocks, scenes = {}, [], []
+    receipts = {}
     card_phase = card_file.parents[1]
     receipts[card_phase.name] = replay_writes(card_phase, [card_file.name], require_verified=False)
     if card.get("profiles"):
         receipts["00-math"] = replay_writes(root / "00-math", ["reaction-model.json"])
     if card.get("outline"):
         receipts["00-outline"] = replay_writes(root / "00-outline", ["outline.json"])
-    catalog_file = root / "scene-sources.json"
-    catalog = read_json(catalog_file) if catalog_file.exists() else {
-        id_: f"{start:02}-{end:02}-encounters"
-        for start, end in groups(card) for id_ in roster[start - 1:end]
-    }
+    catalog = read_json(root / "scene-sources.json")
+    route_patch = root / "balance-revisions/workspace/route-revisions.json"
+    targets = checked_targets(root, card, read_json(route_patch)) if route_patch.exists() else {}
+    blocks, scenes = compile_routes(root, card, targets)
+    if route_patch.exists():
+        receipts["balance-revisions"] = replay_writes(route_patch.parents[1], [route_patch.name], require_verified=False)
     for id_ in roster:
         phase = root / catalog[id_]
         if phase.name not in receipts:
             paths = [name.name for name in sorted((phase / "workspace").glob("*.card.json"))]
             receipts[phase.name] = replay_writes(phase, paths, require_verified=False)
-        scenes.extend(check_scenes(card, phase / "workspace", [id_]))
-        blocks.append(render_card(encounter_card(read_json(phase / "workspace" / scene_path(id_))), card, id_))
     require(reachable(scenes) == set(roster), "encounter graph has unreachable scenes")
     require(len({scene["art"] for scene in scenes}) == 20, "every encounter must have distinct art direction")
     require(len({scene["text"] for scene in scenes}) == 20, "every encounter must contain original scene prose")
@@ -375,6 +374,53 @@ def export(root: Path, card_file: Path, gptstoryworld: Path) -> dict:
                                  "artifacts": {file.name: sha(file.read_bytes()) for file in (swmd, world, out / "balance.json", out / "world-data.js")}})
     print(f"Validated SWMD and SweepWeave export for {card['title']}. Ending counts: {balance['endings']}", flush=True)
     return data
+
+
+def compile_routes(root, card, targets):
+    catalog = read_json(root / "scene-sources.json")
+    ids = world_ids(card)
+    blocks = [render_card(encounter_card(read_json(root / catalog[id_] / "workspace" / scene_path(id_))),
+                          card, id_, targets) for id_ in ids]
+    return blocks, [parse_scene(block, card, id_) for block, id_ in zip(blocks, ids, strict=True)]
+
+
+def checked_targets(root, card, source):
+    require(isinstance(source, dict), "write an object mapping reaction IDs to targets")
+    targets = source.get("targets", source)
+    _, old = compile_routes(root, card, {})
+    ids = {r["id"] for scene in old for option in scene["options"] for r in option["reactions"]}
+    require(isinstance(targets, dict) and targets and set(targets) <= ids, "supply known reaction IDs in targets")
+    _, scenes = compile_routes(root, card, targets)
+    require(reachable(scenes) == set(world_ids(card)), "patch disconnects one or more encounters")
+    result = rehearse(scenes, card["stats"])
+    missing = sorted(set(world_ids(card)) - set(result["encounter_visits"]))
+    require(not missing and not result["timeouts"],
+            f"route rehearsal failed: missing={missing}; stalls={result['timeout_scenes']}; endings={result['endings']}")
+    return targets
+
+
+def balance_brief(root, card):
+    _, scenes = compile_routes(root, card, {})
+    result = rehearse(scenes, card["stats"])
+    rows = []
+    for scene in scenes:
+        if not scene["options"]:
+            continue
+        retries = [r["id"] for option in scene["options"] for r in option["reactions"] if r["to"] == scene["id"]]
+        if retries:
+            rows.append(f"{scene['id']} {scene['title']}: {', '.join(retries)}")
+    finale = scenes[20 - len(card['endings']) - 1]
+    last_choices = [f"{option['text']}: " + ", ".join(f"{r['id']} -> {r['to']} ({result['reaction_hits'].get(r['id'], 0)} visits)"
+                    for r in option["reactions"]) for option in finale["options"]]
+    return ("Author route-revisions.json via create_file with path and content. Its JSON contains a targets object "
+            "mapping existing reaction IDs to their revised encounter IDs. Keep your existing story, art, options, "
+            "scores, and effects. You are adjusting transitions only. Remove local repetition that can trap Pip, "
+            "using forward encounter IDs; keep every scene reachable. Make every ending reachable, especially the missing "
+            "fallback, while honoring your endings and three finale choices. Choose exact destination IDs yourself.\n"
+            f"Seed 523, 5,000 trial results: timeout scenes {result['timeout_scenes']}, ending counts {result['endings']}.\n"
+            f"Your retry reaction IDs: {' / '.join(rows)}.\n"
+            f"Finale diagnostics: {' / '.join(last_choices)}. Endings: {', '.join(e['id'] for e in card['endings'])}.\n"
+            "Submit the revised targets together. Goose will rehearse your patch before accepting it.")
 
 
 def play_brief(data):
@@ -427,7 +473,7 @@ def play(root: Path, gdk: Path, data: dict, node: Path, chrome: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("plan", "check-card", "math", "check-math", "check-proposed-math",
-                        "outline", "check-outline", "check-proposed-outline",
+                        "outline", "check-outline", "check-proposed-outline", "balance", "check-balance", "check-proposed-balance",
                         "scenes", "check-scenes", "check-proposed", "export", "play"))
     parser.add_argument("path", type=Path)
     parser.add_argument("--gdk", type=Path)
@@ -437,7 +483,15 @@ def main() -> int:
     parser.add_argument("--node", type=Path)
     parser.add_argument("--chrome", type=Path)
     parser.add_argument("--first-reply-from", type=Path)
+    parser.add_argument("--world", type=Path)
     args = parser.parse_args()
+    if args.command in ("check-balance", "check-proposed-balance"):
+        root = args.world.resolve()
+        card = with_authoring_cards(check_card(root / "00-world/workspace/world-card.json"), root)
+        source = read_json(args.path) if args.command == "check-balance" else json.loads(sys.stdin.buffer.read())
+        targets = checked_targets(root, card, source)
+        print(f"Validated {len(targets)} authored route revisions over 5,000 complete rehearsals")
+        return 0
     if args.command in ("check-outline", "check-proposed-outline"):
         source = read_json(args.path) if args.command == "check-outline" else json.loads(sys.stdin.buffer.read())
         check_outline(source, check_card(args.card))
@@ -483,6 +537,16 @@ def main() -> int:
         parser.error("a rollout requires --gdk")
     gdk = args.gdk.resolve(strict=True)
     phase = args.path.resolve()
+    if args.command == "balance":
+        card = with_authoring_cards(check_card(phase / "00-world/workspace/world-card.json"), phase)
+        script = str(Path(__file__).resolve())
+        root = phase / "balance-revisions"
+        verifier = [sys.executable, script, "check-proposed-balance", "--world", str(phase)]
+        result = run_phase(root, gdk, balance_brief(phase, card), ["route-revisions.json"],
+                           [sys.executable, script, "check-balance", str(root / "workspace/route-revisions.json"),
+                            "--world", str(phase)], validate_create=verifier,
+                           max_tokens=1792, iterations=5, allow_basename=True)
+        return 0 if (root / "workspace/route-revisions.json").is_file() else 1
     if args.command == "outline":
         card_file = phase / "00-world/workspace/world-card.json"
         card = check_card(card_file)

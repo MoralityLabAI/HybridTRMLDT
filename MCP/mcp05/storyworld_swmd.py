@@ -75,7 +75,7 @@ def profile_pair(profile):
     return tuple(sorted(tuple(delta) for _, delta in profile))
 
 
-def render_card(source: dict, card: dict, scene_id: str) -> str:
+def render_card(source: dict, card: dict, scene_id: str, targets: dict[str, str] | None = None) -> str:
     """Expand an Inkling-authored compact card into canonical ORX and prose records."""
     def text(value):
         require(isinstance(value, str) and value.strip() and "\n" not in value and "\r" not in value and "|" not in value,
@@ -106,13 +106,14 @@ def render_card(source: dict, card: dict, scene_id: str) -> str:
                 require(isinstance(reaction, list) and len(reaction) == 4,
                         "a reaction is an object with next, reply, score and delta")
                 target, reply, scores, deltas = reaction
-            require(isinstance(target, str) and target in roster,
-                    f"target {target!r} must be an encounter ID from the route card, not a title or speaker")
             require(len(scores) == 4 and len(deltas) == 3 and all(type(x) is int for x in [*scores, *deltas]),
                     "reaction scores and deltas must be four and three integer hundredths respectively")
             require(sum(map(abs, scores)) <= 100 and all(abs(delta) <= 24 for delta in deltas),
                     "keep score coefficient mass within 100 and deltas within 24 hundredths")
             opt, rxn = f"opt_{ordinal:02}_{op_i}", f"rxn_{ordinal:02}_{op_i}_{rx_i}"
+            target = (targets or {}).get(rxn, target)
+            require(isinstance(target, str) and target in roster,
+                    f"target {target!r} must be an encounter ID from the route card, not a title or speaker")
             effects = "; ".join(f"SET {hero}.{stat} += {delta / 100:g}" for stat, delta in zip(STATS, deltas) if delta)
             terms = [f"C({scores[0] / 100:g})"] if scores[0] else []
             terms.extend(f"MUL(P({hero}.{stat}),{weight / 100:g})" for stat, weight in zip(STATS, scores[1:]) if weight)
@@ -182,7 +183,7 @@ def rehearse(scenes: list[dict], initial: dict, *, runs: int = 5000, seed: int =
     by_id = {s["id"]: s for s in scenes}
     endings, visits, hits, steps = Counter(), Counter(), Counter(), Counter()
     saturated = 0
-    timeouts = 0
+    timeout_scenes = Counter()
     rng = Random(seed)
     witnesses, scene_witnesses = {}, {}
     for _ in range(runs):
@@ -205,7 +206,7 @@ def rehearse(scenes: list[dict], initial: dict, *, runs: int = 5000, seed: int =
             node = by_id[reply["to"]]
             turn += 1
         if node["options"]:
-            timeouts += 1
+            timeout_scenes[node["id"]] += 1
             continue
         visits[node["id"]] += 1
         scene_witnesses.setdefault(node["id"], path)
@@ -214,7 +215,8 @@ def rehearse(scenes: list[dict], initial: dict, *, runs: int = 5000, seed: int =
         steps[turn] += 1
     return {"runs": runs, "seed": seed, "endings": dict(sorted(endings.items())),
             "encounter_visits": dict(sorted(visits.items())), "reaction_hits": dict(sorted(hits.items())),
-            "lengths": dict(sorted(steps.items())), "clamped_effects": saturated, "timeouts": timeouts, "witnesses": witnesses,
+            "lengths": dict(sorted(steps.items())), "clamped_effects": saturated, "timeouts": sum(timeout_scenes.values()),
+            "timeout_scenes": dict(timeout_scenes.most_common()), "witnesses": witnesses,
             "scene_witnesses": scene_witnesses}
 
 
