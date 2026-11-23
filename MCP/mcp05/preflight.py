@@ -51,6 +51,43 @@ def measure(forward, request, *, window: int, reserve: int):
                            completion_reserve=reserve, safety_margin=64)
 
 
+def size_reference_prompt(forward, request, reference: str, target: int, *, window: int, reserve: int):
+    """Select a prefix of retrieved evidence by the provider's exact chat token count."""
+    messages = request["messages"]
+    user = next(i for i in range(len(messages) - 1, -1, -1) if messages[i]["role"] == "user")
+    task = messages[user]["content"]
+    if not isinstance(task, str) or target > window - reserve - 64:
+        raise PreflightError("invalid sized-reference request")
+
+    def probe(length):
+        content = f"Retrieved reference material for this task:\n{reference[:length]}\n\nAuthoring task:\n{task}"
+        amended = list(messages)
+        amended[user] = dict(messages[user], content=content)
+        candidate = dict(request, messages=amended)
+        return candidate, measure(forward, candidate, window=window, reserve=reserve)
+
+    low, high = 0, len(reference)
+    if probe(low)[1]["prompt_tokens"] > target or probe(high)[1]["prompt_tokens"] < target:
+        raise PreflightError(f"retrieved evidence cannot fill the {target}-token input")
+    closest = None
+    while low <= high:
+        length = (low + high) // 2
+        candidate, measured = probe(length)
+        difference = measured["prompt_tokens"] - target
+        if closest is None or abs(difference) < closest[0]:
+            closest = (abs(difference), candidate, measured, length)
+        if abs(difference) <= 2 and measured["fits"]:
+            return candidate, measured, length
+        if difference < 0:
+            low = length + 1
+        else:
+            high = length - 1
+    distance, candidate, measured, length = closest
+    if distance > 8 or not measured["fits"]:
+        raise PreflightError(f"could not size a retrieved prompt within eight tokens of {target}")
+    return candidate, measured, length
+
+
 def deduplicate_read_sources(messages: list[dict]) -> tuple[list[dict], int]:
     updated = list(messages)
     seen = set()
@@ -190,6 +227,9 @@ def main():
     wire_log = os.environ.get("MCP05_WIRE_LOG")
     fresh_prompt = os.environ.get("MCP05_FRESH_PROMPT") == "1"
     compact_writes = os.environ.get("MCP05_COMPACT_CREATE_HISTORY") == "1"
+    input_target = int(os.environ.get("MCP05_EXACT_INPUT_TARGET", "0"))
+    reference = Path(os.environ["MCP05_REFERENCE_PACKET"]).read_text(encoding="utf-8") if input_target else ""
+    initial_sized = False
 
     def forward(method, path, raw):
         headers = {"Content-Type": "application/json"}
@@ -225,7 +265,7 @@ def main():
             self.wfile.write(payload)
 
         def do_POST(self):
-            nonlocal parity_failed
+            nonlocal parity_failed, initial_sized
             if self.path != "/v1/chat/completions":
                 self.respond(404, b"{}")
                 return
@@ -243,9 +283,18 @@ def main():
                     raise PreflightError("session preflight requires non-streaming inference")
                 if fresh_prompt:
                     request["cache_prompt"] = False
-                measured, receipt = prepare(forward, request, window=args.window, reserve=args.reserve,
-                                           budget=args.budget, memory=args.memory,
-                                           deduplicate_reads=args.deduplicate_reads, compact_writes=compact_writes)
+                if input_target and not initial_sized:
+                    request["cache_prompt"] = False
+                    measured, checked, length = size_reference_prompt(
+                        forward, request, reference, input_target, window=args.window, reserve=args.reserve)
+                    receipt = {"preflight": checked, "compacted": False, "target_input_tokens": input_target,
+                               "reference_characters": length,
+                               "reference_sha256": hashlib.sha256(reference[:length].encode()).hexdigest()}
+                    initial_sized = True
+                else:
+                    measured, receipt = prepare(forward, request, window=args.window, reserve=args.reserve,
+                                               budget=args.budget, memory=args.memory,
+                                               deduplicate_reads=args.deduplicate_reads, compact_writes=compact_writes)
                 receipt["preflight_seconds"] = time.monotonic() - started
                 body = json.dumps(measured, ensure_ascii=False).encode()
                 emit_wire("request", body)

@@ -277,7 +277,8 @@ Use exactly these permitted targets: """ + " / ".join(routes)
 def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: list[str], *,
               max_tokens: int = 2304, iterations: int = 7, context: int = 8192,
               validate_create: list[str] | None = None, first_reply_from: Path | None = None,
-              allow_basename: bool = False, compact_writes: bool = False) -> dict:
+              allow_basename: bool = False, compact_writes: bool = False,
+              reference_prompt: tuple[Path, int] | None = None) -> dict:
     root.mkdir(parents=True)
     workspace = root / "workspace"
     workspace.mkdir()
@@ -295,12 +296,15 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
                "--base-url", "http://127.0.0.1:18097/v1/", "--model", MODEL, "--context-window", str(context),
                "--max-tokens", str(max_tokens), "--max-agent-iterations", str(iterations), "--max-tool-calls", "24",
                "--budget", "1024", "--no-packet", "--memory-mode", "raw", "--allow-create", "--json-actions",
-               "--timeout-secs", "840"]
+               "--timeout-secs", "7200" if reference_prompt else "840"]
     invocation = {"argv": command, "base_commit": git(workspace, "rev-parse", "HEAD"),
                   "verifier_sha256": sha(manifest.read_bytes()),
                   "brief_sha256": sha(task.read_bytes()), "gdk_sha256": sha(gdk.read_bytes())}
     if runtime_file := os.environ.get("INKY_STORYWORLD_RUNTIME"):
         invocation["model_runtime"] = read_json(Path(runtime_file))
+    if reference_prompt:
+        packet, input_tokens = reference_prompt
+        invocation["reference_prompt"] = {"sha256": sha(packet.read_bytes()), "input_tokens": input_tokens}
     save(root / "invocation.json", invocation)
     env = {**os.environ, "MCP05_WIRE_LOG": str(root / "inky-wire.jsonl"),
            "MCP05_SERVER_WIRE_LOG": str(root / "mcp-wire.jsonl")}
@@ -308,6 +312,9 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
         env["MCP05_COMPACT_CREATE_HISTORY"] = "1"
     for key in ("MCP05_FRESH_PROMPT", "MCP05_EPISODE_PREFIX_PATH", "MCP05_FEDERATION", "MCP05_INDEX_ROUTER"):
         env.pop(key, None)
+    if reference_prompt:
+        env["MCP05_REFERENCE_PACKET"] = str(packet)
+        env["MCP05_EXACT_INPUT_TARGET"] = str(input_tokens)
     if first_reply_from:
         provider_events = events(first_reply_from / "inky-wire.jsonl")
         first = events(first_reply_from / "session.preflight.jsonl")[0]
