@@ -168,13 +168,15 @@ def groups(card):
 def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path, first_reply_from: Path | None = None) -> list[dict]:
     roster = world_ids(card)
     prior, sources = [], {}
+    terminal_start = 21 - len(card["endings"])
     for start, end in groups(card):
         ids = roster[start - 1:end]
         prefix = f"{start:02}-{end:02}-encounters"
         attempts = [root / prefix, *sorted(root.glob(f"{prefix}-retry-*"))]
+        earlier_batches = [root / f"{terminal_start:02}-20-encounters", *sorted(root.glob(f"{terminal_start:02}-20-encounters-retry-*"))]
         ready = {}
         for id_ in ids:
-            for phase in attempts:
+            for phase in [*attempts, *(earlier_batches if start >= terminal_start else [])]:
                 if (phase / "workspace" / scene_path(id_)).is_file():
                     candidate = check_scenes(card, phase / "workspace", [id_])[0]
                     if not duplicated(candidate, [*prior, *(entry[0] for entry in ready.values())]):
