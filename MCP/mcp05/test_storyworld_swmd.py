@@ -1,9 +1,16 @@
 import unittest
 
-from .storyworld_swmd import evaluate, parse_scene, rehearse, render_card, world_ids
+from .storyworld_swmd import evaluate, parse_scene, profile_pair, rehearse, render_card, world_ids
 
 
 class CompactCards(unittest.TestCase):
+    def test_profile_guard_preserves_state_dependence(self):
+        data = [[[0, 25, 0, 0], [5, -4, 0]], [[0, -25, 0, 0], [-5, 4, 0]]]
+        self.assertEqual(profile_pair(data), ((-5, 4, 0), (5, -4, 0)))
+        data[1][0] = [60, 25, 0, 0]
+        with self.assertRaisesRegex(ValueError, "each reaction must be favored"):
+            profile_pair(data)
+
     def test_round_trip_preserves_the_action_math(self):
         card = {"cast": [{"id": "char_probe"}], "endings": [{"id": f"end_{i}"} for i in range(4)]}
         data = {"title": "Round trip", "text": "This is a test fixture with a visible narration line.",

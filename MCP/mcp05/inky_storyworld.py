@@ -19,7 +19,7 @@ if __package__ is None:
 from .context import sha
 from .creative_bench import save
 from .inky_goose_game import MODEL, ROOT, git, read_json, replay_writes
-from .storyworld_swmd import parse_scene, reachable, rehearse, render_card, sweepweave_document, swmd_document, world_ids
+from .storyworld_swmd import parse_scene, profile_pair, reachable, rehearse, render_card, sweepweave_document, swmd_document, world_ids
 
 CARD_BRIEF = """Use create_file to write world-card.json. Plan an original illustrated interactive fable
 about a cat and an unusual hat. Invent your own characters and visual identity. This turn is just the
@@ -65,6 +65,32 @@ def check_card(path: Path) -> dict:
     return card
 
 
+def check_profiles(source: dict) -> dict:
+    profiles = source["profiles"]
+    require(isinstance(profiles, dict) and 6 <= len(profiles) <= 9, "provide six to nine named profile pairs")
+    fingerprints = set()
+    accepted = {}
+    for name, profile in profiles.items():
+        require(re.fullmatch(r"[a-z][a-z0-9_]{1,22}", name), f"invalid profile name: {name}")
+        try:
+            if isinstance(profile, dict):
+                profile = [[profile[arm]["score"], profile[arm]["delta"]] for arm in ("a", "b")]
+            require(len(profile) == 2,
+                    'use {"a":{"score":[b,t,n,c],"delta":[t,n,c]},"b":{"score":[b,t,n,c],"delta":[t,n,c]}} '
+                    "for each named profile, with your actual numbers in each of the four arrays")
+            fingerprints.add(profile_pair(profile))
+        except (ValueError, TypeError, KeyError) as error:
+            raise ValueError(f"{name}: {error}") from error
+        accepted[name] = profile
+    require(len(fingerprints) == len(profiles), "each profile needs a different pair of effect vectors")
+    return accepted
+
+
+def with_profiles(card: dict, root: Path) -> dict:
+    model = root / "00-math/workspace/reaction-model.json"
+    return {**card, "profiles": check_profiles(read_json(model))} if model.exists() else card
+
+
 def scene_path(scene_id):
     return f"{scene_id}.card.json"
 
@@ -108,12 +134,20 @@ def scene_brief(card, ids, recent):
         i = roster.index(id_)
         choices = roster[i + 1:min(i + 3, playable)] if i < playable - 1 else terminal_ids
         routes.append(f"{id_} -> {', '.join(choices)}")
+    if profiles := card.get("profiles"):
+        return brief + """Each ordinary card has three distinct options. Atomically write exactly one card.
+An option is {"label":"YOUR CHOICE","model":"PROFILE_NAME","reactions":[{"next":"ENCOUNTER_ID","reply":"YOUR REPLY"},{"next":"ENCOUNTER_ID","reply":"ANOTHER REPLY"}]}
+Give each option a different profile from your authored rulebook. A reaction's next value is an actual
+encounter ID. Use the first permitted target at least once per scene; the finale uses every listed target.
+Keep encounter prose, artwork directions, and replies vivid and concise.
+Your named profiles: """ + ", ".join(profiles) + "\nPermitted routes: " + " / ".join(routes)
     return brief + """Use objects with named fields. The JSON shape for a single option is:
 {"label":"YOUR CHOICE","reactions":[{"next":"ENCOUNTER_ID","reply":"YOUR RESPONSE","score":[0,0,0,0],"delta":[0,0,0]}, {"next":"ENCOUNTER_ID","reply":"A DIFFERENT RESPONSE","score":[0,0,0,0],"delta":[0,0,0]}]}
 Write exactly 3 options. Replace every placeholder, including all-zero vectors. The `next` field is an
 encounter ID from the route list, never a speaker. `score` is four integer hundredths [bias,trust,nerve,care],
 and `delta` is three integer hundredths [trust,nerve,care]. Score abs total <=100. Use opposite nonzero
-slopes in each reaction pair. Change 2–3 stats per reaction within -24 to 24. Use distinct tradeoffs.
+slopes and small biases in each reaction pair. The sum of the absolute differences between the three slopes
+must exceed the absolute bias difference. Change 2–3 stats per reaction within -24 to 24. Use distinct tradeoffs.
 The first listed target for each regular scene must occur at least once; the finale must use all listed targets.
 Use exactly these permitted targets: """ + " / ".join(routes)
 
@@ -145,6 +179,8 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
     save(root / "invocation.json", invocation)
     env = {**os.environ, "MCP05_WIRE_LOG": str(root / "inky-wire.jsonl"),
            "MCP05_SERVER_WIRE_LOG": str(root / "mcp-wire.jsonl")}
+    if validate_create:
+        env["MCP05_COMPACT_CREATE_HISTORY"] = "1"
     for key in ("MCP05_FRESH_PROMPT", "MCP05_EPISODE_PREFIX_PATH", "MCP05_FEDERATION", "MCP05_INDEX_ROUTER"):
         env.pop(key, None)
     print(f"Inkling phase {root.name}", flush=True)
@@ -154,7 +190,7 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
 
 
 def export(root: Path, card_file: Path, gptstoryworld: Path) -> dict:
-    card = check_card(card_file)
+    card = with_profiles(check_card(card_file), root)
     roster = world_ids(card)
     ifid = "SW-INKY-CAT-HAT-20261123"
     (root / "export").mkdir(exist_ok=True)
@@ -162,6 +198,8 @@ def export(root: Path, card_file: Path, gptstoryworld: Path) -> dict:
     receipts, blocks, scenes = {}, [], []
     card_phase = card_file.parents[1]
     receipts[card_phase.name] = replay_writes(card_phase, [card_file.name], require_verified=False)
+    if card.get("profiles"):
+        receipts["00-math"] = replay_writes(root / "00-math", ["reaction-model.json"])
     for start, end in groups(card):
         phase = root / f"{start:02}-{end:02}-encounters"
         ids = roster[start - 1:end]
@@ -248,7 +286,8 @@ def play(root: Path, gdk: Path, data: dict, node: Path, chrome: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("plan", "check-card", "scenes", "check-scenes", "check-proposed", "export", "play"))
+    parser.add_argument("command", choices=("plan", "check-card", "math", "check-math", "check-proposed-math",
+                        "scenes", "check-scenes", "check-proposed", "export", "play"))
     parser.add_argument("path", type=Path)
     parser.add_argument("--gdk", type=Path)
     parser.add_argument("--card", type=Path)
@@ -257,10 +296,14 @@ def main() -> int:
     parser.add_argument("--node", type=Path)
     parser.add_argument("--chrome", type=Path)
     args = parser.parse_args()
+    if args.command in ("check-math", "check-proposed-math"):
+        profiles = check_profiles(read_json(args.path) if args.command == "check-math" else json.loads(sys.stdin.buffer.read()))
+        print(f"Validated {len(profiles)} state-dependent math profiles.")
+        return 0
     if args.command == "check-proposed":
         filename = args.path.name
         id_ = filename.removesuffix(".card.json")
-        card = check_card(args.card)
+        card = with_profiles(check_card(args.card), args.card.resolve().parents[2])
         require(filename == scene_path(id_) and id_ in world_ids(card), "write an authorized encounter file")
         source = json.loads(sys.stdin.buffer.read())
         parse_scene(render_card(source, card, id_), card, id_)
@@ -270,7 +313,7 @@ def main() -> int:
         print(f"Validated five-act plan for {card['title']} with {len(card['endings'])} ending cards.")
         return 0
     if args.command == "check-scenes":
-        items = check_scenes(check_card(args.card), args.path, args.ids)
+        items = check_scenes(with_profiles(check_card(args.card), args.card.resolve().parents[2]), args.path, args.ids)
         print("Verified SWMD encounter blocks: " + ", ".join(scene["id"] for scene in items))
         return 0
     if args.command == "export":
@@ -283,6 +326,23 @@ def main() -> int:
         parser.error("a rollout requires --gdk")
     gdk = args.gdk.resolve(strict=True)
     phase = args.path.resolve()
+    if args.command == "math":
+        card = check_card(phase / "00-world/workspace/world-card.json")
+        target = phase / "00-math"
+        script = str(Path(__file__).resolve())
+        math_brief = f"""Write reaction-model.json with create_file for your cat-and-hat story {card['title']}.
+Define exactly six named profiles in the top-level profiles object. Use this shape for each named profile:
+{{"a":{{"score":[BIAS,TRUST,NERVE,CARE],"delta":[TRUST,NERVE,CARE]}},"b":{{"score":[BIAS,TRUST,NERVE,CARE],"delta":[TRUST,NERVE,CARE]}}}}.
+Replace all placeholders with numbers. Use lowercase descriptive names. Each score is four
+integer hundredths [bias, trustWeight, nerveWeight, careWeight]. Make both biases zero and the two
+weight vectors opposite, with restrained magnitudes, so either reaction can win across character states.
+Each delta is three integer hundredths [trustDelta, nerveDelta, careDelta]. Use distinct tradeoffs around
+2–12 hundredths, change two or three stats per response, and include both gains and costs. Every profile
+must use a different pair of effect vectors. Author all the numbers. Call run_verifier after the write."""
+        result = run_phase(target, gdk, math_brief, ["reaction-model.json"],
+                           [sys.executable, script, "check-math", str(target / "workspace/reaction-model.json")],
+                           validate_create=[sys.executable, script, "check-proposed-math"], max_tokens=1024)
+        return 0 if result["state"].get("verified") else 1
     if args.command == "play":
         if not (args.gptstoryworld and args.node and args.chrome):
             parser.error("play requires --gptstoryworld, --node, and --chrome")
@@ -292,7 +352,7 @@ def main() -> int:
         return 0
     if args.command == "scenes":
         card_path = args.card.resolve() if args.card else phase / "00-world/workspace/world-card.json"
-        card = check_card(card_path)
+        card = with_profiles(check_card(card_path), phase)
         preceding = []
         roster = world_ids(card)
         for start, end in groups(card):

@@ -59,6 +59,22 @@ def reaction_effects(text: str, character: str) -> dict[str, float]:
     return effects
 
 
+def profile_pair(profile):
+    require(len(profile) == 2, "a named balance profile needs two reactions")
+    for scores, deltas in profile:
+        require(len(scores) == 4 and len(deltas) == 3 and all(type(x) is int for x in [*scores, *deltas]),
+                "use four integer scores and three integer deltas per response")
+        require(sum(map(abs, scores)) <= 100 and any(scores[1:]), "each score needs bounded nonzero slopes")
+        require(all(abs(delta) <= 24 for delta in deltas) and sum(bool(x) for x in deltas) >= 2,
+                "each response needs two or three effect changes within 24 hundredths")
+    diff = [a - b for a, b in zip(profile[0][0], profile[1][0], strict=True)]
+    require(sum(map(abs, diff[1:])) > abs(diff[0]), "each reaction must be favored somewhere on the state cube")
+    require(profile[0][1] != profile[1][1], "alternate reactions need distinct effects")
+    require(any(any(x > 0 for x in delta) and any(x < 0 for x in delta) for _, delta in profile),
+            "at least one response must trade one stat for another")
+    return tuple(sorted(tuple(delta) for _, delta in profile))
+
+
 def render_card(source: dict, card: dict, scene_id: str) -> str:
     """Expand an Inkling-authored compact card into canonical ORX and prose records."""
     def text(value):
@@ -73,12 +89,17 @@ def render_card(source: dict, card: dict, scene_id: str) -> str:
     for op_i, option in enumerate(source["options"], 1):
         if isinstance(option, dict):
             label, reactions = option["label"], option["reactions"]
+            profile = card.get("profiles", {}).get(option.get("model"))
+            if card.get("profiles"):
+                require(profile is not None, "each option needs a named Inkling-authored math profile")
         else:
             label, *reactions = option
+            profile = None
         require(len(reactions) == 2, "each option row must contain a label and exactly two reactions")
         for rx_i, reaction in enumerate(reactions, 1):
             if isinstance(reaction, dict):
-                target, reply, scores, deltas = (reaction[key] for key in ("next", "reply", "score", "delta"))
+                target, reply = reaction["next"], reaction["reply"]
+                scores, deltas = profile[rx_i - 1] if profile is not None else (reaction["score"], reaction["delta"])
             else:
                 require(isinstance(reaction, list) and len(reaction) == 4,
                         "a reaction is an object with next, reply, score and delta")
@@ -136,7 +157,10 @@ def parse_scene(text: str, card: dict, scene_id: str) -> dict:
         require(len(pair) == 2 and pair[0]["text"] != pair[1]["text"], "options must have two distinct responses")
         require(pair[0]["effects"] != pair[1]["effects"], "each response needs a distinct effect vector")
         diff = [a - b for a, b in zip(pair[0]["score"], pair[1]["score"], strict=True)]
-        require(sum(map(abs, diff[1:])) > abs(diff[0]), "response ordering must reverse for some bounded states")
+        slope_span, bias_gap = sum(map(abs, diff[1:])), abs(diff[0])
+        require(slope_span > bias_gap,
+                f"{option['id']} ({option['text']}): abs bias gap {bias_gap:g} must be smaller than the sum "
+                f"of abs slope differences {slope_span:g} so each response can win in [-1,1]")
         vectors.add(tuple(sorted(tuple(sorted(r["effects"].items())) for r in pair)))
     require(len(vectors) == 3, "player choices need different effect pairs")
     scene["options"] = list(opts.values())

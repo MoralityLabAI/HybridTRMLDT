@@ -18,7 +18,7 @@ from MCP.serve import Session
 from .context import WorkingSet, sha
 from .evaluate import episode, main as evaluate
 from .gym import ROOT, clone, dump, verifier_manifest
-from .preflight import deduplicate_read_sources, prepare
+from .preflight import compact_create_history, deduplicate_read_sources, prepare
 from .service import RepairWorkspace
 
 TASK = "The player falls upward. Correct vertical gravity in physics."
@@ -143,6 +143,21 @@ class Provider(BaseHTTPRequestHandler):
 
 
 class Contracts(unittest.TestCase):
+    def test_create_prompt_compaction_preserves_receipts_and_pending_source(self):
+        content = "å" * 200
+        def action(id_):
+            return {"id": id_, "function": {"name": "create_file", "arguments": json.dumps({
+                "path": "fixture.js", "content": content})}}
+
+        receipt = {"role": "tool", "tool_call_id": "done", "content": '{"path":"fixture.js","after":"digest"}'}
+        messages = [{"role": "assistant", "tool_calls": [action("done")]}, receipt,
+                    {"role": "assistant", "tool_calls": [action("pending")]}]
+        compact, removed = compact_create_history(messages)
+        self.assertEqual(removed, 1)
+        self.assertIn(sha(content.encode()), compact[0]["tool_calls"][0]["function"]["arguments"])
+        self.assertEqual(compact[1:], messages[1:])
+        self.assertEqual(json.loads(messages[0]["tool_calls"][0]["function"]["arguments"])["content"], content)
+
     def test_rejected_proposal_leaves_source_and_git_index_clean(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

@@ -79,8 +79,43 @@ def deduplicate_read_sources(messages: list[dict]) -> tuple[list[dict], int]:
     return updated, removed
 
 
-def prepare(forward, request, *, window: int, reserve: int, budget: int, memory: str, deduplicate_reads: bool = False):
+def compact_create_history(messages: list[dict]) -> tuple[list[dict], int]:
+    """Keep the completed request and tool receipt while dropping old authored bytes from the next prompt."""
+    results = {m.get("tool_call_id"): m for m in messages if m.get("role") == "tool"}
+    updated = []
+    removed = 0
+    for message in messages:
+        calls = []
+        for call in message.get("tool_calls") or []:
+            function = call.get("function", {})
+            if function.get("name") == "create_file" and call.get("id") in results:
+                try:
+                    args = json.loads(function["arguments"])
+                    source = args["content"]
+                    if isinstance(source, str) and len(source) > 150:
+                        digest = hashlib.sha256(source.encode("utf-8")).hexdigest()
+                        args["content"] = f"[Prior proposal archived; SHA-256 {digest}. See the tool result for acceptance.]"
+                        function = dict(function, arguments=json.dumps(args, ensure_ascii=False, separators=(",", ":")))
+                        call = dict(call, function=function)
+                        removed += 1
+                except (KeyError, ValueError, TypeError):
+                    pass
+            calls.append(call)
+        updated.append(dict(message, tool_calls=calls) if calls else message)
+    return updated, removed
+
+
+def prepare(forward, request, *, window: int, reserve: int, budget: int, memory: str, deduplicate_reads: bool = False,
+            compact_writes: bool = False):
     raw = measure(forward, request, window=window, reserve=reserve)
+    if compact_writes:
+        messages, removed = compact_create_history(request["messages"])
+        if removed:
+            candidate = dict(request, messages=messages)
+            checked = measure(forward, candidate, window=window, reserve=reserve)
+            if checked["fits"] and checked["prompt_tokens"] < raw["prompt_tokens"]:
+                return candidate, {"preflight": checked, "compacted": True, "method": "archive-create-content",
+                                   "raw_prompt_tokens": raw["prompt_tokens"], "create_sources_archived": removed}
     if deduplicate_reads and memory == "typed":
         messages, removed = deduplicate_read_sources(request["messages"])
         if removed:
@@ -134,6 +169,7 @@ def main():
     prefix = ProviderPrefix(Path(prefix_file)) if prefix_file else None
     wire_log = os.environ.get("MCP05_WIRE_LOG")
     fresh_prompt = os.environ.get("MCP05_FRESH_PROMPT") == "1"
+    compact_writes = os.environ.get("MCP05_COMPACT_CREATE_HISTORY") == "1"
 
     def forward(method, path, raw):
         headers = {"Content-Type": "application/json"}
@@ -189,7 +225,7 @@ def main():
                     request["cache_prompt"] = False
                 measured, receipt = prepare(forward, request, window=args.window, reserve=args.reserve,
                                            budget=args.budget, memory=args.memory,
-                                           deduplicate_reads=args.deduplicate_reads)
+                                           deduplicate_reads=args.deduplicate_reads, compact_writes=compact_writes)
                 receipt["preflight_seconds"] = time.monotonic() - started
                 body = json.dumps(measured, ensure_ascii=False).encode()
                 emit_wire("request", body)
