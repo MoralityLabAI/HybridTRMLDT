@@ -144,7 +144,7 @@ def parse_scene(text: str, card: dict, scene_id: str) -> dict:
         require(opt.startswith(f"opt_{idx:02}_") and rxn.startswith(f"rxn_{idx:02}_")
                 and rxn not in reaction_ids and reaction_text[1] == rxn, "encounter-specific option/reaction IDs must match")
         reaction_ids.add(rxn)
-        allowed = ids[idx - 1:min(idx + 2, playable)] if idx < playable else ids[playable:]
+        allowed = ids[idx - 1:playable] if idx < playable else ids[playable:]
         require(target in allowed, f"invalid route {target}, expected one of {allowed}")
         row = opts.setdefault(opt, {"id": opt, "text": choice, "reactions": []})
         require(choice.strip() and row["text"] == choice, "repeat the same nonempty option text on both ORX lines")

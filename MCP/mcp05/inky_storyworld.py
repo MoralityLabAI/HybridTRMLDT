@@ -177,9 +177,10 @@ def scene_brief(card, ids, recent):
     routes = []
     for id_ in ids:
         i = roster.index(id_)
-        choices = roster[i + 1:min(i + 3, playable)] if i < playable - 1 else terminal_ids
-        allowed = [*choices, id_] if i < playable - 1 else choices
-        routes.append(f"{id_} -> {', '.join(allowed)}")
+        if i < playable - 1:
+            routes.append(f"{id_} -> {id_} or {roster[i+1]} through {roster[playable-1]}; include {roster[i+1]}")
+        else:
+            routes.append(f"{id_} -> {', '.join(terminal_ids)}")
     if profiles := card.get("profiles"):
         return brief + """Each ordinary card has three distinct options. Atomically write exactly one card.
 An option is {"label":"YOUR CHOICE","model":"PROFILE_NAME","reactions":[{"next":"ENCOUNTER_ID","reply":"YOUR REPLY"},{"next":"ENCOUNTER_ID","reply":"ANOTHER REPLY"}]}
