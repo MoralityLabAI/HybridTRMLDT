@@ -142,9 +142,9 @@ def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path, first_rep
             for id_ in ids:
                 if (phase / "workspace" / scene_path(id_)).is_file():
                     ready[id_] = (check_scenes(card, phase / "workspace", [id_])[0], phase.name)
-        previous_count = -1
+        stalled = 0
         while len(ready) < len(ids):
-            require(previous_count != len(ready), f"no new valid encounter files in {phase}")
+            require(stalled < 2, f"no new valid encounter files in two attempts for {prefix}")
             previous_count = len(ready)
             missing = [id_ for id_ in ids if id_ not in ready]
             phase = root / (prefix if not attempts[0].exists() else f"{prefix}-retry-{len(attempts):02}")
@@ -153,7 +153,7 @@ def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path, first_rep
             recent = f"{last['title']}: {last['text'][:135]}" if last else ""
             run_phase(phase, gdk, scene_brief(card, missing, recent), [scene_path(id_) for id_ in missing],
                       [sys.executable, str(Path(__file__).resolve()), "check-scenes", str(phase / "workspace"),
-                       "--card", str(card_path), "--ids", *missing], max_tokens=1408, iterations=14,
+                       "--card", str(card_path), "--ids", *missing], max_tokens=1408, iterations=len(missing),
                       validate_create=[sys.executable, str(Path(__file__).resolve()), "check-proposed", "--card", str(card_path)],
                       allow_basename=True, first_reply_from=first_reply_from)
             first_reply_from = None
@@ -162,6 +162,7 @@ def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path, first_rep
             for id_ in missing:
                 if (phase / "workspace" / scene_path(id_)).is_file():
                     ready[id_] = (check_scenes(card, phase / "workspace", [id_])[0], phase.name)
+            stalled = stalled + 1 if len(ready) == previous_count else 0
         for id_ in ids:
             scene, sources[id_] = ready[id_]
             prior.append(scene)
@@ -195,7 +196,7 @@ def scene_brief(card, ids, recent):
              "Write two concise sentences of scene prose, a distinctive drawable art cue, and consequential responses. "
              "Your card compiles to SWMD. "
              "An empty content field in earlier tool history means those bytes were archived. Always write fresh JSON. "
-             "Call run_verifier after all requested files exist.\n")
+             "Each write receives an immediate structural and math check.\n")
     if ids[0] in terminal_ids:
         endings = " / ".join(f"{e['id']}: {e['condition']}" for e in card["endings"])
         return brief + f"Each file is [title, sceneText, artCue, []]. Pay off these endings: {endings}"
