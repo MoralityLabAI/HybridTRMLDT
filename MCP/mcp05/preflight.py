@@ -132,6 +132,7 @@ def main():
     parity_failed = False
     prefix_file = os.environ.get("MCP05_EPISODE_PREFIX_PATH")
     prefix = ProviderPrefix(Path(prefix_file)) if prefix_file else None
+    wire_log = os.environ.get("MCP05_WIRE_LOG")
 
     def forward(method, path, raw):
         headers = {"Content-Type": "application/json"}
@@ -148,6 +149,12 @@ def main():
     def emit_trace(receipt):
         with args.trace.open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(receipt, separators=(",", ":")) + "\n")
+
+    def emit_wire(event, body, status=None):
+        if wire_log:
+            with Path(wire_log).open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps({"event": event, "status": status,
+                                         "body": body.decode("utf-8", errors="replace")}) + "\n")
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *_):
@@ -181,6 +188,7 @@ def main():
                                            deduplicate_reads=args.deduplicate_reads)
                 receipt["preflight_seconds"] = time.monotonic() - started
                 body = json.dumps(measured, ensure_ascii=False).encode()
+                emit_wire("request", body)
                 saved = None
                 if prefix is not None:
                     template = receipt["preflight"]["formatted_prompt_sha256"].encode()
@@ -211,6 +219,7 @@ def main():
                 receipt["error"] = str(exc)
                 status, raw = 422, json.dumps({"error": {"message": str(exc)}}).encode()
             emit_trace(receipt)
+            emit_wire("response", raw, status)
             self.respond(status, raw)
 
     with HTTPServer(("127.0.0.1", 0), Handler) as server:

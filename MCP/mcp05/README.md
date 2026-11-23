@@ -80,6 +80,14 @@ postings at the catalog revision. Semantic relevance remains open. Use `@index-i
 search a deferred repository, `@workspace terms` to find editable sources, and
 `context.expand(node_id="indexes")` to inspect the catalog. Pass returned URIs to `context.read`.
 
+For a long-context research pass, `python -m MCP.mcp05.evidence_packet` builds a packet
+from selected repository lanes and measures it with the loopback model tokenizer. Pass
+the resulting text with `--evidence-file` in a multi-turn Goose session and keep
+`--task-file` short. The relay measures the complete rendered prompt against the
+actual context and output reserve. Set `MCP05_WIRE_LOG` to a fresh local file when the
+operator wants the exact forwarded messages and the provider's response. Keep these
+transcripts with the local run records.
+
 ## Execution and accounting
 
 The session sends the actual Goose wire request through a loopback preflight relay. It applies the upstream chat template, tokenizes with special tokens recognized, and checks for tool-schema serialization when schemas are present. It forwards raw messages if they fit. Packet and typed modes may condense closed history and remeasure it. Each provider completion records preflight parity. A mismatch prevents further completions in that session.

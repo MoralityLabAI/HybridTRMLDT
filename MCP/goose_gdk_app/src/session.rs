@@ -80,6 +80,7 @@ pub(crate) struct Options {
     threads: Option<u32>,
     verifier: Option<String>,
     checkpoint: Option<PathBuf>,
+    evidence_file: Option<PathBuf>,
     controller_reset: bool,
     json_actions: bool,
     deduplicate_reads: bool,
@@ -100,6 +101,7 @@ impl Options {
             "--controller-threads" => self.threads = Some(value()?.parse()?),
             "--verifier" => self.verifier = Some(value()?),
             "--session-file" => self.checkpoint = Some(PathBuf::from(value()?)),
+            "--evidence-file" => self.evidence_file = Some(PathBuf::from(value()?)),
             "--controller-reset" => self.controller_reset = true,
             "--json-actions" => self.json_actions = true,
             "--deduplicate-reads" => self.deduplicate_reads = true,
@@ -116,6 +118,7 @@ impl Options {
             || self.threads.is_some()
             || self.verifier.is_some()
             || self.checkpoint.is_some()
+            || self.evidence_file.is_some()
             || self.controller_reset
             || self.json_actions
             || self.deduplicate_reads
@@ -123,6 +126,16 @@ impl Options {
             bail!("multi-turn options require --max-agent-iterations");
         }
         Ok(())
+    }
+}
+
+fn initial_message(task: &str, evidence: Option<&str>) -> String {
+    match evidence {
+        Some(evidence) => format!(
+            "{task}\n\n--- BEGIN LOCAL REPOSITORY EVIDENCE ---\n{}\n--- END LOCAL REPOSITORY EVIDENCE ---",
+            evidence.replace("<|", "<\u{200b}|")
+        ),
+        None => task.to_owned(),
     }
 }
 
@@ -793,6 +806,17 @@ pub(crate) async fn run(args: Args) -> Result<()> {
         bail!("invalid repair-session repository, memory mode, or budget");
     }
 
+    let evidence = options
+        .evidence_file
+        .as_ref()
+        .map(|path| {
+            if std::fs::metadata(path)?.len() > 2_000_000 {
+                bail!("repository evidence file exceeds 2 MB");
+            }
+            std::fs::read_to_string(path).context("read repository evidence")
+        })
+        .transpose()?;
+    let user_message = initial_message(&args.task, evidence.as_deref());
     let repo = std::fs::canonicalize(&args.repo)?;
     let repo = repo.to_str().context("non-UTF-8 repository path")?;
     let mut service = vec!["-B", "-m", "MCP.mcp05.service", "--repo", repo];
@@ -869,7 +893,7 @@ pub(crate) async fn run(args: Args) -> Result<()> {
         session: Mutex::new(AppSession {
             id: id.clone(),
             conversation: Conversation::new_unvalidated([
-                Message::user().with_text(args.task.clone())
+                Message::user().with_text(user_message)
             ]),
             repair: Some(RepairState {
                 task: args.task.clone(),
@@ -958,6 +982,16 @@ pub(crate) async fn run(args: Args) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn evidence_is_attached_once_to_the_initial_message() {
+        let task = "Prepare the admitted corpus.";
+        assert_eq!(initial_message(task, None), task);
+        let message = initial_message(task, Some("indexed evidence"));
+        assert!(message.starts_with(task));
+        assert_eq!(message.matches("indexed evidence").count(), 1);
+        assert!(!initial_message(task, Some("<|message_model|>")).contains("<|message_model|>"));
+    }
 
     #[test]
     fn inkling_marker_accepts_direct_and_matching_nested_envelopes() {
