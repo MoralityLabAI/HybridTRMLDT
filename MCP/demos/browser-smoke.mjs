@@ -7,19 +7,24 @@ import { extname, join, resolve, sep } from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 
-const [chrome, target] = process.argv.slice(2);
-if (!chrome || !target) throw new Error("Usage: node browser-smoke.mjs /path/to/chrome /capture-directory");
+const [chrome, target, mode, gameDirectory] = process.argv.slice(2);
+if (!chrome || !target || (mode && (!['rpg','story'].includes(mode) || !gameDirectory))) {
+  throw new Error("Usage: node browser-smoke.mjs /path/to/chrome /capture-directory [rpg|story /game-directory]");
+}
 const out=resolve(target);
 await mkdir(out,{recursive:true});
-const root=fileURLToPath(new URL(".",import.meta.url));
+const root=mode?resolve(gameDirectory):fileURLToPath(new URL(".",import.meta.url));
 const types={".html":"text/html; charset=utf-8",".css":"text/css; charset=utf-8",".mjs":"text/javascript; charset=utf-8",".json":"application/json"};
 const server=createServer(async (req,res)=>{
   try{
     const path=decodeURIComponent(new URL(req.url,"http://127.0.0.1").pathname);
+    if(mode && path!=="/") {res.writeHead(404).end();return;}
     const file=resolve(root,"."+path+(path.endsWith("/")?"index.html":""));
     if(!file.startsWith(root.endsWith(sep)?root:root+sep)) {res.writeHead(403).end();return;}
     const body=await readFile(file);
-    res.writeHead(200,{"Content-Type":types[extname(file)]??"application/octet-stream"}).end(body);
+    const headers={"Content-Type":types[extname(file)]??"application/octet-stream"};
+    if(mode) headers["Content-Security-Policy"]="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'";
+    res.writeHead(200,headers).end(body);
   }catch{res.writeHead(404).end();}
 });
 await new Promise(resolve=>server.listen(0,"127.0.0.1",resolve));
@@ -77,6 +82,54 @@ try{
   await send("Runtime.enable");
   await send("Page.enable");
   await send("Emulation.setDeviceMetricsOverride",{width:1280,height:950,deviceScaleFactor:1,mobile:false});
+  if(mode){
+    await visit("/","typeof window.gameState === 'function' && !!document.querySelector('canvas')");
+    const state=()=>evaluate("window.gameState()");
+    const initial=await state();
+    const reset=()=>evaluate("document.querySelector('#restart').click()");
+    const checks=[];
+    await screenshot("start.png");
+    if(mode==="rpg"){
+      assert.equal(initial.status,"playing");
+      assert.ok(Number.isFinite(initial.x) && Number.isFinite(initial.y) && initial.hp>0);
+      await reset();
+      await press("keyDown"," ","Space");await sleep(250);await press("keyUp"," ","Space");
+      assert.ok((await state()).hits>initial.hits,"Space should damage a nearby enemy");
+      checks.push("keyboard attack caused damage");
+      await press("keyDown","d","KeyD");await sleep(240);await press("keyUp","d","KeyD");
+      const moved=await state();
+      assert.ok(Math.hypot(moved.x-initial.x,moved.y-initial.y)>5,"movement should change player position");
+      checks.push("keyboard movement changed player position");
+      await screenshot("gameplay.png");
+      await reset();
+      assert.equal((await state()).hits,initial.hits);
+      assert.equal((await state()).hp,initial.hp);
+      checks.push("restart restored initial combat state");
+    }else{
+      assert.equal(initial.scene,"start");
+      assert.equal(initial.clue,false);
+      assert.equal(await evaluate(`(() => { const b=document.querySelector('[data-choice="cross"]'); return !!b && (b.disabled || b.getAttribute('aria-disabled')==='true'); })()`),true);
+      checks.push("crossing is gated before study");
+      await click("rush");
+      assert.equal((await state()).ending,"bad");
+      await screenshot("bad-ending.png");
+      await reset();
+      assert.equal((await state()).scene,"start");
+      assert.equal((await state()).clue,false);
+      await click("study");
+      assert.equal((await state()).clue,true);
+      assert.notEqual((await state()).scene,"start");
+      await click("cross");
+      assert.equal((await state()).ending,"good");
+      await screenshot("good-ending.png");
+      checks.push("public controls reached both endings and reset the clue");
+    }
+    assert.deepEqual(failures,[]);
+    const receipt={status:"verified",game:mode,title:await evaluate("document.title"),checks};
+    await writeFile(join(out,"browser-receipt.json"),JSON.stringify(receipt,null,2)+"\n");
+    console.log(JSON.stringify(receipt));
+    process.exitCode=0;
+  }else{
   await visit("/",`document.querySelector('h1')?.textContent.includes('field tests') && document.querySelectorAll('.project').length===2`);
   await screenshot("field-tests.png");
   await visit("/lantern/",`document.querySelector('#hp')?.textContent==='7'`);
@@ -124,6 +177,7 @@ try{
   assert.deepEqual(failures,[]);
   console.log(JSON.stringify({status:"verified",checks:["project navigation","canvas input","locked story route","evidence-based ending","mobile viewport"],
     captures:out,variants}));
+  }
 }finally{
   socket?.close();browser.kill();server.close();
 }
