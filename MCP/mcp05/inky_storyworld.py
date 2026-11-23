@@ -92,9 +92,43 @@ def check_profiles(source: dict) -> dict:
     return accepted
 
 
-def with_profiles(card: dict, root: Path) -> dict:
+def with_authoring_cards(card: dict, root: Path) -> dict:
     model = root / "00-math/workspace/reaction-model.json"
-    return {**card, "profiles": check_profiles(read_json(model))} if model.exists() else card
+    outline = root / "00-outline/workspace/outline.json"
+    if model.exists():
+        card = {**card, "profiles": check_profiles(read_json(model))}
+    if outline.exists():
+        card = {**card, "outline": check_outline(read_json(outline), card)}
+    return card
+
+
+def check_outline(source, card):
+    rows = source.get("beats") if isinstance(source, dict) else source
+    roster = world_ids(card)
+    if isinstance(rows, dict) and set(rows) == set(roster):
+        rows = [[id_, *rows[id_]] for id_ in roster]
+    require(isinstance(rows, list) and len(rows) == 20 and all(isinstance(row, list) and len(row) == 3
+            and all(isinstance(cell, str) and cell.strip() for cell in row) for row in rows),
+            "write 20 rows of [encounter ID, unique title, event beat]")
+    require([row[0] for row in rows] == roster, "the outline must include the 20 supplied IDs in order")
+    require(len({row[1].casefold() for row in rows}) == len({row[2].casefold() for row in rows}) == 20,
+            "each title and event beat must be distinct")
+    return {id_: (title, beat) for id_, title, beat in rows}
+
+
+def duplicated(scene, earlier) -> str | None:
+    for other in earlier:
+        if any(" ".join(scene[key].casefold().split()) == " ".join(other[key].casefold().split()) for key in ("text", "art")):
+            return other["id"]
+    return None
+
+
+def written_encounter_files(root: Path, id_):
+    for phase in sorted(root.glob("??-??-encounters*")):
+        if re.fullmatch(r"\d{2}-\d{2}-encounters(?:-retry-\d+)?", phase.name):
+            path = phase / "workspace" / scene_path(id_)
+            if path.is_file():
+                yield path
 
 
 def scene_path(scene_id):
@@ -138,10 +172,13 @@ def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path, first_rep
         prefix = f"{start:02}-{end:02}-encounters"
         attempts = [root / prefix, *sorted(root.glob(f"{prefix}-retry-*"))]
         ready = {}
-        for phase in attempts:
-            for id_ in ids:
+        for id_ in ids:
+            for phase in attempts:
                 if (phase / "workspace" / scene_path(id_)).is_file():
-                    ready[id_] = (check_scenes(card, phase / "workspace", [id_])[0], phase.name)
+                    candidate = check_scenes(card, phase / "workspace", [id_])[0]
+                    if not duplicated(candidate, [*prior, *(entry[0] for entry in ready.values())]):
+                        ready[id_] = (candidate, phase.name)
+                        break
         stalled = 0
         while len(ready) < len(ids):
             require(stalled < 2, f"no new valid encounter files in two attempts for {prefix}")
@@ -161,7 +198,9 @@ def collect_scenes(root: Path, card: dict, card_path: Path, gdk: Path, first_rep
                 attempts.append(phase)
             for id_ in missing:
                 if (phase / "workspace" / scene_path(id_)).is_file():
-                    ready[id_] = (check_scenes(card, phase / "workspace", [id_])[0], phase.name)
+                    candidate = check_scenes(card, phase / "workspace", [id_])[0]
+                    if not duplicated(candidate, [*prior, *(entry[0] for entry in ready.values())]):
+                        ready[id_] = (candidate, phase.name)
             stalled = stalled + 1 if len(ready) == previous_count else 0
         for id_ in ids:
             scene, sources[id_] = ready[id_]
@@ -196,7 +235,10 @@ def scene_brief(card, ids, recent):
              "Write two concise sentences of scene prose, a distinctive drawable art cue, and consequential responses. "
              "Your card compiles to SWMD. "
              "An empty content field in earlier tool history means those bytes were archived. Always write fresh JSON. "
+             "Advance the story at each new encounter. Never copy prior scene prose or illustration cues. "
              "Each write receives an immediate structural and math check.\n")
+    if outline := card.get("outline"):
+        brief += "Your planned events to develop now: " + " / ".join(f"{id_}: {outline[id_][0]} — {outline[id_][1]}" for id_ in ids) + "\n"
     if ids[0] in terminal_ids:
         endings = " / ".join(f"{e['id']}: {e['condition']}" for e in card["endings"])
         return brief + f"Each file is [title, sceneText, artCue, []]. Pay off these endings: {endings}"
@@ -278,7 +320,7 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
 
 
 def export(root: Path, card_file: Path, gptstoryworld: Path) -> dict:
-    card = with_profiles(check_card(card_file), root)
+    card = with_authoring_cards(check_card(card_file), root)
     roster = world_ids(card)
     ifid = "SW-INKY-CAT-HAT-20261123"
     (root / "export").mkdir(exist_ok=True)
@@ -288,6 +330,8 @@ def export(root: Path, card_file: Path, gptstoryworld: Path) -> dict:
     receipts[card_phase.name] = replay_writes(card_phase, [card_file.name], require_verified=False)
     if card.get("profiles"):
         receipts["00-math"] = replay_writes(root / "00-math", ["reaction-model.json"])
+    if card.get("outline"):
+        receipts["00-outline"] = replay_writes(root / "00-outline", ["outline.json"])
     catalog_file = root / "scene-sources.json"
     catalog = read_json(catalog_file) if catalog_file.exists() else {
         id_: f"{start:02}-{end:02}-encounters"
@@ -381,6 +425,7 @@ def play(root: Path, gdk: Path, data: dict, node: Path, chrome: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("plan", "check-card", "math", "check-math", "check-proposed-math",
+                        "outline", "check-outline", "check-proposed-outline",
                         "scenes", "check-scenes", "check-proposed", "export", "play"))
     parser.add_argument("path", type=Path)
     parser.add_argument("--gdk", type=Path)
@@ -391,6 +436,11 @@ def main() -> int:
     parser.add_argument("--chrome", type=Path)
     parser.add_argument("--first-reply-from", type=Path)
     args = parser.parse_args()
+    if args.command in ("check-outline", "check-proposed-outline"):
+        source = read_json(args.path) if args.command == "check-outline" else json.loads(sys.stdin.buffer.read())
+        check_outline(source, check_card(args.card))
+        print("Validated 20 distinct outline beats")
+        return 0
     if args.command in ("check-math", "check-proposed-math"):
         profiles = check_profiles(read_json(args.path) if args.command == "check-math" else json.loads(sys.stdin.buffer.read()))
         print(f"Validated {len(profiles)} state-dependent math profiles.")
@@ -398,13 +448,19 @@ def main() -> int:
     if args.command == "check-proposed":
         filename = args.path.name
         id_ = filename.removesuffix(".card.json")
-        card = with_profiles(check_card(args.card), args.card.resolve().parents[2])
-        require(filename == scene_path(id_) and id_ in world_ids(card), "write an authorized encounter file")
+        card = with_authoring_cards(check_card(args.card), args.card.resolve().parents[2])
+        roster = world_ids(card)
+        require(filename == scene_path(id_) and id_ in roster, "write an authorized encounter file")
         raw = sys.stdin.buffer.read()
         require(not raw.startswith(b"[Prior proposal archived;"),
                 "that text is a history placeholder. Author fresh JSON for this encounter's actual content")
         source = encounter_card(json.loads(raw))
         scene = parse_scene(render_card(source, card, id_), card, id_)
+        earlier = roster[:roster.index(id_)]
+        for prior_id in earlier:
+            for file in written_encounter_files(args.card.resolve().parents[2], prior_id):
+                prior = {"id": prior_id, **encounter_card(read_json(file))}
+                require(not duplicated(scene, [prior]), f"scene text or art repeats {prior_id}; author the planned new event and a different illustration")
         print(f"{id_} accepted. Continuity card: {scene['title'][:72]} / {scene['text'][:170]}")
         return 0
     if args.command == "check-card":
@@ -412,7 +468,7 @@ def main() -> int:
         print(f"Validated five-act plan for {card['title']} with {len(card['endings'])} ending cards.")
         return 0
     if args.command == "check-scenes":
-        items = check_scenes(with_profiles(check_card(args.card), args.card.resolve().parents[2]), args.path, args.ids)
+        items = check_scenes(with_authoring_cards(check_card(args.card), args.card.resolve().parents[2]), args.path, args.ids)
         print("Verified SWMD encounter blocks: " + ", ".join(scene["id"] for scene in items))
         return 0
     if args.command == "export":
@@ -425,6 +481,24 @@ def main() -> int:
         parser.error("a rollout requires --gdk")
     gdk = args.gdk.resolve(strict=True)
     phase = args.path.resolve()
+    if args.command == "outline":
+        card_file = phase / "00-world/workspace/world-card.json"
+        card = check_card(card_file)
+        target = phase / "00-outline"
+        script = str(Path(__file__).resolve())
+        outline_brief = (f"Use create_file: path outline.json, content a single JSON array of 20 brief rows.\n"
+                         f"Your story is {card['title']}. {card['premise']}.\n"
+                         f"Cast: {', '.join(c['name'] for c in card['cast'])}. Acts: {' / '.join(card['acts'])}.\n"
+                         f"Endings: {' / '.join(e['condition'] for e in card['endings'])}.\n"
+                         f"IDs in this order: {', '.join(world_ids(card))}.\n"
+                         "Each row is [encounter ID, short unique title, 8-to-12-word event]. Use all IDs once. "
+                         "Move the cat and the hat through genuinely different places, discoveries, decisions, and costs. "
+                         "Carry consequences into the ending beats. Keep the full action compact. Then call run_verifier.")
+        result = run_phase(target, gdk, outline_brief, ["outline.json"],
+                           [sys.executable, script, "check-outline", str(target / "workspace/outline.json"), "--card", str(card_file)],
+                           validate_create=[sys.executable, script, "check-proposed-outline", "--card", str(card_file)],
+                           max_tokens=1792, allow_basename=True)
+        return 0 if result["state"].get("verified") else 1
     if args.command == "math":
         card = check_card(phase / "00-world/workspace/world-card.json")
         target = phase / "00-math"
@@ -450,7 +524,7 @@ Author your own mechanics. Close the tool call. Then call run_verifier with empt
         return 0
     if args.command == "scenes":
         card_path = args.card.resolve() if args.card else phase / "00-world/workspace/world-card.json"
-        card = with_profiles(check_card(card_path), phase)
+        card = with_authoring_cards(check_card(card_path), phase)
         save(phase / "parsed-scenes.json", collect_scenes(phase, card, card_path, gdk, args.first_reply_from))
         return 0
     target = phase / "workspace/world-card.json"

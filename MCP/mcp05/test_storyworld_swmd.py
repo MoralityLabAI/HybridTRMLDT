@@ -1,10 +1,20 @@
 import unittest
 
-from .inky_storyworld import check_profiles, encounter_card
+from .inky_storyworld import check_outline, check_profiles, duplicated, encounter_card
 from .storyworld_swmd import evaluate, parse_scene, profile_pair, rehearse, render_card, world_ids
 
 
 class CompactCards(unittest.TestCase):
+    def test_outline_requires_distinct_beats_and_scene_cues(self):
+        card = {"endings": [{"id": f"end_{i}"} for i in range(4)]}
+        rows = [[id_, f"Title {i}", f"Beat {i}"] for i, id_ in enumerate(world_ids(card))]
+        self.assertEqual(check_outline(rows, card)["enc_01"], ("Title 0", "Beat 0"))
+        rows[1][2] = rows[0][2]
+        with self.assertRaisesRegex(ValueError, "distinct"):
+            check_outline(rows, card)
+        self.assertEqual(duplicated({"text": "new", "art": "Blue    grid"},
+                                   [{"id": "enc_01", "text": "old", "art": "blue grid"}]), "enc_01")
+
     def test_compact_encounter_expands_text_and_targets_verbatim(self):
         source = ["title", "scene", "art", [["choice", "test profile", "enc_02", "reply A", "enc_03", "reply B"]]]
         card = encounter_card(source)

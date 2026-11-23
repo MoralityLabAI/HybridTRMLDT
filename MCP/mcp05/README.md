@@ -30,6 +30,7 @@ The `inky_storyworld` runner follows GPTStoryworld's `small-storyworld-builder` 
 
     python -m MCP.mcp05.inky_storyworld plan RUN/00-world --gdk GOBLIN_GDK
     python -m MCP.mcp05.inky_storyworld math RUN --gdk GOBLIN_GDK
+    python -m MCP.mcp05.inky_storyworld outline RUN --gdk GOBLIN_GDK
     python -m MCP.mcp05.inky_storyworld scenes RUN --gdk GOBLIN_GDK
     python -m MCP.mcp05.inky_storyworld play RUN --gdk GOBLIN_GDK --gptstoryworld GPTSTORYWORLD --node NODE --chrome CHROME
 
