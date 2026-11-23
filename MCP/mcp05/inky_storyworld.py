@@ -75,6 +75,9 @@ def check_profiles(source: dict) -> dict:
         try:
             if isinstance(profile, dict):
                 profile = [[profile[arm]["score"], profile[arm]["delta"]] for arm in ("a", "b")]
+            elif len(profile) == 3 and all(isinstance(row, list) and len(row) == 3 for row in profile):
+                weights, delta_a, delta_b = profile
+                profile = [[[0, *weights], delta_a], [[0, *(-x for x in weights)], delta_b]]
             require(len(profile) == 2,
                     'use {"a":{"score":[b,t,n,c],"delta":[t,n,c]},"b":{"score":[b,t,n,c],"delta":[t,n,c]}} '
                     "for each named profile, with your actual numbers in each of the four arrays")
@@ -330,15 +333,13 @@ def main() -> int:
         card = check_card(phase / "00-world/workspace/world-card.json")
         target = phase / "00-math"
         script = str(Path(__file__).resolve())
-        math_brief = f"""Write reaction-model.json with create_file for your cat-and-hat story {card['title']}.
-Define exactly six named profiles in the top-level profiles object. Use this shape for each named profile:
-{{"a":{{"score":[BIAS,TRUST,NERVE,CARE],"delta":[TRUST,NERVE,CARE]}},"b":{{"score":[BIAS,TRUST,NERVE,CARE],"delta":[TRUST,NERVE,CARE]}}}}.
-Replace all placeholders with numbers. Use lowercase descriptive names. Each score is four
-integer hundredths [bias, trustWeight, nerveWeight, careWeight]. Make both biases zero and the two
-weight vectors opposite, with restrained magnitudes, so either reaction can win across character states.
-Each delta is three integer hundredths [trustDelta, nerveDelta, careDelta]. Use distinct tradeoffs around
-2–12 hundredths, change two or three stats per response, and include both gains and costs. Every profile
-must use a different pair of effect vectors. Author all the numbers. Call run_verifier after the write."""
+        math_brief = f"""Create reaction-model.json for your fable {card['title']}. The tool arguments are path and content.
+Content is one JSON object with a profiles object containing six short named entries.
+Each name maps to three arrays of three signed integers: [weights, effectsA, effectsB].
+The columns are trust, nerve, care. Scores are the dot product and its negative, in hundredths.
+Choose nonzero weights with total absolute value <= 100. The effects arrays change two or three stats each,
+with signed changes under 24 hundredths. Include a tradeoff within each pair. Use six different pairs of effects.
+Author your own mechanics. Close the tool call. Then call run_verifier with empty arguments."""
         result = run_phase(target, gdk, math_brief, ["reaction-model.json"],
                            [sys.executable, script, "check-math", str(target / "workspace/reaction-model.json")],
                            validate_create=[sys.executable, script, "check-proposed-math"], max_tokens=1024)

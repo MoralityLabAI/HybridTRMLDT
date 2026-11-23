@@ -1,5 +1,6 @@
 import unittest
 
+from .inky_storyworld import check_profiles
 from .storyworld_swmd import evaluate, parse_scene, profile_pair, rehearse, render_card, world_ids
 
 
@@ -10,6 +11,11 @@ class CompactCards(unittest.TestCase):
         data[1][0] = [60, 25, 0, 0]
         with self.assertRaisesRegex(ValueError, "each reaction must be favored"):
             profile_pair(data)
+
+    def test_compact_profile_mirrors_authored_weights_without_altering_effects(self):
+        compact = {f"case_{i}": [[i, 0, -i], [i, -i, 0], [-i, i, 0]] for i in range(1, 7)}
+        profiles = check_profiles({"profiles": compact})
+        self.assertEqual(profiles["case_4"], [[[0, 4, 0, -4], [4, -4, 0]], [[0, -4, 0, 4], [-4, 4, 0]]])
 
     def test_round_trip_preserves_the_action_math(self):
         card = {"cast": [{"id": "char_probe"}], "endings": [{"id": f"end_{i}"} for i in range(4)]}
