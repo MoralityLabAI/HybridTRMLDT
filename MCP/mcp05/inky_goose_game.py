@@ -29,14 +29,10 @@ defeated as kills. The restart must restore the original health and hit count.
 You decide the title, setting, art, interface, rules, and code.""",
 }
 
-WORKFLOW = """You are the sole implementer. This is an empty repository. Use Goose to create index.html
-with create_file, then call run_verifier yourself to check the actual page. Work in tool turns, one action
-per response. For the first action, aim for a runnable draft under 3,500 characters of source. Prioritize
-the starting screen, a minimal visual motif, and basic controls. Build in stages if needed instead of
-risking a truncated action. Use inline Canvas drawings and avoid external assets. If the check fails, read index.html with
-context_read using URI index.html, use apply_edit with that source handle and exact source,
-and run the check again. If you need another page of source, use the returned next_line as start.
-Return action objects directly. Source belongs in tool arguments and the task ends on a passing check."""
+WORKFLOW = """Use the create_file tool now. Set path to index.html. Put all of your first runnable draft
+in content. Aim for under 3,500 characters of source on this turn. Focus on the playable core and one
+visual motif. Use inline Canvas drawings and avoid external assets. You can refine your draft in later
+tool turns. You are the sole author. Work one tool action at a time until you pass the browser checks."""
 
 
 def git(root: Path, *args: str) -> str:
@@ -57,6 +53,16 @@ def require(condition: bool, message: str) -> None:
         raise ValueError(message)
 
 
+def provider_actions(replies: list[dict]):
+    for reply in replies:
+        message = reply["choices"][0]["message"]
+        if message.get("content"):
+            yield message["content"].strip()
+        for call in message.get("tool_calls") or []:
+            function = call["function"]
+            yield function["name"], json.loads(function["arguments"])
+
+
 def audit(root: Path, mode: str) -> dict:
     """Replay tool writes and match their receipts to the raw model and MCP exchanges."""
     invocation = read_json(root / "invocation.json")
@@ -71,9 +77,9 @@ def audit(root: Path, mode: str) -> dict:
     mcp = root / "mcp-wire.jsonl"
     replies = [json.loads(event["body"]) for event in events(wire)
                if event["event"] == "response" and event["status"] == 200]
-    model_actions = iter((reply["choices"][0]["message"].get("content") or "").strip() for reply in replies)
+    model_actions = provider_actions(replies)
     frames = [json.loads(event["body"]) for event in events(mcp)]
-    mcp_results = {frame["id"]: frame["result"] for frame in frames if "result" in frame}
+    mcp_responses = {frame["id"]: frame for frame in frames if "result" in frame or "error" in frame}
     names = {"create_file": "host.create", "apply_edit": "host.edit", "run_verifier": "host.verify"}
     calls = iter(frame for frame in frames if frame.get("method") == "tools/call"
                  and frame["params"]["name"] in names.values())
@@ -82,17 +88,19 @@ def audit(root: Path, mode: str) -> dict:
     writes, checks = [], []
     for receipt in gdk["session"]["receipts"]:
         require(receipt["origin"] == "solver", "a tool was called by an actor other than Inkling")
-        raw = receipt["raw_assistant_action"].strip()
-        require(any(action == raw for action in model_actions), "solver receipt is missing its provider reply")
+        raw = receipt.get("raw_assistant_action")
+        proposed = raw.strip() if raw else (receipt["tool"], receipt["arguments"])
+        require(any(action == proposed for action in model_actions), "solver receipt is missing its provider reply")
         name = receipt["tool"]
         if name not in names:
             continue
         args, output = receipt["arguments"], receipt["output"]
         response = None
         if frame and frame["params"] == {"name": names[name], "arguments": args}:
-            response = mcp_results[frame["id"]]
+            received = mcp_responses[frame["id"]]
+            response = received.get("result")
             frame = next(calls, None)
-            require(response["isError"] == receipt["error"], "MCP error status differs")
+            require((response is None or response["isError"]) == receipt["error"], "MCP error status differs")
         if receipt["error"]:
             continue
         mcp_output = {key: value for key, value in output.items() if key != "next_action_hint"}
