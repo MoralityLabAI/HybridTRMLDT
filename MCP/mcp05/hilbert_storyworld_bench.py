@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import runpy
 import subprocess
 import sys
 from pathlib import Path
@@ -16,7 +17,7 @@ from MCP.transport import StdioClient
 from .context import sha
 from .creative_bench import call, save
 from .hilbert_storyworld import check_algebra, check_scene_continuity, exact_routes, simulate
-from .hilbert_storyworld_export import export, play
+from .hilbert_storyworld_export import export, play, scene_graph, swmd_blocks
 from .inky_goose_game import ROOT, events, read_json, replay_writes
 from .inky_storyworld import require, run_phase
 
@@ -88,6 +89,11 @@ def prepare_packet(root, index, skill):
 def check_plan(plan):
     require(set(plan) == {"title", "premise", "cast", "acts", "endings"}, "missing plan fields")
     require(all(isinstance(plan[k], str) and plan[k].strip() for k in ("title", "premise")), "empty premise or title")
+    premise = f"{plan['title']} {plan['premise']}".casefold()
+    require("bell" in premise and any(cue in premise for cue in ("silent", "silenc", "missing", "misplac", "lost",
+                                                                   "stolen", "vanish", "no longer", "disappear",
+                                                                   "soundless", "swallowed", "muffled", "cease", "can't hear")),
+            "the premise needs the missing sound of the night bell")
     for key, count in (("cast", 3), ("acts", ACTS), ("endings", 5)):
         items = plan[key]
         require(len(items) == count and all(isinstance(row, list) and len(row) == 4 for row in items),
@@ -201,14 +207,32 @@ def text_rows(rows, keys, width):
     return rows
 
 
-def develop(arm, gdk, packet, target):
+def continuity_card(arm, parser, parser_sha, scenes, target_scene):
+    recent = scenes[-2:]
+    expected = [scene["id"] for scene in recent]
+    blocks = ["# SWMD-0-MIN", "", *swmd_blocks(scene_graph(recent, SCENE_IDS), {})]
+    blocks.extend((f"ENC {target_scene} turn=0..999", ""))
+    source = arm / f"continuity-{target_scene}.swmd.min.md"
+    source.write_text("\n".join(blocks), encoding="utf-8", newline="\n")
+    card = parser(path=source, encounter_id=target_scene, neighbor_hops=2, context_budget_tokens=8192,
+                  reserve_output_tokens=1800, planning_card_tokens=900, include_poetics=False)
+    require({neighbor["encounter_id"] for neighbor in card["neighbors"]} == set(expected), "missing continuity neighbor")
+    save(source.with_suffix(".json"), {"parser_sha256": parser_sha, "source_sha256": sha(source.read_bytes()), "card": card})
+    return [neighbor["block"] for neighbor in reversed(card["neighbors"])]
+
+
+def develop(arm, gdk, packet, target, skill):
     planning = read_json(arm / "plan.json")
-    if "plan" in planning:
-        plan = planning["plan"]
-    else:
+    try:
+        require("plan" in planning, planning.get("diagnostic", "no complete long-context plan"))
+        plan = check_plan(planning["plan"])
+    except (KeyError, TypeError, ValueError) as error:
+        save(arm / "plan-review.json", {"initial_phase": planning["phase"], "accepted": False, "reason": str(error)})
         plan = author(arm, gdk, "plan-repair", BRIEF.replace("plan.json", "result.json") +
                       "\nUse short actor, act and ending arrays. Keep the plan focused on the missing night bell.",
                       check_plan)
+    else:
+        save(arm / "plan-review.json", {"initial_phase": planning["phase"], "accepted": True})
     cast_ids = [row[0] for row in plan["cast"]]
     endings = [row[0] for row in plan["endings"]]
     public = [row[0] for row in plan["endings"] if not row[1]]
@@ -229,6 +253,9 @@ Author JSON fields basis, clues, operators, secrets. Your story:\n"""
     model = author(arm, gdk, "math-draft", model_brief + encode(plan),
                    lambda content: check_algebra(content, plan), reference=(packet, target))
     scenes, act_cards = [], []
+    store = skill.parents[2] / "mcp-storyworld-encounter/swmd_store.py"
+    parse_card = runpy.run_path(str(store))["iteration_packet"]
+    store_sha = sha(store.read_bytes())
     for act_i, act in enumerate(plan["acts"]):
         for segment in range(2):
             index = act_i * ENCOUNTERS_PER_ACT + segment * 3
@@ -244,7 +271,7 @@ their discovery legible. Put the tone of the nearby characters into the response
             brief += encode({"ids": ids, "shortcut_scenes": [id_ for id_ in ids if int(id_[4:]) % 6 == 3],
                              "title": plan["title"], "premise": plan["premise"], "act": act,
                              "cast": voices, "prior_act": act_cards[-1:],
-                             "previous_scenes": [{"title": s["title"], "text": s["text"][-180:]} for s in scenes[-2:]],
+                             "previous_scenes_swmd": continuity_card(arm, parse_card, store_sha, scenes, ids[0]),
                              "clues": model["clues"], "operators": model["operators"]})
             batch = author(arm, gdk, f"encounter-{index + 1:02d}", brief,
                            lambda data: check_scene_continuity(data, ids, model, scenes), max_tokens=1800)
@@ -321,6 +348,7 @@ def describe(arm, candidate, target):
     draft = read_json(arm / "draft-rehearsal.json")["exact"]["secret_gates"]
     return {
         "input_target": target, "title": candidate["plan"]["title"], "encounters": len(candidate["scenes"]),
+        "initial_plan_review": read_json(arm / "plan-review.json"),
         "scene_words": sum(len(scene["text"].split()) for scene in candidate["scenes"]),
         "unique_scene_texts": len({scene["text"].strip() for scene in candidate["scenes"]}),
         "unique_choice_labels": len({option[0].lower() for scene in candidate["scenes"] for option in scene["options"]}),
@@ -409,7 +437,7 @@ def main():
             if (arm / "result.json").is_file():
                 continue
             try:
-                candidate = develop(arm, gdk, packet, target)
+                candidate = develop(arm, gdk, packet, target, skill)
                 export(candidate, arm / "export", skill, target)
                 save(arm / "result.json", describe(arm, candidate, target))
                 print(f"{target}: {len(candidate['scenes'])} scenes, "

@@ -12,20 +12,27 @@ from .hilbert_storyworld import BASIS, START, classify, transition
 from .storyworld_swmd import require, sweepweave_document
 
 
-def topology(candidate):
-    scenes = candidate["scenes"]
-    exits = {row[0]: (row[1], row[2]) for row in candidate["endings"]}
-    terminal_ids = list(exits)
+def scene_graph(scenes, scene_order):
+    positions = {id_: i for i, id_ in enumerate(scene_order)}
     records = []
-    for index, scene in enumerate(scenes):
+    for scene in scenes:
+        index = positions[scene["id"]]
         options = []
         for slot, (label, reply, operation, clue, advance) in enumerate(scene["options"], 1):
             i = index + advance
-            target = scenes[i]["id"] if i < len(scenes) else "enc_finale"
+            target = scene_order[i] if i < len(scene_order) else "enc_finale"
             options.append({"id": f"opt_{index + 1:02d}_{slot}", "text": label, "operation": operation, "clue": clue,
                             "reactions": [{"id": f"rxn_{index + 1:02d}_{slot}", "text": reply, "to": target,
                                            "score": [1, 0, 0, 0], "effects": {}}]})
         records.append({"id": scene["id"], "title": scene["title"], "text": scene["text"], "options": options})
+    return records
+
+
+def topology(candidate):
+    scenes = candidate["scenes"]
+    records = scene_graph(scenes, [scene["id"] for scene in scenes])
+    exits = {row[0]: (row[1], row[2]) for row in candidate["endings"]}
+    terminal_ids = list(exits)
     options = [{"id": f"opt_finale_{i}", "text": exits[end][0], "secret_gate": end if end in candidate["math"]["secrets"] else None,
                 "reactions": [{"id": f"rxn_finale_{i}", "text": "", "to": end, "score": [1, 0, 0, 0], "effects": {}}]}
                for i, end in enumerate(terminal_ids, 1)]
@@ -33,6 +40,24 @@ def topology(candidate):
     records.extend({"id": end, "title": title, "text": text, "options": []}
                    for end, (title, text) in exits.items())
     return records
+
+
+def swmd_blocks(records, secrets):
+    rows = []
+    for scene in records:
+        rows.extend((f"ENC {scene['id']} turn=0..999", f"# TITLE: {scene['title']}"))
+        rows.extend(f"# T: {line}" for line in scene["text"].splitlines())
+        for option in scene["options"]:
+            reaction = option["reactions"][0]
+            label = " ".join(option["text"].splitlines()).replace("|", "¦")
+            rows.append(f"ORX {option['id']}/{reaction['id']} -> {reaction['to']} | O:{label} | D:C(1)")
+            rows.extend(f"# R {reaction['id']}: {line}" for line in reaction["text"].splitlines())
+            if "operation" in option:
+                rows.append(f"# DIRAC {option['id']}: {json.dumps([option['operation'], option['clue']])}")
+            if option.get("secret_gate"):
+                rows.append(f"# SECRET {option['id']}: {json.dumps(secrets[option['secret_gate']])}")
+        rows.append("")
+    return rows
 
 
 def export(candidate, out, skill, target):
@@ -51,19 +76,7 @@ def export(candidate, out, skill, target):
                        f"    condition: {json.dumps(promise, ensure_ascii=False)}",
                        f"    clue_chain: {json.dumps(clues, ensure_ascii=False)}"))
     blocks.extend(("---", "", "# SWMD-0-MIN", f"id: {ifid}", f"title: {plan['title']}", ""))
-    for scene in records:
-        blocks.extend((f"ENC {scene['id']} turn=0..999", f"# TITLE: {scene['title']}"))
-        blocks.extend(f"# T: {line}" for line in scene["text"].splitlines())
-        for option in scene["options"]:
-            reaction = option["reactions"][0]
-            label = " ".join(option["text"].splitlines()).replace("|", "¦")
-            blocks.append(f"ORX {option['id']}/{reaction['id']} -> {reaction['to']} | O:{label} | D:C(1)")
-            blocks.extend(f"# R {reaction['id']}: {line}" for line in reaction["text"].splitlines())
-            if "operation" in option:
-                blocks.append(f"# DIRAC {option['id']}: {json.dumps([option['operation'], option['clue']])}")
-            if option.get("secret_gate"):
-                blocks.append(f"# SECRET {option['id']}: {json.dumps(model['secrets'][option['secret_gate']])}")
-        blocks.append("")
+    blocks.extend(swmd_blocks(records, model["secrets"]))
     swmd = out / "world.swmd.min.md"
     swmd.write_text("\n".join(blocks), encoding="utf-8", newline="\n")
     repository = skill.parents[2]
