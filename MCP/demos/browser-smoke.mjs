@@ -135,9 +135,13 @@ try{
       const balance=JSON.parse(await readFile(goalY,"utf8"));
       const snapshots=new Set();
       const authoredInitial=await evaluate("window.WORLD.stats");
-      assert.deepEqual(initial.stats,authoredInitial,"initialize the player from a copy of WORLD.stats");
       await reset();
-      assert.deepEqual((await state()).stats,authoredInitial,"restart must restore WORLD.stats, including nonzero values");
+      const restarted=await state();
+      const statsMatch=shown=>Object.keys(authoredInitial).every(key=>shown[key]===authoredInitial[key]);
+      assert.ok(statsMatch(initial.stats) && statsMatch(restarted.stats),
+        `player.js start and Restart must each copy WORLD.stats ${JSON.stringify(authoredInitial)}. `+
+        `Actual start ${JSON.stringify(initial.stats)}, restart ${JSON.stringify(restarted.stats)}. `+
+        "The response calculation in the next check reads reaction.score as [bias, trust, nerve, care].");
       for(const [destination,path] of Object.entries(balance.scene_witnesses)){
         await reset();
         for(const step of path){
