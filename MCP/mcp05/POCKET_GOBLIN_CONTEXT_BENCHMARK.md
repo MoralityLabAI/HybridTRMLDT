@@ -2,14 +2,21 @@
 
 The pilot uses the same Aleph preparation task and the same IQ4_NL Inkling checkpoint across arms. The source snapshots, task, authoritative execution plan, operator advice, decoding settings and output cap are pinned. The 100K baseline uses the original weighted packet of indexed evidence. The smaller arms use the federation's learned SetTRM shard order, exact vocabulary exclusions checked through the lattice membrane, and BM25 within the selected shards.
 
-| Arm | Evidence policy | Server slot | CPU MoE layers |
-| --- | --- | ---: | ---: |
-| Wide baseline | Weighted seven-repo evidence | 100,096 | 18 |
-| Routed 16K | Top-two routed shards per query | 100,096 | 18 |
-| Routed 50K | Same ranked candidate stream as routed 16K | 100,096 | 18 |
-| Routed 50K, placement change | Byte-identical routed 50K prompt | 100,096 | Measured on launch |
+| Arm | Evidence policy | App mode | Server slot | CPU MoE layers |
+| --- | --- | --- | ---: | ---: |
+| Wide baseline | Weighted seven-repo evidence | Repository tools | 100,096 | 18 |
+| Routed 16K | Top-two routed shards per query | Repository tools | 100,096 | 18 |
+| Routed 50K | Same ranked candidate stream as routed 16K | Answer only | 100,096 | 18 |
+| Routed 50K, placement change | Byte-identical routed 50K request | Answer only | 100,096 | Measured on launch |
 
-The first three arms measure the practical change from wide evidence to routed evidence at two budgets. The final arm isolates expert placement by holding the input and server slot fixed. A matched lexical route can isolate the learned ranker's contribution in a follow-up.
+The first two arms measure the practical change from wide to routed evidence at the smaller budget. Both generated control markers through the output cap. The separate 50K pair uses answer-only mode, which removes the repository-tool instructions after evidence assembly. The placement comparison holds the request and server slot fixed. A matched lexical route can isolate the learned ranker's contribution in a follow-up.
+
+| Arm | Input tokens | Prefill wall time | Prefill tokens/s | Output tokens | Task score |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Wide baseline | 97,982 | 3,008.06 s | 32.57 | 1,024 | 0/12 |
+| Routed 16K | 14,579 | 535.66 s | 27.22 | 1,024 | 0/12 |
+
+Neither request reused cached tokens. The routed prompt reduced prefill time by 5.62× and produced no usable answer. The CPU navigator took 9.63 seconds to select and retrieve candidates from the local federation, plus 0.36 seconds to tokenize and pack the smaller packet. The vocabulary verifier did not exclude any shard on these broad queries. This trial measures token and latency reduction without establishing a task-quality gain.
 
 ## Measurement
 
