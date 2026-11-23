@@ -394,9 +394,20 @@ def compile_routes(root, card, targets):
 
 def checked_targets(root, card, source):
     require(isinstance(source, dict), "write an object mapping reaction IDs to targets")
-    targets = source.get("targets", source)
     _, old = compile_routes(root, card, {})
     ids = {r["id"] for scene in old for option in scene["options"] for r in option["reactions"]}
+    if "retries" in source or "finale" in source:
+        retries, finale = source.get("retries", {}), source.get("finale", {})
+        require(isinstance(retries, dict) and isinstance(finale, dict), "retries and finale must be objects")
+        known_retries = {scene["id"]: [r["id"] for option in scene["options"] for r in option["reactions"]
+                                       if r["to"] == scene["id"]] for scene in old}
+        require(all(known_retries.get(id_) for id_ in retries), "only select scenes that have local retry reactions")
+        finale_ids = {r["id"] for option in old[20-len(card["endings"])-1]["options"] for r in option["reactions"]}
+        require(set(finale) <= finale_ids, "finale only accepts finale reaction IDs")
+        targets = {key: destination for id_, destination in retries.items() for key in known_retries[id_]}
+        targets.update(finale)
+    else:
+        targets = source.get("targets", source)
     require(isinstance(targets, dict) and targets and set(targets) <= ids, "supply known reaction IDs in targets")
     _, scenes = compile_routes(root, card, targets)
     require(reachable(scenes) == set(world_ids(card)), "patch disconnects one or more encounters")
@@ -420,13 +431,15 @@ def balance_brief(root, card):
     finale = scenes[20 - len(card['endings']) - 1]
     last_choices = [f"{option['text']}: " + ", ".join(f"{r['id']} -> {r['to']} ({result['reaction_hits'].get(r['id'], 0)} visits)"
                     for r in option["reactions"]) for option in finale["options"]]
-    return ("Author route-revisions.json via create_file with path and content. Its JSON contains a targets object "
-            "mapping existing reaction IDs to their revised encounter IDs. Keep your existing story, art, options, "
-            "scores, and effects. You are adjusting transitions only. Remove local repetition that can trap Pip, "
-            "using forward encounter IDs; keep every scene reachable. Make every ending reachable, especially the missing "
-            "fallback, while honoring your endings and three finale choices. Choose exact destination IDs yourself.\n"
+    return ("Call create_file with path route-revisions.json and JSON in its content. Your route patch has two objects: "
+            "retries maps each listed stuck scene ID to one forward encounter ID. It changes only that scene's "
+            "self-repeating reactions, leaving its existing forward options intact. finale maps only the finale "
+            "reaction IDs that you want to redirect to different ending IDs. Leave the rest as authored. "
+            "All four actual ending IDs must still appear in the finale. Do not redirect all results to one ending. "
+            "Choose one currently reached response whose ending is also reached by another response, and consider redirecting "
+            "it to the missing ending. Keep the existing prose, profiles, effects, and author decisions.\n"
             f"Seed 523, 5,000 trial results: timeout scenes {result['timeout_scenes']}, ending counts {result['endings']}.\n"
-            f"Your retry reaction IDs: {' / '.join(rows)}.\n"
+            f"Use these scene IDs in retries, not their reaction IDs: {' / '.join(rows)}.\n"
             f"Finale diagnostics: {' / '.join(last_choices)}. Endings: {', '.join(e['id'] for e in card['endings'])}.\n"
             "Submit the revised targets together. Goose will rehearse your patch before accepting it.")
 
