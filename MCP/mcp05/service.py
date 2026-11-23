@@ -27,6 +27,7 @@ class RepairWorkspace:
         self.working = working
         self.root = working.root
         self.manifest = manifest
+        self.creatable = ()
         self.edits: list[dict] = []
         self.verifications: list[dict] = []
         if manifest:
@@ -35,6 +36,16 @@ class RepairWorkspace:
                 raise ValueError("verifier requires host-supplied argv")
             if not editable or not all(isinstance(s, str) and s for s in editable):
                 raise ValueError("verifier requires editable path prefixes")
+            creatable = manifest.get("creatable", [])
+            if not isinstance(creatable, list) or not all(isinstance(rel, str) and rel for rel in creatable):
+                raise ValueError("verifier requires a list of exact creatable paths")
+            self.creatable = tuple(creatable)
+            for rel in self.creatable:
+                path = self.root / rel
+                if (path.relative_to(self.root).as_posix() != rel or path.resolve() != path
+                        or any(part.startswith(".") for part in Path(rel).parts)
+                        or not self.allowed(rel)):
+                    raise ValueError("creatable paths must be exact editable workspace paths")
             if self.git("rev-parse", "--show-prefix").strip() or self.git("status", "--porcelain").strip():
                 raise ValueError("repair verifier requires a clean standalone worktree at the workspace root")
             self.base = self.git("rev-parse", "HEAD").strip()
@@ -49,6 +60,28 @@ class RepairWorkspace:
         return (not flags["is_doc"] and not flags["is_test"] and
                 any(path == item.rstrip("/") or (item.endswith("/") and path.startswith(item))
                     for item in self.manifest["editable"]))
+
+    def create(self, path: str, content: str) -> dict:
+        if path not in self.creatable or not isinstance(content, str):
+            raise ValueError("provide source for a host-authorized new path")
+        raw = content.encode("utf-8")
+        if not 0 < len(raw) <= MAX_SOURCE_BYTES:
+            raise ValueError("new source must fit the source-size limit")
+        target = self.root / path
+        if target.resolve() != target:
+            raise ValueError("workspace path is outside the creatable source set")
+        stream = target.open("xb")
+        try:
+            with stream:
+                stream.write(raw)
+            self.git("add", "--intent-to-add", "--", path)
+        except (subprocess.SubprocessError, OSError):
+            target.unlink()
+            raise
+        self.working.refresh()
+        receipt = {"path": path, "before": None, "after": sha(raw), "revision": self.working.revision}
+        self.edits.append(receipt)
+        return receipt
 
     def apply(self, handle: str, old: str, new: str) -> dict:
         if not self.manifest:
@@ -179,6 +212,8 @@ class Service(GoblinService):
             "host.inspect": {}, "host.verify": {}, "host.final": {},
             "host.propose": {"task": text, "subgoal": text, "calls_left": integer, "tokens_left": integer},
         }
+        if self.workspace.creatable:
+            schemas["host.create"] = {"path": text, "content": text}
         return tools + [
             {"name": name, "description": "Host-authorized workspace operation.",
              "inputSchema": {"type": "object", "properties": props,
@@ -188,6 +223,8 @@ class Service(GoblinService):
 
     def call(self, name: str, arguments: dict) -> dict:
         try:
+            if name == "host.create":
+                return envelope(self.workspace.create(**arguments))
             if name == "host.edit":
                 return envelope(self.workspace.apply(**arguments))
             if name == "host.verify":

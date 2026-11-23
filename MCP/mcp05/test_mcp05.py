@@ -15,10 +15,11 @@ from unittest.mock import patch
 
 from MCP.mcp03.goblin_server import GoblinService
 from MCP.serve import Session
-from .context import WorkingSet
+from .context import WorkingSet, sha
 from .evaluate import episode, main as evaluate
 from .gym import ROOT, clone, dump, verifier_manifest
 from .preflight import deduplicate_read_sources, prepare
+from .service import RepairWorkspace
 
 TASK = "The player falls upward. Correct vertical gravity in physics."
 SOURCE = "def fall(speed, gravity):\n    return speed - gravity\n"
@@ -142,6 +143,31 @@ class Provider(BaseHTTPRequestHandler):
 
 
 class Contracts(unittest.TestCase):
+    def test_new_source_is_exact_readable_and_verified(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            commit_fixture(root)
+            working = WorkingSet(root)
+            manifest = {"argv": [sys.executable, "-c", "from pathlib import Path; "
+                                 "assert Path('new.js').read_bytes().endswith(b'2\\n')"],
+                        "editable": ["new.js"], "creatable": ["new.js"]}
+            workspace = RepairWorkspace(working, manifest)
+            text = "// Crème\nlet value = 1\n"
+            with self.assertRaises(ValueError):
+                workspace.create("../new.js", text)
+            with self.assertRaises(ValueError):
+                workspace.create("engine/physics.py", text)
+            created = workspace.create("new.js", text)
+            self.assertEqual(created["after"], sha(text.encode("utf-8")))
+            self.assertEqual((root / "new.js").read_bytes(), text.encode("utf-8"))
+            with self.assertRaises(FileExistsError):
+                workspace.create("new.js", "replacement")
+            self.assertFalse(workspace.verify()["passed"])
+            source = working.read(uri="new.js")
+            workspace.apply(source["handle"], "value = 1", "value = 2")
+            self.assertTrue(workspace.verify()["passed"])
+            self.assertEqual(workspace.state()["changed_paths"], ["new.js"])
+
     def test_gpu_yield_preserves_attempt_but_does_not_score_it(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

@@ -11,6 +11,17 @@ The original one-shot CLI remains available. Pass the new iteration flag to acti
 
 Set GOBLIN_GDK_BINARY to the built binary to include the deterministic provider replay in the unittest run. The two replays exercise native tool calls and Inkling's marker-encoded actions and verify a real test fixture after the same edit. The CPU workflow pins the Rust toolchain, the cargo lockfile, and the CPU PyTorch version.
 
+## Run an Inkling-authored game through Goose
+
+The launcher starts an empty Git workspace and gives Inkling a brief, source tools, and a browser verifier. Inkling chooses the tool calls. Goose writes the `create_file` content verbatim, applies any later `apply_edit` calls with a current source handle, and returns browser diagnostics through MCP. A run finishes on a passing check initiated by Inkling.
+
+    python -m MCP.mcp05.inky_goose_game story RUN_DIRECTORY --gdk GOBLIN_GDK --node NODE --chrome CHROME
+    python -m MCP.mcp05.inky_goose_game story RUN_DIRECTORY --audit
+
+Use `story` or `rpg` and a new output directory for each run. The default endpoint is the local Inkling Q4 service on port 18097. The launcher enables `--allow-create` and its manifest authorizes only `index.html`. Chrome checks the game over loopback, with external resources blocked, and writes screenshots outside the game workspace.
+
+The run directory retains the full provider request and response journal, the MCP exchange journal, the Goose session, and browser captures. A successful run writes `source-receipt.json`. The audit matches solver actions to actual provider replies and MCP frames, replays every write from the empty tree, and compares the result byte for byte to the game. It then verifies that Inkling called the browser checker after the final write and records artifact hashes. Use `--audit` to independently repeat the replay.
+
 ## Generate and train
 
 Run these from the HybridTRMLDT root with PyTorch CPU installed.

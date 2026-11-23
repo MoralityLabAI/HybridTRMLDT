@@ -1,0 +1,203 @@
+"""Launch a fresh Inkling game workspace with Goose-owned tool execution."""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+from .context import sha
+from .creative_bench import save
+from .inky_web_game import MODEL, ROOT
+
+BRIEFS = {
+    "story": """Invent an original playable Canvas story with a choice and at least four distinct scenes.
+Use an inline script and styles in index.html. Expose window.gameState() returning {scene,clue,ending}.
+Start at scene 'start' without a clue or ending. Provide visible data-choice buttons named 'study', 'cross',
+and 'rush' by attribute. Cross starts disabled. Study finds the clue and advances to an intermediate scene.
+Cross then leads to ending 'good'. Rush at the start leads to ending 'bad'. Both endings must visibly
+differ on the canvas. A button with id 'restart' restores the starting scene and clears progress.
+You decide the title, setting, art, interface, story, and code.""",
+    "rpg": """Invent an original playable Canvas action RPG. Use inline script and styles in index.html.
+Include a clear objective, visible health and controls, moving enemies, combat feedback, win and loss,
+and a button with id 'restart'. Implement WASD and arrow movement and Space to attack. Hold D and Space
+at the start to reach and strike an enemy during browser verification. Expose window.gameState()
+returning {x,y,hp,hits,kills,status}. Start with status 'playing'. Count damage dealt as hits and enemies
+defeated as kills. The restart must restore the original health and hit count.
+You decide the title, setting, art, interface, rules, and code.""",
+}
+
+WORKFLOW = """You are the sole implementer. This is an empty repository. Use Goose to create index.html
+with create_file, then call run_verifier yourself to check the actual page. Work in tool turns, one action
+per response. For the first action, aim for a runnable draft under 3,500 characters of source. Prioritize
+the starting screen, a minimal visual motif, and basic controls. Build in stages if needed instead of
+risking a truncated action. Use inline Canvas drawings and avoid external assets. If the check fails, read index.html with
+context_read using URI index.html, use apply_edit with that source handle and exact source,
+and run the check again. If you need another page of source, use the returned next_line as start.
+Return action objects directly. Source belongs in tool arguments and the task ends on a passing check."""
+
+
+def git(root: Path, *args: str) -> str:
+    return subprocess.run(["git", *args], cwd=root, capture_output=True, check=True,
+                          encoding="utf-8", timeout=20).stdout.strip()
+
+
+def read_json(path: Path) -> dict:
+    return json.loads(path.read_bytes())
+
+
+def events(path: Path) -> list[dict]:
+    return [json.loads(line) for line in path.read_bytes().splitlines()]
+
+
+def require(condition: bool, message: str) -> None:
+    if not condition:
+        raise ValueError(message)
+
+
+def audit(root: Path, mode: str) -> dict:
+    """Replay tool writes and match their receipts to the raw model and MCP exchanges."""
+    invocation = read_json(root / "invocation.json")
+    verify_config = root / "verifier.json"
+    brief = root / "brief.txt"
+    require(sha(brief.read_bytes()) == invocation["brief_sha256"], "brief hash changed")
+    require(sha(verify_config.read_bytes()) == invocation["verifier_sha256"], "verifier hash changed")
+    workspace = root / "workspace"
+    require(not git(workspace, "ls-tree", "-r", invocation["base_commit"]), "base workspace was populated")
+    gdk = read_json(root / "gdk.json")
+    wire = root / "inky-wire.jsonl"
+    mcp = root / "mcp-wire.jsonl"
+    replies = [json.loads(event["body"]) for event in events(wire)
+               if event["event"] == "response" and event["status"] == 200]
+    model_actions = iter((reply["choices"][0]["message"].get("content") or "").strip() for reply in replies)
+    frames = [json.loads(event["body"]) for event in events(mcp)]
+    mcp_results = {frame["id"]: frame["result"] for frame in frames if "result" in frame}
+    names = {"create_file": "host.create", "apply_edit": "host.edit", "run_verifier": "host.verify"}
+    calls = iter(frame for frame in frames if frame.get("method") == "tools/call"
+                 and frame["params"]["name"] in names.values())
+    frame = next(calls, None)
+    source = None
+    writes, checks = [], []
+    for receipt in gdk["session"]["receipts"]:
+        require(receipt["origin"] == "solver", "a tool was called by an actor other than Inkling")
+        raw = receipt["raw_assistant_action"].strip()
+        require(any(action == raw for action in model_actions), "solver receipt is missing its provider reply")
+        name = receipt["tool"]
+        if name not in names:
+            continue
+        args, output = receipt["arguments"], receipt["output"]
+        response = None
+        if frame and frame["params"] == {"name": names[name], "arguments": args}:
+            response = mcp_results[frame["id"]]
+            frame = next(calls, None)
+            require(response["isError"] == receipt["error"], "MCP error status differs")
+        if receipt["error"]:
+            continue
+        mcp_output = {key: value for key, value in output.items() if key != "next_action_hint"}
+        require(response is not None and response["structuredContent"] == mcp_output,
+                "MCP result differs from solver receipt")
+        if name == "run_verifier":
+            checks.append({"action": receipt["index"], "passed": output["passed"], "seconds": output["seconds"]})
+            continue
+        require(output["path"] == "index.html", "unexpected file write")
+        require(output["before"] == (sha(source.encode("utf-8")) if source is not None else None),
+                "before hash does not match replay")
+        if name == "create_file":
+            require(source is None and args["path"] == "index.html", "unexpected create target")
+            source = args["content"]
+        else:
+            old, new = args["old"], args["new"]
+            if "\r\n" in source:
+                old, new = old.replace("\n", "\r\n"), new.replace("\n", "\r\n")
+            require(source.count(old) == 1, "replacement is not unique in replay")
+            source = source.replace(old, new, 1)
+        require(sha(source.encode("utf-8")) == output["after"], "after hash does not match replay")
+        writes.append({"action": receipt["index"], "sha256": output["after"]})
+    require(frame is None, "unattributed MCP operation")
+    raw_file = workspace / "index.html"
+    require(source is not None and source.encode("utf-8") == raw_file.read_bytes(),
+            "live artifact does not match the replayed model writes")
+    require(gdk["state"]["verified"] and checks[-1]["passed"] and checks[-1]["action"] > writes[-1]["action"],
+            "no solver-triggered passing verification of the final write")
+    browser = read_json(root / "browser/browser-receipt.json")
+    require(browser["game"] == mode and browser["status"] == "verified", "missing matching browser verification")
+    files = [brief, verify_config, wire, mcp, root / "invocation.json", root / "gdk.json",
+             root / "session.json", root / "session.preflight.jsonl", raw_file,
+             *sorted((root / "browser").iterdir())]
+    return {"model": gdk["model"], "title": browser["title"], "game": mode, "base_commit": invocation["base_commit"],
+            "gdk_sha256": invocation["gdk_sha256"],
+            "writes": writes, "verifications": checks, "browser_checks": browser["checks"],
+            "provider_calls": len(replies), "provider_timings": [reply.get("timings") for reply in replies],
+            "wall_seconds": gdk["wall_seconds"],
+            "sha256": {file.relative_to(root).as_posix(): sha(file.read_bytes()) for file in files}}
+
+
+def run(root: Path, mode: str, gdk: Path, node: Path, chrome: Path, base_url: str) -> int:
+    root.mkdir(parents=True)
+    game = root / "workspace"
+    game.mkdir()
+    git(game, "init", "--quiet")
+    git(game, "-c", "user.name=Goose workspace", "-c", "user.email=goose@example.invalid",
+        "commit", "--quiet", "--allow-empty", "-m", "Begin with an empty workspace")
+    brief = root / "brief.txt"
+    brief.write_text(BRIEFS[mode] + "\n\n" + WORKFLOW + "\n", encoding="utf-8", newline="\n")
+    verifier = root / "verifier.json"
+    save(verifier, {"argv": [str(node), str(ROOT / "MCP/demos/browser-smoke.mjs"), str(chrome),
+                            str(root / "browser"), mode, str(game)],
+                    "editable": ["index.html"], "creatable": ["index.html"], "timeout_seconds": 50})
+    command = [str(gdk), "--repo", str(game), "--goblin-cwd", str(ROOT), "--python", sys.executable,
+               "--task-file", str(brief), "--session-file", str(root / "session.json"),
+               "--base-url", base_url, "--model", MODEL, "--context-window", "100096",
+               "--max-tokens", "4608", "--max-agent-iterations", "12", "--max-tool-calls", "20",
+               "--budget", "4096", "--no-packet", "--memory-mode", "raw", "--json-actions",
+               "--verifier", str(verifier), "--allow-create", "--timeout-secs", "840"]
+    save(root / "invocation.json", {"argv": command, "base_commit": git(game, "rev-parse", "HEAD"),
+                                    "base_tree": git(game, "ls-tree", "HEAD"),
+                                    "verifier_sha256": sha(verifier.read_bytes()),
+                                    "brief_sha256": sha(brief.read_bytes()),
+                                    "gdk_sha256": sha(gdk.read_bytes())})
+    env = {**os.environ, "MCP05_WIRE_LOG": str(root / "inky-wire.jsonl"),
+           "MCP05_SERVER_WIRE_LOG": str(root / "mcp-wire.jsonl")}
+    for key in ("MCP05_FRESH_PROMPT", "MCP05_EPISODE_PREFIX_PATH", "MCP05_FEDERATION", "MCP05_INDEX_ROUTER"):
+        env.pop(key, None)
+    print(f"Launching {mode} in {game}", flush=True)
+    with (root / "gdk.json").open("wb") as stdout, (root / "gdk.stderr.log").open("wb") as stderr:
+        result = subprocess.run(command, cwd=ROOT, env=env, stdout=stdout, stderr=stderr)
+    if result.returncode:
+        return result.returncode
+    if not read_json(root / "gdk.json")["state"].get("verified"):
+        print(f"Goose ended without a passing check. Traces are in {root}.", file=sys.stderr)
+        return 1
+    return record_audit(root, mode)
+
+
+def record_audit(root: Path, mode: str) -> int:
+    receipt = audit(root, mode)
+    path = root / "source-receipt.json"
+    save(path, receipt)
+    print(f"Verified {receipt['title']}. Replay receipt saved to {path}.")
+    return 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("mode", choices=BRIEFS)
+    parser.add_argument("out", type=Path)
+    parser.add_argument("--audit", action="store_true", help="verify the finished rollout traces")
+    parser.add_argument("--gdk", type=Path)
+    parser.add_argument("--node", type=Path)
+    parser.add_argument("--chrome", type=Path)
+    parser.add_argument("--base-url", default="http://127.0.0.1:18097/v1/")
+    args = parser.parse_args()
+    if args.audit:
+        return record_audit(args.out.resolve(), args.mode)
+    if not (args.gdk and args.node and args.chrome):
+        parser.error("a rollout requires --gdk, --node, and --chrome")
+    return run(args.out.resolve(), args.mode, args.gdk.resolve(strict=True), args.node.resolve(strict=True),
+               args.chrome.resolve(strict=True), args.base_url)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
