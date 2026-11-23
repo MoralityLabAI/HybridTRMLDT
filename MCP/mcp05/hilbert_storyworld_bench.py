@@ -159,6 +159,15 @@ def encode(value):
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
 
 
+def measured_reference(arm, stage):
+    for trace in arm.glob(f"{stage}-attempt-*/session.preflight.jsonl"):
+        for line in trace.read_text(encoding="utf-8").splitlines():
+            row = json.loads(line)
+            if row.get("target_input_tokens") and row.get("provider_preflight_parity"):
+                return True
+    return False
+
+
 def author(arm, gdk, stage, brief, validate, *, max_tokens=1024, reference=None):
     receipt = arm / f"{stage}.json"
     if receipt.is_file():
@@ -168,8 +177,9 @@ def author(arm, gdk, stage, brief, validate, *, max_tokens=1024, reference=None)
         phase = next_attempt(arm, stage)
         path = phase / "workspace/result.json"
         check = [sys.executable, "-m", "json.tool", str(path)]
+        exposure = reference if reference and not measured_reference(arm, stage) else None
         run_phase(phase, gdk, brief + feedback, [path.name], check, max_tokens=max_tokens,
-                  iterations=1, context=WINDOW if reference else 8192, allow_basename=True, reference_prompt=reference)
+                  iterations=1, context=WINDOW if exposure else 8192, allow_basename=True, reference_prompt=exposure)
         try:
             require(path.is_file(), "Goose did not receive a complete create_file action")
             result = read_json(path)
@@ -197,8 +207,8 @@ def develop(arm, gdk, packet, target):
         plan = planning["plan"]
     else:
         plan = author(arm, gdk, "plan-repair", BRIEF.replace("plan.json", "result.json") +
-                      "\nThe first run failed to produce a valid file. Use short actor, act and ending arrays.",
-                      check_plan, reference=(packet, target))
+                      "\nUse short actor, act and ending arrays. Keep the plan focused on the missing night bell.",
+                      check_plan)
     cast_ids = [row[0] for row in plan["cast"]]
     endings = [row[0] for row in plan["endings"]]
     public = [row[0] for row in plan["endings"] if not row[1]]
@@ -329,7 +339,8 @@ def write_report(root, arms, errors):
     lines = ["# Inky Mini Hilbert Storyworld Benchmark", "",
              "Each condition uses the same staged task, checkpoint, two loops, and output budgets. The long",
              "turns use increasingly long prefixes of the same Pocket Goblin reference packet. The comparison",
-             "therefore measures the effect of supplying more retrieved material in this run.", "",
+             "therefore measures the effect of supplying more retrieved material in this run. After a measured",
+             "long turn fails to author a valid file, the repair uses a bounded working card.", "",
              "The model owns the story and the choice rules. The numerical replay treats the amplitude vector",
              "as a pure state. It applies authored sequences in order and reads Born weights at the ending.",
              "The route probabilities below assume uniformly random available choices.", "",
