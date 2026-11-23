@@ -515,13 +515,77 @@ def browser_command(out, scene_root, captures, node, chrome):
             "storyworld", str(scene_root), str(out / "world-data.js"), str(out / "balance.json")]
 
 
-def verify_player_patch(root, source_root, art_root, patch, node, chrome):
+def art_source_path(root):
+    standalone = root / "22-art/workspace/art.js"
+    return standalone if standalone.is_file() else root / "art-composition.js"
+
+
+def check_art_map(source, card):
+    require(isinstance(source, dict), "the art map must be a JSON object")
+    scenes = source.get("scenes", source)
+    require(isinstance(scenes, dict) and set(scenes) == set(world_ids(card)), "provide all twenty scene IDs as keys")
+    cast = {c["id"] for c in card["cast"]}
+    for id_, row in scenes.items():
+        require(isinstance(row, list) and len(row) == 8,
+                f"{id_}: use [sky, ground, light, x, y, scale, landmark, actors]")
+        colors, numbers, landmark, actors = row[:3], row[3:6], row[6], row[7]
+        require(all(isinstance(value, str) and re.fullmatch(r"#[0-9a-fA-F]{6}", value) for value in colors),
+                f"{id_}: colors must be three six-digit Canvas hex colors")
+        require(all(type(n) in (int, float) and math.isfinite(n) and 1 <= n <= 100 for n in numbers),
+                f"{id_}: x, y and scale must be percentages in 1–100")
+        require(isinstance(landmark, str) and landmark and isinstance(actors, list) and set(actors) <= cast,
+                f"{id_}: use a named landmark and existing character IDs")
+    require(len({json.dumps(row[:7]) for row in scenes.values()}) == 20, "each composition must be distinct")
+    return scenes
+
+
+def build_art_layers(root, data, gdk, node):
+    card_file = root / "00-world/workspace/world-card.json"
+    art_root = root / "22-art-map"
+    map_file = art_root / "workspace/art-map.json"
+    script = str(Path(__file__).resolve())
+    cues = " / ".join(f"{s['id']} {s['art'][:100]}" for s in data["scenes"])
+    cast = " / ".join(f"{c['id']}: {c['name']} ({c['visual']})" for c in data["cast"])
+    if not map_file.is_file():
+        task = f"""Create art-map.json. One JSON object maps each of your 20 scene IDs to this compact array:
+[skyColor, groundColor, lightColor, xPercent, yPercent, scalePercent, landmarkName, actorIds].
+Use six-digit hex colors and percentages between 1 and 100. Choose a few shared landmark names but
+varied positions, colors and scales so every illustration has a distinct composition. Use actor ID arrays.
+You choose all compositions. Write only art-map.json in one action, no program source.
+Cast: {cast}. Your scene cues: {cues}."""
+        run_phase(art_root, gdk, task, ["art-map.json"],
+                  [sys.executable, script, "check-art-map", str(map_file), "--card", str(card_file)],
+                  max_tokens=3400, iterations=3, context=8192, allow_basename=True,
+                  validate_create=[sys.executable, script, "check-proposed-art-map", "--card", str(card_file)])
+    authored = check_art_map(read_json(map_file), check_card(card_file))
+    paint_root = root / "22-art-renderer"
+    render_file = paint_root / "workspace/renderer.js"
+    if not render_file.is_file():
+        landmarks = sorted({row[6] for row in authored.values()})
+        task = f"""Create renderer.js, a short vanilla JavaScript Canvas module for your fable {data['title']}.
+Define window.drawScene(canvas,scene,cast). window.INKY_ART[scene.id] is your scene array:
+[sky,ground,light,x%,y%,scale%,landmark,actorIds]. In this module use those actual values to draw a vivid
+backdrop and place a recognizable landmark. Draw original silhouettes for the characters using paths,
+shapes and your own palette. Use shared primitives. The renderer should be under 110 lines and contain
+no scene-by-scene tables, HTML, gameplay logic or external assets. Return one exact create_file action.
+Your landmark motifs: {', '.join(landmarks)}. Your character designs: {cast}."""
+        run_phase(paint_root, gdk, task, ["renderer.js"], [str(node), "--check", str(render_file)],
+                  max_tokens=4000, iterations=1, context=8192, allow_basename=True)
+    bridge = "window.INKY_ART = " + json.dumps(authored, ensure_ascii=False, separators=(",", ":")) + ";\n"
+    composed = root / "art-composition.js"
+    composed.write_bytes(bridge.encode("utf-8") + render_file.read_bytes())
+    return {"scene_compositions": replay_writes(art_root, [map_file.name], require_verified=False),
+            "canvas_renderer": replay_writes(paint_root, [render_file.name], require_verified=False),
+            "composition_sha256": sha(composed.read_bytes())}
+
+
+def verify_player_patch(root, source_root, patch, node, chrome):
     bundle = root / "player-check"
     bundle.mkdir(exist_ok=True)
     workspace = source_root / "workspace"
     fixed = apply_player_fixes((workspace / "player.js").read_bytes().decode("utf-8"), patch)
     shutil.copyfile(workspace / "index.html", bundle / "index.html")
-    shutil.copyfile(art_root / "workspace/art.js", bundle / "art.js")
+    shutil.copyfile(art_source_path(root), bundle / "art.js")
     (bundle / "player.js").write_bytes(fixed.encode("utf-8"))
     return subprocess.run(browser_command(root / "export", bundle, root / "player-browser", node, chrome),
                           check=False, timeout=40).returncode
@@ -531,20 +595,11 @@ def finish_player(root, data, gdk, node, chrome):
     source_root = root / "21-player-parts"
     source = replay_writes(source_root, ["index.html", "player.js"], require_verified=False)
     art_root = root / "22-art"
-    if not (art_root / "workspace/art.js").is_file():
-        cues = "\n".join(f"{s['id']}: {s['art']}" for s in data["scenes"])
-        cast = "\n".join(f"{c['name']}: {c['visual']}" for c in data["cast"])
-        brief = f"""Use create_file to write exactly art.js for your illustrated fable {data['title']}.
-Only write the Canvas illustration module. Other files already implement the HTML, layout and gameplay.
-Define window.drawScene(canvas,scene,cast). Draw with canvas paths, strokes, fills and gradients.
-Each of the twenty scenes uses its own drawable composition. Use a short palette and reusable primitives,
-with distinct designs for the recurring cast. Aim for a compact program under 150 lines. Keep your own
-color choices, scene details, and character silhouettes. Do not write markup, gameplay, or external asset URLs.
-Cast designs you authored:\n{cast}\nScene art cues you authored:\n{cues}"""
-        run_phase(art_root, gdk, brief, ["art.js"], [str(node), "--check", str(art_root / "workspace/art.js")],
-                  max_tokens=6400, iterations=1, context=16384, allow_basename=True)
-    art = replay_writes(art_root, ["art.js"], require_verified=False)
-    subprocess.run([str(node), "--check", str(art_root / "workspace/art.js")], check=True, timeout=10)
+    if (art_root / "workspace/art.js").is_file():
+        art = replay_writes(art_root, ["art.js"], require_verified=False)
+    else:
+        art = build_art_layers(root, data, gdk, node)
+    subprocess.run([str(node), "--check", str(art_source_path(root))], check=True, timeout=10)
     fix_root = root / "23-player-check"
     original = (source_root / "workspace/player.js").read_bytes().decode("utf-8")
     score_start = original.index("      var score = ")
@@ -570,7 +625,7 @@ then call run_verifier to run the browser on your corrected program. Only change
                   max_tokens=2304, iterations=8, context=8192, allow_basename=True, compact_writes=True)
     fixes = replay_writes(fix_root, ["player-fixes.json"], require_verified=False)
     patch = read_json(fix_root / "workspace/player-fixes.json")
-    require(verify_player_patch(root, source_root, art_root, patch, node, chrome) == 0,
+    require(verify_player_patch(root, source_root, patch, node, chrome) == 0,
             "the authored player code did not pass browser verification")
     out = root / "export"
     for name in ("index.html", "art.js", "player.js"):
@@ -587,7 +642,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("plan", "check-card", "math", "check-math", "check-proposed-math",
                         "outline", "check-outline", "check-proposed-outline", "balance", "check-balance", "check-proposed-balance",
-                        "scenes", "check-scenes", "check-proposed", "export", "play", "finish-player", "check-player"))
+                        "scenes", "check-scenes", "check-proposed", "export", "play", "finish-player", "check-player",
+                        "check-art-map", "check-proposed-art-map"))
     parser.add_argument("path", type=Path)
     parser.add_argument("--gdk", type=Path)
     parser.add_argument("--card", type=Path)
@@ -598,9 +654,14 @@ def main() -> int:
     parser.add_argument("--first-reply-from", type=Path)
     parser.add_argument("--world", type=Path)
     args = parser.parse_args()
+    if args.command in ("check-art-map", "check-proposed-art-map"):
+        source = read_json(args.path) if args.command == "check-art-map" else json.loads(sys.stdin.buffer.read())
+        check_art_map(source, check_card(args.card))
+        print("Verified twenty distinct authored illustration compositions")
+        return 0
     if args.command == "check-player":
         phase = args.world.resolve()
-        return verify_player_patch(phase, phase / "21-player-parts", phase / "22-art", read_json(args.path),
+        return verify_player_patch(phase, phase / "21-player-parts", read_json(args.path),
                                    args.node, args.chrome)
     if args.command in ("check-balance", "check-proposed-balance"):
         root = args.world.resolve()

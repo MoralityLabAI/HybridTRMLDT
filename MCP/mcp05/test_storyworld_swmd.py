@@ -1,10 +1,20 @@
 import unittest
 
-from .inky_storyworld import apply_player_fixes, check_outline, check_profiles, duplicated, encounter_card
+from .inky_storyworld import apply_player_fixes, check_art_map, check_outline, check_profiles, duplicated, encounter_card
 from .storyworld_swmd import evaluate, parse_scene, profile_pair, rehearse, render_card, world_ids
 
 
 class CompactCards(unittest.TestCase):
+    def test_art_compositions_accept_exact_scene_ids_and_check_variation(self):
+        card = {"cast": [{"id": "char_test"}], "endings": [{"id": f"end_{i}"} for i in range(4)]}
+        scene_ids = world_ids(card)
+        rows = {id_: ["#010203", "#040506", "#070809", i, 80, 60, "fixture", ["char_test"]]
+                for i, id_ in enumerate(scene_ids, 1)}
+        self.assertEqual(check_art_map(rows, card), rows)
+        rows[scene_ids[-1]] = rows[scene_ids[0]]
+        with self.assertRaisesRegex(ValueError, "distinct"):
+            check_art_map(rows, card)
+
     def test_player_replacements_require_exact_counts(self):
         original = "a\r\na\r\nb\r\n"
         self.assertEqual(apply_player_fixes(original, {"replacements": [
