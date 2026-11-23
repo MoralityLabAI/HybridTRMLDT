@@ -84,8 +84,9 @@ def render_card(source: dict, card: dict, scene_id: str) -> str:
 
     hero = card["cast"][0]["id"]
     ordinal = world_ids(card).index(scene_id) + 1
+    title = card.get("outline", {}).get(scene_id, (source["title"],))[0]
     rows = [f"ENC {scene_id} turn=0..999", f"# T: {text(source['text'])}",
-            f"# TITLE: {text(source['title'])}", f"# ART: {text(source['art'])}"]
+            f"# TITLE: {text(title)}", f"# ART: {text(source['art'])}"]
     for op_i, option in enumerate(source["options"], 1):
         if isinstance(option, dict):
             label, reactions = option["label"], option["reactions"]

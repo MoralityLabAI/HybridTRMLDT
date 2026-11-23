@@ -54,6 +54,8 @@ class CompactCards(unittest.TestCase):
         reaction = scene["options"][0]["reactions"][0]
         self.assertEqual(reaction["effects"], {"trust": 0.08, "nerve": -0.04})
         self.assertAlmostEqual(evaluate(reaction["score"], {"trust": 0.5, "nerve": 0, "care": 0}), .04)
+        authored = {**card, "outline": {"enc_01": ("Outline title", "An authored beat")}}
+        self.assertIn("# TITLE: Outline title\n", render_card(data, authored, "enc_01"))
         with self.assertRaisesRegex(ValueError, "invalid route"):
             parse_scene(compiled.replace("-> enc_02", "-> enc_99", 1), card, "enc_01")
 
