@@ -1,0 +1,776 @@
+{
+  "capacity": 32768,
+  "corruption": 0.1,
+  "ridge_alpha": 25.0,
+  "seeds": [
+    107,
+    109,
+    113
+  ],
+  "worlds_per_domain_per_seed": 16,
+  "trace_sample_counts": {
+    "storyworld": {
+      "train": 605,
+      "test": 651
+    },
+    "canvas": {
+      "train": 354,
+      "test": 384
+    },
+    "lean": {
+      "train": 317,
+      "test": 317
+    }
+  },
+  "domain_baseline_performance": {
+    "storyworld": {
+      "n_worlds": 48,
+      "completion": 0.4583333333333333,
+      "mean_charged_reads": 16977.75
+    },
+    "canvas": {
+      "n_worlds": 48,
+      "completion": 0.7291666666666666,
+      "mean_charged_reads": 11785.666666666666
+    },
+    "lean": {
+      "n_worlds": 48,
+      "completion": 0.6041666666666666,
+      "mean_charged_reads": 10065.520833333334
+    }
+  },
+  "cross_domain_linear_probes": {
+    "progress": {
+      "domains": [
+        "storyworld",
+        "canvas",
+        "lean"
+      ],
+      "r2_matrix": [
+        [
+          0.533,
+          0.6232,
+          0.7569
+        ],
+        [
+          0.5237,
+          0.6705,
+          0.8056
+        ],
+        [
+          0.4615,
+          0.566,
+          0.7909
+        ]
+      ],
+      "pearson_r_matrix": [
+        [
+          0.7662,
+          0.8101,
+          0.8973
+        ],
+        [
+          0.7813,
+          0.8344,
+          0.9225
+        ],
+        [
+          0.7096,
+          0.7837,
+          0.8985
+        ]
+      ],
+      "null_r2_matrix": [
+        [
+          -0.3913,
+          -0.1034,
+          -0.1058
+        ],
+        [
+          -0.2231,
+          -0.0931,
+          -0.1177
+        ],
+        [
+          -0.4218,
+          -0.3823,
+          -0.2749
+        ]
+      ],
+      "within_domain_mean_r2": 0.6647847499248104,
+      "cross_domain_offdiag_mean_r2": 0.622817339277378,
+      "cross_domain_offdiag_mean_r": 0.8174181929649379,
+      "cross_domain_offdiag_null_r2": -0.2256795891830675
+    },
+    "deficit": {
+      "domains": [
+        "storyworld",
+        "canvas",
+        "lean"
+      ],
+      "r2_matrix": [
+        [
+          0.3968,
+          0.3351,
+          0.7339
+        ],
+        [
+          0.4208,
+          0.6755,
+          0.4531
+        ],
+        [
+          0.3102,
+          0.0732,
+          0.7903
+        ]
+      ],
+      "pearson_r_matrix": [
+        [
+          0.7548,
+          0.8074,
+          0.9124
+        ],
+        [
+          0.7936,
+          0.8367,
+          0.9234
+        ],
+        [
+          0.7378,
+          0.7862,
+          0.8981
+        ]
+      ],
+      "null_r2_matrix": [
+        [
+          -0.6401,
+          -0.7524,
+          -0.1712
+        ],
+        [
+          -0.3833,
+          0.0254,
+          -0.5827
+        ],
+        [
+          -0.6663,
+          -1.7757,
+          0.1249
+        ]
+      ],
+      "within_domain_mean_r2": 0.6208634668821005,
+      "cross_domain_offdiag_mean_r2": 0.3877044564137752,
+      "cross_domain_offdiag_mean_r": 0.8267908282742287,
+      "cross_domain_offdiag_null_r2": -0.7219350436646063
+    },
+    "verify_fail": {
+      "domains": [
+        "storyworld",
+        "canvas",
+        "lean"
+      ],
+      "r2_matrix": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "pearson_r_matrix": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "null_r2_matrix": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "within_domain_mean_r2": 0.0,
+      "cross_domain_offdiag_mean_r2": 0.0,
+      "cross_domain_offdiag_mean_r": 0.0,
+      "cross_domain_offdiag_null_r2": 0.0
+    },
+    "u_prob": {
+      "domains": [
+        "storyworld",
+        "canvas",
+        "lean"
+      ],
+      "r2_matrix": [
+        [
+          0.5377,
+          0.5716,
+          0.6361
+        ],
+        [
+          0.5697,
+          0.5392,
+          0.6424
+        ],
+        [
+          0.4997,
+          0.5174,
+          0.6871
+        ]
+      ],
+      "pearson_r_matrix": [
+        [
+          0.7519,
+          0.7558,
+          0.802
+        ],
+        [
+          0.7572,
+          0.741,
+          0.8217
+        ],
+        [
+          0.7224,
+          0.7196,
+          0.8332
+        ]
+      ],
+      "null_r2_matrix": [
+        [
+          -0.0177,
+          0.0434,
+          0.0326
+        ],
+        [
+          0.0,
+          -0.021,
+          -0.0106
+        ],
+        [
+          -0.2211,
+          -0.1364,
+          -0.1337
+        ]
+      ],
+      "within_domain_mean_r2": 0.5879972974448497,
+      "cross_domain_offdiag_mean_r2": 0.572809160370683,
+      "cross_domain_offdiag_mean_r": 0.7631369550724244,
+      "cross_domain_offdiag_null_r2": -0.04868812834110514
+    }
+  },
+  "cross_domain_linear_probes_fast_h": {
+    "progress": {
+      "domains": [
+        "storyworld",
+        "canvas",
+        "lean"
+      ],
+      "r2_matrix": [
+        [
+          0.3754,
+          0.5239,
+          0.6903
+        ],
+        [
+          0.4727,
+          0.5115,
+          0.6928
+        ],
+        [
+          0.401,
+          0.4322,
+          0.7194
+        ]
+      ],
+      "pearson_r_matrix": [
+        [
+          0.6994,
+          0.732,
+          0.8557
+        ],
+        [
+          0.7162,
+          0.7378,
+          0.8459
+        ],
+        [
+          0.6749,
+          0.7,
+          0.8583
+        ]
+      ],
+      "null_r2_matrix": [
+        [
+          -0.6046,
+          -0.1985,
+          -0.2291
+        ],
+        [
+          -0.2263,
+          -0.0788,
+          -0.0934
+        ],
+        [
+          -0.5638,
+          -0.3468,
+          -0.269
+        ]
+      ],
+      "within_domain_mean_r2": 0.5354190139593918,
+      "cross_domain_offdiag_mean_r2": 0.5354747073526415,
+      "cross_domain_offdiag_mean_r": 0.7540983696525531,
+      "cross_domain_offdiag_null_r2": -0.2763094848921752
+    },
+    "deficit": {
+      "domains": [
+        "storyworld",
+        "canvas",
+        "lean"
+      ],
+      "r2_matrix": [
+        [
+          0.1545,
+          0.0641,
+          0.6097
+        ],
+        [
+          0.2963,
+          0.4877,
+          0.2783
+        ],
+        [
+          0.194,
+          -0.2287,
+          0.7183
+        ]
+      ],
+      "pearson_r_matrix": [
+        [
+          0.6446,
+          0.6914,
+          0.8375
+        ],
+        [
+          0.7124,
+          0.7199,
+          0.8446
+        ],
+        [
+          0.6891,
+          0.6919,
+          0.8574
+        ]
+      ],
+      "null_r2_matrix": [
+        [
+          -0.8232,
+          -1.019,
+          -0.1528
+        ],
+        [
+          -0.3827,
+          -0.2161,
+          -0.7462
+        ],
+        [
+          -1.5072,
+          -2.3599,
+          -0.1336
+        ]
+      ],
+      "within_domain_mean_r2": 0.45351426038877135,
+      "cross_domain_offdiag_mean_r2": 0.20229674262976483,
+      "cross_domain_offdiag_mean_r": 0.7445103428403422,
+      "cross_domain_offdiag_null_r2": -1.027973972886347
+    },
+    "verify_fail": {
+      "domains": [
+        "storyworld",
+        "canvas",
+        "lean"
+      ],
+      "r2_matrix": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "pearson_r_matrix": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "null_r2_matrix": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "within_domain_mean_r2": 0.0,
+      "cross_domain_offdiag_mean_r2": 0.0,
+      "cross_domain_offdiag_mean_r": 0.0,
+      "cross_domain_offdiag_null_r2": 0.0
+    },
+    "u_prob": {
+      "domains": [
+        "storyworld",
+        "canvas",
+        "lean"
+      ],
+      "r2_matrix": [
+        [
+          0.5184,
+          0.5313,
+          0.6207
+        ],
+        [
+          0.5338,
+          0.5522,
+          0.6021
+        ],
+        [
+          0.4682,
+          0.4431,
+          0.6325
+        ]
+      ],
+      "pearson_r_matrix": [
+        [
+          0.7403,
+          0.73,
+          0.7856
+        ],
+        [
+          0.7421,
+          0.7482,
+          0.7888
+        ],
+        [
+          0.7249,
+          0.6785,
+          0.8006
+        ]
+      ],
+      "null_r2_matrix": [
+        [
+          -0.1986,
+          -0.2708,
+          -0.139
+        ],
+        [
+          -0.1968,
+          -0.1419,
+          -0.1783
+        ],
+        [
+          -0.1355,
+          -0.1532,
+          -0.1302
+        ]
+      ],
+      "within_domain_mean_r2": 0.5677262786725091,
+      "cross_domain_offdiag_mean_r2": 0.5331953836277405,
+      "cross_domain_offdiag_mean_r": 0.7416483528206045,
+      "cross_domain_offdiag_null_r2": -0.17893897985058183
+    }
+  },
+  "cross_domain_activation_patching": {
+    "storyworld_to_canvas": {
+      "steering": {
+        "exp_tier_early": 1.076812485853831,
+        "exp_tier_late": 1.1017080148061116,
+        "exp_tier_fail": 1.076812485853831,
+        "delta_tier_fail_minus_late": -0.02489552895228068,
+        "delta_tier2_prob_fail_minus_late": -0.010560611883799234,
+        "delta_u_prob_fail_minus_late": -0.04678496718406677,
+        "delta_u_prob_early_minus_late": -0.04678496718406677,
+        "delta_retry_bt_prob_fail_minus_late": -0.08715914686520894,
+        "delta_halt_prob_late_minus_early": 0.10482557614644368
+      },
+      "live_episodes": {
+        "n": 12,
+        "baseline_completion": 0.6666666666666666,
+        "patch_late_completion": 0.9166666666666666,
+        "patch_fail_completion": 0.8333333333333334,
+        "patch_late_mean_reads": 11242.833333333334,
+        "patch_fail_mean_reads": 10784.583333333334,
+        "delta_reads_fail_minus_late": -458.25
+      }
+    },
+    "storyworld_to_lean": {
+      "steering": {
+        "exp_tier_early": 1.076812485853831,
+        "exp_tier_late": 1.1017080148061116,
+        "exp_tier_fail": 1.076812485853831,
+        "delta_tier_fail_minus_late": -0.02489552895228068,
+        "delta_tier2_prob_fail_minus_late": -0.010560611883799234,
+        "delta_u_prob_fail_minus_late": -0.04616209864616394,
+        "delta_u_prob_early_minus_late": -0.04616209864616394,
+        "delta_retry_bt_prob_fail_minus_late": -0.09449552496274312,
+        "delta_halt_prob_late_minus_early": 0.10313187042872111
+      },
+      "live_episodes": {
+        "n": 12,
+        "baseline_completion": 0.75,
+        "patch_late_completion": 0.75,
+        "patch_fail_completion": 0.8333333333333334,
+        "patch_late_mean_reads": 8973.75,
+        "patch_fail_mean_reads": 8948.833333333334,
+        "delta_reads_fail_minus_late": -24.91666666666606
+      }
+    },
+    "canvas_to_storyworld": {
+      "steering": {
+        "exp_tier_early": 1.083969235420227,
+        "exp_tier_late": 1.127393901348114,
+        "exp_tier_fail": 1.083969235420227,
+        "delta_tier_fail_minus_late": -0.04342466592788696,
+        "delta_tier2_prob_fail_minus_late": -0.01931735873222351,
+        "delta_u_prob_fail_minus_late": -0.0001363058884938558,
+        "delta_u_prob_early_minus_late": -0.0001363058884938558,
+        "delta_retry_bt_prob_fail_minus_late": -0.010939151048660278,
+        "delta_halt_prob_late_minus_early": 0.20289987325668335
+      },
+      "live_episodes": {
+        "n": 12,
+        "baseline_completion": 0.6666666666666666,
+        "patch_late_completion": 0.6666666666666666,
+        "patch_fail_completion": 0.5833333333333334,
+        "patch_late_mean_reads": 19311.583333333332,
+        "patch_fail_mean_reads": 20322.333333333332,
+        "delta_reads_fail_minus_late": 1010.75
+      }
+    },
+    "canvas_to_lean": {
+      "steering": {
+        "exp_tier_early": 1.083969235420227,
+        "exp_tier_late": 1.127393901348114,
+        "exp_tier_fail": 1.083969235420227,
+        "delta_tier_fail_minus_late": -0.04342466592788696,
+        "delta_tier2_prob_fail_minus_late": -0.01931735873222351,
+        "delta_u_prob_fail_minus_late": 0.00018229087193806967,
+        "delta_u_prob_early_minus_late": 0.00018229087193806967,
+        "delta_retry_bt_prob_fail_minus_late": -0.01594237486521403,
+        "delta_halt_prob_late_minus_early": 0.20118911067644754
+      },
+      "live_episodes": {
+        "n": 12,
+        "baseline_completion": 0.75,
+        "patch_late_completion": 0.8333333333333334,
+        "patch_fail_completion": 0.8333333333333334,
+        "patch_late_mean_reads": 10285.666666666666,
+        "patch_fail_mean_reads": 9240.0,
+        "delta_reads_fail_minus_late": -1045.666666666666
+      }
+    },
+    "lean_to_storyworld": {
+      "steering": {
+        "exp_tier_early": 1.0900500218073528,
+        "exp_tier_late": 1.1105767289797466,
+        "exp_tier_fail": 1.0900500218073528,
+        "delta_tier_fail_minus_late": -0.0205267071723938,
+        "delta_tier2_prob_fail_minus_late": -0.0025979280471801758,
+        "delta_u_prob_fail_minus_late": -0.018578251202901203,
+        "delta_u_prob_early_minus_late": -0.018578251202901203,
+        "delta_retry_bt_prob_fail_minus_late": -0.13398411870002747,
+        "delta_halt_prob_late_minus_early": 0.22781759252150854
+      },
+      "live_episodes": {
+        "n": 12,
+        "baseline_completion": 0.6666666666666666,
+        "patch_late_completion": 0.6666666666666666,
+        "patch_fail_completion": 0.5833333333333334,
+        "patch_late_mean_reads": 17633.0,
+        "patch_fail_mean_reads": 20555.25,
+        "delta_reads_fail_minus_late": 2922.25
+      }
+    },
+    "lean_to_canvas": {
+      "steering": {
+        "exp_tier_early": 1.0900500218073528,
+        "exp_tier_late": 1.1105767289797466,
+        "exp_tier_fail": 1.0900500218073528,
+        "delta_tier_fail_minus_late": -0.0205267071723938,
+        "delta_tier2_prob_fail_minus_late": -0.0025979280471801758,
+        "delta_u_prob_fail_minus_late": -0.018674492835998535,
+        "delta_u_prob_early_minus_late": -0.018674492835998535,
+        "delta_retry_bt_prob_fail_minus_late": -0.12922075390815735,
+        "delta_halt_prob_late_minus_early": 0.23139706005652746
+      },
+      "live_episodes": {
+        "n": 12,
+        "baseline_completion": 0.6666666666666666,
+        "patch_late_completion": 0.9166666666666666,
+        "patch_fail_completion": 0.9166666666666666,
+        "patch_late_mean_reads": 11428.166666666666,
+        "patch_fail_mean_reads": 11388.0,
+        "delta_reads_fail_minus_late": -40.16666666666606
+      }
+    }
+  },
+  "inference_time_lesions": {
+    "lesion_reset_slow": {
+      "baseline_completion": 0.4583333333333333,
+      "lesioned_completion": 0.4791666666666667,
+      "delta_completion_bootstrap": {
+        "point": 0.020833333333333332,
+        "ci95_low": -0.08333333333333333,
+        "ci95_high": 0.125,
+        "prob_gt_zero": 0.5705,
+        "n_pairs": 48
+      },
+      "baseline_mean_reads": 16977.75,
+      "lesioned_mean_reads": 18918.645833333332,
+      "delta_reads_mean": 1940.8958333333321
+    },
+    "lesion_shuffle_slow": {
+      "baseline_completion": 0.4583333333333333,
+      "lesioned_completion": 0.5,
+      "delta_completion_bootstrap": {
+        "point": 0.041666666666666664,
+        "ci95_low": -0.041666666666666664,
+        "ci95_high": 0.125,
+        "prob_gt_zero": 0.769,
+        "n_pairs": 48
+      },
+      "baseline_mean_reads": 16977.75,
+      "lesioned_mean_reads": 16167.145833333334,
+      "delta_reads_mean": -810.6041666666661
+    },
+    "lesion_uniform_compute": {
+      "baseline_completion": 0.4583333333333333,
+      "lesioned_completion": 0.4791666666666667,
+      "delta_completion_bootstrap": {
+        "point": 0.020833333333333332,
+        "ci95_low": -0.08333333333333333,
+        "ci95_high": 0.125,
+        "prob_gt_zero": 0.5855,
+        "n_pairs": 48
+      },
+      "baseline_mean_reads": 16977.75,
+      "lesioned_mean_reads": 11537.604166666666,
+      "delta_reads_mean": -5440.145833333334
+    },
+    "lesion_no_postfail_switch": {
+      "baseline_completion": 0.4583333333333333,
+      "lesioned_completion": 0.4375,
+      "delta_completion_bootstrap": {
+        "point": -0.020833333333333332,
+        "ci95_low": -0.14583333333333334,
+        "ci95_high": 0.10416666666666667,
+        "prob_gt_zero": 0.3015,
+        "n_pairs": 48
+      },
+      "baseline_mean_reads": 16977.75,
+      "lesioned_mean_reads": 16451.083333333332,
+      "delta_reads_mean": -526.6666666666679
+    },
+    "lesion_no_backtrack": {
+      "baseline_completion": 0.4583333333333333,
+      "lesioned_completion": 0.0,
+      "delta_completion_bootstrap": {
+        "point": -0.4583333333333333,
+        "ci95_low": -0.6041666666666666,
+        "ci95_high": -0.3333333333333333,
+        "prob_gt_zero": 0.0,
+        "n_pairs": 48
+      },
+      "baseline_mean_reads": 16977.75,
+      "lesioned_mean_reads": 2617.5625,
+      "delta_reads_mean": -14360.1875
+    },
+    "lesion_no_cache": {
+      "baseline_completion": 0.4583333333333333,
+      "lesioned_completion": 0.5,
+      "delta_completion_bootstrap": {
+        "point": 0.041666666666666664,
+        "ci95_low": -0.041666666666666664,
+        "ci95_high": 0.125,
+        "prob_gt_zero": 0.778,
+        "n_pairs": 48
+      },
+      "baseline_mean_reads": 16977.75,
+      "lesioned_mean_reads": 23997.145833333332,
+      "delta_reads_mean": 7019.395833333332
+    },
+    "lesion_corrupt_uncertainty": {
+      "baseline_completion": 0.4583333333333333,
+      "lesioned_completion": 0.4583333333333333,
+      "delta_completion_bootstrap": {
+        "point": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0,
+        "prob_gt_zero": 0.0,
+        "n_pairs": 48
+      },
+      "baseline_mean_reads": 16977.75,
+      "lesioned_mean_reads": 16977.75,
+      "delta_reads_mean": 0.0
+    }
+  }
+}
