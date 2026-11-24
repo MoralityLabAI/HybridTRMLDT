@@ -1,0 +1,680 @@
+{
+  "storyworld": "The City That Lost Its Bell",
+  "benchmark": "hilbert-storyworld-canvas-v1",
+  "run_id": "bonsai2-27b-q4-storyworld-hilbert-20261124",
+  "runtime": {
+    "model": "bonsai-2-27b-q4_0",
+    "model_label": "Bonsai 2 27B (unrotated Q4_0)",
+    "source_checkpoint": "Ternary-Bonsai-2-27B-PTQ1_0.gguf",
+    "converted_checkpoint": "Ternary-Bonsai-2-27B-unrotated-Q4_0.gguf",
+    "ptq1_unrotate_verification": {
+      "tensors_converted": 851,
+      "weights_folded": 26869760000,
+      "trit_involution_mismatches": 0,
+      "verify_rows_16_trits_checked": 46563328,
+      "verify_mismatches": 0
+    },
+    "backend": "CUDA0 (RTX 5080 Laptop GPU)",
+    "reasoning_budget": 0,
+    "seed": 523,
+    "temperature": 0.0
+  },
+  "sized_long_context_planning": {
+    "16384": {
+      "phase": "plan-attempt-01",
+      "prompt_tokens": 16385,
+      "cached_tokens": 0,
+      "uncached_tokens": 16385,
+      "completion_tokens": 690,
+      "prefill_tps": 1100.676,
+      "decode_tps": 31.873,
+      "wall_seconds": 36.547,
+      "finish_reason": "tool_calls",
+      "accepted_long_context_plan": true,
+      "context_window": 34816,
+      "included_reference_sha256": "501f4058398b4902a552fb2c30278c43b57a9592a5578a069164cc687cd131ee",
+      "formatted_prompt_sha256": "57bc0bf98af5399f874ab74abb6e4e27490e84f64ab7b6847eda956bba90b4eb",
+      "provider_wire_sha256": "50c4b69d1bc0c10c05104452d1d63e088caf4f4429d97d9edba494d89cf8f07e",
+      "receipt_sha256": "5dff631bf8352969678d8a007eb8835873b0493f558dce76b54c1706b73d92f0"
+    },
+    "24576": {
+      "phase": "plan-attempt-01",
+      "prompt_tokens": 24577,
+      "cached_tokens": 0,
+      "uncached_tokens": 24577,
+      "completion_tokens": 683,
+      "prefill_tps": 1003.842,
+      "decode_tps": 29.149,
+      "wall_seconds": 47.969,
+      "finish_reason": "tool_calls",
+      "accepted_long_context_plan": true,
+      "context_window": 34816,
+      "included_reference_sha256": "0857a8c11c9575179f90fe56e254879358b5f108d00de59490d4e1f81f76e58c",
+      "formatted_prompt_sha256": "7bb0bbcccb279a557bff789fd67212231f0f1f943009fc0f04f011289b835057",
+      "provider_wire_sha256": "3ff0d67b71cb1ca687e1af2d51f9e82fc5e101b2c382343027b3bb0f7ebc1e07",
+      "receipt_sha256": "e3ce81f1428483640239e7e3f5754ae01a40903a198509942131bf28e99eae34"
+    },
+    "32768": {
+      "phase": "plan-attempt-01",
+      "prompt_tokens": 32767,
+      "cached_tokens": 0,
+      "uncached_tokens": 32767,
+      "completion_tokens": 686,
+      "prefill_tps": 68.321,
+      "decode_tps": 1.198,
+      "wall_seconds": 1051.719,
+      "finish_reason": "tool_calls",
+      "accepted_long_context_plan": true,
+      "context_window": 34816,
+      "included_reference_sha256": "2171f446849183ec465e0d62117b403a52f509627634e050f7d563b0407641e1",
+      "formatted_prompt_sha256": "db754e3bfc003d45b67b8963b9f38387724ab1093d06c64ae9f092fb65bcc1e3",
+      "provider_wire_sha256": "6f0c9e0429a5d96064c78713262b6e8a6199a4fabd7d6e993d0a1ca93a0fe99b",
+      "receipt_sha256": "defe1e07aa05e9c25521662c9a819b8199e2b55cbac23df2770655076fd40a2b"
+    }
+  },
+  "conveyor_16k_turn_totals": {
+    "total_recorded_turns": 36,
+    "http_200_timed_turns": 36,
+    "preflight_parity_turns": 36,
+    "first_attempt_stage_passes": 22,
+    "total_stages": 26,
+    "total_prompt_tokens_in": 97194,
+    "total_cached_prompt_tokens": 14696,
+    "total_uncached_prompt_tokens": 82498,
+    "total_completion_tokens_out": 41941,
+    "aggregate_prefill_tps": 830.794,
+    "aggregate_decode_tps": 8.198,
+    "total_provider_wall_seconds": 5216.079
+  },
+  "accepted_stage_turns": {
+    "act-complete-1": {
+      "stage": "act-complete-1-attempt-01",
+      "prompt_tokens": 1111,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 675,
+      "completion_tokens": 127,
+      "prefill_tps": 668.623,
+      "decode_tps": 19.041,
+      "wall_seconds": 7.656,
+      "preflight_parity": true
+    },
+    "act-complete-2": {
+      "stage": "act-complete-2-attempt-01",
+      "prompt_tokens": 1101,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 665,
+      "completion_tokens": 157,
+      "prefill_tps": 209.112,
+      "decode_tps": 1.16,
+      "wall_seconds": 137.719,
+      "preflight_parity": true
+    },
+    "act-complete-3": {
+      "stage": "act-complete-3-attempt-01",
+      "prompt_tokens": 1108,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 672,
+      "completion_tokens": 164,
+      "prefill_tps": 729.488,
+      "decode_tps": 27.814,
+      "wall_seconds": 6.813,
+      "preflight_parity": true
+    },
+    "act-complete-4": {
+      "stage": "act-complete-4-attempt-01",
+      "prompt_tokens": 1124,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 688,
+      "completion_tokens": 112,
+      "prefill_tps": 742.851,
+      "decode_tps": 26.429,
+      "wall_seconds": 5.14,
+      "preflight_parity": true
+    },
+    "act-complete-5": {
+      "stage": "act-complete-5-attempt-01",
+      "prompt_tokens": 1068,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 632,
+      "completion_tokens": 166,
+      "prefill_tps": 572.26,
+      "decode_tps": 23.977,
+      "wall_seconds": 8.016,
+      "preflight_parity": true
+    },
+    "canvas-art-map": {
+      "stage": "canvas-art-map-attempt-05",
+      "prompt_tokens": 1298,
+      "cached_tokens": 740,
+      "uncached_prompt_tokens": 558,
+      "completion_tokens": 1551,
+      "prefill_tps": 573.198,
+      "decode_tps": 14.437,
+      "wall_seconds": 108.36,
+      "preflight_parity": true
+    },
+    "canvas-page": {
+      "stage": "canvas-page-attempt-01",
+      "prompt_tokens": 651,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 215,
+      "completion_tokens": 391,
+      "prefill_tps": 57.643,
+      "decode_tps": 1.135,
+      "wall_seconds": 347.437,
+      "preflight_parity": true
+    },
+    "canvas-renderer": {
+      "stage": "canvas-renderer-attempt-03",
+      "prompt_tokens": 1248,
+      "cached_tokens": 0,
+      "uncached_prompt_tokens": 1248,
+      "completion_tokens": 1544,
+      "prefill_tps": 567.833,
+      "decode_tps": 8.744,
+      "wall_seconds": 178.719,
+      "preflight_parity": true
+    },
+    "canvas-renderer-repair": {
+      "stage": "canvas-renderer-repair-attempt-01",
+      "prompt_tokens": 1324,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 888,
+      "completion_tokens": 3787,
+      "prefill_tps": 492.252,
+      "decode_tps": 5.013,
+      "wall_seconds": 757.0,
+      "preflight_parity": true
+    },
+    "characterize": {
+      "stage": "characterize-attempt-02",
+      "prompt_tokens": 1115,
+      "cached_tokens": 565,
+      "uncached_prompt_tokens": 550,
+      "completion_tokens": 299,
+      "prefill_tps": 748.803,
+      "decode_tps": 36.306,
+      "wall_seconds": 8.953,
+      "preflight_parity": true
+    },
+    "encounter-01": {
+      "stage": "encounter-01-attempt-01",
+      "prompt_tokens": 1612,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 1176,
+      "completion_tokens": 1012,
+      "prefill_tps": 857.075,
+      "decode_tps": 7.393,
+      "wall_seconds": 138.157,
+      "preflight_parity": true
+    },
+    "encounter-04": {
+      "stage": "encounter-04-attempt-01",
+      "prompt_tokens": 1701,
+      "cached_tokens": 0,
+      "uncached_prompt_tokens": 1701,
+      "completion_tokens": 1112,
+      "prefill_tps": 797.413,
+      "decode_tps": 18.528,
+      "wall_seconds": 62.14,
+      "preflight_parity": true
+    },
+    "encounter-07": {
+      "stage": "encounter-07-attempt-01",
+      "prompt_tokens": 1808,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 1372,
+      "completion_tokens": 1690,
+      "prefill_tps": 866.515,
+      "decode_tps": 17.752,
+      "wall_seconds": 96.735,
+      "preflight_parity": true
+    },
+    "encounter-10": {
+      "stage": "encounter-10-attempt-01",
+      "prompt_tokens": 1799,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 1363,
+      "completion_tokens": 1216,
+      "prefill_tps": 837.655,
+      "decode_tps": 18.132,
+      "wall_seconds": 68.64,
+      "preflight_parity": true
+    },
+    "encounter-13": {
+      "stage": "encounter-13-attempt-01",
+      "prompt_tokens": 1829,
+      "cached_tokens": 0,
+      "uncached_prompt_tokens": 1829,
+      "completion_tokens": 1163,
+      "prefill_tps": 888.857,
+      "decode_tps": 27.479,
+      "wall_seconds": 44.36,
+      "preflight_parity": true
+    },
+    "encounter-16": {
+      "stage": "encounter-16-attempt-01",
+      "prompt_tokens": 1815,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 1379,
+      "completion_tokens": 1393,
+      "prefill_tps": 932.299,
+      "decode_tps": 27.687,
+      "wall_seconds": 51.782,
+      "preflight_parity": true
+    },
+    "encounter-19": {
+      "stage": "encounter-19-attempt-01",
+      "prompt_tokens": 1837,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 1401,
+      "completion_tokens": 1390,
+      "prefill_tps": 888.537,
+      "decode_tps": 2.345,
+      "wall_seconds": 593.875,
+      "preflight_parity": true
+    },
+    "encounter-22": {
+      "stage": "encounter-22-attempt-01",
+      "prompt_tokens": 1833,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 1397,
+      "completion_tokens": 1501,
+      "prefill_tps": 824.78,
+      "decode_tps": 26.864,
+      "wall_seconds": 57.531,
+      "preflight_parity": true
+    },
+    "encounter-25": {
+      "stage": "encounter-25-attempt-01",
+      "prompt_tokens": 1791,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 1355,
+      "completion_tokens": 1248,
+      "prefill_tps": 933.577,
+      "decode_tps": 26.314,
+      "wall_seconds": 48.859,
+      "preflight_parity": true
+    },
+    "encounter-28": {
+      "stage": "encounter-28-attempt-01",
+      "prompt_tokens": 1811,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 1375,
+      "completion_tokens": 1673,
+      "prefill_tps": 859.267,
+      "decode_tps": 1.909,
+      "wall_seconds": 877.656,
+      "preflight_parity": true
+    },
+    "endings": {
+      "stage": "endings-attempt-02",
+      "prompt_tokens": 1986,
+      "cached_tokens": 1447,
+      "uncached_prompt_tokens": 539,
+      "completion_tokens": 1164,
+      "prefill_tps": 557.221,
+      "decode_tps": 12.015,
+      "wall_seconds": 97.797,
+      "preflight_parity": true
+    },
+    "late-stage-holistic": {
+      "stage": "late-stage-holistic-attempt-01",
+      "prompt_tokens": 16386,
+      "cached_tokens": 0,
+      "uncached_prompt_tokens": 16386,
+      "completion_tokens": 126,
+      "prefill_tps": 916.031,
+      "decode_tps": 14.192,
+      "wall_seconds": 26.75,
+      "preflight_parity": true
+    },
+    "math-draft": {
+      "stage": "math-draft-attempt-01",
+      "prompt_tokens": 16383,
+      "cached_tokens": 0,
+      "uncached_prompt_tokens": 16383,
+      "completion_tokens": 613,
+      "prefill_tps": 1113.914,
+      "decode_tps": 33.132,
+      "wall_seconds": 33.234,
+      "preflight_parity": true
+    },
+    "outline": {
+      "stage": "outline-attempt-01",
+      "prompt_tokens": 1331,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 895,
+      "completion_tokens": 1408,
+      "prefill_tps": 911.963,
+      "decode_tps": 35.745,
+      "wall_seconds": 40.375,
+      "preflight_parity": true
+    },
+    "plan": {
+      "stage": "plan-attempt-01",
+      "prompt_tokens": 16385,
+      "cached_tokens": 0,
+      "uncached_prompt_tokens": 16385,
+      "completion_tokens": 690,
+      "prefill_tps": 1100.676,
+      "decode_tps": 31.873,
+      "wall_seconds": 36.547,
+      "preflight_parity": true
+    },
+    "recharacterize": {
+      "stage": "recharacterize-attempt-01",
+      "prompt_tokens": 1297,
+      "cached_tokens": 436,
+      "uncached_prompt_tokens": 861,
+      "completion_tokens": 372,
+      "prefill_tps": 801.618,
+      "decode_tps": 22.824,
+      "wall_seconds": 17.328,
+      "preflight_parity": true
+    }
+  },
+  "story_shape": {
+    "encounters": 30,
+    "scene_words": 5419,
+    "unique_scene_texts": 30,
+    "unique_choice_labels": 85,
+    "options": 90,
+    "endings": 5,
+    "route_lengths": {
+      "28": 1576,
+      "27": 909,
+      "30": 640,
+      "29": 1623,
+      "26": 231,
+      "25": 21
+    },
+    "rehearsed_endings": {
+      "end_restore": 1208,
+      "end_expose": 1243,
+      "end_silence": 1190,
+      "end_mix": 717,
+      "end_phase": 642
+    },
+    "secrets": {
+      "end_mix": {
+        "draft_probability": 0.6587551079689845,
+        "final_probability": 0.6616001341247139,
+        "order_sensitive": true,
+        "clue_probability": 0.9923959487493015
+      },
+      "end_phase": {
+        "draft_probability": 0.5710307134625048,
+        "final_probability": 0.5710307134625048,
+        "order_sensitive": true,
+        "clue_probability": 0.8565532555245814
+      }
+    }
+  },
+  "canvas_edition": {
+    "status": "verified",
+    "art_map_phase": "canvas-art-map-attempt-05",
+    "page_phase": "canvas-page-attempt-01",
+    "renderer_phase": "canvas-renderer-attempt-03",
+    "player_phase": "canvas-player-attempt-02",
+    "art_map_stats": {
+      "scenes_mapped": 35,
+      "distinct_landmarks": 30,
+      "landmarks": [
+        "Archive of Names",
+        "Archive's Confession",
+        "Bell Tower",
+        "Bell Tower Reopens",
+        "Bell's Memory",
+        "Borrowed Hours",
+        "Choice of Sound",
+        "City That Lost Its Bell",
+        "City's Hunger",
+        "City's Voice",
+        "Clapper Name",
+        "Collector's Ledger",
+        "Counter-Sound",
+        "Echo Returns",
+        "New Sound",
+        "Night Market",
+        "Page Before the City",
+        "Plaza of Echoes",
+        "Reconciliation",
+        "Rhythm Stalls",
+        "Sable's Page",
+        "Second Bell's Song",
+        "Silent Bell",
+        "Tobias's Last Rhythm",
+        "Torn Page",
+        "Tower Steps",
+        "True Culprit",
+        "Undercroft",
+        "Unwritten Ledger",
+        "Wax Seal Door"
+      ],
+      "distinct_palettes": 19
+    },
+    "renderer_stats": {
+      "bytes": 3382,
+      "lines": 27,
+      "canvas_ops": 25
+    },
+    "browser": {
+      "status": "verified",
+      "game": "hilbert-storyworld",
+      "title": "The City That Lost Its Bell",
+      "visited_scenes": 33,
+      "distinct_canvas_hashes": 33,
+      "verified_secret_endings": [
+        "end_mix",
+        "end_phase"
+      ],
+      "visual_metrics": {
+        "canvas_width": 640,
+        "canvas_height": 400,
+        "mean_quantized_colors": 124.76,
+        "max_quantized_colors": 172,
+        "mean_edge_density": 0.0423,
+        "mean_pairwise_rgb_l1": 49.87
+      },
+      "checks": [
+        "33 distinct Canvas scenes verified across encounters and endings",
+        "browser 2-qubit complex unitary state and Born weights match exact reference replay",
+        "secret endings unlocked via exact Hilbert witnesses (end_mix, end_phase)",
+        "restart restores |00> initial state and clears clues"
+      ]
+    },
+    "screenshots_sha256": {
+      "act3.png": "0799b43f1ceccec2256091e3d06ee06f0c015674d182b29d2b412002b1d14110",
+      "end_mix.png": "0040da4d7f68df4e7f628347633b92f51848db2241c57d0a144946d459b0e498",
+      "end_phase.png": "4f077492d5fd88bcbdff75a7e5d95861a3994c2231fe457317e2cef1b40a5cc9",
+      "end_restore.png": "cd583ea4970b1302b92a78b44307d87330478b8c807198b144dc15a572c42533",
+      "start.png": "61b636ff08411017927fa20db04394fa76c6e48a045e0926369dce4e16adf888"
+    },
+    "web_artifacts_sha256": {
+      "index.html": "03951a249d11252c7d4817d74c970ba5eb58fab5e9a1ccedb08c008fa69751c4",
+      "world-data.js": "c509ab3cd4edb128c01cb664fcf43e165cb36af2728fcfecd00d2e0130162a58",
+      "art.js": "812625bdf1a0c06a94d510b82c710c2cfb4ec825b437c8036190e560160a1a29",
+      "player.js": "8d1bf1719ef144ebfea45dfc6e63e45939bf77102a4f629040dd29c811c0a33f"
+    },
+    "authorship": {
+      "art_map": {
+        "model": "bonsai-2-27b-q4_0",
+        "base_commit": "74fbb0d552fa2925297c64aa5874c715e627ba33",
+        "gdk_sha256": "178e0d3db30629a3508b67cb038aed337bfbc7968f42b4aff07fad202db28677",
+        "writes": [
+          {
+            "action": 0,
+            "path": "result.json",
+            "sha256": "ca09159750a166e697651fcf9a378c0513c25db7500beb08c48fd2927572d00e"
+          }
+        ],
+        "verifications": [],
+        "solver_verified": false,
+        "provider_calls": 1,
+        "provider_timings": [
+          {
+            "cache_n": 740,
+            "prompt_n": 558,
+            "prompt_ms": 973.486,
+            "prompt_per_token_ms": 1.7445985663082437,
+            "prompt_per_second": 573.1977655559506,
+            "predicted_n": 1551,
+            "predicted_ms": 107360.649,
+            "predicted_per_token_ms": 69.26493483870968,
+            "predicted_per_second": 14.43731958065939
+          }
+        ],
+        "wall_seconds": 110.3335105,
+        "sha256": {
+          "brief.txt": "39a825c180fd8aebbdada1143fe48e5eff6472fad7fe8720a5ab8283eadb8a3d",
+          "verifier.json": "36ff88a51c4e46f05ad1ba9e9ea8854427573d990b93b0dcc2a1610ec4622d99",
+          "inky-wire.jsonl": "e1a159ab13c1865c88080090f4708a8c2b54b8f26ae4aea24892c4f55a80f520",
+          "mcp-wire.jsonl": "43b97e24eb48330d17a001f8565aa52356f0a965f191edef084f3ad0fd6e1cfa",
+          "invocation.json": "f229771627c27815046a25d6727bff40965f814c9766c9e7ec8d639c6b097e17",
+          "gdk.json": "b37bef04218d758ed1e8e768fc0696373c4ff9341fc9d48d05b7c29ce3002cd8",
+          "session.json": "beff00f2762087723a8b80289eea00304eea5a1e6066653e680d9cab9b7defa3",
+          "session.preflight.jsonl": "cded9c449b7258af5adbebee8a9abd92b7df31fb493f56648a837d3ef05de7f2",
+          "workspace/result.json": "ca09159750a166e697651fcf9a378c0513c25db7500beb08c48fd2927572d00e"
+        }
+      },
+      "index_html": {
+        "model": "bonsai-2-27b-q4_0",
+        "base_commit": "66e9ee94a85ff8766b5f0bf90b351b85d8bf5931",
+        "gdk_sha256": "178e0d3db30629a3508b67cb038aed337bfbc7968f42b4aff07fad202db28677",
+        "writes": [
+          {
+            "action": 0,
+            "path": "index.html",
+            "sha256": "03951a249d11252c7d4817d74c970ba5eb58fab5e9a1ccedb08c008fa69751c4"
+          }
+        ],
+        "verifications": [],
+        "solver_verified": false,
+        "provider_calls": 1,
+        "provider_timings": [
+          {
+            "cache_n": 436,
+            "prompt_n": 215,
+            "prompt_ms": 3729.872,
+            "prompt_per_token_ms": 17.348241860465116,
+            "prompt_per_second": 57.642728758520406,
+            "predicted_n": 391,
+            "predicted_ms": 343679.641,
+            "predicted_per_token_ms": 881.2298487179487,
+            "predicted_per_second": 1.1347777216748198
+          }
+        ],
+        "wall_seconds": 350.3969,
+        "sha256": {
+          "brief.txt": "b9e74c8fefba8a085294e2dd312d4227a33a4eed7de601071a02edfd074e133d",
+          "verifier.json": "4ec778dbc52183328aa6b39bd5df504f9810b06145730393b33d47d40c7bdfa3",
+          "inky-wire.jsonl": "1300e20175e1e241e1280093d564e922f8256f6d55751a73532b03ae48058a6e",
+          "mcp-wire.jsonl": "c23ab9bd38123a855c5079518e75043a6e08507326b1bcddd7cdb0b735a8e80e",
+          "invocation.json": "6998a9fceadcf82ad642a58dc843fb4a304a3a0e8e7212f24f6e110aa04b2a7c",
+          "gdk.json": "86c673c8a3d4d50179fffd525aa3f235149ad3d6e06da6e7adb975f3ff7ccba4",
+          "session.json": "19042d29a2792912133461690dc3d5ea702c5b36144a29ad77b21bc62fba1598",
+          "session.preflight.jsonl": "99a961c8bc8eae291beacb40bebb21b41b8dce4dd6435475e36ed8adfe5c9eba",
+          "workspace/index.html": "03951a249d11252c7d4817d74c970ba5eb58fab5e9a1ccedb08c008fa69751c4"
+        }
+      },
+      "renderer_js": {
+        "model": "bonsai-2-27b-q4_0",
+        "base_commit": "70b95bcdcc548e5bbba0bc515e287fce04210d5b",
+        "gdk_sha256": "178e0d3db30629a3508b67cb038aed337bfbc7968f42b4aff07fad202db28677",
+        "writes": [
+          {
+            "action": 0,
+            "path": "renderer.js",
+            "sha256": "812625bdf1a0c06a94d510b82c710c2cfb4ec825b437c8036190e560160a1a29"
+          }
+        ],
+        "verifications": [],
+        "solver_verified": false,
+        "provider_calls": 1,
+        "provider_timings": [
+          {
+            "cache_n": 0,
+            "prompt_n": 1248,
+            "prompt_ms": 2197.831,
+            "prompt_per_token_ms": 1.7610825320512822,
+            "prompt_per_second": 567.8325585543201,
+            "predicted_n": 1544,
+            "predicted_ms": 176470.25,
+            "predicted_per_token_ms": 114.36827608554763,
+            "predicted_per_second": 8.743683425393233
+          }
+        ],
+        "wall_seconds": 180.5400589,
+        "sha256": {
+          "brief.txt": "c96d2ed47170e53b0f55fbd8b94cb172bf70711e0b1fa159eb471fd45c1d22cf",
+          "verifier.json": "4ae1716d87438ea72d60c963a6578e5b903d450907a5f304370d4e5955bd7fae",
+          "inky-wire.jsonl": "c7353f3f51f9abcb9cb22ca4dd5a571c64f04022500a2c6493060809a082ec98",
+          "mcp-wire.jsonl": "6fe1099bc555cb5aed6fb933c0589722b37805b6c5ec55d5905127522f10db40",
+          "invocation.json": "18bd9ae3927a59ec323b99d0b65f47a937bbf5c0ab0d87d3849f89e7b2309110",
+          "gdk.json": "2f7b9f205536e6e004e805ea4a99059dfef19cfc27bd2b8da319e6166c6510d3",
+          "session.json": "77af86ac2fe1934c61110046b8e41c7d45b632d25bf2c2a1cffbf14f8afa4f15",
+          "session.preflight.jsonl": "3ce00a70d7639a437adbf8a8717fe87182be18ab0bd24bf45f577b08103f70f1",
+          "workspace/renderer.js": "812625bdf1a0c06a94d510b82c710c2cfb4ec825b437c8036190e560160a1a29"
+        }
+      },
+      "player_js": {
+        "model": "bonsai-2-27b-q4_0",
+        "base_commit": "5d8849f9ab4aa8f9625c5a53f7eb22c5df0e05a0",
+        "gdk_sha256": "178e0d3db30629a3508b67cb038aed337bfbc7968f42b4aff07fad202db28677",
+        "writes": [
+          {
+            "action": 0,
+            "path": "player.js",
+            "sha256": "8d1bf1719ef144ebfea45dfc6e63e45939bf77102a4f629040dd29c811c0a33f"
+          }
+        ],
+        "verifications": [],
+        "solver_verified": false,
+        "provider_calls": 1,
+        "provider_timings": [
+          {
+            "cache_n": 436,
+            "prompt_n": 1753,
+            "prompt_ms": 2784.979,
+            "prompt_per_token_ms": 1.5886930975470621,
+            "prompt_per_second": 629.4481933256948,
+            "predicted_n": 1916,
+            "predicted_ms": 378775.054,
+            "predicted_per_token_ms": 197.79376187989556,
+            "predicted_per_second": 5.055771175469227
+          }
+        ],
+        "wall_seconds": 383.0628176,
+        "sha256": {
+          "brief.txt": "d53be6cb59e0cc933cdc141c146f0f1f10efb0598546e85c17612b5618f011f4",
+          "verifier.json": "8f3dc308b0d3a52e61d721c5d5d3ca8399487a7827795aba42d127ad5522dc1a",
+          "inky-wire.jsonl": "90f9feb85fcfee40718ee25959579b942ef4e6fe1322c4cdb2a67d4bee2c32c0",
+          "mcp-wire.jsonl": "b5df8299548c7b54ecf32c3952ba8b4c43c860e31f6cae655db4d722a5b2dc30",
+          "invocation.json": "a3e93af30f41eed8acc3ea873ce5528f2c4035a29cab059962159e05e55c42a3",
+          "gdk.json": "9b88bfccc9b3ce6c2dd6e604ee7748310c28f2e30f3b98c7937dd9e4101771f6",
+          "session.json": "33a1bfb15115c907b35c1e13a0f8f1adec24f0c9cd92983d2739de83c9f080ab",
+          "session.preflight.jsonl": "3b5b8ef3168cf9ef545e74ff1a7d08f4fae8bc3e625f4285dbd3f9de46173b14",
+          "workspace/player.js": "8d1bf1719ef144ebfea45dfc6e63e45939bf77102a4f629040dd29c811c0a33f"
+        }
+      }
+    }
+  },
+  "export_sha256": {
+    "web/index.html": "03951a249d11252c7d4817d74c970ba5eb58fab5e9a1ccedb08c008fa69751c4",
+    "web/art.js": "812625bdf1a0c06a94d510b82c710c2cfb4ec825b437c8036190e560160a1a29",
+    "web/player.js": "8d1bf1719ef144ebfea45dfc6e63e45939bf77102a4f629040dd29c811c0a33f",
+    "web/world-data.js": "c509ab3cd4edb128c01cb664fcf43e165cb36af2728fcfecd00d2e0130162a58",
+    "world.swmd.min.md": "13ed38044b3d07835670546bba13380dfede44f765299c4f59ecd26ca1eb0f0f",
+    "storyworld.hilbert.json": "2083615e6b51be806a7f7abca0c9c6b3a0e4483931f13a4abd085713dc631496",
+    "sweepweave-topology.json": "864c68a960dfa0ca67b166492451cf96845a6309eb164901ae65098021de6eb2",
+    "browser-receipt.json": "6706c8abf8d0b13f1f590c9db495efb281ce741010726913e9d80a902f364d7c"
+  },
+  "browser_screenshots_sha256": {
+    "act3.png": "0799b43f1ceccec2256091e3d06ee06f0c015674d182b29d2b412002b1d14110",
+    "end_mix.png": "0040da4d7f68df4e7f628347633b92f51848db2241c57d0a144946d459b0e498",
+    "end_phase.png": "4f077492d5fd88bcbdff75a7e5d95861a3994c2231fe457317e2cef1b40a5cc9",
+    "end_restore.png": "cd583ea4970b1302b92a78b44307d87330478b8c807198b144dc15a572c42533",
+    "start.png": "61b636ff08411017927fa20db04394fa76c6e48a045e0926369dce4e16adf888"
+  }
+}

@@ -1,0 +1,2305 @@
+{
+  "plan": {
+    "title": "The City That Lost Its Bell",
+    "premise": "When the night bell of Vespera stops ringing, the city's hidden agreements begin to unravel. Three people with conflicting goals must decide whether the silence is a theft, a mercy, or a message. The player infers truth from shifting dialogue and consequences, not from direct confession.",
+    "cast": [
+      [
+        "c1",
+        "Mara",
+        "Restore the bell to keep the city's old order",
+        "Measured, precise, speaks in half-finished sentences"
+      ],
+      [
+        "c2",
+        "Tobias",
+        "Let the silence grow into a new civic ritual",
+        "Warm, repetitive, asks the same question three ways"
+      ],
+      [
+        "c3",
+        "Sable",
+        "Use the missing sound to expose who controls the city's memory",
+        "Sharp, ironic, changes subject when pressed"
+      ]
+    ],
+    "acts": [
+      [
+        "Act I: The First Quiet",
+        "The Bell Tower at dusk",
+        "A public notice claims the bell is broken; no one admits it was silenced.",
+        "Mara finds a wax seal on the tower door that matches no known guild."
+      ],
+      [
+        "Act II: The Borrowed Hours",
+        "The Night Market",
+        "Merchants trade in 'quiet hours' as if silence were currency.",
+        "Tobias reveals he has been selling the bell's old rhythm to collectors."
+      ],
+      [
+        "Act III: The Unwritten Ledger",
+        "The Archive of Names",
+        "The city's records show the bell was never officially installed.",
+        "Sable produces a page torn from the ledger, dated before the city existed."
+      ],
+      [
+        "Act IV: The Counter-Sound",
+        "The Undercroft",
+        "A hidden chamber holds a second bell, smaller and older.",
+        "Mara hears her own name inscribed on the second bell's clapper."
+      ],
+      [
+        "Act V: The Reconciliation",
+        "The Plaza of Echoes",
+        "All three must choose which sound to restore, if any.",
+        "The true culprit is revealed: the city itself, which has been eating its own history."
+      ]
+    ],
+    "endings": [
+      [
+        "end_restore",
+        false,
+        "The bell rings again; order returns but the city forgets why it was ever silent.",
+        "seal -> ledger page -> counter-bell"
+      ],
+      [
+        "end_silence",
+        false,
+        "The city embraces quiet; a new ritual forms around absence.",
+        "market trade -> borrowed hours -> plaza echo"
+      ],
+      [
+        "end_expose",
+        false,
+        "Sable's exposure shatters the old order; the city rebuilds from raw memory.",
+        "torn page -> undercroft -> name on clapper"
+      ],
+      [
+        "end_mix",
+        true,
+        "The player mixes the two bells' tones, creating a sound that is neither old nor new.",
+        "seal + torn page -> counter-bell + market trade"
+      ],
+      [
+        "end_phase",
+        true,
+        "The player acts in a different order than the city expects, revealing that silence was a phase, not a loss.",
+        "ledger page first -> seal second -> name last"
+      ]
+    ]
+  },
+  "cast": [
+    [
+      "c1",
+      "She now believes the bell was never silenced by a person but devoured by the city itself, and that her private record of the seal is not proof of guilt but the only honest witness left.",
+      "The seal is not a guild mark; it is my own hand, and I have been the one who locked the tower door.",
+      "A public ledger showing her name beside the second bell's clapper, forcing her to choose between order and confession."
+    ],
+    [
+      "c2",
+      "He now believes silence was never mercy but a market, and that his quiet-hours trade has been erasing people from the Archive of Names, so he must stop selling rhythm and start paying it back.",
+      "I only lend the rhythm out; I never meant to keep it, and the city should hear it again in a new shape.",
+      "A collector demanding payment in names, revealing that his quiet-hours trade has been erasing people from the Archive of Names."
+    ],
+    [
+      "c3",
+      "She now believes the torn page is not a weapon or a secret but a mirror, and that memory is not hers to burn because the city's own voice is asking her to return it.",
+      "The page is not a weapon; it is a mirror, and if you look long enough you will see the city eating itself.",
+      "The city's own voice speaking from the undercroft, asking her to return the page and accept that memory is not hers to burn."
+    ]
+  ],
+  "scenes": [
+    {
+      "id": "enc_01",
+      "title": "Dusk at the Silent Tower",
+      "text": "The last light thins over Vespera as Mara climbs the tower steps, her notebook already open. The public notice is nailed to the door in a clerk's careful hand: 'The bell is broken. Do not attempt repair.' She reads it twice, then looks up at the dark mouth of the tower where no sound has come for three nights.\n\nA man in a merchant's coat steps out from the alley and watches her with the patience of someone who has been waiting for an audience. 'You're the one who keeps asking questions,' he says. 'The city is resting. Let it rest.' His voice is soft, almost kind, but his eyes are counting her.\n\nMara touches the notice. The paper is dry, the ink still fresh. 'Resting,' she repeats. 'Or hiding?' She glances at the door, where a faint shadow of wax catches the dying light.",
+      "options": [
+        [
+          "Ask the merchant about the silence",
+          "\"If the bell is broken, why is the notice so new?\"",
+          "plaza_echo",
+          "c5",
+          1
+        ],
+        [
+          "Examine the tower door closely",
+          "\"I don't need your permission to look at a door.\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Step back and listen for the bell",
+          "\"If it's broken, I should hear something.\"",
+          "undercroft_bell",
+          null,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_02",
+      "title": "The Wax Seal on the Door",
+      "text": "Mara's fingers find the wax before the merchant can finish his sentence. It is small, round, and pressed with a mark she has never seen in any guild registry. She pulls out her notebook and begins to copy it, the graphite scratching against the page.\n\nThe merchant leans closer. 'You're copying it,' he says. Not a question. 'That's not how this works. You don't take things from the tower.' His voice drops, and for a moment she hears something underneath it: fear, or maybe guilt.\n\nMara does not stop drawing. The seal is not a guild mark. It is too personal, too particular. She thinks of the second bell, the one with her name on its clapper, and wonders if this is the same hand that locked the door.",
+      "options": [
+        [
+          "Show the merchant the copy",
+          "\"I'm not hiding it. Look at it.\"",
+          "name_on_clapper",
+          "c0",
+          1
+        ],
+        [
+          "Pocket the notebook and step away",
+          "\"I'll be back when you're ready to talk.\"",
+          "market_trade",
+          "c1",
+          1
+        ],
+        [
+          "Press the seal against the door frame",
+          "\"If it matches, I know who was here.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_03",
+      "title": "The Bell That Never Rang",
+      "text": "Inside the tower the great bell hangs in its frame, intact and cold. Its bronze skin is unmarked, but a scratch mark on the iron frame tells a different story: someone locked this door from the inside. The silence here is not empty; it is full of held breath.\n\nMara's hand finds the smaller bell in the undercroft, the one with her name inscribed on its clapper. She turns it over in her palm. It is warm, as if it has been waiting for her. Above, the great bell does not ring. Below, the small one seems to hum.\n\nThe merchant's voice comes from the stairwell, distant and careful. 'You can't take this. The city needs its story.' But his words sound thin now, like a page torn from a ledger that no longer exists.",
+      "options": [
+        [
+          "Ring the small bell once",
+          "\"If I can hear it, the city can too.\"",
+          "undercroft_bell",
+          "c3",
+          1
+        ],
+        [
+          "Take the ledger page from the shelf",
+          "\"This is what they tore out. I'm putting it back.\"",
+          "ledger_tear",
+          "c2",
+          2
+        ],
+        [
+          "Leave the tower and let the city decide",
+          "\"Maybe the silence is the message.\"",
+          "plaza_echo",
+          "c4",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_04",
+      "title": "The First Quiet",
+      "text": "The city guard leans against the tower base, his hand still resting on the hilt of a sword he has not drawn in three days. \"Three nights,\" he says, voice low, as if the words might wake something. \"The bell stopped at the third watch. No one saw who touched it. No one heard it stop. The streets just... held their breath.\"\n\nMara studies the tower door, the wax seal still fresh on the wood. \"If no one saw it stop, then the silence is not a theft. It is a choice. And choices leave marks.\"\n\nThe guard shifts his weight. \"I have walked these streets for twenty years. I know every sound they make. This quiet is not empty. It is full of something I cannot name.\"",
+      "options": [
+        [
+          "Ask the guard what he heard in the silence",
+          "The guard closes his eyes. \"Nothing. That is the worst part. Nothing at all. The city does not know how to be still.\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Press him about who locked the tower door",
+          "\"I did not lock it. But I saw a woman with a seal on her sleeve. She said the bell was broken. I believed her. I should not have.\"",
+          "name_on_clapper",
+          "c5",
+          1
+        ],
+        [
+          "Offer to walk the streets with him at night",
+          "\"Walk with me, then. If the silence is a message, we will hear it together. And if it is a theft, we will find the thief.\"",
+          "plaza_echo",
+          "c1",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_05",
+      "title": "The Archive of Names",
+      "text": "The Archive of Names smells of old paper and colder dust. Sable moves through the aisles with the ease of someone who has memorized every shelf, every drawer, every hidden gap between the ledgers. \"Here,\" she says, pulling out a slim volume. \"The city's records. The bell was never officially installed.\"\n\nMara frowns. \"Never installed? Then what was ringing?\"\n\nSable's smile is thin. \"That is the question, isn't it? If the bell was never installed, then the silence is not a loss. It is a correction. The city has been ringing a lie for a hundred years.\"",
+      "options": [
+        [
+          "Ask Sable who wrote the records",
+          "\"I did not write them. But I know who did. And I know they are no longer in this city.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ],
+        [
+          "Examine the ledger for hidden entries",
+          "Sable watches Mara's fingers trace the page. \"Careful. Some names are not meant to be read. Some silences are not meant to be broken.\"",
+          "undercroft_bell",
+          "c3",
+          1
+        ],
+        [
+          "Ask what the city did with the bell before it was lost",
+          "\"We sold it. Not the bronze. The rhythm. The sound. We sold it to collectors who wanted to own a piece of the city's voice.\"",
+          "market_trade",
+          "c4",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_06",
+      "title": "The Torn Page",
+      "text": "Sable produces the page from her coat, the paper brittle and dark at the edges. \"This is older than the tower,\" she says. \"Older than the city. The bell was never installed because it was never meant to be a bell. It was meant to be a name.\"\n\nMara takes the page. The ink is faded but legible: a list of names, each one crossed out with a single, deliberate stroke. \"These are not people,\" she whispers. \"These are silences. Each one a sound the city chose to forget.\"\n\nSable's voice drops. \"And the last name on the list... is yours.\"",
+      "options": [
+        [
+          "Ask Sable how she knows the page is older than the tower",
+          "\"I have held it in my hands for longer than I can say. The paper remembers what the city has forgotten.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ],
+        [
+          "Examine the crossed-out names more closely",
+          "Mara's breath catches. \"These are not just silences. They are people. Each one erased from the Archive of Names.\"",
+          "name_on_clapper",
+          "c3",
+          1
+        ],
+        [
+          "Ask what the city will do with the page now that it is found",
+          "\"Nothing. The city will pretend it was never here. As it has always done. As it always will.\"",
+          "plaza_echo",
+          "c5",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_07",
+      "title": "The Night Market",
+      "text": "Mara slips into the Night Market where merchants trade in 'quiet hours' as if silence were currency, and the air hums with hushed transactions. Stalls glow with lanterns that burn too low, and every voice is a whisper, as though the darkness itself is listening. A merchant in a grey cloak leans toward her. \"You're looking for the bell's old rhythm? It's not lost. It's been sold, piece by piece, to people who can't stand the sound of their own names.\" He slides a small vial across the table. Inside, something dark and still moves like a held breath.\n\nMara watches the crowd. A woman in a red shawl buys a quiet hour from a man with no face, and the man's mouth moves but no sound comes out. The woman leaves lighter, as if a weight has been lifted from her shoulders. \"What do you get back?\" Mara asks. The merchant shrugs. \"A memory. A name. A piece of the city that used to be yours. Silence is the only thing that never devalues.\"\n\nShe thinks of the wax seal on the tower door, the one that matched no known guild. She thinks of the torn page from the Archive of Names, dated before the city existed. The bell was never officially installed. It was never meant to be a bell at all. It was meant to be a name. And now someone is selling that name in pieces, like a merchant selling off the last of a dying fire.\n\nThe merchant's eyes catch the lantern light. \"You're not here for the rhythm, are you? You're here for the truth. But truth is expensive in this market. And you can't pay with what you don't have.\"",
+      "options": [
+        [
+          "Ask about the wax seal",
+          "\"The seal on the tower door. It's not a guild mark. It's someone's private hand. Who put it there?\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Buy a quiet hour",
+          "\"I'll trade a memory for a quiet hour. Tell me what silence costs in this market.\"",
+          "market_trade",
+          "c1",
+          1
+        ],
+        [
+          "Follow the red shawl",
+          "\"That woman in red. She bought a quiet hour and left lighter. What did she give up?\"",
+          "plaza_echo",
+          null,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_08",
+      "title": "Tobias the Rhythm Seller",
+      "text": "She meets Tobias, who reveals he has been selling the bell's old rhythm to collectors, and his smile is as hollow as the tower. He sits in a small room above a shop that sells nothing but silence, in jars and vials and folded paper. The walls are lined with glass containers, each holding a different shade of quiet. Some are pale as morning fog. Others are dark as the space between stars.\n\n\"You want to know about the rhythm?\" Tobias says, pouring two cups of tea that steams too slowly. \"I didn't steal it. I lent it out. The city was drowning in noise, and I thought if I could take the bell's voice and spread it thin, maybe people would finally hear themselves. But collectors don't want to hear. They want to own. They want to keep the rhythm in a jar and play it when they feel like remembering what it was to be alive.\"\n\nMara watches his hands. They move with a strange precision, as if he's still counting something. \"How many have you sold?\" she asks. \"Dozens. Maybe more. Each one a piece of the city's memory. Each one a name that will never be spoken again. The Archive of Names is emptying, Mara. Not because people are dying. Because they're being sold.\"\n\nThe tea cools between them. Outside, the market whispers continue, but here in this room, the silence has weight. It presses against her ears like deep water. \"You could stop it,\" she says. \"You could give it back. Let the city hear its own name again.\"\n\nTobias smiles, and for a moment his eyes are not hollow but bright, as if something behind them is trying to break through. \"And who would I be, if I gave it back? A thief who returned what he stole? Or a man who finally admitted he was the one who locked the tower door?\"",
+      "options": [
+        [
+          "Demand the rhythm back",
+          "\"Give it back. Every piece. The city needs to hear its own name again.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ],
+        [
+          "Ask about the collectors",
+          "\"Who are the collectors? What do they want with the rhythm?\"",
+          "market_trade",
+          "c4",
+          1
+        ],
+        [
+          "Show him the torn page",
+          "\"I have a page from the Archive. Dated before the city existed. It says the bell was never officially installed.\"",
+          "name_on_clapper",
+          "c3",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_09",
+      "title": "The Borrowed Hours",
+      "text": "A merchant offers Mara a quiet hour in exchange for a memory, and she refuses, but the deal leaves a cold mark on her wrist. The merchant is a tall woman with silver hair and eyes that have seen too many transactions. She sits across from Mara in a booth that smells of old paper and colder dust. \"I can give you an hour of silence,\" she says, sliding a small glass vial across the table. \"One hour. No sound. No thought. No name. Just quiet. All I ask is a memory. Any memory. The city will take care of the rest.\"\n\nMara looks at the vial. Inside, the silence moves like a living thing, dark and patient. She thinks of the bell in the Silent Tower, locked from the inside. She thinks of the public notice forbidding repair. She thinks of the wax seal that matched no known guild, and the torn page that said the bell was never officially installed. She thinks of Tobias, selling the rhythm in pieces, and the collectors who wanted to own the city's voice.\n\n\"No,\" she says. \"I won't trade a memory for silence.\"\n\nThe merchant's smile does not fade. \"Everyone refuses at first. But the mark stays. The cold mark on your wrist. It's a reminder. A debt. And debts, in this market, always come due.\"\n\nMara stands. The booth is empty now, except for the vial and the cold mark on her wrist. Outside, the Night Market continues its hushed transactions, and the silence presses against her like deep water. She walks through the crowd, and for a moment she hears it: the bell's old rhythm, faint and broken, moving through the streets like a ghost trying to remember its own name.",
+      "options": [
+        [
+          "Refuse the deal",
+          "\"No. I won't trade a memory for silence. The city's voice is not for sale.\"",
+          "plaza_echo",
+          "c5",
+          1
+        ],
+        [
+          "Ask about the cold mark",
+          "\"What is this mark? What will it cost me when it comes due?\"",
+          "undercroft_bell",
+          null,
+          2
+        ],
+        [
+          "Search the undercroft",
+          "\"Take me to the undercroft. I want to see the second bell. The one with my name on its clapper.\"",
+          "name_on_clapper",
+          "c3",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_10",
+      "title": "The Collector's Ledger",
+      "text": "Tobias unrolls a leather ledger across the counter, its pages swollen with ink and wax. \"Every rhythm I have sold is here,\" he says, tapping a column of names. \"Buyers from the north, from the coast, from places that no longer appear on any map. When they pay, I cross them out. Not because they are dead. Because they are no longer needed.\"\n\nMara leans closer. The crossed-out names are not merely erased; they are overwritten with smaller, more careful letters, as if someone had tried to make the people disappear twice. \"You are not selling sound,\" she says. \"You are selling absence.\"\n\nTobias smiles, but it does not reach his eyes. \"Absence is the only thing that cannot be taxed. The city pays for noise. It pays for light. But silence? Silence is free. And I am simply the one who knows how to make it expensive.\"",
+      "options": [
+        [
+          "Ask who crossed out the names",
+          "\"You did not cross them out yourself, did you? Someone else held the pen.\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Demand the ledger be opened to the city",
+          "\"If this is a market for absence, then the city has a right to see what it has sold.\"",
+          "market_trade",
+          "c1",
+          1
+        ],
+        [
+          "Tear out a page and keep it",
+          "\"I will not let you hide this in a locked room. If the city is buying silence, it should know what it is buying.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_11",
+      "title": "The Unwritten Ledger",
+      "text": "The Archive of Names smells of dust and old wax. Mara runs her fingers along the spines of the ledgers, searching for the one that should contain the bell's installation. She finds it, but the page where the bell should be recorded is not merely blank; it is shaped like a mouth, a gap cut into the parchment as if someone had bitten through the record itself.\n\nSable stands behind her, arms crossed. \"You see it now,\" she says. \"The city did not lose its bell. It swallowed it. And the Archive is the throat.\"\n\nMara turns the ledger over. On the back, in handwriting she recognizes as her own, are the words: \"The bell was never officially installed. It was a name given to a sound that had no right to exist.\"\n\n\"You wrote this,\" Sable says. It is not a question. \"You have been here before. You have been here many times.\"",
+      "options": [
+        [
+          "Ask Sable about the wax seal",
+          "\"That seal on the tower door. It matches no guild. But it looks like your hand. Explain.\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Search for the second bell",
+          "\"You mentioned a second bell. A smaller one. Where is it? I need to see it before I can understand what this gap means.\"",
+          "undercroft_bell",
+          "c3",
+          1
+        ],
+        [
+          "Ask about the public notice",
+          "\"The notice says the bell is broken. But you know it was silenced. Who put that notice up, and why did no one admit it?\"",
+          "plaza_echo",
+          "c5",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_12",
+      "title": "The Page Before the City",
+      "text": "Sable holds the torn page up to the candlelight. The ink is old, the paper brittle, but the words are clear: a record of the bell's installation, dated before the city existed. \"This is not a weapon,\" Sable says. \"It is a mirror. If you look long enough, you will see the city eating itself.\"\n\nMara takes the page. The words blur and sharpen, blur and sharpen, until she sees not just the record but the shape of the city around it, the streets and towers and people all turning inward, consuming their own history.\n\n\"You tore this out,\" Mara says. \"Before the city existed. You kept it hidden. Why?\"\n\nSable's face is unreadable. \"Because the city does not want to remember. And I am the one who remembers for it. But remembering is not the same as keeping. And keeping is not the same as owning.\"",
+      "options": [
+        [
+          "Ask Sable to return the page",
+          "\"The city's voice is speaking from the undercroft. It is asking you to return the page. Accept that memory is not yours to burn.\"",
+          "name_on_clapper",
+          "c3",
+          1
+        ],
+        [
+          "Ask about the collector's demand",
+          "\"Tobias said a collector demanded payment in names. Is that why you tore this page? To keep the city from being erased?\"",
+          "market_trade",
+          "c4",
+          1
+        ],
+        [
+          "Ask who silenced the bell",
+          "\"The notice says the bell is broken. But you know it was silenced. Who did it, and why? I need to know before I decide what to do with this page.\"",
+          "plaza_echo",
+          "c5",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_13",
+      "title": "The Undercroft",
+      "text": "Mara descends into the undercroft and finds a hidden chamber holding a second bell, smaller and older than the one above. The air is thick with dust and the faint smell of wax. She runs her fingers along the spines of the ledgers, searching for the one that should contain the bell's installation. She finds it, but the page is torn, and the words are gone.\n\nSable stands in the shadows, holding a candle. \"You found it,\" she says. \"The second bell. The one that was never meant to be here.\"\n\nMara looks at the bell. It is smaller than the one above, older, and covered in a thin layer of dust. \"What is this?\" she asks.\n\nSable steps forward. \"It is the bell that was never officially installed. The one that was silenced before the city existed.\"",
+      "options": [
+        [
+          "Examine the wax seal on the tower door",
+          "Mara: \"This seal... it matches no known guild. It's an unauthorized entry.\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Ask Sable about the quiet hours market",
+          "Sable: \"Merchants trade in silence as if it were currency. The market for absence is real.\"",
+          "market_trade",
+          "c1",
+          1
+        ],
+        [
+          "Search the chamber for more clues",
+          "Mara: \"There's a page torn from the Archive of Names ledger here. Dated before the city existed.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_14",
+      "title": "Her Name on the Clapper",
+      "text": "She hears her own name inscribed on the second bell's clapper, and the sound of her heartbeat echoes in the stone. The chamber is silent except for the faint ticking of her pulse. She looks at the bell, and the words are clear: a record of the bell's installation, dated before the city existed.\n\nSable watches from the shadows. \"You see it now,\" she says. \"Your name. On the clapper. You were here before the city existed.\"\n\nMara touches the bell. It is warm, as if it has been waiting for her. \"What does this mean?\" she asks.\n\nSable steps closer. \"It means you are not just a witness. You are part of the story. The bell was never officially installed because it was never meant to be found.\"",
+      "options": [
+        [
+          "Strike the small bell",
+          "Mara: \"The sound is different. It's not quite a note, but something older.\"",
+          "undercroft_bell",
+          "c3",
+          1
+        ],
+        [
+          "Ask Sable about the collector's demand",
+          "Sable: \"A collector demands payment in names. His quiet-hours trade has been erasing people from the Archive of Names.\"",
+          "name_on_clapper",
+          "c4",
+          1
+        ],
+        [
+          "Look for the public notice",
+          "Mara: \"The public notice claims the bell is broken. But no one admits it was actually silenced.\"",
+          "plaza_echo",
+          "c5",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_15",
+      "title": "The Counter-Sound",
+      "text": "Mara strikes the small bell and hears a note that is not quite a note, but something older, like a word before it became a word. The sound fills the chamber, and the dust motes dance in the candlelight. She looks at Sable, who is watching with a mixture of fear and hope.\n\n\"What was that?\" Mara asks.\n\nSable's voice is quiet. \"It is the counter-sound. The sound that was silenced before the city existed. It is the sound of the bell that was never officially installed.\"\n\nMara looks at the bell again. Her name is still there, on the clapper. She thinks of the wax seal, the quiet hours market, the torn page from the Archive of Names. She thinks of Tobias selling the bell's old rhythm to collectors. She thinks of the public notice claiming the bell is broken.\n\n\"What do we do now?\" she asks.",
+      "options": [
+        [
+          "Return the page to the Archive",
+          "Mara: \"The page is not a weapon; it is a mirror. If you look long enough, you will see the city eating itself.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ],
+        [
+          "Sell the rhythm to the collectors",
+          "Sable: \"I only lend the rhythm out; I never meant to keep it. The city should hear it again in a new shape.\"",
+          "market_trade",
+          "c4",
+          1
+        ],
+        [
+          "Silence the bell forever",
+          "Mara: \"The silence is not a theft, a mercy, or a message. It is a choice. And we must make it together.\"",
+          "undercroft_bell",
+          "c3",
+          2
+        ]
+      ]
+    },
+    {
+      "id": "enc_16",
+      "title": "The City's Hunger",
+      "text": "Sable stands before the torn page, her fingers tracing the ink that predates the city's first stone. \"You think the bell was silenced? No. The city ate it. Every year it swallows a memory, and the silence is just the chewing.\" She holds the page up to the candlelight, and the letters seem to move, like something alive beneath the parchment.\n\nMara watches the page tremble in Sable's hand. \"If the city eats history, then what are we? Just another meal waiting to be swallowed?\" Tobias steps forward, his voice low. \"I've seen the collectors. They don't buy silence for its own sake. They buy it because it's the only thing the city can't digest.\"\n\nSable's eyes flick between them. \"The Archive of Names isn't a record. It's a menu. And we're all still on it.\" The candle gutters, and for a moment the chamber is dark enough to hear the city breathing outside.",
+      "options": [
+        [
+          "Ask Sable to show the ledger page",
+          "Sable: \"You want to see what the city ate? Fine. But once you read it, you can't unsee it. The names are still warm.\"",
+          "seal_check",
+          null,
+          1
+        ],
+        [
+          "Demand Tobias reveal his collectors",
+          "Tobias: \"They're not collectors. They're archivists of what's been lost. And I'm the only one who remembers how to read them.\"",
+          "market_trade",
+          "c4",
+          1
+        ],
+        [
+          "Search the tower door for the seal",
+          "Mara: \"If the city ate the bell, it left a mark. That wax seal on the door—it's not a guild. It's a tooth mark.\"",
+          "seal_check",
+          "c0",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_17",
+      "title": "The Plaza of Echoes",
+      "text": "The Plaza of Echoes is a shallow bowl of stone, and every word spoken here returns to the speaker slightly altered. Mara steps into the center and says, \"We need to decide what to restore.\" The echo comes back as, \"We need to decide what to restore... or what to let die.\"\n\nTobias laughs, but the echo makes it sound like a sob. \"I've been selling the rhythm because someone had to. If I kept it, the city would have eaten me too. Now it's in their hands, and they're using it to buy silence from each other.\" He pulls a small vial from his coat. \"This is the last of the old rhythm. One drop, and you'll hear what the bell sounded like before it was swallowed.\"\n\nSable watches them both, her hand on the torn page. \"You can't restore what the city has already digested. But you can make it hungry again. You can make it remember it's supposed to eat.\" The plaza holds its breath, and the echoes begin to layer, overlapping into something almost like a chorus.",
+      "options": [
+        [
+          "Let Tobias play the last rhythm",
+          "Tobias: \"Listen. That's not a note. That's a word. The city was never silent—it was just holding its breath.\"",
+          "plaza_echo",
+          "c4",
+          1
+        ],
+        [
+          "Ask Sable to read the page aloud",
+          "Sable: \"If I read it here, the plaza will echo it back. And the city will hear itself being named. That's not a choice. That's a confession.\"",
+          "name_on_clapper",
+          "c2",
+          1
+        ],
+        [
+          "Strike the small bell in the plaza",
+          "Mara: \"The second bell. The one with my name on it. If I strike it here, the echo will carry it into every street. The city can't eat what it hears.\"",
+          "undercroft_bell",
+          "c3",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_18",
+      "title": "The Choice of Sound",
+      "text": "The plaza is silent now, the echoes fading into the stone. Three choices hang in the air, and each one will change what Vespera becomes. The tower door stands open behind them, the wax seal still fresh on the wood.\n\nTobias holds out the vial. \"If we restore the old rhythm, the city will remember it was ever a bell at all. But remembering means hunger. It'll eat again. Faster this time.\" His voice is steady, but his hands are not.\n\nSable steps forward, the torn page in her hand. \"Or we can let the silence stand. Let the city keep its meal. But then the Archive of Names stays a menu, and we're all still on it. I can feel the names being written out. One by one. Quietly.\"\n\nMara looks at the small bell in her palm, her name still warm on the clapper. \"Or we can make a new sound. Not the old rhythm, not the silence. Something the city has never eaten before. Something it can't digest.\" She holds the bell up, and the plaza waits.",
+      "options": [
+        [
+          "Restore the old rhythm",
+          "Tobias: \"Then let it ring. Let the city remember what it was. And let it be hungry again. I'd rather it be hungry than full of lies.\"",
+          "plaza_echo",
+          "c4",
+          1
+        ],
+        [
+          "Let the silence stand",
+          "Sable: \"If we do this, I have to burn the page. The city will forget it ever had a bell. And I'll forget I ever had a name. But at least the menu will be empty.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ],
+        [
+          "Make a new sound",
+          "Mara: \"Not the old rhythm. Not silence. Something new. The city can't eat what it hasn't tasted yet. And if we're going to be on that menu, let's be the dish it never expected.\"",
+          "undercroft_bell",
+          "c3",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_19",
+      "title": "The True Culprit",
+      "text": "The undercroft door groans shut behind them, and the air tastes of wet stone and old ink. Mara presses her palm to the wall and feels it pulse, slow as a sleeping animal. \"It was never a thief,\" she says, her voice thin in the dark. \"It was never a guild, or a merchant, or even me. The city ate the bell. Every year it swallows a memory, and the silence is just the chewing.\"\n\nSable steps forward, the torn page trembling in her hand. \"You think I silenced it? I only copied the seal so no one could use it against me. But look at this ink. It predates the first stone. The bell was never officially installed. It was a mouth, and the city has been feeding it its own past.\"\n\nTobias leans against the pillar, his collector's satchel clinking softly. \"I only lend the rhythm out; I never meant to keep it. But the city should hear it again in a new shape. The silence is not a theft. It is a mercy. A message. And if you listen, you will hear the city speaking back.\"\n\nThe small bell hangs in the center of the chamber, its clapper still, its bronze skin dark with age. Mara's name is inscribed on it in letters so fine they might be scratches. The air hums, and for a moment the three of them are not alone.",
+      "options": [
+        [
+          "Ask Sable to show the ledger page",
+          "Sable: \"The page is not a weapon; it is a mirror, and if you look long enough you will see the city eating itself.\"",
+          "name_on_clapper",
+          "c2",
+          1
+        ],
+        [
+          "Press Mara to the tower door",
+          "Mara: \"The seal is not a guild mark; it is my own hand, and I have been the one who locked the tower door.\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Demand Tobias's collector's ledger",
+          "Tobias: \"I only lend the rhythm out; I never meant to keep it, and the city should hear it again in a new shape.\"",
+          "market_trade",
+          "c4",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_20",
+      "title": "The Bell's Memory",
+      "text": "Mara strikes the small bell with a stone, and the note that rises is not quite a note. It is something older, like a word before it became a word. The sound does not echo; it settles into the floor, into the walls, into the bones of the city above.\n\n\"It was never broken,\" Mara whispers, her eyes wide. \"It was a mouth. The city has been feeding it its own past, and the silence is just the chewing.\"\n\nSable kneels beside the bell, tracing the inscription with one finger. \"The public notice claimed the bell was broken. No one admits it was silenced. But this bell was never officially installed. It was a mouth, and the city has been feeding it its own past.\"\n\nTobias watches from the doorway, his satchel clinking softly. \"I only lend the rhythm out; I never meant to keep it. But the city should hear it again in a new shape. The silence is not a theft. It is a mercy. A message. And if you listen, you will hear the city speaking back.\"",
+      "options": [
+        [
+          "Strike the bell again",
+          "Mara: \"It was never broken; it was a mouth, and the city has been feeding it its own past.\"",
+          "undercroft_bell",
+          "c3",
+          1
+        ],
+        [
+          "Read the public notice aloud",
+          "Sable: \"The public notice claimed the bell was broken, which no one admits was actually silenced.\"",
+          "plaza_echo",
+          "c5",
+          1
+        ],
+        [
+          "Trade a memory for the rhythm",
+          "Tobias: \"I only lend the rhythm out; I never meant to keep it, and the city should hear it again in a new shape.\"",
+          "market_trade",
+          "c4",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_21",
+      "title": "The Second Bell's Song",
+      "text": "The small bell begins to ring on its own. Its song is not a melody; it is the city's name, spoken in a voice no one remembers. The sound fills the undercroft, presses against the walls, and for a moment the stone above them seems to breathe.\n\nMara's hand flies to her mouth. \"That is my name. That is the city's name. That is the name of every person who has ever lived here and been forgotten.\"\n\nSable grips the torn page, her knuckles white. \"The city's own voice speaking from the undercroft, asking her to return the page and accept that memory is not hers to burn.\"\n\nTobias steps forward, his collector's satchel clinking softly. \"I only lend the rhythm out; I never meant to keep it. But the city should hear it again in a new shape. The silence is not a theft. It is a mercy. A message. And if you listen, you will hear the city speaking back.\"",
+      "options": [
+        [
+          "Let the bell ring",
+          "Mara: \"That is my name. That is the city's name. That is the name of every person who has ever lived here and been forgotten.\"",
+          "undercroft_bell",
+          "c3",
+          1
+        ],
+        [
+          "Return the ledger page",
+          "Sable: \"The city's own voice speaking from the undercroft, asking her to return the page and accept that memory is not hers to burn.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ],
+        [
+          "Silence the bell",
+          "Tobias: \"I only lend the rhythm out; I never meant to keep it, and the city should hear it again in a new shape.\"",
+          "plaza_echo",
+          "c5",
+          2
+        ]
+      ]
+    },
+    {
+      "id": "enc_22",
+      "title": "The Archive's Confession",
+      "text": "The Archive of Names opens its doors and spills out every record it has ever hidden, and the pages are warm, like skin. They drift across the floor in a slow tide, their edges curling as if breathing. Mara watches them settle around her feet, each one carrying the faint smell of ink and old rain.\n\nSable kneels among the pages, her fingers trembling as she touches a ledger that has never been opened before. \"You think the bell was silenced? No. The city ate it. Every year it swallows a memory, and the silence is just the chewing.\" Her voice is low, almost a whisper, but the words hang in the air like smoke.\n\nTobias stands at the edge of the room, his collector's satchel clutched tight against his chest. He watches the pages with the wary expression of a man who has seen too many secrets and not enough coin. \"I only lend the rhythm out; I never meant to keep it, and the city should hear it again in a new shape,\" he says, though his eyes dart toward the door as if expecting collectors to arrive at any moment.",
+      "options": [
+        [
+          "Ask Sable about the wax seal",
+          "Sable: \"The seal is not a guild mark; it is my own hand, and I have been the one who locked the tower door. I kept it as a private record of who silenced it.\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Press Tobias on the quiet-hours trade",
+          "Tobias: \"Merchants trading in 'quiet hours' as if silence were currency, revealing a market for absence. I sell the rhythm to collectors, but I never meant to keep it.\"",
+          "market_trade",
+          "c1",
+          1
+        ],
+        [
+          "Demand the torn ledger page",
+          "Sable: \"A page torn from the Archive of Names ledger, dated before the city existed, showing the bell was never officially installed. The page is not a weapon; it is a mirror, and if you look long enough you will see the city eating itself.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_23",
+      "title": "Tobias's Last Rhythm",
+      "text": "Tobias offers to give back the rhythm he sold, but the collectors have already spent it, and the silence is now in their bones. He stands in the center of the undercroft, his satchel open, revealing a small brass bell that has never been rung. The air around him hums with a faint, almost imperceptible vibration.\n\n\"I only lend the rhythm out; I never meant to keep it,\" Tobias says, his voice cracking as he speaks. \"The city should hear it again in a new shape. But the collectors have already spent it. They bought the silence and wore it like a cloak. Now it is in their bones, and I cannot take it back.\"\n\nMara watches him with a mixture of pity and suspicion. She has seen the way he moves through the city, always listening, always selling. But she also knows that the rhythm he sold was not just a sound; it was a memory, a piece of the city's soul. And now it is gone, scattered among the collectors who have no intention of returning it.",
+      "options": [
+        [
+          "Ask Tobias to sell the rhythm back",
+          "Tobias: \"I can sell the rhythm back, but the collectors have already spent it. The silence is now in their bones, and I cannot take it back.\"",
+          "market_trade",
+          "c4",
+          1
+        ],
+        [
+          "Demand the collector's name",
+          "Tobias: \"A collector demanding payment in names, revealing that his quiet-hours trade has been erasing people from the Archive of Names. I never meant to keep it, and the city should hear it again in a new shape.\"",
+          "name_on_clapper",
+          "c5",
+          1
+        ],
+        [
+          "Strike the small bell",
+          "Tobias: \"The small bell begins to ring on its own. Its song is not a melody; it is the city's name, spoken in a voice no one remembers. The sound fills the undercroft, presses against the walls.\"",
+          "undercroft_bell",
+          "c3",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_24",
+      "title": "Sable's Page",
+      "text": "Sable returns the torn page to the Archive, and the city shudders, as if a tooth has been pulled from its jaw. The pages around her begin to glow with a faint, golden light, their edges curling and uncurling like living things. She holds the page in both hands, her fingers tracing the ink that predates the city's first stone.\n\n\"The page is not a weapon; it is a mirror,\" Sable says, her voice steady despite the trembling of her hands. \"If you look long enough you will see the city eating itself. The bell was never officially installed. It was a memory, a dream, a lie the city told itself to keep from going mad.\"\n\nMara watches as Sable places the page back into the Archive. The moment it touches the shelf, the pages around it begin to move, rearranging themselves, forming new patterns. The air grows thick with the smell of ink and old rain, and the sound of the city's heartbeat becomes louder, more insistent.",
+      "options": [
+        [
+          "Ask Sable about the public notice",
+          "Sable: \"The public notice claiming the bell is broken, which no one admits was actually silenced. I tore the ledger page before the city existed and kept it hidden. The city's own voice speaking from the undercroft, asking her to return the page and accept that memory is not hers to burn.\"",
+          "plaza_echo",
+          "c5",
+          1
+        ],
+        [
+          "Demand Sable confess",
+          "Sable: \"The seal is not a guild mark; it is my own hand, and I have been the one who locked the tower door. I kept it as a private record of who silenced it. A public ledger showing her name beside the second bell's clapper, forcing her to choose between order and confession.\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Strike the small bell again",
+          "Sable: \"The small bell begins to ring on its own. Its song is not a melody; it is the city's name, spoken in a voice no one remembers. The sound fills the undercroft, presses against the walls.\"",
+          "undercroft_bell",
+          "c3",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_25",
+      "title": "The Bell Tower Reopens",
+      "text": "Mara presses the wax seal against the tower door, and the lock turns with a sound like a held breath finally released. The great bell is gone, replaced by a hollow space shaped like a bell, its absence carved into the stone. She stands in the empty frame, her fingers tracing the outline of what was there, and feels the city's silence pressing against her ribs.\n\nTobias watches from the doorway, his satchel slung low, and says nothing. He has sold the rhythm to collectors, but the shape of the bell remains in his memory, and he cannot stop seeing it. Sable steps forward, her hand on the torn page she has returned, and asks if the hollow is a wound or a mouth.\n\nMara answers that it is both, and that the city has been eating its own history. The three of them stand in the empty tower, and the silence between them is not empty but full, like a bell that has been struck and is still ringing in the dark.",
+      "options": [
+        [
+          "Press the seal deeper into the hollow",
+          "Mara: 'If the city took the bell, it will take the seal too. I will not let it keep my hand.'",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Ask Tobias what the collectors paid",
+          "Tobias: 'They paid in names. Not yours. Not mine. But close enough to hurt.'",
+          "market_trade",
+          "c4",
+          1
+        ],
+        [
+          "Let Sable read the page aloud",
+          "Sable: 'The city is not broken. It is listening. And it has been listening for a very long time.'",
+          "ledger_tear",
+          "c2",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_26",
+      "title": "The Echo Returns",
+      "text": "In the Plaza of Echoes, the stones are warm and the air is thick with voices that are not echoes. They are the voices of everyone the city has swallowed, speaking in unison and in fragments, their words overlapping like a bell struck too many times. Mara hears her own name in the crowd of voices, spoken by someone who is not there.\n\nTobias kneels and presses his palm to the ground, and the rhythm he sold comes back to him, not as sound but as a pulse in the stone. He says the city has been eating its own history, and that the silence was not a theft but a digestion. Sable stands at the center of the plaza, her hand on the small bell with her name inscribed on its clapper, and asks if the city will speak if she rings it.\n\nThe voices in the plaza answer before she can finish. They say the city is not a thief. It is a mouth. And it is still hungry.",
+      "options": [
+        [
+          "Ring the small bell",
+          "Sable: 'If the city is a mouth, then this is the only thing it cannot swallow. My name. My voice.'",
+          "undercroft_bell",
+          "c3",
+          1
+        ],
+        [
+          "Ask the echoes for the truth",
+          "Echo: 'The truth is not a thing you can ask. It is a thing you must become. And you are not ready.'",
+          "plaza_echo",
+          "c5",
+          1
+        ],
+        [
+          "Offer the wax seal to the voices",
+          "Mara: 'I have been copying this seal for months. I thought it was a record. It is a key. And I have been holding it too long.'",
+          "name_on_clapper",
+          "c0",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_27",
+      "title": "The City's Voice",
+      "text": "The city's voice speaks from the undercroft, and it is not a voice at all but a pressure in the air, a weight in the bones. It asks Sable to return the page and accept that memory is not hers to burn. The three of them stand in the dark, and the small bell in Sable's hand grows warm, then hot, then almost too heavy to hold.\n\nMara says the city has been eating its own history, and that the silence was a mercy. Tobias says the rhythm is not his to give back, but the city can take it if it wants. Sable says nothing, and the city's voice waits, patient as stone, hungry as a bell that has been struck and not yet rung.\n\nThe page in Sable's hand glows with a faint golden light, and the words on it shift, rearrange, become something new. The city is not asking for the page. It is asking for the choice. And the choice is not hers alone.",
+      "options": [
+        [
+          "Return the page to the Archive",
+          "Sable: 'I will give it back. But I will not forget. And neither will you.'",
+          "ledger_tear",
+          "c2",
+          1
+        ],
+        [
+          "Ring the small bell one last time",
+          "Sable: 'If the city is a mouth, then this is the only thing it cannot swallow. My name. My voice. My choice.'",
+          "undercroft_bell",
+          "c3",
+          2
+        ],
+        [
+          "Let the city keep the silence",
+          "Mara: 'Perhaps the silence was not a theft. Perhaps it was a mercy. And perhaps we have been too loud for too long.'",
+          "plaza_echo",
+          "c5",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_28",
+      "title": "The Reconciliation",
+      "text": "Mara, Tobias, and Sable stand together in the Plaza of Echoes as the city offers them a choice: restore the bell and let it eat again, or let the silence remain and let the city starve.\n\nMara's hand hovers over the wax seal in her pocket. \"I locked the tower door myself,\" she says, her voice steady but her fingers trembling. \"I thought if I kept the bell silent, I could keep the city from swallowing itself. But I was wrong. The silence isn't mercy. It's a wound.\"\n\nTobias steps forward, his collector's satchel clinking with the old rhythm he's been selling. \"I've been trading in absence,\" he admits, \"as if silence were something you could bottle and sell. But the city doesn't want my coin. It wants its voice back. Even if that voice is broken. Even if it's a new one.\"\n\nSable holds up the torn page from the Archive of Names. \"I tore it before the city existed,\" she says, \"and I kept it hidden. I thought I was protecting the truth. But the truth isn't a weapon. It's a mirror. And if you look long enough, you'll see the city eating itself.\"\n\nThe plaza stones hum beneath their feet. The city is waiting. The choice is theirs: restore the bell and let it eat again, or let the silence remain and let the city starve.",
+      "options": [
+        [
+          "Restore the Bell",
+          "Mara: \"Then we ring it. We let the city hear itself again, even if it hurts. Even if it eats.\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Let Silence Remain",
+          "Tobias: \"Maybe the city doesn't need to eat. Maybe it just needs to listen. Maybe silence is its own kind of voice.\"",
+          "undercroft_bell",
+          "c5",
+          1
+        ],
+        [
+          "A Third Path",
+          "Sable: \"What if we don't restore the old bell? What if we make a new sound? A sound that belongs to no one and everyone?\"",
+          "plaza_echo",
+          "c3",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_29",
+      "title": "The New Sound",
+      "text": "They choose a third option: they ring the small bell, and its sound is not the old rhythm but a new one, a sound that belongs to no one and everyone.\n\nSable lifts the small bell from the undercroft. It is lighter than she expected, almost weightless, as if it has been waiting for this moment. The name on its clapper catches the light: her own name, written in ink that seems to shift and breathe.\n\n\"This bell was never meant to be rung alone,\" she says, her voice barely above a whisper. \"It was meant to be rung with the city. With all of us.\"\n\nMara steps forward and places her hand on the bell's rim. \"I locked the tower door to protect you,\" she says to Tobias, \"but I was wrong. The city doesn't need protection from its own voice. It needs us to listen.\"\n\nTobias opens his satchel and takes out the old rhythm, now a small glass vial filled with something that looks like liquid sound. \"I've been selling this for years,\" he says, \"as if it were a commodity. But it's not. It's a memory. And memories aren't meant to be sold. They're meant to be shared.\"\n\nHe pours the vial into the small bell. The sound that emerges is not the old rhythm. It is something new. Something that belongs to no one and everyone. The plaza stones vibrate with it, and the voices of the swallowed rise to meet it, not in unison but in harmony.",
+      "options": [
+        [
+          "Ring the Small Bell",
+          "Sable: \"This bell was never meant to be rung alone. It was meant to be rung with the city. With all of us.\"",
+          "name_on_clapper",
+          "c3",
+          1
+        ],
+        [
+          "Share the Old Rhythm",
+          "Tobias: \"I've been selling this for years, as if it were a commodity. But it's not. It's a memory. And memories aren't meant to be sold. They're meant to be shared.\"",
+          "market_trade",
+          "c4",
+          1
+        ],
+        [
+          "Let the City Listen",
+          "Mara: \"The city doesn't need protection from its own voice. It needs us to listen.\"",
+          "plaza_echo",
+          "c5",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "enc_30",
+      "title": "The City That Lost Its Bell",
+      "text": "The city wakes with a new silence, not of absence but of listening, and Mara leaves the tower with the wax seal in her pocket, knowing she has been the one who locked the door all along.\n\nThe plaza is quiet, but it is not empty. The stones are warm beneath their feet, and the air is thick with voices that are not echoes. They are the voices of everyone the city has swallowed, speaking in unison and in fragments, and they are no longer angry. They are listening.\n\nMara stands at the tower door, the wax seal in her pocket. She knows now that the seal is not a guild mark. It is her own hand. She has been the one who locked the tower door, who silenced the bell, who kept the city from hearing itself. And yet, as she looks out over the plaza, she sees that the city is not broken. It is waiting. It is listening.\n\nTobias stands beside her, his satchel empty. \"I sold the rhythm for years,\" he says, \"as if it were something I could own. But it was never mine. It belonged to the city. To all of us.\"\n\nSable holds the torn page in her hand. \"I tore it before the city existed,\" she says, \"and I kept it hidden. I thought I was protecting the truth. But the truth isn't a weapon. It's a mirror. And if you look long enough, you'll see the city eating itself.\"\n\nMara places the wax seal on the tower door. The door opens. The city breathes. And in the new silence, not of absence but of listening, they all hear the small bell ringing again, its sound a new one, a sound that belongs to no one and everyone.",
+      "options": [
+        [
+          "Leave the Tower",
+          "Mara: \"I locked the tower door myself. I thought I was protecting the city. But I was wrong. The city doesn't need protection from its own voice. It needs us to listen.\"",
+          "seal_check",
+          "c0",
+          1
+        ],
+        [
+          "Return the Page",
+          "Sable: \"The page is not a weapon. It's a mirror. And if you look long enough, you'll see the city eating itself. I'm returning it to the Archive.\"",
+          "ledger_tear",
+          "c2",
+          1
+        ],
+        [
+          "Accept the Silence",
+          "Tobias: \"The silence isn't absence. It's listening. And in that listening, the city is not broken. It's waiting. It's alive.\"",
+          "undercroft_bell",
+          "c5",
+          1
+        ]
+      ]
+    }
+  ],
+  "endings": [
+    [
+      "end_restore",
+      "The Bell Remembers Its Shape",
+      "Mara pressed her thumb to the wax seal and felt the old order settle back into place, like a bone resetting after a fall. The tower door opened without protest, and the bell above rang once, clean and bright, as if it had only been sleeping. The city below exhaled, and the market stalls closed early, and no one asked why the silence had ever mattered at all.\nSable watched from the plaza with her arms folded, and Tobias counted his coins with a face that said he had won something he could not name. The bell rang again, and again, and the city forgot why it was ever silent, and the forgetting felt like mercy, and the mercy felt like a lie, and no one in the tower would say which of those things was true.\n"
+    ],
+    [
+      "end_silence",
+      "The Quiet That Remains",
+      "Tobias set the last coin on the counter and let the rhythm go, and the city listened to the absence the way a body listens to a wound that has stopped bleeding. The market closed early, and the quiet hours stretched out like a long breath held in a dark room, and people began to trade in silence the way they once traded in bread, and the Archive of Names grew thinner by one name each night.\nMara stood in the plaza and felt the quiet settle into her bones, and she understood that the city had not lost its voice but had learned to speak in a language of absence, and the new ritual formed around the silence like moss on a stone, soft and patient and impossible to remove. She did not ring the bell again, and the city did not ask her to, and the quiet held them all like a hand over a mouth, gentle and absolute and full of things that would never be said aloud.\n"
+    ],
+    [
+      "end_expose",
+      "The Name on the Clapper",
+      "Sable stood before the torn page and let the ink dry on her fingers, and the city's own voice rose from the undercroft like a thing that had been waiting a long time to be heard. The name on the clapper was hers, and the bell had never been silenced by a person but devoured by the city itself, and the old order shattered like glass under a hammer, and the pieces cut everyone who tried to pick them up.\nMara carried the wax seal in her pocket and felt it warm against her hip, and Tobias stood at the edge of the plaza with his ledger open and his face blank, and the city rebuilt itself from raw memory, from the names that had been erased and the rhythms that had been sold and the silence that had been mistaken for peace. Sable spoke the name aloud, and the bell rang, and the sound was not a note but a word, and the word was a confession, and the confession was a door, and the door opened onto a city that had to learn to remember how to be itself.\n"
+    ],
+    [
+      "end_mix",
+      "The Sound Between",
+      "Mara held the seal in one hand and the torn page in the other, and Tobias stood between them with his ledger closed and his face set, and Sable traced the ink on the clapper with a finger that would not stop trembling. The two bells rang together, and the sound that came out was neither old nor new but something in between, a sound that had no name in any language the city still spoke, and the city listened to it the way a child listens to a word they have not yet learned.\nThe tower door opened, and the bell above rang, and the small bell below rang, and the two sounds wove together into a pattern that was not a rhythm but a shape, a shape that held the memory of the old order and the absence of the new one and the space between them where the city could build something it had not yet imagined. Mara set the seal on the counter and let it go, and Tobias closed his ledger for the last time, and Sable spoke the name into the air, and the city held its breath, and the sound held the city, and neither of them knew which of them was the bell and which was the silence.\n"
+    ],
+    [
+      "end_phase",
+      "The Silence That Was a Phase",
+      "Mara opened the ledger page first and let the ink dry on her fingers, and the city's old order cracked along the lines that had been there all along, and the seal came second and the tower door opened without protest, and the name came last and the bell rang, and the sound was not a note but a word, and the word was a phase, and the phase was a turning, and the turning was a door, and the door opened onto a city that had been waiting for someone to tell it that the silence was not a loss but a breath.\nTobias stood at the edge of the plaza with his ledger open and his face set, and Sable held the small bell in her hands and felt it warm against her palms, and Mara carried the wax seal in her pocket and felt it settle into her bones like a memory that had finally found its place. The city rebuilt itself from raw memory, from the names that had been erased and the rhythms that had been sold and the silence that had been mistaken for peace, and the new silence was not an absence but a listening, and the listening was a phase, and the phase was a turning, and the turning was a door, and the door opened onto a city that had to learn to remember how to be itself.\n"
+    ]
+  ],
+  "math": {
+    "basis": {
+      "00": "The bell is silent and the city's old order is intact; the player has not yet disturbed the hidden agreements.",
+      "01": "The bell is silent but the city's old order is fraying; a crack in the public narrative has appeared.",
+      "10": "The bell has been restored or partially restored, but the city's old order is now unstable and contested.",
+      "11": "The bell's sound and the city's memory are entangled; the player has discovered that silence was a phase, not a loss."
+    },
+    "clues": {
+      "c0": "A wax seal on the tower door that matches no known guild, suggesting an unauthorized entry.",
+      "c1": "Merchants trading in 'quiet hours' as if silence were currency, revealing a market for absence.",
+      "c2": "A page torn from the Archive of Names ledger, dated before the city existed, showing the bell was never officially installed.",
+      "c3": "A second, smaller bell in the undercroft with the player's name inscribed on its clapper.",
+      "c4": "Tobias selling the bell's old rhythm to collectors, proving the silence has been commodified.",
+      "c5": "The public notice claiming the bell is broken, which no one admits was actually silenced."
+    },
+    "operators": {
+      "seal_check": [
+        "H0",
+        "Z0"
+      ],
+      "market_trade": [
+        "S0",
+        "H1"
+      ],
+      "ledger_tear": [
+        "X0",
+        "CX01"
+      ],
+      "undercroft_bell": [
+        "H0",
+        "S1",
+        "X1"
+      ],
+      "name_on_clapper": [
+        "Z1",
+        "CX10"
+      ],
+      "plaza_echo": [
+        "H0",
+        "H1",
+        "S0",
+        "Z1"
+      ]
+    },
+    "secrets": {
+      "end_mix": {
+        "requires": [
+          "c0",
+          "c2",
+          "c3"
+        ],
+        "projectors": [
+          [
+            "X0+",
+            0.45,
+            0.75
+          ],
+          [
+            "Y1+",
+            0.35,
+            0.6
+          ]
+        ]
+      },
+      "end_phase": {
+        "requires": [
+          "c1",
+          "c2",
+          "c5"
+        ],
+        "projectors": [
+          [
+            "X1-",
+            0.4,
+            0.7
+          ],
+          [
+            "Y0+",
+            0.3,
+            0.55
+          ]
+        ]
+      }
+    }
+  },
+  "algebra": {
+    "order_sensitive_operator_pairs": [
+      [
+        "seal_check",
+        "market_trade"
+      ],
+      [
+        "seal_check",
+        "ledger_tear"
+      ],
+      [
+        "seal_check",
+        "undercroft_bell"
+      ],
+      [
+        "seal_check",
+        "name_on_clapper"
+      ],
+      [
+        "seal_check",
+        "plaza_echo"
+      ],
+      [
+        "market_trade",
+        "ledger_tear"
+      ],
+      [
+        "market_trade",
+        "undercroft_bell"
+      ],
+      [
+        "market_trade",
+        "name_on_clapper"
+      ],
+      [
+        "market_trade",
+        "plaza_echo"
+      ],
+      [
+        "ledger_tear",
+        "undercroft_bell"
+      ],
+      [
+        "ledger_tear",
+        "name_on_clapper"
+      ],
+      [
+        "ledger_tear",
+        "plaza_echo"
+      ],
+      [
+        "undercroft_bell",
+        "name_on_clapper"
+      ],
+      [
+        "undercroft_bell",
+        "plaza_echo"
+      ],
+      [
+        "name_on_clapper",
+        "plaza_echo"
+      ]
+    ]
+  },
+  "balance": {
+    "runs": 5000,
+    "seed": 523,
+    "encounter_visits": {
+      "enc_01": 5000,
+      "enc_02": 5000,
+      "enc_03": 5000,
+      "enc_05": 5000,
+      "enc_06": 5000,
+      "enc_07": 5000,
+      "enc_08": 5000,
+      "enc_09": 5000,
+      "enc_10": 3265,
+      "enc_11": 5000,
+      "enc_12": 5000,
+      "enc_13": 5000,
+      "enc_14": 5000,
+      "enc_15": 5000,
+      "enc_16": 3289,
+      "enc_17": 5000,
+      "enc_18": 5000,
+      "enc_19": 5000,
+      "enc_20": 5000,
+      "enc_21": 5000,
+      "enc_22": 3296,
+      "enc_23": 5000,
+      "enc_24": 5000,
+      "enc_25": 5000,
+      "enc_26": 5000,
+      "enc_27": 5000,
+      "enc_29": 5000,
+      "enc_30": 5000,
+      "enc_28": 3344,
+      "enc_04": 3275
+    },
+    "endings": {
+      "end_restore": 1208,
+      "end_expose": 1243,
+      "end_silence": 1190,
+      "end_mix": 717,
+      "end_phase": 642
+    },
+    "secret_eligible": {
+      "end_mix": 3334,
+      "end_phase": 2868
+    },
+    "witnesses": {
+      "end_mix": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          7,
+          1
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          10,
+          0
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          13,
+          2
+        ],
+        [
+          14,
+          2
+        ],
+        [
+          16,
+          2
+        ],
+        [
+          17,
+          2
+        ],
+        [
+          18,
+          0
+        ],
+        [
+          19,
+          2
+        ],
+        [
+          20,
+          2
+        ],
+        [
+          22,
+          1
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          25,
+          0
+        ],
+        [
+          26,
+          0
+        ],
+        [
+          27,
+          2
+        ],
+        [
+          28,
+          0
+        ],
+        [
+          29,
+          2
+        ]
+      ],
+      "end_phase": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          7,
+          1
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          10,
+          0
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          13,
+          2
+        ],
+        [
+          14,
+          2
+        ],
+        [
+          16,
+          2
+        ],
+        [
+          17,
+          2
+        ],
+        [
+          18,
+          0
+        ],
+        [
+          19,
+          2
+        ],
+        [
+          20,
+          2
+        ],
+        [
+          22,
+          1
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          25,
+          0
+        ],
+        [
+          26,
+          0
+        ],
+        [
+          27,
+          2
+        ],
+        [
+          28,
+          0
+        ],
+        [
+          29,
+          2
+        ]
+      ]
+    },
+    "counterfactuals": {
+      "end_mix": {
+        "witness": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            1
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            9,
+            0
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            14,
+            2
+          ],
+          [
+            16,
+            2
+          ],
+          [
+            17,
+            2
+          ],
+          [
+            18,
+            0
+          ],
+          [
+            19,
+            2
+          ],
+          [
+            20,
+            2
+          ],
+          [
+            22,
+            1
+          ],
+          [
+            23,
+            0
+          ],
+          [
+            24,
+            0
+          ],
+          [
+            25,
+            0
+          ],
+          [
+            26,
+            0
+          ],
+          [
+            27,
+            2
+          ],
+          [
+            28,
+            0
+          ],
+          [
+            29,
+            2
+          ]
+        ],
+        "swap_decisions": [
+          11,
+          12
+        ],
+        "clues": [
+          "c0",
+          "c1",
+          "c2",
+          "c3",
+          "c4",
+          "c5"
+        ],
+        "probabilities": {
+          "X0+": [
+            0.4999999999999981,
+            0.49999999999999817
+          ],
+          "Y1+": [
+            0.4999999999999981,
+            0.0
+          ]
+        }
+      },
+      "end_phase": {
+        "witness": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            1
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            9,
+            0
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            13,
+            2
+          ],
+          [
+            14,
+            2
+          ],
+          [
+            16,
+            2
+          ],
+          [
+            17,
+            2
+          ],
+          [
+            18,
+            0
+          ],
+          [
+            19,
+            2
+          ],
+          [
+            20,
+            2
+          ],
+          [
+            22,
+            1
+          ],
+          [
+            23,
+            0
+          ],
+          [
+            24,
+            0
+          ],
+          [
+            25,
+            0
+          ],
+          [
+            26,
+            0
+          ],
+          [
+            27,
+            2
+          ],
+          [
+            28,
+            0
+          ],
+          [
+            29,
+            2
+          ]
+        ],
+        "swap_decisions": [
+          11,
+          12
+        ],
+        "clues": [
+          "c0",
+          "c1",
+          "c2",
+          "c3",
+          "c4",
+          "c5"
+        ],
+        "probabilities": {
+          "X1-": [
+            0.49999999999999817,
+            0.49999999999999817
+          ],
+          "Y0+": [
+            0.49999999999999817,
+            0.9999999999999962
+          ]
+        }
+      }
+    },
+    "route_lengths": {
+      "28": 1576,
+      "27": 909,
+      "30": 640,
+      "29": 1623,
+      "26": 231,
+      "25": 21
+    }
+  },
+  "exact": {
+    "states_per_scene": [
+      1,
+      3,
+      9,
+      18,
+      63,
+      184,
+      503,
+      1042,
+      1454,
+      1454,
+      1860,
+      1961,
+      2048,
+      2109,
+      2180,
+      1944,
+      2229,
+      2247,
+      2262,
+      2198,
+      2205,
+      2030,
+      2238,
+      2240,
+      2248,
+      2248,
+      2253,
+      2001,
+      2264,
+      2264,
+      2216
+    ],
+    "secret_gates": {
+      "end_mix": {
+        "eligible_probability": 0.6616001341247139,
+        "witness": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            0
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            12,
+            0
+          ],
+          [
+            13,
+            0
+          ],
+          [
+            14,
+            2
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            17,
+            0
+          ],
+          [
+            18,
+            0
+          ],
+          [
+            19,
+            0
+          ],
+          [
+            20,
+            2
+          ],
+          [
+            22,
+            0
+          ],
+          [
+            23,
+            0
+          ],
+          [
+            24,
+            0
+          ],
+          [
+            25,
+            0
+          ],
+          [
+            26,
+            1
+          ],
+          [
+            28,
+            0
+          ],
+          [
+            29,
+            0
+          ]
+        ],
+        "order_witness": {
+          "witness": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              6,
+              0
+            ],
+            [
+              7,
+              0
+            ],
+            [
+              8,
+              1
+            ],
+            [
+              10,
+              0
+            ],
+            [
+              11,
+              0
+            ],
+            [
+              12,
+              0
+            ],
+            [
+              13,
+              0
+            ],
+            [
+              14,
+              2
+            ],
+            [
+              16,
+              0
+            ],
+            [
+              17,
+              0
+            ],
+            [
+              18,
+              0
+            ],
+            [
+              19,
+              0
+            ],
+            [
+              20,
+              2
+            ],
+            [
+              22,
+              0
+            ],
+            [
+              23,
+              0
+            ],
+            [
+              24,
+              0
+            ],
+            [
+              25,
+              0
+            ],
+            [
+              26,
+              1
+            ],
+            [
+              28,
+              0
+            ],
+            [
+              29,
+              0
+            ]
+          ],
+          "swap_decisions": [
+            1,
+            2
+          ],
+          "clues": [
+            "c0",
+            "c2",
+            "c3",
+            "c4",
+            "c5"
+          ],
+          "probabilities": {
+            "X0+": [
+              0.4999999999999982,
+              0.0
+            ],
+            "Y1+": [
+              0.4999999999999982,
+              0.9999999999999964
+            ]
+          }
+        },
+        "clue_probability": 0.9923959487493015,
+        "projector_distribution": [
+          {
+            "values": [
+              0.5,
+              0.5
+            ],
+            "probability": 0.6616001341247139
+          },
+          {
+            "values": [
+              1.0,
+              0.5
+            ],
+            "probability": 0.06616033868529114
+          },
+          {
+            "values": [
+              0.0,
+              0.5
+            ],
+            "probability": 0.06616032268751135
+          },
+          {
+            "values": [
+              0.5,
+              1.0
+            ],
+            "probability": 0.06615907696960989
+          },
+          {
+            "values": [
+              0.5,
+              0.0
+            ],
+            "probability": 0.0661588338558415
+          },
+          {
+            "values": [
+              0.0,
+              0.0
+            ],
+            "probability": 0.01653937539859446
+          },
+          {
+            "values": [
+              1.0,
+              0.0
+            ],
+            "probability": 0.016539363131961245
+          },
+          {
+            "values": [
+              0.0,
+              1.0
+            ],
+            "probability": 0.016539253142639366
+          },
+          {
+            "values": [
+              1.0,
+              1.0
+            ],
+            "probability": 0.016539250753138685
+          }
+        ]
+      },
+      "end_phase": {
+        "eligible_probability": 0.5710307134625048,
+        "witness": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            7,
+            0
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            11,
+            0
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            13,
+            0
+          ],
+          [
+            14,
+            2
+          ],
+          [
+            16,
+            0
+          ],
+          [
+            17,
+            0
+          ],
+          [
+            18,
+            0
+          ],
+          [
+            19,
+            0
+          ],
+          [
+            20,
+            2
+          ],
+          [
+            22,
+            0
+          ],
+          [
+            23,
+            0
+          ],
+          [
+            24,
+            0
+          ],
+          [
+            25,
+            0
+          ],
+          [
+            26,
+            1
+          ],
+          [
+            28,
+            0
+          ],
+          [
+            29,
+            0
+          ]
+        ],
+        "order_witness": {
+          "witness": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              6,
+              0
+            ],
+            [
+              7,
+              0
+            ],
+            [
+              8,
+              1
+            ],
+            [
+              10,
+              0
+            ],
+            [
+              11,
+              0
+            ],
+            [
+              12,
+              1
+            ],
+            [
+              13,
+              0
+            ],
+            [
+              14,
+              2
+            ],
+            [
+              16,
+              0
+            ],
+            [
+              17,
+              0
+            ],
+            [
+              18,
+              0
+            ],
+            [
+              19,
+              0
+            ],
+            [
+              20,
+              2
+            ],
+            [
+              22,
+              0
+            ],
+            [
+              23,
+              0
+            ],
+            [
+              24,
+              0
+            ],
+            [
+              25,
+              0
+            ],
+            [
+              26,
+              1
+            ],
+            [
+              28,
+              0
+            ],
+            [
+              29,
+              0
+            ]
+          ],
+          "swap_decisions": [
+            0,
+            1
+          ],
+          "clues": [
+            "c0",
+            "c1",
+            "c2",
+            "c3",
+            "c4",
+            "c5"
+          ],
+          "probabilities": {
+            "X1-": [
+              0.49999999999999817,
+              0.0
+            ],
+            "Y0+": [
+              0.4999999999999982,
+              0.0
+            ]
+          }
+        },
+        "clue_probability": 0.8565532555245814,
+        "projector_distribution": [
+          {
+            "values": [
+              0.5,
+              0.5
+            ],
+            "probability": 0.5710307134625048
+          },
+          {
+            "values": [
+              0.0,
+              0.5
+            ],
+            "probability": 0.05710674071028422
+          },
+          {
+            "values": [
+              1.0,
+              0.5
+            ],
+            "probability": 0.05710641186698092
+          },
+          {
+            "values": [
+              0.5,
+              0.0
+            ],
+            "probability": 0.057101849227043776
+          },
+          {
+            "values": [
+              0.5,
+              1.0
+            ],
+            "probability": 0.057101807385416536
+          },
+          {
+            "values": [
+              1.0,
+              1.0
+            ],
+            "probability": 0.014276542637604901
+          },
+          {
+            "values": [
+              1.0,
+              0.0
+            ],
+            "probability": 0.014276488914183755
+          },
+          {
+            "values": [
+              0.0,
+              0.0
+            ],
+            "probability": 0.014276363789644699
+          },
+          {
+            "values": [
+              0.0,
+              1.0
+            ],
+            "probability": 0.014276337530917838
+          }
+        ]
+      }
+    }
+  }
+}

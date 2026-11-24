@@ -1,5 +1,5 @@
 {
-  "date": "23 November 2026",
+  "date": "24 November 2026",
   "plan": {
     "project_commit": "eb02038fc8f1ea95266ba4aee44463f306215543",
     "index_revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
@@ -31,6 +31,30 @@
     "tide-assisted.png": {
       "sha256": "30351193626ded38b6ed1fad765abea8a6a10f4fc81371d28aa77717198b907b",
       "source": "visual-checks-final/tide-assisted.png"
+    },
+    "cat-hat-start.png": {
+      "sha256": "a32a594cde4b7377e2156720428ac0539d06fc55708ab825aa777b09dd9c6208",
+      "source": "inky-cat-hat-20261123/26-storybook-ink-retry-02/browser/start.png"
+    },
+    "cat-hat-share.png": {
+      "sha256": "276e227be84577f2bb376a47dc800d2f7311f1189bf28a11ea5aff1de0d3d558",
+      "source": "inky-cat-hat-20261123/26-storybook-ink-retry-02/browser/end_share.png"
+    },
+    "hilbert-inky-start.png": {
+      "sha256": "4526a597744db3977c26b1d28d60fc2a544b179358b50c770f8693443777fd41",
+      "source": "MCP/results/mcp05/inky-hilbert-16k/screenshots/start.png"
+    },
+    "hilbert-inky-secret.png": {
+      "sha256": "e01fc8213e7d66c93b53652e5add8657798d10a2cc4aa994127eae4194d5242b",
+      "source": "MCP/results/mcp05/inky-hilbert-16k/screenshots/end_bell_as_question.png"
+    },
+    "hilbert-bonsai-start.png": {
+      "sha256": "61b636ff08411017927fa20db04394fa76c6e48a045e0926369dce4e16adf888",
+      "source": "MCP/results/mcp05/bonsai2-27b-q4-hilbert-16k/screenshots/start.png"
+    },
+    "hilbert-bonsai-secret.png": {
+      "sha256": "0040da4d7f68df4e7f628347633b92f51848db2241c57d0a144946d459b0e498",
+      "source": "MCP/results/mcp05/bonsai2-27b-q4-hilbert-16k/screenshots/end_mix.png"
     }
   },
   "primary": [
@@ -418,5 +442,224 @@
       "assigned": 7,
       "reason": "stop"
     }
-  ]
+  ],
+  "storyworlds": {
+    "cat_hat": {
+      "title": "The Hat That Held the Moon",
+      "scenes": 20,
+      "choices": 48,
+      "reactions": 96,
+      "endings": 4,
+      "story_cards": {
+        "turns": 41,
+        "prompt_in": 60805,
+        "uncached_in": 60189,
+        "cached_in": 616,
+        "completion_out": 16789,
+        "prefill_tps": 19.79,
+        "decode_tps": 5.62,
+        "gpu_seconds": 6031.6
+      },
+      "canvas_edition": {
+        "turns": 9,
+        "prompt_in": 21696,
+        "uncached_in": 21054,
+        "cached_in": 642,
+        "completion_out": 21175,
+        "prefill_tps": 23.15,
+        "decode_tps": 8.32,
+        "gpu_seconds": 3454.7
+      },
+      "totals": {
+        "turns": 50,
+        "prompt_in": 82501,
+        "uncached_in": 81243,
+        "cached_in": 1258,
+        "completion_out": 37964,
+        "prefill_tps": 20.56,
+        "decode_tps": 6.86,
+        "gpu_seconds": 9486.3
+      },
+      "receipt_sha256": "7297cad5073374bd58f6ada73a08c9aaab374b026f4d487c2bb49619a15d5011"
+    },
+    "hilbert_inky": {
+      "title": "The City That Lost Its Night Bell",
+      "encounters": 30,
+      "scene_words": 5445,
+      "options": 90,
+      "endings": 5,
+      "landmarks": 35,
+      "palettes": 33,
+      "distinct_hashes": 32,
+      "visited_scenes": 32,
+      "mean_colors": 87.41,
+      "edge_density": 0.0194,
+      "rgb_l1": 15.91,
+      "secret_question_pct": 20.54,
+      "secret_answer_pct": 32.83,
+      "first_attempt_passes": 13,
+      "total_stages": 24,
+      "long_exposures": {
+        "turns": 3,
+        "prompt_in": 49148,
+        "uncached_in": 49148,
+        "cached_in": 0,
+        "completion_out": 3072,
+        "prefill_tps": 28.13,
+        "decode_tps": 10.16,
+        "wall_seconds": 2049.9
+      },
+      "bounded_conveyor": {
+        "turns": 68,
+        "prompt_in": 160995,
+        "uncached_in": 62155,
+        "cached_in": 98840,
+        "completion_out": 96086,
+        "prefill_tps": 50.43,
+        "decode_tps": 12.87,
+        "wall_seconds": 8702.8
+      },
+      "canvas_stages": {
+        "turns": 18,
+        "prompt_in": 24443,
+        "uncached_in": 12384,
+        "cached_in": 12059,
+        "completion_out": 50689,
+        "prefill_tps": 27.19,
+        "decode_tps": 6.3,
+        "wall_seconds": 8496.8
+      },
+      "totals": {
+        "total_recorded_turns": 145,
+        "http_200_timed_turns": 89,
+        "preflight_parity_turns": 89,
+        "total_prompt_tokens_in": 234586,
+        "total_cached_prompt_tokens": 110899,
+        "total_uncached_prompt_tokens": 123687,
+        "total_completion_tokens_out": 149847,
+        "aggregate_prefill_tps": 36.006,
+        "aggregate_decode_tps": 9.478,
+        "total_provider_wall_seconds": 19351.52
+      },
+      "sized_planning": {
+        "16384": {
+          "prompt_tokens": 16384,
+          "completion_tokens": 1024,
+          "prefill_tps": 16.528,
+          "decode_tps": 8.003,
+          "wall_seconds": 1119.203,
+          "finish_reason": "length",
+          "accepted_long_context_plan": false
+        },
+        "24576": {
+          "prompt_tokens": 24577,
+          "completion_tokens": 1024,
+          "prefill_tps": 54.082,
+          "decode_tps": 17.344,
+          "wall_seconds": 513.578,
+          "finish_reason": "length",
+          "accepted_long_context_plan": false
+        },
+        "32768": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "prefill_tps": 47.715,
+          "decode_tps": 17.588,
+          "wall_seconds": 745.157,
+          "finish_reason": "length",
+          "accepted_long_context_plan": false
+        }
+      },
+      "receipt_sha256": "324b5e8fb6da1ca74a93f3bcd594eddee8f77cb115dcbc8d3f02423ac9407dc0"
+    },
+    "hilbert_bonsai": {
+      "title": "The City That Lost Its Bell",
+      "encounters": 30,
+      "scene_words": 5419,
+      "options": 90,
+      "endings": 5,
+      "landmarks": 30,
+      "palettes": 19,
+      "distinct_hashes": 33,
+      "visited_scenes": 33,
+      "mean_colors": 124.76,
+      "edge_density": 0.0423,
+      "rgb_l1": 49.87,
+      "first_attempt_passes": 22,
+      "total_stages": 26,
+      "totals": {
+        "total_recorded_turns": 36,
+        "http_200_timed_turns": 36,
+        "preflight_parity_turns": 36,
+        "first_attempt_stage_passes": 22,
+        "total_stages": 26,
+        "total_prompt_tokens_in": 97194,
+        "total_cached_prompt_tokens": 14696,
+        "total_uncached_prompt_tokens": 82498,
+        "total_completion_tokens_out": 41941,
+        "aggregate_prefill_tps": 830.794,
+        "aggregate_decode_tps": 8.198,
+        "total_provider_wall_seconds": 5216.079
+      },
+      "sized_planning": {
+        "16384": {
+          "phase": "plan-attempt-01",
+          "prompt_tokens": 16385,
+          "cached_tokens": 0,
+          "uncached_tokens": 16385,
+          "completion_tokens": 690,
+          "prefill_tps": 1100.676,
+          "decode_tps": 31.873,
+          "wall_seconds": 36.547,
+          "finish_reason": "tool_calls",
+          "accepted_long_context_plan": true,
+          "context_window": 34816,
+          "included_reference_sha256": "501f4058398b4902a552fb2c30278c43b57a9592a5578a069164cc687cd131ee",
+          "formatted_prompt_sha256": "57bc0bf98af5399f874ab74abb6e4e27490e84f64ab7b6847eda956bba90b4eb",
+          "provider_wire_sha256": "50c4b69d1bc0c10c05104452d1d63e088caf4f4429d97d9edba494d89cf8f07e",
+          "receipt_sha256": "5dff631bf8352969678d8a007eb8835873b0493f558dce76b54c1706b73d92f0"
+        },
+        "24576": {
+          "phase": "plan-attempt-01",
+          "prompt_tokens": 24577,
+          "cached_tokens": 0,
+          "uncached_tokens": 24577,
+          "completion_tokens": 683,
+          "prefill_tps": 1003.842,
+          "decode_tps": 29.149,
+          "wall_seconds": 47.969,
+          "finish_reason": "tool_calls",
+          "accepted_long_context_plan": true,
+          "context_window": 34816,
+          "included_reference_sha256": "0857a8c11c9575179f90fe56e254879358b5f108d00de59490d4e1f81f76e58c",
+          "formatted_prompt_sha256": "7bb0bbcccb279a557bff789fd67212231f0f1f943009fc0f04f011289b835057",
+          "provider_wire_sha256": "3ff0d67b71cb1ca687e1af2d51f9e82fc5e101b2c382343027b3bb0f7ebc1e07",
+          "receipt_sha256": "e3ce81f1428483640239e7e3f5754ae01a40903a198509942131bf28e99eae34"
+        },
+        "32768": {
+          "phase": "plan-attempt-01",
+          "prompt_tokens": 32767,
+          "cached_tokens": 0,
+          "uncached_tokens": 32767,
+          "completion_tokens": 686,
+          "prefill_tps": 68.321,
+          "decode_tps": 1.198,
+          "wall_seconds": 1051.719,
+          "finish_reason": "tool_calls",
+          "accepted_long_context_plan": true,
+          "context_window": 34816,
+          "included_reference_sha256": "2171f446849183ec465e0d62117b403a52f509627634e050f7d563b0407641e1",
+          "formatted_prompt_sha256": "db754e3bfc003d45b67b8963b9f38387724ab1093d06c64ae9f092fb65bcc1e3",
+          "provider_wire_sha256": "6f0c9e0429a5d96064c78713262b6e8a6199a4fabd7d6e993d0a1ca93a0fe99b",
+          "receipt_sha256": "defe1e07aa05e9c25521662c9a819b8199e2b55cbac23df2770655076fd40a2b"
+        }
+      },
+      "secrets": {
+        "end_mix": 66.16,
+        "end_phase": 57.1
+      },
+      "receipt_sha256": "98f6a8c95f5d0b4950930cd077658d419d03fc8fd850e79e1a17d18f173c3da4"
+    },
+    "reference_packet_sha256": "cfdcad17644db9535db371defc140da92ae953a32ff163c28cd1e31bed1a40f2"
+  }
 }

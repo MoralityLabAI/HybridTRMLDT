@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The City That Lost Its Bell</title>
+<style>
+body{background:#101014;color:#e8d9b5;font:14px/1.4 Georgia,serif;margin:0;padding:20px}
+#art{border:1px solid #555;background:#0a0a0f}
+h1{font-size:22px;margin:0 0 8px}
+#scene-text{margin:10px 0}
+#reaction,#quantum-readout{font-family:monospace;font-size:12px;color:#9ab}
+#choices{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button{background:#2a2418;color:#e8d9b5;border:1px solid #777;padding:6px 10px;cursor:pointer}
+</style>
+</head>
+<body>
+<h1>The City That Lost Its Bell</h1>
+<canvas id="art" width="640" height="400"></canvas>
+<div id="scene-title"></div>
+<div id="scene-text"></div>
+<div id="reaction"></div>
+<div id="quantum-readout"></div>
+<div id="choices"></div>
+<button id="restart">Restart</button>
+<script src="world-data.js"></script>
+<script src="art.js"></script>
+<script src="player.js"></script>
+</body>
+</html>

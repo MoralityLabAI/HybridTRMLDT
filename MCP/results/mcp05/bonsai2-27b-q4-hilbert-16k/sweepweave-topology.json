@@ -1,0 +1,4381 @@
+{
+  "IFID": "SW-INKY-HILBERT-16384-20261124",
+  "storyworld_title": "The City That Lost Its Bell",
+  "storyworld_author": "Inkling",
+  "sweepweave_version": "0.1.9",
+  "about_text": {
+    "script_element_type": "Pointer",
+    "pointer_type": "String Constant",
+    "value": "When the night bell of Vespera stops ringing, the city's hidden agreements begin to unravel. Three people with conflicting goals must decide whether the silence is a theft, a mercy, or a message. The player infers truth from shifting dialogue and consequences, not from direct confession."
+  },
+  "css_theme": "dark",
+  "debug_mode": false,
+  "display_mode": "default",
+  "creation_time": 0,
+  "modified_time": 0,
+  "characters": [
+    {
+      "id": "c1",
+      "name": "Mara",
+      "description": "Measured, precise, speaks in half-finished sentences",
+      "bnumber_properties": {}
+    },
+    {
+      "id": "c2",
+      "name": "Tobias",
+      "description": "Warm, repetitive, asks the same question three ways",
+      "bnumber_properties": {}
+    },
+    {
+      "id": "c3",
+      "name": "Sable",
+      "description": "Sharp, ironic, changes subject when pressed",
+      "bnumber_properties": {}
+    }
+  ],
+  "authored_properties": [],
+  "spools": [
+    {
+      "id": "spool_main",
+      "spool_name": "The City That Lost Its Bell",
+      "starts_active": true,
+      "creation_index": 0,
+      "encounters": [
+        "enc_01",
+        "enc_02",
+        "enc_03",
+        "enc_04",
+        "enc_05",
+        "enc_06",
+        "enc_07",
+        "enc_08",
+        "enc_09",
+        "enc_10",
+        "enc_11",
+        "enc_12",
+        "enc_13",
+        "enc_14",
+        "enc_15",
+        "enc_16",
+        "enc_17",
+        "enc_18",
+        "enc_19",
+        "enc_20",
+        "enc_21",
+        "enc_22",
+        "enc_23",
+        "enc_24",
+        "enc_25",
+        "enc_26",
+        "enc_27",
+        "enc_28",
+        "enc_29",
+        "enc_30",
+        "enc_finale",
+        "end_restore",
+        "end_silence",
+        "end_expose",
+        "end_mix",
+        "end_phase"
+      ]
+    }
+  ],
+  "encounters": [
+    {
+      "id": "enc_01",
+      "title": "Dusk at the Silent Tower",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 0,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_01_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant about the silence"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_01_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"If the bell is broken, why is the notice so new?\""
+              },
+              "consequence_id": "enc_02",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_01_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Examine the tower door closely"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_01_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I don't need your permission to look at a door.\""
+              },
+              "consequence_id": "enc_02",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_01_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Step back and listen for the bell"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_01_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"If it's broken, I should hear something.\""
+              },
+              "consequence_id": "enc_02",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The last light thins over Vespera as Mara climbs the tower steps, her notebook already open. The public notice is nailed to the door in a clerk's careful hand: 'The bell is broken. Do not attempt repair.' She reads it twice, then looks up at the dark mouth of the tower where no sound has come for three nights.\n\nA man in a merchant's coat steps out from the alley and watches her with the patience of someone who has been waiting for an audience. 'You're the one who keeps asking questions,' he says. 'The city is resting. Let it rest.' His voice is soft, almost kind, but his eyes are counting her.\n\nMara touches the notice. The paper is dry, the ink still fresh. 'Resting,' she repeats. 'Or hiding?' She glances at the door, where a faint shadow of wax catches the dying light."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 1
+      }
+    },
+    {
+      "id": "enc_02",
+      "title": "The Wax Seal on the Door",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 1,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_02_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Show the merchant the copy"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_02_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I'm not hiding it. Look at it.\""
+              },
+              "consequence_id": "enc_03",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_02_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Pocket the notebook and step away"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_02_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I'll be back when you're ready to talk.\""
+              },
+              "consequence_id": "enc_03",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_02_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Press the seal against the door frame"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_02_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"If it matches, I know who was here.\""
+              },
+              "consequence_id": "enc_03",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Mara's fingers find the wax before the merchant can finish his sentence. It is small, round, and pressed with a mark she has never seen in any guild registry. She pulls out her notebook and begins to copy it, the graphite scratching against the page.\n\nThe merchant leans closer. 'You're copying it,' he says. Not a question. 'That's not how this works. You don't take things from the tower.' His voice drops, and for a moment she hears something underneath it: fear, or maybe guilt.\n\nMara does not stop drawing. The seal is not a guild mark. It is too personal, too particular. She thinks of the second bell, the one with her name on its clapper, and wonders if this is the same hand that locked the door."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_03",
+      "title": "The Bell That Never Rang",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 2,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_03_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ring the small bell once"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_03_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"If I can hear it, the city can too.\""
+              },
+              "consequence_id": "enc_04",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_03_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Take the ledger page from the shelf"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_03_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"This is what they tore out. I'm putting it back.\""
+              },
+              "consequence_id": "enc_05",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_03_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Leave the tower and let the city decide"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_03_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"Maybe the silence is the message.\""
+              },
+              "consequence_id": "enc_04",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Inside the tower the great bell hangs in its frame, intact and cold. Its bronze skin is unmarked, but a scratch mark on the iron frame tells a different story: someone locked this door from the inside. The silence here is not empty; it is full of held breath.\n\nMara's hand finds the smaller bell in the undercroft, the one with her name inscribed on its clapper. She turns it over in her palm. It is warm, as if it has been waiting for her. Above, the great bell does not ring. Below, the small one seems to hum.\n\nThe merchant's voice comes from the stairwell, distant and careful. 'You can't take this. The city needs its story.' But his words sound thin now, like a page torn from a ledger that no longer exists."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_04",
+      "title": "The First Quiet",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 3,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_04_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the guard what he heard in the silence"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_04_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The guard closes his eyes. \"Nothing. That is the worst part. Nothing at all. The city does not know how to be still.\""
+              },
+              "consequence_id": "enc_05",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_04_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Press him about who locked the tower door"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_04_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I did not lock it. But I saw a woman with a seal on her sleeve. She said the bell was broken. I believed her. I should not have.\""
+              },
+              "consequence_id": "enc_05",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_04_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Offer to walk the streets with him at night"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_04_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"Walk with me, then. If the silence is a message, we will hear it together. And if it is a theft, we will find the thief.\""
+              },
+              "consequence_id": "enc_05",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The city guard leans against the tower base, his hand still resting on the hilt of a sword he has not drawn in three days. \"Three nights,\" he says, voice low, as if the words might wake something. \"The bell stopped at the third watch. No one saw who touched it. No one heard it stop. The streets just... held their breath.\"\n\nMara studies the tower door, the wax seal still fresh on the wood. \"If no one saw it stop, then the silence is not a theft. It is a choice. And choices leave marks.\"\n\nThe guard shifts his weight. \"I have walked these streets for twenty years. I know every sound they make. This quiet is not empty. It is full of something I cannot name.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_05",
+      "title": "The Archive of Names",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 4,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_05_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable who wrote the records"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_05_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I did not write them. But I know who did. And I know they are no longer in this city.\""
+              },
+              "consequence_id": "enc_06",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_05_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Examine the ledger for hidden entries"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_05_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable watches Mara's fingers trace the page. \"Careful. Some names are not meant to be read. Some silences are not meant to be broken.\""
+              },
+              "consequence_id": "enc_06",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_05_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask what the city did with the bell before it was lost"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_05_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"We sold it. Not the bronze. The rhythm. The sound. We sold it to collectors who wanted to own a piece of the city's voice.\""
+              },
+              "consequence_id": "enc_06",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The Archive of Names smells of old paper and colder dust. Sable moves through the aisles with the ease of someone who has memorized every shelf, every drawer, every hidden gap between the ledgers. \"Here,\" she says, pulling out a slim volume. \"The city's records. The bell was never officially installed.\"\n\nMara frowns. \"Never installed? Then what was ringing?\"\n\nSable's smile is thin. \"That is the question, isn't it? If the bell was never installed, then the silence is not a loss. It is a correction. The city has been ringing a lie for a hundred years.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_06",
+      "title": "The Torn Page",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 5,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_06_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable how she knows the page is older than the tower"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_06_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I have held it in my hands for longer than I can say. The paper remembers what the city has forgotten.\""
+              },
+              "consequence_id": "enc_07",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_06_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Examine the crossed-out names more closely"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_06_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara's breath catches. \"These are not just silences. They are people. Each one erased from the Archive of Names.\""
+              },
+              "consequence_id": "enc_07",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_06_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask what the city will do with the page now that it is found"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_06_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"Nothing. The city will pretend it was never here. As it has always done. As it always will.\""
+              },
+              "consequence_id": "enc_07",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Sable produces the page from her coat, the paper brittle and dark at the edges. \"This is older than the tower,\" she says. \"Older than the city. The bell was never installed because it was never meant to be a bell. It was meant to be a name.\"\n\nMara takes the page. The ink is faded but legible: a list of names, each one crossed out with a single, deliberate stroke. \"These are not people,\" she whispers. \"These are silences. Each one a sound the city chose to forget.\"\n\nSable's voice drops. \"And the last name on the list... is yours.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_07",
+      "title": "The Night Market",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 6,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_07_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask about the wax seal"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_07_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"The seal on the tower door. It's not a guild mark. It's someone's private hand. Who put it there?\""
+              },
+              "consequence_id": "enc_08",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_07_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Buy a quiet hour"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_07_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I'll trade a memory for a quiet hour. Tell me what silence costs in this market.\""
+              },
+              "consequence_id": "enc_08",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_07_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Follow the red shawl"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_07_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"That woman in red. She bought a quiet hour and left lighter. What did she give up?\""
+              },
+              "consequence_id": "enc_08",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Mara slips into the Night Market where merchants trade in 'quiet hours' as if silence were currency, and the air hums with hushed transactions. Stalls glow with lanterns that burn too low, and every voice is a whisper, as though the darkness itself is listening. A merchant in a grey cloak leans toward her. \"You're looking for the bell's old rhythm? It's not lost. It's been sold, piece by piece, to people who can't stand the sound of their own names.\" He slides a small vial across the table. Inside, something dark and still moves like a held breath.\n\nMara watches the crowd. A woman in a red shawl buys a quiet hour from a man with no face, and the man's mouth moves but no sound comes out. The woman leaves lighter, as if a weight has been lifted from her shoulders. \"What do you get back?\" Mara asks. The merchant shrugs. \"A memory. A name. A piece of the city that used to be yours. Silence is the only thing that never devalues.\"\n\nShe thinks of the wax seal on the tower door, the one that matched no known guild. She thinks of the torn page from the Archive of Names, dated before the city existed. The bell was never officially installed. It was never meant to be a bell at all. It was meant to be a name. And now someone is selling that name in pieces, like a merchant selling off the last of a dying fire.\n\nThe merchant's eyes catch the lantern light. \"You're not here for the rhythm, are you? You're here for the truth. But truth is expensive in this market. And you can't pay with what you don't have.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_08",
+      "title": "Tobias the Rhythm Seller",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 7,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_08_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Demand the rhythm back"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_08_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"Give it back. Every piece. The city needs to hear its own name again.\""
+              },
+              "consequence_id": "enc_09",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_08_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask about the collectors"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_08_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"Who are the collectors? What do they want with the rhythm?\""
+              },
+              "consequence_id": "enc_09",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_08_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Show him the torn page"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_08_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I have a page from the Archive. Dated before the city existed. It says the bell was never officially installed.\""
+              },
+              "consequence_id": "enc_09",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "She meets Tobias, who reveals he has been selling the bell's old rhythm to collectors, and his smile is as hollow as the tower. He sits in a small room above a shop that sells nothing but silence, in jars and vials and folded paper. The walls are lined with glass containers, each holding a different shade of quiet. Some are pale as morning fog. Others are dark as the space between stars.\n\n\"You want to know about the rhythm?\" Tobias says, pouring two cups of tea that steams too slowly. \"I didn't steal it. I lent it out. The city was drowning in noise, and I thought if I could take the bell's voice and spread it thin, maybe people would finally hear themselves. But collectors don't want to hear. They want to own. They want to keep the rhythm in a jar and play it when they feel like remembering what it was to be alive.\"\n\nMara watches his hands. They move with a strange precision, as if he's still counting something. \"How many have you sold?\" she asks. \"Dozens. Maybe more. Each one a piece of the city's memory. Each one a name that will never be spoken again. The Archive of Names is emptying, Mara. Not because people are dying. Because they're being sold.\"\n\nThe tea cools between them. Outside, the market whispers continue, but here in this room, the silence has weight. It presses against her ears like deep water. \"You could stop it,\" she says. \"You could give it back. Let the city hear its own name again.\"\n\nTobias smiles, and for a moment his eyes are not hollow but bright, as if something behind them is trying to break through. \"And who would I be, if I gave it back? A thief who returned what he stole? Or a man who finally admitted he was the one who locked the tower door?\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_09",
+      "title": "The Borrowed Hours",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 8,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_09_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Refuse the deal"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_09_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"No. I won't trade a memory for silence. The city's voice is not for sale.\""
+              },
+              "consequence_id": "enc_10",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_09_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask about the cold mark"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_09_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"What is this mark? What will it cost me when it comes due?\""
+              },
+              "consequence_id": "enc_11",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_09_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the undercroft"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_09_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"Take me to the undercroft. I want to see the second bell. The one with my name on its clapper.\""
+              },
+              "consequence_id": "enc_10",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "A merchant offers Mara a quiet hour in exchange for a memory, and she refuses, but the deal leaves a cold mark on her wrist. The merchant is a tall woman with silver hair and eyes that have seen too many transactions. She sits across from Mara in a booth that smells of old paper and colder dust. \"I can give you an hour of silence,\" she says, sliding a small glass vial across the table. \"One hour. No sound. No thought. No name. Just quiet. All I ask is a memory. Any memory. The city will take care of the rest.\"\n\nMara looks at the vial. Inside, the silence moves like a living thing, dark and patient. She thinks of the bell in the Silent Tower, locked from the inside. She thinks of the public notice forbidding repair. She thinks of the wax seal that matched no known guild, and the torn page that said the bell was never officially installed. She thinks of Tobias, selling the rhythm in pieces, and the collectors who wanted to own the city's voice.\n\n\"No,\" she says. \"I won't trade a memory for silence.\"\n\nThe merchant's smile does not fade. \"Everyone refuses at first. But the mark stays. The cold mark on your wrist. It's a reminder. A debt. And debts, in this market, always come due.\"\n\nMara stands. The booth is empty now, except for the vial and the cold mark on her wrist. Outside, the Night Market continues its hushed transactions, and the silence presses against her like deep water. She walks through the crowd, and for a moment she hears it: the bell's old rhythm, faint and broken, moving through the streets like a ghost trying to remember its own name."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_10",
+      "title": "The Collector's Ledger",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 9,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_10_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask who crossed out the names"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_10_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"You did not cross them out yourself, did you? Someone else held the pen.\""
+              },
+              "consequence_id": "enc_11",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_10_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Demand the ledger be opened to the city"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_10_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"If this is a market for absence, then the city has a right to see what it has sold.\""
+              },
+              "consequence_id": "enc_11",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_10_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Tear out a page and keep it"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_10_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I will not let you hide this in a locked room. If the city is buying silence, it should know what it is buying.\""
+              },
+              "consequence_id": "enc_11",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Tobias unrolls a leather ledger across the counter, its pages swollen with ink and wax. \"Every rhythm I have sold is here,\" he says, tapping a column of names. \"Buyers from the north, from the coast, from places that no longer appear on any map. When they pay, I cross them out. Not because they are dead. Because they are no longer needed.\"\n\nMara leans closer. The crossed-out names are not merely erased; they are overwritten with smaller, more careful letters, as if someone had tried to make the people disappear twice. \"You are not selling sound,\" she says. \"You are selling absence.\"\n\nTobias smiles, but it does not reach his eyes. \"Absence is the only thing that cannot be taxed. The city pays for noise. It pays for light. But silence? Silence is free. And I am simply the one who knows how to make it expensive.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_11",
+      "title": "The Unwritten Ledger",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 10,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_11_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable about the wax seal"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_11_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"That seal on the tower door. It matches no guild. But it looks like your hand. Explain.\""
+              },
+              "consequence_id": "enc_12",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_11_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search for the second bell"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_11_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"You mentioned a second bell. A smaller one. Where is it? I need to see it before I can understand what this gap means.\""
+              },
+              "consequence_id": "enc_12",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_11_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask about the public notice"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_11_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"The notice says the bell is broken. But you know it was silenced. Who put that notice up, and why did no one admit it?\""
+              },
+              "consequence_id": "enc_12",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The Archive of Names smells of dust and old wax. Mara runs her fingers along the spines of the ledgers, searching for the one that should contain the bell's installation. She finds it, but the page where the bell should be recorded is not merely blank; it is shaped like a mouth, a gap cut into the parchment as if someone had bitten through the record itself.\n\nSable stands behind her, arms crossed. \"You see it now,\" she says. \"The city did not lose its bell. It swallowed it. And the Archive is the throat.\"\n\nMara turns the ledger over. On the back, in handwriting she recognizes as her own, are the words: \"The bell was never officially installed. It was a name given to a sound that had no right to exist.\"\n\n\"You wrote this,\" Sable says. It is not a question. \"You have been here before. You have been here many times.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_12",
+      "title": "The Page Before the City",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 11,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_12_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable to return the page"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_12_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"The city's voice is speaking from the undercroft. It is asking you to return the page. Accept that memory is not yours to burn.\""
+              },
+              "consequence_id": "enc_13",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_12_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask about the collector's demand"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_12_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"Tobias said a collector demanded payment in names. Is that why you tore this page? To keep the city from being erased?\""
+              },
+              "consequence_id": "enc_13",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_12_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask who silenced the bell"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_12_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"The notice says the bell is broken. But you know it was silenced. Who did it, and why? I need to know before I decide what to do with this page.\""
+              },
+              "consequence_id": "enc_13",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Sable holds the torn page up to the candlelight. The ink is old, the paper brittle, but the words are clear: a record of the bell's installation, dated before the city existed. \"This is not a weapon,\" Sable says. \"It is a mirror. If you look long enough, you will see the city eating itself.\"\n\nMara takes the page. The words blur and sharpen, blur and sharpen, until she sees not just the record but the shape of the city around it, the streets and towers and people all turning inward, consuming their own history.\n\n\"You tore this out,\" Mara says. \"Before the city existed. You kept it hidden. Why?\"\n\nSable's face is unreadable. \"Because the city does not want to remember. And I am the one who remembers for it. But remembering is not the same as keeping. And keeping is not the same as owning.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_13",
+      "title": "The Undercroft",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 12,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_13_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Examine the wax seal on the tower door"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_13_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"This seal... it matches no known guild. It's an unauthorized entry.\""
+              },
+              "consequence_id": "enc_14",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_13_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable about the quiet hours market"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_13_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"Merchants trade in silence as if it were currency. The market for absence is real.\""
+              },
+              "consequence_id": "enc_14",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_13_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the chamber for more clues"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_13_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"There's a page torn from the Archive of Names ledger here. Dated before the city existed.\""
+              },
+              "consequence_id": "enc_14",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Mara descends into the undercroft and finds a hidden chamber holding a second bell, smaller and older than the one above. The air is thick with dust and the faint smell of wax. She runs her fingers along the spines of the ledgers, searching for the one that should contain the bell's installation. She finds it, but the page is torn, and the words are gone.\n\nSable stands in the shadows, holding a candle. \"You found it,\" she says. \"The second bell. The one that was never meant to be here.\"\n\nMara looks at the bell. It is smaller than the one above, older, and covered in a thin layer of dust. \"What is this?\" she asks.\n\nSable steps forward. \"It is the bell that was never officially installed. The one that was silenced before the city existed.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_14",
+      "title": "Her Name on the Clapper",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 13,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_14_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Strike the small bell"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_14_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"The sound is different. It's not quite a note, but something older.\""
+              },
+              "consequence_id": "enc_15",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_14_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable about the collector's demand"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_14_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"A collector demands payment in names. His quiet-hours trade has been erasing people from the Archive of Names.\""
+              },
+              "consequence_id": "enc_15",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_14_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Look for the public notice"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_14_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"The public notice claims the bell is broken. But no one admits it was actually silenced.\""
+              },
+              "consequence_id": "enc_15",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "She hears her own name inscribed on the second bell's clapper, and the sound of her heartbeat echoes in the stone. The chamber is silent except for the faint ticking of her pulse. She looks at the bell, and the words are clear: a record of the bell's installation, dated before the city existed.\n\nSable watches from the shadows. \"You see it now,\" she says. \"Your name. On the clapper. You were here before the city existed.\"\n\nMara touches the bell. It is warm, as if it has been waiting for her. \"What does this mean?\" she asks.\n\nSable steps closer. \"It means you are not just a witness. You are part of the story. The bell was never officially installed because it was never meant to be found.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_15",
+      "title": "The Counter-Sound",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 14,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_15_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Return the page to the Archive"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_15_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"The page is not a weapon; it is a mirror. If you look long enough, you will see the city eating itself.\""
+              },
+              "consequence_id": "enc_16",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_15_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Sell the rhythm to the collectors"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_15_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"I only lend the rhythm out; I never meant to keep it. The city should hear it again in a new shape.\""
+              },
+              "consequence_id": "enc_16",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_15_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Silence the bell forever"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_15_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"The silence is not a theft, a mercy, or a message. It is a choice. And we must make it together.\""
+              },
+              "consequence_id": "enc_17",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Mara strikes the small bell and hears a note that is not quite a note, but something older, like a word before it became a word. The sound fills the chamber, and the dust motes dance in the candlelight. She looks at Sable, who is watching with a mixture of fear and hope.\n\n\"What was that?\" Mara asks.\n\nSable's voice is quiet. \"It is the counter-sound. The sound that was silenced before the city existed. It is the sound of the bell that was never officially installed.\"\n\nMara looks at the bell again. Her name is still there, on the clapper. She thinks of the wax seal, the quiet hours market, the torn page from the Archive of Names. She thinks of Tobias selling the bell's old rhythm to collectors. She thinks of the public notice claiming the bell is broken.\n\n\"What do we do now?\" she asks."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_16",
+      "title": "The City's Hunger",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 15,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_16_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable to show the ledger page"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_16_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"You want to see what the city ate? Fine. But once you read it, you can't unsee it. The names are still warm.\""
+              },
+              "consequence_id": "enc_17",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_16_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Demand Tobias reveal his collectors"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_16_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"They're not collectors. They're archivists of what's been lost. And I'm the only one who remembers how to read them.\""
+              },
+              "consequence_id": "enc_17",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_16_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the tower door for the seal"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_16_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"If the city ate the bell, it left a mark. That wax seal on the door—it's not a guild. It's a tooth mark.\""
+              },
+              "consequence_id": "enc_17",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Sable stands before the torn page, her fingers tracing the ink that predates the city's first stone. \"You think the bell was silenced? No. The city ate it. Every year it swallows a memory, and the silence is just the chewing.\" She holds the page up to the candlelight, and the letters seem to move, like something alive beneath the parchment.\n\nMara watches the page tremble in Sable's hand. \"If the city eats history, then what are we? Just another meal waiting to be swallowed?\" Tobias steps forward, his voice low. \"I've seen the collectors. They don't buy silence for its own sake. They buy it because it's the only thing the city can't digest.\"\n\nSable's eyes flick between them. \"The Archive of Names isn't a record. It's a menu. And we're all still on it.\" The candle gutters, and for a moment the chamber is dark enough to hear the city breathing outside."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_17",
+      "title": "The Plaza of Echoes",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 16,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_17_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Let Tobias play the last rhythm"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_17_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"Listen. That's not a note. That's a word. The city was never silent—it was just holding its breath.\""
+              },
+              "consequence_id": "enc_18",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_17_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable to read the page aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_17_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"If I read it here, the plaza will echo it back. And the city will hear itself being named. That's not a choice. That's a confession.\""
+              },
+              "consequence_id": "enc_18",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_17_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Strike the small bell in the plaza"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_17_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"The second bell. The one with my name on it. If I strike it here, the echo will carry it into every street. The city can't eat what it hears.\""
+              },
+              "consequence_id": "enc_18",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The Plaza of Echoes is a shallow bowl of stone, and every word spoken here returns to the speaker slightly altered. Mara steps into the center and says, \"We need to decide what to restore.\" The echo comes back as, \"We need to decide what to restore... or what to let die.\"\n\nTobias laughs, but the echo makes it sound like a sob. \"I've been selling the rhythm because someone had to. If I kept it, the city would have eaten me too. Now it's in their hands, and they're using it to buy silence from each other.\" He pulls a small vial from his coat. \"This is the last of the old rhythm. One drop, and you'll hear what the bell sounded like before it was swallowed.\"\n\nSable watches them both, her hand on the torn page. \"You can't restore what the city has already digested. But you can make it hungry again. You can make it remember it's supposed to eat.\" The plaza holds its breath, and the echoes begin to layer, overlapping into something almost like a chorus."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_18",
+      "title": "The Choice of Sound",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 17,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_18_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Restore the old rhythm"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_18_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"Then let it ring. Let the city remember what it was. And let it be hungry again. I'd rather it be hungry than full of lies.\""
+              },
+              "consequence_id": "enc_19",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_18_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Let the silence stand"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_18_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"If we do this, I have to burn the page. The city will forget it ever had a bell. And I'll forget I ever had a name. But at least the menu will be empty.\""
+              },
+              "consequence_id": "enc_19",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_18_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Make a new sound"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_18_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"Not the old rhythm. Not silence. Something new. The city can't eat what it hasn't tasted yet. And if we're going to be on that menu, let's be the dish it never expected.\""
+              },
+              "consequence_id": "enc_19",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The plaza is silent now, the echoes fading into the stone. Three choices hang in the air, and each one will change what Vespera becomes. The tower door stands open behind them, the wax seal still fresh on the wood.\n\nTobias holds out the vial. \"If we restore the old rhythm, the city will remember it was ever a bell at all. But remembering means hunger. It'll eat again. Faster this time.\" His voice is steady, but his hands are not.\n\nSable steps forward, the torn page in her hand. \"Or we can let the silence stand. Let the city keep its meal. But then the Archive of Names stays a menu, and we're all still on it. I can feel the names being written out. One by one. Quietly.\"\n\nMara looks at the small bell in her palm, her name still warm on the clapper. \"Or we can make a new sound. Not the old rhythm, not the silence. Something the city has never eaten before. Something it can't digest.\" She holds the bell up, and the plaza waits."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_19",
+      "title": "The True Culprit",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 18,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_19_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable to show the ledger page"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_19_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"The page is not a weapon; it is a mirror, and if you look long enough you will see the city eating itself.\""
+              },
+              "consequence_id": "enc_20",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_19_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Press Mara to the tower door"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_19_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"The seal is not a guild mark; it is my own hand, and I have been the one who locked the tower door.\""
+              },
+              "consequence_id": "enc_20",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_19_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Demand Tobias's collector's ledger"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_19_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"I only lend the rhythm out; I never meant to keep it, and the city should hear it again in a new shape.\""
+              },
+              "consequence_id": "enc_20",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The undercroft door groans shut behind them, and the air tastes of wet stone and old ink. Mara presses her palm to the wall and feels it pulse, slow as a sleeping animal. \"It was never a thief,\" she says, her voice thin in the dark. \"It was never a guild, or a merchant, or even me. The city ate the bell. Every year it swallows a memory, and the silence is just the chewing.\"\n\nSable steps forward, the torn page trembling in her hand. \"You think I silenced it? I only copied the seal so no one could use it against me. But look at this ink. It predates the first stone. The bell was never officially installed. It was a mouth, and the city has been feeding it its own past.\"\n\nTobias leans against the pillar, his collector's satchel clinking softly. \"I only lend the rhythm out; I never meant to keep it. But the city should hear it again in a new shape. The silence is not a theft. It is a mercy. A message. And if you listen, you will hear the city speaking back.\"\n\nThe small bell hangs in the center of the chamber, its clapper still, its bronze skin dark with age. Mara's name is inscribed on it in letters so fine they might be scratches. The air hums, and for a moment the three of them are not alone."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_20",
+      "title": "The Bell's Memory",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 19,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_20_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Strike the bell again"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_20_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"It was never broken; it was a mouth, and the city has been feeding it its own past.\""
+              },
+              "consequence_id": "enc_21",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_20_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the public notice aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_20_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"The public notice claimed the bell was broken, which no one admits was actually silenced.\""
+              },
+              "consequence_id": "enc_21",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_20_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Trade a memory for the rhythm"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_20_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"I only lend the rhythm out; I never meant to keep it, and the city should hear it again in a new shape.\""
+              },
+              "consequence_id": "enc_21",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Mara strikes the small bell with a stone, and the note that rises is not quite a note. It is something older, like a word before it became a word. The sound does not echo; it settles into the floor, into the walls, into the bones of the city above.\n\n\"It was never broken,\" Mara whispers, her eyes wide. \"It was a mouth. The city has been feeding it its own past, and the silence is just the chewing.\"\n\nSable kneels beside the bell, tracing the inscription with one finger. \"The public notice claimed the bell was broken. No one admits it was silenced. But this bell was never officially installed. It was a mouth, and the city has been feeding it its own past.\"\n\nTobias watches from the doorway, his satchel clinking softly. \"I only lend the rhythm out; I never meant to keep it. But the city should hear it again in a new shape. The silence is not a theft. It is a mercy. A message. And if you listen, you will hear the city speaking back.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_21",
+      "title": "The Second Bell's Song",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 20,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_21_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Let the bell ring"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_21_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"That is my name. That is the city's name. That is the name of every person who has ever lived here and been forgotten.\""
+              },
+              "consequence_id": "enc_22",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_21_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Return the ledger page"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_21_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"The city's own voice speaking from the undercroft, asking her to return the page and accept that memory is not hers to burn.\""
+              },
+              "consequence_id": "enc_22",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_21_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Silence the bell"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_21_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"I only lend the rhythm out; I never meant to keep it, and the city should hear it again in a new shape.\""
+              },
+              "consequence_id": "enc_23",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The small bell begins to ring on its own. Its song is not a melody; it is the city's name, spoken in a voice no one remembers. The sound fills the undercroft, presses against the walls, and for a moment the stone above them seems to breathe.\n\nMara's hand flies to her mouth. \"That is my name. That is the city's name. That is the name of every person who has ever lived here and been forgotten.\"\n\nSable grips the torn page, her knuckles white. \"The city's own voice speaking from the undercroft, asking her to return the page and accept that memory is not hers to burn.\"\n\nTobias steps forward, his collector's satchel clinking softly. \"I only lend the rhythm out; I never meant to keep it. But the city should hear it again in a new shape. The silence is not a theft. It is a mercy. A message. And if you listen, you will hear the city speaking back.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_22",
+      "title": "The Archive's Confession",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 21,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_22_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable about the wax seal"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_22_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"The seal is not a guild mark; it is my own hand, and I have been the one who locked the tower door. I kept it as a private record of who silenced it.\""
+              },
+              "consequence_id": "enc_23",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_22_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Press Tobias on the quiet-hours trade"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_22_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"Merchants trading in 'quiet hours' as if silence were currency, revealing a market for absence. I sell the rhythm to collectors, but I never meant to keep it.\""
+              },
+              "consequence_id": "enc_23",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_22_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Demand the torn ledger page"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_22_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"A page torn from the Archive of Names ledger, dated before the city existed, showing the bell was never officially installed. The page is not a weapon; it is a mirror, and if you look long enough you will see the city eating itself.\""
+              },
+              "consequence_id": "enc_23",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The Archive of Names opens its doors and spills out every record it has ever hidden, and the pages are warm, like skin. They drift across the floor in a slow tide, their edges curling as if breathing. Mara watches them settle around her feet, each one carrying the faint smell of ink and old rain.\n\nSable kneels among the pages, her fingers trembling as she touches a ledger that has never been opened before. \"You think the bell was silenced? No. The city ate it. Every year it swallows a memory, and the silence is just the chewing.\" Her voice is low, almost a whisper, but the words hang in the air like smoke.\n\nTobias stands at the edge of the room, his collector's satchel clutched tight against his chest. He watches the pages with the wary expression of a man who has seen too many secrets and not enough coin. \"I only lend the rhythm out; I never meant to keep it, and the city should hear it again in a new shape,\" he says, though his eyes dart toward the door as if expecting collectors to arrive at any moment."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_23",
+      "title": "Tobias's Last Rhythm",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 22,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_23_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Tobias to sell the rhythm back"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_23_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"I can sell the rhythm back, but the collectors have already spent it. The silence is now in their bones, and I cannot take it back.\""
+              },
+              "consequence_id": "enc_24",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_23_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Demand the collector's name"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_23_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"A collector demanding payment in names, revealing that his quiet-hours trade has been erasing people from the Archive of Names. I never meant to keep it, and the city should hear it again in a new shape.\""
+              },
+              "consequence_id": "enc_24",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_23_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Strike the small bell"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_23_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"The small bell begins to ring on its own. Its song is not a melody; it is the city's name, spoken in a voice no one remembers. The sound fills the undercroft, presses against the walls.\""
+              },
+              "consequence_id": "enc_24",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Tobias offers to give back the rhythm he sold, but the collectors have already spent it, and the silence is now in their bones. He stands in the center of the undercroft, his satchel open, revealing a small brass bell that has never been rung. The air around him hums with a faint, almost imperceptible vibration.\n\n\"I only lend the rhythm out; I never meant to keep it,\" Tobias says, his voice cracking as he speaks. \"The city should hear it again in a new shape. But the collectors have already spent it. They bought the silence and wore it like a cloak. Now it is in their bones, and I cannot take it back.\"\n\nMara watches him with a mixture of pity and suspicion. She has seen the way he moves through the city, always listening, always selling. But she also knows that the rhythm he sold was not just a sound; it was a memory, a piece of the city's soul. And now it is gone, scattered among the collectors who have no intention of returning it."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_24",
+      "title": "Sable's Page",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 23,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_24_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Sable about the public notice"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_24_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"The public notice claiming the bell is broken, which no one admits was actually silenced. I tore the ledger page before the city existed and kept it hidden. The city's own voice speaking from the undercroft, asking her to return the page and accept that memory is not hers to burn.\""
+              },
+              "consequence_id": "enc_25",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_24_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Demand Sable confess"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_24_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"The seal is not a guild mark; it is my own hand, and I have been the one who locked the tower door. I kept it as a private record of who silenced it. A public ledger showing her name beside the second bell's clapper, forcing her to choose between order and confession.\""
+              },
+              "consequence_id": "enc_25",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_24_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Strike the small bell again"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_24_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"The small bell begins to ring on its own. Its song is not a melody; it is the city's name, spoken in a voice no one remembers. The sound fills the undercroft, presses against the walls.\""
+              },
+              "consequence_id": "enc_25",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Sable returns the torn page to the Archive, and the city shudders, as if a tooth has been pulled from its jaw. The pages around her begin to glow with a faint, golden light, their edges curling and uncurling like living things. She holds the page in both hands, her fingers tracing the ink that predates the city's first stone.\n\n\"The page is not a weapon; it is a mirror,\" Sable says, her voice steady despite the trembling of her hands. \"If you look long enough you will see the city eating itself. The bell was never officially installed. It was a memory, a dream, a lie the city told itself to keep from going mad.\"\n\nMara watches as Sable places the page back into the Archive. The moment it touches the shelf, the pages around it begin to move, rearranging themselves, forming new patterns. The air grows thick with the smell of ink and old rain, and the sound of the city's heartbeat becomes louder, more insistent."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_25",
+      "title": "The Bell Tower Reopens",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 24,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_25_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Press the seal deeper into the hollow"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_25_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: 'If the city took the bell, it will take the seal too. I will not let it keep my hand.'"
+              },
+              "consequence_id": "enc_26",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_25_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Tobias what the collectors paid"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_25_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: 'They paid in names. Not yours. Not mine. But close enough to hurt.'"
+              },
+              "consequence_id": "enc_26",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_25_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Let Sable read the page aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_25_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: 'The city is not broken. It is listening. And it has been listening for a very long time.'"
+              },
+              "consequence_id": "enc_26",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Mara presses the wax seal against the tower door, and the lock turns with a sound like a held breath finally released. The great bell is gone, replaced by a hollow space shaped like a bell, its absence carved into the stone. She stands in the empty frame, her fingers tracing the outline of what was there, and feels the city's silence pressing against her ribs.\n\nTobias watches from the doorway, his satchel slung low, and says nothing. He has sold the rhythm to collectors, but the shape of the bell remains in his memory, and he cannot stop seeing it. Sable steps forward, her hand on the torn page she has returned, and asks if the hollow is a wound or a mouth.\n\nMara answers that it is both, and that the city has been eating its own history. The three of them stand in the empty tower, and the silence between them is not empty but full, like a bell that has been struck and is still ringing in the dark."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_26",
+      "title": "The Echo Returns",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 25,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_26_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ring the small bell"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_26_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: 'If the city is a mouth, then this is the only thing it cannot swallow. My name. My voice.'"
+              },
+              "consequence_id": "enc_27",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_26_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the echoes for the truth"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_26_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Echo: 'The truth is not a thing you can ask. It is a thing you must become. And you are not ready.'"
+              },
+              "consequence_id": "enc_27",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_26_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Offer the wax seal to the voices"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_26_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: 'I have been copying this seal for months. I thought it was a record. It is a key. And I have been holding it too long.'"
+              },
+              "consequence_id": "enc_27",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "In the Plaza of Echoes, the stones are warm and the air is thick with voices that are not echoes. They are the voices of everyone the city has swallowed, speaking in unison and in fragments, their words overlapping like a bell struck too many times. Mara hears her own name in the crowd of voices, spoken by someone who is not there.\n\nTobias kneels and presses his palm to the ground, and the rhythm he sold comes back to him, not as sound but as a pulse in the stone. He says the city has been eating its own history, and that the silence was not a theft but a digestion. Sable stands at the center of the plaza, her hand on the small bell with her name inscribed on its clapper, and asks if the city will speak if she rings it.\n\nThe voices in the plaza answer before she can finish. They say the city is not a thief. It is a mouth. And it is still hungry."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_27",
+      "title": "The City's Voice",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 26,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_27_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Return the page to the Archive"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_27_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: 'I will give it back. But I will not forget. And neither will you.'"
+              },
+              "consequence_id": "enc_28",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_27_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ring the small bell one last time"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_27_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: 'If the city is a mouth, then this is the only thing it cannot swallow. My name. My voice. My choice.'"
+              },
+              "consequence_id": "enc_29",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_27_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Let the city keep the silence"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_27_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: 'Perhaps the silence was not a theft. Perhaps it was a mercy. And perhaps we have been too loud for too long.'"
+              },
+              "consequence_id": "enc_28",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The city's voice speaks from the undercroft, and it is not a voice at all but a pressure in the air, a weight in the bones. It asks Sable to return the page and accept that memory is not hers to burn. The three of them stand in the dark, and the small bell in Sable's hand grows warm, then hot, then almost too heavy to hold.\n\nMara says the city has been eating its own history, and that the silence was a mercy. Tobias says the rhythm is not his to give back, but the city can take it if it wants. Sable says nothing, and the city's voice waits, patient as stone, hungry as a bell that has been struck and not yet rung.\n\nThe page in Sable's hand glows with a faint golden light, and the words on it shift, rearrange, become something new. The city is not asking for the page. It is asking for the choice. And the choice is not hers alone."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_28",
+      "title": "The Reconciliation",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 27,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_28_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Restore the Bell"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_28_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"Then we ring it. We let the city hear itself again, even if it hurts. Even if it eats.\""
+              },
+              "consequence_id": "enc_29",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_28_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Let Silence Remain"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_28_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"Maybe the city doesn't need to eat. Maybe it just needs to listen. Maybe silence is its own kind of voice.\""
+              },
+              "consequence_id": "enc_29",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_28_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "A Third Path"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_28_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"What if we don't restore the old bell? What if we make a new sound? A sound that belongs to no one and everyone?\""
+              },
+              "consequence_id": "enc_29",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Mara, Tobias, and Sable stand together in the Plaza of Echoes as the city offers them a choice: restore the bell and let it eat again, or let the silence remain and let the city starve.\n\nMara's hand hovers over the wax seal in her pocket. \"I locked the tower door myself,\" she says, her voice steady but her fingers trembling. \"I thought if I kept the bell silent, I could keep the city from swallowing itself. But I was wrong. The silence isn't mercy. It's a wound.\"\n\nTobias steps forward, his collector's satchel clinking with the old rhythm he's been selling. \"I've been trading in absence,\" he admits, \"as if silence were something you could bottle and sell. But the city doesn't want my coin. It wants its voice back. Even if that voice is broken. Even if it's a new one.\"\n\nSable holds up the torn page from the Archive of Names. \"I tore it before the city existed,\" she says, \"and I kept it hidden. I thought I was protecting the truth. But the truth isn't a weapon. It's a mirror. And if you look long enough, you'll see the city eating itself.\"\n\nThe plaza stones hum beneath their feet. The city is waiting. The choice is theirs: restore the bell and let it eat again, or let the silence remain and let the city starve."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_29",
+      "title": "The New Sound",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 28,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_29_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ring the Small Bell"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_29_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"This bell was never meant to be rung alone. It was meant to be rung with the city. With all of us.\""
+              },
+              "consequence_id": "enc_30",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_29_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Share the Old Rhythm"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_29_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"I've been selling this for years, as if it were a commodity. But it's not. It's a memory. And memories aren't meant to be sold. They're meant to be shared.\""
+              },
+              "consequence_id": "enc_30",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_29_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Let the City Listen"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_29_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"The city doesn't need protection from its own voice. It needs us to listen.\""
+              },
+              "consequence_id": "enc_30",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "They choose a third option: they ring the small bell, and its sound is not the old rhythm but a new one, a sound that belongs to no one and everyone.\n\nSable lifts the small bell from the undercroft. It is lighter than she expected, almost weightless, as if it has been waiting for this moment. The name on its clapper catches the light: her own name, written in ink that seems to shift and breathe.\n\n\"This bell was never meant to be rung alone,\" she says, her voice barely above a whisper. \"It was meant to be rung with the city. With all of us.\"\n\nMara steps forward and places her hand on the bell's rim. \"I locked the tower door to protect you,\" she says to Tobias, \"but I was wrong. The city doesn't need protection from its own voice. It needs us to listen.\"\n\nTobias opens his satchel and takes out the old rhythm, now a small glass vial filled with something that looks like liquid sound. \"I've been selling this for years,\" he says, \"as if it were a commodity. But it's not. It's a memory. And memories aren't meant to be sold. They're meant to be shared.\"\n\nHe pours the vial into the small bell. The sound that emerges is not the old rhythm. It is something new. Something that belongs to no one and everyone. The plaza stones vibrate with it, and the voices of the swallowed rise to meet it, not in unison but in harmony."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_30",
+      "title": "The City That Lost Its Bell",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 29,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_30_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Leave the Tower"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_30_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Mara: \"I locked the tower door myself. I thought I was protecting the city. But I was wrong. The city doesn't need protection from its own voice. It needs us to listen.\""
+              },
+              "consequence_id": "enc_finale",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_30_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Return the Page"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_30_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Sable: \"The page is not a weapon. It's a mirror. And if you look long enough, you'll see the city eating itself. I'm returning it to the Archive.\""
+              },
+              "consequence_id": "enc_finale",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_30_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Accept the Silence"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_30_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Tobias: \"The silence isn't absence. It's listening. And in that listening, the city is not broken. It's waiting. It's alive.\""
+              },
+              "consequence_id": "enc_finale",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The city wakes with a new silence, not of absence but of listening, and Mara leaves the tower with the wax seal in her pocket, knowing she has been the one who locked the door all along.\n\nThe plaza is quiet, but it is not empty. The stones are warm beneath their feet, and the air is thick with voices that are not echoes. They are the voices of everyone the city has swallowed, speaking in unison and in fragments, and they are no longer angry. They are listening.\n\nMara stands at the tower door, the wax seal in her pocket. She knows now that the seal is not a guild mark. It is her own hand. She has been the one who locked the tower door, who silenced the bell, who kept the city from hearing itself. And yet, as she looks out over the plaza, she sees that the city is not broken. It is waiting. It is listening.\n\nTobias stands beside her, his satchel empty. \"I sold the rhythm for years,\" he says, \"as if it were something I could own. But it was never mine. It belonged to the city. To all of us.\"\n\nSable holds the torn page in her hand. \"I tore it before the city existed,\" she says, \"and I kept it hidden. I thought I was protecting the truth. But the truth isn't a weapon. It's a mirror. And if you look long enough, you'll see the city eating itself.\"\n\nMara places the wax seal on the tower door. The door opens. The city breathes. And in the new silence, not of absence but of listening, they all hear the small bell ringing again, its sound a new one, a sound that belongs to no one and everyone."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_finale",
+      "title": "Act V: The Reconciliation",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 30,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_finale_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "The Bell Remembers Its Shape"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_finale_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": ""
+              },
+              "consequence_id": "end_restore",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_finale_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "The Quiet That Remains"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_finale_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": ""
+              },
+              "consequence_id": "end_silence",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_finale_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "The Name on the Clapper"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_finale_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": ""
+              },
+              "consequence_id": "end_expose",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_finale_4",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "The Sound Between"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_finale_4",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": ""
+              },
+              "consequence_id": "end_mix",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_finale_5",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "The Silence That Was a Phase"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_finale_5",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": ""
+              },
+              "consequence_id": "end_phase",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": ""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "end_restore",
+      "title": "The Bell Remembers Its Shape",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 31,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Mara pressed her thumb to the wax seal and felt the old order settle back into place, like a bone resetting after a fall. The tower door opened without protest, and the bell above rang once, clean and bright, as if it had only been sleeping. The city below exhaled, and the market stalls closed early, and no one asked why the silence had ever mattered at all.\nSable watched from the plaza with her arms folded, and Tobias counted his coins with a face that said he had won something he could not name. The bell rang again, and again, and the city forgot why it was ever silent, and the forgetting felt like mercy, and the mercy felt like a lie, and no one in the tower would say which of those things was true.\n"
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "end_silence",
+      "title": "The Quiet That Remains",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 32,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Tobias set the last coin on the counter and let the rhythm go, and the city listened to the absence the way a body listens to a wound that has stopped bleeding. The market closed early, and the quiet hours stretched out like a long breath held in a dark room, and people began to trade in silence the way they once traded in bread, and the Archive of Names grew thinner by one name each night.\nMara stood in the plaza and felt the quiet settle into her bones, and she understood that the city had not lost its voice but had learned to speak in a language of absence, and the new ritual formed around the silence like moss on a stone, soft and patient and impossible to remove. She did not ring the bell again, and the city did not ask her to, and the quiet held them all like a hand over a mouth, gentle and absolute and full of things that would never be said aloud.\n"
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "end_expose",
+      "title": "The Name on the Clapper",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 33,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Sable stood before the torn page and let the ink dry on her fingers, and the city's own voice rose from the undercroft like a thing that had been waiting a long time to be heard. The name on the clapper was hers, and the bell had never been silenced by a person but devoured by the city itself, and the old order shattered like glass under a hammer, and the pieces cut everyone who tried to pick them up.\nMara carried the wax seal in her pocket and felt it warm against her hip, and Tobias stood at the edge of the plaza with his ledger open and his face blank, and the city rebuilt itself from raw memory, from the names that had been erased and the rhythms that had been sold and the silence that had been mistaken for peace. Sable spoke the name aloud, and the bell rang, and the sound was not a note but a word, and the word was a confession, and the confession was a door, and the door opened onto a city that had to learn to remember how to be itself.\n"
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "end_mix",
+      "title": "The Sound Between",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 34,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Mara held the seal in one hand and the torn page in the other, and Tobias stood between them with his ledger closed and his face set, and Sable traced the ink on the clapper with a finger that would not stop trembling. The two bells rang together, and the sound that came out was neither old nor new but something in between, a sound that had no name in any language the city still spoke, and the city listened to it the way a child listens to a word they have not yet learned.\nThe tower door opened, and the bell above rang, and the small bell below rang, and the two sounds wove together into a pattern that was not a rhythm but a shape, a shape that held the memory of the old order and the absence of the new one and the space between them where the city could build something it had not yet imagined. Mara set the seal on the counter and let it go, and Tobias closed his ledger for the last time, and Sable spoke the name into the air, and the city held its breath, and the sound held the city, and neither of them knew which of them was the bell and which was the silence.\n"
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      },
+      "is_secret_ending": true
+    },
+    {
+      "id": "end_phase",
+      "title": "The Silence That Was a Phase",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 35,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Mara opened the ledger page first and let the ink dry on her fingers, and the city's old order cracked along the lines that had been there all along, and the seal came second and the tower door opened without protest, and the name came last and the bell rang, and the sound was not a note but a word, and the word was a phase, and the phase was a turning, and the turning was a door, and the door opened onto a city that had been waiting for someone to tell it that the silence was not a loss but a breath.\nTobias stood at the edge of the plaza with his ledger open and his face set, and Sable held the small bell in her hands and felt it warm against her palms, and Mara carried the wax seal in her pocket and felt it settle into her bones like a memory that had finally found its place. The city rebuilt itself from raw memory, from the names that had been erased and the rhythms that had been sold and the silence that had been mistaken for peace, and the new silence was not an absence but a listening, and the listening was a phase, and the phase was a turning, and the turning was a door, and the door opened onto a city that had to learn to remember how to be itself.\n"
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      },
+      "is_secret_ending": true
+    }
+  ],
+  "hilbert_player_data": "storyworld.hilbert.json",
+  "topology_only": true
+}
