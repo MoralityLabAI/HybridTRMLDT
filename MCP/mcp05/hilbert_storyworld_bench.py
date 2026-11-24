@@ -94,7 +94,8 @@ def check_plan(plan):
     premise = f"{plan['title']} {plan['premise']}".casefold()
     require("bell" in premise and any(cue in premise for cue in ("silent", "silenc", "missing", "misplac", "lost",
                                                                    "stolen", "vanish", "no longer", "disappear",
-                                                                   "soundless", "swallowed", "muffled", "cease", "can't hear")),
+                                                                   "soundless", "swallowed", "muffled", "cease", "can't hear",
+                                                                   "forgot", "not rung", "unrung")),
             "the premise needs the missing sound of the night bell")
     for key, count in (("cast", 3), ("acts", ACTS), ("endings", 5)):
         items = plan[key]

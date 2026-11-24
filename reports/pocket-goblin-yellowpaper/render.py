@@ -31,7 +31,7 @@ for name, receipt in DATA["screenshots"].items():
     assert hashlib.sha256((ROOT / "assets" / name).read_bytes()).hexdigest() == receipt["sha256"]
 
 W, H = 612, 792
-TOTAL_PAGES = 8
+TOTAL_PAGES = 9
 PAPER = "#FFF7DA"
 AMBER = "#F5C947"
 INK = "#142431"
@@ -584,64 +584,141 @@ for i, (mtxt, iv_txt, bv_txt) in enumerate(score_rows):
 
 c.showPage()
 
-# Page 8: Methods and provenance
-page(8, "Methods and receipts")
+# Page 8: Pure-GPU 16 GB Context Curation & TPS Benchmark
+PG = DATA["pure_gpu_goblin"]
+pg_tot = PG["totals"]
+pg_cv = PG["canvas_edition_verified"]
+pg_pkt = PG["pocket_goblin_curated_packet"]
+
+page(8, "Pure-GPU 16 GB curation")
+heading(
+    "Zero offload via Pocket Goblin",
+    "Keeping 100% of Bonsai 2 27B Q4_0 inside 16 GB VRAM (0 CPU layers) by curating compact Pocket Goblin packets (3,072 tokens) and 4.6K–7.2K stage slots.",
+)
+
+rect(44, 544, SPAN, 60, INK, radius=5)
+label(f"{pg_tot['aggregate_decode_tps']:.1f} / {pg_tot['peak_decode_tps']:.1f}", 56, 576, 21, "Bold", AMBER)
+label("Mean / peak decode tok/s", 56, 556, 9.0, "Body", WHITE)
+line(214, 554, 214, 594, GRID)
+label(f"{pg_tot['aggregate_prefill_tps']:.0f} / {pg_tot['peak_prefill_tps']:.0f}", 228, 576, 21, "Bold", AQUA)
+label("Mean / peak prefill tok/s", 228, 556, 9.0, "Body", WHITE)
+line(392, 554, 392, 594, GRID)
+label("4.0× / 6.6×", 406, 576, 21, "Bold", LILAC)
+label("Decode vs 6–10 CPU layers", 406, 556, 9.0, "Body", WHITE)
+
+label("100% GPU VRAM & throughput sweep (0 CPU layers)", 44, 518, 15.0, "Display")
+ps_cols = [44, 150, 272, 366, 466, 568]
+for x, htxt in zip(ps_cols, ["Slot", "Used / Free MiB", "Prompt", "Out", "Prefill t/s", "Decode t/s"]):
+    label(htxt, x, 498, 8.5, "Bold", INK, "left" if x == 44 else "right")
+line(44, 491, 568, 491, INK)
+
+for i, s in enumerate(PG["context_window_sweep_pure_gpu"]):
+    y = 476 - i * 17.5
+    if i % 2 == 0:
+        rect(44, y - 4.5, 524, 15.5, "#F9EBC1")
+    label(f"{s['ctx_size']:,}", 44, y, 8.3, "Mono")
+    vals = [
+        f"{s['vram_used_mib']:,} / {s['vram_free_mib']:,}",
+        f"{s['prompt_n']:,}",
+        f"{s['predicted_n']:,}",
+        f"{s['prefill_tps']:.1f}",
+        f"{s['decode_tps']:.2f}",
+    ]
+    for j, (x, val) in enumerate(zip(ps_cols[1:], vals)):
+        label(val, x, y, 8.3, "Bold" if j == 4 else "Mono", TEAL if j == 4 else INK, "right")
+
+label("Pure-GPU Pocket Goblin curated + Canvas remainder turns", 44, 340, 15.0, "Display")
+pt_cols = [44, 246, 306, 362, 420, 492, 568]
+for x, htxt in zip(pt_cols, ["Stage", "In", "Cache", "Out", "Wall s", "Prefill", "Decode"]):
+    label(htxt, x, 320, 8.5, "Bold", INK, "left" if x == 44 else "right")
+line(44, 313, 568, 313, INK)
+
+for i, t in enumerate(PG["turns"]):
+    y = 298 - i * 17.5
+    if i % 2 == 0:
+        rect(44, y - 4.5, 524, 15.5, "#F9EBC1")
+    label(t["phase"], 44, y, 8.1, "Mono")
+    vals = [
+        f"{t['prompt_tokens']:,}",
+        f"{t['cached_tokens']:,}",
+        f"{t['completion_tokens']:,}",
+        f"{t['wall_seconds']:.1f}",
+        f"{t['prefill_tps']:.1f}",
+        f"{t['decode_tps']:.2f}",
+    ]
+    for j, (x, val) in enumerate(zip(pt_cols[1:], vals)):
+        label(val, x, y, 8.2, "Bold" if j == 5 else "Mono", TEAL if (j == 5 and t["accepted"]) else INK, "right")
+
+copy(
+    f"Pocket Goblin curated {pg_pkt['chunks_selected']} federation chunks ({pg_pkt['packet_bytes']:,} B) in {pg_pkt['retrieval_seconds']:.2f}s, shrinking plan/math prompts by 81–91% so all 27B Q4_0 weights stayed in GDDR7 VRAM. The pure-GPU Canvas edition verified {pg_cv['distinct_canvas_hashes']}/{pg_cv['visited_scenes']} unique hashes and {pg_cv['visual_metrics']['mean_quantized_colors']:.1f} mean colors in {pg_tot['total_provider_wall_seconds']:.1f}s total.",
+    44,
+    150,
+    SPAN,
+    size=9.2,
+    leading=12.8,
+    floor=54,
+)
+c.showPage()
+
+# Page 9: Methods and provenance
+page(9, "Methods and receipts")
 heading(
     "What the suite supports",
-    "Synthesis across the four-call creative retrieval pilot, two long-form Inky storyworlds, and the matched Bonsai 2 27B Q4_0 Hilbert replication.",
+    "Synthesis across the four-call creative retrieval pilot, two long-form Inky storyworlds, and the matched + pure-GPU Bonsai 2 27B Q4_0 replications.",
 )
-rect(44, 492, 524, 114, "#F9E8AF", radius=5)
-label("Context discipline vs. model scale", 58, 584, 18, "Display")
+rect(44, 502, 524, 108, "#F9E8AF", radius=5)
+label("Context discipline unlocks pure-GPU speed", 58, 588, 17.5, "Display")
 copy(
-    "Flooding Inky Mini (2 loops) with 16K–32K raw retrieval packets stalled direct plan authoring 3/3 times, yet bounded Pocket Goblin SWMD cards (<=3.5K tokens) let the same small model ship 20-scene and 30-encounter worlds with 32/32 distinct Canvas hashes. Unrotated Bonsai 2 27B Q4_0 recovered 3/3 cold long-context plans and first-pass conveyor reliability.",
+    "Wide 16K–32K raw packets stalled 2-loop Inky Mini 3/3 times and forced 27B Q4_0 to spill layers to CPU/PCIe RAM (1.2–8.2 tok/s) on a 16 GB GPU. Curating <=3.1K Pocket Goblin packets kept 100% of Bonsai 2 27B Q4_0 in VRAM, sustaining 28.5–36.8 tok/s decode and 645–930 tok/s prefill.",
     58,
-    569,
+    573,
     495,
-    size=9.9,
-    leading=13.8,
-    floor=512,
+    size=9.7,
+    leading=13.4,
+    floor=520,
 )
 story = total(lookup("tide", "assisted")) + sum(map(total, DATA["followups"]))
 label(
-    f"Pilot story verified in {story:.1f}s (3 calls)   ·   30-scene Hilbert worlds verified in headless Chrome",
+    f"Pilot verified in {story:.1f}s   ·   Pure-GPU curated + Canvas verified in {pg_tot['total_provider_wall_seconds']:.1f}s (33/33 hashes)",
     58,
-    503,
-    9.6,
+    511,
+    9.4,
     "Bold",
     TEAL,
 )
 
-label("Interpretation", 44, 463, 20, "Display")
+label("Interpretation", 44, 475, 19, "Display")
 copy(
-    "The pilot and Hilbert benchmarks jointly show why Pocket Goblin separates retrieval routing from bounded stage cards. Small looped checkpoints are highly sensitive to unrouted prefill width and multi-file output caps, whereas single-file Goose create_file stages with deterministic geometry, algebra, and DOM verifiers converge reliably.",
+    "Pocket Goblin turns a memory-wall problem into a routing problem: SetTRM shard selection and SWMD continuity cards shrink both prompt prefill and KV-cache allocation, letting dense 27B Q4_0 models run entirely inside 16 GB consumer VRAM without sacrificing multi-act continuity or browser-verified Hilbert algebra.",
     44,
-    448,
-    SPAN,
-    size=10.3,
-    leading=14.5,
-    floor=378,
-)
-
-label("Reproduce and audit", 44, 352, 20, "Display")
-copy(
-    "Hardware: RTX 5080 Laptop GPU (16 GB VRAM), deterministic seed 523, temperature 0. Every file in the exported browser editions was replayed from recorded Goose create_file tool calls, validated by SWMD/SweepWeave topology checks, and exercised in headless Chrome across all public and non-commuting secret routes.",
-    44,
-    337,
+    461,
     SPAN,
     size=10.0,
     leading=14.0,
-    floor=255,
+    floor=395,
+)
+
+label("Reproduce and audit", 44, 372, 19, "Display")
+copy(
+    "Hardware: RTX 5080 Laptop GPU (16 GB VRAM), seed 523, temperature 0. Every exported storyworld and Canvas edition was replayed from recorded Goose create_file tool calls, checked for /apply-template + /tokenize parity, and verified in headless Chrome.",
+    44,
+    358,
+    SPAN,
+    size=9.8,
+    leading=13.6,
+    floor=295,
 )
 
 for y, title, value in [
-    (225, "PILOT SOURCE COMMIT", DATA["plan"]["project_commit"]),
-    (191, "FEDERATION INDEX REVISION", DATA["plan"]["index_revision"]),
-    (157, "HILBERT PACKET SHA-256", SW["reference_packet_sha256"]),
-    (123, "INKY HILBERT + CANVAS RECEIPT SHA-256", hi["receipt_sha256"]),
-    (89, "BONSAI 2 27B Q4_0 HILBERT + CANVAS RECEIPT SHA-256", hb["receipt_sha256"]),
+    (266, "PILOT SOURCE COMMIT", DATA["plan"]["project_commit"]),
+    (234, "FEDERATION INDEX REVISION", DATA["plan"]["index_revision"]),
+    (202, "HILBERT PACKET SHA-256", SW["reference_packet_sha256"]),
+    (170, "INKY HILBERT + CANVAS RECEIPT SHA-256", hi["receipt_sha256"]),
+    (138, "BONSAI 2 27B Q4_0 16K RECEIPT SHA-256", hb["receipt_sha256"]),
+    (106, "BONSAI 2 27B Q4_0 PURE-GPU GOBLIN TPS RECEIPT SHA-256", PG["receipt_sha256"]),
 ]:
-    label(title, 44, y, 8.0, "Mono", TEAL)
-    label(value, 44, y - 13, 8.8, "Mono")
+    label(title, 44, y, 7.8, "Mono", TEAL)
+    label(value, 44, y - 12, 8.6, "Mono")
 
 c.showPage()
 c.save()

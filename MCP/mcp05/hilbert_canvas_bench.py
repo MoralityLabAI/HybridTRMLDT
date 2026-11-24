@@ -211,6 +211,7 @@ def author_canvas_edition(
     *,
     node: Path | None = None,
     chrome: Path | None = None,
+    context_limit: int = 16384,
 ) -> dict:
     receipt_path = arm / "canvas-edition.json"
     if receipt_path.is_file():
@@ -256,7 +257,7 @@ def author_canvas_edition(
             out_file = phase / "workspace/result.json"
             check_cmd = [sys.executable, "-B", script, "check-art-map", str(out_file), "--candidate", str(candidate_path)]
             run_phase(phase, gdk, art_brief + feedback, [out_file.name], check_cmd,
-                      max_tokens=4200, iterations=1, context=16384, allow_basename=True, compact_writes=True)
+                      max_tokens=min(4200, context_limit - 1900), iterations=1, context=context_limit, allow_basename=True, compact_writes=True)
             try:
                 require(out_file.is_file(), "Goose did not receive result.json")
                 art_map = check_hilbert_art_map(read_json(out_file), candidate)
@@ -297,7 +298,7 @@ def author_canvas_edition(
             out_file = phase / "workspace/index.html"
             check_cmd = [sys.executable, "-B", script, "check-page", str(out_file)]
             run_phase(phase, gdk, page_brief + feedback, [out_file.name], check_cmd,
-                      max_tokens=3600, iterations=1, context=16384, allow_basename=True, compact_writes=True)
+                      max_tokens=min(3600, context_limit - 1200), iterations=1, context=context_limit, allow_basename=True, compact_writes=True)
             try:
                 require(out_file.is_file(), "Goose did not receive index.html")
                 check_html_page(out_file)
@@ -350,7 +351,7 @@ def author_canvas_edition(
             out_file = phase / "workspace/renderer.js"
             check_cmd = [sys.executable, "-B", script, "check-renderer", str(out_file), "--node", str(node)]
             run_phase(phase, gdk, renderer_brief + feedback, [out_file.name], check_cmd,
-                      max_tokens=4200, iterations=1, context=16384, allow_basename=True, compact_writes=True)
+                      max_tokens=min(4200, context_limit - 1600), iterations=1, context=context_limit, allow_basename=True, compact_writes=True)
             try:
                 require(out_file.is_file(), "Goose did not receive renderer.js")
                 check_renderer_js(out_file, node)
@@ -440,7 +441,7 @@ def author_canvas_edition(
                 "--chrome", str(chrome),
             ]
             run_phase(phase, gdk, player_brief + feedback, [out_file.name], check_cmd,
-                      max_tokens=5000, iterations=1, context=8192, allow_basename=True, compact_writes=True)
+                      max_tokens=min(5000, context_limit - 2560), iterations=1, context=min(8192, context_limit), allow_basename=True, compact_writes=True)
             try:
                 require(out_file.is_file(), "Goose did not receive player.js")
                 browser_receipt = verify_assembled_bundle(
@@ -465,7 +466,7 @@ def author_canvas_edition(
                         "plus scene.id-specific geometry AND sets window.drawScene = drawScene so every scene renders a distinct, colorful Canvas composition."
                     )
                     run_phase(rphase, gdk, rbrief, [rout.name], rcheck,
-                              max_tokens=4200, iterations=1, context=8192, allow_basename=True, compact_writes=True)
+                              max_tokens=min(4200, context_limit - 1800), iterations=1, context=min(8192, context_limit), allow_basename=True, compact_writes=True)
                     if rout.is_file():
                         check_renderer_js(rout, node)
                         rproof = replay_writes(rphase, [rout.name], require_verified=False)

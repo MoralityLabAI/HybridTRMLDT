@@ -35,3 +35,36 @@ Head-to-head evaluation on the identical Pocket Goblin federation packet (`cfdca
 | Mean Quantized Colors | 87.41 | **124.76** |
 | Edge Density / Mean Pairwise RGB L1 | 0.0194 / 15.91 | **0.0423 / 49.87** |
 | Secret Endings Unlocked (Swap-Sensitive) | 2 / 2 (`verified`) | 2 / 2 (`verified`) |
+
+## 3. 100% Pure-GPU (`0` CPU Offload) + Pocket Goblin Curated Context TPS Benchmark
+
+Reloading `Ternary-Bonsai-2-27B-unrotated-Q4_0.gguf` (`14.48 GiB` weights) 100% in RTX 5080 VRAM (`-ngl 99`, zero `-ot` CPU tensor offload) and using Pocket Goblin (`MCP.mcp05.service` SetTRM shard routing + `WorkingSet` curation) to curate retrieval and Canvas stage budgets inside `4,608`–`7,168` tokens eliminates CPU FFN offload and WDDM PCIe paging:
+
+### Pure-GPU Context Window & VRAM Sweep (`0` CPU Layers)
+
+| Context Slot | VRAM Used / Free (`MiB`) | Prompt Tokens | Prefill `tok/s` | Decode `tok/s` |
+|---:|---:|---:|---:|---:|
+| 4,096 | 14,472 / 1,444 | 29 | 45.20 | **34.78** |
+| 4,608 | 14,444 / 1,472 | 2,189 | 688.52 | **34.57** |
+| 6,144 | 14,548 / 1,368 | 3,865 | 872.93 | **32.58** |
+| 7,168 | 14,560 / 1,356 | 3,072 | 929.89 | **36.78** |
+| 8,192 | 14,626 / 1,290 | 3,865 | 861.85 | **31.45** |
+| 10,240 | 14,702 / 1,214 | 3,865 | 852.76 | **31.83** |
+| 12,288 | 14,780 / 1,136 | 3,865 | 829.41 | **31.38** |
+
+### Pure-GPU Pocket Goblin Curated Storyworld + Canvas Remainder Stages
+
+- **Curated Federation Packet**: `4` chunks (`9,562` bytes) assembled in `0.570s` (`3,072` tokens vs `16,384`–`32,768` uncurated — **81.2%–90.6% input token reduction**)
+- **Aggregate Throughput (`8` HTTP-200 Goose turns, `8/8` preflight parity)**: **`644.83 tok/s` prefill** (peak `929.89`), **`32.86 tok/s` decode** (range `28.53`–`36.78 tok/s`, **6.6× faster decode** than 10-layer CPU FFN offload at `5.01 tok/s` and **27.9× faster** than 32K WDDM paging at `1.19 tok/s`)
+- **Headless Chrome Verification**: `33/33` distinct Canvas SHA-256 hashes, `187.33` mean quantized colors, both secret endings verified (`verified`)
+
+| Phase | Accepted | Prompt In | Cached | Uncached | Out | Prefill `tok/s` | Decode `tok/s` | Wall (s) |
+|---|:---:|---:|---:|---:|---:|---:|---:|---:|
+| `curated-plan-attempt-01` | Yes | 3,074 | 0 | 3,074 | 713 | 821.31 | **33.53** | 25.01 |
+| `curated-math-draft-attempt-02` | Yes | 3,072 | 0 | 3,072 | 699 | 929.89 | **36.78** | 22.31 |
+| `canvas-art-map-attempt-01` | Yes | 1,256 | 436 | 820 | 1,744 | 784.67 | **35.95** | 49.55 |
+| `canvas-page-attempt-01` | Retry | 651 | 0 | 651 | 443 | 265.60 | **31.06** | 16.74 |
+| `canvas-page-attempt-02` | Yes | 671 | 519 | 152 | 390 | 152.99 | **31.16** | 13.50 |
+| `canvas-player-attempt-01` | Retry | 2,189 | 0 | 2,189 | 1,910 | 688.52 | **34.57** | 58.45 |
+| `canvas-player-attempt-02` | Yes | 2,278 | 2,057 | 221 | 1,844 | 300.68 | **28.53** | 65.36 |
+| `canvas-renderer-attempt-02` | Yes | 1,246 | 0 | 1,246 | 2,199 | 549.50 | **32.65** | 69.64 |

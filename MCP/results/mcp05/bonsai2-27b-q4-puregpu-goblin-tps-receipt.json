@@ -1,0 +1,326 @@
+{
+  "benchmark": "pocket-goblin-puregpu-curated-tps-v1",
+  "model": "bonsai-2-27b-q4_0",
+  "model_label": "Bonsai 2 27B (unrotated Q4_0, 100% GPU / 0 CPU offload)",
+  "gpu": "NVIDIA GeForce RTX 5080 Laptop GPU (15,915 MiB usable VRAM)",
+  "cpu_offload_layers": 0,
+  "ngl": 99,
+  "override_tensor": null,
+  "context_window_sweep_pure_gpu": [
+    {
+      "ctx_size": 4096,
+      "vram_used_mib": 14472,
+      "vram_free_mib": 1444,
+      "prompt_n": 29,
+      "prefill_tps": 45.2,
+      "predicted_n": 160,
+      "decode_tps": 34.78
+    },
+    {
+      "ctx_size": 4608,
+      "vram_used_mib": 14444,
+      "vram_free_mib": 1472,
+      "prompt_n": 2189,
+      "prefill_tps": 688.52,
+      "predicted_n": 1910,
+      "decode_tps": 34.57
+    },
+    {
+      "ctx_size": 6144,
+      "vram_used_mib": 14548,
+      "vram_free_mib": 1368,
+      "prompt_n": 3865,
+      "prefill_tps": 872.93,
+      "predicted_n": 134,
+      "decode_tps": 32.58
+    },
+    {
+      "ctx_size": 7168,
+      "vram_used_mib": 14560,
+      "vram_free_mib": 1356,
+      "prompt_n": 3072,
+      "prefill_tps": 929.89,
+      "predicted_n": 699,
+      "decode_tps": 36.78
+    },
+    {
+      "ctx_size": 8192,
+      "vram_used_mib": 14626,
+      "vram_free_mib": 1290,
+      "prompt_n": 3865,
+      "prefill_tps": 861.85,
+      "predicted_n": 134,
+      "decode_tps": 31.45
+    },
+    {
+      "ctx_size": 10240,
+      "vram_used_mib": 14702,
+      "vram_free_mib": 1214,
+      "prompt_n": 3865,
+      "prefill_tps": 852.76,
+      "predicted_n": 134,
+      "decode_tps": 31.83
+    },
+    {
+      "ctx_size": 12288,
+      "vram_used_mib": 14780,
+      "vram_free_mib": 1136,
+      "prompt_n": 3865,
+      "prefill_tps": 829.41,
+      "predicted_n": 134,
+      "decode_tps": 31.38
+    }
+  ],
+  "pocket_goblin_curated_packet": {
+    "retrieval_seconds": 0.5704,
+    "queries": 3,
+    "chunks_selected": 4,
+    "packet_bytes": 9562,
+    "packet_sha256": "7b17167ab485a97bf3f80fd81fa1b64919680780c82aab5c0ce9d620c3c275e4",
+    "routes": [
+      {
+        "query": "storyworld secret endings clue gate noncommuting encounter choices",
+        "searched": [
+          "compactification",
+          "bpd"
+        ],
+        "deferred": [
+          "pocket-goblin",
+          "looped-transformers",
+          "evalmath",
+          "datagoblin",
+          "storyworld"
+        ],
+        "excluded": [],
+        "proof": "no exact OR-term postings",
+        "terms": [
+          "storyworld",
+          "secret",
+          "endings",
+          "clue",
+          "gate",
+          "noncommuting",
+          "encounter",
+          "choices"
+        ],
+        "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+        "policy": "lexical"
+      },
+      {
+        "query": "Hilbert unitary projector Born probability two-qubit amplitude",
+        "searched": [
+          "looped-transformers",
+          "compactification"
+        ],
+        "deferred": [
+          "storyworld",
+          "pocket-goblin",
+          "bpd",
+          "datagoblin",
+          "evalmath"
+        ],
+        "excluded": [],
+        "proof": "no exact OR-term postings",
+        "terms": [
+          "hilbert",
+          "unitary",
+          "projector",
+          "born",
+          "probability",
+          "two",
+          "qubit",
+          "amplitude"
+        ],
+        "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+        "policy": "lexical"
+      },
+      {
+        "query": "storyworld late stage balancing route reachability continuity",
+        "searched": [
+          "compactification",
+          "evalmath"
+        ],
+        "deferred": [
+          "bpd",
+          "looped-transformers",
+          "datagoblin",
+          "storyworld",
+          "pocket-goblin"
+        ],
+        "excluded": [],
+        "proof": "no exact OR-term postings",
+        "terms": [
+          "storyworld",
+          "late",
+          "stage",
+          "balancing",
+          "route",
+          "reachability",
+          "continuity"
+        ],
+        "revision": "a0064705f380dbe771a3952725494301694ce24a3b262439e0dc815ea282d1c7",
+        "policy": "lexical"
+      }
+    ]
+  },
+  "totals": {
+    "timed_turns": 8,
+    "accepted_stages": 6,
+    "preflight_parity_turns": 8,
+    "total_prompt_tokens_in": 14437,
+    "total_uncached_tokens": 11425,
+    "total_cached_tokens": 3012,
+    "total_completion_tokens_out": 9942,
+    "aggregate_prefill_tps": 644.83,
+    "aggregate_decode_tps": 32.86,
+    "peak_prefill_tps": 929.89,
+    "peak_decode_tps": 36.78,
+    "min_decode_tps": 28.53,
+    "total_provider_wall_seconds": 320.56
+  },
+  "turns": [
+    {
+      "phase": "curated-plan-attempt-01",
+      "prompt_tokens": 3074,
+      "uncached_tokens": 3074,
+      "cached_tokens": 0,
+      "completion_tokens": 713,
+      "prefill_ms": 3742.801,
+      "decode_ms": 21237.697,
+      "prefill_tps": 821.31,
+      "decode_tps": 33.53,
+      "wall_seconds": 25.01,
+      "preflight_parity": true,
+      "finish_reason": "tool_calls",
+      "accepted": true
+    },
+    {
+      "phase": "curated-math-draft-attempt-02",
+      "prompt_tokens": 3072,
+      "uncached_tokens": 3072,
+      "cached_tokens": 0,
+      "completion_tokens": 699,
+      "prefill_ms": 3303.63,
+      "decode_ms": 18976.818,
+      "prefill_tps": 929.89,
+      "decode_tps": 36.78,
+      "wall_seconds": 22.31,
+      "preflight_parity": true,
+      "finish_reason": "tool_calls",
+      "accepted": true
+    },
+    {
+      "phase": "canvas-art-map-attempt-01",
+      "prompt_tokens": 1256,
+      "uncached_tokens": 820,
+      "cached_tokens": 436,
+      "completion_tokens": 1744,
+      "prefill_ms": 1045.02,
+      "decode_ms": 48483.524,
+      "prefill_tps": 784.67,
+      "decode_tps": 35.95,
+      "wall_seconds": 49.55,
+      "preflight_parity": true,
+      "finish_reason": "tool_calls",
+      "accepted": true
+    },
+    {
+      "phase": "canvas-page-attempt-01",
+      "prompt_tokens": 651,
+      "uncached_tokens": 651,
+      "cached_tokens": 0,
+      "completion_tokens": 443,
+      "prefill_ms": 2451.071,
+      "decode_ms": 14232.347,
+      "prefill_tps": 265.6,
+      "decode_tps": 31.06,
+      "wall_seconds": 16.74,
+      "preflight_parity": true,
+      "finish_reason": "stop",
+      "accepted": false
+    },
+    {
+      "phase": "canvas-page-attempt-02",
+      "prompt_tokens": 671,
+      "uncached_tokens": 152,
+      "cached_tokens": 519,
+      "completion_tokens": 390,
+      "prefill_ms": 993.54,
+      "decode_ms": 12483.458,
+      "prefill_tps": 152.99,
+      "decode_tps": 31.16,
+      "wall_seconds": 13.5,
+      "preflight_parity": true,
+      "finish_reason": "tool_calls",
+      "accepted": true
+    },
+    {
+      "phase": "canvas-player-attempt-01",
+      "prompt_tokens": 2189,
+      "uncached_tokens": 2189,
+      "cached_tokens": 0,
+      "completion_tokens": 1910,
+      "prefill_ms": 3179.262,
+      "decode_ms": 55225.943,
+      "prefill_tps": 688.52,
+      "decode_tps": 34.57,
+      "wall_seconds": 58.45,
+      "preflight_parity": true,
+      "finish_reason": "tool_calls",
+      "accepted": false
+    },
+    {
+      "phase": "canvas-player-attempt-02",
+      "prompt_tokens": 2278,
+      "uncached_tokens": 221,
+      "cached_tokens": 2057,
+      "completion_tokens": 1844,
+      "prefill_ms": 735.012,
+      "decode_ms": 64598.272,
+      "prefill_tps": 300.68,
+      "decode_tps": 28.53,
+      "wall_seconds": 65.36,
+      "preflight_parity": true,
+      "finish_reason": "tool_calls",
+      "accepted": true
+    },
+    {
+      "phase": "canvas-renderer-attempt-02",
+      "prompt_tokens": 1246,
+      "uncached_tokens": 1246,
+      "cached_tokens": 0,
+      "completion_tokens": 2199,
+      "prefill_ms": 2267.519,
+      "decode_ms": 67327.227,
+      "prefill_tps": 549.5,
+      "decode_tps": 32.65,
+      "wall_seconds": 69.64,
+      "preflight_parity": true,
+      "finish_reason": "tool_calls",
+      "accepted": true
+    }
+  ],
+  "canvas_edition_verified": {
+    "status": "verified",
+    "visited_scenes": 33,
+    "distinct_canvas_hashes": 33,
+    "verified_secret_endings": [
+      "end_mix",
+      "end_phase"
+    ],
+    "visual_metrics": {
+      "canvas_width": 640,
+      "canvas_height": 400,
+      "mean_quantized_colors": 187.33,
+      "max_quantized_colors": 216,
+      "mean_edge_density": 0.0797,
+      "mean_pairwise_rgb_l1": 24.89
+    },
+    "web_artifacts_sha256": {
+      "index.html": "3821239d7e0af49ec221cafa6718086d2d3b4b595e4e79471f7623e1619c95f5",
+      "world-data.js": "417f3ab9f0bf5f6cd105844c11c0950ed2d27cba9e217c60e992b9bd26142c9e",
+      "art.js": "26a7dbb4577d0b72cf8d7b5ae81673718282dcb6ce2aefb17c759affe88a40ed",
+      "player.js": "095d6f3d29bb6b13da8466caabe964a6ab322a698fb13bbee1a55280a28a709b"
+    }
+  }
+}
