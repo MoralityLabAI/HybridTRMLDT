@@ -1,0 +1,1800 @@
+{
+  "capacity": 32768,
+  "budget": 16,
+  "roots_per_family_per_seed": 128,
+  "seeds": [
+    107,
+    109,
+    113
+  ],
+  "projections_order": [
+    "row",
+    "col",
+    "hilbert",
+    "morton"
+  ],
+  "pooled_linear_probes": {
+    "slow_state": {
+      "query_geometry_8way_acc": 0.7755533854166666,
+      "active_projection_4way_acc": 0.8946126302083334,
+      "search_progress_step_r2": 0.8035785655687128,
+      "solved_state_acc": 0.9823811848958334,
+      "uncertainty_entropy_r2": 0.6949210468107015
+    },
+    "fast_state": {
+      "query_geometry_8way_acc": 0.8104654947916666,
+      "active_projection_4way_acc": 0.9375,
+      "search_progress_step_r2": 0.7245698960205565,
+      "solved_state_acc": 0.9999186197916666,
+      "uncertainty_entropy_r2": 0.7102656908213981
+    }
+  },
+  "pooled_interventions": {
+    "freeze_router": {
+      "baseline_completion": 0.6608072916666666,
+      "intervened_completion": 0.5250651041666666,
+      "delta_bootstrap": {
+        "point": -0.1357421875,
+        "ci95_low": -0.150390625,
+        "ci95_high": -0.11979166666666667,
+        "prob_gt_zero": 0.0,
+        "n_pairs": 3072
+      },
+      "per_family": {
+        "horizontal": {
+          "baseline": 0.9322916666666666,
+          "intervened": 0.9270833333333334,
+          "delta": -0.005208333333333259
+        },
+        "vertical": {
+          "baseline": 1.0,
+          "intervened": 1.0,
+          "delta": 0.0
+        },
+        "diagonal": {
+          "baseline": 0.9635416666666666,
+          "intervened": 0.9635416666666666,
+          "delta": 0.0
+        },
+        "isotropic": {
+          "baseline": 0.6875,
+          "intervened": 0.703125,
+          "delta": 0.015625
+        },
+        "sparse_long_range": {
+          "baseline": 0.3255208333333333,
+          "intervened": 0.0,
+          "delta": -0.3255208333333333
+        },
+        "multihop": {
+          "baseline": 0.6927083333333334,
+          "intervened": 0.20572916666666666,
+          "delta": -0.48697916666666674
+        },
+        "regime_shift": {
+          "baseline": 0.4010416666666667,
+          "intervened": 0.3932291666666667,
+          "delta": -0.0078125
+        },
+        "corrupted_replica": {
+          "baseline": 0.2838541666666667,
+          "intervened": 0.0078125,
+          "delta": -0.2760416666666667
+        }
+      }
+    },
+    "shuffle_slow_state": {
+      "baseline_completion": 0.6608072916666666,
+      "intervened_completion": 0.5061848958333334,
+      "delta_bootstrap": {
+        "point": -0.15462239583333334,
+        "ci95_low": -0.17155761718749998,
+        "ci95_high": -0.13736165364583336,
+        "prob_gt_zero": 0.0,
+        "n_pairs": 3072
+      },
+      "per_family": {
+        "horizontal": {
+          "baseline": 0.9322916666666666,
+          "intervened": 0.9583333333333334,
+          "delta": 0.02604166666666674
+        },
+        "vertical": {
+          "baseline": 1.0,
+          "intervened": 0.9479166666666666,
+          "delta": -0.05208333333333337
+        },
+        "diagonal": {
+          "baseline": 0.9635416666666666,
+          "intervened": 0.7239583333333334,
+          "delta": -0.23958333333333326
+        },
+        "isotropic": {
+          "baseline": 0.6875,
+          "intervened": 0.4869791666666667,
+          "delta": -0.20052083333333331
+        },
+        "sparse_long_range": {
+          "baseline": 0.3255208333333333,
+          "intervened": 0.11197916666666667,
+          "delta": -0.21354166666666663
+        },
+        "multihop": {
+          "baseline": 0.6927083333333334,
+          "intervened": 0.5338541666666666,
+          "delta": -0.15885416666666674
+        },
+        "regime_shift": {
+          "baseline": 0.4010416666666667,
+          "intervened": 0.125,
+          "delta": -0.2760416666666667
+        },
+        "corrupted_replica": {
+          "baseline": 0.2838541666666667,
+          "intervened": 0.16145833333333334,
+          "delta": -0.12239583333333334
+        }
+      }
+    },
+    "remove_cross_proj_comm": {
+      "baseline_completion": 0.6608072916666666,
+      "intervened_completion": 0.5403645833333334,
+      "delta_bootstrap": {
+        "point": -0.12044270833333333,
+        "ci95_low": -0.13704427083333334,
+        "ci95_high": -0.10350748697916672,
+        "prob_gt_zero": 0.0,
+        "n_pairs": 3072
+      },
+      "per_family": {
+        "horizontal": {
+          "baseline": 0.9322916666666666,
+          "intervened": 0.90625,
+          "delta": -0.02604166666666663
+        },
+        "vertical": {
+          "baseline": 1.0,
+          "intervened": 0.9947916666666666,
+          "delta": -0.00520833333333337
+        },
+        "diagonal": {
+          "baseline": 0.9635416666666666,
+          "intervened": 0.5598958333333334,
+          "delta": -0.40364583333333326
+        },
+        "isotropic": {
+          "baseline": 0.6875,
+          "intervened": 0.3645833333333333,
+          "delta": -0.3229166666666667
+        },
+        "sparse_long_range": {
+          "baseline": 0.3255208333333333,
+          "intervened": 0.3255208333333333,
+          "delta": 0.0
+        },
+        "multihop": {
+          "baseline": 0.6927083333333334,
+          "intervened": 0.5963541666666666,
+          "delta": -0.09635416666666674
+        },
+        "regime_shift": {
+          "baseline": 0.4010416666666667,
+          "intervened": 0.3411458333333333,
+          "delta": -0.05989583333333337
+        },
+        "corrupted_replica": {
+          "baseline": 0.2838541666666667,
+          "intervened": 0.234375,
+          "delta": -0.049479166666666685
+        }
+      }
+    },
+    "force_wrong_projection": {
+      "baseline_completion": 0.6608072916666666,
+      "intervened_completion": 0.1171875,
+      "delta_bootstrap": {
+        "point": -0.5436197916666666,
+        "ci95_low": -0.5628255208333334,
+        "ci95_high": -0.5250651041666666,
+        "prob_gt_zero": 0.0,
+        "n_pairs": 3072
+      },
+      "per_family": {
+        "horizontal": {
+          "baseline": 0.9322916666666666,
+          "intervened": 0.12239583333333333,
+          "delta": -0.8098958333333333
+        },
+        "vertical": {
+          "baseline": 1.0,
+          "intervened": 0.059895833333333336,
+          "delta": -0.9401041666666666
+        },
+        "diagonal": {
+          "baseline": 0.9635416666666666,
+          "intervened": 0.4348958333333333,
+          "delta": -0.5286458333333333
+        },
+        "isotropic": {
+          "baseline": 0.6875,
+          "intervened": 0.2734375,
+          "delta": -0.4140625
+        },
+        "sparse_long_range": {
+          "baseline": 0.3255208333333333,
+          "intervened": 0.015625,
+          "delta": -0.3098958333333333
+        },
+        "multihop": {
+          "baseline": 0.6927083333333334,
+          "intervened": 0.018229166666666668,
+          "delta": -0.6744791666666667
+        },
+        "regime_shift": {
+          "baseline": 0.4010416666666667,
+          "intervened": 0.0,
+          "delta": -0.4010416666666667
+        },
+        "corrupted_replica": {
+          "baseline": 0.2838541666666667,
+          "intervened": 0.013020833333333334,
+          "delta": -0.27083333333333337
+        }
+      }
+    },
+    "patch_slow_same_family": {
+      "baseline_completion": 0.6608072916666666,
+      "intervened_completion": 0.5849609375,
+      "delta_bootstrap": {
+        "point": -0.07584635416666667,
+        "ci95_low": -0.09147135416666667,
+        "ci95_high": -0.06053873697916671,
+        "prob_gt_zero": 0.0,
+        "n_pairs": 3072
+      },
+      "per_family": {
+        "horizontal": {
+          "baseline": 0.9322916666666666,
+          "intervened": 0.8984375,
+          "delta": -0.03385416666666663
+        },
+        "vertical": {
+          "baseline": 1.0,
+          "intervened": 0.9609375,
+          "delta": -0.0390625
+        },
+        "diagonal": {
+          "baseline": 0.9635416666666666,
+          "intervened": 0.8854166666666666,
+          "delta": -0.078125
+        },
+        "isotropic": {
+          "baseline": 0.6875,
+          "intervened": 0.6666666666666666,
+          "delta": -0.02083333333333337
+        },
+        "sparse_long_range": {
+          "baseline": 0.3255208333333333,
+          "intervened": 0.2994791666666667,
+          "delta": -0.02604166666666663
+        },
+        "multihop": {
+          "baseline": 0.6927083333333334,
+          "intervened": 0.5078125,
+          "delta": -0.18489583333333337
+        },
+        "regime_shift": {
+          "baseline": 0.4010416666666667,
+          "intervened": 0.2552083333333333,
+          "delta": -0.14583333333333337
+        },
+        "corrupted_replica": {
+          "baseline": 0.2838541666666667,
+          "intervened": 0.20572916666666666,
+          "delta": -0.07812500000000003
+        }
+      }
+    },
+    "patch_slow_cross_family": {
+      "baseline_completion": 0.6608072916666666,
+      "intervened_completion": 0.482421875,
+      "delta_bootstrap": {
+        "point": -0.17838541666666666,
+        "ci95_low": -0.19434407552083333,
+        "ci95_high": -0.16047363281250004,
+        "prob_gt_zero": 0.0,
+        "n_pairs": 3072
+      },
+      "per_family": {
+        "horizontal": {
+          "baseline": 0.9322916666666666,
+          "intervened": 0.8802083333333334,
+          "delta": -0.05208333333333326
+        },
+        "vertical": {
+          "baseline": 1.0,
+          "intervened": 0.8333333333333334,
+          "delta": -0.16666666666666663
+        },
+        "diagonal": {
+          "baseline": 0.9635416666666666,
+          "intervened": 0.9401041666666666,
+          "delta": -0.0234375
+        },
+        "isotropic": {
+          "baseline": 0.6875,
+          "intervened": 0.6484375,
+          "delta": -0.0390625
+        },
+        "sparse_long_range": {
+          "baseline": 0.3255208333333333,
+          "intervened": 0.0,
+          "delta": -0.3255208333333333
+        },
+        "multihop": {
+          "baseline": 0.6927083333333334,
+          "intervened": 0.3984375,
+          "delta": -0.29427083333333337
+        },
+        "regime_shift": {
+          "baseline": 0.4010416666666667,
+          "intervened": 0.036458333333333336,
+          "delta": -0.36458333333333337
+        },
+        "corrupted_replica": {
+          "baseline": 0.2838541666666667,
+          "intervened": 0.12239583333333333,
+          "delta": -0.16145833333333337
+        }
+      }
+    }
+  },
+  "patch_recovery": {
+    "shuffle_drop": 0.15462239583333326,
+    "cross_family_patch_drop": 0.17838541666666663,
+    "same_family_patch_drop": 0.07584635416666663,
+    "same_vs_shuffle_recovery_fraction": 0.5094736842105263,
+    "same_vs_cross_recovery_fraction": 0.5748175182481753,
+    "mean_cross_donor_prob_shift": 0.0949796464697501,
+    "mean_same_router_l1_dev": 0.13269196450710297
+  },
+  "per_seed": {
+    "107": {
+      "family_telemetry": {
+        "horizontal": {
+          "completion": 0.9140625,
+          "mean_switches": 1.6796875,
+          "mean_router_probs": [
+            0.7154645323753357,
+            0.0019088354893028736,
+            0.019581643864512444,
+            0.2630459666252136
+          ],
+          "mean_router_entropy": 0.45332109928131104,
+          "init_router_probs": [
+            0.9143141508102417,
+            0.0005487109301611781,
+            0.022041749209165573,
+            0.06309565156698227
+          ]
+        },
+        "vertical": {
+          "completion": 1.0,
+          "mean_switches": 0.0859375,
+          "mean_router_probs": [
+            0.024263456463813782,
+            0.9147716164588928,
+            0.042178213596343994,
+            0.018786611035466194
+          ],
+          "mean_router_entropy": 0.2902447283267975,
+          "init_router_probs": [
+            0.003009489504620433,
+            0.9603831768035889,
+            0.02898353710770607,
+            0.007623913232237101
+          ]
+        },
+        "diagonal": {
+          "completion": 0.9609375,
+          "mean_switches": 0.8671875,
+          "mean_router_probs": [
+            0.5143764019012451,
+            0.027059322223067284,
+            0.043821994215250015,
+            0.41474270820617676
+          ],
+          "mean_router_entropy": 0.5947814583778381,
+          "init_router_probs": [
+            0.19626787304878235,
+            0.019030185416340828,
+            0.038268961012363434,
+            0.7464329600334167
+          ]
+        },
+        "isotropic": {
+          "completion": 0.6796875,
+          "mean_switches": 0.96875,
+          "mean_router_probs": [
+            0.2621784806251526,
+            0.17453768849372864,
+            0.2529238760471344,
+            0.3103597164154053
+          ],
+          "mean_router_entropy": 0.9737562537193298,
+          "init_router_probs": [
+            0.15591003000736237,
+            0.09308216720819473,
+            0.3217669129371643,
+            0.4292409121990204
+          ]
+        },
+        "sparse_long_range": {
+          "completion": 0.25,
+          "mean_switches": 2.5234375,
+          "mean_router_probs": [
+            0.30395281314849854,
+            0.2743173837661743,
+            0.26945629715919495,
+            0.15227344632148743
+          ],
+          "mean_router_entropy": 1.1124635934829712,
+          "init_router_probs": [
+            0.2570016086101532,
+            0.511368989944458,
+            0.1301337331533432,
+            0.1014956682920456
+          ]
+        },
+        "multihop": {
+          "completion": 0.6875,
+          "mean_switches": 1.2890625,
+          "mean_router_probs": [
+            0.37181711196899414,
+            0.2751094400882721,
+            0.09662769734859467,
+            0.2564462125301361
+          ],
+          "mean_router_entropy": 0.649281919002533,
+          "init_router_probs": [
+            0.40076854825019836,
+            0.26317140460014343,
+            0.0762111023068428,
+            0.25984901189804077
+          ]
+        },
+        "regime_shift": {
+          "completion": 0.34375,
+          "mean_switches": 1.6796875,
+          "mean_router_probs": [
+            0.3711141049861908,
+            0.27479520440101624,
+            0.18158376216888428,
+            0.17250701785087585
+          ],
+          "mean_router_entropy": 0.9436898827552795,
+          "init_router_probs": [
+            0.3131498694419861,
+            0.45300042629241943,
+            0.03798013925552368,
+            0.19586944580078125
+          ]
+        },
+        "corrupted_replica": {
+          "completion": 0.2578125,
+          "mean_switches": 2.1328125,
+          "mean_router_probs": [
+            0.298067569732666,
+            0.29295614361763,
+            0.19373804330825806,
+            0.21523693203926086
+          ],
+          "mean_router_entropy": 0.963558554649353,
+          "init_router_probs": [
+            0.3832123875617981,
+            0.317198783159256,
+            0.02795146033167839,
+            0.27163752913475037
+          ]
+        }
+      },
+      "switch_transition_matrix": [
+        [
+          0,
+          199,
+          98,
+          198
+        ],
+        [
+          296,
+          0,
+          101,
+          47
+        ],
+        [
+          54,
+          70,
+          0,
+          4
+        ],
+        [
+          354,
+          57,
+          0,
+          0
+        ]
+      ],
+      "linear_probes": {
+        "slow_state": {
+          "query_geometry_8way_acc": 0.761962890625,
+          "active_projection_4way_acc": 0.8831787109375,
+          "search_progress_step_r2": 0.7966807216397878,
+          "solved_state_acc": 0.9835205078125,
+          "uncertainty_entropy_r2": 0.6944841482346921
+        },
+        "fast_state": {
+          "query_geometry_8way_acc": 0.805419921875,
+          "active_projection_4way_acc": 0.93017578125,
+          "search_progress_step_r2": 0.7542129789521415,
+          "solved_state_acc": 0.9998779296875,
+          "uncertainty_entropy_r2": 0.747508265937544
+        },
+        "chance_baselines": {
+          "query_geometry_8way_acc": 0.125,
+          "active_projection_4way_acc": 0.25,
+          "solved_state_majority_acc": 0.5103759765625
+        }
+      },
+      "interventions": {
+        "freeze_router": {
+          "baseline_completion": 0.63671875,
+          "intervened_completion": 0.498046875,
+          "delta_completion": -0.138671875,
+          "mean_switches": 0.0,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9140625,
+              "intervened": 0.9140625,
+              "delta": 0.0
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 1.0,
+              "delta": 0.0
+            },
+            "diagonal": {
+              "baseline": 0.9609375,
+              "intervened": 0.9609375,
+              "delta": 0.0
+            },
+            "isotropic": {
+              "baseline": 0.6796875,
+              "intervened": 0.7109375,
+              "delta": 0.03125
+            },
+            "sparse_long_range": {
+              "baseline": 0.25,
+              "intervened": 0.0,
+              "delta": -0.25
+            },
+            "multihop": {
+              "baseline": 0.6875,
+              "intervened": 0.171875,
+              "delta": -0.515625
+            },
+            "regime_shift": {
+              "baseline": 0.34375,
+              "intervened": 0.2265625,
+              "delta": -0.1171875
+            },
+            "corrupted_replica": {
+              "baseline": 0.2578125,
+              "intervened": 0.0,
+              "delta": -0.2578125
+            }
+          }
+        },
+        "shuffle_slow_state": {
+          "baseline_completion": 0.63671875,
+          "intervened_completion": 0.482421875,
+          "delta_completion": -0.154296875,
+          "mean_switches": 2.66015625,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9140625,
+              "intervened": 0.9609375,
+              "delta": 0.046875
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.921875,
+              "delta": -0.078125
+            },
+            "diagonal": {
+              "baseline": 0.9609375,
+              "intervened": 0.5625,
+              "delta": -0.3984375
+            },
+            "isotropic": {
+              "baseline": 0.6796875,
+              "intervened": 0.4765625,
+              "delta": -0.203125
+            },
+            "sparse_long_range": {
+              "baseline": 0.25,
+              "intervened": 0.1171875,
+              "delta": -0.1328125
+            },
+            "multihop": {
+              "baseline": 0.6875,
+              "intervened": 0.5234375,
+              "delta": -0.1640625
+            },
+            "regime_shift": {
+              "baseline": 0.34375,
+              "intervened": 0.15625,
+              "delta": -0.1875
+            },
+            "corrupted_replica": {
+              "baseline": 0.2578125,
+              "intervened": 0.140625,
+              "delta": -0.1171875
+            }
+          }
+        },
+        "remove_cross_proj_comm": {
+          "baseline_completion": 0.63671875,
+          "intervened_completion": 0.509765625,
+          "delta_completion": -0.126953125,
+          "mean_switches": 1.65234375,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9140625,
+              "intervened": 0.890625,
+              "delta": -0.0234375
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.9921875,
+              "delta": -0.0078125
+            },
+            "diagonal": {
+              "baseline": 0.9609375,
+              "intervened": 0.5703125,
+              "delta": -0.390625
+            },
+            "isotropic": {
+              "baseline": 0.6796875,
+              "intervened": 0.296875,
+              "delta": -0.3828125
+            },
+            "sparse_long_range": {
+              "baseline": 0.25,
+              "intervened": 0.2890625,
+              "delta": 0.0390625
+            },
+            "multihop": {
+              "baseline": 0.6875,
+              "intervened": 0.625,
+              "delta": -0.0625
+            },
+            "regime_shift": {
+              "baseline": 0.34375,
+              "intervened": 0.1796875,
+              "delta": -0.1640625
+            },
+            "corrupted_replica": {
+              "baseline": 0.2578125,
+              "intervened": 0.234375,
+              "delta": -0.0234375
+            }
+          }
+        },
+        "force_wrong_projection": {
+          "baseline_completion": 0.63671875,
+          "intervened_completion": 0.08203125,
+          "delta_completion": -0.5546875,
+          "mean_switches": 11.4443359375,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9140625,
+              "intervened": 0.0625,
+              "delta": -0.8515625
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.078125,
+              "delta": -0.921875
+            },
+            "diagonal": {
+              "baseline": 0.9609375,
+              "intervened": 0.3359375,
+              "delta": -0.625
+            },
+            "isotropic": {
+              "baseline": 0.6796875,
+              "intervened": 0.1484375,
+              "delta": -0.53125
+            },
+            "sparse_long_range": {
+              "baseline": 0.25,
+              "intervened": 0.0,
+              "delta": -0.25
+            },
+            "multihop": {
+              "baseline": 0.6875,
+              "intervened": 0.0078125,
+              "delta": -0.6796875
+            },
+            "regime_shift": {
+              "baseline": 0.34375,
+              "intervened": 0.0,
+              "delta": -0.34375
+            },
+            "corrupted_replica": {
+              "baseline": 0.2578125,
+              "intervened": 0.0234375,
+              "delta": -0.234375
+            }
+          }
+        },
+        "patch_slow_same_family": {
+          "baseline_completion": 0.63671875,
+          "intervened_completion": 0.572265625,
+          "delta_completion": -0.064453125,
+          "mean_switches": 1.0634765625,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9140625,
+              "intervened": 0.890625,
+              "delta": -0.0234375
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.921875,
+              "delta": -0.078125
+            },
+            "diagonal": {
+              "baseline": 0.9609375,
+              "intervened": 0.90625,
+              "delta": -0.0546875
+            },
+            "isotropic": {
+              "baseline": 0.6796875,
+              "intervened": 0.6484375,
+              "delta": -0.03125
+            },
+            "sparse_long_range": {
+              "baseline": 0.25,
+              "intervened": 0.28125,
+              "delta": 0.03125
+            },
+            "multihop": {
+              "baseline": 0.6875,
+              "intervened": 0.5,
+              "delta": -0.1875
+            },
+            "regime_shift": {
+              "baseline": 0.34375,
+              "intervened": 0.2109375,
+              "delta": -0.1328125
+            },
+            "corrupted_replica": {
+              "baseline": 0.2578125,
+              "intervened": 0.21875,
+              "delta": -0.0390625
+            }
+          },
+          "router_prob_l1_deviation": 0.13647405803203583
+        },
+        "patch_slow_cross_family": {
+          "baseline_completion": 0.63671875,
+          "intervened_completion": 0.486328125,
+          "delta_completion": -0.150390625,
+          "mean_switches": 0.6904296875,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9140625,
+              "intervened": 0.9609375,
+              "delta": 0.046875
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.7890625,
+              "delta": -0.2109375
+            },
+            "diagonal": {
+              "baseline": 0.9609375,
+              "intervened": 0.9453125,
+              "delta": -0.015625
+            },
+            "isotropic": {
+              "baseline": 0.6796875,
+              "intervened": 0.671875,
+              "delta": -0.0078125
+            },
+            "sparse_long_range": {
+              "baseline": 0.25,
+              "intervened": 0.0,
+              "delta": -0.25
+            },
+            "multihop": {
+              "baseline": 0.6875,
+              "intervened": 0.375,
+              "delta": -0.3125
+            },
+            "regime_shift": {
+              "baseline": 0.34375,
+              "intervened": 0.0234375,
+              "delta": -0.3203125
+            },
+            "corrupted_replica": {
+              "baseline": 0.2578125,
+              "intervened": 0.125,
+              "delta": -0.1328125
+            }
+          },
+          "donor_proj_prob_shift": 0.09849185714115603
+        }
+      }
+    },
+    "109": {
+      "family_telemetry": {
+        "horizontal": {
+          "completion": 0.9296875,
+          "mean_switches": 0.9375,
+          "mean_router_probs": [
+            0.43777793645858765,
+            0.0022064943332225084,
+            0.015628676861524582,
+            0.5443867444992065
+          ],
+          "mean_router_entropy": 0.39626142382621765,
+          "init_router_probs": [
+            0.9046094417572021,
+            0.0007609915919601917,
+            0.020770153030753136,
+            0.07385924458503723
+          ]
+        },
+        "vertical": {
+          "completion": 1.0,
+          "mean_switches": 0.5703125,
+          "mean_router_probs": [
+            0.03450848534703255,
+            0.594765841960907,
+            0.06970551609992981,
+            0.3010200560092926
+          ],
+          "mean_router_entropy": 0.5794886350631714,
+          "init_router_probs": [
+            0.0035076632630079985,
+            0.9550241827964783,
+            0.026016905903816223,
+            0.01545129157602787
+          ]
+        },
+        "diagonal": {
+          "completion": 1.0,
+          "mean_switches": 0.640625,
+          "mean_router_probs": [
+            0.09323883056640625,
+            0.013492472469806671,
+            0.03633777052164078,
+            0.8569309115409851
+          ],
+          "mean_router_entropy": 0.39175334572792053,
+          "init_router_probs": [
+            0.1607523411512375,
+            0.018014132976531982,
+            0.030336234718561172,
+            0.7908974885940552
+          ]
+        },
+        "isotropic": {
+          "completion": 0.71875,
+          "mean_switches": 0.6328125,
+          "mean_router_probs": [
+            0.1303737461566925,
+            0.07734870165586472,
+            0.242581307888031,
+            0.5496960878372192
+          ],
+          "mean_router_entropy": 0.7986661195755005,
+          "init_router_probs": [
+            0.11795961111783981,
+            0.08080757409334183,
+            0.358014315366745,
+            0.44321849942207336
+          ]
+        },
+        "sparse_long_range": {
+          "completion": 0.40625,
+          "mean_switches": 2.78125,
+          "mean_router_probs": [
+            0.28114157915115356,
+            0.22313916683197021,
+            0.30402013659477234,
+            0.1916990578174591
+          ],
+          "mean_router_entropy": 1.1429072618484497,
+          "init_router_probs": [
+            0.27118462324142456,
+            0.4980185627937317,
+            0.0880630686879158,
+            0.14273378252983093
+          ]
+        },
+        "multihop": {
+          "completion": 0.7265625,
+          "mean_switches": 1.2578125,
+          "mean_router_probs": [
+            0.3167167603969574,
+            0.2753165364265442,
+            0.105740986764431,
+            0.3022255003452301
+          ],
+          "mean_router_entropy": 0.6491255164146423,
+          "init_router_probs": [
+            0.3372133672237396,
+            0.31658679246902466,
+            0.053818102926015854,
+            0.2923817038536072
+          ]
+        },
+        "regime_shift": {
+          "completion": 0.3359375,
+          "mean_switches": 1.671875,
+          "mean_router_probs": [
+            0.34012460708618164,
+            0.26014620065689087,
+            0.21501058340072632,
+            0.18471823632717133
+          ],
+          "mean_router_entropy": 1.0162476301193237,
+          "init_router_probs": [
+            0.4231918454170227,
+            0.4165375530719757,
+            0.02195676602423191,
+            0.13831375539302826
+          ]
+        },
+        "corrupted_replica": {
+          "completion": 0.3125,
+          "mean_switches": 2.265625,
+          "mean_router_probs": [
+            0.27570870518684387,
+            0.26983124017715454,
+            0.1824243664741516,
+            0.2720355689525604
+          ],
+          "mean_router_entropy": 0.9540645480155945,
+          "init_router_probs": [
+            0.33612632751464844,
+            0.3327373266220093,
+            0.029280323535203934,
+            0.30185607075691223
+          ]
+        }
+      },
+      "switch_transition_matrix": [
+        [
+          0,
+          81,
+          164,
+          283
+        ],
+        [
+          211,
+          0,
+          59,
+          140
+        ],
+        [
+          102,
+          35,
+          0,
+          37
+        ],
+        [
+          178,
+          95,
+          18,
+          0
+        ]
+      ],
+      "linear_probes": {
+        "slow_state": {
+          "query_geometry_8way_acc": 0.7916259765625,
+          "active_projection_4way_acc": 0.8941650390625,
+          "search_progress_step_r2": 0.8328830392245634,
+          "solved_state_acc": 0.9815673828125,
+          "uncertainty_entropy_r2": 0.7427195183514603
+        },
+        "fast_state": {
+          "query_geometry_8way_acc": 0.8348388671875,
+          "active_projection_4way_acc": 0.933837890625,
+          "search_progress_step_r2": 0.6964164010250046,
+          "solved_state_acc": 0.9998779296875,
+          "uncertainty_entropy_r2": 0.7378562406667448
+        },
+        "chance_baselines": {
+          "query_geometry_8way_acc": 0.125,
+          "active_projection_4way_acc": 0.25,
+          "solved_state_majority_acc": 0.508544921875
+        }
+      },
+      "interventions": {
+        "freeze_router": {
+          "baseline_completion": 0.6787109375,
+          "intervened_completion": 0.556640625,
+          "delta_completion": -0.1220703125,
+          "mean_switches": 0.0,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9296875,
+              "intervened": 0.9375,
+              "delta": 0.0078125
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 1.0,
+              "delta": 0.0
+            },
+            "diagonal": {
+              "baseline": 1.0,
+              "intervened": 1.0,
+              "delta": 0.0
+            },
+            "isotropic": {
+              "baseline": 0.71875,
+              "intervened": 0.71875,
+              "delta": 0.0
+            },
+            "sparse_long_range": {
+              "baseline": 0.40625,
+              "intervened": 0.0,
+              "delta": -0.40625
+            },
+            "multihop": {
+              "baseline": 0.7265625,
+              "intervened": 0.234375,
+              "delta": -0.4921875
+            },
+            "regime_shift": {
+              "baseline": 0.3359375,
+              "intervened": 0.5625,
+              "delta": 0.2265625
+            },
+            "corrupted_replica": {
+              "baseline": 0.3125,
+              "intervened": 0.0,
+              "delta": -0.3125
+            }
+          }
+        },
+        "shuffle_slow_state": {
+          "baseline_completion": 0.6787109375,
+          "intervened_completion": 0.5166015625,
+          "delta_completion": -0.162109375,
+          "mean_switches": 2.3310546875,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9296875,
+              "intervened": 0.9453125,
+              "delta": 0.015625
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.9375,
+              "delta": -0.0625
+            },
+            "diagonal": {
+              "baseline": 1.0,
+              "intervened": 0.8203125,
+              "delta": -0.1796875
+            },
+            "isotropic": {
+              "baseline": 0.71875,
+              "intervened": 0.4609375,
+              "delta": -0.2578125
+            },
+            "sparse_long_range": {
+              "baseline": 0.40625,
+              "intervened": 0.1328125,
+              "delta": -0.2734375
+            },
+            "multihop": {
+              "baseline": 0.7265625,
+              "intervened": 0.5546875,
+              "delta": -0.171875
+            },
+            "regime_shift": {
+              "baseline": 0.3359375,
+              "intervened": 0.1171875,
+              "delta": -0.21875
+            },
+            "corrupted_replica": {
+              "baseline": 0.3125,
+              "intervened": 0.1640625,
+              "delta": -0.1484375
+            }
+          }
+        },
+        "remove_cross_proj_comm": {
+          "baseline_completion": 0.6787109375,
+          "intervened_completion": 0.6025390625,
+          "delta_completion": -0.076171875,
+          "mean_switches": 1.408203125,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9296875,
+              "intervened": 0.90625,
+              "delta": -0.0234375
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.9921875,
+              "delta": -0.0078125
+            },
+            "diagonal": {
+              "baseline": 1.0,
+              "intervened": 0.7421875,
+              "delta": -0.2578125
+            },
+            "isotropic": {
+              "baseline": 0.71875,
+              "intervened": 0.5234375,
+              "delta": -0.1953125
+            },
+            "sparse_long_range": {
+              "baseline": 0.40625,
+              "intervened": 0.421875,
+              "delta": 0.015625
+            },
+            "multihop": {
+              "baseline": 0.7265625,
+              "intervened": 0.625,
+              "delta": -0.1015625
+            },
+            "regime_shift": {
+              "baseline": 0.3359375,
+              "intervened": 0.3515625,
+              "delta": 0.015625
+            },
+            "corrupted_replica": {
+              "baseline": 0.3125,
+              "intervened": 0.2578125,
+              "delta": -0.0546875
+            }
+          }
+        },
+        "force_wrong_projection": {
+          "baseline_completion": 0.6787109375,
+          "intervened_completion": 0.1572265625,
+          "delta_completion": -0.521484375,
+          "mean_switches": 12.1708984375,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9296875,
+              "intervened": 0.1953125,
+              "delta": -0.734375
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.0625,
+              "delta": -0.9375
+            },
+            "diagonal": {
+              "baseline": 1.0,
+              "intervened": 0.5625,
+              "delta": -0.4375
+            },
+            "isotropic": {
+              "baseline": 0.71875,
+              "intervened": 0.375,
+              "delta": -0.34375
+            },
+            "sparse_long_range": {
+              "baseline": 0.40625,
+              "intervened": 0.0078125,
+              "delta": -0.3984375
+            },
+            "multihop": {
+              "baseline": 0.7265625,
+              "intervened": 0.046875,
+              "delta": -0.6796875
+            },
+            "regime_shift": {
+              "baseline": 0.3359375,
+              "intervened": 0.0,
+              "delta": -0.3359375
+            },
+            "corrupted_replica": {
+              "baseline": 0.3125,
+              "intervened": 0.0078125,
+              "delta": -0.3046875
+            }
+          }
+        },
+        "patch_slow_same_family": {
+          "baseline_completion": 0.6787109375,
+          "intervened_completion": 0.60546875,
+          "delta_completion": -0.0732421875,
+          "mean_switches": 1.1103515625,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9296875,
+              "intervened": 0.9453125,
+              "delta": 0.015625
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.9609375,
+              "delta": -0.0390625
+            },
+            "diagonal": {
+              "baseline": 1.0,
+              "intervened": 0.8359375,
+              "delta": -0.1640625
+            },
+            "isotropic": {
+              "baseline": 0.71875,
+              "intervened": 0.6953125,
+              "delta": -0.0234375
+            },
+            "sparse_long_range": {
+              "baseline": 0.40625,
+              "intervened": 0.4375,
+              "delta": 0.03125
+            },
+            "multihop": {
+              "baseline": 0.7265625,
+              "intervened": 0.53125,
+              "delta": -0.1953125
+            },
+            "regime_shift": {
+              "baseline": 0.3359375,
+              "intervened": 0.2734375,
+              "delta": -0.0625
+            },
+            "corrupted_replica": {
+              "baseline": 0.3125,
+              "intervened": 0.1640625,
+              "delta": -0.1484375
+            }
+          },
+          "router_prob_l1_deviation": 0.14298997819423676
+        },
+        "patch_slow_cross_family": {
+          "baseline_completion": 0.6787109375,
+          "intervened_completion": 0.4677734375,
+          "delta_completion": -0.2109375,
+          "mean_switches": 0.76171875,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.9296875,
+              "intervened": 0.953125,
+              "delta": 0.0234375
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.75,
+              "delta": -0.25
+            },
+            "diagonal": {
+              "baseline": 1.0,
+              "intervened": 0.90625,
+              "delta": -0.09375
+            },
+            "isotropic": {
+              "baseline": 0.71875,
+              "intervened": 0.6171875,
+              "delta": -0.1015625
+            },
+            "sparse_long_range": {
+              "baseline": 0.40625,
+              "intervened": 0.0,
+              "delta": -0.40625
+            },
+            "multihop": {
+              "baseline": 0.7265625,
+              "intervened": 0.4140625,
+              "delta": -0.3125
+            },
+            "regime_shift": {
+              "baseline": 0.3359375,
+              "intervened": 0.0390625,
+              "delta": -0.296875
+            },
+            "corrupted_replica": {
+              "baseline": 0.3125,
+              "intervened": 0.0625,
+              "delta": -0.25
+            }
+          },
+          "donor_proj_prob_shift": 0.07509316277914432
+        }
+      }
+    },
+    "113": {
+      "family_telemetry": {
+        "horizontal": {
+          "completion": 0.953125,
+          "mean_switches": 0.6875,
+          "mean_router_probs": [
+            0.7467904686927795,
+            0.020073508843779564,
+            0.06286798417568207,
+            0.17026786506175995
+          ],
+          "mean_router_entropy": 0.5785717964172363,
+          "init_router_probs": [
+            0.8933006525039673,
+            0.0006331913755275309,
+            0.030878275632858276,
+            0.07518777996301651
+          ]
+        },
+        "vertical": {
+          "completion": 1.0,
+          "mean_switches": 0.0,
+          "mean_router_probs": [
+            0.005311704706400633,
+            0.9462699890136719,
+            0.031221969053149223,
+            0.017195144668221474
+          ],
+          "mean_router_entropy": 0.2233027070760727,
+          "init_router_probs": [
+            0.0023275327403098345,
+            0.9632635712623596,
+            0.029052577912807465,
+            0.0053563970141112804
+          ]
+        },
+        "diagonal": {
+          "completion": 0.9296875,
+          "mean_switches": 1.21875,
+          "mean_router_probs": [
+            0.2433893233537674,
+            0.3424271047115326,
+            0.0735141783952713,
+            0.3406694233417511
+          ],
+          "mean_router_entropy": 0.8461023569107056,
+          "init_router_probs": [
+            0.15217556059360504,
+            0.03589194267988205,
+            0.05383243411779404,
+            0.758100152015686
+          ]
+        },
+        "isotropic": {
+          "completion": 0.6640625,
+          "mean_switches": 0.7265625,
+          "mean_router_probs": [
+            0.1472906470298767,
+            0.2593962252140045,
+            0.18787716329097748,
+            0.40543586015701294
+          ],
+          "mean_router_entropy": 0.8468182682991028,
+          "init_router_probs": [
+            0.1401965320110321,
+            0.09624382108449936,
+            0.2859293520450592,
+            0.4776301681995392
+          ]
+        },
+        "sparse_long_range": {
+          "completion": 0.3203125,
+          "mean_switches": 2.4296875,
+          "mean_router_probs": [
+            0.19128167629241943,
+            0.24246107041835785,
+            0.40064889192581177,
+            0.16560828685760498
+          ],
+          "mean_router_entropy": 1.0709437131881714,
+          "init_router_probs": [
+            0.25219669938087463,
+            0.4347967505455017,
+            0.1434611827135086,
+            0.16954533755779266
+          ]
+        },
+        "multihop": {
+          "completion": 0.6640625,
+          "mean_switches": 1.21875,
+          "mean_router_probs": [
+            0.3540719747543335,
+            0.28984335064888,
+            0.08453331142663956,
+            0.27155178785324097
+          ],
+          "mean_router_entropy": 0.6157436370849609,
+          "init_router_probs": [
+            0.2786412239074707,
+            0.3190167248249054,
+            0.12274271249771118,
+            0.2795993685722351
+          ]
+        },
+        "regime_shift": {
+          "completion": 0.5234375,
+          "mean_switches": 1.2734375,
+          "mean_router_probs": [
+            0.3419334888458252,
+            0.29968681931495667,
+            0.20623809099197388,
+            0.15214143693447113
+          ],
+          "mean_router_entropy": 0.913275957107544,
+          "init_router_probs": [
+            0.35805314779281616,
+            0.45456159114837646,
+            0.04779095947742462,
+            0.13959453999996185
+          ]
+        },
+        "corrupted_replica": {
+          "completion": 0.28125,
+          "mean_switches": 1.78125,
+          "mean_router_probs": [
+            0.235852912068367,
+            0.25314512848854065,
+            0.2975516617298126,
+            0.21345072984695435
+          ],
+          "mean_router_entropy": 0.806609570980072,
+          "init_router_probs": [
+            0.363704115152359,
+            0.39736053347587585,
+            0.030754027888178825,
+            0.20818118751049042
+          ]
+        }
+      },
+      "switch_transition_matrix": [
+        [
+          0,
+          117,
+          155,
+          88
+        ],
+        [
+          233,
+          0,
+          103,
+          50
+        ],
+        [
+          25,
+          73,
+          0,
+          17
+        ],
+        [
+          189,
+          159,
+          4,
+          0
+        ]
+      ],
+      "linear_probes": {
+        "slow_state": {
+          "query_geometry_8way_acc": 0.7730712890625,
+          "active_projection_4way_acc": 0.906494140625,
+          "search_progress_step_r2": 0.7811719358417873,
+          "solved_state_acc": 0.9820556640625,
+          "uncertainty_entropy_r2": 0.6475594738459522
+        },
+        "fast_state": {
+          "query_geometry_8way_acc": 0.7911376953125,
+          "active_projection_4way_acc": 0.948486328125,
+          "search_progress_step_r2": 0.7230803080845238,
+          "solved_state_acc": 1.0,
+          "uncertainty_entropy_r2": 0.6454325658599056
+        },
+        "chance_baselines": {
+          "query_geometry_8way_acc": 0.125,
+          "active_projection_4way_acc": 0.25,
+          "solved_state_majority_acc": 0.501953125
+        }
+      },
+      "interventions": {
+        "freeze_router": {
+          "baseline_completion": 0.6669921875,
+          "intervened_completion": 0.5205078125,
+          "delta_completion": -0.146484375,
+          "mean_switches": 0.0,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.953125,
+              "intervened": 0.9296875,
+              "delta": -0.0234375
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 1.0,
+              "delta": 0.0
+            },
+            "diagonal": {
+              "baseline": 0.9296875,
+              "intervened": 0.9296875,
+              "delta": 0.0
+            },
+            "isotropic": {
+              "baseline": 0.6640625,
+              "intervened": 0.6796875,
+              "delta": 0.015625
+            },
+            "sparse_long_range": {
+              "baseline": 0.3203125,
+              "intervened": 0.0,
+              "delta": -0.3203125
+            },
+            "multihop": {
+              "baseline": 0.6640625,
+              "intervened": 0.2109375,
+              "delta": -0.453125
+            },
+            "regime_shift": {
+              "baseline": 0.5234375,
+              "intervened": 0.390625,
+              "delta": -0.1328125
+            },
+            "corrupted_replica": {
+              "baseline": 0.28125,
+              "intervened": 0.0234375,
+              "delta": -0.2578125
+            }
+          }
+        },
+        "shuffle_slow_state": {
+          "baseline_completion": 0.6669921875,
+          "intervened_completion": 0.51953125,
+          "delta_completion": -0.1474609375,
+          "mean_switches": 2.3505859375,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.953125,
+              "intervened": 0.96875,
+              "delta": 0.015625
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.984375,
+              "delta": -0.015625
+            },
+            "diagonal": {
+              "baseline": 0.9296875,
+              "intervened": 0.7890625,
+              "delta": -0.140625
+            },
+            "isotropic": {
+              "baseline": 0.6640625,
+              "intervened": 0.5234375,
+              "delta": -0.140625
+            },
+            "sparse_long_range": {
+              "baseline": 0.3203125,
+              "intervened": 0.0859375,
+              "delta": -0.234375
+            },
+            "multihop": {
+              "baseline": 0.6640625,
+              "intervened": 0.5234375,
+              "delta": -0.140625
+            },
+            "regime_shift": {
+              "baseline": 0.5234375,
+              "intervened": 0.1015625,
+              "delta": -0.421875
+            },
+            "corrupted_replica": {
+              "baseline": 0.28125,
+              "intervened": 0.1796875,
+              "delta": -0.1015625
+            }
+          }
+        },
+        "remove_cross_proj_comm": {
+          "baseline_completion": 0.6669921875,
+          "intervened_completion": 0.5087890625,
+          "delta_completion": -0.158203125,
+          "mean_switches": 1.2919921875,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.953125,
+              "intervened": 0.921875,
+              "delta": -0.03125
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 1.0,
+              "delta": 0.0
+            },
+            "diagonal": {
+              "baseline": 0.9296875,
+              "intervened": 0.3671875,
+              "delta": -0.5625
+            },
+            "isotropic": {
+              "baseline": 0.6640625,
+              "intervened": 0.2734375,
+              "delta": -0.390625
+            },
+            "sparse_long_range": {
+              "baseline": 0.3203125,
+              "intervened": 0.265625,
+              "delta": -0.0546875
+            },
+            "multihop": {
+              "baseline": 0.6640625,
+              "intervened": 0.5390625,
+              "delta": -0.125
+            },
+            "regime_shift": {
+              "baseline": 0.5234375,
+              "intervened": 0.4921875,
+              "delta": -0.03125
+            },
+            "corrupted_replica": {
+              "baseline": 0.28125,
+              "intervened": 0.2109375,
+              "delta": -0.0703125
+            }
+          }
+        },
+        "force_wrong_projection": {
+          "baseline_completion": 0.6669921875,
+          "intervened_completion": 0.1123046875,
+          "delta_completion": -0.5546875,
+          "mean_switches": 9.1953125,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.953125,
+              "intervened": 0.109375,
+              "delta": -0.84375
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.0390625,
+              "delta": -0.9609375
+            },
+            "diagonal": {
+              "baseline": 0.9296875,
+              "intervened": 0.40625,
+              "delta": -0.5234375
+            },
+            "isotropic": {
+              "baseline": 0.6640625,
+              "intervened": 0.296875,
+              "delta": -0.3671875
+            },
+            "sparse_long_range": {
+              "baseline": 0.3203125,
+              "intervened": 0.0390625,
+              "delta": -0.28125
+            },
+            "multihop": {
+              "baseline": 0.6640625,
+              "intervened": 0.0,
+              "delta": -0.6640625
+            },
+            "regime_shift": {
+              "baseline": 0.5234375,
+              "intervened": 0.0,
+              "delta": -0.5234375
+            },
+            "corrupted_replica": {
+              "baseline": 0.28125,
+              "intervened": 0.0078125,
+              "delta": -0.2734375
+            }
+          }
+        },
+        "patch_slow_same_family": {
+          "baseline_completion": 0.6669921875,
+          "intervened_completion": 0.5771484375,
+          "delta_completion": -0.08984375,
+          "mean_switches": 0.9482421875,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.953125,
+              "intervened": 0.859375,
+              "delta": -0.09375
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 1.0,
+              "delta": 0.0
+            },
+            "diagonal": {
+              "baseline": 0.9296875,
+              "intervened": 0.9140625,
+              "delta": -0.015625
+            },
+            "isotropic": {
+              "baseline": 0.6640625,
+              "intervened": 0.65625,
+              "delta": -0.0078125
+            },
+            "sparse_long_range": {
+              "baseline": 0.3203125,
+              "intervened": 0.1796875,
+              "delta": -0.140625
+            },
+            "multihop": {
+              "baseline": 0.6640625,
+              "intervened": 0.4921875,
+              "delta": -0.171875
+            },
+            "regime_shift": {
+              "baseline": 0.5234375,
+              "intervened": 0.28125,
+              "delta": -0.2421875
+            },
+            "corrupted_replica": {
+              "baseline": 0.28125,
+              "intervened": 0.234375,
+              "delta": -0.046875
+            }
+          },
+          "router_prob_l1_deviation": 0.11861185729503632
+        },
+        "patch_slow_cross_family": {
+          "baseline_completion": 0.6669921875,
+          "intervened_completion": 0.4931640625,
+          "delta_completion": -0.173828125,
+          "mean_switches": 0.6044921875,
+          "per_family": {
+            "horizontal": {
+              "baseline": 0.953125,
+              "intervened": 0.7265625,
+              "delta": -0.2265625
+            },
+            "vertical": {
+              "baseline": 1.0,
+              "intervened": 0.9609375,
+              "delta": -0.0390625
+            },
+            "diagonal": {
+              "baseline": 0.9296875,
+              "intervened": 0.96875,
+              "delta": 0.0390625
+            },
+            "isotropic": {
+              "baseline": 0.6640625,
+              "intervened": 0.65625,
+              "delta": -0.0078125
+            },
+            "sparse_long_range": {
+              "baseline": 0.3203125,
+              "intervened": 0.0,
+              "delta": -0.3203125
+            },
+            "multihop": {
+              "baseline": 0.6640625,
+              "intervened": 0.40625,
+              "delta": -0.2578125
+            },
+            "regime_shift": {
+              "baseline": 0.5234375,
+              "intervened": 0.046875,
+              "delta": -0.4765625
+            },
+            "corrupted_replica": {
+              "baseline": 0.28125,
+              "intervened": 0.1796875,
+              "delta": -0.1015625
+            }
+          },
+          "donor_proj_prob_shift": 0.11135391948894995
+        }
+      }
+    }
+  }
+}

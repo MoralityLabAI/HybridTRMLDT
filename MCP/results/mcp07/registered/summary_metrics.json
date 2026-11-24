@@ -1,0 +1,650 @@
+{
+  "experiment_id": "MCP-07-ADAPTIVE-GEOMETRY-V1",
+  "mode": "registered_full",
+  "manifest_sha256": "4ac105df37ec9328e8b4088a1536396c5f5b3b7af62a7720a3a6c9be9c319b3b",
+  "threads": 6,
+  "seeds": [
+    107,
+    109,
+    113
+  ],
+  "capacities": [
+    16384,
+    24576,
+    32768,
+    65536,
+    131072
+  ],
+  "budgets": [
+    4,
+    8,
+    16,
+    32
+  ],
+  "corruptions": [
+    0.0,
+    0.05,
+    0.15
+  ],
+  "roots_per_family_per_seed": 128,
+  "total_episodes_evaluated": 3317760,
+  "total_failed_episodes": 2285364,
+  "wall_seconds": 3402.3781672999903,
+  "peak_process_rss_bytes": 709492736,
+  "peak_process_rss_mib": 676.62,
+  "parameter_counts": {
+    "54K_switch": {
+      "total_params": 54460,
+      "active_params": 54460,
+      "router_params": 4516,
+      "comm_params": 272
+    },
+    "54K_fixed": {
+      "total_params": 61068,
+      "active_params": 56024,
+      "router_params": 4772,
+      "comm_params": 272
+    },
+    "54K_nocomm": {
+      "total_params": 54460,
+      "active_params": 54188,
+      "router_params": 4516,
+      "comm_params": 272
+    },
+    "116K_switch": {
+      "total_params": 117224,
+      "active_params": 117224,
+      "router_params": 9652,
+      "comm_params": 420
+    }
+  },
+  "train_telemetry": {
+    "107": {
+      "fixed_row": {
+        "teacher_verified_rate": 1.0,
+        "dagger_16k_onpolicy_rate": 0.2316715542521994,
+        "final_train_loss": 0.5978558442809365,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 89.5646820999973
+      },
+      "fixed_col": {
+        "teacher_verified_rate": 0.99951171875,
+        "dagger_16k_onpolicy_rate": 0.26099706744868034,
+        "final_train_loss": 0.5274607877839695,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 89.67873929999769
+      },
+      "fixed_hilbert": {
+        "teacher_verified_rate": 0.958984375,
+        "dagger_16k_onpolicy_rate": 0.20381231671554254,
+        "final_train_loss": 0.8435177234086123,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 95.55621870001778
+      },
+      "fixed_morton": {
+        "teacher_verified_rate": 0.998046875,
+        "dagger_16k_onpolicy_rate": 0.1935483870967742,
+        "final_train_loss": 0.8227339359846982,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 96.02269769998384
+      },
+      "fixed_rand_coloc": {
+        "teacher_verified_rate": 0.8984375,
+        "dagger_16k_onpolicy_rate": 0.024926686217008796,
+        "final_train_loss": 1.0073597512461923,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 108.27764640000532
+      },
+      "fixed_rand_full": {
+        "teacher_verified_rate": 0.94580078125,
+        "dagger_16k_onpolicy_rate": 0.04985337243401759,
+        "final_train_loss": 1.1900750181891702,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 98.57010250000167
+      },
+      "router_single": {
+        "teacher_verified_rate": 1.0,
+        "dagger_16k_onpolicy_rate": 0.3651026392961877,
+        "final_train_loss": 0.887903013012626,
+        "total_params": 54460,
+        "active_params": 54460,
+        "router_params": 4516,
+        "comm_params": 272,
+        "train_seconds": 98.40295450002304
+      },
+      "recurrent_switch": {
+        "teacher_verified_rate": 0.99755859375,
+        "dagger_16k_onpolicy_rate": 0.5,
+        "final_train_loss": 1.3263169472867793,
+        "total_params": 54460,
+        "active_params": 54460,
+        "router_params": 4516,
+        "comm_params": 272,
+        "train_seconds": 118.14773329999298
+      }
+    },
+    "109": {
+      "fixed_row": {
+        "teacher_verified_rate": 1.0,
+        "dagger_16k_onpolicy_rate": 0.2287390029325513,
+        "final_train_loss": 0.60135786912658,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 91.68414749999647
+      },
+      "fixed_col": {
+        "teacher_verified_rate": 1.0,
+        "dagger_16k_onpolicy_rate": 0.27126099706744866,
+        "final_train_loss": 0.5343358760530298,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 95.39142319999519
+      },
+      "fixed_hilbert": {
+        "teacher_verified_rate": 0.9638671875,
+        "dagger_16k_onpolicy_rate": 0.1158357771260997,
+        "final_train_loss": 0.8680606782436371,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 103.19516330002807
+      },
+      "fixed_morton": {
+        "teacher_verified_rate": 0.99853515625,
+        "dagger_16k_onpolicy_rate": 0.16422287390029325,
+        "final_train_loss": 0.834202148697593,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 106.47726990000228
+      },
+      "fixed_rand_coloc": {
+        "teacher_verified_rate": 0.89697265625,
+        "dagger_16k_onpolicy_rate": 0.02785923753665689,
+        "final_train_loss": 1.008561540733684,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 111.13447520000045
+      },
+      "fixed_rand_full": {
+        "teacher_verified_rate": 0.9609375,
+        "dagger_16k_onpolicy_rate": 0.06451612903225806,
+        "final_train_loss": 1.1597541516477412,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 107.99756950000301
+      },
+      "router_single": {
+        "teacher_verified_rate": 1.0,
+        "dagger_16k_onpolicy_rate": 0.3812316715542522,
+        "final_train_loss": 0.9038806422190233,
+        "total_params": 54460,
+        "active_params": 54460,
+        "router_params": 4516,
+        "comm_params": 272,
+        "train_seconds": 98.92639850001433
+      },
+      "recurrent_switch": {
+        "teacher_verified_rate": 0.99951171875,
+        "dagger_16k_onpolicy_rate": 0.5630498533724341,
+        "final_train_loss": 1.3432536341927268,
+        "total_params": 54460,
+        "active_params": 54460,
+        "router_params": 4516,
+        "comm_params": 272,
+        "train_seconds": 114.39562729999307
+      }
+    },
+    "113": {
+      "fixed_row": {
+        "teacher_verified_rate": 1.0,
+        "dagger_16k_onpolicy_rate": 0.21700879765395895,
+        "final_train_loss": 0.6014223830266432,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 92.8315702000109
+      },
+      "fixed_col": {
+        "teacher_verified_rate": 0.99951171875,
+        "dagger_16k_onpolicy_rate": 0.23460410557184752,
+        "final_train_loss": 0.5481213669885289,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 98.63755479999236
+      },
+      "fixed_hilbert": {
+        "teacher_verified_rate": 0.9521484375,
+        "dagger_16k_onpolicy_rate": 0.18328445747800587,
+        "final_train_loss": 0.8380239524624564,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 105.82879260001937
+      },
+      "fixed_morton": {
+        "teacher_verified_rate": 0.99560546875,
+        "dagger_16k_onpolicy_rate": 0.18621700879765396,
+        "final_train_loss": 0.8455361886457964,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 101.82632650001324
+      },
+      "fixed_rand_coloc": {
+        "teacher_verified_rate": 0.89404296875,
+        "dagger_16k_onpolicy_rate": 0.021994134897360705,
+        "final_train_loss": 1.000731115991419,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 108.0050801000034
+      },
+      "fixed_rand_full": {
+        "teacher_verified_rate": 0.94921875,
+        "dagger_16k_onpolicy_rate": 0.04985337243401759,
+        "final_train_loss": 1.160415768623352,
+        "total_params": 61068,
+        "active_params": 56024,
+        "router_params": 4772,
+        "comm_params": 272,
+        "train_seconds": 106.82008570001926
+      },
+      "router_single": {
+        "teacher_verified_rate": 1.0,
+        "dagger_16k_onpolicy_rate": 0.35777126099706746,
+        "final_train_loss": 0.9328737773678519,
+        "total_params": 54460,
+        "active_params": 54460,
+        "router_params": 4516,
+        "comm_params": 272,
+        "train_seconds": 92.25293399998918
+      },
+      "recurrent_switch": {
+        "teacher_verified_rate": 0.998046875,
+        "dagger_16k_onpolicy_rate": 0.4970674486803519,
+        "final_train_loss": 1.3420272957194934,
+        "total_params": 54460,
+        "active_params": 54460,
+        "router_params": 4516,
+        "comm_params": 272,
+        "train_seconds": 110.62493640001048
+      }
+    }
+  },
+  "gates": {
+    "primary_gate": {
+      "status": "PASS",
+      "threshold_pp": 5.0,
+      "best_fixed_non_oracle_all": "det_row",
+      "best_fixed_deterministic": "det_row",
+      "best_fixed_learned": "fixed_col",
+      "fixed_arm_completions_32k_b16_c0": {
+        "det_row": 0.474609375,
+        "det_col": 0.4228515625,
+        "det_hilbert": 0.419921875,
+        "det_morton": 0.314453125,
+        "det_rand_coloc": 0.017252604166666668,
+        "det_rand_full": 0.034505208333333336,
+        "fixed_row": 0.3434244791666667,
+        "fixed_col": 0.4482421875,
+        "fixed_hilbert": 0.23111979166666666,
+        "fixed_morton": 0.2786458333333333,
+        "fixed_rand_coloc": 0.015299479166666666,
+        "fixed_rand_full": 0.0283203125
+      },
+      "recurrent_switch_completion": 0.6608072916666666,
+      "hier_adaptive_completion": 0.6608072916666666,
+      "delta_vs_best_fixed_all_bootstrap": {
+        "point": 0.18619791666666666,
+        "ci95_low": 0.16405436197916667,
+        "ci95_high": 0.2080159505208333,
+        "prob_gt_zero": 1.0,
+        "n_pairs": 3072
+      },
+      "delta_vs_best_fixed_learned_bootstrap": {
+        "point": 0.21256510416666666,
+        "ci95_low": 0.1923828125,
+        "ci95_high": 0.23308105468749996,
+        "prob_gt_zero": 1.0,
+        "n_pairs": 3072
+      },
+      "delta_adaptive_vs_best_fixed_all_bootstrap": {
+        "point": 0.18619791666666666,
+        "ci95_low": 0.16471354166666666,
+        "ci95_high": 0.20866699218749996,
+        "prob_gt_zero": 1.0,
+        "n_pairs": 3072
+      },
+      "delta_vs_single_router_bootstrap": {
+        "point": 0.17122395833333334,
+        "ci95_low": 0.15234375,
+        "ci95_high": 0.1904296875,
+        "prob_gt_zero": 1.0,
+        "n_pairs": 3072
+      },
+      "delta_vs_det_router_bootstrap": {
+        "point": 0.0654296875,
+        "ci95_low": 0.042643229166666664,
+        "ci95_high": 0.08529459635416661,
+        "prob_gt_zero": 1.0,
+        "n_pairs": 3072
+      },
+      "delta_vs_rand_routing_bootstrap": {
+        "point": 0.3997395833333333,
+        "ci95_low": 0.3795572916666667,
+        "ci95_high": 0.4192708333333333,
+        "prob_gt_zero": 1.0,
+        "n_pairs": 3072
+      },
+      "oracle_minus_switch_bootstrap": {
+        "point": 0.19563802083333334,
+        "ci95_low": 0.17936197916666666,
+        "ci95_high": 0.21158854166666666,
+        "prob_gt_zero": 1.0,
+        "n_pairs": 3072
+      }
+    },
+    "secondary_gate": {
+      "status": "PASS",
+      "min_read_reduction_pct": 15.0,
+      "max_completion_loss_pp": 1.0,
+      "fixed_budget_mean_charged_reads": 515.7229817708334,
+      "adaptive_mean_charged_reads": 275.7711588541667,
+      "read_reduction_bootstrap": {
+        "point": 0.4652726975492662,
+        "ci95_low": 0.4510978664228914,
+        "ci95_high": 0.4786474760423046,
+        "prob_gt_zero": 1.0,
+        "n_pairs": 3072
+      },
+      "completion_loss_bootstrap": {
+        "point": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0,
+        "prob_gt_zero": 0.0,
+        "n_pairs": 3072
+      }
+    },
+    "per_seed_32k_b16_c0": {
+      "107": {
+        "recurrent_switch": 0.63671875,
+        "hier_adaptive": 0.63671875,
+        "best_fixed_all": 0.4755859375,
+        "best_fixed_learned": 0.421875,
+        "delta_vs_best_fixed_all": 0.1611328125,
+        "delta_vs_best_fixed_learned": 0.21484375,
+        "sec_read_reduction": 0.4564472593327301,
+        "sec_comp_loss": 0.0
+      },
+      "109": {
+        "recurrent_switch": 0.6787109375,
+        "hier_adaptive": 0.6787109375,
+        "best_fixed_all": 0.4697265625,
+        "best_fixed_learned": 0.4423828125,
+        "delta_vs_best_fixed_all": 0.208984375,
+        "delta_vs_best_fixed_learned": 0.236328125,
+        "sec_read_reduction": 0.4732925016802825,
+        "sec_comp_loss": 0.0
+      },
+      "113": {
+        "recurrent_switch": 0.6669921875,
+        "hier_adaptive": 0.6669921875,
+        "best_fixed_all": 0.478515625,
+        "best_fixed_learned": 0.48046875,
+        "delta_vs_best_fixed_all": 0.1884765625,
+        "delta_vs_best_fixed_learned": 0.1865234375,
+        "sec_read_reduction": 0.46608085424031953,
+        "sec_comp_loss": 0.0
+      }
+    },
+    "per_family_32k_b16_c0": {
+      "horizontal": {
+        "det_row": 0.8177083333333334,
+        "det_col": 0.4114583333333333,
+        "det_hilbert": 0.5546875,
+        "det_morton": 0.5703125,
+        "det_rand_coloc": 0.013020833333333334,
+        "det_rand_full": 0.059895833333333336,
+        "det_router": 0.8177083333333334,
+        "fixed_row": 0.9479166666666666,
+        "fixed_col": 0.4348958333333333,
+        "fixed_hilbert": 0.20572916666666666,
+        "fixed_morton": 0.4244791666666667,
+        "fixed_rand_coloc": 0.010416666666666666,
+        "fixed_rand_full": 0.033854166666666664,
+        "router_single": 0.8958333333333334,
+        "recurrent_switch": 0.9322916666666666,
+        "hier_adaptive": 0.9322916666666666,
+        "rand_routing": 0.3880208333333333,
+        "oracle_proj": 0.9583333333333334,
+        "delta_switch_minus_best_fixed_all": 0.11458333333333326
+      },
+      "vertical": {
+        "det_row": 0.3307291666666667,
+        "det_col": 0.6979166666666666,
+        "det_hilbert": 0.515625,
+        "det_morton": 0.13541666666666666,
+        "det_rand_coloc": 0.026041666666666668,
+        "det_rand_full": 0.028645833333333332,
+        "det_router": 0.6979166666666666,
+        "fixed_row": 0.296875,
+        "fixed_col": 1.0,
+        "fixed_hilbert": 0.2630208333333333,
+        "fixed_morton": 0.2578125,
+        "fixed_rand_coloc": 0.0234375,
+        "fixed_rand_full": 0.0234375,
+        "router_single": 0.9375,
+        "recurrent_switch": 1.0,
+        "hier_adaptive": 1.0,
+        "rand_routing": 0.453125,
+        "oracle_proj": 1.0,
+        "delta_switch_minus_best_fixed_all": 0.6692708333333333
+      },
+      "diagonal": {
+        "det_row": 0.5859375,
+        "det_col": 0.46875,
+        "det_hilbert": 0.8932291666666666,
+        "det_morton": 0.7239583333333334,
+        "det_rand_coloc": 0.020833333333333332,
+        "det_rand_full": 0.036458333333333336,
+        "det_router": 0.5859375,
+        "fixed_row": 0.4739583333333333,
+        "fixed_col": 0.5859375,
+        "fixed_hilbert": 0.8020833333333334,
+        "fixed_morton": 0.7473958333333334,
+        "fixed_rand_coloc": 0.018229166666666668,
+        "fixed_rand_full": 0.0390625,
+        "router_single": 0.8671875,
+        "recurrent_switch": 0.9635416666666666,
+        "hier_adaptive": 0.9635416666666666,
+        "rand_routing": 0.4479166666666667,
+        "oracle_proj": 0.984375,
+        "delta_switch_minus_best_fixed_all": 0.37760416666666663
+      },
+      "isotropic": {
+        "det_row": 0.9453125,
+        "det_col": 0.9557291666666666,
+        "det_hilbert": 0.8515625,
+        "det_morton": 0.8255208333333334,
+        "det_rand_coloc": 0.010416666666666666,
+        "det_rand_full": 0.0390625,
+        "det_router": 0.8489583333333334,
+        "fixed_row": 0.4348958333333333,
+        "fixed_col": 0.7708333333333334,
+        "fixed_hilbert": 0.3619791666666667,
+        "fixed_morton": 0.28125,
+        "fixed_rand_coloc": 0.026041666666666668,
+        "fixed_rand_full": 0.013020833333333334,
+        "router_single": 0.4270833333333333,
+        "recurrent_switch": 0.6875,
+        "hier_adaptive": 0.6875,
+        "rand_routing": 0.4765625,
+        "oracle_proj": 0.8828125,
+        "delta_switch_minus_best_fixed_all": -0.2578125
+      },
+      "sparse_long_range": {
+        "det_row": 0.125,
+        "det_col": 0.0,
+        "det_hilbert": 0.0,
+        "det_morton": 0.013020833333333334,
+        "det_rand_coloc": 0.026041666666666668,
+        "det_rand_full": 0.0390625,
+        "det_router": 0.3645833333333333,
+        "fixed_row": 0.0859375,
+        "fixed_col": 0.0,
+        "fixed_hilbert": 0.041666666666666664,
+        "fixed_morton": 0.2109375,
+        "fixed_rand_coloc": 0.028645833333333332,
+        "fixed_rand_full": 0.0390625,
+        "router_single": 0.15364583333333334,
+        "recurrent_switch": 0.3255208333333333,
+        "hier_adaptive": 0.3255208333333333,
+        "rand_routing": 0.057291666666666664,
+        "oracle_proj": 0.7916666666666666,
+        "delta_switch_minus_best_fixed_all": 0.20052083333333331
+      },
+      "multihop": {
+        "det_row": 0.2864583333333333,
+        "det_col": 0.3255208333333333,
+        "det_hilbert": 0.3697916666666667,
+        "det_morton": 0.21875,
+        "det_rand_coloc": 0.0,
+        "det_rand_full": 0.0,
+        "det_router": 0.4661458333333333,
+        "fixed_row": 0.19010416666666666,
+        "fixed_col": 0.4114583333333333,
+        "fixed_hilbert": 0.06510416666666667,
+        "fixed_morton": 0.09635416666666667,
+        "fixed_rand_coloc": 0.0,
+        "fixed_rand_full": 0.0,
+        "router_single": 0.2942708333333333,
+        "recurrent_switch": 0.6927083333333334,
+        "hier_adaptive": 0.6927083333333334,
+        "rand_routing": 0.10677083333333333,
+        "oracle_proj": 0.8541666666666666,
+        "delta_switch_minus_best_fixed_all": 0.40625000000000006
+      },
+      "regime_shift": {
+        "det_row": 0.53125,
+        "det_col": 0.3697916666666667,
+        "det_hilbert": 0.1015625,
+        "det_morton": 0.013020833333333334,
+        "det_rand_coloc": 0.028645833333333332,
+        "det_rand_full": 0.044270833333333336,
+        "det_router": 0.7213541666666666,
+        "fixed_row": 0.11197916666666667,
+        "fixed_col": 0.203125,
+        "fixed_hilbert": 0.052083333333333336,
+        "fixed_morton": 0.046875,
+        "fixed_rand_coloc": 0.0078125,
+        "fixed_rand_full": 0.028645833333333332,
+        "router_single": 0.22395833333333334,
+        "recurrent_switch": 0.4010416666666667,
+        "hier_adaptive": 0.4010416666666667,
+        "rand_routing": 0.13541666666666666,
+        "oracle_proj": 0.6484375,
+        "delta_switch_minus_best_fixed_all": -0.13020833333333331
+      },
+      "corrupted_replica": {
+        "det_row": 0.17447916666666666,
+        "det_col": 0.15364583333333334,
+        "det_hilbert": 0.07291666666666667,
+        "det_morton": 0.015625,
+        "det_rand_coloc": 0.013020833333333334,
+        "det_rand_full": 0.028645833333333332,
+        "det_router": 0.2604166666666667,
+        "fixed_row": 0.20572916666666666,
+        "fixed_col": 0.1796875,
+        "fixed_hilbert": 0.057291666666666664,
+        "fixed_morton": 0.1640625,
+        "fixed_rand_coloc": 0.0078125,
+        "fixed_rand_full": 0.049479166666666664,
+        "router_single": 0.1171875,
+        "recurrent_switch": 0.2838541666666667,
+        "hier_adaptive": 0.2838541666666667,
+        "rand_routing": 0.0234375,
+        "oracle_proj": 0.7317708333333334,
+        "delta_switch_minus_best_fixed_all": 0.10937500000000003
+      }
+    }
+  },
+  "native_status": "completed_separate_from_synthetic",
+  "receipt_hashes": {
+    "manifest.json": "4ac105df37ec9328e8b4088a1536396c5f5b3b7af62a7720a3a6c9be9c319b3b",
+    "roots.jsonl.gz": "6e888f4fe7c76b2ce47248db0feac0dd5b9fce6f736db14dff242edf2c1937ad",
+    "failed_episodes.jsonl.gz": "89da6ef0625399ce9d020ee0072f1245041c57763cd42ebe7f41307a02fb82d8",
+    "107-fixed_row.pt": "cf298b1a940e20cadd6fe79ee72f01886150e22c4d235c38007961e4bb7673b1",
+    "107-fixed_col.pt": "fc8076d9d972e131df7015b56c31f4fd936e68be13c56881052dcf79fb688fd7",
+    "107-fixed_hilbert.pt": "37dd5dff3a8d4f4c62a9dd6e75440ec2d94aa1f9cebe4a2d6a109ece01c187a6",
+    "107-fixed_morton.pt": "e25853a29c43ab7bee6e85a0d0c73b6b162d8d007542baf99a653a7726b6b543",
+    "107-fixed_rand_coloc.pt": "0f7a58a128c85773fc821922b39bcf68b17b73d97f77b4c4ce71f12f4a3bd738",
+    "107-fixed_rand_full.pt": "10f80cd3a37f2ae762e898547ccec2ba2cc16021ddacc8c3bd68264b8ad973ed",
+    "107-router_single.pt": "7e871919eda1ff1c5c56e9c35db728298d5e39093619602ac2b2736f0163381c",
+    "107-recurrent_switch.pt": "98d3b163a9a6191025f9bcda842685641b3da9687f63cb9c93177b382358a725",
+    "109-fixed_row.pt": "1b3df4f8e91bb5116b88b92204aeb0cafeec2e73d3395e0e2d20b7678b5dd87e",
+    "109-fixed_col.pt": "65e6490e88d3d590e63f13ec17525233113fe6f4ac3356412fbde7d9d3f974f1",
+    "109-fixed_hilbert.pt": "4bd9212dc0021d4f6832c085cf212db201b0c25cc5a08e24c61b0ee85e888eed",
+    "109-fixed_morton.pt": "c0cecae08140366a56492fc856ae78ed6372c6954fe268585772989d274e50a6",
+    "109-fixed_rand_coloc.pt": "065aea431943a5038ea2a290dec1949429c8fcdf5c68894a2d81ce5089de2ec1",
+    "109-fixed_rand_full.pt": "6ded307b850f73177ecc49cf58604d5f0ec5237f6ee7d6fcac8393b91fecc262",
+    "109-router_single.pt": "818abff62d3fdcbea3af53052cfe438425fa9bb16602cb90fd29ad4d0ed3092d",
+    "109-recurrent_switch.pt": "f6f85da3a2499996f3fa023dc6bcd4cb5c92e241c036f50f9c3219481fb874a7",
+    "113-fixed_row.pt": "31a6734d211f2e52316cd6abe3588d23c8b4da48edb467fb40a5a2fbc6d57768",
+    "113-fixed_col.pt": "a33291e3baf86ad67025e7f55931089c49c8d91370039459895c1c04c833b8ae",
+    "113-fixed_hilbert.pt": "9b62d9350288aca2cc446b35f7ec70a76a7af0e51b3cc99ee55cc9d28ea5715c",
+    "113-fixed_morton.pt": "857a553bae7912ff16f809131d8e2c101b214ca34b03683367624bf045cc0b88",
+    "113-fixed_rand_coloc.pt": "66476fa48b486c65ea9f1d45e1b773db485ac2c9840e96ddb7b355388244604f",
+    "113-fixed_rand_full.pt": "1c32608e1667d660860874d1b1a08184dc82c3b7fd7379e357e844397cb0eb77",
+    "113-router_single.pt": "ac50c9d77409a4114acab7cb3fb9839529192fbc85bf2deeb698314855c716bf",
+    "113-recurrent_switch.pt": "314fe25d80df5cb1727a1717391e5672ee7bf7f259a7c871586975f7e251e514",
+    "107-ablation-single_best_54k.pt": "050c224a9db4b736fd582adad751075edd81fe2e56adf1357e6c5cdd86d5729a",
+    "107-ablation-no_comm_54k.pt": "f240d6ef452de4bd47927c0e019ad3b55d70a701e8046f7e25a5d1fa59c7f59a",
+    "107-ablation-scaled_116k.pt": "73490ea4efe1a536ee421c6cc5f38bccaa3255a4100f004884457f86bd5f910e",
+    "109-ablation-single_best_54k.pt": "7c1453f6286f387d3376f1d0c05ed2a9375e7e355c78fe4fc538c475e663374b",
+    "109-ablation-no_comm_54k.pt": "fd03f5bc11c83a785149a49168cb2a5fff232f38369fc066cf91b82c00a9d306",
+    "109-ablation-scaled_116k.pt": "2c87fba8453da8af488a61e0106465a8bad615b3399777533827056b22513ff5",
+    "113-ablation-single_best_54k.pt": "68fe3e1555e8db586bd641b449747516c8dc6c583dd473276096408b56fc2a63",
+    "113-ablation-no_comm_54k.pt": "05c4a48c022c78bbc15db00b3eb2cc569f0da7d03d03da205a8c6f99480704e2",
+    "113-ablation-scaled_116k.pt": "69f5e6cac70f8c062e2b514ce085f50855ef72692d10b7394166f5d7c97672c4",
+    "107-shift-recurrent_switch.pt": "630473b967dc153d4e2d066865f144119936b974641f00f758846e6597f37d41",
+    "109-shift-recurrent_switch.pt": "0167a01eea3e7beab70df2bcd5e6d2b40f5caac4210a2a608b0a6c8040a65713",
+    "113-shift-recurrent_switch.pt": "00ed9bd54f199427779c70854f3641a3f96c243e91cd6c1850ba64292c6a51b7"
+  },
+  "raw_summary_json_sha256": "c1cb525df8604b9d05d293ac7fb8554ce8de5814d54308e25375fa6bb5867fcd",
+  "rows_count": 25920
+}

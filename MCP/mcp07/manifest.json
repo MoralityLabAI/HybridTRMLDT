@@ -1,0 +1,132 @@
+{
+  "experiment_id": "MCP-07-ADAPTIVE-GEOMETRY-V1",
+  "protocol_status": "FROZEN_BEFORE_REGISTERED_EVAL",
+  "parent_branch": "gym/mcp06-spatial-memory",
+  "parent_commit": "3c03ccc6c4a0cac059c670011a55ea7ad9666de9",
+  "train_capacity": 16384,
+  "eval_capacities": [16384, 24576, 32768, 65536, 131072],
+  "seeds": [107, 109, 113],
+  "roots_per_seed_capacity_family": 128,
+  "budgets": [4, 8, 16, 32],
+  "corruptions": [0.0, 0.05, 0.15],
+  "families": [
+    "horizontal",
+    "vertical",
+    "diagonal",
+    "isotropic",
+    "sparse_long_range",
+    "multihop",
+    "regime_shift",
+    "corrupted_replica"
+  ],
+  "projections": [
+    "row",
+    "col",
+    "hilbert",
+    "morton",
+    "rand_coloc",
+    "rand_full"
+  ],
+  "arms": {
+    "A_deterministic_fixed": [
+      "det_row",
+      "det_col",
+      "det_hilbert",
+      "det_morton",
+      "det_rand_coloc",
+      "det_rand_full"
+    ],
+    "B_deterministic_router": ["det_router"],
+    "C_learned_fixed": [
+      "fixed_row",
+      "fixed_col",
+      "fixed_hilbert",
+      "fixed_morton",
+      "fixed_rand_coloc",
+      "fixed_rand_full"
+    ],
+    "D_learned_single_router": ["router_single"],
+    "E_learned_recurrent_switching": ["recurrent_switch"],
+    "F_hierarchical_adaptive_stopping": ["hier_adaptive"],
+    "G_matched_randomized_routing": ["rand_routing"],
+    "H_privileged_oracle_upper_bound": ["oracle_proj"]
+  },
+  "training": {
+    "capacity": 16384,
+    "train_namespace_base": 10000,
+    "train_roots": 2048,
+    "dagger_16k_onpolicy": true,
+    "dagger_roots": 768,
+    "epochs": 18,
+    "batch_size": 128,
+    "lr": 0.0035,
+    "teacher_horizon": 16,
+    "switch_penalty": 0.75,
+    "supervision": "action_set",
+    "obs_dim": 34,
+    "cand_feat_dim": 10,
+    "primary_param_scale": "54K_matched",
+    "scaled_variant_cap": 128000
+  },
+  "namespaces": {
+    "smoke_eval": 700000,
+    "registered_eval": 2000000,
+    "distribution_shift_train": 3000000,
+    "distribution_shift_eval": 3500000,
+    "native_replay": 2800000,
+    "native_discovery": 3900000
+  },
+  "cost_model": {
+    "page_size_slots": 32,
+    "anchor_lookup_reads": 1,
+    "projection_switch_reads": 2,
+    "index_bytes_per_slot_per_projection": 8.375
+  },
+  "gates": {
+    "primary": {
+      "capacity": 32768,
+      "budget": 16,
+      "corruption": 0.0,
+      "candidate_arm": "recurrent_switch",
+      "comparator": "strongest_non_oracle_fixed_layout_A_and_C",
+      "min_improvement_pp": 5.0,
+      "bootstrap_resamples": 2000
+    },
+    "secondary": {
+      "capacity": 32768,
+      "budget": 16,
+      "corruption": 0.0,
+      "adaptive_arm": "hier_adaptive",
+      "fixed_budget_counterpart": "recurrent_switch",
+      "min_charged_read_reduction_pct": 15.0,
+      "max_completion_loss_pp": 1.0,
+      "bootstrap_resamples": 2000
+    }
+  },
+  "ablations": [
+    "single_best_supervision",
+    "no_cross_projection_comm",
+    "scaled_116k_controller",
+    "distribution_shift_80_20_to_20_80"
+  ],
+  "native_storyworld": {
+    "separate_from_synthetic": true,
+    "witness_replay_budget": 16,
+    "route_discovery_retrieval_budget": 6,
+    "route_discovery_corruptions": [0.0, 0.15]
+  },
+  "mechanistic": {
+    "capacity": 32768,
+    "budget": 16,
+    "corruption": 0.0,
+    "roots_per_family_per_seed": 128,
+    "interventions": [
+      "freeze_router",
+      "shuffle_slow_state",
+      "remove_cross_proj_comm",
+      "force_wrong_projection",
+      "patch_slow_same_family",
+      "patch_slow_cross_family"
+    ]
+  }
+}
