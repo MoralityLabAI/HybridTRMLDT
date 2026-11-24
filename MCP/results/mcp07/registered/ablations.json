@@ -1,0 +1,423 @@
+{
+  "architecture_and_supervision": {
+    "action_set_54k": {
+      "params": {
+        "total_params": 54460,
+        "active_params": 54460,
+        "router_params": 4516,
+        "comm_params": 272
+      },
+      "clean_32k_b16_completion": 0.6608072916666666,
+      "c15_32k_b16_completion": 0.6341145833333334,
+      "adaptive_32k_b16_completion": 0.6608072916666666,
+      "adaptive_mean_charged_reads": 275.7711588541667,
+      "fixed_mean_charged_reads": 515.7229817708334,
+      "per_seed_clean": {
+        "107": 0.63671875,
+        "109": 0.6787109375,
+        "113": 0.6669921875
+      },
+      "per_family_clean": {
+        "horizontal": 0.9322916666666666,
+        "vertical": 1.0,
+        "diagonal": 0.9635416666666666,
+        "isotropic": 0.6875,
+        "sparse_long_range": 0.3255208333333333,
+        "multihop": 0.6927083333333334,
+        "regime_shift": 0.4010416666666667,
+        "corrupted_replica": 0.2838541666666667
+      },
+      "train_stats": {
+        "107": {
+          "total_params": 54460,
+          "active_params": 54460,
+          "router_params": 4516,
+          "comm_params": 272
+        },
+        "109": {
+          "total_params": 54460,
+          "active_params": 54460,
+          "router_params": 4516,
+          "comm_params": 272
+        },
+        "113": {
+          "total_params": 54460,
+          "active_params": 54460,
+          "router_params": 4516,
+          "comm_params": 272
+        }
+      }
+    },
+    "single_best_54k": {
+      "params": {
+        "total_params": 54460,
+        "active_params": 54460,
+        "router_params": 4516,
+        "comm_params": 272
+      },
+      "clean_32k_b16_completion": 0.662109375,
+      "c15_32k_b16_completion": 0.6331380208333334,
+      "adaptive_32k_b16_completion": 0.662109375,
+      "adaptive_mean_charged_reads": 273.7506510416667,
+      "fixed_mean_charged_reads": 515.6204427083334,
+      "per_seed_clean": {
+        "107": 0.646484375,
+        "109": 0.662109375,
+        "113": 0.677734375
+      },
+      "per_family_clean": {
+        "horizontal": 0.9557291666666666,
+        "vertical": 1.0,
+        "diagonal": 0.9713541666666666,
+        "isotropic": 0.7135416666666666,
+        "sparse_long_range": 0.3125,
+        "multihop": 0.6822916666666666,
+        "regime_shift": 0.4010416666666667,
+        "corrupted_replica": 0.2604166666666667
+      },
+      "train_stats": {
+        "107": {
+          "teacher_verified_rate": 0.99755859375,
+          "dagger_16k_onpolicy_rate": 0.5278592375366569,
+          "final_train_loss": 1.6468223929405212,
+          "total_params": 54460,
+          "active_params": 54460,
+          "router_params": 4516,
+          "comm_params": 272,
+          "train_seconds": 109.21851100001368
+        },
+        "109": {
+          "teacher_verified_rate": 0.99951171875,
+          "dagger_16k_onpolicy_rate": 0.5659824046920822,
+          "final_train_loss": 1.6666362990032544,
+          "total_params": 54460,
+          "active_params": 54460,
+          "router_params": 4516,
+          "comm_params": 272,
+          "train_seconds": 108.40003809999325
+        },
+        "113": {
+          "teacher_verified_rate": 0.998046875,
+          "dagger_16k_onpolicy_rate": 0.5117302052785924,
+          "final_train_loss": 1.7306213107976047,
+          "total_params": 54460,
+          "active_params": 54460,
+          "router_params": 4516,
+          "comm_params": 272,
+          "train_seconds": 81.23100530001102
+        }
+      }
+    },
+    "no_comm_54k": {
+      "params": {
+        "total_params": 54460,
+        "active_params": 54188,
+        "router_params": 4516,
+        "comm_params": 272
+      },
+      "clean_32k_b16_completion": 0.6595052083333334,
+      "c15_32k_b16_completion": 0.6321614583333334,
+      "adaptive_32k_b16_completion": 0.6595052083333334,
+      "adaptive_mean_charged_reads": 274.7923177083333,
+      "fixed_mean_charged_reads": 515.552734375,
+      "per_seed_clean": {
+        "107": 0.6533203125,
+        "109": 0.6708984375,
+        "113": 0.654296875
+      },
+      "per_family_clean": {
+        "horizontal": 0.9427083333333334,
+        "vertical": 1.0,
+        "diagonal": 0.9739583333333334,
+        "isotropic": 0.65625,
+        "sparse_long_range": 0.3020833333333333,
+        "multihop": 0.6901041666666666,
+        "regime_shift": 0.3932291666666667,
+        "corrupted_replica": 0.3177083333333333
+      },
+      "train_stats": {
+        "107": {
+          "teacher_verified_rate": 0.99755859375,
+          "dagger_16k_onpolicy_rate": 0.5087976539589443,
+          "final_train_loss": 1.3477785153822466,
+          "total_params": 54460,
+          "active_params": 54188,
+          "router_params": 4516,
+          "comm_params": 272,
+          "train_seconds": 105.65121779998299
+        },
+        "109": {
+          "teacher_verified_rate": 0.99951171875,
+          "dagger_16k_onpolicy_rate": 0.5439882697947214,
+          "final_train_loss": 1.3567255356095054,
+          "total_params": 54460,
+          "active_params": 54188,
+          "router_params": 4516,
+          "comm_params": 272,
+          "train_seconds": 105.35211939999135
+        },
+        "113": {
+          "teacher_verified_rate": 0.998046875,
+          "dagger_16k_onpolicy_rate": 0.49266862170087977,
+          "final_train_loss": 1.3424860618331216,
+          "total_params": 54460,
+          "active_params": 54188,
+          "router_params": 4516,
+          "comm_params": 272,
+          "train_seconds": 75.52251810001326
+        }
+      }
+    },
+    "scaled_116k": {
+      "params": {
+        "total_params": 117224,
+        "active_params": 117224,
+        "router_params": 9652,
+        "comm_params": 420
+      },
+      "clean_32k_b16_completion": 0.6731770833333334,
+      "c15_32k_b16_completion": 0.6448567708333334,
+      "adaptive_32k_b16_completion": 0.6731770833333334,
+      "adaptive_mean_charged_reads": 268.892578125,
+      "fixed_mean_charged_reads": 515.91796875,
+      "per_seed_clean": {
+        "107": 0.65625,
+        "109": 0.6796875,
+        "113": 0.68359375
+      },
+      "per_family_clean": {
+        "horizontal": 0.9270833333333334,
+        "vertical": 1.0,
+        "diagonal": 0.9713541666666666,
+        "isotropic": 0.6979166666666666,
+        "sparse_long_range": 0.3619791666666667,
+        "multihop": 0.7005208333333334,
+        "regime_shift": 0.3984375,
+        "corrupted_replica": 0.328125
+      },
+      "train_stats": {
+        "107": {
+          "teacher_verified_rate": 0.99755859375,
+          "dagger_16k_onpolicy_rate": 0.4310850439882698,
+          "final_train_loss": 1.333277160471136,
+          "total_params": 117224,
+          "active_params": 117224,
+          "router_params": 9652,
+          "comm_params": 420,
+          "train_seconds": 123.68100720000803
+        },
+        "109": {
+          "teacher_verified_rate": 0.99951171875,
+          "dagger_16k_onpolicy_rate": 0.5351906158357771,
+          "final_train_loss": 1.3085905205119739,
+          "total_params": 117224,
+          "active_params": 117224,
+          "router_params": 9652,
+          "comm_params": 420,
+          "train_seconds": 121.76777569999103
+        },
+        "113": {
+          "teacher_verified_rate": 0.998046875,
+          "dagger_16k_onpolicy_rate": 0.5689149560117303,
+          "final_train_loss": 1.2769195166501133,
+          "total_params": 117224,
+          "active_params": 117224,
+          "router_params": 9652,
+          "comm_params": 420,
+          "train_seconds": 97.44229320000159
+        }
+      }
+    }
+  },
+  "architecture_paired_deltas": {
+    "single_best_54k_minus_action_set_54k": {
+      "point": 0.0013020833333333333,
+      "ci95_low": -0.012044270833333334,
+      "ci95_high": 0.0146484375,
+      "prob_gt_zero": 0.5575,
+      "n_pairs": 3072
+    },
+    "no_comm_54k_minus_action_set_54k": {
+      "point": -0.0013020833333333333,
+      "ci95_low": -0.013997395833333334,
+      "ci95_high": 0.01171875,
+      "prob_gt_zero": 0.419,
+      "n_pairs": 3072
+    },
+    "scaled_116k_minus_action_set_54k": {
+      "point": 0.012369791666666666,
+      "ci95_low": -0.001953125,
+      "ci95_high": 0.027669270833333332,
+      "prob_gt_zero": 0.949,
+      "n_pairs": 3072
+    }
+  },
+  "distribution_shift": {
+    "train_mixture": {
+      "horizontal": 0.2,
+      "isotropic": 0.2,
+      "sparse_long_range": 0.2,
+      "multihop": 0.2,
+      "vertical": 0.05,
+      "diagonal": 0.05,
+      "regime_shift": 0.05,
+      "corrupted_replica": 0.05
+    },
+    "eval_mixture": {
+      "horizontal": 0.05,
+      "isotropic": 0.05,
+      "sparse_long_range": 0.05,
+      "multihop": 0.05,
+      "vertical": 0.2,
+      "diagonal": 0.2,
+      "regime_shift": 0.2,
+      "corrupted_replica": 0.2
+    },
+    "eval_capacity": 32768,
+    "eval_budget": 16,
+    "n_eval_roots_total": 3072,
+    "by_arm": {
+      "fixed_row": {
+        "completion": 0.3333333333333333,
+        "mean_charged_reads": 513.033203125,
+        "per_family": {
+          "horizontal": 0.9477124183006536,
+          "vertical": 0.2146341463414634,
+          "diagonal": 0.7642276422764228,
+          "isotropic": 0.6470588235294118,
+          "sparse_long_range": 0.1437908496732026,
+          "multihop": 0.27450980392156865,
+          "regime_shift": 0.06341463414634146,
+          "corrupted_replica": 0.12195121951219512
+        }
+      },
+      "fixed_col": {
+        "completion": 0.4742838541666667,
+        "mean_charged_reads": 513.0361328125,
+        "per_family": {
+          "horizontal": 0.5294117647058824,
+          "vertical": 0.9967479674796748,
+          "diagonal": 0.6276422764227643,
+          "isotropic": 0.7712418300653595,
+          "sparse_long_range": 0.0,
+          "multihop": 0.43790849673202614,
+          "regime_shift": 0.17886178861788618,
+          "corrupted_replica": 0.13333333333333333
+        }
+      },
+      "fixed_hilbert": {
+        "completion": 0.2584635416666667,
+        "mean_charged_reads": 513.015625,
+        "per_family": {
+          "horizontal": 0.23529411764705882,
+          "vertical": 0.22926829268292684,
+          "diagonal": 0.7528455284552845,
+          "isotropic": 0.5098039215686274,
+          "sparse_long_range": 0.058823529411764705,
+          "multihop": 0.06535947712418301,
+          "regime_shift": 0.03902439024390244,
+          "corrupted_replica": 0.05365853658536585
+        }
+      },
+      "fixed_morton": {
+        "completion": 0.2809244791666667,
+        "mean_charged_reads": 513.0234375,
+        "per_family": {
+          "horizontal": 0.5751633986928104,
+          "vertical": 0.24065040650406505,
+          "diagonal": 0.6308943089430894,
+          "isotropic": 0.3006535947712418,
+          "sparse_long_range": 0.2222222222222222,
+          "multihop": 0.11764705882352941,
+          "regime_shift": 0.03902439024390244,
+          "corrupted_replica": 0.1902439024390244
+        }
+      },
+      "router_single": {
+        "completion": 0.48828125,
+        "mean_charged_reads": 513.0419921875,
+        "per_family": {
+          "horizontal": 0.9150326797385621,
+          "vertical": 0.9317073170731708,
+          "diagonal": 0.7934959349593496,
+          "isotropic": 0.5490196078431373,
+          "sparse_long_range": 0.1437908496732026,
+          "multihop": 0.33986928104575165,
+          "regime_shift": 0.16747967479674797,
+          "corrupted_replica": 0.061788617886178863
+        }
+      },
+      "recurrent_switch": {
+        "completion": 0.6031901041666666,
+        "mean_charged_reads": 516.0494791666666,
+        "per_family": {
+          "horizontal": 0.8954248366013072,
+          "vertical": 0.9967479674796748,
+          "diagonal": 0.8048780487804879,
+          "isotropic": 0.6797385620915033,
+          "sparse_long_range": 0.32679738562091504,
+          "multihop": 0.6274509803921569,
+          "regime_shift": 0.3121951219512195,
+          "corrupted_replica": 0.26991869918699185
+        }
+      },
+      "hier_adaptive": {
+        "completion": 0.6031901041666666,
+        "mean_charged_reads": 294.0182291666667,
+        "per_family": {
+          "horizontal": 0.8954248366013072,
+          "vertical": 0.9967479674796748,
+          "diagonal": 0.8048780487804879,
+          "isotropic": 0.6797385620915033,
+          "sparse_long_range": 0.32679738562091504,
+          "multihop": 0.6274509803921569,
+          "regime_shift": 0.3121951219512195,
+          "corrupted_replica": 0.26991869918699185
+        }
+      },
+      "det_router": {
+        "completion": 0.5846354166666666,
+        "mean_charged_reads": 314.5026041666667,
+        "per_family": {
+          "horizontal": 0.7973856209150327,
+          "vertical": 0.6878048780487804,
+          "diagonal": 0.6113821138211382,
+          "isotropic": 0.8758169934640523,
+          "sparse_long_range": 0.39215686274509803,
+          "multihop": 0.5032679738562091,
+          "regime_shift": 0.7138211382113822,
+          "corrupted_replica": 0.2682926829268293
+        }
+      }
+    },
+    "best_fixed_under_shift": "fixed_col",
+    "switch_minus_best_fixed_bootstrap": {
+      "point": 0.12890625,
+      "ci95_low": 0.10872395833333333,
+      "ci95_high": 0.14908854166666666,
+      "prob_gt_zero": 1.0,
+      "n_pairs": 3072
+    },
+    "switch_minus_single_router_bootstrap": {
+      "point": 0.11490885416666667,
+      "ci95_low": 0.09700520833333333,
+      "ci95_high": 0.13216145833333334,
+      "prob_gt_zero": 1.0,
+      "n_pairs": 3072
+    }
+  },
+  "ablation_checkpoints": {
+    "107-ablation-single_best_54k.pt": "050c224a9db4b736fd582adad751075edd81fe2e56adf1357e6c5cdd86d5729a",
+    "107-ablation-no_comm_54k.pt": "f240d6ef452de4bd47927c0e019ad3b55d70a701e8046f7e25a5d1fa59c7f59a",
+    "107-ablation-scaled_116k.pt": "73490ea4efe1a536ee421c6cc5f38bccaa3255a4100f004884457f86bd5f910e",
+    "109-ablation-single_best_54k.pt": "7c1453f6286f387d3376f1d0c05ed2a9375e7e355c78fe4fc538c475e663374b",
+    "109-ablation-no_comm_54k.pt": "fd03f5bc11c83a785149a49168cb2a5fff232f38369fc066cf91b82c00a9d306",
+    "109-ablation-scaled_116k.pt": "2c87fba8453da8af488a61e0106465a8bad615b3399777533827056b22513ff5",
+    "113-ablation-single_best_54k.pt": "68fe3e1555e8db586bd641b449747516c8dc6c583dd473276096408b56fc2a63",
+    "113-ablation-no_comm_54k.pt": "05c4a48c022c78bbc15db00b3eb2cc569f0da7d03d03da205a8c6f99480704e2",
+    "113-ablation-scaled_116k.pt": "69f5e6cac70f8c062e2b514ce085f50855ef72692d10b7394166f5d7c97672c4",
+    "107-shift-recurrent_switch.pt": "630473b967dc153d4e2d066865f144119936b974641f00f758846e6597f37d41",
+    "109-shift-recurrent_switch.pt": "0167a01eea3e7beab70df2bcd5e6d2b40f5caac4210a2a608b0a6c8040a65713",
+    "113-shift-recurrent_switch.pt": "00ed9bd54f199427779c70854f3641a3f96c243e91cd6c1850ba64292c6a51b7"
+  }
+}
