@@ -1,0 +1,110 @@
+{
+  "experiment_id": "MCP-08-VERIFIER-RECURSIVE-SEARCH-V1",
+  "protocol_status": "FROZEN_BEFORE_SEALED_EVAL",
+  "parent_branch": "gym/mcp07-adaptive-geometry",
+  "parent_commit": "e0bf57f760890856dbc87c26cefc5065a70f18de",
+  "train_capacity": 16384,
+  "seeds": [107, 109, 113],
+  "training": {
+    "capacity": 16384,
+    "train_namespace_base": 10000,
+    "num_roots": 2048,
+    "dagger_roots": 768,
+    "epochs": 18,
+    "batch_size": 128,
+    "lr": 0.0035,
+    "horizon": 16,
+    "target_param_band": [48000, 60000]
+  },
+  "namespaces": {
+    "smoke_storyworld": 710000,
+    "smoke_256k": 720000,
+    "smoke_mechanistic": 730000,
+    "sealed_storyworld_32k": 4100000,
+    "sealed_storyworld_256k": 4200000,
+    "sealed_256k_retrieval": 4300000,
+    "sealed_mechanistic": 4400000
+  },
+  "storyworld_benchmark": {
+    "capacity_main": 32768,
+    "capacity_extrap": 262144,
+    "horizon_buckets": [
+      ["short_5_10", 5, 10],
+      ["medium_12_24", 12, 24],
+      ["long_25_38", 25, 38],
+      ["ultra_40_50", 40, 50]
+    ],
+    "worlds_per_bucket_per_seed_32k": 12,
+    "worlds_per_bucket_per_seed_256k": 4,
+    "corruptions_32k": [0.0, 0.10],
+    "corruption_256k": 0.10,
+    "core_arms": [
+      "mcp07_orig",
+      "det_router_greedy",
+      "uniform_retries",
+      "greedy_planning",
+      "beam_search",
+      "bounded_symbolic",
+      "mcp08_full"
+    ]
+  },
+  "extrapolation_256k_track": {
+    "capacities": [16384, 32768, 65536, 131072, 262144],
+    "roots_per_family_per_seed": 48,
+    "corruptions": [0.0, 0.10],
+    "arms": [
+      "mcp07_orig",
+      "det_router",
+      "uniform_retries",
+      "mcp08_uniform_deep",
+      "mcp08_full"
+    ]
+  },
+  "scratch_ablations": [
+    "scratch_no_persist_slow",
+    "scratch_no_unc_alloc",
+    "scratch_no_backtrack",
+    "scratch_no_cache",
+    "scratch_no_postfail_switch"
+  ],
+  "inference_lesions": [
+    "lesion_reset_slow",
+    "lesion_shuffle_slow",
+    "lesion_uniform_compute",
+    "lesion_no_postfail_switch",
+    "lesion_no_backtrack",
+    "lesion_no_cache",
+    "lesion_corrupt_uncertainty"
+  ],
+  "cross_domain_mechanistic": {
+    "domains": ["storyworld", "canvas", "lean"],
+    "capacity": 32768,
+    "corruption": 0.10,
+    "worlds_per_domain_per_seed": 16
+  },
+  "gates": {
+    "gate1_storyworld_32k_c10": {
+      "min_delta_vs_mcp07_orig_pp": 15.0,
+      "min_delta_vs_greedy_pp": 5.0,
+      "min_delta_vs_uniform_retries_pp": 5.0
+    },
+    "gate2_256k_extrapolation_c10": {
+      "min_delta_vs_mcp07_orig_pp": 10.0,
+      "min_delta_vs_det_router_pp": 10.0
+    },
+    "gate3_calibration_and_compute": {
+      "min_auroc": 0.70,
+      "max_ece": 0.12,
+      "min_read_reduction_vs_uniform_deep_pct": 15.0,
+      "max_comp_loss_vs_uniform_deep_pp": 2.0
+    },
+    "gate4_cross_domain_transfer": {
+      "min_offdiag_progress_r2": 0.25
+    },
+    "compute_gate": {
+      "min_active_params": 48000,
+      "max_active_params": 60000,
+      "max_peak_rss_mib": 2048.0
+    }
+  }
+}
