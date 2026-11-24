@@ -1,0 +1,86 @@
+{
+  "experiment_id": "MCP-08-CONTEXT-ECONOMICS-V1",
+  "paper_title": "The Cost of Context II: Hardware-Aware Recurrent Memory for Autonomous Local Agents",
+  "protocol_status": "STAGE_08A_CPU_FIXTURES_AND_VERIFIERS",
+  "parent_branches": [
+    "gym/mcp05-controller-evidence",
+    "gym/mcp06-spatial-memory",
+    "gym/mcp07-adaptive-geometry"
+  ],
+  "models": [
+    "bonsai-2-27b",
+    "inky-mini"
+  ],
+  "environments": [
+    "flooded_city",
+    "quantum_labyrinth",
+    "arena_architect",
+    "broken_archive"
+  ],
+  "namespaces": {
+    "dev_fixtures": 800000,
+    "pilot_roots": 805000,
+    "held_out_eval": 810000,
+    "storyworlds": 820000
+  },
+  "counts": {
+    "dev_roots_per_env": 2,
+    "pilot_roots_per_env": 2,
+    "eval_roots_per_env": 8,
+    "total_eval_roots": 32,
+    "wide_and_oracle_subset_per_env": 2,
+    "total_wide_and_oracle_roots": 8,
+    "total_registered_episodes": 224,
+    "storyworld_builds": 8
+  },
+  "wide_oracle_subset_indices": [0, 4],
+  "arms": {
+    "A": {"name": "bm25_3k", "policy": "bm25", "evidence_budget_tokens": 3072, "roots": "all_32"},
+    "B": {"name": "hybrid_3k", "policy": "hybrid_lexical_embedding", "evidence_budget_tokens": 3072, "roots": "all_32"},
+    "C": {"name": "pocket_goblin_3k", "policy": "settrm_adaptive_working_set", "evidence_budget_tokens": 3072, "roots": "all_32"},
+    "D": {"name": "wide_16k", "policy": "wide_context", "evidence_budget_tokens": 16384, "roots": "subset_8"},
+    "E": {"name": "oracle_3k", "policy": "oracle_evidence", "evidence_budget_tokens": 3072, "roots": "subset_8"}
+  },
+  "hardware_sweep": {
+    "device": "RTX 5080 Laptop GPU (16 GB VRAM)",
+    "actual_input_tokens": [1024, 3072, 6144, 12288, 16384, 24576, 32768],
+    "allocated_context_tokens": [4096, 6144, 8192, 12288, 16384, 24576, 32768, 40960],
+    "kv_precisions": ["f16", "q8_0", "q4_0"],
+    "execution_modes": ["pure_gpu", "explicit_cpu_offload", "paging"],
+    "diagnostic_output_tokens": 256,
+    "inky_recurrence_loops": [1, 2, 4]
+  },
+  "storyworlds": [
+    {
+      "id": "clockmakers_republic",
+      "title": "The Clockmaker's Republic",
+      "districts": 8,
+      "policies": ["hybrid_3k", "pocket_goblin_3k"],
+      "models": ["bonsai-2-27b", "inky-mini"]
+    },
+    {
+      "id": "garden_of_unmeasured_things",
+      "title": "The Garden of Unmeasured Things",
+      "hilbert_dim": 4,
+      "policies": ["hybrid_3k", "pocket_goblin_3k"],
+      "models": ["bonsai-2-27b", "inky-mini"]
+    }
+  ],
+  "gates": {
+    "learned_routing_min_pp": 5.0,
+    "context_economy_min_time_reduction_pct": 25.0,
+    "pure_gpu_max_cpu_offload_tensors": 0,
+    "pure_gpu_max_paging_events": 0,
+    "require_fresh_browser_verifiable_worlds": true,
+    "require_positive_eta_transfer_both_models": true,
+    "bootstrap_resamples": 2000
+  },
+  "stages": [
+    "MCP-08A",
+    "MCP-08B",
+    "MCP-08C",
+    "MCP-08D",
+    "MCP-08E",
+    "MCP-08F"
+  ]
+}
