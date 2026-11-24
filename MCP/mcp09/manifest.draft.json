@@ -1,0 +1,39 @@
+{
+  "experiment_id": "MCP-09-PROSPECTIVE-RECURSIVE-PLANNING",
+  "protocol_status": "DRAFT_NOT_REGISTERED",
+  "parent_commit": "8b90fc78eabd15a4c526aa5b7713fe921507c875",
+  "train_capacity": 16384,
+  "seeds": [
+    107,
+    109,
+    113
+  ],
+  "namespace": {
+    "smoke_storyworld": 9100000,
+    "proposed_train": 9300000,
+    "proposed_calibration": 9400000,
+    "proposed_sealed_storyworld_32k": 9500000,
+    "proposed_sealed_storyworld_256k": 9600000,
+    "proposed_sealed_retrieval": 9700000
+  },
+  "smoke": {
+    "depths": [
+      0,
+      2
+    ],
+    "corruption": 0.1,
+    "read_cap": "2200 * L + 6000",
+    "verifier_cap": "45 * L + 140"
+  },
+  "proposed_targets": {
+    "storyworld_32k": 0.7,
+    "storyworld_256k": 0.55,
+    "long_storyworld": 0.5,
+    "retrieval_256k": 0.7,
+    "relative_lock_failure_max": 0.5,
+    "learned_vs_lookahead_min_pp": 5,
+    "active_params_max": 65536,
+    "peak_rss_mib_max": 2048
+  },
+  "registered_run_allowed": false
+}
