@@ -1,0 +1,25 @@
+{
+  "status": "verified",
+  "game": "hilbert-storyworld",
+  "title": "The City That Lost Its Night Bell",
+  "visited_scenes": 32,
+  "distinct_canvas_hashes": 32,
+  "verified_secret_endings": [
+    "end_bell_as_question",
+    "end_bell_as_answer"
+  ],
+  "visual_metrics": {
+    "canvas_width": 640,
+    "canvas_height": 400,
+    "mean_quantized_colors": 87.41,
+    "max_quantized_colors": 124,
+    "mean_edge_density": 0.0194,
+    "mean_pairwise_rgb_l1": 15.91
+  },
+  "checks": [
+    "32 distinct Canvas scenes verified across encounters and endings",
+    "browser 2-qubit complex unitary state and Born weights match exact reference replay",
+    "secret endings unlocked via exact Hilbert witnesses (end_bell_as_question, end_bell_as_answer)",
+    "restart restores |00> initial state and clears clues"
+  ]
+}

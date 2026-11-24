@@ -1,0 +1,4381 @@
+{
+  "IFID": "SW-INKY-HILBERT-16384-20261124",
+  "storyworld_title": "The City That Lost Its Night Bell",
+  "storyworld_author": "Inkling",
+  "sweepweave_version": "0.1.9",
+  "about_text": {
+    "script_element_type": "Pointer",
+    "pointer_type": "String Constant",
+    "value": "In the city of Vellum, the night bell that once marked the hour of rest has vanished. Without it, the city cannot tell when the day ends, when the dead are called home, or when the harbor opens. Three people want the bell back for three different reasons, and each wants it to mean something different."
+  },
+  "css_theme": "dark",
+  "debug_mode": false,
+  "display_mode": "default",
+  "creation_time": 0,
+  "modified_time": 0,
+  "characters": [
+    {
+      "id": "bellkeeper",
+      "name": "Maren the Bellkeeper",
+      "description": "Measured, ritualistic, speaks in liturgy",
+      "bnumber_properties": {}
+    },
+    {
+      "id": "merchant",
+      "name": "Corvin the Merchant",
+      "description": "Smooth, transactional, speaks in prices",
+      "bnumber_properties": {}
+    },
+    {
+      "id": "child",
+      "name": "Pip the Night-Watcher",
+      "description": "Curious, unafraid, speaks in questions",
+      "bnumber_properties": {}
+    }
+  ],
+  "authored_properties": [],
+  "spools": [
+    {
+      "id": "spool_main",
+      "spool_name": "The City That Lost Its Night Bell",
+      "starts_active": true,
+      "creation_index": 0,
+      "encounters": [
+        "enc_01",
+        "enc_02",
+        "enc_03",
+        "enc_04",
+        "enc_05",
+        "enc_06",
+        "enc_07",
+        "enc_08",
+        "enc_09",
+        "enc_10",
+        "enc_11",
+        "enc_12",
+        "enc_13",
+        "enc_14",
+        "enc_15",
+        "enc_16",
+        "enc_17",
+        "enc_18",
+        "enc_19",
+        "enc_20",
+        "enc_21",
+        "enc_22",
+        "enc_23",
+        "enc_24",
+        "enc_25",
+        "enc_26",
+        "enc_27",
+        "enc_28",
+        "enc_29",
+        "enc_30",
+        "enc_finale",
+        "end_bell_returns",
+        "end_bell_sold",
+        "end_bell_lost_forever",
+        "end_bell_as_question",
+        "end_bell_as_answer"
+      ]
+    }
+  ],
+  "encounters": [
+    {
+      "id": "enc_01",
+      "title": "The Silence at Dusk",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 0,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_01_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper about the ledger of hours"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_01_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do."
+              },
+              "consequence_id": "enc_02",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_01_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_01_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The mechanism is a key, not a rope, and it fits only the door of the bell's chamber."
+              },
+              "consequence_id": "enc_02",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_01_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Follow the sound of the stair to the bell's chamber"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_01_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_02",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it.\n\n\"They say the old bell marked the end of the day,\" said Maren, standing where the stair meets the square. \"But I have heard the ledger of hours open on the merchant's table, and every coin and every bargain is recorded in the name of the old order.\"\n\n\"And the keeper's cellar is dark,\" said Corvin, turning a coin over in his fingers. \"The old mechanism waits in the dark for someone to understand what it was built to do.\"\n\n\"If the bell is cracked, then something inside it is cracked too,\" said Pip, crouching by the broken clapper. \"And if the clapper is missing, then the bell is missing its voice.\"\n\n\"The bell is sold to a stranger and the city wakes to a foreign hour,\" said Maren. \"But the city holds its breath at the sound of the stair.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 1
+      }
+    },
+    {
+      "id": "enc_02",
+      "title": "The Ledger of Hours",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 1,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_02_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_02_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger of hours is open on the merchant's table, recording every coin and every bargain made in the name of the old order."
+              },
+              "consequence_id": "enc_03",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_02_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_02_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The mechanism is a key, not a rope, and it fits only the door of the bell's chamber."
+              },
+              "consequence_id": "enc_03",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_02_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Follow the sound of the stair to the bell's chamber"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_02_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_03",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The ledger of hours is open on the merchant's table, recording every coin and every bargain made in the name of the old order.\n\n\"Everything in this city is worth what someone will pay for it,\" said Corvin, tapping the ledger with one finger. \"And the bell is no different, only louder.\"\n\n\"The bell is sold to a stranger and the city wakes to a foreign hour,\" said Maren. \"But the city holds its breath at the sound of the stair.\"\n\n\"If the bell is cracked, then something inside it is cracked too,\" said Pip, tracing the crack with his thumb. \"And if the clapper is missing, then the bell is missing its voice.\"\n\n\"The keeper's cellar is dark,\" said Corvin. \"The old mechanism waits in the dark for someone to understand what it was built to do.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_03",
+      "title": "The Bell's Chamber",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 2,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_03_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Open the bell's chamber with the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_03_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The mechanism is a key, not a rope, and it fits only the door of the bell's chamber."
+              },
+              "consequence_id": "enc_04",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_03_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_03_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The mechanism is a key, not a rope, and it fits only the door of the bell's chamber."
+              },
+              "consequence_id": "enc_05",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_03_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Follow the sound of the stair to the bell's chamber"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_03_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_04",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The mechanism is a key, not a rope, and it fits only the door of the bell's chamber.\n\n\"The bell is sold to a stranger and the city wakes to a foreign hour,\" said Maren. \"But the city holds its breath at the sound of the stair.\"\n\n\"If the bell is cracked, then something inside it is cracked too,\" said Pip, holding the mechanism up to the light. \"And if the clapper is missing, then the bell is missing its voice.\"\n\n\"The keeper's cellar is dark,\" said Corvin. \"The old mechanism waits in the dark for someone to understand what it was built to do.\"\n\n\"The bell is given away freely and the city keeps its own time without it,\" said Maren. \"But the city holds its breath at the sound of the stair.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_04",
+      "title": "The Cracked Bell at Dusk",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 3,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_04_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_04_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake."
+              },
+              "consequence_id": "enc_05",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_04_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the crack means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_04_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the crack is a scar from the day the bell was first cast, and the city has been listening to it ever since."
+              },
+              "consequence_id": "enc_05",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_04_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_04_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor."
+              },
+              "consequence_id": "enc_05",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell in the tower has a crack running down its flank, and the keeper stands before it with a lamp in one hand and a question in the other.\n\n\"It is not broken,\" the keeper says, tracing the line with a fingertip. \"It is cracked, and the crack is older than the tower itself.\"\n\n\"Then what does it mean?\" asks the merchant, leaning in close.\n\n\"That something inside it is cracked too,\" the keeper answers, and the lamp flickers in the wind that comes down from the ridge.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_05",
+      "title": "The Ledger of Dust and Coin",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 4,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_05_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_05_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake."
+              },
+              "consequence_id": "enc_06",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_05_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_05_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted."
+              },
+              "consequence_id": "enc_06",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_05_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_05_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor."
+              },
+              "consequence_id": "enc_06",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The merchant's table is covered in ledgers, each one open to a different page, and the room smells of ink and old paper.\n\n\"Every coin, every bargain, every name,\" the merchant says, tapping the top ledger with one finger. \"The city has been keeping its accounts since before the tower was built.\"\n\n\"And the bell?\" asks the keeper.\n\n\"The bell is not in the ledger,\" the merchant says slowly. \"The bell was never a transaction. It was a promise.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_06",
+      "title": "The Cracked Bell and the Silent Stair",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 5,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_06_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_06_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake."
+              },
+              "consequence_id": "enc_07",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_06_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the crack means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_06_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the crack is a scar from the day the bell was first cast, and the city has been listening to it ever since."
+              },
+              "consequence_id": "enc_07",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_06_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_06_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor."
+              },
+              "consequence_id": "enc_07",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The keeper stands at the base of the stair that leads to the bell's chamber, and the wind carries the sound of a bell that is not ringing.\n\n\"The stair is empty,\" the keeper says. \"But the bell is not silent. It is waiting.\"\n\n\"Waiting for what?\" asks the merchant.\n\n\"For someone to understand what it was built to do,\" the keeper answers, and the lamp flickers in the dark."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_07",
+      "title": "The Merchant's Bargain",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 6,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_07_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_07_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake."
+              },
+              "consequence_id": "enc_08",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_07_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_07_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted."
+              },
+              "consequence_id": "enc_08",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_07_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_07_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor."
+              },
+              "consequence_id": "enc_08",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The merchant's table is crowded with ledgers, each one open to a different page, and the room smells of ink and old paper. The bell is not in the ledger, the merchant says slowly, tapping the top ledger with one finger. The bell was never a transaction. It was a promise.\n\nThe keeper stands at the far end of the table, and the keeper's ledger holds the proof of a single, deliberate ringing, and the keeper does not want to say what it was built to do. The merchant offers to buy the bell's silence, and the room goes quiet at the offer.\n\nThe keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_08",
+      "title": "The Keeper's Ledger",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 7,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_08_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_08_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake."
+              },
+              "consequence_id": "enc_09",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_08_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_08_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted."
+              },
+              "consequence_id": "enc_09",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_08_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_08_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor."
+              },
+              "consequence_id": "enc_09",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The keeper's ledger holds the proof of a single, deliberate ringing, and the keeper does not want to say what it was built to do. The keeper says the bell was never rung by accident, and the keeper's ledger holds the proof of a single, deliberate ringing.\n\nThe merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself. The keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber.\n\nThe keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay. The keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_09",
+      "title": "The Stair of Pip",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 8,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_09_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_09_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake."
+              },
+              "consequence_id": "enc_10",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_09_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_09_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted."
+              },
+              "consequence_id": "enc_11",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_09_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_09_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor."
+              },
+              "consequence_id": "enc_10",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The keeper stands at the base of the stair that leads to the bell's chamber, and the wind carries the sound of a bell that is not ringing. The keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber.\n\nThe merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself. The keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber.\n\nThe keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay. The keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_10",
+      "title": "The Watcher's Stair",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 9,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_10_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_10_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake. The merchant hears the words and goes quiet, and the keeper says the bell was never rung by accident."
+              },
+              "consequence_id": "enc_11",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_10_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_10_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_11",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_10_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_10_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_11",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The stair climbs out of the dark and into the sound of the city holding its breath. Maren stands at the foot of it, and the keeper's ledger is open in her hands, recording every coin and every bargain made in the name of the old order. The bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it.\n\nThe merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself. The keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber.\n\nPip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair. The keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_11",
+      "title": "The Square at Midnight",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 10,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_11_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_11_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake. The merchant hears the words and goes quiet, and the keeper says the bell was never rung by accident."
+              },
+              "consequence_id": "enc_12",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_11_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_11_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_12",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_11_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_11_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_12",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The square at midnight holds its breath for the answer. Three people stand where the old order once gathered, and the bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself.\n\nThe keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do. The keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber.\n\nThe ledger of hours is open on the merchant's table, recording every coin and every bargain made in the name of the old order. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_12",
+      "title": "The Silence of the Merchant",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 11,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_12_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_12_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake. The merchant hears the words and goes quiet, and the keeper says the bell was never rung by accident."
+              },
+              "consequence_id": "enc_13",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_12_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_12_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_13",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_12_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_12_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_13",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The silence of the merchant settles over the square like a held breath. The bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself.\n\nThe keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do. The keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber.\n\nThe ledger of hours is open on the merchant's table, recording every coin and every bargain made in the name of the old order. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_13",
+      "title": "The Keeper's Silence",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 12,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_13_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_13_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake. The merchant hears the words and goes quiet, and the keeper says the bell was never rung by accident."
+              },
+              "consequence_id": "enc_14",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_13_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_13_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_14",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_13_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_13_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_14",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell is sold to a stranger and the city wakes to a foreign hour. The keeper's ledger records the loss in a hand that has gone unsteady, and the merchant watches the keeper's face while the stranger counts coins into a velvet pouch. Maren says the bell was never meant to be owned, only kept, and she cannot bear that the city's rest is now a rumor.\n\nThe merchant says everything in this city is worth what someone will pay for it, and the bell is no different, only louder. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair. The keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber.\n\nThe keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do. The bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_14",
+      "title": "The Stair of the Watcher",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 13,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_14_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism does"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_14_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+              },
+              "consequence_id": "enc_15",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_14_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_14_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_15",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_14_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_14_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_15",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The keeper stands at the base of the stair that leads to the bell's chamber, and the wind carries the sound of a bell that is not ringing. Maren says the bell was never rung by accident, and the keeper's ledger holds the proof of a single, deliberate ringing, and the keeper does not want to say what it was built to do.\n\nThe bell is cracked, not broken, in the Bell Tower at dusk. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair. The clapper is missing, not the bell, and the keeper's ledger records a single ringing long ago.\n\nThe merchant says everything in this city is worth what someone will pay for it, and the bell is no different, only louder. The keeper says the bell is a key, not a rope, and it fits only the door of the bell's chamber. The bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_15",
+      "title": "The Hour of the Bell",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 14,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_15_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_15_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake. The merchant hears the words and goes quiet, and the keeper says the bell was never rung by accident."
+              },
+              "consequence_id": "enc_16",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_15_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism does"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_15_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+              },
+              "consequence_id": "enc_17",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_15_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_15_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_16",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell rings once, and the city must decide what it heard, and the square at midnight holds its breath for the answer. The bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay.\n\nThe bell is cracked, not broken, in the Bell Tower at dusk. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair. The clapper is missing, not the bell, and the keeper's ledger records a single ringing long ago.\n\nThe keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do. The bell is sold to a stranger and the city wakes to a foreign hour, and the keeper's ledger records the loss. The merchant says everything in this city is worth what someone will pay for it, and the bell is no different, only louder."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_16",
+      "title": "The Merchant's Silence",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 15,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_16_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_16_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_17",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_16_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_16_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_17",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_16_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_16_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake. The merchant hears the words and goes quiet, and the keeper says the bell was never rung by accident."
+              },
+              "consequence_id": "enc_17",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell is sold to a stranger and the city wakes to a foreign hour, and the merchant's ledger records the loss. Corvin stands at the table where the ledger of hours lies open, every coin and every bargain made in the name of the old order recorded in his own hand. He does not speak. The bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it.\n\nMaren watches the merchant's silence and understands that the bell was never meant to be owned, only kept. The keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do. The bell is cracked, not broken, in the Bell Tower at dusk, and the clapper is missing, not the bell.\n\nPip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair. The merchant says everything in this city is worth what someone will pay for it, and the bell is no different, only louder. But the keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_17",
+      "title": "The Keeper's Stair",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 16,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_17_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism does"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_17_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+              },
+              "consequence_id": "enc_18",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_17_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_17_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_18",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_17_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Read the ledger of hours aloud"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_17_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The ledger opens with a single line: the bell was rung once, long ago, and the city did not wake. The merchant hears the words and goes quiet, and the keeper says the bell was never rung by accident."
+              },
+              "consequence_id": "enc_18",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The keeper stands at the base of the stair that leads to the bell's chamber, and the wind carries the sound of a bell that is not ringing. Maren says the bell was never rung by accident, and the keeper's ledger holds the proof of a single, deliberate ringing, and the keeper does not want to say what it was built to do.\n\nThe bell is cracked, not broken, in the Bell Tower at dusk. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair. The clapper is missing, not the bell, and the keeper's ledger records a single ringing long ago.\n\nThe keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do. The bell is sold to a stranger and the city wakes to a foreign hour, and the keeper's ledger records the loss. The merchant says everything in this city is worth what someone will pay for it, and the bell is no different, only louder."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_18",
+      "title": "The Watcher's Hour",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 17,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_18_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_18_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_19",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_18_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism does"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_18_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+              },
+              "consequence_id": "enc_19",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_18_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_18_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_19",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "All three must choose what the bell means, and the square at midnight holds its breath for the answer. The bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay.\n\nThe bell is cracked, not broken, in the Bell Tower at dusk. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair. The clapper is missing, not the bell, and the keeper's ledger records a single ringing long ago.\n\nThe keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do. The bell is sold to a stranger and the city wakes to a foreign hour, and the keeper's ledger records the loss. The merchant says everything in this city is worth what someone will pay for it, and the bell is no different, only louder."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_19",
+      "title": "The Merchant's Hour",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 18,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_19_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_19_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_20",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_19_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism does"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_19_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+              },
+              "consequence_id": "enc_20",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_19_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_19_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_20",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell is sold to a stranger and the city wakes to a foreign hour, and the merchant's ledger records the loss. Corvin stands at the table where the ledger of hours lies open, his fingers resting on the line where the bell was entered as a commodity. He says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself.\n\nThe merchant says everything in this city is worth what someone will pay for it, and the bell is no different, only louder. Pip watches the merchant's hand hover over the ledger, and the child says if the bell is cracked, then something inside it is cracked too, and if the clapper is missing, then the bell is missing its voice.\n\nThe merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself. The merchant says everything in this city is worth what someone will pay for it, and the bell is no different, only louder."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_20",
+      "title": "The Keeper's Hour",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 19,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_20_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism does"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_20_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+              },
+              "consequence_id": "enc_21",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_20_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_20_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_21",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_20_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_20_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_21",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell is sold to a stranger and the city wakes to a foreign hour, and the keeper's ledger records the loss. Maren stands at the base of the stair that leads to the bell's chamber, and the wind carries the sound of a bell that is not ringing. She says the bell was never rung by accident, and the keeper's ledger holds the proof of a single, deliberate ringing, and the keeper does not want to say what it was built to do.\n\nThe keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay.\n\nThe keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_21",
+      "title": "The Stair of the Keeper",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 20,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_21_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism does"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_21_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+              },
+              "consequence_id": "enc_22",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_21_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_21_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_23",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_21_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_21_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_22",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The keeper stands at the base of the stair that leads to the bell's chamber, and the wind carries the sound of a bell that is not ringing. Maren says the bell was never rung by accident, and the keeper's ledger holds the proof of a single, deliberate ringing, and the keeper does not want to say what it was built to do.\n\nThe keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay.\n\nThe keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_22",
+      "title": "The Hour of the Watcher",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 21,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_22_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism does"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_22_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+              },
+              "consequence_id": "enc_23",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_22_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_22_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_23",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_22_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_22_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_23",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The square at midnight holds its breath for the answer. Maren stands at the base of the stair that leads to the bell's chamber, and the wind carries the sound of a bell that is not ringing. She says the bell was never rung by accident, and the keeper's ledger holds the proof of a single, deliberate ringing, and the keeper does not want to say what it was built to do.\n\nCorvin stands beside her, turning the ledger of hours over in his hands as if it were a ledger of coin. He says everything in this city is worth what someone will pay for it, and the bell is no different, only louder. Pip, small and barefoot on the stair, says if the bell is cracked, then something inside it is cracked too, and if the clapper is missing, then the bell is missing its voice.\n\nThe three of them look at one another across the dark square. The bell is sold to a stranger and the city wakes to a foreign hour, and none of them can say what the bell was built to do. The keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_23",
+      "title": "The Merchant's Stair",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 22,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_23_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism does"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_23_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+              },
+              "consequence_id": "enc_24",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_23_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_23_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_24",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_23_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_23_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_24",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The keeper stands at the base of the stair that leads to the bell's chamber, and the wind carries the sound of a bell that is not ringing. Maren says the bell was never rung by accident, and the keeper's ledger holds the proof of a single, deliberate ringing, and the keeper does not want to say what it was built to do.\n\nCorvin climbs the stair with the ledger of hours open on the merchant's table, recording every coin and every bargain made in the name of the old order. He says everything in this city is worth what someone will pay for it, and the bell is no different, only louder. Pip, small and barefoot on the stair, says if the bell is cracked, then something inside it is cracked too, and if the clapper is missing, then the bell is missing its voice.\n\nThe three of them look at one another across the dark square. The bell is sold to a stranger and the city wakes to a foreign hour, and none of them can say what the bell was built to do. The keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_24",
+      "title": "The Keeper's Hour of the Bell",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 23,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_24_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism does"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_24_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The keeper says the mechanism is a key, not a rope, and it fits only the door of the bell's chamber. The merchant says the bell is a commodity whose value is only what the highest bidder will pay, and the keeper says the bell is a promise the city made to itself."
+              },
+              "consequence_id": "enc_25",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_24_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the merchant what the bell means"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_24_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The merchant says the bell is the one thing in the city that cannot be bought, sold, or counted. The keeper says the bell is a promise the city made to itself, and the merchant says the bell is a commodity whose value is only what the highest bidder will pay."
+              },
+              "consequence_id": "enc_25",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_24_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Search the bell's chamber for the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_24_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "The chamber holds nothing but dust and a single key, small as a fingernail, resting on the floor. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair."
+              },
+              "consequence_id": "enc_25",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell rings once, and the city must decide what it heard, and the square at midnight holds its breath for the answer. Maren stands at the base of the stair that leads to the bell's chamber, and the wind carries the sound of a bell that is not ringing. She says the bell was never rung by accident, and the keeper's ledger holds the proof of a single, deliberate ringing, and the keeper does not want to say what it was built to do.\n\nCorvin stands beside her, turning the ledger of hours over in his hands as if it were a ledger of coin. He says everything in this city is worth what someone will pay for it, and the bell is no different, only louder. Pip, small and barefoot on the stair, says if the bell is cracked, then something inside it is cracked too, and if the clapper is missing, then the bell is missing its voice.\n\nThe three of them look at one another across the dark square. The bell is sold to a stranger and the city wakes to a foreign hour, and none of them can say what the bell was built to do. The keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_25",
+      "title": "The Watcher's Hour of the Bell",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 24,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_25_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the stranger what the bell was sold for"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_25_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I bought it for the sound,\" the stranger says, \"not for what it means. The bell is sold to a stranger and the city wakes to a foreign hour.\""
+              },
+              "consequence_id": "enc_26",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_25_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Tell Pip the bell is cracked, not broken"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_25_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"The bell is found cracked, not broken, in the Bell Tower at dusk,\" Maren says, \"and the clapper is missing, not the bell. Something inside it is cracked too.\""
+              },
+              "consequence_id": "enc_26",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_25_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Corvin what the bell is worth"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_25_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"Everything in this city is worth what someone will pay for it, and the bell is no different, only louder,\" Corvin says, and the square laughs."
+              },
+              "consequence_id": "enc_26",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The square at midnight holds its breath for the answer. Maren stands at the base of the stair that leads to the bell's chamber, and the wind carries the smell of rain and old brass. Around her, the city has gathered in the dark: the merchants with their ledgers, the children with their questions, and the stranger who bought the bell and does not know what it is for.\n\n\"The bell does not ring for the hour,\" Maren says, not looking up from the cracked bell she has been holding. \"It rings for the dead, and the dead do not care what the merchants call it.\"\n\n\"Then why does the keeper's ledger record a single ringing long ago?\" asks Pip, clutching his fists. \"If the bell is cracked, then something inside it is cracked too, and if the clapper is missing, then the bell is missing its voice.\"\n\n\"Because the bell is missing its voice,\" Maren says, and the square goes quiet. \"And the dead are waiting for it to find it again.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_26",
+      "title": "The Merchant's Hour of the Bell",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 25,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_26_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Offer to buy the bell back at any price"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_26_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"I will pay any price,\" Corvin says, \"but the bell is sold to a stranger and the city wakes to a foreign hour. The bell is sold to a stranger and the city wakes to a foreign hour.\""
+              },
+              "consequence_id": "enc_27",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_26_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask Corvin what the bell is worth to the dead"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_26_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"The dead do not care what the merchants call it,\" Maren says, \"and the bell is sold to a stranger and the city wakes to a foreign hour.\""
+              },
+              "consequence_id": "enc_27",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_26_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Tell Corvin the bell is not for sale"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_26_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"The bell is sold to a stranger and the city wakes to a foreign hour,\" Corvin says, \"but the bell is not for sale. The bell is sold to a stranger and the city wakes to a foreign hour.\""
+              },
+              "consequence_id": "enc_27",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The square at midnight holds its breath for the answer. Corvin stands at the center of the square, his ledger open on the merchant's table, recording every coin and every bargain made in the name of the old order. The bell is not here, but its absence hangs over the crowd like a held breath.\n\n\"The bell is a commodity whose value is only what the highest bidder will pay,\" Corvin says, tapping the ledger with one finger. \"He cannot bear that it might mean something beyond price.\"\n\n\"And if the bell is sold to a stranger and the city wakes to a foreign hour?\" asks Pip. \"Then what does the city wake to?\"\n\n\"The city wakes to a foreign hour,\" Corvin says, \"and the dead are called home by a bell that does not know their names.\" He looks at Maren. \"The bell is sold to a stranger and the city wakes to a foreign hour.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_27",
+      "title": "The Keeper's Stair of the Bell",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 26,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_27_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Climb the stair to the bell's chamber"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_27_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair,\" Maren says."
+              },
+              "consequence_id": "enc_29",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_27_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Ask the keeper what the mechanism was built to do"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_27_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"The keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do,\" Maren says."
+              },
+              "consequence_id": "enc_28",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_27_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Tell Pip the mechanism is a key, not a rope"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_27_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "\"The mechanism is a key, not a rope, and it fits only the door of the bell's chamber,\" Maren says."
+              },
+              "consequence_id": "enc_28",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The square at midnight holds its breath for the answer. Maren stands at the base of the stair that leads to the bell's chamber, and the wind carries the smell of rain and old brass. The mechanism is a key, not a rope, and it fits only the door of the bell's chamber.\n\n\"The mechanism is a key, not a rope, and it fits only the door of the bell's chamber,\" Maren says, looking up the stair. \"The keeper's cellar is dark, and the old mechanism waits in the dark for someone to understand what it was built to do.\"\n\n\"And if the bell is cracked, then something inside it is cracked too, and if the clapper is missing, then the bell is missing its voice,\" Pip says, climbing the stair. \"Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair.\"\n\n\"Then we go up,\" Maren says, \"and we find what the bell was built to do.\""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_28",
+      "title": "The Watcher's Stair of the Bell",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 27,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_28_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Maren turns the key and opens the chamber door"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_28_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Maren: \"The bell was never meant to be owned, only kept. I will open the door and let the bell speak for itself.\""
+              },
+              "consequence_id": "enc_29",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_28_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Corvin tries to buy the mechanism from the keeper"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_28_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Corvin: \"Everything in this city is worth what someone will pay for it, and the bell is no different, only louder. I will pay whatever it takes to own this key.\""
+              },
+              "consequence_id": "enc_29",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_28_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Pip climbs to the chamber and finds the mechanism"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_28_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Pip: \"If the bell is cracked, then something inside it is cracked too, and if the clapper is missing, then the bell is missing its voice. I will find what it is hiding.\""
+              },
+              "consequence_id": "enc_29",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The stair to the bell's chamber is narrow, worn smooth by generations of feet, and at its top the mechanism waits in the dark for someone to understand what it was built to do. Maren stands at the base of the stair, her hand resting on the cold stone, and the wind carries the smell of rain and old brass. Corvin follows her up, his ledger open in his hand, and Pip clings to the railing, his eyes wide with the certainty that something inside the bell is cracked.\n\nThe mechanism is a key, not a rope, and it fits only the door of the bell's chamber. It does not pull; it turns. It does not open; it remembers. Maren understands that the bell was never meant to be owned, only kept, and that the door of the chamber is the only place the bell can be whole again. Corvin sees a lock, a mechanism, a thing that can be bought and sold, and he reaches for it with the same hand that reaches for every other valuable object in his life. Pip sees a crack, a missing clapper, a voice that has been taken from the bell.\n\nThe square at midnight holds its breath for the answer. The three of them stand at the top of the stair, looking down at the dark square below, and the question hangs in the air like the smell of rain: what does the bell mean, and what does it want to say?"
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_29",
+      "title": "The Merchant's Hour of the Watcher",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 28,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_29_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Maren says the bell rings for the dead"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_29_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Maren: \"The bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it. We must let the bell ring for them.\""
+              },
+              "consequence_id": "enc_30",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_29_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Corvin says the bell is worth what someone will pay"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_29_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Corvin: \"Everything in this city is worth what someone will pay for it, and the bell is no different, only louder. We must sell the bell and let the highest bidder decide what it means.\""
+              },
+              "consequence_id": "enc_30",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_29_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Pip says the bell is hiding something"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_29_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Pip: \"If the bell is cracked, then something inside it is cracked too, and if the clapper is missing, then the bell is missing its voice. We must ask what the bell is hiding.\""
+              },
+              "consequence_id": "enc_30",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The square at midnight holds its breath for the answer. Corvin stands at the center of the square, his ledger open on the merchant's table, recording every coin and every bargain made in the name of the old order. The bell is gone, and the city cannot tell when the day ends, when the dead are called home, or when the harbor opens. The three of them stand at the edge of the square, each with a different idea of what the bell means.\n\nCorvin believes the bell is a commodity whose value is only what the highest bidder will pay. He cannot bear that it might mean something beyond price. He stands before the empty space where the bell hung, and he sees only a gap, a hole, a thing that can be filled with money. Maren stands beside him, and she sees the bell as a thing that was kept, not owned, and she cannot bear that the city's rest is now a rumor. Pip stands beside her, and he sees the bell as a thing that was hiding something, and he cannot bear that the city would not ask what it was hiding.\n\nThe square at midnight holds its breath for the answer. The three of them must choose what the bell means, and the choice will determine what the bell heard at midnight."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_30",
+      "title": "The Keeper's Hour of the Watcher",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 29,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_30_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Maren says the bell rings for the dead"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_30_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Maren: \"The bell does not ring for the hour; it rings for the dead, and the dead do not care what the merchants call it. We must let the bell ring for them.\""
+              },
+              "consequence_id": "enc_finale",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_30_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Corvin says the bell is worth what someone will pay"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_30_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Corvin: \"Everything in this city is worth what someone will pay for it, and the bell is no different, only louder. We must sell the bell and let the highest bidder decide what it means.\""
+              },
+              "consequence_id": "enc_finale",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_30_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "Pip says the bell is hiding something"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_30_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": "Pip: \"If the bell is cracked, then something inside it is cracked too, and if the clapper is missing, then the bell is missing its voice. We must ask what the bell is hiding.\""
+              },
+              "consequence_id": "enc_finale",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The square at midnight holds its breath for the answer. The three of them stand at the center of the square, and the question hangs in the air like the smell of rain: what does the bell mean, and what does it want to say? The bell is gone, and the city cannot tell when the day ends, when the dead are called home, or when the harbor opens. The three of them must choose what the bell means, and the choice will determine what the bell heard at midnight.\n\nMaren believes the bell was never meant to be owned, only kept. She cannot bear that the city's rest is now a rumor. She stands before the empty space where the bell hung, and she sees the bell as a thing that was kept, not owned, and she knows that the bell must ring for the dead. Corvin believes the bell is a commodity whose value is only what the highest bidder will pay. He cannot bear that it might mean something beyond price. He stands before the empty space where the bell hung, and he sees only a gap, a hole, a thing that can be filled with money. Pip believes the bell went missing because it was hiding something. He cannot bear that the city would not ask what it was hiding. He stands before the empty space where the bell hung, and he sees a crack, a missing clapper, a voice that has been taken from the bell.\n\nThe bell rings once, and the city must decide what it heard. The three of them stand at the center of the square, and the question hangs in the air like the smell of rain: what does the bell mean, and what does it want to say?"
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "enc_finale",
+      "title": "Act V: The Hour of the Bell",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 30,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [
+        {
+          "id": "opt_finale_1",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "The Bell Returns"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_finale_1",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": ""
+              },
+              "consequence_id": "end_bell_returns",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_finale_2",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "The Bell Sold"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_finale_2",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": ""
+              },
+              "consequence_id": "end_bell_sold",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_finale_3",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "The Bell Lost Forever"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_finale_3",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": ""
+              },
+              "consequence_id": "end_bell_lost_forever",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_finale_4",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "The Bell as a Question"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_finale_4",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": ""
+              },
+              "consequence_id": "end_bell_as_question",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "opt_finale_5",
+          "text_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "String Constant",
+            "value": "The Bell as an Answer"
+          },
+          "visibility_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "performability_script": {
+            "script_element_type": "Pointer",
+            "pointer_type": "Boolean Constant",
+            "value": true
+          },
+          "reactions": [
+            {
+              "id": "rxn_finale_5",
+              "text_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "String Constant",
+                "value": ""
+              },
+              "consequence_id": "end_bell_as_answer",
+              "after_effects": [],
+              "desirability_script": {
+                "script_element_type": "Pointer",
+                "pointer_type": "Bounded Number Constant",
+                "value": 1
+              }
+            }
+          ]
+        }
+      ],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": ""
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "end_bell_returns",
+      "title": "The Bell Returns",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 31,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell comes back to the city, whole and cracked, and the dead are called home. Maren stands at the base of the tower as the mechanism turns in the dark, and the clapper, missing for so long, finds its place at last. The city wakes to a sound it has not heard in a generation, and every soul in Vellum knows that the bell was never a commodity but a door.\n\nThe dead are called home, and the ledger of hours is closed for good. Corvin watches from the merchant's row, and for the first time in his life he does not reach for a price. The bell rings once more, and the city learns that some things are kept, not owned, and that the sound of a bell is not a sound to be sold but a sound to be answered."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "end_bell_sold",
+      "title": "The Bell Sold",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 32,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "Corvin sells the bell's sound to a foreign power, and the city wakes to a stranger's hour. The ledger of hours records every coin and every bargain, and the mechanism, a key that fits only the door of the bell's chamber, is left behind in the dark. The city wakes to a foreign hour, and the bell's voice is gone, carried away by men who do not know what it was built to say.\n\nThe dead are not called home, and the city learns to live without its bell. Maren watches from the cellar, and the keeper's ledger records the loss. The bell is sold, and the city wakes to a stranger's hour, and the sound of the bell is a sound that belongs to someone else now."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "end_bell_lost_forever",
+      "title": "The Bell Lost Forever",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 33,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell is lost to the sea, and the city learns to keep its own time. The cracked bell is found at dusk, and the mechanism waits in the dark for someone to understand what it was built to do. The keeper's ledger records a single ringing long ago, and the clapper is missing, not the bell. The city learns to keep its own time, and the bell is gone, lost to the sea.\n\nThe city learns to keep its own time, and the dead are not called home. Maren watches from the cellar, and the keeper's ledger records the loss. The bell is lost to the sea, and the city learns to keep its own time, and the sound of the bell is a sound that belongs to the deep now."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      }
+    },
+    {
+      "id": "end_bell_as_question",
+      "title": "The Bell as a Question",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 34,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell is rung as a question, and the city must answer it together. Pip climbs the stair to the bell's chamber and finds the mechanism, and the city holds its breath at the sound of the stair. The cracked bell is found at dusk, and the clapper is missing, not the bell. The bell is rung as a question, and the city must answer it together.\n\nThe city answers the bell's question, and the dead are called home. Maren stands at the base of the tower, and the mechanism turns in the dark. The bell is rung as a question, and the city must answer it together, and the sound of the bell is a sound that belongs to the city now."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      },
+      "is_secret_ending": true
+    },
+    {
+      "id": "end_bell_as_answer",
+      "title": "The Bell as an Answer",
+      "earliest_turn": 0,
+      "latest_turn": 999,
+      "creation_index": 35,
+      "connected_spools": [
+        "spool_main"
+      ],
+      "options": [],
+      "text_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "String Constant",
+        "value": "The bell is rung as an answer, and the city must decide what it was hiding. The ledger of hours records every coin and every bargain, and the mechanism is a key, not a rope, fitting only the door of the bell's chamber. The bell is rung as an answer, and the city must decide what it was hiding.\n\nThe city decides what the bell was hiding, and the dead are called home. Maren stands at the base of the tower, and the mechanism turns in the dark. The bell is rung as an answer, and the city must decide what it was hiding, and the sound of the bell is a sound that belongs to the city now."
+      },
+      "acceptability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Boolean Constant",
+        "value": true
+      },
+      "desirability_script": {
+        "script_element_type": "Pointer",
+        "pointer_type": "Bounded Number Constant",
+        "value": 0
+      },
+      "is_secret_ending": true
+    }
+  ],
+  "hilbert_player_data": "storyworld.hilbert.json",
+  "topology_only": true
+}

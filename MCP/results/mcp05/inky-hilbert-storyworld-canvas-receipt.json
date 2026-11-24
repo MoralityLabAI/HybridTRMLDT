@@ -1,0 +1,633 @@
+{
+  "storyworld": "The City That Lost Its Night Bell",
+  "benchmark": "hilbert-storyworld-canvas-v1",
+  "run_id": "inky-storyworld-hilbert-20261124",
+  "runtime": {
+    "model": "inky-mini-varloop",
+    "model_label": "Inky Mini (IQ4_NL, 2 loops)",
+    "checkpoint": "TML-d24-varloop-research-IQ4_NL.gguf",
+    "context_tokens": 34816,
+    "loop_count": 2,
+    "cpu_moe_layers": 10,
+    "backend": "CUDA0 (RTX 5080 Laptop GPU)",
+    "logit_bias": "200008-inf",
+    "reasoning_budget": 0,
+    "seed": 523,
+    "temperature": 0.0
+  },
+  "sized_long_context_planning": {
+    "16384": {
+      "prompt_tokens": 16384,
+      "completion_tokens": 1024,
+      "prefill_tps": 16.528,
+      "decode_tps": 8.003,
+      "wall_seconds": 1119.203,
+      "finish_reason": "length",
+      "accepted_long_context_plan": false
+    },
+    "24576": {
+      "prompt_tokens": 24577,
+      "completion_tokens": 1024,
+      "prefill_tps": 54.082,
+      "decode_tps": 17.344,
+      "wall_seconds": 513.578,
+      "finish_reason": "length",
+      "accepted_long_context_plan": false
+    },
+    "32768": {
+      "prompt_tokens": 32768,
+      "completion_tokens": 1024,
+      "prefill_tps": 47.715,
+      "decode_tps": 17.588,
+      "wall_seconds": 745.157,
+      "finish_reason": "length",
+      "accepted_long_context_plan": false
+    }
+  },
+  "conveyor_16k_turn_totals": {
+    "total_recorded_turns": 145,
+    "http_200_timed_turns": 89,
+    "preflight_parity_turns": 89,
+    "total_prompt_tokens_in": 234586,
+    "total_cached_prompt_tokens": 110899,
+    "total_uncached_prompt_tokens": 123687,
+    "total_completion_tokens_out": 149847,
+    "aggregate_prefill_tps": 36.006,
+    "aggregate_decode_tps": 9.478,
+    "total_provider_wall_seconds": 19351.52
+  },
+  "accepted_stage_turns": {
+    "act-complete-1": {
+      "stage": "act-complete-1-attempt-01",
+      "prompt_tokens": 2846,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 2538,
+      "completion_tokens": 192,
+      "prefill_tps": 61.044,
+      "decode_tps": 11.876,
+      "wall_seconds": 57.704,
+      "preflight_parity": true
+    },
+    "act-complete-2": {
+      "stage": "act-complete-2-attempt-05",
+      "prompt_tokens": 1196,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 888,
+      "completion_tokens": 218,
+      "prefill_tps": 75.917,
+      "decode_tps": 16.992,
+      "wall_seconds": 24.5,
+      "preflight_parity": true
+    },
+    "act-complete-3": {
+      "stage": "act-complete-3-attempt-01",
+      "prompt_tokens": 1192,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 884,
+      "completion_tokens": 180,
+      "prefill_tps": 42.753,
+      "decode_tps": 11.858,
+      "wall_seconds": 35.797,
+      "preflight_parity": true
+    },
+    "act-complete-4": {
+      "stage": "act-complete-4-attempt-01",
+      "prompt_tokens": 1200,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 892,
+      "completion_tokens": 213,
+      "prefill_tps": 39.146,
+      "decode_tps": 11.879,
+      "wall_seconds": 40.641,
+      "preflight_parity": true
+    },
+    "act-complete-5": {
+      "stage": "act-complete-5-attempt-01",
+      "prompt_tokens": 1134,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 826,
+      "completion_tokens": 151,
+      "prefill_tps": 33.181,
+      "decode_tps": 14.224,
+      "wall_seconds": 35.469,
+      "preflight_parity": true
+    },
+    "canvas-art-map": {
+      "stage": "canvas-art-map-attempt-03",
+      "prompt_tokens": 1547,
+      "cached_tokens": 1279,
+      "uncached_prompt_tokens": 268,
+      "completion_tokens": 2959,
+      "prefill_tps": 54.85,
+      "decode_tps": 12.496,
+      "wall_seconds": 241.64,
+      "preflight_parity": true
+    },
+    "canvas-page": {
+      "stage": "canvas-page-attempt-07",
+      "prompt_tokens": 547,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 239,
+      "completion_tokens": 1541,
+      "prefill_tps": 17.46,
+      "decode_tps": 3.692,
+      "wall_seconds": 430.844,
+      "preflight_parity": true
+    },
+    "canvas-renderer": {
+      "stage": "canvas-renderer-attempt-01",
+      "prompt_tokens": 1209,
+      "cached_tokens": 1174,
+      "uncached_prompt_tokens": 35,
+      "completion_tokens": 1304,
+      "prefill_tps": 25.042,
+      "decode_tps": 6.118,
+      "wall_seconds": 214.437,
+      "preflight_parity": true
+    },
+    "canvas-renderer-repair": {
+      "stage": "canvas-renderer-repair-attempt-01",
+      "prompt_tokens": 1423,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 1115,
+      "completion_tokens": 3281,
+      "prefill_tps": 19.474,
+      "decode_tps": 3.276,
+      "wall_seconds": 1058.797,
+      "preflight_parity": true
+    },
+    "characterize": {
+      "stage": "characterize-attempt-04",
+      "prompt_tokens": 1186,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 878,
+      "completion_tokens": 333,
+      "prefill_tps": 75.997,
+      "decode_tps": 17.678,
+      "wall_seconds": 30.375,
+      "preflight_parity": true
+    },
+    "encounter-01": {
+      "stage": "encounter-01-attempt-01",
+      "prompt_tokens": 1611,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 1303,
+      "completion_tokens": 1524,
+      "prefill_tps": 80.327,
+      "decode_tps": 17.222,
+      "wall_seconds": 104.656,
+      "preflight_parity": true
+    },
+    "encounter-04": {
+      "stage": "encounter-04-attempt-05",
+      "prompt_tokens": 2849,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 2541,
+      "completion_tokens": 1189,
+      "prefill_tps": 58.277,
+      "decode_tps": 14.613,
+      "wall_seconds": 124.937,
+      "preflight_parity": true
+    },
+    "encounter-07": {
+      "stage": "encounter-07-attempt-06",
+      "prompt_tokens": 2937,
+      "cached_tokens": 2904,
+      "uncached_prompt_tokens": 33,
+      "completion_tokens": 1370,
+      "prefill_tps": 42.057,
+      "decode_tps": 12.069,
+      "wall_seconds": 114.25,
+      "preflight_parity": true
+    },
+    "encounter-10": {
+      "stage": "encounter-10-attempt-01",
+      "prompt_tokens": 3001,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 2693,
+      "completion_tokens": 2017,
+      "prefill_tps": 62.135,
+      "decode_tps": 12.321,
+      "wall_seconds": 207.016,
+      "preflight_parity": true
+    },
+    "encounter-16": {
+      "stage": "encounter-16-attempt-01",
+      "prompt_tokens": 3382,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 3074,
+      "completion_tokens": 1870,
+      "prefill_tps": 37.028,
+      "decode_tps": 17.662,
+      "wall_seconds": 188.875,
+      "preflight_parity": true
+    },
+    "encounter-19": {
+      "stage": "encounter-19-attempt-02",
+      "prompt_tokens": 3401,
+      "cached_tokens": 3356,
+      "uncached_prompt_tokens": 45,
+      "completion_tokens": 1844,
+      "prefill_tps": 35.199,
+      "decode_tps": 11.694,
+      "wall_seconds": 158.937,
+      "preflight_parity": true
+    },
+    "encounter-22": {
+      "stage": "encounter-22-attempt-01",
+      "prompt_tokens": 3342,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 3034,
+      "completion_tokens": 1939,
+      "prefill_tps": 41.102,
+      "decode_tps": 11.764,
+      "wall_seconds": 238.609,
+      "preflight_parity": true
+    },
+    "encounter-25": {
+      "stage": "encounter-25-attempt-05",
+      "prompt_tokens": 2243,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 1935,
+      "completion_tokens": 1715,
+      "prefill_tps": 37.917,
+      "decode_tps": 11.315,
+      "wall_seconds": 202.547,
+      "preflight_parity": true
+    },
+    "encounter-28": {
+      "stage": "encounter-28-attempt-01",
+      "prompt_tokens": 2148,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 1840,
+      "completion_tokens": 1930,
+      "prefill_tps": 35.342,
+      "decode_tps": 11.153,
+      "wall_seconds": 225.063,
+      "preflight_parity": true
+    },
+    "endings": {
+      "stage": "endings-attempt-01",
+      "prompt_tokens": 2421,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 2113,
+      "completion_tokens": 1012,
+      "prefill_tps": 32.595,
+      "decode_tps": 10.17,
+      "wall_seconds": 164.266,
+      "preflight_parity": true
+    },
+    "late-stage-holistic": {
+      "stage": "late-stage-holistic-attempt-05",
+      "prompt_tokens": 1433,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 1125,
+      "completion_tokens": 324,
+      "prefill_tps": 41.689,
+      "decode_tps": 10.441,
+      "wall_seconds": 57.938,
+      "preflight_parity": true
+    },
+    "math-draft": {
+      "stage": "math-draft-attempt-13",
+      "prompt_tokens": 1687,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 1379,
+      "completion_tokens": 998,
+      "prefill_tps": 79.017,
+      "decode_tps": 17.608,
+      "wall_seconds": 74.078,
+      "preflight_parity": true
+    },
+    "plan-repair": {
+      "stage": "plan-repair-attempt-02",
+      "prompt_tokens": 620,
+      "cached_tokens": 587,
+      "uncached_prompt_tokens": 33,
+      "completion_tokens": 1015,
+      "prefill_tps": 53.34,
+      "decode_tps": 18.574,
+      "wall_seconds": 55.25,
+      "preflight_parity": true
+    },
+    "recharacterize": {
+      "stage": "recharacterize-attempt-01",
+      "prompt_tokens": 1380,
+      "cached_tokens": 308,
+      "uncached_prompt_tokens": 1072,
+      "completion_tokens": 334,
+      "prefill_tps": 48.815,
+      "decode_tps": 12.794,
+      "wall_seconds": 48.0,
+      "preflight_parity": true
+    }
+  },
+  "story_shape": {
+    "encounters": 30,
+    "scene_words": 5445,
+    "unique_scene_texts": 30,
+    "unique_choice_labels": 23,
+    "options": 90,
+    "endings": 5,
+    "route_lengths": {
+      "27": 809,
+      "28": 1682,
+      "29": 1614,
+      "30": 692,
+      "26": 191,
+      "25": 12
+    },
+    "rehearsed_endings": {
+      "end_bell_sold": 1462,
+      "end_bell_as_question": 207,
+      "end_bell_lost_forever": 1468,
+      "end_bell_returns": 1475,
+      "end_bell_as_answer": 388
+    },
+    "secrets": {
+      "end_bell_as_question": {
+        "draft_probability": 0.2053599188323851,
+        "final_probability": 0.2053599188323851,
+        "order_sensitive": true,
+        "clue_probability": 0.4400597250237703
+      },
+      "end_bell_as_answer": {
+        "draft_probability": 0.328326098265686,
+        "final_probability": 0.328326098265686,
+        "order_sensitive": true,
+        "clue_probability": 0.7036283611163751
+      }
+    }
+  },
+  "canvas_edition": {
+    "status": "verified",
+    "art_map_phase": "canvas-art-map-attempt-03",
+    "page_phase": "canvas-page-attempt-07",
+    "renderer_phase": "canvas-renderer-repair-attempt-01",
+    "player_phase": "canvas-player-attempt-10",
+    "art_map_stats": {
+      "scenes_mapped": 35,
+      "distinct_landmarks": 35,
+      "landmarks": [
+        "The Bell Tower",
+        "The Bell Tower at Dawn",
+        "The Bell's Chamber",
+        "The Cracked Bell and the Silent Stair",
+        "The Cracked Bell at Dusk",
+        "The Hour of the Bell",
+        "The Hour of the Watcher",
+        "The Keeper's Hour",
+        "The Keeper's Hour of the Bell",
+        "The Keeper's Hour of the Watcher",
+        "The Keeper's Ledger",
+        "The Keeper's Silence",
+        "The Keeper's Stair",
+        "The Keeper's Stair of the Bell",
+        "The Ledger of Dust and Coin",
+        "The Merchant's Bargain",
+        "The Merchant's Exchange",
+        "The Merchant's Exchange at Dusk",
+        "The Merchant's Hour",
+        "The Merchant's Hour of the Bell",
+        "The Merchant's Hour of the Watcher",
+        "The Merchant's Silence",
+        "The Merchant's Stair",
+        "The Silence of the Merchant",
+        "The Silent Bell Tower",
+        "The Square at Dawn",
+        "The Square at Midnight",
+        "The Stair of Pip",
+        "The Stair of the Keeper",
+        "The Stair of the Question",
+        "The Stair of the Watcher",
+        "The Watcher's Hour",
+        "The Watcher's Hour of the Bell",
+        "The Watcher's Stair",
+        "The Watcher's Stair of the Bell"
+      ],
+      "distinct_palettes": 33
+    },
+    "renderer_stats": {
+      "bytes": 6688,
+      "lines": 45,
+      "canvas_ops": 61
+    },
+    "browser": {
+      "status": "verified",
+      "game": "hilbert-storyworld",
+      "title": "The City That Lost Its Night Bell",
+      "visited_scenes": 32,
+      "distinct_canvas_hashes": 32,
+      "verified_secret_endings": [
+        "end_bell_as_question",
+        "end_bell_as_answer"
+      ],
+      "visual_metrics": {
+        "canvas_width": 640,
+        "canvas_height": 400,
+        "mean_quantized_colors": 87.41,
+        "max_quantized_colors": 124,
+        "mean_edge_density": 0.0194,
+        "mean_pairwise_rgb_l1": 15.91
+      },
+      "checks": [
+        "32 distinct Canvas scenes verified across encounters and endings",
+        "browser 2-qubit complex unitary state and Born weights match exact reference replay",
+        "secret endings unlocked via exact Hilbert witnesses (end_bell_as_question, end_bell_as_answer)",
+        "restart restores |00> initial state and clears clues"
+      ]
+    },
+    "screenshots_sha256": {
+      "act3.png": "4a84c3d42753392f24a5af1bb8e56df5ff91c3c69389779745ba28782e129f36",
+      "end_bell_as_answer.png": "eda8e73734ca7ee32351b558076ae08a4ab7dfba3a1b107ec22b0569d986df47",
+      "end_bell_as_question.png": "e01fc8213e7d66c93b53652e5add8657798d10a2cc4aa994127eae4194d5242b",
+      "end_bell_returns.png": "a1ef66f1ba42fc5d627abfba6109e46e74454ca5795d55f358a9d46e5ab57abf",
+      "start.png": "4526a597744db3977c26b1d28d60fc2a544b179358b50c770f8693443777fd41"
+    },
+    "web_artifacts_sha256": {
+      "index.html": "175777c9ed1ae1748f38773961366e60a5a349b7b243f332019df6ed76bb7305",
+      "world-data.js": "4d26b432d59a413c3e226f352f4ecee9334f0a2d250317154325977f56b2558e",
+      "art.js": "5ec179eab70a4096cb2aebf58b439b318fa7eb12c16fc058a44c75e37de9bba7",
+      "player.js": "1bb4eced4727bbc3de1e41f1eb4f1edea2449ebde06ff53f99be27b42ea0fa40"
+    },
+    "authorship": {
+      "art_map": {
+        "model": "inky-mini-varloop",
+        "base_commit": "399102f0ae206dd11f07f4bbb9c9d03d5afdff52",
+        "gdk_sha256": "178e0d3db30629a3508b67cb038aed337bfbc7968f42b4aff07fad202db28677",
+        "writes": [
+          {
+            "action": 0,
+            "path": "result.json",
+            "sha256": "d796fd339cf3c1679fe4a7e6cc9a3dd471de54af621ad5f8dd4f55b64aad2f67"
+          }
+        ],
+        "verifications": [],
+        "solver_verified": false,
+        "provider_calls": 1,
+        "provider_timings": [
+          {
+            "cache_n": 1279,
+            "prompt_n": 268,
+            "prompt_ms": 4886.029,
+            "prompt_per_token_ms": 18.231451492537314,
+            "prompt_per_second": 54.85026797835215,
+            "predicted_n": 2959,
+            "predicted_ms": 236724.073,
+            "predicted_per_token_ms": 80.02842224475998,
+            "predicted_per_second": 12.495560601477147
+          }
+        ],
+        "wall_seconds": 242.6284266,
+        "sha256": {
+          "brief.txt": "57065287380ac9e8ceb7e000a6c87cf789c5e5b7a344d42ec17bcd3be6350b25",
+          "verifier.json": "fe5fab4695db5bd51f3ebe54974d6659ae9814ee57e8e19e33cea7947bef2574",
+          "inky-wire.jsonl": "75f358cea8558d263415878be654556d67ae07678d69517881255638ebf98c02",
+          "mcp-wire.jsonl": "a56633e2eeef73ca753f7a4a315caca1d35fb3fc33409495c114325f71c73e4f",
+          "invocation.json": "3f7f2b63eaf5a221769fa671fba63a2d04d5a08a878f6652123efca6da81c2bc",
+          "gdk.json": "9540b665de189b5dc8f954fac8ba27cabe2005b19e3a23960d42063c556a07cf",
+          "session.json": "a25b2c22885b418c72632b8e8442cda5b260fc708b93fbcff15387a7153e8d34",
+          "session.preflight.jsonl": "5400d6db08eb1c0e56cb05de1e70976b4a43bc481b98f372c909d8ef46cbee81",
+          "workspace/result.json": "d796fd339cf3c1679fe4a7e6cc9a3dd471de54af621ad5f8dd4f55b64aad2f67"
+        }
+      },
+      "index_html": {
+        "model": "inky-mini-varloop",
+        "base_commit": "9e3a00e43d558139be1728e664a8818b06ff992a",
+        "gdk_sha256": "178e0d3db30629a3508b67cb038aed337bfbc7968f42b4aff07fad202db28677",
+        "writes": [
+          {
+            "action": 0,
+            "path": "index.html",
+            "sha256": "175777c9ed1ae1748f38773961366e60a5a349b7b243f332019df6ed76bb7305"
+          }
+        ],
+        "verifications": [],
+        "solver_verified": false,
+        "provider_calls": 1,
+        "provider_timings": [
+          {
+            "cache_n": 308,
+            "prompt_n": 239,
+            "prompt_ms": 13688.569,
+            "prompt_per_token_ms": 57.27434728033472,
+            "prompt_per_second": 17.459823594416626,
+            "predicted_n": 1541,
+            "predicted_ms": 417125.96,
+            "predicted_per_token_ms": 270.861012987013,
+            "predicted_per_second": 3.691930370385003
+          }
+        ],
+        "wall_seconds": 434.5465632,
+        "sha256": {
+          "brief.txt": "7b38e73d38af617952177566bc88dfd6327eab96fae8f1913264658f492479fe",
+          "verifier.json": "d6f3caa76ed55daf98bc9776163fb99280a6958524d9aa81a6e261c594e9877a",
+          "inky-wire.jsonl": "eeb7c3636f2d5ef8a467a563dce3372cce3575cc2da3ba3530fcca8875f6962b",
+          "mcp-wire.jsonl": "81df1e15d3bbd23a4fbf153f6df452cb7b4fec3b9ce00c50e378c113d130fef9",
+          "invocation.json": "653703e5b6f59b21bf138e93465c9d7bb563780a495440a9d6ba1e9bf144b04d",
+          "gdk.json": "15e10a0a538d47021bf89d43be931934c06ee3b4297d19ffb9f707976ad9fa41",
+          "session.json": "fab5f4ba08f9a845aa925f1124283960e5b2a7bbc78d97a597a6f6258d0e794e",
+          "session.preflight.jsonl": "504fdacadc13c94c60120e1ed82ab203b06d1a63227d9ccbfc5bfe672537c2b4",
+          "workspace/index.html": "175777c9ed1ae1748f38773961366e60a5a349b7b243f332019df6ed76bb7305"
+        }
+      },
+      "renderer_js": {
+        "model": "inky-mini-varloop",
+        "base_commit": "0017a563c190020f9abe1d0b74df674bd1147cc6",
+        "gdk_sha256": "178e0d3db30629a3508b67cb038aed337bfbc7968f42b4aff07fad202db28677",
+        "writes": [
+          {
+            "action": 0,
+            "path": "renderer.js",
+            "sha256": "5ec179eab70a4096cb2aebf58b439b318fa7eb12c16fc058a44c75e37de9bba7"
+          }
+        ],
+        "verifications": [],
+        "solver_verified": false,
+        "provider_calls": 1,
+        "provider_timings": [
+          {
+            "cache_n": 308,
+            "prompt_n": 1115,
+            "prompt_ms": 57255.465,
+            "prompt_per_token_ms": 51.3501928251121,
+            "prompt_per_second": 19.474123561829426,
+            "predicted_n": 3281,
+            "predicted_ms": 1001228.76,
+            "predicted_per_token_ms": 305.2526707317073,
+            "predicted_per_second": 3.2759746134339967
+          }
+        ],
+        "wall_seconds": 1061.6058071,
+        "sha256": {
+          "brief.txt": "db03d4a79086f28527f8eb7ad18f49904739a7e7cb16311dfee6e1c78c6ce089",
+          "verifier.json": "31ca7ddedf013e3391f6c3c8292839fc96e5ff2b918b5214c6799f505c64eb95",
+          "inky-wire.jsonl": "60fe3d5065df0b2d0e9213873797dd85ef834d4de188a17eb1ba850d0a5777fb",
+          "mcp-wire.jsonl": "bd04ed1179b422b7ef0f659ee053401bec1ea8d2778f1e94cd0ca45df7d3e18c",
+          "invocation.json": "59a9352c3a3c0adf29a555442fa8acaaa7c6ab15fb52b49b085b11d1f894d979",
+          "gdk.json": "f2c29b30c93560d42dd908fe69ea1e8e1bd99bae1e41c61d1dca8abe5c9815a6",
+          "session.json": "3cf51480ac4b09957b1c1b2ef329aaaae36a21ba91ba7998f8f3dd2fa1c8697b",
+          "session.preflight.jsonl": "9398038c3786ae6109bb4aade5221d0e286d53fabae3aa265c69c68b928acbde",
+          "workspace/renderer.js": "5ec179eab70a4096cb2aebf58b439b318fa7eb12c16fc058a44c75e37de9bba7"
+        }
+      },
+      "player_js": {
+        "model": "inky-mini-varloop",
+        "base_commit": "15fb56be43115398758522d5ac15f94ad297f1e2",
+        "gdk_sha256": "178e0d3db30629a3508b67cb038aed337bfbc7968f42b4aff07fad202db28677",
+        "writes": [
+          {
+            "action": 0,
+            "path": "player.js",
+            "sha256": "1bb4eced4727bbc3de1e41f1eb4f1edea2449ebde06ff53f99be27b42ea0fa40"
+          }
+        ],
+        "verifications": [],
+        "solver_verified": false,
+        "provider_calls": 1,
+        "provider_timings": [
+          {
+            "cache_n": 0,
+            "prompt_n": 2611,
+            "prompt_ms": 118760.115,
+            "prompt_per_token_ms": 45.4845327460743,
+            "prompt_per_second": 21.985495719669856,
+            "predicted_n": 3367,
+            "predicted_ms": 1033190.983,
+            "predicted_per_token_ms": 306.94919281045753,
+            "predicted_per_second": 3.2578681535009095
+          }
+        ],
+        "wall_seconds": 1154.9268748,
+        "sha256": {
+          "brief.txt": "b2e724ab7f548e2e1fa23a51e99a891350cf9423a47a1625a4b15107c946e0c4",
+          "verifier.json": "53e9d15e9ab6ed7a8bf435bdaee3be950380607f83fc4e33e2ae2c6ecbe54aa6",
+          "inky-wire.jsonl": "c236de6046c82d7a168498f49bbf548bae49dc990ceedd16caa86d54144369a7",
+          "mcp-wire.jsonl": "70013b296af677ffaaad2b8c9a8b7c975dab7e9ea519cf7a0aa0ec36b456e94e",
+          "invocation.json": "238e635344f35a236eb89412a09dba07ed13de92ea81136ca2da895cf6d3d88f",
+          "gdk.json": "2f641a5c136b85834d6da2da1fd0b7a6d9a358fbc2209cb46e1a6e875390bf83",
+          "session.json": "7ae9bc1861ceb473c297a2c5ccf976dda8ca341c632fbc51aa4bf6edd5b7211b",
+          "session.preflight.jsonl": "50001a34e97b9a1f7b3d0ebc690b1bb5cffc0a60e28192556e0fe11df496baae",
+          "workspace/player.js": "1bb4eced4727bbc3de1e41f1eb4f1edea2449ebde06ff53f99be27b42ea0fa40"
+        }
+      }
+    }
+  },
+  "export_sha256": {
+    "web/index.html": "175777c9ed1ae1748f38773961366e60a5a349b7b243f332019df6ed76bb7305",
+    "web/art.js": "5ec179eab70a4096cb2aebf58b439b318fa7eb12c16fc058a44c75e37de9bba7",
+    "web/player.js": "1bb4eced4727bbc3de1e41f1eb4f1edea2449ebde06ff53f99be27b42ea0fa40",
+    "web/world-data.js": "4d26b432d59a413c3e226f352f4ecee9334f0a2d250317154325977f56b2558e",
+    "world.swmd.min.md": "40d4da1071a7a0ec655d451a5b0ff4256a92ae18cc7e0f85ace514d48583f0cc",
+    "storyworld.hilbert.json": "e0d9349b454606ae45432388b1d46e47c0a6cf17a5fa9ea32a6257ee863c84bb",
+    "sweepweave-topology.json": "1ef0ed5900c5680a2deedaeb73fff486f68a6f8b07b57c98b7d74d223ea58a4d",
+    "browser-receipt.json": "4dbadfb8f5b05c93b6fe61b43c693fbc797f27e84e4c1d19e05969c7ed425725"
+  },
+  "browser_screenshots_sha256": {
+    "act3.png": "4a84c3d42753392f24a5af1bb8e56df5ff91c3c69389779745ba28782e129f36",
+    "end_bell_as_answer.png": "eda8e73734ca7ee32351b558076ae08a4ab7dfba3a1b107ec22b0569d986df47",
+    "end_bell_as_question.png": "e01fc8213e7d66c93b53652e5add8657798d10a2cc4aa994127eae4194d5242b",
+    "end_bell_returns.png": "a1ef66f1ba42fc5d627abfba6109e46e74454ca5795d55f358a9d46e5ab57abf",
+    "start.png": "4526a597744db3977c26b1d28d60fc2a544b179358b50c770f8693443777fd41"
+  }
+}

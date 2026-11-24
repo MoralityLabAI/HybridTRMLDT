@@ -278,7 +278,8 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
               max_tokens: int = 2304, iterations: int = 7, context: int = 8192,
               validate_create: list[str] | None = None, first_reply_from: Path | None = None,
               allow_basename: bool = False, compact_writes: bool = False,
-              reference_prompt: tuple[Path, int] | None = None) -> dict:
+              reference_prompt: tuple[Path, int] | None = None,
+              base_url: str | None = None, model: str | None = None) -> dict:
     root.mkdir(parents=True)
     workspace = root / "workspace"
     workspace.mkdir()
@@ -288,15 +289,17 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
     task = root / "brief.txt"
     task.write_text(brief + "\n", encoding="utf-8", newline="\n")
     manifest = root / "verifier.json"
-    save(manifest, {"argv": verifier, "editable": paths, "creatable": paths, "timeout_seconds": 45,
+    save(manifest, {"argv": verifier, "editable": paths, "creatable": paths, "timeout_seconds": 60,
                     **({"allow_create_basename": True} if allow_basename else {}),
                     **({"validate_create_argv": validate_create} if validate_create else {})})
+    resolved_url = base_url or os.environ.get("MCP05_BASE_URL", "http://127.0.0.1:18097/v1/")
+    resolved_model = model or os.environ.get("MCP05_MODEL", MODEL)
     command = [str(gdk), "--repo", str(workspace), "--goblin-cwd", str(ROOT), "--python", sys.executable,
                "--task-file", str(task), "--verifier", str(manifest), "--session-file", str(root / "session.json"),
-               "--base-url", "http://127.0.0.1:18097/v1/", "--model", MODEL, "--context-window", str(context),
+               "--base-url", resolved_url, "--model", resolved_model, "--context-window", str(context),
                "--max-tokens", str(max_tokens), "--max-agent-iterations", str(iterations), "--max-tool-calls", "24",
                "--budget", "1024", "--no-packet", "--memory-mode", "raw", "--allow-create", "--json-actions",
-               "--timeout-secs", "7200" if reference_prompt else "840"]
+               "--timeout-secs", "7200" if reference_prompt else "1800"]
     invocation = {"argv": command, "base_commit": git(workspace, "rev-parse", "HEAD"),
                   "verifier_sha256": sha(manifest.read_bytes()),
                   "brief_sha256": sha(task.read_bytes()), "gdk_sha256": sha(gdk.read_bytes())}
@@ -306,7 +309,8 @@ def run_phase(root: Path, gdk: Path, brief: str, paths: list[str], verifier: lis
         packet, input_tokens = reference_prompt
         invocation["reference_prompt"] = {"sha256": sha(packet.read_bytes()), "input_tokens": input_tokens}
     save(root / "invocation.json", invocation)
-    env = {**os.environ, "MCP05_WIRE_LOG": str(root / "inky-wire.jsonl"),
+    env = {**os.environ, "RUST_MIN_STACK": "16777216",
+           "MCP05_WIRE_LOG": str(root / "inky-wire.jsonl"),
            "MCP05_SERVER_WIRE_LOG": str(root / "mcp-wire.jsonl")}
     if validate_create or compact_writes:
         env["MCP05_COMPACT_CREATE_HISTORY"] = "1"

@@ -227,6 +227,7 @@ def main():
     wire_log = os.environ.get("MCP05_WIRE_LOG")
     fresh_prompt = os.environ.get("MCP05_FRESH_PROMPT") == "1"
     compact_writes = os.environ.get("MCP05_COMPACT_CREATE_HISTORY") == "1"
+    reasoning_effort = os.environ.get("MCP05_REASONING_EFFORT", "").strip()
     input_target = int(os.environ.get("MCP05_EXACT_INPUT_TARGET", "0"))
     reference = Path(os.environ["MCP05_REFERENCE_PACKET"]).read_text(encoding="utf-8") if input_target else ""
     initial_sized = False
@@ -281,6 +282,8 @@ def main():
                 request = json.loads(self.rfile.read(size))
                 if request.get("stream"):
                     raise PreflightError("session preflight requires non-streaming inference")
+                if reasoning_effort:
+                    request["reasoning_effort"] = reasoning_effort
                 if fresh_prompt:
                     request["cache_prompt"] = False
                 if input_target and not initial_sized:
