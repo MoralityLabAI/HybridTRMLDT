@@ -40,6 +40,8 @@ jobs:
         run: cargo build --locked
       - name: Goblin MCP server and GDK app against a scripted OpenAI-compatible endpoint
         run: python MCP/goose_gdk_app/ci_smoke.py MCP/goose_gdk_app/target/debug/goblin-gdk
+      - name: GDK-02 Inkling and Bonsai exact-gate scripted smoke
+        run: python MCP/goose_gdk_app/ci_gdk02_smoke.py MCP/goose_gdk_app/target/debug/goblin-gdk
       - name: Build release against goose-agent 0.1.0-alpha.14
         working-directory: MCP/goose_gdk_app
         run: cargo build --release --locked
