@@ -27,3 +27,11 @@ python -m MCP.mcp02.hf_server --model-dir SNAPSHOT --served-name qwen2.5-0.5b-in
 - retrieval and inference seconds.
 
 Set `MCP03_ROUTER_CHECKPOINT` in the goblin server's environment to swap the BM25 control for a trained looped, TRM, TRM+LDT or HRM router.
+
+## GDK-01 optional lean provider view
+
+The existing `goblin-gdk` command now accepts `--lean-context --lean-request-byte-limit 32768 --lean-history-turns 0`. See [MCP/GDK/GDK01.md](../GDK/GDK01.md).
+
+The feature uses a request preparer for system/packet text and a provider wrapper for conversation selection. It keeps the current user turn together, excludes prior turns from the provider request by default, and checks the **internal serialized input byte** limit before calling the OpenAI-compatible endpoint. `--history-file` accepts a JSON array of simple user/assistant text turns for reproducible comparison. The authoritative session history remains unchanged. This byte counter does not establish exact provider tokens or the model's context-window limit.
+
+`--lean-context` is disabled by default. `--no-packet` still isolates the DataGoblin packet contribution. The scripted endpoint smoke exercises the full provider path, the new Rust unit suite tests pruning and rejection, and the JSON receipt contains `lean_request` with the observed boundary counters.

@@ -14,6 +14,7 @@ import math
 import subprocess
 import sys
 import threading
+import tempfile
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -58,12 +59,9 @@ def main() -> int:
     server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     port = server.server_address[1]
-    try:
-        with_packet = run(binary, port, "--repo", str(ROOT), "--budget", "1024")
-        n_with = len(REQUESTS)
-        without = run(binary, port, "--no-packet")
-    finally:
-        server.shutdown()
+    with_packet = run(binary, port, "--repo", str(ROOT), "--budget", "1024")
+    n_with = len(REQUESTS)
+    without = run(binary, port, "--no-packet")
     sent = json.dumps(REQUESTS[n_with - 1])
     stats = with_packet["packet_stats"]
     checks = {
@@ -73,7 +71,44 @@ def main() -> int:
         "router_read_more_than_it_sent": stats["local_result_tokens"] > stats["packet_tokens"],
         "usage_recorded": with_packet["provider_input_tokens"] > without["provider_input_tokens"] > 0,
     }
-    print(json.dumps({"checks": checks, "with_packet": with_packet, "without_packet": without}, indent=1))
+    # Exercise the provider boundary with a long, durable two-turn history.
+    # Only the inference view may omit those messages.
+    with tempfile.TemporaryDirectory(prefix="gdk01-") as tmp:
+        history = Path(tmp) / "history.json"
+        history.write_text(json.dumps([
+            {"role": "user", "text": "OLD_SENTINEL " + "archived content " * 240},
+            {"role": "assistant", "text": "OLD_ANSWER " + "large result " * 240},
+        ]), encoding="utf-8")
+        unfiltered = run(binary, port, "--no-packet", "--history-file", str(history))
+        unfiltered_request = json.dumps(REQUESTS[-1])
+        filtered = run(binary, port, "--no-packet", "--history-file", str(history),
+                       "--lean-context", "--lean-request-byte-limit", "6500",
+                       "--lean-history-turns", "0")
+        filtered_request = json.dumps(REQUESTS[-1])
+        before_block = len(REQUESTS)
+        # The Rust provider wrapper is expected to fail before any HTTP request.
+        blocked = subprocess.run([
+            binary, "--task", "tiny", "--no-packet",
+            "--base-url", f"http://127.0.0.1:{port}/v1/", "--model", "scripted",
+            "--lean-context", "--lean-request-byte-limit", "8",
+        ], capture_output=True, text=True, timeout=600)
+        checks.update({
+            "baseline_preserves_old_history": "OLD_SENTINEL" in unfiltered_request,
+            "lean_omits_prior_history": "OLD_SENTINEL" not in filtered_request
+                                        and "OLD_ANSWER" not in filtered_request,
+            "lean_retains_current_task": "certify_and_apply_verified" in filtered_request,
+            "lean_reduces_provider_bytes": len(filtered_request) < len(unfiltered_request),
+            "lean_durable_history_retained": filtered["session_message_count"] ==
+                                            unfiltered["session_message_count"],
+            "lean_receipt_reports_omission": filtered["lean_request"]["omitted_messages"] >= 2,
+            "lean_receipt_within_byte_gate":
+                filtered["lean_request"]["serialized_input_bytes"] <= 6500,
+            "over_budget_blocks_http": blocked.returncode != 0
+                                       and len(REQUESTS) == before_block,
+        })
+    server.shutdown()
+    print(json.dumps({"checks": checks, "with_packet": with_packet, "without_packet": without,
+                      "unfiltered": unfiltered, "lean": filtered}, indent=1))
     return 0 if all(checks.values()) else 1
 
 
