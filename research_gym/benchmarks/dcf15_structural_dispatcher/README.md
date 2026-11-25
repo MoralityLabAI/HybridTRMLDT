@@ -1,0 +1,9 @@
+# DCF-15: Reusable structural dispatcher
+
+Standalone research-gym prototype; not wired into the production LDT membrane. Boolean factor scopes and query are supplied. Immutable plan records input factor indices, broadcasting shapes, elimination axes, peak scope and work proxy. Execute with fresh nonnegative factors; rescale intermediate factors by positive maxima (preserves normalized posterior). Cap overflow produces abstention. FP64 exact algorithm, not certified interval arithmetic. Decision threshold .8 corresponds to reward +1/-4/0.
+
+Benchmark: 36 graph/seed configurations, n=8/16/32, chain/star/cycle/random, seeds1801/1807/1811, 24 fresh factor sets per configuration. Five alternating timing repetitions. Cached arm excludes initial plan build (prep recorded separately); replan arm includes plan build per observation. Both use identical NumPy executor. Mean of condition medians 7.559 ms cached vs24.344 ms replan per24; median paired speedup2.330. 864 decisions; 288 independent brute-force checks at n8, max abs error1.665e-16. All cached/replan predictions identical. Scope-abstention fixture passes. CPU-only, no paid compute. No claim of speedup vs optimized external inference, dynamic topology, or actual learned LDT.
+
+Run OPENBLAS_NUM_THREADS=1 python benchmark.py from this directory. Generates receipt.json and frames.jsonl (576 development,288 test by seed). Split is seed-based, not graph-family held-out, and some topology repeats across splits. Reference labels for n>8 use same executor, not an independent verifier. Frames are provisional for Data Goblin; do not mix test frames into training. No Data Goblin import yet. Raw local receipts/archive supplied in conversation.
+
+Next: validate plan integrity at the authorization boundary, add independent larger-system reference, budget actual peak bytes, add cutset fallback, then wire to typed lattice state. 
