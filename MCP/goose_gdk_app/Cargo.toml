@@ -16,6 +16,8 @@ goose-providers = "=0.1.0-alpha.14"
 goose-provider-types = "=0.1.0-alpha.14"
 anyhow = "1"
 async-trait = "0.1"
+rmcp = { version = "3.11.0", default-features = false }
+serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "process", "io-util", "sync", "time"] }
 tokio-util = "0.7"
