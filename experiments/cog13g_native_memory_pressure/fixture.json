@@ -1,0 +1,156 @@
+{
+  "schema": "cog13g.fixture.v1",
+  "mock": true,
+  "rows": [
+    {
+      "capGiB": 2,
+      "arm": "replay_lru",
+      "certified": 32,
+      "opens": 187,
+      "evictions": 155,
+      "pressureEvictions": 155,
+      "executed": 2064,
+      "restored": 0,
+      "peakLive": 14,
+      "events": 1388
+    },
+    {
+      "capGiB": 2,
+      "arm": "snapshot_lru",
+      "certified": 32,
+      "opens": 187,
+      "evictions": 155,
+      "pressureEvictions": 155,
+      "executed": 1540,
+      "restored": 524,
+      "peakLive": 14,
+      "events": 1388
+    },
+    {
+      "capGiB": 2,
+      "arm": "snapshot_recent",
+      "certified": 32,
+      "opens": 150,
+      "evictions": 118,
+      "pressureEvictions": 118,
+      "executed": 1372,
+      "restored": 692,
+      "peakLive": 14,
+      "events": 1240
+    },
+    {
+      "capGiB": 2,
+      "arm": "block_snapshot",
+      "certified": 32,
+      "opens": 32,
+      "evictions": 0,
+      "pressureEvictions": 0,
+      "executed": 896,
+      "restored": 1168,
+      "peakLive": 1,
+      "events": 768
+    },
+    {
+      "capGiB": 4,
+      "arm": "replay_lru",
+      "certified": 32,
+      "opens": 32,
+      "evictions": 0,
+      "pressureEvictions": 0,
+      "executed": 2064,
+      "restored": 0,
+      "peakLive": 24,
+      "events": 768
+    },
+    {
+      "capGiB": 4,
+      "arm": "snapshot_lru",
+      "certified": 32,
+      "opens": 32,
+      "evictions": 0,
+      "pressureEvictions": 0,
+      "executed": 896,
+      "restored": 1168,
+      "peakLive": 24,
+      "events": 768
+    },
+    {
+      "capGiB": 4,
+      "arm": "snapshot_recent",
+      "certified": 32,
+      "opens": 32,
+      "evictions": 0,
+      "pressureEvictions": 0,
+      "executed": 896,
+      "restored": 1168,
+      "peakLive": 24,
+      "events": 768
+    },
+    {
+      "capGiB": 4,
+      "arm": "block_snapshot",
+      "certified": 32,
+      "opens": 32,
+      "evictions": 0,
+      "pressureEvictions": 0,
+      "executed": 896,
+      "restored": 1168,
+      "peakLive": 1,
+      "events": 768
+    },
+    {
+      "capGiB": 8,
+      "arm": "replay_lru",
+      "certified": 32,
+      "opens": 32,
+      "evictions": 0,
+      "pressureEvictions": 0,
+      "executed": 2064,
+      "restored": 0,
+      "peakLive": 24,
+      "events": 768
+    },
+    {
+      "capGiB": 8,
+      "arm": "snapshot_lru",
+      "certified": 32,
+      "opens": 32,
+      "evictions": 0,
+      "pressureEvictions": 0,
+      "executed": 896,
+      "restored": 1168,
+      "peakLive": 24,
+      "events": 768
+    },
+    {
+      "capGiB": 8,
+      "arm": "snapshot_recent",
+      "certified": 32,
+      "opens": 32,
+      "evictions": 0,
+      "pressureEvictions": 0,
+      "executed": 896,
+      "restored": 1168,
+      "peakLive": 24,
+      "events": 768
+    },
+    {
+      "capGiB": 8,
+      "arm": "block_snapshot",
+      "certified": 32,
+      "opens": 32,
+      "evictions": 0,
+      "pressureEvictions": 0,
+      "executed": 896,
+      "restored": 1168,
+      "peakLive": 1,
+      "events": 768
+    }
+  ],
+  "negative": {
+    "credit": true,
+    "work": true,
+    "missing": true,
+    "eviction": true
+  }
+}
