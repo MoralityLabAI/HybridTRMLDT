@@ -1,0 +1,24 @@
+name: Hybrid MMS CPU
+on:
+  pull_request:
+    paths:
+      - 'research_gym/neural/mms.py'
+      - 'research_gym/neural/rollout.py'
+      - 'MCP/mcp02/mms.py'
+      - 'MCP/mcp02/train.py'
+      - 'research_gym/scripts/run_storyworld_mms.py'
+      - 'tests/test_hybrid_mms.py'
+      - '.github/workflows/hybrid-mms.yml'
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pytest numpy && pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m py_compile MCP/mcp02/train.py research_gym/neural/rollout.py
+      - run: python -m pytest -q tests/test_hybrid_mms.py
+      - run: python -m research_gym.scripts.run_storyworld_mms --steps 3 --states 4 --mms-mib 1 --out /tmp/story_mms

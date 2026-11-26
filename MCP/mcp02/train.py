@@ -176,7 +176,7 @@ def evaluate_ranking(model, states, device, batch=64) -> dict:
 def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, device: str, seed: int,
         shuffle_labels: bool = False, shuffle_utilities_only: bool = False,
         dev: dict | None = None, threads: int = 6, log=print,
-        max_steps: int | None = None) -> tuple:
+        max_steps: int | None = None, mms_options: dict | None = None) -> tuple:
     import torch
     from .models import Router, flops_per_candidate, parameter_counts
     torch.manual_seed(seed)
@@ -184,6 +184,16 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
     model = Router(config).to(device)
     rng = random.Random(seed)
     decide = [dict(s) for s in data["decide"]]
+    mms, visits_by_site = None, {}
+    if mms_options and mms_options.get("mib",0):
+        if device != "cpu" or data.get("meta",{}).get("split") != "train":
+            raise ValueError("MMS requires CPU and a train-only dataset")
+        from .mms import router_memory
+        mms, visits_by_site = router_memory(model,mms_options,FE.SEQ_LEN)
+        offset = 0
+        for state in decide:
+            state["_mms_offset"] = offset
+            offset += len(state["cands"])
     if (model.utility_heads or model.single_utility) and any("utilities" not in s for s in decide):
         raise ValueError("dual utility heads require states with private packet-marginal targets")
     if shuffle_utilities_only:
@@ -212,6 +222,7 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
     sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda step: min(1.0, (step + 1) / 50) *
                                               0.5 * (1 + math.cos(math.pi * min(step, total_steps) / total_steps)))
     curve, started, step = [], time.perf_counter(), 0
+    started_cpu = time.process_time()
     train_flops = 0
     per_cand = flops_per_candidate(model)["flops"]
     for epoch in range(epochs):
@@ -222,24 +233,34 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
         for b in range(steps_per_epoch):
             chunk = decide[b * batch_states:(b + 1) * batch_states]
             ids, seg, structs, owner, labels = _assemble(chunk, device, model.encoder)
-            scores, _ = model(ids, seg, structs)
-            if model.utility_heads or model.single_utility:
-                values = torch.tensor([v for state in chunk for v in state["utilities"]],
-                                      dtype=scores.dtype, device=device).clamp(0, 1)
-                loss = (_utility_listwise_loss(scores, owner, values, len(chunk))
-                        + 0.2 * torch.nn.functional.smooth_l1_loss(scores.sigmoid(), values))
-            else:
-                loss = _listwise_loss(scores, owner, labels, len(chunk))
-            train_flops += 3 * per_cand * ids.shape[0]
-            if rows:
-                rchunk = rows[b * row_batch:(b + 1) * row_batch]
-                if rchunk:
-                    rids, rseg, rstruct, _owner, rlabels = _assemble(rchunk, device, model.encoder)
-                    _s, logits = model(rids, rseg, rstruct)
-                    loss = loss + 0.5 * torch.nn.functional.cross_entropy(logits, rlabels)
-                    train_flops += 3 * per_cand * rids.shape[0]
-            opt.zero_grad(set_to_none=True)
-            loss.backward()
+            from contextlib import nullcontext
+            capture = nullcontext()
+            if mms is not None:
+                keys = torch.tensor([state["_mms_offset"]+i for state in chunk
+                                     for i in range(len(state["cands"]))],dtype=torch.long)
+                name = mms.select(step)
+                visits = visits_by_site[name]
+                extra = visits if rows and rows[b * row_batch:(b + 1) * row_batch] else 0
+                capture = mms.sites[name].capture(keys,step,visits//2,visits,extra_visits=extra)
+            with capture:
+                scores, _ = model(ids, seg, structs)
+                if model.utility_heads or model.single_utility:
+                    values = torch.tensor([v for state in chunk for v in state["utilities"]],
+                                          dtype=scores.dtype, device=device).clamp(0, 1)
+                    loss = (_utility_listwise_loss(scores, owner, values, len(chunk))
+                            + 0.2 * torch.nn.functional.smooth_l1_loss(scores.sigmoid(), values))
+                else:
+                    loss = _listwise_loss(scores, owner, labels, len(chunk))
+                train_flops += 3 * per_cand * ids.shape[0]
+                if rows:
+                    rchunk = rows[b * row_batch:(b + 1) * row_batch]
+                    if rchunk:
+                        rids, rseg, rstruct, _owner, rlabels = _assemble(rchunk, device, model.encoder)
+                        _s, logits = model(rids, rseg, rstruct)
+                        loss = loss + 0.5 * torch.nn.functional.cross_entropy(logits, rlabels)
+                        train_flops += 3 * per_cand * rids.shape[0]
+                opt.zero_grad(set_to_none=True)
+                loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             sched.step()
@@ -264,6 +285,9 @@ def fit(config: dict, data: dict, *, epochs: int, lr: float, batch_states: int, 
                "train_flops_method": "3 x measured forward FLOPs per candidate at fixed length x candidates seen "
                                      "(upper bound; batches use shorter dynamic padding)",
                "parameters": parameter_counts(model), "dataset": data["meta"]}
+    receipt["train_process_cpu_seconds"] = time.process_time()-started_cpu
+    if mms is not None:
+        receipt["mms"] = {"config":dict(mms_options),**mms.receipt()}
     from .run import peak_rss_bytes
     receipt["memory"] = {"process_peak_rss_bytes": peak_rss_bytes(),
                          "scope": "whole training process, including the in-memory dataset"}
@@ -305,7 +329,19 @@ def main(argv=None) -> int:
     f.add_argument("--out", type=Path, required=True)
     f.add_argument("--device", default="cpu")
     f.add_argument("--cuda-memory-fraction", type=float)
+    for cmd in (tp,f):
+        cmd.add_argument("--mms-mib",type=float,default=0)
+        cmd.add_argument("--mms-mode",choices=("observe","dense","bpd","sham"),default="bpd")
+        cmd.add_argument("--mms-sites",default="auto")
+        cmd.add_argument("--mms-schedule",choices=("round_robin","adaptive"),default="round_robin")
+        cmd.add_argument("--mms-rank",type=int,default=16)
+        cmd.add_argument("--mms-topk",type=int,default=4)
+        cmd.add_argument("--mms-ratio",type=float,default=.2)
+        cmd.add_argument("--mms-refresh",type=int,default=128)
+        cmd.add_argument("--mms-max-age",type=int,default=32768)
+        cmd.add_argument("--mms-map-manifest",default="")
     args = p.parse_args(argv)
+    mms_options = {k[4:]:v for k,v in vars(args).items() if k.startswith("mms_")}
     if getattr(args, "cuda_memory_fraction", None) and args.device == "cuda":
         import torch
         torch.cuda.set_per_process_memory_fraction(args.cuda_memory_fraction)
@@ -334,11 +370,12 @@ def main(argv=None) -> int:
         started = time.perf_counter()
         model, receipt = fit(spec["config"], data, epochs=1, lr=train["lr"], batch_states=train["batch_states"],
                              device=args.device, seed=train["seed"], threads=train.get("threads", 6),
-                             log=lambda *_: None, max_steps=args.steps)
+                             log=lambda *_: None, max_steps=args.steps,mms_options=mms_options)
         out = {"model": args.model, "device": args.device, "steps": receipt["steps"],
                "seconds_per_step": (time.perf_counter() - started) / max(1, receipt["steps"]),
                "batch_states": train["batch_states"], "peak_rss_after_dataset_and_torch_load": before,
-               "peak_rss_training": peak_rss_bytes(), "parameters": receipt["parameters"]}
+               "peak_rss_training": peak_rss_bytes(), "parameters": receipt["parameters"],
+               **({"mms":receipt["mms"]} if "mms" in receipt else {})}
         if args.device == "cuda":
             out["cuda_max_memory_allocated"] = int(torch.cuda.max_memory_allocated())
         print(json.dumps(out))
@@ -351,7 +388,7 @@ def main(argv=None) -> int:
                          lr=spec.get("lr", train["lr"]), batch_states=train["batch_states"], device=args.device,
                          seed=spec.get("seed", train["seed"]), shuffle_labels=spec.get("shuffle_labels", False),
                          shuffle_utilities_only=spec.get("shuffle_utilities_only", False),
-                         dev=dev, threads=train.get("threads", 6))
+                         dev=dev, threads=train.get("threads", 6),mms_options=mms_options)
     receipt["model_name"] = args.model
     sha = save_checkpoint(model, receipt, args.out)
     receipt["checkpoint_sha256"] = sha
