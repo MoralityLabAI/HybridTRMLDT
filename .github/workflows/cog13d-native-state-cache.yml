@@ -1,0 +1,86 @@
+name: COG-13D native state accretion
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13d_native_state_cache/**'
+      - '.github/workflows/cog13d-native-state-cache.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node experiments/cog13d_native_state_cache/run.mjs --fixture "$RUNNER_TEMP/cog13d-fixture.json"
+  native:
+    needs: fixture
+    strategy:
+      fail-fast: false
+      matrix:
+        memory_mib: [2048, 4096]
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      LEAN_NUM_THREADS: '1'
+      MATHLIB_SHA: 56a005855ea17e0b0958f73ec801ae140b0a1679
+      MEMORY_MIB: ${{ matrix.memory_mib }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/checkout@v4
+        with:
+          repository: leanprover-community/mathlib4
+          ref: 56a005855ea17e0b0958f73ec801ae140b0a1679
+          path: upstream-mathlib
+          persist-credentials: false
+      - name: Install Lean 4.35.0
+        run: |
+          curl --fail --location --retry 3 https://github.com/leanprover/lean4/releases/download/v4.35.0/lean-4.35.0-linux.tar.zst -o "$RUNNER_TEMP/lean.tar.zst"
+          tar --zstd -xf "$RUNNER_TEMP/lean.tar.zst" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lean-4.35.0-linux/bin" >> "$GITHUB_PATH"
+      - name: Compile native snapshot server
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$MATHLIB_SHA"
+          test "$(cat lean-toolchain)" = "leanprover/lean4:v4.35.0"
+          lean --version
+          lake exe cache get
+          cp "$GITHUB_WORKSPACE/experiments/cog13d_native_state_cache/StateCacheServer.lean" .
+          mkdir -p .lake/build/lib/lean
+          lake env lean -o .lake/build/lib/lean/StateCacheServer.olean StateCacheServer.lean
+      - name: Execute under hard cgroup memory cap
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          lake env bash -c '
+            set -euo pipefail
+            cap=$((MEMORY_MIB*1024*1024))
+            node_bin="$(command -v node)"
+            lean_bin="$(command -v lean)"
+            # Root owns the scope; the workload runs as the original runner user.
+            # The child checks memory.max and memory.swap.max before scoring.
+            sudo --preserve-env=LEAN_PATH,LEAN_NUM_THREADS systemd-run \
+              --scope --quiet --property="MemoryMax=$cap" --property=MemorySwapMax=0 \
+              /usr/sbin/runuser -u "$(id -un)" --preserve-environment -- \
+              "$node_bin" "$GITHUB_WORKSPACE/experiments/cog13d_native_state_cache/run.mjs" \
+              --native "$RUNNER_TEMP/cog13d-native" "$lean_bin" "$PWD" "$cap"
+          '
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cog13d-native-${{ matrix.memory_mib }}-mib
+          path: ${{ runner.temp }}/cog13d-native/
+          if-no-files-found: warn
+          retention-days: 30
