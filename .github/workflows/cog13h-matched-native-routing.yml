@@ -1,0 +1,118 @@
+name: COG-13H matched native routing
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13h_matched_native_routing/**'
+      - '.github/workflows/cog13h-matched-native-routing.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node experiments/cog13h_matched_native_routing/run.mjs --fixture "$RUNNER_TEMP/cog13h-fixture.json"
+  native:
+    needs: fixture
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [1701, 1709, 1723]
+    runs-on: ubuntu-latest
+    timeout-minutes: 130
+    env:
+      LEAN_NUM_THREADS: '1'
+      MATHLIB_SHA: 56a005855ea17e0b0958f73ec801ae140b0a1679
+      SEED: ${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch exact verified source archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/MoralityLabAI/HybridTRMLDT/actions/artifacts/15136527625/zip \
+            -o "$RUNNER_TEMP/cog13c-native.zip"
+          echo 'd99bc6a95d4ea31a132b408cd653644e9680a167fa87aca3b722522af0ab5aea  '"$RUNNER_TEMP/cog13c-native.zip" | sha256sum --check
+          python experiments/cog13h_matched_native_routing/prepare.py "$RUNNER_TEMP/cog13c-native.zip" "$RUNNER_TEMP/cog13h-input.json"
+      - uses: actions/checkout@v4
+        with:
+          repository: leanprover-community/mathlib4
+          ref: 56a005855ea17e0b0958f73ec801ae140b0a1679
+          path: upstream-mathlib
+          persist-credentials: false
+      - name: Install Lean 4.35.0
+        run: |
+          curl --fail --location --retry 3 https://github.com/leanprover/lean4/releases/download/v4.35.0/lean-4.35.0-linux.tar.zst -o "$RUNNER_TEMP/lean.tar.zst"
+          tar --zstd -xf "$RUNNER_TEMP/lean.tar.zst" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lean-4.35.0-linux/bin" >> "$GITHUB_PATH"
+      - name: Prepare pinned Mathlib and snapshot server
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$MATHLIB_SHA"
+          test "$(cat lean-toolchain)" = "leanprover/lean4:v4.35.0"
+          lean --version
+          lake exe cache get
+          cp "$GITHUB_WORKSPACE/experiments/cog13h_matched_native_routing/StateCacheH.lean" .
+          mkdir -p .lake/build/lib/lean
+          lake env lean -o .lake/build/lib/lean/StateCacheH.olean StateCacheH.lean
+      - name: Execute paired native proof search
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          lake env bash -c '
+            node "$GITHUB_WORKSPACE/experiments/cog13h_matched_native_routing/run.mjs" \
+              --native "$RUNNER_TEMP/cog13h-native" "$(command -v lean)" "$PWD" \
+              "$RUNNER_TEMP/cog13h-input.json" "$SEED"
+          '
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cog13h-seed-${{ matrix.seed }}
+          path: ${{ runner.temp }}/cog13h-native/
+          if-no-files-found: warn
+          retention-days: 30
+  aggregate:
+    needs: native
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cog13h-seed-*
+          path: ${{ runner.temp }}/cog13h-aggregate
+      - run: node experiments/cog13h_matched_native_routing/aggregate.mjs "$RUNNER_TEMP/cog13h-aggregate"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cog13h-aggregate
+          path: ${{ runner.temp }}/cog13h-aggregate/aggregate.json
+          if-no-files-found: warn
+          retention-days: 30
