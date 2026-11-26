@@ -1,0 +1,127 @@
+name: COG-13G native memory pressure
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13g_native_memory_pressure/**'
+      - '.github/workflows/cog13g-native-memory-pressure.yml'
+  workflow_dispatch:
+    inputs:
+      replicate:
+        description: Rotation index for another complete one-host replicate
+        type: choice
+        options: ['0','1']
+        default: '1'
+permissions:
+  contents: read
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          node experiments/cog13g_native_memory_pressure/run.mjs --fixture "$RUNNER_TEMP/cog13g-fixture.json"
+          node experiments/cog13g_native_memory_pressure/test_budget.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cog13g-fixture
+          path: ${{ runner.temp }}/cog13g-fixture.json
+  native:
+    needs: fixture
+    runs-on: ubuntu-latest
+    timeout-minutes: 130
+    env:
+      LEAN_NUM_THREADS: '1'
+      REPLICATE: ${{ inputs.replicate || '0' }}
+      MATHLIB_SHA: 56a005855ea17e0b0958f73ec801ae140b0a1679
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/checkout@v4
+        with:
+          repository: leanprover-community/mathlib4
+          ref: 56a005855ea17e0b0958f73ec801ae140b0a1679
+          path: upstream-mathlib
+          persist-credentials: false
+      - name: Install Lean 4.35.0
+        run: |
+          curl --fail --location --retry 3 https://github.com/leanprover/lean4/releases/download/v4.35.0/lean-4.35.0-linux.tar.zst -o "$RUNNER_TEMP/lean.tar.zst"
+          tar --zstd -xf "$RUNNER_TEMP/lean.tar.zst" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lean-4.35.0-linux/bin" >> "$GITHUB_PATH"
+      - name: Prepare pinned native cache server
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$MATHLIB_SHA"
+          test "$(cat lean-toolchain)" = "leanprover/lean4:v4.35.0"
+          lean --version
+          lake exe cache get
+          cp "$GITHUB_WORKSPACE/experiments/cog13d_native_state_cache/StateCacheServer.lean" .
+          mkdir -p .lake/build/lib/lean
+          lake env lean -o .lake/build/lib/lean/StateCacheServer.olean StateCacheServer.lean
+      - name: Verify all reference scripts and negative sentinel before scored scopes
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/cog13g"
+          cp /proc/meminfo "$RUNNER_TEMP/cog13g/host-meminfo.txt"
+          cp /proc/cpuinfo "$RUNNER_TEMP/cog13g/host-cpuinfo.txt"
+          lake env bash -c '
+            node "$GITHUB_WORKSPACE/experiments/cog13g_native_memory_pressure/run.mjs" --preflight \
+              "$RUNNER_TEMP/cog13g/preflight" "$(command -v lean)" "$PWD"
+          '
+      - name: Run all matched scopes on one host
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          lake env bash -c '
+            set -euo pipefail
+            root="$RUNNER_TEMP/cog13g"
+            node_bin="$(command -v node)"
+            lean_bin="$(command -v lean)"
+            script="$GITHUB_WORKSPACE/experiments/cog13g_native_memory_pressure/run.mjs"
+            tiers=(2 4 8)
+            arms=(replay_lru snapshot_lru snapshot_recent block_snapshot)
+            : > "$root/scope-exit.tsv"
+            for ((j=0;j<3;j++)); do
+              gib=${tiers[$(((j+REPLICATE)%3))]}
+              bytes=$((gib*1024*1024*1024))
+              for ((k=0;k<4;k++)); do
+                arm=${arms[$(((k+j+REPLICATE)%4))]}
+                set +e
+                sudo --preserve-env=LEAN_PATH,LEAN_NUM_THREADS systemd-run \
+                  --scope --quiet --property="MemoryMax=$bytes" --property=MemorySwapMax=0 --property=CPUQuota=100% \
+                  /usr/sbin/runuser -u "$(id -un)" --preserve-environment -- \
+                  "$node_bin" "$script" --native "$root/${gib}gib_$arm" "$lean_bin" "$PWD" \
+                  "$bytes" "$arm" "$root/preflight/receipt.json"
+                status=$?
+                set -e
+                printf "%s\t%s\t%s\n" "$gib" "$arm" "$status" >> "$root/scope-exit.tsv"
+              done
+            done
+          '
+      - name: Audit all native scopes and raw proof receipts
+        if: always()
+        run: |
+          if test -f "$RUNNER_TEMP/cog13g/scope-exit.tsv"; then
+            node experiments/cog13g_native_memory_pressure/audit_archive.mjs "$RUNNER_TEMP/cog13g"
+          else
+            echo "Native preflight or preparation did not reach the scope matrix"
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cog13g-native-replicate-${{ inputs.replicate || '0' }}
+          path: ${{ runner.temp }}/cog13g/
+          if-no-files-found: warn
+          retention-days: 30
