@@ -239,10 +239,10 @@ function suite(keep=true){
   insist(rows.every(d=>d.split==="train"&&d.continuation==="recent"),"training custody");
   groups.push(rows);
  }
- const model=fit(groups),sham=fit(groups,true),calibration=[],neg={cost:false,score:false,cache:false,missing:false};let audited=0,auditedRuns=0;
+ const model=fit(groups),sham=fit(groups,true),calibration=[],calibrationRuns=[],neg={cost:false,score:false,cache:false,missing:false};let audited=0,auditedRuns=0;
  for(const lambda of [0,.25,.5,1]){
   const m=meter();
-  for(const t of tasks.filter(t=>t.split==="calibration"))for(const cap of caps){const r=run(t,cap,"residual",model,lambda);audited+=audit(t,r,model);auditedRuns++;addMetrics(m,r.m);}
+  for(const t of tasks.filter(t=>t.split==="calibration"))for(const cap of caps){const r=run(t,cap,"residual",model,lambda);audited+=audit(t,r,model);auditedRuns++;addMetrics(m,r.m);if(keep)calibrationRuns.push(r);}
   calibration.push({lambda,m,charged:charged(m)});
  }
  const selected=[...calibration].sort((a,b)=>a.charged-b.charged||a.lambda-b.lambda)[0].lambda;
@@ -265,6 +265,6 @@ function suite(keep=true){
  const summary=summaryOf(runs),paired=pairs(runs,tasks),deeper=summary.deeper;
  const gate={beatsBoth: caps.every(c=>deeper[c].calibrated.charged<Math.min(deeper[c].recent.charged,deeper[c].coverage.charged)),beatsSham: caps.every(c=>deeper[c].residual1.charged<deeper[c].sham1.charged)};
  const result={schema:"cog13f.dynamic.v1",seed:2026112619,counts,caps,horizon:12,model,sham,training,trainingRollouts:trainReceipts.length,calibration,selected,summary,paired,gate,audit:{runs:auditedRuns,requests:audited,negative:neg},evidence:"synthetic development, modeled work/bytes only"};
- return {result,runs:keep?runs:[],labels:keep?groups.flat():[],tasks:keep?tasks:[],trainReceipts:keep?trainReceipts:[]};
+ return {result,runs:keep?runs:[],calibrationRuns,labels:keep?groups.flat():[],tasks:keep?tasks:[],trainReceipts:keep?trainReceipts:[]};
 }
 export {makeCorpus,suite};
