@@ -49,6 +49,7 @@ from .memory256k import (
     CacheEntry,
     ExtendedPhysicalMemory,
     TranspositionCache,
+    CACHE_ENTRY_BYTES,
 )
 from .models import (
     COMPUTE_TIERS,
@@ -559,6 +560,7 @@ def solve_domain_episode(
     lesion: Optional[SearchLesionSpec] = None,
     record_slow_trace: bool = False,
     archived_witness: Optional[Sequence[Sequence[int]]] = None,
+    transposition_mib: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Run one complete long-horizon episode on Storyworld, Canvas, or Lean-style search."""
     ls = lesion if lesion is not None else SearchLesionSpec()
@@ -582,7 +584,14 @@ def solve_domain_episode(
         and (not ls.disable_backtrack)
         and (mcp08_model is None or mcp08_model.cfg.use_backtrack or arm == "bounded_symbolic")
     )
-    tcache = TranspositionCache(max_entries=1024, enabled=use_cache)
+    entries=1024
+    if transposition_mib is not None:
+        import math
+        if not math.isfinite(transposition_mib) or transposition_mib<0:
+            raise ValueError("invalid transposition budget")
+        entries=int(transposition_mib*2**20)//CACHE_ENTRY_BYTES
+        use_cache=use_cache and entries>0
+    tcache = TranspositionCache(max_entries=entries, enabled=use_cache)
 
     # Retrieval record cache within episode so backtracking never re-pays for already-decoded options
     # at the same node (realistic working-set memory; lookup still goes through node record check).

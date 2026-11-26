@@ -1,0 +1,31 @@
+name: MCP spatial MMS CPU
+on:
+  pull_request:
+    paths:
+      - 'MCP/spatial_mms.py'
+      - 'MCP/run_spatial_mms.py'
+      - 'MCP/test_spatial_mms.py'
+      - 'MCP/mcp05/train.py'
+      - 'MCP/mcp05/mms.py'
+      - 'MCP/mcp05/run_mms.py'
+      - 'MCP/test_mcp05_mms.py'
+      - 'MCP/mcp06/gym.py'
+      - 'MCP/mcp07/train.py'
+      - 'MCP/mcp08/train.py'
+      - 'MCP/mcp08/search.py'
+      - 'research_gym/neural/mms.py'
+      - '.github/workflows/mcp-spatial-mms.yml'
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install numpy pytest && pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m py_compile MCP/mcp06/gym.py MCP/mcp07/train.py MCP/mcp08/train.py MCP/mcp08/search.py
+      - run: python -m pytest -q MCP/test_spatial_mms.py MCP/test_mcp05_mms.py
+      - run: python -m MCP.run_spatial_mms --gym 07 --roots 16 --dev-roots 4 --epochs 1 --batch 8 --horizon 4 --threads 1 --mms-mib 1 --mms-mode observe --out /tmp/mms07
+      - run: python -m MCP.run_spatial_mms --gym 08 --roots 16 --epochs 1 --batch 8 --horizon 4 --threads 1 --mms-mib 1 --mms-mode observe --out /tmp/mms08

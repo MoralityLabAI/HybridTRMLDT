@@ -98,8 +98,12 @@ def trace(w,r,offsets,budget=16):
     return rows
 
 
-def train(w,offsets,seed,count,epochs):
+def train(w,offsets,seed,count,epochs,mms_options=None,mms_receipt=None):
     torch.manual_seed(seed); model=Controller(); opt=torch.optim.AdamW(model.parameters(),lr=.002)
+    mms=None
+    if mms_options and mms_options.get('mib',0):
+        from MCP.spatial_mms import SpatialMemory
+        mms=SpatialMemory(model,mms_options,legacy=True)
     traces=[trace(w,r,offsets) for r in w.roots(count,37)]
     x=np.zeros((count,16,20),np.float32); a=np.full((count,16),-1,np.int64); y=np.zeros((count,16),np.float32); m=np.zeros((count,16),bool)
     for i,rows in enumerate(traces):
@@ -107,13 +111,21 @@ def train(w,offsets,seed,count,epochs):
     x,a,y,m=map(torch.from_numpy,(x,a,y,m)); rng=np.random.default_rng(seed+12)
     for _ in range(epochs):
         for idx in np.array_split(rng.permutation(count),math.ceil(count/32)):
-            h,s=model.initial(len(idx)); loss=0.
-            for t in range(16):
-                logits,stop,h,s=model(x[idx,t],h,s,t); mask=m[idx,t]; targets=a[idx,t]; legal=x[idx,t,12:].bool()
-                active=mask&(targets>=0)
-                if active.any(): loss=loss+F.cross_entropy(logits[active].masked_fill(~legal[active],-1e9),targets[active],reduction='sum')
-                if mask.any(): loss=loss+F.binary_cross_entropy_with_logits(stop[mask],y[idx,t][mask],pos_weight=torch.tensor(4.),reduction='sum')
-            opt.zero_grad(); (loss/m[idx].sum()).backward(); nn.utils.clip_grad_norm_(model.parameters(),1.); opt.step()
+            from contextlib import nullcontext
+            active_visits=int(m[idx].any(dim=0).sum())
+            active_slow=(active_visits+2)//4
+            eligible={'fast','slow'} if active_slow else {'fast'}
+            selected={'fast':(active_visits-1)//2,'slow':max(0,(active_slow-1)//2)}
+            context=mms.capture(torch.from_numpy(idx),{'fast':16,'slow':4},selected_visits=selected,eligible=eligible) if mms else nullcontext()
+            with context:
+                h,s=model.initial(len(idx)); loss=0.
+                for t in range(16):
+                    logits,stop,h,s=model(x[idx,t],h,s,t); mask=m[idx,t]; targets=a[idx,t]; legal=x[idx,t,12:].bool()
+                    active=mask&(targets>=0)
+                    if active.any(): loss=loss+F.cross_entropy(logits[active].masked_fill(~legal[active],-1e9),targets[active],reduction='sum')
+                    if mask.any(): loss=loss+F.binary_cross_entropy_with_logits(stop[mask],y[idx,t][mask],pos_weight=torch.tensor(4.),reduction='sum')
+                opt.zero_grad(); (loss/m[idx].sum()).backward(); nn.utils.clip_grad_norm_(model.parameters(),1.); opt.step()
+    if mms is not None and mms_receipt is not None: mms_receipt.update(mms.receipt())
     return model.eval()
 
 
