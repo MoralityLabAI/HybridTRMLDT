@@ -1,0 +1,204 @@
+{
+  "rows": 224,
+  "positive": 82,
+  "roots": 8,
+  "source": "COG-13C native teacher rows, regrouped in archived menu order",
+  "evidence": "actual archived TRAIN labels only; in-sample fit diagnostic; no new native evaluation",
+  "seeds": [
+    {
+      "seed": 1701,
+      "loop": {
+        "parameters": 553,
+        "updates": 4480,
+        "initialLoss": 0.6686971818391069,
+        "finalLoss": 0.34037726461385703
+      },
+      "flat": {
+        "parameters": 553,
+        "updates": 4480,
+        "initialLoss": 0.6534718992167201,
+        "finalLoss": 0.37147254718121386
+      },
+      "fitDiagnostic": {
+        "frequency": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 694
+        },
+        "symbolic": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 14,
+          "bothTop": 14,
+          "pairs": 766,
+          "orderedPairs": 554
+        },
+        "flat": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 694
+        },
+        "loop": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 702
+        },
+        "loop_rank4": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 702
+        },
+        "loop_q4": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 13,
+          "bothTop": 13,
+          "pairs": 766,
+          "orderedPairs": 701
+        }
+      }
+    },
+    {
+      "seed": 1709,
+      "loop": {
+        "parameters": 553,
+        "updates": 4480,
+        "initialLoss": 0.6682372484625857,
+        "finalLoss": 0.3469875711574749
+      },
+      "flat": {
+        "parameters": 553,
+        "updates": 4480,
+        "initialLoss": 0.666283801139077,
+        "finalLoss": 0.3860218170631735
+      },
+      "fitDiagnostic": {
+        "frequency": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 694
+        },
+        "symbolic": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 14,
+          "bothTop": 14,
+          "pairs": 766,
+          "orderedPairs": 554
+        },
+        "flat": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 694
+        },
+        "loop": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 703
+        },
+        "loop_rank4": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 702
+        },
+        "loop_q4": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 714
+        }
+      }
+    },
+    {
+      "seed": 1723,
+      "loop": {
+        "parameters": 553,
+        "updates": 4480,
+        "initialLoss": 0.6707349386784011,
+        "finalLoss": 0.2973562220763778
+      },
+      "flat": {
+        "parameters": 553,
+        "updates": 4480,
+        "initialLoss": 0.6696680959408807,
+        "finalLoss": 0.36714148066461727
+      },
+      "fitDiagnostic": {
+        "frequency": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 694
+        },
+        "symbolic": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 14,
+          "bothTop": 14,
+          "pairs": 766,
+          "orderedPairs": 554
+        },
+        "flat": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 696
+        },
+        "loop": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 714
+        },
+        "loop_rank4": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 714
+        },
+        "loop_q4": {
+          "groups": 14,
+          "bothLabels": 14,
+          "topProgress": 12,
+          "bothTop": 12,
+          "pairs": 766,
+          "orderedPairs": 715
+        }
+      }
+    }
+  ]
+}
