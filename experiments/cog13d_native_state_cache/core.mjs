@@ -2,7 +2,8 @@
 const badAction="exact cog13d_missing_identifier";
 function check(ok,msg){if(!ok)throw Error(msg);}
 
-function equal(a,b){return JSON.stringify(a)===JSON.stringify(b);}
+function canonical(x){if(Array.isArray(x))return "["+x.map(canonical).join(",")+"]";if(x!==null&&typeof x==="object")return "{"+Object.keys(x).sort().map(k=>JSON.stringify(k)+":"+canonical(x[k])).join(",")+"}";return JSON.stringify(x);}
+function equal(a,b){return canonical(a)===canonical(b);}
 
 function prefix(a,b){return a.length<=b.length&&a.every((x,i)=>x===b[i]);}
 
