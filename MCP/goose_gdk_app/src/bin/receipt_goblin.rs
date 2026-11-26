@@ -235,15 +235,13 @@ struct Args {
     max_tokens: Option<i32>,
     max_repairs: u32,
     timeout_secs: u64,
-    request_params: HashMap<String, Value>,
     offset: usize,
     limit: Option<usize>,
 }
 
 const USAGE: &str = "usage: receipt-goblin (--bench BENCH.jsonl | --doc DOC.md --receipts DIR) [--out RECEIPTS.jsonl] \
 [--arm NAME] [--base-url URL] [--model ID] [--python PY] [--server-cwd REPO] [--budget N] [--k-lexical N] \
-[--k-neighbours N] [--blind] [--max-tokens N] [--max-repairs N] [--timeout-secs N] [--request-params JSON] \
-[--offset N] [--limit N]";
+[--k-neighbours N] [--blind] [--max-tokens N] [--max-repairs N] [--timeout-secs N] [--offset N] [--limit N]";
 
 fn parse_args() -> Result<Args> {
     let mut args = Args {
@@ -263,7 +261,6 @@ fn parse_args() -> Result<Args> {
         max_tokens: Some(2048),
         max_repairs: 1,
         timeout_secs: 600,
-        request_params: HashMap::new(),
         offset: 0,
         limit: None,
     };
@@ -287,7 +284,6 @@ fn parse_args() -> Result<Args> {
             "--max-tokens" => args.max_tokens = Some(value()?.parse()?),
             "--max-repairs" => args.max_repairs = value()?.parse()?,
             "--timeout-secs" => args.timeout_secs = value()?.parse()?,
-            "--request-params" => args.request_params = serde_json::from_str(&value()?)?,
             "--offset" => args.offset = value()?.parse()?,
             "--limit" => args.limit = Some(value()?.parse()?),
             "--help" | "-h" => bail!("{USAGE}"),
@@ -371,13 +367,10 @@ async fn check_claim(
         repairs: Mutex::new(0),
         outcome: Mutex::new(None),
     });
-    let mut model = ModelConfig::new(&args.model)
+    let model = ModelConfig::new(&args.model)
         .with_max_tokens(args.max_tokens)
         .with_temperature(Some(0.0))
         .with_context_limit(Some(16384));
-    if !args.request_params.is_empty() {
-        model = model.with_merged_request_params(args.request_params.clone());
-    }
     let machine = StateMachine::new(
         vec![
             Step::Operation(certify.clone() as Arc<dyn Operation<AppSession, AppEffect>>),

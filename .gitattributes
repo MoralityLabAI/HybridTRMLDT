@@ -22,3 +22,5 @@ configs/controller_mesh_measured_stalk_bridge_v1.json text eol=lf
 data/bridge/qwen08_l23_measured_stalk_v1.json text eol=lf
 data/benchmarks/controller_mesh_measured_stalk_bridge_v1.json text eol=lf
 experiments/controller_mesh_measured_stalk_bridge_v1/results.json text eol=lf
+# Shell scripts run under bash from Windows checkouts too.
+MCP/receipt_goblin/scripts/*.sh text eol=lf

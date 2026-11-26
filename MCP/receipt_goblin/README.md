@@ -38,8 +38,7 @@ python -m MCP.receipt_goblin.score run.jsonl
 ```
 
 `--blind` withholds packet values. `--k-lexical`, `--k-neighbours` and `--budget` shape the packet.
-`--request-params JSON` is merged into the provider request. Re-running with the same `--out` and
-`--arm` skips the claims already written.
+Re-running with the same `--out` and `--arm` skips the claims already written.
 
 Inside a Goose session the server works as an extension:
 `goose session --with-extension "python -m MCP.receipt_goblin.server"`, run from the repository root.
