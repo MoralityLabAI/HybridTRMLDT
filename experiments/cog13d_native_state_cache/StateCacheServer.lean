@@ -28,7 +28,7 @@ private def emit (id : Nat) (j : Json) : TacticM Unit := do
   IO.FS.rename temporary path
 
 private def allowed : Array String :=
-  #["constructor", "omega", "ring", "simp", "assumption", "rfl",
+  #["constructor", "refine ⟨?_, ?_⟩", "omega", "ring", "simp [Finset.mem_union, Finset.mem_inter]", "assumption", "rfl",
     "exact cog13d_missing_identifier"]
 
 private def prefixOf (xs ys : Array String) : Bool :=
