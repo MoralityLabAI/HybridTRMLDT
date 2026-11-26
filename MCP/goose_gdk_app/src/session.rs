@@ -139,6 +139,109 @@ impl Options {
         }
         Ok(())
     }
+
+    /// The validated budgets of a repair session. The repository is checked by each run.
+    pub(crate) fn settings<'a>(&'a self, args: &Args) -> Result<Settings<'a>> {
+        let max_iterations = self.max_iterations.context("missing iteration budget")?;
+        let completion = args.max_tokens.unwrap_or(768);
+        let window = self.context_window.unwrap_or(16_384);
+        let memory = self
+            .memory
+            .as_deref()
+            .unwrap_or(if args.no_packet { "raw" } else { "typed" });
+        if !matches!(memory, "raw" | "packet" | "typed")
+            || (self.deduplicate_reads && memory != "typed")
+            || (self.allow_create && self.verifier.is_none())
+            || !(1..=128).contains(&max_iterations)
+            || !(1..=200).contains(&args.max_tool_calls)
+            || !(200..=32_768).contains(&args.budget)
+            || completion < 1
+            || window <= completion as u32 + 64
+            || self.depth.is_some_and(|n| !(1..=8).contains(&n))
+            || self.threads.is_some_and(|n| !(1..=4).contains(&n))
+        {
+            bail!("invalid repair-session memory mode or budget");
+        }
+        Ok(Settings { max_iterations, completion, window, memory })
+    }
+
+    /// Options an ACP agent cannot honour: every prompt runs its own session, so one checkpoint
+    /// file would be overwritten by each of them.
+    pub(crate) fn check_acp(&self) -> Result<()> {
+        if self.checkpoint.is_some() {
+            bail!("--session-file names one checkpoint file and cannot serve ACP sessions; drop it with --acp");
+        }
+        Ok(())
+    }
+}
+
+pub(crate) struct Settings<'a> {
+    max_iterations: u32,
+    completion: i32,
+    window: u32,
+    memory: &'a str,
+}
+
+/// The kind an ACP client shows for a repair tool.
+pub(crate) fn tool_kind(tool: &str) -> &'static str {
+    match tool {
+        "context_query" | "context_expand" => "search",
+        "context_read" | "context_state" | "inspect_edit" => "read",
+        "apply_edit" | "create_file" => "edit",
+        "run_verifier" => "execute",
+        _ => "other",
+    }
+}
+
+/// One `RepairOperation::execute` call, as an observer sees it.
+#[derive(Clone)]
+pub(crate) struct ToolCall {
+    /// The call's position in the session receipts, unique within one run.
+    pub index: usize,
+    /// `solver` (the model), `controller` (the trained manager) or `host` (an automatic verify).
+    pub origin: String,
+    pub tool: String,
+    pub arguments: Value,
+    /// The workspace-relative file a write targets, when it is known before the call runs.
+    pub path: Option<String>,
+    /// `Some(approved)` once the observer answered the write's permission request.
+    pub permission: Option<bool>,
+}
+
+impl ToolCall {
+    pub(crate) fn is_write(&self) -> bool {
+        matches!(self.tool.as_str(), "apply_edit" | "create_file")
+    }
+}
+
+/// Watches a repair run on behalf of a client: every tool call starts and finishes, and each write
+/// waits for `permit`. A rejected write never reaches the workspace and returns a tool error. The
+/// command-line session runs without an observer; its verifier manifest is the authorization.
+#[async_trait]
+pub(crate) trait Observer: Send + Sync {
+    fn started(&self, call: &ToolCall);
+    async fn permit(&self, call: &ToolCall) -> bool;
+    fn finished(&self, call: &ToolCall, output: &Value, error: bool);
+}
+
+/// The file a write targets: `create_file` names it, and `apply_edit` names a handle that an earlier
+/// read or admitted controller evidence resolved to a path.
+fn write_path(state: &RepairState, tool: &str, arguments: &Value) -> Option<String> {
+    let path = match tool {
+        "create_file" => &arguments["path"],
+        "apply_edit" => {
+            let handle = arguments["handle"].as_str()?;
+            &state
+                .receipts
+                .iter()
+                .rev()
+                .map(|receipt| &receipt["output"])
+                .chain(&state.admitted)
+                .find(|output| output["handle"] == handle && output["path"].is_string())?["path"]
+        }
+        _ => return None,
+    };
+    path.as_str().map(str::to_owned)
 }
 
 fn initial_message(task: &str, evidence: Option<&str>) -> String {
@@ -251,6 +354,7 @@ struct RepairOperation {
     can_edit: bool,
     can_create: bool,
     json_actions: bool,
+    observer: Option<Arc<dyn Observer>>,
 }
 
 fn json_action(text: &str) -> Option<(String, serde_json::Map<String, Value>)> {
@@ -365,6 +469,16 @@ impl RepairOperation {
             .get("output")?.get("remaining_to_create")?.as_array().filter(|paths| !paths.is_empty())
     }
 
+    /// Ask the observer to approve a write. Without an observer every write is approved.
+    async fn permit(&self, call: &mut ToolCall) -> bool {
+        let Some(observer) = &self.observer else {
+            return true;
+        };
+        let approved = observer.permit(call).await;
+        call.permission = Some(approved);
+        approved
+    }
+
     async fn execute(
         &self,
         state: &mut RepairState,
@@ -372,6 +486,17 @@ impl RepairOperation {
         tool: &str,
         arguments: Value,
     ) -> (Value, bool) {
+        let mut call = ToolCall {
+            index: state.receipts.len(),
+            origin: origin.to_owned(),
+            tool: tool.to_owned(),
+            arguments: arguments.clone(),
+            path: write_path(state, tool, &arguments),
+            permission: None,
+        };
+        if let Some(observer) = &self.observer {
+            observer.started(&call);
+        }
         let started = Instant::now();
         let result = match TOOLS.iter().find(|(name, _, _, _)| *name == tool) {
             _ if self.can_create && !state.dirty && tool != "create_file" && state.calls < state.call_limit => {
@@ -414,6 +539,8 @@ impl RepairOperation {
                 {
                     state.answer_only = true;
                     Err(anyhow!("This expansion was already unavailable, and its source is already in the session. Answer the original task using the collected evidence."))
+                } else if call.is_write() && !self.permit(&mut call).await {
+                    Err(anyhow!("The client rejected this {tool} call, so the workspace is unchanged."))
                 } else {
                     self.mcp
                         .lock()
@@ -475,10 +602,17 @@ impl RepairOperation {
                 "Correct the current native regression failures.".into()
             };
         }
-        state.receipts.push(json!({
+        let mut receipt = json!({
             "index": state.receipts.len(), "origin": origin, "tool": tool, "arguments": arguments,
             "error": error, "output": payload, "seconds": started.elapsed().as_secs_f64(),
-        }));
+        });
+        if let Some(approved) = call.permission {
+            receipt["permission"] = json!(if approved { "approved" } else { "rejected" });
+        }
+        state.receipts.push(receipt);
+        if let Some(observer) = &self.observer {
+            observer.finished(&call, &payload, error);
+        }
         (payload, error)
     }
 
@@ -828,8 +962,11 @@ async fn relay(
     if args.session.deduplicate_reads {
         command.arg("--deduplicate-reads");
     }
+    // The relay reads no input. Under --acp our stdin is the protocol pipe, and on Windows a child
+    // that inherits a synchronous pipe with a read pending stalls at startup until the read ends.
     let mut child = command
         .current_dir(&args.goblin_cwd)
+        .stdin(std::process::Stdio::null())
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::inherit())
         .kill_on_drop(true)
@@ -846,29 +983,21 @@ async fn relay(
     Ok((child, format!("http://127.0.0.1:{port}/v1/")))
 }
 
-pub(crate) async fn run(args: Args) -> Result<()> {
+/// Run one repair session for `task` over `repo` and return its receipt. The caller owns stdout.
+/// `observer` sees every tool call and approves writes. Cancelling `cancel` stops the machine at
+/// its next step boundary or during inference.
+pub(crate) async fn run(
+    args: &Args,
+    task: &str,
+    repo: &str,
+    observer: Option<Arc<dyn Observer>>,
+    cancel: CancellationToken,
+) -> Result<Value> {
     let started = Instant::now();
     let options = &args.session;
-    let max_iterations = options.max_iterations.context("missing iteration budget")?;
-    let completion = args.max_tokens.unwrap_or(768);
-    let window = options.context_window.unwrap_or(16_384);
-    let memory = options
-        .memory
-        .as_deref()
-        .unwrap_or(if args.no_packet { "raw" } else { "typed" });
-    if args.repo.is_empty()
-        || !matches!(memory, "raw" | "packet" | "typed")
-        || (options.deduplicate_reads && memory != "typed")
-        || (options.allow_create && options.verifier.is_none())
-        || !(1..=128).contains(&max_iterations)
-        || !(1..=200).contains(&args.max_tool_calls)
-        || !(200..=32_768).contains(&args.budget)
-        || completion < 1
-        || window <= completion as u32 + 64
-        || options.depth.is_some_and(|n| !(1..=8).contains(&n))
-        || options.threads.is_some_and(|n| !(1..=4).contains(&n))
-    {
-        bail!("invalid repair-session repository, memory mode, or budget");
+    let Settings { max_iterations, completion, window, memory } = options.settings(args)?;
+    if repo.is_empty() {
+        bail!("a repair session needs a repository");
     }
 
     let evidence = options
@@ -881,8 +1010,8 @@ pub(crate) async fn run(args: Args) -> Result<()> {
             std::fs::read_to_string(path).context("read repository evidence")
         })
         .transpose()?;
-    let user_message = initial_message(&args.task, evidence.as_deref());
-    let repo = std::fs::canonicalize(&args.repo)?;
+    let user_message = initial_message(task, evidence.as_deref());
+    let repo = std::fs::canonicalize(repo).with_context(|| format!("repair repository {repo}"))?;
     let repo = repo.to_str().context("non-UTF-8 repository path")?;
     let mut service = vec!["-B", "-m", "MCP.mcp05.service", "--repo", repo];
     if let Some(ref path) = options.verifier {
@@ -902,7 +1031,9 @@ pub(crate) async fn run(args: Args) -> Result<()> {
     if options.controller_reset {
         service.push("--reset");
     }
-    let mut mcp = McpClient::spawn(&args.python, &service, &args.goblin_cwd).await?;
+    let mut mcp = McpClient::spawn(&args.python, &service, &args.goblin_cwd)
+        .await
+        .context("the MCP-05 repair service did not start; its error is on stderr")?;
     let mut packet = String::new();
     let mut packet_stats = Value::Null;
     let mut calls = 0;
@@ -912,7 +1043,7 @@ pub(crate) async fn run(args: Args) -> Result<()> {
         && args.max_tool_calls > 3
     {
         packet_stats = mcp.call_tool("compact_context", json!({
-            "task": args.task, "budget_tokens": args.budget, "max_tool_calls": args.max_tool_calls / 2, "arm": args.arm,
+            "task": task, "budget_tokens": args.budget, "max_tool_calls": args.max_tool_calls / 2, "arm": args.arm,
         })).await?;
         packet = packet_stats["packet"]
             .as_str()
@@ -928,7 +1059,7 @@ pub(crate) async fn run(args: Args) -> Result<()> {
         |path| cwd.join(path).with_extension("preflight.jsonl"),
     );
     std::fs::write(&trace, [])?;
-    let (mut relay, proxy_url) = relay(&args, &trace, memory, window, completion).await?;
+    let (mut relay, proxy_url) = relay(args, &trace, memory, window, completion).await?;
     let api = ApiClient::with_timeout_and_tls(
         proxy_url,
         AuthMethod::NoAuth,
@@ -945,6 +1076,7 @@ pub(crate) async fn run(args: Args) -> Result<()> {
         can_edit: options.verifier.is_some(),
         can_create: options.allow_create,
         json_actions: options.json_actions,
+        observer,
     });
     let machine = StateMachine::new(
         vec![
@@ -957,7 +1089,7 @@ pub(crate) async fn run(args: Args) -> Result<()> {
                     .with_max_tokens(Some(completion)),
             ))),
         ],
-        CancellationToken::new(),
+        cancel.clone(),
     );
     let runtime = Runtime {
         session: Mutex::new(AppSession {
@@ -966,7 +1098,7 @@ pub(crate) async fn run(args: Args) -> Result<()> {
                 Message::user().with_text(user_message)
             ]),
             repair: Some(RepairState {
-                task: args.task.clone(),
+                task: task.to_owned(),
                 receipts: Vec::new(),
                 admitted: Vec::new(),
                 iteration_limit: max_iterations,
@@ -981,7 +1113,7 @@ pub(crate) async fn run(args: Args) -> Result<()> {
                 subgoal: if options.allow_create {
                     "Create the requested source files.".into()
                 } else {
-                    args.task.clone()
+                    task.to_owned()
                 },
                 reminders: 0,
                 answer_only: options.answer_only,
@@ -991,7 +1123,7 @@ pub(crate) async fn run(args: Args) -> Result<()> {
         checkpoint: options.checkpoint.clone(),
     };
     let (tx, mut rx) = mpsc::unbounded_channel();
-    let emitter = Emitter::new(tx, CancellationToken::new());
+    let emitter = Emitter::new(tx, cancel);
     tokio::spawn(async move { while rx.recv().await.is_some() {} });
     let outcome = machine.run(&runtime, &id, &emitter).await;
     let _ = relay.kill().await;
@@ -1039,18 +1171,14 @@ pub(crate) async fn run(args: Args) -> Result<()> {
     } else {
         answer
     };
-    println!(
-        "{}",
-        serde_json::to_string_pretty(&json!({
-            "app": "goblin-gdk", "gdk": "goose-agent 0.1.0-alpha.14", "model": args.model,
-            "memory": memory, "context_window": window, "provider_input_tokens": input,
-            "provider_output_tokens": output, "inference_calls": usage.len(), "preflight": preflight,
-            "packet_stats": packet_stats, "session": session.repair.as_ref().map(RepairState::receipt),
-            "state": final_state, "answer": answer, "wall_seconds": started.elapsed().as_secs_f64(),
-            "error": outcome.err().map(|error| format!("{error:#}")),
-        }))?
-    );
-    Ok(())
+    Ok(json!({
+        "app": "goblin-gdk", "gdk": "goose-agent 0.1.0-alpha.14", "model": args.model,
+        "memory": memory, "context_window": window, "provider_input_tokens": input,
+        "provider_output_tokens": output, "inference_calls": usage.len(), "preflight": preflight,
+        "packet_stats": packet_stats, "session": session.repair.as_ref().map(RepairState::receipt),
+        "state": final_state, "answer": answer, "wall_seconds": started.elapsed().as_secs_f64(),
+        "error": outcome.err().map(|error| format!("{error:#}")),
+    }))
 }
 
 #[cfg(test)]
@@ -1066,6 +1194,30 @@ mod tests {
             .unwrap();
         assert!(options.answer_only);
         assert!(options.check_legacy().is_err());
+    }
+
+    fn state_with(receipts: Vec<Value>, admitted: Vec<Value>) -> RepairState {
+        RepairState {
+            task: String::new(), receipts, admitted, calls: 0, call_limit: 10, iterations: 0,
+            iteration_limit: 8, manager_steps: 0, budget: 1024, dirty: false, verified: false,
+            verification: Value::Null, subgoal: String::new(), reminders: 0, answer_only: false,
+        }
+    }
+
+    #[test]
+    fn writes_name_their_file_and_tools_map_to_acp_kinds() {
+        let read = json!({"tool": "context_read", "output": {"handle": "source:a", "path": "engine/physics.py"}});
+        let evidence = json!({"handle": "source:b", "path": "engine/world.py"});
+        let state = state_with(vec![read], vec![evidence]);
+        let edit = |handle: &str| write_path(&state, "apply_edit", &json!({"handle": handle, "old": "a", "new": "b"}));
+        assert_eq!(edit("source:a").as_deref(), Some("engine/physics.py"));
+        assert_eq!(edit("source:b").as_deref(), Some("engine/world.py"));
+        assert_eq!(edit("source:unknown"), None);
+        let create = json!({"path": "engine/new.py", "content": "x = 1\n"});
+        assert_eq!(write_path(&state, "create_file", &create).as_deref(), Some("engine/new.py"));
+        assert_eq!(write_path(&state, "context_read", &json!({"handle": "source:a"})), None);
+        let kinds: Vec<_> = TOOLS.iter().map(|(name, ..)| tool_kind(name)).collect();
+        assert_eq!(kinds, ["search", "search", "read", "read", "edit", "edit", "read", "execute"]);
     }
 
     #[test]

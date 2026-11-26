@@ -8,8 +8,10 @@
 //! runs without the operation's contribution, so the two runs differ only in the packet.
 //!
 //! The app prints one JSON receipt: answer, provider-reported input/output tokens, packet
-//! accounting from the goblin server, and timings. With `--acp` it instead serves the Agent Client
-//! Protocol on stdio, which is how TitanAgent squads on OpenAB run their agents (see `acp.rs`).
+//! accounting from the goblin server, and timings. With `--max-agent-iterations` it runs the
+//! multi-turn Pocket Goblin repair session instead (see `session.rs`). With `--acp` it serves the
+//! Agent Client Protocol on stdio, which is how TitanAgent squads on OpenAB run their agents (see
+//! `acp.rs`); the repair-session flags make each ACP prompt a repair session.
 
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
@@ -288,8 +290,9 @@ fn token_totals(usage: &[ProviderUsage]) -> (i64, i64) {
 // ---- command line ----
 
 const USAGE: &str = "usage: goblin-gdk --task TEXT|--task-file PATH --repo PATH [--base-url URL] [--model ID] \
-[--budget N] [--no-packet]\n       goblin-gdk --acp [--repo PATH] [--agent-name NAME] [--audit-log PATH] \
-[--history-turns N] [--base-url URL] [--model ID] [--budget N] [--no-packet]";
+[--budget N] [--no-packet] [--max-agent-iterations N --verifier PATH ...]\n       goblin-gdk --acp [--repo PATH] \
+[--agent-name NAME] [--audit-log PATH] [--history-turns N] [--base-url URL] [--model ID] [--budget N] [--no-packet] \
+[--max-agent-iterations N --verifier PATH ...]";
 
 struct Args {
     repo: String,
@@ -362,16 +365,16 @@ fn parse_args(argv: impl IntoIterator<Item = String>) -> Result<Args> {
             other => args.session.parse(other, &mut value).map_err(|error| anyhow!("{error}\n{USAGE}"))?,
         }
     }
-    if args.session.max_iterations.is_none() {
+    if args.session.max_iterations.is_some() {
+        args.session.settings(&args)?;
+    } else {
         args.session.check_legacy()?;
     }
     if args.acp {
         if !args.task.is_empty() {
             bail!("--acp reads each task from session/prompt; drop --task and --task-file");
         }
-        if args.session.max_iterations.is_some() {
-            bail!("--acp does not serve repair sessions yet; drop --max-agent-iterations");
-        }
+        args.session.check_acp()?;
     } else if acp_only {
         bail!("--agent-name, --audit-log and --history-turns need --acp");
     } else if args.task.is_empty() || (!args.no_packet && args.repo.is_empty()) {
@@ -390,7 +393,9 @@ async fn main() -> Result<()> {
         return acp::serve(args).await;
     }
     if args.session.max_iterations.is_some() {
-        return session::run(args).await;
+        let receipt = session::run(&args, &args.task, &args.repo, None, CancellationToken::new()).await?;
+        println!("{}", serde_json::to_string_pretty(&receipt)?);
+        return Ok(());
     }
     let started = Instant::now();
     let (packet, packet_stats) = if args.no_packet {
@@ -444,6 +449,19 @@ mod tests {
     fn acp_flags_without_acp_are_rejected() {
         assert!(parse(&["--task", "fix it", "--repo", ".", "--audit-log", "a.jsonl"]).is_err());
         assert!(parse(&["--task", "fix it", "--repo", ".", "--history-turns", "2"]).is_err());
+    }
+
+    #[test]
+    fn acp_mode_takes_the_repair_session_flags() {
+        let args = parse(&["--acp", "--max-agent-iterations", "8", "--verifier", "v.json", "--memory-mode", "typed"]).unwrap();
+        assert!(args.acp && args.session.max_iterations == Some(8));
+        // Validated at startup, not at the first prompt.
+        assert!(parse(&["--acp", "--max-agent-iterations", "0", "--verifier", "v.json"]).is_err());
+        assert!(parse(&["--acp", "--max-agent-iterations", "8", "--memory-mode", "full"]).is_err());
+        // Repair flags still need an iteration budget, and one checkpoint file cannot serve ACP sessions.
+        assert!(parse(&["--acp", "--verifier", "v.json"]).is_err());
+        assert!(parse(&["--acp", "--max-agent-iterations", "8", "--session-file", "s.json"]).is_err());
+        assert!(parse(&["--task", "t", "--repo", ".", "--max-agent-iterations", "8", "--session-file", "s.json"]).is_ok());
     }
 
     #[test]

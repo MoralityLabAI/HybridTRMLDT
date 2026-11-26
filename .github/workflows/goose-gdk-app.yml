@@ -5,12 +5,16 @@ on:
     paths:
       - 'MCP/goose_gdk_app/**'
       - 'MCP/mcp03/**'
+      - 'MCP/mcp05/**'
+      - 'MCP/hubrun/**'
       - '.github/workflows/goose-gdk-app.yml'
   push:
     branches: [master]
     paths:
       - 'MCP/goose_gdk_app/**'
       - 'MCP/mcp03/**'
+      - 'MCP/mcp05/**'
+      - 'MCP/hubrun/**'
       - '.github/workflows/goose-gdk-app.yml'
   workflow_dispatch:
 
@@ -33,10 +37,10 @@ jobs:
       - name: Build goblin-gdk against goose-agent 0.1.0-alpha.14
         working-directory: MCP/goose_gdk_app
         run: cargo build --release --locked || cargo build --release
-      - name: Unit tests (argument parsing and the ACP agent)
+      - name: Unit tests (argument parsing, the ACP agent and the repair session)
         working-directory: MCP/goose_gdk_app
         run: cargo test --release --locked
       - name: Goblin MCP server and GDK app against a scripted OpenAI-compatible endpoint
         run: python MCP/goose_gdk_app/ci_smoke.py MCP/goose_gdk_app/target/release/goblin-gdk
-      - name: Pocket Goblin as an ACP agent, driven with OpenAB's frames (Titan port)
+      - name: Pocket Goblin as an ACP agent, driven with OpenAB's frames (Titan port), one-shot and repair session
         run: python MCP/goose_gdk_app/ci_acp_smoke.py MCP/goose_gdk_app/target/release/goblin-gdk

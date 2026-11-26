@@ -14,26 +14,39 @@
 //! - Sessions keep their last `--history-turns` completed turns. A cancelled turn is dropped.
 //! - `--audit-log PATH` appends one JSON line per retrieval and inference (timestamp, agent,
 //!   session, op, path or model, status), the shape of a TitanAgent shared audit log.
+//! - With the repair-session flags (`--max-agent-iterations`, `--verifier`, ...) each
+//!   `session/prompt` runs one Pocket Goblin repair session (`session.rs`) over the session
+//!   repository instead. Every repair tool call is a `tool_call`/`tool_call_update` pair. Each
+//!   write (`apply_edit`, `create_file`) first sends `session/request_permission`, TitanAgent's
+//!   approval gate, which OpenAB answers; a rejected write becomes a tool error. The audit log gets
+//!   an `op: write` line with the edited path per write, an `op: verify` line per verifier run and
+//!   one `op: repair` line per turn.
 //! - Errors carry a stable `data.category`. Stdout carries protocol frames only; the goblin
 //!   server's stderr passes through to ours.
 
 use std::collections::HashMap;
 use std::io::Write as _;
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
+use async_trait::async_trait;
 use goose_provider_types::conversation::message::Message;
 use goose_provider_types::conversation::Conversation;
 use serde_json::{json, Value};
 use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
-use tokio::sync::{mpsc, Mutex as AsyncMutex};
+use tokio::sync::{mpsc, oneshot, Mutex as AsyncMutex};
 use tokio::task::JoinSet;
 use tokio_util::sync::CancellationToken;
 
+use crate::session::{self as repair, tool_kind, Observer, ToolCall};
 use crate::{fetch_packet, infer, token_totals, Args, McpClient};
 
 const PROTOCOL_VERSION: u64 = 1;
+/// The permission options offered for each write. There is no `allow_always`: every edit asks.
+const ALLOW: &str = "allow-once";
+const REJECT: &str = "reject-once";
 
 /// A JSON-RPC error with a stable `data.category` that clients can branch on.
 #[derive(Debug)]
@@ -73,9 +86,99 @@ struct Turn {
     receipt: Value,
 }
 
+/// Our end of the stdio connection: frames to stdout, and the requests this agent sent
+/// (`session/request_permission`) that await the client's answer.
+struct Client {
+    out: mpsc::UnboundedSender<Value>,
+    next_id: AtomicU64,
+    pending: Mutex<HashMap<u64, oneshot::Sender<Value>>>,
+}
+
+impl Client {
+    fn new(out: mpsc::UnboundedSender<Value>) -> Self {
+        Self { out, next_id: AtomicU64::new(0), pending: Mutex::default() }
+    }
+
+    fn send(&self, frame: Value) {
+        let _ = self.out.send(frame);
+    }
+
+    fn update(&self, session: &str, update: Value) {
+        self.send(json!({"jsonrpc": "2.0", "method": "session/update",
+                         "params": {"sessionId": session, "update": update}}));
+    }
+
+    /// Send a request and wait for the client's result. An error response or a closed connection
+    /// is an `Err`; dropping the future (a cancelled turn) abandons the request.
+    async fn request(&self, method: &str, params: Value) -> Result<Value, String> {
+        let id = self.next_id.fetch_add(1, Ordering::Relaxed) + 1;
+        let (tx, rx) = oneshot::channel();
+        self.pending.lock().unwrap().insert(id, tx);
+        let _forget = Forget { client: self, id };
+        self.send(json!({"jsonrpc": "2.0", "id": id, "method": method, "params": params}));
+        let reply = rx.await.map_err(|_| "the client connection closed".to_owned())?;
+        match reply.get("error") {
+            Some(error) => Err(format!("the client answered {method} with an error: {error}")),
+            None => Ok(reply.get("result").cloned().unwrap_or(Value::Null)),
+        }
+    }
+
+    /// Hand a response frame to the request awaiting it. A response to nothing pending is dropped.
+    fn resolve(&self, frame: Value) {
+        let waiting = frame.get("id").and_then(Value::as_u64).and_then(|id| self.pending.lock().unwrap().remove(&id));
+        if let Some(waiting) = waiting {
+            let _ = waiting.send(frame);
+        }
+    }
+
+    /// The connection closed: every request still waiting fails.
+    fn close(&self) {
+        self.pending.lock().unwrap().clear();
+    }
+}
+
+/// Removes a request's pending entry when its wait ends, answered or abandoned.
+struct Forget<'a> {
+    client: &'a Client,
+    id: u64,
+}
+
+impl Drop for Forget<'_> {
+    fn drop(&mut self) {
+        self.client.pending.lock().unwrap().remove(&self.id);
+    }
+}
+
+/// The squad's shared audit log: one JSON line per operation, tagged with time, agent and session.
+#[derive(Clone)]
+struct AuditLog {
+    path: Option<PathBuf>,
+    agent: String,
+}
+
+impl AuditLog {
+    fn write(&self, session: &str, entry: Value) -> Result<(), RpcError> {
+        let Some(path) = &self.path else {
+            return Ok(());
+        };
+        let ts = SystemTime::now().duration_since(UNIX_EPOCH).map_or(0.0, |elapsed| elapsed.as_secs_f64());
+        let mut line = json!({"ts": ts, "agent": self.agent, "session": session});
+        if let (Some(line), Value::Object(entry)) = (line.as_object_mut(), entry) {
+            line.extend(entry);
+        }
+        std::fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(path)
+            .and_then(|mut file| file.write_all(format!("{line}\n").as_bytes()))
+            .map_err(|error| RpcError::internal(format!("audit log {}: {error}", path.display()), "audit_log_error"))
+    }
+}
+
 struct Agent {
     args: Args,
-    out: mpsc::UnboundedSender<Value>,
+    client: Arc<Client>,
+    log: AuditLog,
     /// One Data Goblin server per agent process, shared by its sessions.
     goblin: AsyncMutex<Option<McpClient>>,
     sessions: Mutex<HashMap<String, Arc<AsyncMutex<Session>>>>,
@@ -120,7 +223,9 @@ pub(crate) async fn serve(args: Args) -> anyhow::Result<()> {
             }
             (Some(method), Some(id)) => agent.reply(id, agent.handle(method, &params)),
             (Some("session/cancel"), None) => agent.cancel(&params),
-            // Other notifications, and responses: this agent sends no requests of its own.
+            // A response to one of our requests (a permission answer).
+            (None, Some(_)) => agent.client.resolve(message.clone()),
+            // Other notifications.
             _ => {}
         }
     }
@@ -128,6 +233,7 @@ pub(crate) async fn serve(args: Args) -> anyhow::Result<()> {
     for token in agent.cancels.lock().unwrap().values() {
         token.cancel();
     }
+    agent.client.close();
     while prompts.join_next().await.is_some() {}
     drop(agent);
     writer.await?;
@@ -136,9 +242,11 @@ pub(crate) async fn serve(args: Args) -> anyhow::Result<()> {
 
 impl Agent {
     fn new(args: Args, out: mpsc::UnboundedSender<Value>) -> Self {
+        let log = AuditLog { path: args.audit_log.clone(), agent: args.agent_name.clone() };
         Self {
             args,
-            out,
+            client: Arc::new(Client::new(out)),
+            log,
             goblin: AsyncMutex::new(None),
             sessions: Mutex::default(),
             cancels: Mutex::default(),
@@ -151,12 +259,15 @@ impl Agent {
             Err(error) => json!({"jsonrpc": "2.0", "id": id, "error": {
                 "code": error.code, "message": error.message, "data": {"category": error.category}}}),
         };
-        let _ = self.out.send(frame);
+        self.client.send(frame);
     }
 
     fn update(&self, session: &str, update: Value) {
-        let _ = self.out.send(json!({"jsonrpc": "2.0", "method": "session/update",
-                                     "params": {"sessionId": session, "update": update}}));
+        self.client.update(session, update);
+    }
+
+    fn repairs(&self) -> bool {
+        self.args.session.max_iterations.is_some()
     }
 
     fn handle(&self, method: &str, params: &Value) -> Result<Value, RpcError> {
@@ -192,7 +303,7 @@ impl Agent {
             .filter(|cwd| Path::new(cwd).is_absolute())
             .ok_or_else(|| RpcError::invalid("session/new needs an absolute cwd"))?;
         let repo = if self.args.repo.is_empty() { cwd } else { self.args.repo.as_str() };
-        if !self.args.no_packet && !Path::new(repo).is_dir() {
+        if (!self.args.no_packet || self.repairs()) && !Path::new(repo).is_dir() {
             return Err(RpcError::invalid(format!("session repository {repo} is not a directory")));
         }
         if params.get("mcpServers").and_then(Value::as_array).is_some_and(|servers| !servers.is_empty()) {
@@ -221,16 +332,22 @@ impl Agent {
         let mut session = session.lock().await;
         let cancel = CancellationToken::new();
         self.cancels.lock().unwrap().insert(id.clone(), cancel.clone());
-        let outcome = self.turn(&id, &mut session, task, &cancel).await;
+        let outcome = if self.repairs() {
+            self.repair_turn(&id, &mut session, task, &cancel).await
+        } else {
+            self.turn(&id, &mut session, task, &cancel).await
+        };
         // Once the token leaves the map no cancel can land, so the stop reason below is final.
         self.cancels.lock().unwrap().remove(&id);
         if cancel.is_cancelled() {
             return Ok(json!({"stopReason": "cancelled"}));
         }
         let turn = outcome?;
-        session.turns.push(turn.messages);
-        let excess = session.turns.len().saturating_sub(self.args.history_turns);
-        session.turns.drain(..excess);
+        if !turn.messages.is_empty() {
+            session.turns.push(turn.messages);
+            let excess = session.turns.len().saturating_sub(self.args.history_turns);
+            session.turns.drain(..excess);
+        }
         if !turn.answer.is_empty() {
             self.update(&id, json!({"sessionUpdate": "agent_message_chunk",
                                     "content": {"type": "text", "text": turn.answer}}));
@@ -327,6 +444,58 @@ impl Agent {
         Ok(Turn { messages, answer, input_tokens, output_tokens, receipt })
     }
 
+    /// One repair session for `task` over the session repository, reported to the client while it
+    /// runs. The session's own conversation is multi-turn; ACP prompts do not share history.
+    async fn repair_turn(&self, id: &str, session: &mut Session, task: String, cancel: &CancellationToken)
+        -> Result<Turn, RpcError> {
+        session.prompts += 1;
+        let observer = Arc::new(RepairObserver {
+            client: self.client.clone(),
+            log: self.log.clone(),
+            session: id.to_owned(),
+            calls: format!("{id}-repair-{}", session.prompts),
+            workspace: std::path::absolute(&session.repo).unwrap_or_else(|_| PathBuf::from(&session.repo)),
+            open: Mutex::new(None),
+            audit_error: Mutex::new(None),
+        });
+        let run = repair::run(&self.args, &task, &session.repo, Some(observer.clone()), cancel.clone());
+        // Dropping the run on cancel stops a tool call in flight too: the repair service and the
+        // preflight relay are killed with it.
+        let outcome = tokio::select! {
+            outcome = run => outcome,
+            _ = cancel.cancelled() => Err(anyhow::anyhow!("cancelled by the client")),
+        };
+        if cancel.is_cancelled() {
+            observer.cancel_open();
+            self.audit(id, json!({"op": "repair", "model": self.args.model, "status": "cancelled"}))?;
+            return Err(RpcError::internal("cancelled by the client", "cancelled"));
+        }
+        let receipt = match outcome {
+            Ok(receipt) => receipt,
+            Err(error) => {
+                let message = format!("{error:#}");
+                self.audit(id, json!({"op": "repair", "model": self.args.model, "status": "failed", "error": message}))?;
+                return Err(RpcError::internal(format!("repair session failed: {message}"), "repair_error"));
+            }
+        };
+        if let Some(message) = observer.audit_error.lock().unwrap().take() {
+            return Err(RpcError::internal(message, "audit_log_error"));
+        }
+        let input_tokens = receipt["provider_input_tokens"].as_i64().unwrap_or(0);
+        let output_tokens = receipt["provider_output_tokens"].as_i64().unwrap_or(0);
+        let error = receipt["error"].as_str().map(str::to_owned);
+        self.audit(id, json!({
+            "op": "repair", "model": self.args.model, "status": if error.is_some() { "failed" } else { "ok" },
+            "verified": receipt["state"]["verified"], "input_tokens": input_tokens, "output_tokens": output_tokens,
+            "inference_calls": receipt["inference_calls"], "tool_calls": receipt["session"]["tool_calls"],
+        }))?;
+        if let Some(error) = error {
+            return Err(RpcError::internal(format!("repair session failed: {error}"), "repair_error"));
+        }
+        let answer = receipt["answer"].as_str().unwrap_or_default().to_owned();
+        Ok(Turn { messages: Vec::new(), answer, input_tokens, output_tokens, receipt })
+    }
+
     async fn retrieve(&self, task: &str, repo: &str) -> anyhow::Result<(String, Value)> {
         let mut goblin = self.goblin.lock().await;
         if goblin.is_none() {
@@ -337,21 +506,157 @@ impl Agent {
     }
 
     fn audit(&self, session: &str, entry: Value) -> Result<(), RpcError> {
-        let Some(path) = &self.args.audit_log else {
-            return Ok(());
-        };
-        let ts = SystemTime::now().duration_since(UNIX_EPOCH).map_or(0.0, |elapsed| elapsed.as_secs_f64());
-        let mut line = json!({"ts": ts, "agent": self.args.agent_name, "session": session});
-        if let (Some(line), Value::Object(entry)) = (line.as_object_mut(), entry) {
-            line.extend(entry);
-        }
-        std::fs::OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(path)
-            .and_then(|mut file| file.write_all(format!("{line}\n").as_bytes()))
-            .map_err(|error| RpcError::internal(format!("audit log {}: {error}", path.display()), "audit_log_error"))
+        self.log.write(session, entry)
     }
+}
+
+/// Reports one repair turn: each tool call to the client and the writes and verifier runs to the
+/// audit log, and asks the client to approve each write.
+struct RepairObserver {
+    client: Arc<Client>,
+    log: AuditLog,
+    session: String,
+    /// The prefix of this turn's tool call ids.
+    calls: String,
+    /// The session repository as an absolute path, for ACP `locations` and diffs.
+    workspace: PathBuf,
+    /// The call in flight, which a cancelled turn closes.
+    open: Mutex<Option<ToolCall>>,
+    /// The first audit-log failure. The turn fails with it once the run returns.
+    audit_error: Mutex<Option<String>>,
+}
+
+impl RepairObserver {
+    fn call_id(&self, call: &ToolCall) -> String {
+        format!("{}-{}", self.calls, call.index)
+    }
+
+    /// The ACP description of a call: id, title, kind, raw input, and for a write its file and diff.
+    fn describe(&self, call: &ToolCall) -> Value {
+        let mut fields = json!({"toolCallId": self.call_id(call), "title": title(call),
+                                "kind": tool_kind(&call.tool), "rawInput": call.arguments});
+        if let Some(path) = &call.path {
+            let path = self.workspace.join(path).display().to_string();
+            let (old, new) = match call.tool.as_str() {
+                "apply_edit" => (call.arguments["old"].clone(), call.arguments["new"].clone()),
+                _ => (Value::Null, call.arguments["content"].clone()),
+            };
+            fields["locations"] = json!([{"path": path}]);
+            fields["content"] = json!([{"type": "diff", "path": path, "oldText": old, "newText": new}]);
+        }
+        fields
+    }
+
+    fn record(&self, entry: Value) {
+        if let Err(error) = self.log.write(&self.session, entry) {
+            self.audit_error.lock().unwrap().get_or_insert(error.message);
+        }
+    }
+
+    /// The turn was cancelled with a call in flight: close it for the client and the audit log.
+    fn cancel_open(&self) {
+        let Some(call) = self.open.lock().unwrap().take() else {
+            return;
+        };
+        self.client.update(&self.session, json!({
+            "sessionUpdate": "tool_call_update", "toolCallId": self.call_id(&call), "status": "failed",
+            "content": text_content("cancelled by the client"),
+        }));
+        if call.is_write() {
+            self.record(json!({"op": "write", "tool": call.tool, "path": call.path, "status": "cancelled",
+                               "origin": call.origin}));
+        }
+    }
+}
+
+#[async_trait]
+impl Observer for RepairObserver {
+    fn started(&self, call: &ToolCall) {
+        let mut update = self.describe(call);
+        update["sessionUpdate"] = json!("tool_call");
+        update["status"] = json!(if call.is_write() { "pending" } else { "in_progress" });
+        self.client.update(&self.session, update);
+        *self.open.lock().unwrap() = Some(call.clone());
+    }
+
+    async fn permit(&self, call: &ToolCall) -> bool {
+        let mut tool_call = self.describe(call);
+        tool_call["status"] = json!("pending");
+        let params = json!({
+            "sessionId": self.session, "toolCall": tool_call,
+            "options": [
+                {"optionId": ALLOW, "name": "Allow this edit", "kind": "allow_once"},
+                {"optionId": REJECT, "name": "Reject this edit", "kind": "reject_once"},
+            ],
+        });
+        match self.client.request("session/request_permission", params).await {
+            Ok(result) => result["outcome"]["outcome"] == "selected" && result["outcome"]["optionId"] == ALLOW,
+            Err(error) => {
+                eprintln!("{}: write not approved: {error}", self.log.agent);
+                false
+            }
+        }
+    }
+
+    fn finished(&self, call: &ToolCall, output: &Value, error: bool) {
+        self.open.lock().unwrap().take();
+        self.client.update(&self.session, json!({
+            "sessionUpdate": "tool_call_update", "toolCallId": self.call_id(call),
+            "status": if error { "failed" } else { "completed" },
+            "content": text_content(&summary(call, output, error)), "rawOutput": output,
+        }));
+        if call.is_write() {
+            let status = match (call.permission, error) {
+                (Some(false), _) => "rejected",
+                (_, true) => "failed",
+                _ => "ok",
+            };
+            let mut entry = json!({"op": "write", "tool": call.tool, "status": status, "origin": call.origin,
+                                   "path": output["path"].as_str().or(call.path.as_deref())});
+            if error {
+                entry["error"] = output["error"].clone();
+            } else {
+                entry["before"] = output["before"].clone();
+                entry["after"] = output["after"].clone();
+            }
+            self.record(entry);
+        } else if call.tool == "run_verifier" {
+            self.record(json!({"op": "verify", "status": if error { "failed" } else { "ok" },
+                               "origin": call.origin, "passed": output["passed"], "exit_code": output["exit_code"]}));
+        }
+    }
+}
+
+fn title(call: &ToolCall) -> String {
+    let argument = |key: &str| call.arguments[key].as_str().unwrap_or("?");
+    match call.tool.as_str() {
+        "context_query" => format!("Search: {}", argument("query")),
+        "context_expand" => format!("Expand {}", argument("node_id")),
+        "context_read" => format!("Read {}", call.arguments["uri"].as_str().unwrap_or_else(|| argument("handle"))),
+        "context_state" => "Inspect the context state".into(),
+        "apply_edit" => format!("Edit {}", call.path.as_deref().unwrap_or("source")),
+        "create_file" => format!("Create {}", call.path.as_deref().unwrap_or("file")),
+        "inspect_edit" => "Inspect the patch".into(),
+        "run_verifier" => "Run the native verifier".into(),
+        other => other.to_owned(),
+    }
+}
+
+fn summary(call: &ToolCall, output: &Value, error: bool) -> String {
+    if error {
+        return output["error"].as_str().unwrap_or("failed").to_owned();
+    }
+    match call.tool.as_str() {
+        "run_verifier" => format!("the native verifier {} (exit code {})",
+                                  if output["passed"] == true { "passed" } else { "failed" }, output["exit_code"]),
+        "apply_edit" | "create_file" => format!("wrote {}", output["path"].as_str().unwrap_or("?")),
+        "context_read" => format!("read {}", output["path"].as_str().unwrap_or("?")),
+        _ => output.to_string().chars().take(300).collect(),
+    }
+}
+
+fn text_content(text: &str) -> Value {
+    json!([{"type": "content", "content": {"type": "text", "text": text}}])
 }
 
 fn session_id(params: &Value) -> Result<&str, RpcError> {
@@ -487,6 +792,79 @@ mod tests {
         let blank = agent.prompt(&json!({"sessionId": "nope", "prompt": []})).await;
         assert_eq!(blank.unwrap_err().category, "invalid_params");
         assert!(frames.try_recv().is_err());
+    }
+
+    /// Answer the next permission request in `frames` with `outcome`, as OpenAB would, and return it.
+    async fn answer(frames: &mut mpsc::UnboundedReceiver<Value>, client: &Client, outcome: Value) -> Value {
+        let request = frames.recv().await.unwrap();
+        client.resolve(json!({"jsonrpc": "2.0", "id": request["id"], "result": {"outcome": outcome}}));
+        request
+    }
+
+    #[tokio::test]
+    async fn repair_writes_ask_permission_once_each_and_audit_the_edited_path() {
+        let (out, mut frames) = mpsc::unbounded_channel();
+        let client = Arc::new(Client::new(out));
+        let path = temp_path("repair-audit.jsonl");
+        let observer = RepairObserver {
+            client: client.clone(), log: AuditLog { path: Some(path.clone()), agent: "fixer".into() },
+            session: "s-1".into(), calls: "s-1-repair-1".into(), workspace: std::env::temp_dir(),
+            open: Mutex::new(None), audit_error: Mutex::new(None),
+        };
+        let edit = ToolCall {
+            index: 2, origin: "solver".into(), tool: "apply_edit".into(),
+            arguments: json!({"handle": "source:a", "old": "speed - gravity", "new": "speed + gravity"}),
+            path: Some("engine/physics.py".into()), permission: None,
+        };
+
+        observer.started(&edit);
+        let started = frames.try_recv().unwrap()["params"]["update"].clone();
+        assert_eq!((started["sessionUpdate"].as_str(), started["kind"].as_str()), (Some("tool_call"), Some("edit")));
+        assert_eq!(started["status"], "pending");
+        assert!(started["locations"][0]["path"].as_str().unwrap().ends_with("physics.py"));
+        assert_eq!(started["content"][0]["newText"], "speed + gravity");
+
+        let rejected = json!({"outcome": "selected", "optionId": REJECT});
+        let (approved, asked) = tokio::join!(observer.permit(&edit), answer(&mut frames, &client, rejected));
+        assert!(!approved);
+        assert_eq!(asked["method"], "session/request_permission");
+        assert_eq!(asked["params"]["sessionId"], "s-1");
+        assert_eq!(asked["params"]["toolCall"]["toolCallId"], started["toolCallId"]);
+        let kinds: Vec<_> = asked["params"]["options"].as_array().unwrap().iter().map(|o| o["kind"].clone()).collect();
+        assert_eq!(kinds, [json!("allow_once"), json!("reject_once")]);
+        let error = json!({"error": "The client rejected this apply_edit call, so the workspace is unchanged."});
+        observer.finished(&ToolCall { permission: Some(false), ..edit.clone() }, &error, true);
+        let update = frames.try_recv().unwrap()["params"]["update"].clone();
+        assert_eq!((update["toolCallId"].clone(), update["status"].as_str()), (started["toolCallId"].clone(), Some("failed")));
+
+        let allowed = json!({"outcome": "selected", "optionId": ALLOW});
+        let (approved, _) = tokio::join!(observer.permit(&edit), answer(&mut frames, &client, allowed));
+        assert!(approved);
+        let receipt = json!({"path": "engine/physics.py", "before": "b", "after": "a"});
+        observer.finished(&ToolCall { permission: Some(true), ..edit.clone() }, &receipt, false);
+        assert_eq!(frames.try_recv().unwrap()["params"]["update"]["status"], "completed");
+
+        // A cancelled outcome and a closed connection both reject the write.
+        let cancelled = json!({"outcome": "cancelled"});
+        assert!(!tokio::join!(observer.permit(&edit), answer(&mut frames, &client, cancelled)).0);
+        let closed = async {
+            frames.recv().await.unwrap();
+            client.close();
+        };
+        assert!(!tokio::join!(observer.permit(&edit), closed).0);
+        assert!(client.pending.lock().unwrap().is_empty());
+
+        let lines: Vec<Value> = std::fs::read_to_string(&path)
+            .unwrap()
+            .lines()
+            .map(|line| serde_json::from_str(line).unwrap())
+            .collect();
+        std::fs::remove_file(&path).unwrap();
+        let writes: Vec<_> = lines.iter().map(|l| (l["op"].as_str(), l["status"].as_str(), l["path"].as_str())).collect();
+        let path = Some("engine/physics.py");
+        assert_eq!(writes, [(Some("write"), Some("rejected"), path), (Some("write"), Some("ok"), path)]);
+        assert_eq!((lines[1]["agent"].as_str(), lines[1]["session"].as_str()), (Some("fixer"), Some("s-1")));
+        assert!(observer.audit_error.lock().unwrap().is_none());
     }
 
     #[test]

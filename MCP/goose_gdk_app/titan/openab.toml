@@ -23,6 +23,11 @@ args = [
   "--python", "/opt/pocket-goblin/venv/bin/python", "--goblin-cwd", "/opt/HybridTRMLDT",
   "--budget", "2048", "--history-turns", "6",
   "--audit-log", "/workspace/shared/audit-log/goblin.jsonl",
+  # For an edit-capable member, add the repair-session flags. Each prompt then runs a repair
+  # session over --repo, which must be a clean git worktree, and asks before every write
+  # (session/request_permission):
+  # "--max-agent-iterations", "8", "--max-tool-calls", "24", "--memory-mode", "typed",
+  # "--verifier", "/workspace/.agents/goblin/verifier.json",
 ]
 working_dir = "/workspace/.agents/goblin"
 # OpenAB clears the agent's environment (HOME, PATH and USER pass through). The goblin server reads
