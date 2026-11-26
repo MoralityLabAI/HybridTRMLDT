@@ -1,0 +1,109 @@
+name: COG-13B checkpoint quantum replay
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13b_checkpoint_quantum/**'
+      - '.github/workflows/cog13b-checkpoint-quantum.yml'
+  push:
+    paths:
+      - 'experiments/cog13b_checkpoint_quantum/**'
+      - '.github/workflows/cog13b-checkpoint-quantum.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run benchmark and export
+        run: node experiments/cog13b_checkpoint_quantum/benchmark.mjs "$RUNNER_TEMP/cog13b-run.json" "$RUNNER_TEMP/cog13b-exports"
+      - name: Verify receipt and export custody
+        run: |
+          node --input-type=module - "$RUNNER_TEMP/cog13b-run.json" "$RUNNER_TEMP/cog13b-exports" <<'JS'
+          import {readFileSync} from "node:fs";
+          import {join} from "node:path";
+          import {createHash} from "node:crypto";
+          import assert from "node:assert/strict";
+          const run=JSON.parse(readFileSync(process.argv[2],"utf8"));
+          const expected=JSON.parse(readFileSync("experiments/cog13b_checkpoint_quantum/results.json","utf8"));
+          const compare=(a,b,path="summary")=>{
+            if(typeof a==="number"&&typeof b==="number"){
+              if(path.includes(".weights.")) assert.ok(Math.abs(a-b)<=1e-9*Math.max(1,Math.abs(b)),path);
+              else assert.equal(a,b,path);
+            }else if(a!==null&&b!==null&&typeof a==="object"&&typeof b==="object"){
+              assert.deepEqual(Object.keys(a).sort(),Object.keys(b).sort(),path);
+              for(const key of Object.keys(b)) compare(a[key],b[key],path+"."+key);
+            }else assert.equal(a,b,path);
+          };
+          compare(run.summary,expected);
+          assert.equal(run.runs.length,240);
+          const root=process.argv[3];
+          const manifest=JSON.parse(readFileSync(join(root,"export_manifest.json"),"utf8"));
+          for(const [name,hash] of Object.entries(manifest.hashes)) assert.equal(createHash("sha256").update(readFileSync(join(root,name))).digest("hex"),hash);
+          const rows=readFileSync(join(root,"train_residual.jsonl"),"utf8").trim().split("\n").map(JSON.parse);
+          assert.equal(rows.length,645);
+          assert.equal(new Set(rows.map(r=>r.root)).size,64);
+          assert.ok(rows.every(r=>r.split==="train"&&r.input.features.length===9&&r.target.residualVerifierCalls>0));
+          const index=JSON.parse(readFileSync(join(root,"certificate_index.json"),"utf8"));
+          assert.equal(index.length,192);
+          assert.equal(index.filter(x=>x.solved).length,161);
+          JS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cog13b-replay
+          path: ${{ runner.temp }}/cog13b-run.json
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cog13b-exports
+          path: ${{ runner.temp }}/cog13b-exports/
+          retention-days: 30
+  native-lean:
+    needs: replay
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      LEAN_NUM_THREADS: '1'
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: cog13b-exports
+          path: ${{ runner.temp }}/cog13b-exports
+      - name: Install Lean 4.35.0
+        run: |
+          curl --fail --location --retry 3 https://github.com/leanprover/lean4/releases/download/v4.35.0/lean-4.35.0-linux.tar.zst -o "$RUNNER_TEMP/lean.tar.zst"
+          tar --zstd -xf "$RUNNER_TEMP/lean.tar.zst" -C "$RUNNER_TEMP"
+      - name: Compile certificates and reject invalid term
+        run: |
+          set -euo pipefail
+          LEAN="$RUNNER_TEMP/lean-4.35.0-linux/bin/lean"
+          DIR="$RUNNER_TEMP/cog13b-exports"
+          "$LEAN" --version | tee "$DIR/lean-version.txt"
+          sha256sum "$LEAN" > "$DIR/lean-binary-sha256.txt"
+          "$LEAN" "$DIR/certificates.lean" | tee "$DIR/lean-output.txt"
+          if "$LEAN" "$DIR/rejected_sentinel.lean" > "$DIR/negative-output.txt" 2>&1; then
+            echo "Invalid theorem unexpectedly compiled"; exit 1
+          fi
+          python3 - "$DIR" <<'PY'
+          import json, re, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          index = json.loads((root / "certificate_index.json").read_text())
+          names = {x["theorem"] for x in index if x["solved"]}
+          audited = set(re.findall(r"'(cog13b_\d+)' does not depend on any axioms", (root / "lean-output.txt").read_text()))
+          assert len(names) == 161 and audited == names, (len(audited), len(names))
+          print("All 161 constructive proof certificates compiled with empty axiom lists.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cog13b-native-lean
+          path: ${{ runner.temp }}/cog13b-exports/*output.txt
+          retention-days: 30
