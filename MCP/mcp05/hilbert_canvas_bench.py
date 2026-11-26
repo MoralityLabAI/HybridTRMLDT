@@ -36,7 +36,8 @@ def default_node() -> Path:
 def default_chrome() -> Path:
     if DEFAULT_CHROME.is_file():
         return DEFAULT_CHROME
-    found = shutil.which("chrome")
+    found = next((p for name in ("chrome", "google-chrome", "google-chrome-stable", "chromium", "chromium-browser")
+                  if (p := shutil.which(name))), None)
     require(bool(found), "chrome executable not found")
     return Path(found)
 
