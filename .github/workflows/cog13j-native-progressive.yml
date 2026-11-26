@@ -43,18 +43,7 @@ jobs:
           mkdir "$RUNNER_TEMP/cog13j"
           python experiments/cog13j_native_progressive/native.py "$RUNNER_TEMP/cog13c.zip" --fixture | tee "$RUNNER_TEMP/cog13j/fixture.json"
           python experiments/cog13j_native_progressive/transport.py "$RUNNER_TEMP/cog13c.zip" "$RUNNER_TEMP/cog13j/archive_timing.json"
-          python - "$RUNNER_TEMP/cog13j" <<'PY'
-          import json, sys
-          from pathlib import Path
-          root = Path(sys.argv[1])
-          expected = json.loads(Path('experiments/cog13j_native_progressive/archive_timing.json').read_text())
-          fresh = json.loads((root / 'archive_timing.json').read_text())
-          assert json.loads((root / 'fixture.json').read_text()) == expected['fixture']
-          for a, v in expected['arms'].items():
-              for key in ('decisions', 'bytes', 'stages', 'refinements', 'exactFallbacks', 'senderAbstentions'):
-                  assert fresh['arms'][a][key] == v[key], (a, key)
-          print('Frozen discrete packet counts and negative fixture reproduced; timing is a new measurement.')
-          PY
+          python experiments/cog13j_native_progressive/verify.py "$RUNNER_TEMP/cog13j"
       - uses: actions/checkout@v4
         with:
           repository: leanprover-community/mathlib4
