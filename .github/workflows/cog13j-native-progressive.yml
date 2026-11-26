@@ -1,0 +1,95 @@
+name: COG-13J native progressive routing
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13j_native_progressive/**'
+      - '.github/workflows/cog13j-native-progressive.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      LEAN_NUM_THREADS: '1'
+      MATHLIB_SHA: 56a005855ea17e0b0958f73ec801ae140b0a1679
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Retrieve frozen source and prior registry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for pair in '15136527625 c' '15139420524 h'; do
+            read -r id label <<< "$pair"
+            curl --fail --location --retry 3 \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/MoralityLabAI/HybridTRMLDT/actions/artifacts/$id/zip" \
+              -o "$RUNNER_TEMP/cog13$label.zip"
+          done
+          echo 'd99bc6a95d4ea31a132b408cd653644e9680a167fa87aca3b722522af0ab5aea  '"$RUNNER_TEMP/cog13c.zip" | sha256sum --check
+          echo 'f20b8ce3b6f1fe6d8e12816899024027c921bcb2065ddefd6c578c7d4ec80f8d  '"$RUNNER_TEMP/cog13h.zip" | sha256sum --check
+      - name: Execute mock fixture and archive timing replay
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/cog13j"
+          python experiments/cog13j_native_progressive/native.py "$RUNNER_TEMP/cog13c.zip" --fixture | tee "$RUNNER_TEMP/cog13j/fixture.json"
+          python experiments/cog13j_native_progressive/transport.py "$RUNNER_TEMP/cog13c.zip" "$RUNNER_TEMP/cog13j/archive_timing.json"
+          python - "$RUNNER_TEMP/cog13j" <<'PY'
+          import json, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          expected = json.loads(Path('experiments/cog13j_native_progressive/archive_timing.json').read_text())
+          fresh = json.loads((root / 'archive_timing.json').read_text())
+          assert json.loads((root / 'fixture.json').read_text()) == expected['fixture']
+          for a, v in expected['arms'].items():
+              for key in ('decisions', 'bytes', 'stages', 'refinements', 'exactFallbacks', 'senderAbstentions'):
+                  assert fresh['arms'][a][key] == v[key], (a, key)
+          print('Frozen discrete packet counts and negative fixture reproduced; timing is a new measurement.')
+          PY
+      - uses: actions/checkout@v4
+        with:
+          repository: leanprover-community/mathlib4
+          ref: 56a005855ea17e0b0958f73ec801ae140b0a1679
+          path: upstream-mathlib
+          persist-credentials: false
+      - name: Install Lean 4.35.0
+        run: |
+          curl --fail --location --retry 3 https://github.com/leanprover/lean4/releases/download/v4.35.0/lean-4.35.0-linux.tar.zst -o "$RUNNER_TEMP/lean.tar.zst"
+          tar --zstd -xf "$RUNNER_TEMP/lean.tar.zst" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lean-4.35.0-linux/bin" >> "$GITHUB_PATH"
+      - name: Compile pinned snapshot server
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$MATHLIB_SHA"
+          test "$(cat lean-toolchain)" = "leanprover/lean4:v4.35.0"
+          lean --version
+          lake exe cache get
+          cp "$GITHUB_WORKSPACE/experiments/cog13j_native_progressive/StateCacheJ.lean" .
+          mkdir -p .lake/build/lib/lean
+          lake env lean -o .lake/build/lib/lean/StateCacheJ.olean StateCacheJ.lean
+      - name: Execute matched native proof search
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          lake env bash -c '
+            python "$GITHUB_WORKSPACE/experiments/cog13j_native_progressive/native.py" "$RUNNER_TEMP/cog13c.zip" \
+              --old-h "$RUNNER_TEMP/cog13h.zip" --lean "$(command -v lean)" --cwd "$PWD" \
+              --out "$RUNNER_TEMP/cog13j/native"
+          '
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cog13j-native-and-timing
+          path: ${{ runner.temp }}/cog13j/
+          if-no-files-found: warn
+          retention-days: 30
