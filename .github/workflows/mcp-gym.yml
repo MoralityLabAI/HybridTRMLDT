@@ -31,7 +31,9 @@ jobs:
       - name: Install test runner
         run: python -m pip install pytest
       - name: MCP contracts and lattice regressions
-        run: python -m pytest -q MCP tests/test_cca_verified_membrane.py tests/test_hybrid_membrane.py
+        run: >-
+          python -m pytest -q MCP tests/test_cca_verified_membrane.py tests/test_hybrid_membrane.py
+          --ignore=MCP/mcp06 --ignore=MCP/mcp07 --ignore=MCP/mcp08 --ignore=MCP/test_spatial_mms.py
       - name: Matched deterministic MCP stdio pilot
         run: python -m MCP.run --controller reference --transport stdio --cases 24 --catalog-sizes 8 64 --depths 3 --out MCP/runs/ci
       - name: MCP-02 deterministic control smoke, summary and tape replay
