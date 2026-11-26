@@ -5,7 +5,7 @@
 #
 #   bash MCP/receipt_goblin/scripts/inky_16k.sh [WORK_DIR]
 #
-# The squid launcher queues for a 15,000 MiB vramorama lease, so this waits for the card. Arms:
+# The server queues for a 15,000 MiB vramorama lease, so this waits for the card. Arms:
 #   inky_packet       values shown, default packet (40 lexical + 8 neighbours, 3,000-token budget)
 #   inky_blind        values withheld, same packet
 #   inky_packet_nonb  values shown, no neighbour expansion, 1,500-token budget
@@ -22,18 +22,47 @@ PORT=18090
 mkdir -p "$WORK"
 log() { echo "[$(date '+%F %T')] $*" | tee -a "$WORK/run.log"; }
 
+V="$LOCALAPPDATA/Programs/vramorama/vramorama.exe"
+OWNER=squid5080-serve
 ours=0
 cleanup() { [ "$ours" = 1 ] && bash C:/Users/patri/tools/squid5080/stop.sh >>"$WORK/run.log" 2>&1; }
 trap cleanup EXIT
 
-log "start; queueing squid5080 (ctx 16384)"
-bash C:/Users/patri/tools/squid5080/serve.sh "$PORT" --ctx 16384 >"$WORK/serve.log" 2>&1 &
-SERVE=$!
-until curl -sf "http://127.0.0.1:$PORT/v1/models" >/dev/null 2>&1; do
-  if ! kill -0 "$SERVE" 2>/dev/null; then log "squid launcher exited before serving"; tail -20 "$WORK/serve.log"; exit 1; fi
-  sleep 30
-done
-grep -q "already serving" "$WORK/serve.log" || ours=1
+# The same lease, owner, guard and WSL tagging as tools/squid5080/serve.sh, without its --guard-idle
+# (not an option of the installed vramorama 0.16.1); the EXIT trap stops the server instead.
+if curl -sf "http://127.0.0.1:$PORT/v1/models" >/dev/null 2>&1; then
+  log "a server is already answering on $PORT; using it and leaving it running"
+else
+  ours=1
+  log "start; queueing squid5080 (ctx 16384) for a 15000M lease"
+  "$V" run --vram 15000M --owner "$OWNER" --guard-power 120 -- \
+    wsl.exe -d Ubuntu-24.04 -u root -- /opt/squid5080/bin/squid5090 serve /opt/squid5080/model \
+    --host 127.0.0.1 --port "$PORT" --ctx 16384 >"$WORK/serve.log" 2>&1 &
+  SERVE=$!
+  lease=""
+  i=0
+  until curl -sf "http://127.0.0.1:$PORT/v1/models" >/dev/null 2>&1; do
+    if ! kill -0 "$SERVE" 2>/dev/null; then log "server exited before serving"; tail -20 "$WORK/serve.log"; exit 1; fi
+    [ -z "$lease" ] && lease=$("$V" leases 2>/dev/null | awk -v o="$OWNER" '$7==o && $2=="admitted" {print $1; exit}')
+    if [ -n "$lease" ] && [ $((i % 10)) -eq 0 ]; then
+      pid=$("$V" ps 2>/dev/null | awk '/vmwp.exe/ {print $1; exit}')
+      [ -n "$pid" ] && "$V" tag "$lease" "$pid" >/dev/null 2>&1
+      "$V" renew "$lease" >/dev/null 2>&1
+    fi
+    i=$((i + 1))
+    sleep 30
+  done
+  # Keep the lease tagged and renewed while the arms run.
+  ( while kill -0 "$SERVE" 2>/dev/null; do
+      [ -z "$lease" ] && lease=$("$V" leases 2>/dev/null | awk -v o="$OWNER" '$7==o && $2=="admitted" {print $1; exit}')
+      if [ -n "$lease" ]; then
+        pid=$("$V" ps 2>/dev/null | awk '/vmwp.exe/ {print $1; exit}')
+        [ -n "$pid" ] && "$V" tag "$lease" "$pid" >/dev/null 2>&1
+        "$V" renew "$lease" >/dev/null 2>&1
+      fi
+      sleep 300
+    done ) &
+fi
 curl -s "http://127.0.0.1:$PORT/v1/models" >"$WORK/server_models.json"
 log "server ready (started by this run: $ours)"
 
