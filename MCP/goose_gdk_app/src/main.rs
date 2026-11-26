@@ -8,7 +8,8 @@
 //! runs without the operation's contribution, so the two runs differ only in the packet.
 //!
 //! The app prints one JSON receipt: answer, provider-reported input/output tokens, packet
-//! accounting from the goblin server, and timings.
+//! accounting from the goblin server, and timings. With `--acp` it instead serves the Agent Client
+//! Protocol on stdio, which is how TitanAgent squads on OpenAB run their agents (see `acp.rs`).
 
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
@@ -30,6 +31,7 @@ use tokio::process::{Child, ChildStdin, ChildStdout, Command};
 use tokio::sync::mpsc;
 use tokio_util::sync::CancellationToken;
 
+mod acp;
 mod session;
 
 // ---- minimal MCP stdio client: newline-delimited JSON-RPC 2.0, protocol 2025-06-18 ----
@@ -217,7 +219,77 @@ impl Operation<AppSession, AppEffect> for CompactContextOperation {
     }
 }
 
+// ---- one GDK turn: the goblin packet, then inference ----
+
+/// Ask the goblin server for the compact packet for `task` over `repo`. Returns the packet text and
+/// the server's accounting without the packet.
+async fn fetch_packet(goblin: &mut McpClient, args: &Args, task: &str, repo: &str) -> Result<(String, Value)> {
+    let mut result = goblin
+        .call_tool(
+            "compact_context",
+            json!({"task": task, "repo_path": repo, "budget_tokens": args.budget,
+                   "max_tool_calls": args.max_tool_calls, "arm": args.arm}),
+        )
+        .await?;
+    let packet = result["packet"].as_str().unwrap_or_default().to_string();
+    if let Some(object) = result.as_object_mut() {
+        object.remove("packet");
+    }
+    Ok((packet, result))
+}
+
+/// Run the two-step machine over `conversation`, whose last message is the user's turn, and return
+/// the final conversation with the usage of each inference call. Cancelling `cancel` stops the
+/// machine at its next step boundary or during inference.
+async fn infer(
+    args: &Args,
+    conversation: Conversation,
+    packet: String,
+    cancel: CancellationToken,
+) -> Result<(Conversation, Vec<ProviderUsage>)> {
+    let api = ApiClient::with_timeout_and_tls(
+        args.base_url.clone(),
+        AuthMethod::NoAuth,
+        std::time::Duration::from_secs(args.timeout_secs),
+        None,
+    )?;
+    let provider = Arc::new(OpenAiCompatibleProvider::new("local".into(), api, String::new()).with_supports_streaming(false));
+    let machine = StateMachine::new(
+        vec![
+            Step::Operation(Arc::new(CompactContextOperation { packet })),
+            Step::Inference(Arc::new(InferenceRunner::new(
+                provider,
+                ModelConfig::new(&args.model).with_max_tokens(args.max_tokens),
+            ))),
+        ],
+        cancel.clone(),
+    );
+    let runtime = Runtime {
+        session: Mutex::new(AppSession { id: "goblin".into(), conversation, repair: None }),
+        usage: Mutex::new(Vec::new()),
+        checkpoint: None,
+    };
+    let (tx, mut rx) = mpsc::unbounded_channel();
+    let emit = Emitter::new(tx, cancel);
+    tokio::spawn(async move { while rx.recv().await.is_some() {} });
+    let session = machine.run(&runtime, "goblin", &emit).await?;
+    let usage = runtime.usage.into_inner().unwrap();
+    Ok((session.conversation, usage))
+}
+
+/// Provider-reported (input, output) tokens summed over inference calls.
+fn token_totals(usage: &[ProviderUsage]) -> (i64, i64) {
+    (
+        usage.iter().filter_map(|u| u.usage.input_tokens).sum(),
+        usage.iter().filter_map(|u| u.usage.output_tokens).sum(),
+    )
+}
+
 // ---- command line ----
+
+const USAGE: &str = "usage: goblin-gdk --task TEXT|--task-file PATH --repo PATH [--base-url URL] [--model ID] \
+[--budget N] [--no-packet]\n       goblin-gdk --acp [--repo PATH] [--agent-name NAME] [--audit-log PATH] \
+[--history-turns N] [--base-url URL] [--model ID] [--budget N] [--no-packet]";
 
 struct Args {
     repo: String,
@@ -233,25 +305,40 @@ struct Args {
     max_tokens: Option<i32>,
     timeout_secs: u64,
     session: session::Options,
+    acp: bool,
+    agent_name: String,
+    audit_log: Option<std::path::PathBuf>,
+    history_turns: usize,
 }
 
-fn parse_args() -> Result<Args> {
-    let mut args = Args {
-        repo: String::new(),
-        task: String::new(),
-        base_url: "http://127.0.0.1:8093/v1/".into(),
-        model: "qwen2.5-0.5b-instruct".into(),
-        budget: 2048,
-        max_tool_calls: 24,
-        arm: "hybrid".into(),
-        python: "python3".into(),
-        goblin_cwd: ".".into(),
-        no_packet: false,
-        max_tokens: None,
-        timeout_secs: 600,
-        session: session::Options::default(),
-    };
-    let mut it = std::env::args().skip(1);
+impl Default for Args {
+    fn default() -> Self {
+        Self {
+            repo: String::new(),
+            task: String::new(),
+            base_url: "http://127.0.0.1:8093/v1/".into(),
+            model: "qwen2.5-0.5b-instruct".into(),
+            budget: 2048,
+            max_tool_calls: 24,
+            arm: "hybrid".into(),
+            python: "python3".into(),
+            goblin_cwd: ".".into(),
+            no_packet: false,
+            max_tokens: None,
+            timeout_secs: 600,
+            session: session::Options::default(),
+            acp: false,
+            agent_name: "pocket-goblin".into(),
+            audit_log: None,
+            history_turns: 6,
+        }
+    }
+}
+
+fn parse_args(argv: impl IntoIterator<Item = String>) -> Result<Args> {
+    let mut args = Args::default();
+    let mut acp_only = false;
+    let mut it = argv.into_iter();
     while let Some(flag) = it.next() {
         let mut value = || it.next().ok_or_else(|| anyhow!("{flag} needs a value"));
         match flag.as_str() {
@@ -268,11 +355,27 @@ fn parse_args() -> Result<Args> {
             "--no-packet" => args.no_packet = true,
             "--max-tokens" => args.max_tokens = Some(value()?.parse()?),
             "--timeout-secs" => args.timeout_secs = value()?.parse()?,
-            other => args.session.parse(other, &mut value)?,
+            "--acp" => args.acp = true,
+            "--agent-name" => (args.agent_name, acp_only) = (value()?, true),
+            "--audit-log" => (args.audit_log, acp_only) = (Some(value()?.into()), true),
+            "--history-turns" => (args.history_turns, acp_only) = (value()?.parse()?, true),
+            other => args.session.parse(other, &mut value).map_err(|error| anyhow!("{error}\n{USAGE}"))?,
         }
     }
-    if args.task.is_empty() || (!args.no_packet && args.repo.is_empty()) {
-        bail!("usage: goblin-gdk --task TEXT|--task-file PATH --repo PATH [--base-url URL] [--model ID] [--budget N] [--no-packet]");
+    if args.session.max_iterations.is_none() {
+        args.session.check_legacy()?;
+    }
+    if args.acp {
+        if !args.task.is_empty() {
+            bail!("--acp reads each task from session/prompt; drop --task and --task-file");
+        }
+        if args.session.max_iterations.is_some() {
+            bail!("--acp does not serve repair sessions yet; drop --max-agent-iterations");
+        }
+    } else if acp_only {
+        bail!("--agent-name, --audit-log and --history-turns need --acp");
+    } else if args.task.is_empty() || (!args.no_packet && args.repo.is_empty()) {
+        bail!("{USAGE}");
     }
     if !args.base_url.ends_with('/') {
         args.base_url.push('/');
@@ -282,69 +385,31 @@ fn parse_args() -> Result<Args> {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let args = parse_args()?;
+    let args = parse_args(std::env::args().skip(1))?;
+    if args.acp {
+        return acp::serve(args).await;
+    }
     if args.session.max_iterations.is_some() {
         return session::run(args).await;
     }
-    args.session.check_legacy()?;
     let started = Instant::now();
     let (packet, packet_stats) = if args.no_packet {
         (String::new(), Value::Null)
     } else {
         let mut goblin = McpClient::spawn(&args.python, &["-m", "MCP.mcp03.goblin_server"], &args.goblin_cwd).await?;
-        let mut result = goblin
-            .call_tool(
-                "compact_context",
-                json!({"task": args.task, "repo_path": args.repo, "budget_tokens": args.budget,
-                       "max_tool_calls": args.max_tool_calls, "arm": args.arm}),
-            )
-            .await?;
-        let packet = result["packet"].as_str().unwrap_or_default().to_string();
-        if let Some(object) = result.as_object_mut() {
-            object.remove("packet");
-        }
-        (packet, result)
+        fetch_packet(&mut goblin, &args, &args.task, &args.repo).await?
     };
     let retrieval_seconds = started.elapsed().as_secs_f64();
 
-    let api = ApiClient::with_timeout_and_tls(
-        args.base_url.clone(),
-        AuthMethod::NoAuth,
-        std::time::Duration::from_secs(args.timeout_secs),
-        None,
-    )?;
-    let provider = Arc::new(OpenAiCompatibleProvider::new("local".into(), api, String::new()).with_supports_streaming(false));
-    let machine = StateMachine::new(
-        vec![
-            Step::Operation(Arc::new(CompactContextOperation { packet: packet.clone() })),
-            Step::Inference(Arc::new(InferenceRunner::new(
-                provider,
-                ModelConfig::new(&args.model).with_max_tokens(args.max_tokens),
-            ))),
-        ],
-        CancellationToken::new(),
-    );
-    let runtime = Runtime {
-        session: Mutex::new(AppSession {
-            id: "goblin".into(),
-            conversation: Conversation::new_unvalidated([Message::user().with_text(args.task.clone())]),
-            repair: None,
-        }),
-        usage: Mutex::new(Vec::new()),
-        checkpoint: None,
-    };
-    let (tx, mut rx) = mpsc::unbounded_channel();
-    let emit = Emitter::new(tx, CancellationToken::new());
-    tokio::spawn(async move { while rx.recv().await.is_some() {} });
     let inference_started = Instant::now();
-    let session = machine.run(&runtime, "goblin", &emit).await?;
-    let answer = session.conversation.last().map(|m| m.as_concat_text()).unwrap_or_default();
-    let usage = runtime.usage.lock().unwrap().clone();
-    let input_tokens: i64 = usage.iter().filter_map(|u| u.usage.input_tokens).sum();
-    let output_tokens: i64 = usage.iter().filter_map(|u| u.usage.output_tokens).sum();
+    let packet_chars = packet.len();
+    let conversation = Conversation::new_unvalidated([Message::user().with_text(args.task.clone())]);
+    let (conversation, usage) = infer(&args, conversation, packet, CancellationToken::new()).await?;
+    let answer = conversation.last().map(|m| m.as_concat_text()).unwrap_or_default();
+    let (input_tokens, output_tokens) = token_totals(&usage);
     let receipt = json!({
         "app": "goblin-gdk", "gdk": "goose-agent 0.1.0-alpha.14", "model": args.model,
-        "used_packet": !args.no_packet, "packet_stats": packet_stats, "packet_chars": packet.len(),
+        "used_packet": !args.no_packet, "packet_stats": packet_stats, "packet_chars": packet_chars,
         "provider_input_tokens": input_tokens, "provider_output_tokens": output_tokens,
         "inference_calls": usage.len(), "max_tokens": args.max_tokens, "timeout_secs": args.timeout_secs,
         "retrieval_seconds": retrieval_seconds,
@@ -352,4 +417,40 @@ async fn main() -> Result<()> {
     });
     println!("{}", serde_json::to_string_pretty(&receipt)?);
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn parse(argv: &[&str]) -> Result<Args> {
+        parse_args(argv.iter().map(|arg| arg.to_string()))
+    }
+
+    #[test]
+    fn acp_mode_needs_no_task_and_takes_its_own_flags() {
+        let args = parse(&["--acp", "--agent-name", "goblin", "--history-turns", "3", "--audit-log", "audit.jsonl"]).unwrap();
+        assert!(args.acp && args.repo.is_empty() && args.task.is_empty());
+        assert_eq!((args.agent_name.as_str(), args.history_turns), ("goblin", 3));
+        assert_eq!(args.audit_log.as_deref(), Some(std::path::Path::new("audit.jsonl")));
+    }
+
+    #[test]
+    fn acp_mode_rejects_a_fixed_task() {
+        assert!(parse(&["--acp", "--task", "fix it"]).is_err());
+    }
+
+    #[test]
+    fn acp_flags_without_acp_are_rejected() {
+        assert!(parse(&["--task", "fix it", "--repo", ".", "--audit-log", "a.jsonl"]).is_err());
+        assert!(parse(&["--task", "fix it", "--repo", ".", "--history-turns", "2"]).is_err());
+    }
+
+    #[test]
+    fn one_shot_mode_still_needs_a_task_and_a_repo() {
+        assert!(parse(&["--repo", "."]).is_err());
+        assert!(parse(&["--task", "fix it"]).is_err());
+        let args = parse(&["--task", "fix it", "--no-packet", "--base-url", "http://h:1/v1"]).unwrap();
+        assert_eq!(args.base_url, "http://h:1/v1/");
+    }
 }
