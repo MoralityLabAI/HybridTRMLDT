@@ -1,0 +1,77 @@
+{
+ "lexical_top1": {
+  "clean": {
+   "n": 58,
+   "correct": 1,
+   "rate": 0.0172,
+   "linked_gold": 0.0,
+   "packet_gold_recall": 1.0,
+   "packet_tokens_mean": 1235.1
+  },
+  "decoy": {
+   "n": 53,
+   "correct": 53,
+   "rate": 1.0,
+   "linked_gold": 0.0,
+   "packet_gold_recall": 0.9623,
+   "packet_tokens_mean": 1296.7
+  },
+  "off_receipt": {
+   "n": 23,
+   "correct": 23,
+   "rate": 1.0,
+   "linked_gold": 0.0,
+   "packet_gold_recall": 0.6522,
+   "packet_tokens_mean": 899.9
+  },
+  "balanced": 0.6724
+ },
+ "number_lookup": {
+  "clean": {
+   "n": 58,
+   "correct": 58,
+   "rate": 1.0,
+   "packet_gold_recall": 1.0,
+   "packet_tokens_mean": 1235.1
+  },
+  "decoy": {
+   "n": 53,
+   "correct": 0,
+   "rate": 0.0,
+   "packet_gold_recall": 0.9623,
+   "packet_tokens_mean": 1296.7
+  },
+  "off_receipt": {
+   "n": 23,
+   "correct": 23,
+   "rate": 1.0,
+   "packet_gold_recall": 0.6522,
+   "packet_tokens_mean": 899.9
+  },
+  "balanced": 0.6667
+ },
+ "packet_number_lookup": {
+  "clean": {
+   "n": 58,
+   "correct": 58,
+   "rate": 1.0,
+   "packet_gold_recall": 1.0,
+   "packet_tokens_mean": 1235.1
+  },
+  "decoy": {
+   "n": 53,
+   "correct": 0,
+   "rate": 0.0,
+   "packet_gold_recall": 0.9623,
+   "packet_tokens_mean": 1296.7
+  },
+  "off_receipt": {
+   "n": 23,
+   "correct": 23,
+   "rate": 1.0,
+   "packet_gold_recall": 0.6522,
+   "packet_tokens_mean": 899.9
+  },
+  "balanced": 0.6667
+ }
+}

@@ -6,9 +6,18 @@ description = "Pocket Goblin, a Goose GDK app: a goose-agent state machine whose
 license = "MIT"
 publish = false
 
+[lib]
+name = "goblin_gdk"
+path = "src/lib.rs"
+
 [[bin]]
 name = "goblin-gdk"
 path = "src/main.rs"
+
+# Receipt Goblin: checks a write-up's numeric claims against its JSON run receipts.
+[[bin]]
+name = "receipt-goblin"
+path = "src/bin/receipt_goblin.rs"
 
 [dependencies]
 goose-agent = "=0.1.0-alpha.14"

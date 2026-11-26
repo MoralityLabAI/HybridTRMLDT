@@ -60,3 +60,7 @@ Set `MCP03_ROUTER_CHECKPOINT` in the goblin server's environment to swap the BM2
 ```bash
 python MCP/goose_gdk_app/ci_acp_smoke.py target/release/goblin-gdk
 ```
+
+## receipt-goblin
+
+The crate's second binary, `receipt-goblin`, checks a write-up's numeric claims against the JSON receipts they came from, using the Receipt Goblin MCP server ([`MCP/receipt_goblin`](../receipt_goblin)). Its state machine puts a certify `Operation` ahead of the packet operation and `InferenceRunner`. The certify step runs after the model links a claim to a packet leaf. It asks once for a repair when the answer names no leaf, and otherwise has the server compare the claimed number with the leaf's value. Its MCP client is the library module `src/mcp.rs`. [`receipt_smoke.py`](receipt_smoke.py) runs it in CI against a scripted endpoint and checks verdicts, the repair path, blind packets and resume.

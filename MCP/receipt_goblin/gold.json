@@ -1,0 +1,412 @@
+{
+ "annotator": "Claude Opus 5.5 (Claude Code), reviewing the candidate sheet",
+ "rule": "Gold leaves are the receipt values the sentence reports, judged from the sentence, the table lead-in and the leaf path. Equivalent copies of one value are all gold. Claims with an empty list were reviewed and have no single receipt leaf (derived, aggregate or out-of-receipt numbers).",
+ "claims": {
+  "MCP/results/mcp01/README.md:5:4": {
+   "leaves": [
+    "summary.json :: summary/episodes"
+   ]
+  },
+  "MCP/results/mcp01/README.md:5:55": {
+   "leaves": []
+  },
+  "MCP/results/mcp01/README.md:5:58": {
+   "leaves": []
+  },
+  "MCP/results/mcp01/README.md:5:66": {
+   "leaves": []
+  },
+  "MCP/results/mcp01/README.md:5:87": {
+   "leaves": []
+  },
+  "MCP/results/mcp01/README.md:5:94": {
+   "leaves": []
+  },
+  "MCP/results/mcp01/README.md:7:30": {
+   "leaves": []
+  },
+  "MCP/results/mcp01/README.md:11:53": {
+   "leaves": []
+  },
+  "MCP/results/mcp01/README.md:11:73": {
+   "leaves": []
+  },
+  "MCP/results/mcp01/README.md:15:67": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=flat catalog_size=128 depth=3]/catalog_utf8_bytes"
+   ]
+  },
+  "MCP/results/mcp01/README.md:15:100": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=flat catalog_size=128 depth=3]/reference_context_utf8_bytes"
+   ]
+  },
+  "MCP/results/mcp01/README.md:16:43": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=layered catalog_size=128 depth=3]/tool_calls",
+    "summary.json :: summary/arms/[controller=reference architecture=layered catalog_size=128 depth=3]/environment_stats/tool_calls"
+   ]
+  },
+  "MCP/results/mcp01/README.md:16:70": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=layered catalog_size=128 depth=3]/catalog_utf8_bytes"
+   ]
+  },
+  "MCP/results/mcp01/README.md:16:102": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=layered catalog_size=128 depth=3]/reference_context_utf8_bytes"
+   ]
+  },
+  "MCP/results/mcp01/README.md:17:47": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=layered_ldt catalog_size=128 depth=3]/tool_calls",
+    "summary.json :: summary/arms/[controller=reference architecture=layered_ldt catalog_size=128 depth=3]/environment_stats/tool_calls"
+   ]
+  },
+  "MCP/results/mcp01/README.md:17:74": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=layered_ldt catalog_size=128 depth=3]/catalog_utf8_bytes"
+   ]
+  },
+  "MCP/results/mcp01/README.md:17:106": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=layered_ldt catalog_size=128 depth=3]/reference_context_utf8_bytes"
+   ]
+  },
+  "MCP/results/mcp01/README.md:17:131": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=layered_ldt catalog_size=128 depth=3]/environment_stats/metadata_checks"
+   ]
+  },
+  "MCP/results/mcp01/README.md:18:42": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=search catalog_size=128 depth=3]/tool_calls",
+    "summary.json :: summary/arms/[controller=reference architecture=search catalog_size=128 depth=3]/environment_stats/tool_calls"
+   ]
+  },
+  "MCP/results/mcp01/README.md:18:69": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=search catalog_size=128 depth=3]/catalog_utf8_bytes"
+   ]
+  },
+  "MCP/results/mcp01/README.md:18:100": {
+   "leaves": [
+    "summary.json :: summary/arms/[controller=reference architecture=search catalog_size=128 depth=3]/reference_context_utf8_bytes"
+   ]
+  },
+  "MCP/results/mcp02/README.md:7:109": {
+   "leaves": []
+  },
+  "MCP/results/mcp02/README.md:7:117": {
+   "leaves": []
+  },
+  "MCP/results/mcp02/README.md:7:196": {
+   "leaves": [
+    "pilot_gpu/summary.json :: episodes"
+   ]
+  },
+  "MCP/results/mcp02/README.md:26:29": {
+   "leaves": []
+  },
+  "MCP/results/mcp02/README.md:28:24": {
+   "leaves": []
+  },
+  "MCP/results/mcp02/README.md:29:3": {
+   "leaves": []
+  },
+  "MCP/results/mcp02/README.md:33:115": {
+   "leaves": [
+    "pilot_gpu/model_receipts.json :: transformer_l4_d128/parameters/non_embedding",
+    "pilot_gpu/model_receipts.json :: transformer_l4_d128/training/parameters/non_embedding"
+   ]
+  },
+  "MCP/results/mcp02/README.md:36:22": {
+   "leaves": []
+  },
+  "MCP/results/mcp02/README.md:37:3": {
+   "leaves": []
+  },
+  "MCP/results/mcp02/README.md:39:8": {
+   "leaves": [
+    "llm_pilot/summary.json :: groups/[arm=search experiment=llm policy=llm:qwen2.5-0.5b-instruct policy_family=llm catalog_size=256 depth=None max_tool_calls=40 recurrent_depth=None]/tool_calls_mean"
+   ]
+  },
+  "MCP/results/mcp02/README.md:39:112": {
+   "leaves": []
+  },
+  "MCP/results/mcp03/README.md:7:50": {
+   "leaves": [
+    "swebench_lite/summary.json :: bm25_path_map_baseline/25/instances",
+    "swebench_lite/summary.json :: bm25_path_map_baseline/12/instances",
+    "swebench_lite/summary.json :: bm25_path_map_baseline/5/instances",
+    "swebench_lite/summary.json :: bm25_file_baseline/13000/instances",
+    "swebench_lite/summary.json :: bm25_file_baseline/2048/instances",
+    "swebench_lite/summary.json :: bm25_file_baseline/27000/instances"
+   ]
+  },
+  "MCP/results/mcp03/README.md:7:80": {
+   "leaves": []
+  },
+  "MCP/results/mcp03/README.md:8:69": {
+   "leaves": [
+    "swebench_e2e/report_bm25_13k.json :: total_instances",
+    "swebench_e2e/report_bm25_13k.json :: submitted_instances",
+    "swebench_e2e/report_gold.json :: total_instances",
+    "swebench_e2e/report_gold.json :: submitted_instances"
+   ]
+  },
+  "MCP/results/mcp03/README.md:8:295": {
+   "leaves": []
+  },
+  "MCP/results/mcp03/README.md:8:323": {
+   "leaves": []
+  },
+  "MCP/results/mcp03/README.md:8:519": {
+   "leaves": [
+    "swebench_e2e/report_bm25_13k.json :: completed_instances"
+   ]
+  },
+  "MCP/results/mcp03/README.md:8:573": {
+   "leaves": [
+    "swebench_e2e/report_goblin.json :: completed_instances"
+   ]
+  },
+  "MCP/results/mcp03/README.md:13:76": {
+   "leaves": []
+  },
+  "MCP/results/mcp03/README.md:13:81": {
+   "leaves": []
+  },
+  "MCP/results/mcp03/README.md:13:88": {
+   "leaves": []
+  },
+  "MCP/results/mcp03/README.md:13:98": {
+   "leaves": []
+  },
+  "MCP/results/hubrun/README.md:28:44": {
+   "leaves": [
+    "summary.json :: runs/sw-constitution-eval/episodes"
+   ]
+  },
+  "MCP/results/hubrun/README.md:29:65": {
+   "leaves": [
+    "summary.json :: runs/jbm-cross-dev80/mean_score"
+   ]
+  },
+  "MCP/results/hubrun/README.md:30:47": {
+   "leaves": [
+    "summary.json :: runs/jbm-constructs-dev/episodes"
+   ]
+  },
+  "MCP/results/hubrun/README.md:34:80": {
+   "leaves": [
+    "summary.json :: runs/jbm-cross-dev80/metric_means/uncertainty_match"
+   ]
+  },
+  "MCP/results/hubrun/README.md:37:28": {
+   "leaves": []
+  },
+  "MCP/results/hubrun/README.md:37:33": {
+   "leaves": []
+  },
+  "MCP/results/hubrun/README.md:44:94": {
+   "leaves": []
+  },
+  "MCP/results/hubrun/README.md:46:162": {
+   "leaves": [
+    "summary.json :: runs/er-t1-late/provider/compacted_calls"
+   ]
+  },
+  "MCP/results/hubrun/README.md:47:58": {
+   "leaves": [
+    "summary.json :: runs/docedit-raw/mean_score",
+    "summary.json :: pairs/docedit/raw_mean"
+   ]
+  },
+  "MCP/results/hubrun/README.md:48:46": {
+   "leaves": [
+    "summary.json :: runs/docedit-goblin/episodes"
+   ]
+  },
+  "MCP/results/hubrun/README.md:51:55": {
+   "leaves": [
+    "summary.json :: runs/feishu-expert-raw/episodes"
+   ]
+  },
+  "MCP/results/hubrun/README.md:51:116": {
+   "leaves": [
+    "summary.json :: runs/feishu-expert-raw/provider/prompt_tokens_per_episode"
+   ]
+  },
+  "MCP/results/hubrun/README.md:52:58": {
+   "leaves": [
+    "summary.json :: runs/feishu-expert-goblin/episodes"
+   ]
+  },
+  "MCP/results/hubrun/README.md:52:140": {
+   "leaves": [
+    "summary.json :: pairs/feishu-expert/prompt_peak_goblin",
+    "summary.json :: runs/feishu-expert-goblin/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/README.md:53:75": {
+   "leaves": [
+    "summary.json :: runs/sqlite-all/metric_means/exact_match",
+    "summary.json :: runs/sqlite-all/mean_score"
+   ]
+  },
+  "MCP/results/hubrun/README.md:53:122": {
+   "leaves": [
+    "summary.json :: runs/sqlite-all/provider/prompt_tokens_per_episode"
+   ]
+  },
+  "MCP/results/hubrun/README.md:53:143": {
+   "leaves": [
+    "summary.json :: runs/sqlite-all/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/README.md:54:62": {
+   "leaves": [
+    "summary.json :: runs/notebook-hardened/episodes"
+   ]
+  },
+  "MCP/results/hubrun/README.md:60:39": {
+   "leaves": [
+    "summary.json :: runs/notebook-hardened/metric_means/_score_episode",
+    "summary.json :: runs/notebook-hardened/mean_score"
+   ]
+  },
+  "MCP/results/hubrun/README.md:61:74": {
+   "leaves": [
+    "summary.json :: runs/sqlite-all/solved_wilson95/[1]"
+   ]
+  },
+  "MCP/results/hubrun/README.md:64:30": {
+   "leaves": []
+  },
+  "MCP/results/hubrun/README.md:79:20": {
+   "leaves": []
+  },
+  "MCP/results/hubrun/summary.md:4:128": {
+   "leaves": [
+    "summary.json :: runs/docedit-raw/provider/prompt_tokens_per_episode"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:5:181": {
+   "leaves": [
+    "summary.json :: pairs/er-t1/prompt_peak_goblin",
+    "summary.json :: runs/er-t1-goblin/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:6:226": {
+   "leaves": [
+    "summary.json :: pairs/er-t1-late/context_overflows_goblin",
+    "summary.json :: runs/er-t1-late/provider/context_overflows"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:7:178": {
+   "leaves": [
+    "summary.json :: pairs/er-t1/prompt_peak_raw",
+    "summary.json :: pairs/er-t1-late/prompt_peak_raw",
+    "summary.json :: runs/er-t1-raw/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:9:185": {
+   "leaves": [
+    "summary.json :: pairs/feishu-expert/prompt_peak_raw",
+    "summary.json :: runs/feishu-expert-raw/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:11:69": {
+   "leaves": [
+    "summary.json :: runs/feishu-hard-raw/solved"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:11:183": {
+   "leaves": [
+    "summary.json :: pairs/feishu-hard/prompt_peak_raw",
+    "summary.json :: runs/feishu-hard-raw/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:12:186": {
+   "leaves": [
+    "summary.json :: runs/jbm-constructs-dev/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:14:30": {
+   "leaves": [
+    "summary.json :: runs/jbm-mesh2-dev/episodes"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:16:34": {
+   "leaves": [
+    "summary.json :: runs/notebook-hardened/episodes"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:16:49": {
+   "leaves": [
+    "summary.json :: runs/notebook-hardened/metric_means/_score_episode",
+    "summary.json :: runs/notebook-hardened/mean_score"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:17:43": {
+   "leaves": [
+    "summary.json :: runs/sqlite-all/mean_score",
+    "summary.json :: runs/sqlite-all/metric_means/exact_match"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:17:67": {
+   "leaves": [
+    "summary.json :: runs/sqlite-all/solved"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:17:161": {
+   "leaves": [
+    "summary.json :: runs/sqlite-all/provider/completion_tokens_per_episode"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:18:167": {
+   "leaves": [
+    "summary.json :: runs/sw-constitution-eval/provider/completion_tokens_per_episode"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:23:143": {
+   "leaves": [
+    "summary.json :: pairs/er-t1/prompt_peak_raw",
+    "summary.json :: runs/er-t1-raw/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:23:151": {
+   "leaves": [
+    "summary.json :: pairs/er-t1/prompt_peak_goblin",
+    "summary.json :: runs/er-t1-goblin/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:24:25": {
+   "leaves": []
+  },
+  "MCP/results/hubrun/summary.md:24:148": {
+   "leaves": [
+    "summary.json :: pairs/er-t1-late/prompt_peak_raw",
+    "summary.json :: runs/er-t1-raw/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:24:156": {
+   "leaves": [
+    "summary.json :: pairs/er-t1-late/prompt_peak_goblin",
+    "summary.json :: runs/er-t1-late/provider/prompt_peak"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:24:237": {
+   "leaves": [
+    "summary.json :: pairs/er-t1-late/episode_errors_raw"
+   ]
+  },
+  "MCP/results/hubrun/summary.md:25:154": {
+   "leaves": [
+    "summary.json :: pairs/feishu-expert/prompt_peak_raw",
+    "summary.json :: runs/feishu-expert-raw/provider/prompt_peak"
+   ]
+  }
+ }
+}

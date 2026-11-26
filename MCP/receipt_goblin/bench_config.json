@@ -1,0 +1,10 @@
+{
+  "description": "Result write-ups in this repository paired with the receipt directories they were written from.",
+  "pairs": [
+    {"doc": "MCP/results/mcp01/README.md", "receipts": "MCP/results/mcp01"},
+    {"doc": "MCP/results/mcp02/README.md", "receipts": "MCP/results/mcp02"},
+    {"doc": "MCP/results/mcp03/README.md", "receipts": "MCP/results/mcp03"},
+    {"doc": "MCP/results/hubrun/README.md", "receipts": "MCP/results/hubrun"},
+    {"doc": "MCP/results/hubrun/summary.md", "receipts": "MCP/results/hubrun"}
+  ]
+}
