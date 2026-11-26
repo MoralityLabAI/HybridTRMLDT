@@ -1,0 +1,100 @@
+{
+  "schema": "cog13i.discrete_receipt.v1",
+  "source": {
+    "run": 45852214025,
+    "artifact": 15136527625,
+    "archiveSha256": "d99bc6a95d4ea31a132b408cd653644e9680a167fa87aca3b722522af0ab5aea"
+  },
+  "sourceBlobs": {
+    "audit": "a390da75c8ec421a351b3c08b176ad2a1160ea8e",
+    "certified": "c5746a5629d28ca314a62dcef7cfb4d96c59ea8e"
+  },
+  "packets": 493,
+  "menus": 449,
+  "uniqueFeatureMenus": 88,
+  "naiveDenseBytes": 864965,
+  "originalMixedBytes": 450327,
+  "firstProtocol": {
+    "shared_dense": {
+      "bytes": 30981,
+      "agrees": 449,
+      "intervalSufficient": 449
+    },
+    "shared_rank4": {
+      "bytes": 9429,
+      "agrees": 429,
+      "intervalSufficient": 0
+    },
+    "shared_q4": {
+      "bytes": 3143,
+      "agrees": 429,
+      "intervalSufficient": 0
+    },
+    "exact_action_rank4": {
+      "bytes": 9429,
+      "agrees": 445,
+      "intervalSufficient": 0
+    },
+    "exact_action_q4": {
+      "bytes": 3143,
+      "agrees": 445,
+      "intervalSufficient": 0
+    }
+  },
+  "certified": {
+    "q4_envelope": {
+      "bytes": 4939,
+      "certified": 0,
+      "agrees": 445
+    },
+    "pre_i8": {
+      "bytes": 9429,
+      "certified": 422,
+      "agrees": 449
+    },
+    "pre_f16": {
+      "bytes": 13021,
+      "certified": 449,
+      "agrees": 449
+    }
+  },
+  "progressive": {
+    "q4_then_exact": {
+      "bytes": 35920,
+      "exactFallbacks": 449,
+      "finalDenseAgreements": 449
+    },
+    "i8_then_exact": {
+      "bytes": 11292,
+      "exactFallbacks": 27,
+      "finalDenseAgreements": 449
+    },
+    "f16_then_exact": {
+      "bytes": 13021,
+      "exactFallbacks": 0,
+      "finalDenseAgreements": 449
+    },
+    "q4_i8_f16_exact": {
+      "bytes": 15151,
+      "exactFallbacks": 0,
+      "finalDenseAgreements": 449
+    },
+    "i8_f16_exact": {
+      "bytes": 10212,
+      "exactFallbacks": 0,
+      "finalDenseAgreements": 449
+    }
+  },
+  "deeper": {
+    "menus": 256,
+    "exactActionQ4Agrees": 256,
+    "int8Certified": 251,
+    "halfCertified": 256,
+    "progressiveBytes": 5521
+  },
+  "localSummarySHA256": {
+    "audit": "2f2815aa85a33b8a6eb94a1776cd11e82753af4b47660eab4757107b16a767c0",
+    "certified": "634b50cdc36d5ac54cabec153697c3314f4448d8e08efbbe77d0e1aa0582e4aa"
+  },
+  "scope": "Retrospective archive replay; no new native proof search. Hashes refer to original local summary JSON; compare discrete quantities exactly on hosted re-execution."
+}
