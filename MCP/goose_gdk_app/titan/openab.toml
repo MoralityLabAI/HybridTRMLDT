@@ -1,0 +1,34 @@
+# OpenAB config that adds Pocket Goblin to a TitanAgent squad. OpenAB runs one bot per agent, so
+# Pocket Goblin gets its own Discord bot next to the other squad members in the shared channel.
+#
+#   openab run -c MCP/goose_gdk_app/titan/openab.toml
+#
+# Paths assume the TitanAgent workspace layout: /workspace/src is the code, /workspace/.agents/<name>
+# is each agent's own area, /workspace/shared/audit-log is the squad's audit log. OpenAB passes
+# working_dir to the agent as the ACP session cwd. --repo pins retrieval to the shared source tree,
+# which Pocket Goblin only reads.
+
+[discord]
+bot_token = "${GOBLIN_DISCORD_BOT_TOKEN}"
+allowed_channels = ["<squad channel id>"]
+allow_bot_messages = "mentions"   # squad members @mention each other
+trusted_bot_ids = []              # list the squad's bot ids to accept @mentions only from them
+
+[agent]
+command = "/opt/pocket-goblin/goblin-gdk"
+args = [
+  "--acp", "--agent-name", "goblin",
+  "--repo", "/workspace/src",
+  "--base-url", "http://127.0.0.1:8093/v1/", "--model", "qwen2.5-0.5b-instruct",
+  "--python", "/opt/pocket-goblin/venv/bin/python", "--goblin-cwd", "/opt/HybridTRMLDT",
+  "--budget", "2048", "--history-turns", "6",
+  "--audit-log", "/workspace/shared/audit-log/goblin.jsonl",
+]
+working_dir = "/workspace/.agents/goblin"
+# OpenAB clears the agent's environment (HOME, PATH and USER pass through). The goblin server reads
+# MCP03_ROUTER_CHECKPOINT to swap the BM25 router for a trained one:
+# env = { MCP03_ROUTER_CHECKPOINT = "/opt/pocket-goblin/routers/looped.pt" }
+
+[pool]
+max_sessions = 10
+session_ttl_hours = 24

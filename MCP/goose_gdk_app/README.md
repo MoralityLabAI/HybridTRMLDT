@@ -27,3 +27,36 @@ python -m MCP.mcp02.hf_server --model-dir SNAPSHOT --served-name qwen2.5-0.5b-in
 - retrieval and inference seconds.
 
 Set `MCP03_ROUTER_CHECKPOINT` in the goblin server's environment to swap the BM25 control for a trained looped, TRM, TRM+LDT or HRM router.
+
+## Titan: Pocket Goblin as a TitanAgent squad member
+
+[TitanAgent](https://wchung.tw/blog/20260511-openab-en) is Blake Hung's agent squad. Each member is an Agent Client Protocol ([ACP](https://agentclientprotocol.com)) command bridged into Discord by [OpenAB](https://github.com/openabdev/openab). Tasks are routed to members by role, each member works in its own `.agents/<name>/` area, and every operation is recorded in a shared audit log. `goblin-gdk --acp` makes Pocket Goblin one of those commands. It fits the read-only scout role: it answers code questions over the shared source tree from a token-budgeted Data Goblin packet, using a local model.
+
+```bash
+./target/release/goblin-gdk --acp --agent-name goblin --repo /workspace/src \
+    --base-url http://127.0.0.1:8093/v1/ --model qwen2.5-0.5b-instruct --budget 2048 \
+    --python python3 --goblin-cwd /path/to/HybridTRMLDT \
+    --history-turns 6 --audit-log /workspace/shared/audit-log/goblin.jsonl
+```
+
+[`titan/openab.toml`](titan/openab.toml) is the matching OpenAB config. Run it with `openab run -c titan/openab.toml`. Pocket Goblin speaks ACP protocol version 1 as newline-delimited JSON-RPC 2.0 on stdio, the frames OpenAB's `AcpConnection` sends:
+
+| ACP frame | Pocket Goblin |
+|---|---|
+| `initialize` | `protocolVersion` 1, `agentInfo.name` from `--agent-name`, `loadSession: false`, no auth methods |
+| `session/new` `{cwd, mcpServers}` | a session over `--repo`, or over `cwd` if no repo is pinned (it must be an absolute directory). Client MCP servers are not attached; context comes from the goblin server. |
+| `session/prompt` | one GDK turn over the session's conversation. The packet is a `tool_call` of kind `search`, then a `tool_call_update` with the packet accounting as `rawOutput`. The answer is one `agent_message_chunk`. The result holds `stopReason: end_turn`, provider `usage`, and the turn receipt under `_meta.pocketGoblin`. |
+| `session/cancel` | stops retrieval or inference and answers the prompt with `stopReason: cancelled`. The cancelled turn is not kept in the history. |
+| `session/close`, `session/end` | drops the session |
+| anything else | JSON-RPC error -32601 |
+
+- **History:** a session keeps its last `--history-turns` completed turns (default 6). Each prompt gets a fresh packet for its own text.
+- **Errors:** a failure carries a stable `error.data.category`: `invalid_params`, `session_not_found`, `retrieval_error`, `provider_error` or `audit_log_error`.
+- **Audit log:** `--audit-log` appends one JSON line per retrieval (`op: retrieve`, `path`, packet tokens, router) and per inference (`op: infer`, `model`, tokens). Each line carries `ts`, `agent`, `session` and `status` (`ok`, `failed` or `cancelled`). If the log cannot be written, the turn fails.
+- **Process model:** one goblin server per agent process, shared by its sessions. The server is restarted after a failed or cancelled retrieval. Stdout carries protocol frames only.
+
+[`ci_acp_smoke.py`](ci_acp_smoke.py) checks the whole contract end to end. It sends OpenAB's frames to the binary, uses a scripted OpenAI-compatible endpoint, and runs four turns on this repository, cancelling one of them during inference:
+
+```bash
+python MCP/goose_gdk_app/ci_acp_smoke.py target/release/goblin-gdk
+```
