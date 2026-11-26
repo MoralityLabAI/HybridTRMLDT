@@ -1,0 +1,26 @@
+name: COG-13E retention value replay
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13e_retention_value/**'
+      - '.github/workflows/cog13e-retention.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node experiments/cog13e_retention_value/run.mjs "$RUNNER_TEMP/cog13e"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cog13e-train-and-replay
+          path: ${{ runner.temp }}/cog13e/
+          retention-days: 30
