@@ -34,3 +34,21 @@ MCP09 is a three-valued speculative planner with charged native previews;
 no learned optimizer loop. Leave its evidence rules intact. A future
 memoization study must bind route, verifier version and budget semantics,
 especially UNKNOWN and budget exhaustion. No historical test was opened.
+
+## MCP05 separate episode controller
+
+The stacked branch also has its own SetTRM and RU02 trainer. MMS now hooks
+the first slate of each training episode at one selected recurrent write.
+Later slates still run and backpropagate as before; their invocations are
+counted explicitly. SetTRM rows are keyed by episode, RU02 by stable first
+slate candidate ID; variable slate size is padded only in the bank.
+
+```sh
+python -m MCP.mcp05.run_mms --train-replay TRAIN/training-replay.json --arm recurrent --mms-mib 8 --out runs/mcp05_mms
+```
+
+Use an explicit fresh development replay if available; the runner rejects
+overlapping root IDs and does not load sealed.json or its test cases.
+Legacy fit calls keep their 3 GiB process guard; an optional explicit
+--ram-limit-gib changes only the new lane. Check bank headroom and actual
+RSS. Small episode counts may saturate the memory at MiB scale.

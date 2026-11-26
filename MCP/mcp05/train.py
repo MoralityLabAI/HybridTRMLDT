@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import nullcontext
 import hashlib
 import json
 import os
@@ -47,10 +48,10 @@ def peak_rss() -> int:
     return counters.peak
 
 
-def check_ram() -> int:
+def check_ram(limit: int = RAM_LIMIT) -> int:
     peak = peak_rss()
-    if peak > RAM_LIMIT:
-        raise MemoryError(f"trainer peak process RSS exceeds 3 GiB: {peak}")
+    if peak > limit:
+        raise MemoryError(f"trainer peak process RSS {peak} exceeds limit {limit}")
     return peak
 
 
@@ -139,10 +140,17 @@ def collect(stage: Path, case: dict, work: Path) -> dict:
     return {"case": case["instance_id"], "steps": steps}
 
 
-def fit(episodes: list[dict], mode: str, *, depth: int, epochs: int, seed: int):
+def fit(episodes: list[dict], mode: str, *, depth: int, epochs: int, seed: int,
+        mms_options=None, mms_receipt=None, ram_limit_bytes=RAM_LIMIT):
     torch.manual_seed(seed)
     model_class = RU02 if mode in {"shared", "dual"} else SetTRM
     model = model_class(mode, depth)
+    memory = None
+    if mms_options and mms_options.get('mib',0):
+        from .mms import EpisodeMemory
+        if mms_options['mib']*2**20 >= ram_limit_bytes:
+            raise ValueError('MMS bank must leave headroom inside process RAM limit')
+        memory = EpisodeMemory(model,episodes,depth,mms_options)
     optimizer = torch.optim.AdamW(model.parameters(), lr=0.003)
     chronology = random.Random(seed)
     shuffle = random.Random(seed + 1)
@@ -152,21 +160,27 @@ def fit(episodes: list[dict], mode: str, *, depth: int, epochs: int, seed: int):
         chronology.shuffle(order)
         for index in order:
             optimizer.zero_grad()
-            latent = None
-            loss = []
-            for step in episodes[index]["steps"]:
-                target = step["utility"].copy()
-                if mode == "shuffled":
-                    shuffle.shuffle(target)
-                scores, next_latent = model.step(step["observation"], latent)
-                latent = next_latent if mode in {"recurrent", "shuffled"} else None
-                loss.append(F.smooth_l1_loss(scores, torch.tensor(target)))
-            objective = torch.stack(loss).mean()
-            objective.backward()
+            context = memory.capture(index,len(losses)) if memory else nullcontext()
+            with context:
+                latent = None
+                loss = []
+                for step in episodes[index]["steps"]:
+                    target = step["utility"].copy()
+                    if mode == "shuffled":
+                        shuffle.shuffle(target)
+                    scores, next_latent = model.step(step["observation"], latent)
+                    latent = next_latent if mode in {"recurrent", "shuffled"} else None
+                    loss.append(F.smooth_l1_loss(scores, torch.tensor(target)))
+                objective = torch.stack(loss).mean()
+                objective.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.)
             optimizer.step()
             losses.append(float(objective.detach()))
-        check_ram()
+            if memory is not None:
+                check_ram(ram_limit_bytes)
+        check_ram(ram_limit_bytes)
+    if memory is not None and mms_receipt is not None:
+        mms_receipt.update(memory.memory.receipt())
     return model, losses
 
 
