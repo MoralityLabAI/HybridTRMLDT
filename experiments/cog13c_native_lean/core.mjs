@@ -92,6 +92,7 @@ function transportRank(model,factors,goals,actions,mode){
  return {order,scores,bytes:packet.length+1,clipping,packet:Array.from(packet),reply:order[0]};
 }
 
+function utf8Length(s){let n=0;for(const c of s){const v=c.codePointAt(0);n+=v<128?1:v<2048?2:v<65536?3:4;}return n;}
 function sameGoals(a,b){return JSON.stringify(a)===JSON.stringify(b);}
 
 function progress(before,r){return r?.accepted===true&&Array.isArray(r.goals)&&!sameGoals(before,r.goals);}
@@ -117,7 +118,7 @@ function fitAllocator(rollouts){
 
 async function collect(cases,backend){
  const rows=[],receipts=[];
- for(const c of cases){requireIt(c.split==="train","nontraining collector");const start=backend.now(),deadline=start+90000;let s=null,prefix=[],calls=0,done=false,reason="teacher_depth",elapsed=0,prefixCommands=0;
+ for(const c of cases){backend.setPhase?.("teacher_"+c.id);requireIt(c.split==="train","nontraining collector");const start=backend.now(),deadline=start+90000;let s=null,prefix=[],calls=0,done=false,reason="teacher_depth",elapsed=0,prefixCommands=0;
   try{
    s=await backend.open(c,deadline);let goals=s.initial;
    for(let t=0;t<5&&backend.now()<deadline;t++){
@@ -140,10 +141,11 @@ async function collect(cases,backend){
 }
 
 async function portfolio(cases,arm,backend,fit,fac,allocator,tag){
+ backend.setPhase?.(tag);
  const roots=cases.map(newRoot),live=new Map(),events=[],start=backend.now(),deadline=start+arm.wallMs;
  let calls=0,certCalls=0,prefixCommands=0,opens=0,evictions=0,rr=0,peakRssKiB=0,peakMetadataBytes=0,started=0,reason="budget";
- const sample=()=>{const rss=[...live.values()].reduce((a,s)=>a+(s.rssKiB?.()??0),0);peakRssKiB=Math.max(peakRssKiB,rss);const bytes=JSON.stringify(roots.map(r=>({id:r.c.id,stack:r.stack,initial:r.initial}))).length;peakMetadataBytes=Math.max(peakMetadataBytes,bytes);};
- const close=async i=>{const s=live.get(i);if(s){sample();live.delete(i);await s.close();}};
+ const sample=()=>{const rss=[...live.values()].reduce((a,s)=>a+(s.rssKiB?.()??0),0);peakRssKiB=Math.max(peakRssKiB,rss);const bytes=utf8Length(JSON.stringify(roots.map(r=>({id:r.c.id,stack:r.stack,initial:r.initial}))));peakMetadataBytes=Math.max(peakMetadataBytes,bytes);};
+ const close=async(i,kind="close")=>{const s=live.get(i);if(s){sample();live.delete(i);await s.close();events.push({kind,root:roots[i].c.id,elapsedMs:backend.now()-start});}};
  const finish=(r,why)=>{r.terminal=true;r.reason=why;};
  function chooseRoot(){const available=roots.map((r,i)=>i).filter(i=>!roots[i].terminal);
   if(!available.length)return -1;
@@ -155,7 +157,7 @@ async function portfolio(cases,arm,backend,fit,fac,allocator,tag){
   while(calls<arm.probes&&backend.now()<deadline){
    const i=chooseRoot();if(i<0){reason="all_terminal";break;}const r=roots[i];let s=live.get(i);
    if(!s){
-    if(live.size>=arm.slots){const victim=live.keys().next().value;await close(victim);evictions++;events.push({kind:"evict",root:roots[victim].c.id,elapsedMs:backend.now()-start});}
+    if(live.size>=arm.slots){const victim=live.keys().next().value;await close(victim,"evict");evictions++;}
     try{s=await backend.open(r.c,deadline);opens++;}catch(e){finish(r,"open_unknown:"+String(e));continue;}
     if(r.initial===null){started++;r.initial=[...s.initial];r.stack=[{goals:[...s.initial],prefix:[],tried:[]}];}
     else if(!sameGoals(r.initial,s.initial)){await s.close();finish(r,"reopen_root_changed");continue;}
@@ -202,15 +204,16 @@ function auditPortfolio(r){
  for(const e of r.events){
   requireIt(reg.has(e.root),"unknown root event");
   if(e.kind==="evict"){requireIt(live.has(e.root),"eviction of nonresident");live.delete(e.root);evict++;}
-  else if(e.kind==="open"){live.add(e.root);}
+  else if(e.kind==="close"){requireIt(live.has(e.root),"close of nonresident");live.delete(e.root);}
+  else if(e.kind==="open"){requireIt(!live.has(e.root)&&live.size<r.arm.slots,"residency cap");live.add(e.root);}
   else if(e.kind==="probe"){
-   total++;prefix+=e.prefix.length-1;requireIt(e.portfolioCall===total&&e.attempt===(calls.get(e.root)||0)+1&&e.prefix.at(-1)===e.action&&e.prefix.every(a=>MENU.includes(a))&&e.options.includes(e.action),"invalid probe receipt");calls.set(e.root,e.attempt);
+   requireIt(live.has(e.root),"probe without resident process");total++;prefix+=e.prefix.length-1;requireIt(e.portfolioCall===total&&e.attempt===(calls.get(e.root)||0)+1&&e.prefix.at(-1)===e.action&&e.prefix.every(a=>MENU.includes(a))&&e.options.includes(e.action),"invalid probe receipt");calls.set(e.root,e.attempt);
    if(e.transport){requireIt(e.transport.packet.length+1===e.transport.bytes&&e.options[e.transport.reply]===e.action,"transport reply/byte mismatch");}
   }else if(e.kind==="certificate"){certTotal++;const a=certs.get(e.root)||[];requireIt(e.rep===a.length,"certificate order");a.push(e.certificate);certs.set(e.root,a);live.delete(e.root);}
   else throw Error("unknown receipt kind");
  }
  for(const x of r.roots){const a=certs.get(x.c.id)||[];requireIt(x.attempts===(calls.get(x.c.id)||0)&&sameGoals(x.certificates,a),"root receipt mismatch");if(x.solved)requireIt(a.length===2&&a.every(c=>c.accepted===true)&&a[0].sourceHash===a[1].sourceHash,"uncertified success");}
- requireIt(total===r.calls&&prefix===r.prefixCommands&&certTotal===r.certCalls&&evict===r.evictions&&r.solved===r.roots.filter(x=>x.solved).length,"summary mismatch");
+ requireIt(live.size===0&&total===r.calls&&prefix===r.prefixCommands&&certTotal===r.certCalls&&evict===r.evictions&&r.solved===r.roots.filter(x=>x.solved).length,"summary mismatch");
  return total;
 }
 
