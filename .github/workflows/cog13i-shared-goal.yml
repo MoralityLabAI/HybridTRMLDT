@@ -1,0 +1,46 @@
+name: COG-13I shared-goal transport replay
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13i_shared_goal_transport/**'
+      - '.github/workflows/cog13i-shared-goal.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Fetch pinned native archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/MoralityLabAI/HybridTRMLDT/actions/artifacts/15136527625/zip \
+            -o "$RUNNER_TEMP/cog13c-native.zip"
+          echo 'd99bc6a95d4ea31a132b408cd653644e9680a167fa87aca3b722522af0ab5aea  '"$RUNNER_TEMP/cog13c-native.zip" | sha256sum --check
+      - name: Independently reproduce packet and certificate arithmetic
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/cog13i"
+          python experiments/cog13i_shared_goal_transport/audit.py "$RUNNER_TEMP/cog13c-native.zip" --out "$RUNNER_TEMP/cog13i/shared"
+          python experiments/cog13i_shared_goal_transport/certified.py "$RUNNER_TEMP/cog13c-native.zip" --out "$RUNNER_TEMP/cog13i/certified"
+          python experiments/cog13i_shared_goal_transport/verify.py "$RUNNER_TEMP/cog13i"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cog13i-transport-replay
+          path: ${{ runner.temp }}/cog13i/
+          if-no-files-found: warn
+          retention-days: 30
