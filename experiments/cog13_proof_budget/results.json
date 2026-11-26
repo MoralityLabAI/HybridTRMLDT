@@ -1,0 +1,680 @@
+{
+  "schema": "cog13.proof_budget.v1",
+  "evidence": "public synthetic development; not confirmation",
+  "budgetsPerEightRoots": [
+    48,
+    96,
+    144
+  ],
+  "model": {
+    "weights": [
+      -6.360380399399809,
+      -11.2141735425385,
+      17.433645914768856,
+      0.2811370015384207,
+      12.835084083899355,
+      11.723332816692924,
+      -22.217016156175394,
+      -2.367760645649531,
+      21.31146276005912
+    ],
+    "trainingVerifierCalls": 723,
+    "trainingRoots": 64
+  },
+  "offlineDiagnosticVerifierCalls": 2737,
+  "independentReplay": {
+    "runs": 240,
+    "calls": 26968,
+    "forgedFactRejected": true
+  },
+  "splits": {
+    "calibration": {
+      "round_robin@8": {
+        "completed": [
+          26,
+          59,
+          64
+        ],
+        "calls": [
+          384,
+          632,
+          645
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 791,
+        "maxTapeBytes": 835,
+        "batches": 8
+      },
+      "static_size@8": {
+        "completed": [
+          42,
+          62,
+          64
+        ],
+        "calls": [
+          384,
+          632,
+          645
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 151,
+        "maxTapeBytes": 835,
+        "batches": 8
+      },
+      "remaining_rules@8": {
+        "completed": [
+          42,
+          62,
+          64
+        ],
+        "calls": [
+          384,
+          632,
+          645
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 151,
+        "maxTapeBytes": 835,
+        "batches": 8
+      },
+      "ancestry_priority@8": {
+        "completed": [
+          44,
+          62,
+          64
+        ],
+        "calls": [
+          384,
+          632,
+          645
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 151,
+        "maxTapeBytes": 835,
+        "batches": 8
+      },
+      "learned@8": {
+        "completed": [
+          41,
+          62,
+          64
+        ],
+        "calls": [
+          384,
+          632,
+          645
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 151,
+        "maxTapeBytes": 835,
+        "batches": 8
+      },
+      "full_ancestry@8": {
+        "completed": [
+          52,
+          64,
+          64
+        ],
+        "calls": [
+          384,
+          490,
+          490
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 121,
+        "maxTapeBytes": 769,
+        "batches": 8
+      },
+      "clairvoyant@8": {
+        "completed": [
+          45,
+          62,
+          64
+        ],
+        "calls": [
+          384,
+          632,
+          645
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 151,
+        "maxTapeBytes": 835,
+        "batches": 8
+      },
+      "round_robin@1": {
+        "completed": [
+          1,
+          10,
+          21
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          192,
+          488,
+          803
+        ],
+        "evictions": 325,
+        "maxCacheBytes": 104,
+        "maxTapeBytes": 677,
+        "batches": 8
+      },
+      "round_robin@2": {
+        "completed": [
+          1,
+          10,
+          21
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          192,
+          488,
+          803
+        ],
+        "evictions": 317,
+        "maxCacheBytes": 205,
+        "maxTapeBytes": 677,
+        "batches": 8
+      },
+      "round_robin@4": {
+        "completed": [
+          1,
+          10,
+          24
+        ],
+        "calls": [
+          384,
+          768,
+          1131
+        ],
+        "replays": [
+          192,
+          483,
+          746
+        ],
+        "evictions": 293,
+        "maxCacheBytes": 404,
+        "maxTapeBytes": 736,
+        "batches": 8
+      }
+    },
+    "ordinary_test": {
+      "round_robin@8": {
+        "completed": [
+          26,
+          62,
+          64
+        ],
+        "calls": [
+          384,
+          642,
+          650
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 770,
+        "maxTapeBytes": 825,
+        "batches": 8
+      },
+      "static_size@8": {
+        "completed": [
+          40,
+          63,
+          64
+        ],
+        "calls": [
+          384,
+          642,
+          650
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 142,
+        "maxTapeBytes": 825,
+        "batches": 8
+      },
+      "remaining_rules@8": {
+        "completed": [
+          40,
+          63,
+          64
+        ],
+        "calls": [
+          384,
+          642,
+          650
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 142,
+        "maxTapeBytes": 825,
+        "batches": 8
+      },
+      "ancestry_priority@8": {
+        "completed": [
+          42,
+          63,
+          64
+        ],
+        "calls": [
+          384,
+          642,
+          650
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 142,
+        "maxTapeBytes": 825,
+        "batches": 8
+      },
+      "learned@8": {
+        "completed": [
+          44,
+          63,
+          64
+        ],
+        "calls": [
+          384,
+          642,
+          650
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 142,
+        "maxTapeBytes": 825,
+        "batches": 8
+      },
+      "full_ancestry@8": {
+        "completed": [
+          51,
+          64,
+          64
+        ],
+        "calls": [
+          384,
+          487,
+          487
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 123,
+        "maxTapeBytes": 755,
+        "batches": 8
+      },
+      "clairvoyant@8": {
+        "completed": [
+          46,
+          63,
+          64
+        ],
+        "calls": [
+          384,
+          642,
+          650
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 142,
+        "maxTapeBytes": 825,
+        "batches": 8
+      },
+      "round_robin@1": {
+        "completed": [
+          5,
+          9,
+          20
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          192,
+          489,
+          808
+        ],
+        "evictions": 323,
+        "maxCacheBytes": 104,
+        "maxTapeBytes": 673,
+        "batches": 8
+      },
+      "round_robin@2": {
+        "completed": [
+          5,
+          9,
+          20
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          192,
+          489,
+          808
+        ],
+        "evictions": 315,
+        "maxCacheBytes": 206,
+        "maxTapeBytes": 673,
+        "batches": 8
+      },
+      "round_robin@4": {
+        "completed": [
+          5,
+          9,
+          21
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          192,
+          489,
+          795
+        ],
+        "evictions": 296,
+        "maxCacheBytes": 425,
+        "maxTapeBytes": 703,
+        "batches": 8
+      }
+    },
+    "ood_test": {
+      "round_robin@8": {
+        "completed": [
+          0,
+          5,
+          25
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 941,
+        "maxTapeBytes": 948,
+        "batches": 8
+      },
+      "static_size@8": {
+        "completed": [
+          20,
+          35,
+          49
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 185,
+        "maxTapeBytes": 953,
+        "batches": 8
+      },
+      "remaining_rules@8": {
+        "completed": [
+          20,
+          35,
+          49
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 185,
+        "maxTapeBytes": 953,
+        "batches": 8
+      },
+      "ancestry_priority@8": {
+        "completed": [
+          19,
+          35,
+          49
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 194,
+        "maxTapeBytes": 950,
+        "batches": 8
+      },
+      "learned@8": {
+        "completed": [
+          19,
+          36,
+          49
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 188,
+        "maxTapeBytes": 950,
+        "batches": 8
+      },
+      "full_ancestry@8": {
+        "completed": [
+          31,
+          51,
+          64
+        ],
+        "calls": [
+          384,
+          768,
+          962
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 149,
+        "maxTapeBytes": 917,
+        "batches": 8
+      },
+      "clairvoyant@8": {
+        "completed": [
+          22,
+          38,
+          50
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          0,
+          0,
+          0
+        ],
+        "evictions": 0,
+        "maxCacheBytes": 168,
+        "maxTapeBytes": 949,
+        "batches": 8
+      },
+      "round_robin@1": {
+        "completed": [
+          0,
+          0,
+          0
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          192,
+          488,
+          800
+        ],
+        "evictions": 344,
+        "maxCacheBytes": 104,
+        "maxTapeBytes": 679,
+        "batches": 8
+      },
+      "round_robin@2": {
+        "completed": [
+          0,
+          0,
+          0
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          192,
+          488,
+          800
+        ],
+        "evictions": 336,
+        "maxCacheBytes": 205,
+        "maxTapeBytes": 679,
+        "batches": 8
+      },
+      "round_robin@4": {
+        "completed": [
+          0,
+          0,
+          0
+        ],
+        "calls": [
+          384,
+          768,
+          1152
+        ],
+        "replays": [
+          192,
+          488,
+          800
+        ],
+        "evictions": 320,
+        "maxCacheBytes": 401,
+        "maxTapeBytes": 679,
+        "batches": 8
+      }
+    }
+  },
+  "source": {
+    "repository": "MoralityLabAI/LoopedTransformers",
+    "commit": "c1c903b3f0664ee19838fcba45bd67e24f779aab",
+    "compressedSha256": "cf8292144cfd37b42c9a8a4d86ac1517ef4c6cb4c26400210d1a840de310a83c",
+    "uncompressedSha256": "aef151e3f7de099e9b5d7b51c92ad94aa3bab20a85b4f73b8f4fb5ac8ce7905a",
+    "counts": {
+      "train": 64,
+      "calibration": 64,
+      "ordinary_test": 64,
+      "ood_test": 64
+    }
+  }
+}

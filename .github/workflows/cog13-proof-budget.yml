@@ -1,0 +1,52 @@
+name: COG-13 proof budget replay
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13_proof_budget/**'
+      - '.github/workflows/cog13-proof-budget.yml'
+  push:
+    paths:
+      - 'experiments/cog13_proof_budget/**'
+      - '.github/workflows/cog13-proof-budget.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch pinned source snapshot
+        run: |
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/MoralityLabAI/LoopedTransformers/c1c903b3f0664ee19838fcba45bd67e24f779aab/research/cog03_ledger_router/data/tasks.jsonl.gz' -o "$RUNNER_TEMP/cog13-tasks.jsonl.gz"
+      - name: Run benchmark and independent audit
+        run: node experiments/cog13_proof_budget/benchmark.mjs "$RUNNER_TEMP/cog13-tasks.jsonl.gz" "$RUNNER_TEMP/cog13-run.json"
+      - name: Compare committed numerical receipt
+        run: |
+          node --input-type=module - "$RUNNER_TEMP/cog13-run.json" <<'JS'
+          import {readFileSync} from "node:fs";
+          import assert from "node:assert/strict";
+          const run=JSON.parse(readFileSync(process.argv[2],"utf8"));
+          const {source,...expected}=JSON.parse(readFileSync("experiments/cog13_proof_budget/results.json","utf8"));
+          const compare=(a,b,path="summary")=>{
+            if(typeof a==="number"&&typeof b==="number"){
+              if(path.includes(".weights.")) assert.ok(Math.abs(a-b)<=1e-9*Math.max(1,Math.abs(b)),path);
+              else assert.equal(a,b,path);
+            }else if(a!==null&&b!==null&&typeof a==="object"&&typeof b==="object"){
+              assert.deepEqual(Object.keys(a).sort(),Object.keys(b).sort(),path);
+              for(const key of Object.keys(b)) compare(a[key],b[key],path+"."+key);
+            }else assert.equal(a,b,path);
+          };
+          compare(run.summary,expected);
+          assert.equal(run.runs.length,240);
+          assert.equal(run.summary.independentReplay.forgedFactRejected,true);
+          JS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cog13-full-replay
+          path: ${{ runner.temp }}/cog13-run.json
+          retention-days: 30
