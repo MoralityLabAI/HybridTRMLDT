@@ -115,7 +115,7 @@ if(mode==="--fixture"){
  json(join(out,"models.json"),models);json(join(out,"retrospective.json"),{scope:"selection-biased archived observed candidates; not a proof rollout",metrics:retrospective});
  json(join(out,"registry.json"),registry);
  const raw=nativeBackend(out,resolve(leanArg),resolve(cwdArg)),results=[],errors=[],goals=new Map();
- const rawKey=new Map(),seen=new Map();
+ const initialGoals=new Map();
  const backend={now:raw.now,open:async(c,arm,s,deadline)=>raw.open(c,deadline,arm.slots),
   certify:async(c,arm,s,actions,rep,deadline)=>raw.certify(c,actions,deadline,rep)};
  function rawAudit(r){
@@ -123,19 +123,23 @@ if(mode==="--fixture"){
   const sessions=procs.filter(p=>p.kind==="probe_server");
   check(sessions.length===1,"probe process denominator");
   const proc=sessions[0],folder=proc.folder;
-  if(r.initial){const start=JSON.parse(text(join(folder,"response-0.json")));check(start.ready&&canon(start.goals)===canon(r.initial),"raw initial goals");}
+  if(r.initial){
+   const start=JSON.parse(text(join(folder,"response-0.json")));check(start.ready&&canon(start.goals)===canon(r.initial),"raw initial goals");
+   if(initialGoals.has(r.case.id))check(canon(initialGoals.get(r.case.id))===canon(r.initial),"root goal differs across arms");else initialGoals.set(r.case.id,r.initial);
+  }
   for(const e of r.events.filter(x=>x.id)){
    const req=JSON.parse(text(join(folder,"request-"+e.id+".json")));check(req.id===e.id&&canon(req.actions)===canon(e.actions)&&req.stop===false,"raw request");
    if(!e.reply)continue;
    const res=JSON.parse(text(join(folder,"response-"+e.id+".json")));check(canon(res)===canon(e.reply),"raw reply");
    const k=r.case.id+":"+canon(e.actions);
-   if(e.reply.result.accepted){
-    const g=e.reply.result.goals;if(goals.has(k))check(canon(goals.get(k))===canon(g),"common native goal differs");else goals.set(k,g);
-   }
+   const verdict=e.reply.result.accepted?{accepted:true,goals:e.reply.result.goals}:{accepted:false};
+   if(goals.has(k))check(canon(goals.get(k))===canon(verdict),"common native verdict or goal differs");else goals.set(k,verdict);
   }
+  check(new Set(r.certs.filter(c=>c.sourceFile).map(c=>c.sourceFile)).size===r.certs.filter(c=>c.sourceFile).length,"reused compiler process");
   for(const cert of r.certs){
    if(!cert.sourceFile){check(!cert.accepted,"missing accepted cert");continue;}
    const src=readFileSync(cert.sourceFile),log=readFileSync(join(cert.sourceFile,"..","stdout.log"));
+   const p=procs.find(p=>p.folder===join(cert.sourceFile,"..")&&p.kind.startsWith("certificate_"));check(p&&p.root===r.case.id&&p.exitCode===cert.exitCode&&p.logSha256===cert.logSha256,"compiler process binding");
    check(hash(src)===cert.sourceHash&&hash(log)===cert.logSha256&&src.toString("utf8")===source(r.case,r.closedActions,false),"certificate byte custody");
    if(cert.accepted)check(cert.exitCode===0&&Array.isArray(cert.axioms)&&cert.axioms.every(x=>allowedAxioms.has(x))&&!/sorryAx|error(?:\([^\n]*\))?:/.test(log.toString("utf8")),"invalid accepted cert");
   }
@@ -146,7 +150,9 @@ if(mode==="--fixture"){
    const c=registry[i],offset=(i+[1701,1709,1723].indexOf(seed))%all.length,order=[...all.slice(offset),...all.slice(0,offset)];
    for(const arm of order){
     const phase=c.id+"_"+arm.name;raw.setPhase(phase);
-    const r=await search(c,arm,models,backend,seed);
+    const cpu0=process.cpuUsage(),r=await search(c,arm,models,backend,seed),cpu=process.cpuUsage(cpu0);
+    const ps=raw.processes.filter(p=>p.phase===phase),complete=ps.filter(p=>p.userSeconds!==null&&p.systemSeconds!==null);
+    r.cost={controllerCpuUsec:cpu.user+cpu.system,leanCpuSeconds:complete.reduce((v,p)=>v+p.userSeconds+p.systemSeconds,0),completeProcesses:complete.length,processes:ps.length};
     results.push(r);
     writeFileSync(join(out,phase+".json"),JSON.stringify(r,null,2)+"\n",{flag:"wx"});
     try{check(r.reason!=="evidence_error","search evidence error");audit(r,models);rawAudit(r);}catch(e){errors.push({phase,error:String(e)});}
