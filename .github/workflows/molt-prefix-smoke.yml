@@ -16,4 +16,4 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m unittest research_gym.benchmarks.molt_hybrid.test_prefix_memory -v
+      - run: python -m unittest discover -s research_gym/benchmarks/molt_hybrid -p 'test_*.py' -v
