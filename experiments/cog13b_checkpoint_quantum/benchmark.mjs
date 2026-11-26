@@ -1,5 +1,7 @@
 // COG-13B. Node 20+, standard library only. Fresh synthetic development worlds.
-import {writeFileSync} from "node:fs";
+import {writeFileSync,mkdirSync} from "node:fs";
+import {join} from "node:path";
+import {createHash} from "node:crypto";
 function insist(v,m){if(!v)throw Error(m);}
 
 function rng32(seed){let s=seed>>>0;return n=>{s^=s<<13;s^=s>>>17;s^=s<<5;return (s>>>0)%n;};}
@@ -45,8 +47,8 @@ function feat(c,k,m){const w=c.w;let u=0,rn=0,mg=Infinity,ng=0;
  return [1,w.rules.length/64,w.n/64,(k.size-w.facts.length)/64,(w.n-k.size)/64,u/64,rn/64,mg/4,ng/16];
 }
 
-function fit(tasks){const m=meter(),n=9,A=Array.from({length:n},()=>Array(n+1).fill(0));
- for(const t of tasks){const c=context(t,m,false),k=new Set(c.w.facts),xs=[];while(!has(k,c.w.goal,m)){xs.push(feat(c,k,m));apply(c,k,propose(c,k,m),m,false);}for(let j=0;j<xs.length;j++){const x=xs[j],y=xs.length-j,w=1/xs.length;for(let a=0;a<n;a++){for(let b=0;b<n;b++)A[a][b]+=w*x[a]*x[b];A[a][n]+=w*x[a]*y;}}}
+function fit(tasks,rows=[]){const m=meter(),n=9,A=Array.from({length:n},()=>Array(n+1).fill(0));
+ for(const t of tasks){const c=context(t,m,false),k=new Set(c.w.facts),xs=[];while(!has(k,c.w.goal,m)){xs.push(feat(c,k,m));apply(c,k,propose(c,k,m),m,false);}for(let j=0;j<xs.length;j++){const x=xs[j],y=xs.length-j,w=1/xs.length;rows.push({root:t.id,split:t.split,input:{features:x},target:{residualVerifierCalls:y},weight:w,source:'synthetic_local_router'});for(let a=0;a<n;a++){for(let b=0;b<n;b++)A[a][b]+=w*x[a]*x[b];A[a][n]+=w*x[a]*y;}}}
  for(let a=0;a<n;a++)A[a][a]+=.01;for(let a=0;a<n;a++){let p=a;for(let b=a+1;b<n;b++)if(Math.abs(A[b][a])>Math.abs(A[p][a]))p=b;[A[p],A[a]]=[A[a],A[p]];const v=A[a][a];insist(Math.abs(v)>1e-12,"singular");for(let b=a;b<=n;b++)A[a][b]/=v;for(let j=0;j<n;j++)if(j!==a){const q=A[j][a];for(let b=a;b<=n;b++)A[j][b]-=q*A[a][b];}}
  return {weights:A.map(x=>x[n]),collection:m,roots:tasks.length};
 }
@@ -109,8 +111,8 @@ function audit(batch,r){
  return calls;
 }
 
-function suite(){
- const tasks=makeTasks(),model=fit(tasks.filter(t=>t.split==="train")),arms=[
+function suite(rows=[]){
+ const tasks=makeTasks(),model=fit(tasks.filter(t=>t.split==="train"),rows),arms=[
   ["rr1_tape", "rr",1,1,"tape","local"],["rr4_tape","rr",1,4,"tape","local"],["rr8_tape","rr",1,8,"tape","local"],["rr1_resident8","rr",8,1,"tape","local"],["static_block","static",1,"block","tape","local"],["rr1_packed","rr",1,1,"packed","local"],["rr4_packed","rr",1,4,"packed","local"],["adaptive_tape","adaptive",1,"adaptive","tape","local"],["adaptive_packed","adaptive",1,"adaptive","packed","local"],["full_static_block","static",1,"block","tape","full"]
  ].map(([name,policy,slots,quantum,backing,router])=>({name,policy,slots,quantum,backing,router}));
  const summary={},runs=[];let audited=0,negativeFact=false,negativeCheckpoint=false,negativeCost=false;
@@ -130,11 +132,41 @@ function suite(){
  insist(negativeFact&&negativeCheckpoint&&negativeCost,"negative sentinel");
  return {summary:{schema:"cog13b.checkpoint_quantum.v1",seed:2026112603,counts:{train:64,calibration:64,ordinary:64,deeper:64},evidence:"fresh public synthetic generator; development only",budgets:[48,96,144],costWeights:[10,100,1000],model,audit:{runs:runs.length,verifierCalls:audited,negativeFact,negativeCheckpoint,negativeCost},splits:summary},runs};
 }
-const [, , output]=process.argv;
+function exportBundle(result,rows){
+ const tasks=makeTasks(),byId=new Map(tasks.map(t=>[t.id,t])),index=[],proofs=["import Init",""];
+ insist(rows.length===result.summary.model.collection.verifier&&rows.every(r=>r.split==="train"&&r.input.features.length===9),"training export custody");
+ for(const r of result.runs.filter(x=>x.split==="deeper"&&["static_block","adaptive_tape","full_static_block"].includes(x.arm.name))){
+  for(let i=0;i<r.roots.length;i++){
+   const t=byId.get(r.roots[i]),w=t.w,actions=r.events.filter(e=>e.root===i&&e.kind==="new").map(e=>e.action),terms=new Map(w.facts.map(x=>[x,"f"+x]));
+   const body=[];
+   for(const a of actions){const rule=w.rules[a];insist(rule.premises.every(x=>terms.has(x))&&!terms.has(rule.conclusion),"invalid certificate derivation");body.push(`  have h${rule.conclusion} : p${rule.conclusion} := r${a} ${rule.premises.map(x=>terms.get(x)).join(" ")}`);terms.set(rule.conclusion,"h"+rule.conclusion);}
+   const solved=terms.has(w.goal),name=solved?`cog13b_${index.length}`:null;
+   index.push({root:t.id,arm:r.arm.name,solved,theorem:name,freshActions:actions.length});
+   if(!solved)continue;
+   const props=Array.from({length:w.n},(_,j)=>"p"+j).join(" "),facts=w.facts.map(x=>`(f${x} : p${x})`),rules=w.rules.map((a,j)=>`(r${j} : ${[...a.premises,a.conclusion].map(x=>"p"+x).join(" → ")})`);
+   proofs.push(`theorem ${name} (${props} : Prop) ${[...facts,...rules].join(" ")} : p${w.goal} := by`,...body,`  exact ${terms.get(w.goal)}`,`#print axioms ${name}`,"");
+  }
+ }
+ insist(index.length===192&&index.filter(x=>x.solved).length===161,"certificate cohort");
+ const jsonl=x=>x.map(r=>JSON.stringify(r)).join("\n")+"\n";
+ return {"train_residual.jsonl":jsonl(rows),"task_registry.jsonl":jsonl(tasks),"certificate_index.json":JSON.stringify(index,null,2)+"\n","certificates.lean":proofs.join("\n")+"\n","rejected_sentinel.lean":"import Init\ntheorem cog13bRejected (P Q : Prop) (h : P) : Q := h\n"};
+}
+
+const [, , output, exportDir]=process.argv;
 insist(output,"usage: node benchmark.mjs NEW_OUTPUT.json");
 const before=process.memoryUsage();
 const t0=process.hrtime.bigint();
-const result=suite();
+const rows=[];
+const result=suite(rows);
 const runtime={elapsedMs:Number(process.hrtime.bigint()-t0)/1e6,rssBefore:before.rss,rssAfter:process.memoryUsage().rss,maxRSSKiB:process.resourceUsage().maxRSS,node:process.version,platform:process.platform};
 writeFileSync(output,JSON.stringify({...result,runtime},null,2)+"\n",{flag:"wx"});
+if(exportDir){
+ mkdirSync(exportDir);
+ const bundle=exportBundle(result,rows),hashes={};
+ for(const [name,contents] of Object.entries(bundle)){
+  writeFileSync(join(exportDir,name),contents,{flag:"wx"});
+  hashes[name]=createHash("sha256").update(contents).digest("hex");
+ }
+ writeFileSync(join(exportDir,"export_manifest.json"),JSON.stringify({schema:"cog13b.export.v1",trainingRows:rows.length,certificateCohort:192,expectedProofs:161,hashes},null,2)+"\n",{flag:"wx"});
+}
 console.log(JSON.stringify({summary:result.summary,runtime},null,2));
