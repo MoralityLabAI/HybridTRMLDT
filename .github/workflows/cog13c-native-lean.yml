@@ -1,0 +1,77 @@
+name: COG-13C native Lean portfolio
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13c_native_lean/**'
+      - '.github/workflows/cog13c-native-lean.yml'
+  push:
+    paths:
+      - 'experiments/cog13c_native_lean/**'
+      - '.github/workflows/cog13c-native-lean.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node experiments/cog13c_native_lean/run.mjs --fixture "$RUNNER_TEMP/cog13c-fixture.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cog13c-fixture
+          path: ${{ runner.temp }}/cog13c-fixture.json
+  native:
+    needs: fixture
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+    env:
+      LEAN_NUM_THREADS: '1'
+      MATHLIB_SHA: 56a005855ea17e0b0958f73ec801ae140b0a1679
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/checkout@v4
+        with:
+          repository: leanprover-community/mathlib4
+          ref: 56a005855ea17e0b0958f73ec801ae140b0a1679
+          path: upstream-mathlib
+          persist-credentials: false
+      - name: Install Lean 4.35.0
+        run: |
+          curl --fail --location --retry 3 https://github.com/leanprover/lean4/releases/download/v4.35.0/lean-4.35.0-linux.tar.zst -o "$RUNNER_TEMP/lean.tar.zst"
+          tar --zstd -xf "$RUNNER_TEMP/lean.tar.zst" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lean-4.35.0-linux/bin" >> "$GITHUB_PATH"
+      - name: Prepare source-pinned Mathlib and probe server
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$MATHLIB_SHA"
+          test "$(cat lean-toolchain)" = "leanprover/lean4:v4.35.0"
+          lean --version
+          curl --fail --location --retry 3 https://raw.githubusercontent.com/MoralityLabAI/LoopedTransformers/c25fe023b40eb4a802f4bb733f777d6d68067c88/experiments/lean_ram15/ProbeServer.lean -o ProbeServer.lean
+          test "$(git hash-object ProbeServer.lean)" = eb6885674e0ce25da78833b64a8a65c3752346a6
+          lake exe cache get
+          lake env lean -o ProbeServer.olean ProbeServer.lean
+      - name: Execute native portfolio matrix
+        working-directory: upstream-mathlib
+        run: |
+          set -euo pipefail
+          lake env bash -c 'export LEAN_PATH="$PWD:$LEAN_PATH"; node "$GITHUB_WORKSPACE/experiments/cog13c_native_lean/run.mjs" --native "$RUNNER_TEMP/cog13c-native" "$(command -v lean)" "$PWD"'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cog13c-native-receipts
+          path: ${{ runner.temp }}/cog13c-native/
+          if-no-files-found: warn
+          retention-days: 30
