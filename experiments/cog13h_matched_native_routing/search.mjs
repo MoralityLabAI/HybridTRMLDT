@@ -108,9 +108,11 @@ function audit(r,models){
 function summarize(results){
  const summary={};
  for(const r of results){
-  const a=(summary[r.case.split]??={})[r.arm.name]??={roots:0,solved:0,unknown:0,attempts:0,bytes:0,macs:0,executed:0,restored:0,elapsedMs:0};
+  const a=(summary[r.case.split]??={})[r.arm.name]??={roots:0,solved:0,unknown:0,attempts:0,bytes:0,macs:0,executed:0,restored:0,elapsedMs:0,controllerCpuUsec:0,leanCpuSeconds:0,completeProcesses:0,processes:0,setupJsonBytes:0};
   a.roots++;a.solved+=Number(r.solved);a.unknown+=Number(["startup_unknown","query_unknown","evidence_error"].includes(r.reason));
   for(const k of ["attempts","bytes","macs","executed","restored","elapsedMs"])a[k]+=r[k];
+  for(const k of ["controllerCpuUsec","leanCpuSeconds","completeProcesses","processes"])a[k]+=r.cost?.[k]??0;
+  a.setupJsonBytes=Math.max(a.setupJsonBytes,r.setupBytes);
  }
  return summary;
 }
