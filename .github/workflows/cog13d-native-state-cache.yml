@@ -58,14 +58,14 @@ jobs:
           lean --version
           lake exe cache get
           cp "$GITHUB_WORKSPACE/experiments/cog13d_native_state_cache/StateCacheServer.lean" .
-          lake env lean -o StateCacheServer.olean StateCacheServer.lean
+          mkdir -p .lake/build/lib/lean
+          lake env lean -o .lake/build/lib/lean/StateCacheServer.olean StateCacheServer.lean
       - name: Execute under hard cgroup memory cap
         working-directory: upstream-mathlib
         run: |
           set -euo pipefail
           lake env bash -c '
             set -euo pipefail
-            export LEAN_PATH="$PWD:$LEAN_PATH"
             cap=$((MEMORY_MIB*1024*1024))
             node_bin="$(command -v node)"
             lean_bin="$(command -v lean)"
