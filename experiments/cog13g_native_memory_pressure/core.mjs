@@ -89,10 +89,12 @@ async function portfolio(backend,arm,cases,limit){
   for(;;){
    const n=backend.sample().current,threshold=(opening?.90:.85)*limit.bytes;
    if(n+(opening?reserve:0)<=threshold)break;
-   const v=chooseVictim(live,arm.evict,exclude);if(!v)break;
-   // Record scored candidates before eviction, including anonymous memory
-   // proxy measurements and observed CPU history.
+   // Freeze anonymous-memory samples before computing and logging the decision.
    const candidates=[...live.values()].filter(s=>s.root!==exclude).map(s=>({root:s.root,last:s.last,startCPU:s.startCPU,queryCPU:s.queryCPU,executed:s.executed,recent:s.recent,cache:s.cache,anon:s.handle.anon()}));
+   if(!candidates.length)break;
+   const rank=x=>arm.evict==="lru"?x.last:evictionScore(x,x.anon);
+   const victim=[...candidates].sort((a,b)=>rank(a)-rank(b)||a.last-b.last||a.root-b.root)[0];
+   const v=live.get(victim.root);
    emit("eviction_decision",{reason,policy:arm.evict,exclude,victim:v.root,candidates,reserve,threshold});
    await close(v,reason);
   }
@@ -137,8 +139,9 @@ async function portfolio(backend,arm,cases,limit){
      r.certificates.push(cert);emit("certificate",{root:i,rep,certificate:cert});
      if(!cert.accepted)break;
     }
-    if(r.certificates.length===2&&r.certificates.every(x=>x.accepted)&&r.certificates[0].sourceHash===r.certificates[1].sourceHash&&within()){
-     r.certified=true;r.reason="certified";emit("credit",{root:i});
+    const creditClock=backend.sample(),creditWall=backend.now()-wall0;
+    if(r.certificates.length===2&&r.certificates.every(x=>x.accepted)&&r.certificates[0].sourceHash===r.certificates[1].sourceHash&&creditClock.cpu-start.cpu<limit.cpu&&creditWall<limit.wallMs){
+     r.certified=true;r.reason="certified";emit("credit",{root:i,creditClock,creditWall});
     }
    }else{
     queue.push(i);
@@ -192,7 +195,7 @@ function audit(result){
    check(pendingCert.get(e.root)===e.rep,"certificate receipt");pendingCert.delete(e.root);
    const a=certs.get(e.root)??[];a.push(e.certificate);certs.set(e.root,a);
   }else if(e.kind==="credit"){
-   const a=certs.get(e.root);check(!credited.has(e.root)&&a?.length===2&&a.every(c=>c.accepted)&&a[0].sourceHash===a[1].sourceHash&&e.cgroup.cpu-result.start.cpu<limit.cpu&&e.elapsedMs<limit.wallMs,"uncertified credit");
+   const a=certs.get(e.root);check(!credited.has(e.root)&&a?.length===2&&a.every(c=>c.accepted)&&a[0].sourceHash===a[1].sourceHash&&e.creditClock.cpu-result.start.cpu<limit.cpu&&e.creditWall<limit.wallMs&&e.creditClock.cpu<=e.cgroup.cpu&&e.creditWall<=e.elapsedMs,"uncertified credit");
    credited.add(e.root);
   }else if(e.kind!=="failure")throw Error("unknown event "+e.kind);
  }
