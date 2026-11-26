@@ -228,4 +228,4 @@ async function fixture(){
  check(Object.values(bad).every(Boolean),"negative fixture");
  return {schema:"cog13g.fixture.v1",mock:true,rows,negative:bad};
 }
-export {BAD,check,canonical,equal,makeCases,arms,portfolio,audit,fixture};
+export {BAD,check,canonical,equal,makeCases,arms,portfolio,audit,fixture,fixtureBackend};
