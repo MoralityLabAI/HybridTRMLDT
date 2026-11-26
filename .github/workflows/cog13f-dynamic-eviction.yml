@@ -1,0 +1,28 @@
+name: COG-13F dynamic eviction regret
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13f_dynamic_eviction/**'
+      - '.github/workflows/cog13f-dynamic-eviction.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node experiments/cog13f_dynamic_eviction/run.mjs "$RUNNER_TEMP/cog13f"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cog13f-dynamic-regret-receipts
+          path: ${{ runner.temp }}/cog13f/
+          if-no-files-found: warn
+          retention-days: 30
