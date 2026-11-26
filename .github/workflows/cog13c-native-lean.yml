@@ -62,12 +62,13 @@ jobs:
           curl --fail --location --retry 3 https://raw.githubusercontent.com/MoralityLabAI/LoopedTransformers/c25fe023b40eb4a802f4bb733f777d6d68067c88/experiments/lean_ram15/ProbeServer.lean -o ProbeServer.lean
           test "$(git hash-object ProbeServer.lean)" = eb6885674e0ce25da78833b64a8a65c3752346a6
           lake exe cache get
-          lake env lean -o ProbeServer.olean ProbeServer.lean
+          mkdir -p .lake/build/lib/lean
+          lake env lean -o .lake/build/lib/lean/ProbeServer.olean ProbeServer.lean
       - name: Execute native portfolio matrix
         working-directory: upstream-mathlib
         run: |
           set -euo pipefail
-          lake env bash -c 'export LEAN_PATH="$PWD:$LEAN_PATH"; node "$GITHUB_WORKSPACE/experiments/cog13c_native_lean/run.mjs" --native "$RUNNER_TEMP/cog13c-native" "$(command -v lean)" "$PWD"'
+          lake env bash -c 'node "$GITHUB_WORKSPACE/experiments/cog13c_native_lean/run.mjs" --native "$RUNNER_TEMP/cog13c-native" "$(command -v lean)" "$PWD"'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
