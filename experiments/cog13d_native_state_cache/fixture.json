@@ -1,0 +1,60 @@
+{
+  "schema": "cog13d.fixture.v1",
+  "syntheticFixture": true,
+  "cases": 8,
+  "arms": 5,
+  "requestRows": 1680,
+  "summary": {
+    "root_replay": {
+      "requests": 336,
+      "executed": 1504,
+      "restored": 0,
+      "hits": 0,
+      "insertions": 0,
+      "evictions": 0,
+      "peak": 0
+    },
+    "lru1": {
+      "requests": 336,
+      "executed": 1128,
+      "restored": 376,
+      "hits": 112,
+      "insertions": 208,
+      "evictions": 200,
+      "peak": 1
+    },
+    "lru4": {
+      "requests": 336,
+      "executed": 364,
+      "restored": 1140,
+      "hits": 280,
+      "insertions": 152,
+      "evictions": 120,
+      "peak": 4
+    },
+    "value4": {
+      "requests": 336,
+      "executed": 704,
+      "restored": 800,
+      "hits": 320,
+      "insertions": 176,
+      "evictions": 144,
+      "peak": 4
+    },
+    "lru16": {
+      "requests": 336,
+      "executed": 240,
+      "restored": 1264,
+      "hits": 320,
+      "insertions": 112,
+      "evictions": 0,
+      "peak": 16
+    }
+  },
+  "negative": {
+    "forgedHit": true,
+    "forgedResult": true,
+    "forgedCache": true,
+    "missingRequest": true
+  }
+}
