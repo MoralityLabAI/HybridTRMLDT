@@ -96,8 +96,8 @@ async function certify(c,actions,folder,lean,cwd,negative=false){
  const m=log.match(new RegExp("'"+name+"' depends on axioms: \\[([^\\]]*)\\]"));
  const ax=no?[]:m?m[1].split(",").map(s=>s.trim()).filter(Boolean):null;
  const approved=new Set(["propext","Classical.choice","Quot.sound"]);
- const passed=negative?finished&&proc.p.exitCode!==null&&proc.p.exitCode!==0&&log.includes("cog13d_missing_identifier")&&/error:/.test(log):
-  finished&&proc.p.exitCode===0&&ax!==null&&ax.every(x=>approved.has(x))&&!/sorryAx|error:|declaration uses 'sorry'/.test(log);
+ const passed=negative?finished&&proc.p.exitCode!==null&&proc.p.exitCode!==0&&log.includes("cog13d_missing_identifier")&&/error(?:\([^\n]*\))?:/.test(log):
+  finished&&proc.p.exitCode===0&&ax!==null&&ax.every(x=>approved.has(x))&&!/sorryAx|error(?:\([^\n]*\))?:|declaration uses 'sorry'/.test(log);
  const receipt={passed,negative,sourceSha256:sha(src),axioms:ax,process:proc.info()};
  json(join(folder,"receipt.json"),receipt);return receipt;
 }
