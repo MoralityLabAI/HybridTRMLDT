@@ -1,0 +1,80 @@
+{
+  "schema": "cog13j.archive_timing.v1",
+  "archiveSha256": "d99bc6a95d4ea31a132b408cd653644e9680a167fa87aca3b722522af0ab5aea",
+  "evidence": "archived candidate menus, not native proof search; one sequential CPU timing pilot, no cross-decision interval cache",
+  "sourceBlobs": {
+    "transport": "75050c3c8e5ab08ef351ea738d788d4fe2f28aaa",
+    "native": "ba65f6a0f5f02aa9388103613456b0bfb935d97b"
+  },
+  "arms": {
+    "frequency": {
+      "decisions": 449,
+      "bytes": 449,
+      "senderNs": 61095372,
+      "receiverNs": 0,
+      "auditNs": 0,
+      "stages": 449,
+      "refinements": 0,
+      "exactFallbacks": 0,
+      "senderAbstentions": 0
+    },
+    "local_dense": {
+      "decisions": 449,
+      "bytes": 449,
+      "senderNs": 394389166,
+      "receiverNs": 0,
+      "auditNs": 346294085,
+      "stages": 449,
+      "refinements": 0,
+      "exactFallbacks": 0,
+      "senderAbstentions": 0
+    },
+    "shared_dense": {
+      "decisions": 449,
+      "bytes": 30981,
+      "senderNs": 37165122,
+      "receiverNs": 365404339,
+      "auditNs": 346599115,
+      "stages": 449,
+      "refinements": 0,
+      "exactFallbacks": 0,
+      "senderAbstentions": 0
+    },
+    "half_exact": {
+      "decisions": 449,
+      "bytes": 13021,
+      "senderNs": 86845400,
+      "receiverNs": 11522443899,
+      "auditNs": 347264529,
+      "stages": 449,
+      "refinements": 0,
+      "exactFallbacks": 0,
+      "senderAbstentions": 0
+    },
+    "progressive": {
+      "decisions": 449,
+      "bytes": 10212,
+      "senderNs": 161710494,
+      "receiverNs": 12151770832,
+      "auditNs": 347233713,
+      "stages": 476,
+      "refinements": 27,
+      "exactFallbacks": 0,
+      "senderAbstentions": 0
+    }
+  },
+  "fixture": {
+    "fixture": true,
+    "arms": 5,
+    "probes": 69,
+    "cacheForgeryRejected": true,
+    "certificateForgeryRejected": true,
+    "byteForgeryRejected": true
+  },
+  "registry": {
+    "fresh": 16,
+    "oldC": 24,
+    "oldH": 16,
+    "exactStatementOverlap": 0
+  }
+}
