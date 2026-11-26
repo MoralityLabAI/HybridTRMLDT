@@ -1,0 +1,1533 @@
+{
+  "schema": "cog13b.checkpoint_quantum.v1",
+  "seed": 2026112603,
+  "counts": {
+    "train": 64,
+    "calibration": 64,
+    "ordinary": 64,
+    "deeper": 64
+  },
+  "evidence": "fresh public synthetic generator; development only",
+  "budgets": [
+    48,
+    96,
+    144
+  ],
+  "costWeights": [
+    10,
+    100,
+    1000
+  ],
+  "model": {
+    "weights": [
+      -5.837990402538409,
+      -7.450305804558594,
+      11.25913480467263,
+      2.224650230302428,
+      16.83406124890347,
+      1.1878290944062861,
+      -13.911196972355363,
+      -4.519810204060215,
+      30.005159998843798
+    ],
+    "collection": {
+      "verifier": 645,
+      "replay": 0,
+      "ruleVisits": 32101,
+      "membership": 75650,
+      "rank": 0,
+      "feature": 5805,
+      "dot": 0,
+      "checkpointRead": 0,
+      "checkpointWrite": 0,
+      "tapeRead": 0,
+      "tapeWrite": 0
+    },
+    "roots": 64
+  },
+  "audit": {
+    "runs": 240,
+    "verifierCalls": 26876,
+    "negativeFact": true,
+    "negativeCheckpoint": true,
+    "negativeCost": true
+  },
+  "splits": {
+    "calibration": {
+      "rr1_tape": {
+        "completed": [
+          2,
+          5,
+          10
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            0,
+            3,
+            7
+          ],
+          "1000": [
+            2,
+            4,
+            9
+          ]
+        },
+        "calls": 1152,
+        "replays": 802,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 10,
+        "longRoots": 0,
+        "evictions": 335,
+        "peakPacked": 5,
+        "peakLive": 5,
+        "peakBack": 0,
+        "peakTape": 60,
+        "peakPayload": 64,
+        "counts": {
+          "verifier": 1152,
+          "replay": 802,
+          "ruleVisits": 11118,
+          "membership": 25931,
+          "rank": 364,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 802,
+          "tapeWrite": 350
+        }
+      },
+      "rr4_tape": {
+        "completed": [
+          7,
+          25,
+          38
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            3,
+            9,
+            24
+          ],
+          "1000": [
+            6,
+            24,
+            37
+          ]
+        },
+        "calls": 1148,
+        "replays": 559,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 38,
+        "longRoots": 0,
+        "evictions": 120,
+        "peakPacked": 5,
+        "peakLive": 5,
+        "peakBack": 0,
+        "peakTape": 92,
+        "peakPayload": 96,
+        "counts": {
+          "verifier": 1148,
+          "replay": 559,
+          "ruleVisits": 16481,
+          "membership": 37752,
+          "rank": 214,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 559,
+          "tapeWrite": 589
+        }
+      },
+      "rr8_tape": {
+        "completed": [
+          20,
+          39,
+          56
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            3
+          ],
+          "100": [
+            6,
+            21,
+            34
+          ],
+          "1000": [
+            19,
+            37,
+            54
+          ]
+        },
+        "calls": 1090,
+        "replays": 394,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 56,
+        "longRoots": 0,
+        "evictions": 49,
+        "peakPacked": 5,
+        "peakLive": 5,
+        "peakBack": 0,
+        "peakTape": 112,
+        "peakPayload": 117,
+        "counts": {
+          "verifier": 1090,
+          "replay": 394,
+          "ruleVisits": 18959,
+          "membership": 42449,
+          "rank": 165,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 394,
+          "tapeWrite": 696
+        }
+      },
+      "rr1_resident8": {
+        "completed": [
+          13,
+          60,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            2,
+            13,
+            39
+          ],
+          "1000": [
+            9,
+            50,
+            64
+          ]
+        },
+        "calls": 717,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 0,
+        "peakPacked": 32,
+        "peakLive": 32,
+        "peakBack": 0,
+        "peakTape": 114,
+        "peakPayload": 120,
+        "counts": {
+          "verifier": 717,
+          "replay": 0,
+          "ruleVisits": 19147,
+          "membership": 42218,
+          "rank": 1209,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 717
+        }
+      },
+      "static_block": {
+        "completed": [
+          35,
+          60,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            1,
+            9
+          ],
+          "100": [
+            21,
+            36,
+            54
+          ],
+          "1000": [
+            32,
+            59,
+            64
+          ]
+        },
+        "calls": 717,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 0,
+        "peakPacked": 5,
+        "peakLive": 5,
+        "peakBack": 0,
+        "peakTape": 114,
+        "peakPayload": 117,
+        "counts": {
+          "verifier": 717,
+          "replay": 0,
+          "ruleVisits": 19147,
+          "membership": 42218,
+          "rank": 512,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 717
+        }
+      },
+      "rr1_packed": {
+        "completed": [
+          13,
+          60,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            1,
+            13,
+            37
+          ],
+          "1000": [
+            9,
+            49,
+            64
+          ]
+        },
+        "calls": 717,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 632,
+        "peakPacked": 32,
+        "peakLive": 5,
+        "peakBack": 29,
+        "peakTape": 114,
+        "peakPayload": 120,
+        "counts": {
+          "verifier": 717,
+          "replay": 0,
+          "ruleVisits": 19147,
+          "membership": 42218,
+          "rank": 1209,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 2414,
+          "checkpointWrite": 2414,
+          "tapeRead": 0,
+          "tapeWrite": 717
+        }
+      },
+      "rr4_packed": {
+        "completed": [
+          17,
+          60,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            3,
+            18,
+            40
+          ],
+          "1000": [
+            9,
+            51,
+            64
+          ]
+        },
+        "calls": 717,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 135,
+        "peakPacked": 30,
+        "peakLive": 5,
+        "peakBack": 27,
+        "peakTape": 114,
+        "peakPayload": 121,
+        "counts": {
+          "verifier": 717,
+          "replay": 0,
+          "ruleVisits": 19147,
+          "membership": 42218,
+          "rank": 317,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 520,
+          "checkpointWrite": 520,
+          "tapeRead": 0,
+          "tapeWrite": 717
+        }
+      },
+      "adaptive_tape": {
+        "completed": [
+          37,
+          60,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            12,
+            29,
+            39
+          ],
+          "1000": [
+            32,
+            57,
+            64
+          ]
+        },
+        "calls": 717,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 0,
+        "peakPacked": 5,
+        "peakLive": 5,
+        "peakBack": 0,
+        "peakTape": 114,
+        "peakPayload": 117,
+        "counts": {
+          "verifier": 717,
+          "replay": 0,
+          "ruleVisits": 34925,
+          "membership": 82166,
+          "rank": 1048,
+          "feature": 6453,
+          "dot": 6453,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 717
+        }
+      },
+      "adaptive_packed": {
+        "completed": [
+          37,
+          60,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            12,
+            29,
+            39
+          ],
+          "1000": [
+            32,
+            57,
+            64
+          ]
+        },
+        "calls": 717,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 0,
+        "peakPacked": 5,
+        "peakLive": 5,
+        "peakBack": 0,
+        "peakTape": 114,
+        "peakPayload": 117,
+        "counts": {
+          "verifier": 717,
+          "replay": 0,
+          "ruleVisits": 34925,
+          "membership": 82166,
+          "rank": 1048,
+          "feature": 6453,
+          "dot": 6453,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 717
+        }
+      },
+      "full_static_block": {
+        "completed": [
+          51,
+          64,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            21,
+            44,
+            62
+          ],
+          "1000": [
+            45,
+            64,
+            64
+          ]
+        },
+        "calls": 502,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 0,
+        "peakPacked": 5,
+        "peakLive": 5,
+        "peakBack": 0,
+        "peakTape": 86,
+        "peakPayload": 89,
+        "counts": {
+          "verifier": 502,
+          "replay": 0,
+          "ruleVisits": 17912,
+          "membership": 39389,
+          "rank": 512,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 502
+        }
+      }
+    },
+    "ordinary": {
+      "rr1_tape": {
+        "completed": [
+          6,
+          12,
+          20
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            1,
+            8,
+            13
+          ],
+          "1000": [
+            6,
+            11,
+            20
+          ]
+        },
+        "calls": 1152,
+        "replays": 807,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 20,
+        "longRoots": 0,
+        "evictions": 322,
+        "peakPacked": 6,
+        "peakLive": 6,
+        "peakBack": 0,
+        "peakTape": 60,
+        "peakPayload": 65,
+        "counts": {
+          "verifier": 1152,
+          "replay": 807,
+          "ruleVisits": 11086,
+          "membership": 26028,
+          "rank": 383,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 807,
+          "tapeWrite": 345
+        }
+      },
+      "rr4_tape": {
+        "completed": [
+          17,
+          38,
+          50
+        ],
+        "weighted": {
+          "10": [
+            0,
+            1,
+            3
+          ],
+          "100": [
+            8,
+            20,
+            36
+          ],
+          "1000": [
+            15,
+            35,
+            47
+          ]
+        },
+        "calls": 1079,
+        "replays": 528,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 50,
+        "longRoots": 0,
+        "evictions": 103,
+        "peakPacked": 6,
+        "peakLive": 6,
+        "peakBack": 0,
+        "peakTape": 93,
+        "peakPayload": 97,
+        "counts": {
+          "verifier": 1079,
+          "replay": 528,
+          "ruleVisits": 15993,
+          "membership": 36728,
+          "rank": 252,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 528,
+          "tapeWrite": 551
+        }
+      },
+      "rr8_tape": {
+        "completed": [
+          29,
+          51,
+          58
+        ],
+        "weighted": {
+          "10": [
+            0,
+            1,
+            7
+          ],
+          "100": [
+            15,
+            29,
+            44
+          ],
+          "1000": [
+            28,
+            47,
+            57
+          ]
+        },
+        "calls": 878,
+        "replays": 275,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 58,
+        "longRoots": 0,
+        "evictions": 38,
+        "peakPacked": 6,
+        "peakLive": 6,
+        "peakBack": 0,
+        "peakTape": 112,
+        "peakPayload": 115,
+        "counts": {
+          "verifier": 878,
+          "replay": 275,
+          "ruleVisits": 17113,
+          "membership": 38660,
+          "rank": 151,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 275,
+          "tapeWrite": 603
+        }
+      },
+      "rr1_resident8": {
+        "completed": [
+          25,
+          58,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            6,
+            26,
+            51
+          ],
+          "1000": [
+            20,
+            57,
+            64
+          ]
+        },
+        "calls": 622,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 0,
+        "peakPacked": 32,
+        "peakLive": 32,
+        "peakBack": 0,
+        "peakTape": 126,
+        "peakPayload": 132,
+        "counts": {
+          "verifier": 622,
+          "replay": 0,
+          "ruleVisits": 17329,
+          "membership": 38581,
+          "rank": 1126,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 622
+        }
+      },
+      "static_block": {
+        "completed": [
+          44,
+          62,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            3,
+            13
+          ],
+          "100": [
+            24,
+            45,
+            58
+          ],
+          "1000": [
+            40,
+            60,
+            64
+          ]
+        },
+        "calls": 622,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 0,
+        "peakPacked": 6,
+        "peakLive": 6,
+        "peakBack": 0,
+        "peakTape": 126,
+        "peakPayload": 129,
+        "counts": {
+          "verifier": 622,
+          "replay": 0,
+          "ruleVisits": 17329,
+          "membership": 38581,
+          "rank": 512,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 622
+        }
+      },
+      "rr1_packed": {
+        "completed": [
+          25,
+          58,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            5,
+            25,
+            50
+          ],
+          "1000": [
+            20,
+            57,
+            64
+          ]
+        },
+        "calls": 622,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 529,
+        "peakPacked": 32,
+        "peakLive": 6,
+        "peakBack": 29,
+        "peakTape": 126,
+        "peakPayload": 132,
+        "counts": {
+          "verifier": 622,
+          "replay": 0,
+          "ruleVisits": 17329,
+          "membership": 38581,
+          "rank": 1126,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 2063,
+          "checkpointWrite": 2063,
+          "tapeRead": 0,
+          "tapeWrite": 622
+        }
+      },
+      "rr4_packed": {
+        "completed": [
+          25,
+          59,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            1,
+            3
+          ],
+          "100": [
+            8,
+            25,
+            52
+          ],
+          "1000": [
+            24,
+            56,
+            64
+          ]
+        },
+        "calls": 622,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 113,
+        "peakPacked": 32,
+        "peakLive": 6,
+        "peakBack": 29,
+        "peakTape": 126,
+        "peakPayload": 134,
+        "counts": {
+          "verifier": 622,
+          "replay": 0,
+          "ruleVisits": 17329,
+          "membership": 38581,
+          "rank": 297,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 447,
+          "checkpointWrite": 447,
+          "tapeRead": 0,
+          "tapeWrite": 622
+        }
+      },
+      "adaptive_tape": {
+        "completed": [
+          43,
+          62,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            15,
+            32,
+            44
+          ],
+          "1000": [
+            39,
+            61,
+            64
+          ]
+        },
+        "calls": 622,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 0,
+        "peakPacked": 6,
+        "peakLive": 6,
+        "peakBack": 0,
+        "peakTape": 126,
+        "peakPayload": 130,
+        "counts": {
+          "verifier": 622,
+          "replay": 0,
+          "ruleVisits": 31394,
+          "membership": 74501,
+          "rank": 928,
+          "feature": 5598,
+          "dot": 5598,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 622
+        }
+      },
+      "adaptive_packed": {
+        "completed": [
+          43,
+          62,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            15,
+            32,
+            44
+          ],
+          "1000": [
+            39,
+            61,
+            64
+          ]
+        },
+        "calls": 622,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 0,
+        "peakPacked": 6,
+        "peakLive": 6,
+        "peakBack": 0,
+        "peakTape": 126,
+        "peakPayload": 130,
+        "counts": {
+          "verifier": 622,
+          "replay": 0,
+          "ruleVisits": 31394,
+          "membership": 74501,
+          "rank": 928,
+          "feature": 5598,
+          "dot": 5598,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 622
+        }
+      },
+      "full_static_block": {
+        "completed": [
+          52,
+          64,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            23,
+            46,
+            63
+          ],
+          "1000": [
+            47,
+            64,
+            64
+          ]
+        },
+        "calls": 485,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 64,
+        "longRoots": 0,
+        "evictions": 0,
+        "peakPacked": 6,
+        "peakLive": 6,
+        "peakBack": 0,
+        "peakTape": 90,
+        "peakPayload": 93,
+        "counts": {
+          "verifier": 485,
+          "replay": 0,
+          "ruleVisits": 17609,
+          "membership": 38721,
+          "rank": 512,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 485
+        }
+      }
+    },
+    "deeper": {
+      "rr1_tape": {
+        "completed": [
+          0,
+          0,
+          0
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            0,
+            0,
+            0
+          ],
+          "1000": [
+            0,
+            0,
+            0
+          ]
+        },
+        "calls": 1152,
+        "replays": 800,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 0,
+        "longRoots": 19,
+        "evictions": 344,
+        "peakPacked": 7,
+        "peakLive": 7,
+        "peakBack": 0,
+        "peakTape": 60,
+        "peakPayload": 67,
+        "counts": {
+          "verifier": 1152,
+          "replay": 800,
+          "ruleVisits": 17022,
+          "membership": 36905,
+          "rank": 352,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 800,
+          "tapeWrite": 352
+        }
+      },
+      "rr4_tape": {
+        "completed": [
+          1,
+          1,
+          3
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            0,
+            1,
+            1
+          ],
+          "1000": [
+            1,
+            1,
+            3
+          ]
+        },
+        "calls": 1152,
+        "replays": 512,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 3,
+        "longRoots": 19,
+        "evictions": 149,
+        "peakPacked": 7,
+        "peakLive": 7,
+        "peakBack": 0,
+        "peakTape": 96,
+        "peakPayload": 103,
+        "counts": {
+          "verifier": 1152,
+          "replay": 512,
+          "ruleVisits": 26474,
+          "membership": 58189,
+          "rank": 161,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 512,
+          "tapeWrite": 640
+        }
+      },
+      "rr8_tape": {
+        "completed": [
+          1,
+          7,
+          12
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            1,
+            1,
+            1
+          ],
+          "1000": [
+            1,
+            6,
+            7
+          ]
+        },
+        "calls": 1152,
+        "replays": 346,
+        "started": 64,
+        "longSolved": 0,
+        "shortSolved": 12,
+        "longRoots": 19,
+        "evictions": 92,
+        "peakPacked": 7,
+        "peakLive": 7,
+        "peakBack": 0,
+        "peakTape": 119,
+        "peakPayload": 125,
+        "counts": {
+          "verifier": 1152,
+          "replay": 346,
+          "ruleVisits": 31367,
+          "membership": 67647,
+          "rank": 113,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 346,
+          "tapeWrite": 806
+        }
+      },
+      "rr1_resident8": {
+        "completed": [
+          0,
+          6,
+          27
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            0,
+            0,
+            1
+          ],
+          "1000": [
+            0,
+            1,
+            15
+          ]
+        },
+        "calls": 1152,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 1,
+        "shortSolved": 26,
+        "longRoots": 19,
+        "evictions": 0,
+        "peakPacked": 41,
+        "peakLive": 41,
+        "peakBack": 0,
+        "peakTape": 160,
+        "peakPayload": 193,
+        "counts": {
+          "verifier": 1152,
+          "replay": 0,
+          "ruleVisits": 44662,
+          "membership": 94702,
+          "rank": 1274,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 1152
+        }
+      },
+      "static_block": {
+        "completed": [
+          18,
+          34,
+          48
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            8,
+            19,
+            25
+          ],
+          "1000": [
+            17,
+            32,
+            44
+          ]
+        },
+        "calls": 1152,
+        "replays": 0,
+        "started": 56,
+        "longSolved": 4,
+        "shortSolved": 44,
+        "longRoots": 19,
+        "evictions": 0,
+        "peakPacked": 7,
+        "peakLive": 7,
+        "peakBack": 0,
+        "peakTape": 160,
+        "peakPayload": 167,
+        "counts": {
+          "verifier": 1152,
+          "replay": 0,
+          "ruleVisits": 42633,
+          "membership": 86515,
+          "rank": 448,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 1152
+        }
+      },
+      "rr1_packed": {
+        "completed": [
+          0,
+          6,
+          27
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            0,
+            0,
+            1
+          ],
+          "1000": [
+            0,
+            1,
+            15
+          ]
+        },
+        "calls": 1152,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 1,
+        "shortSolved": 26,
+        "longRoots": 19,
+        "evictions": 1115,
+        "peakPacked": 41,
+        "peakLive": 7,
+        "peakBack": 38,
+        "peakTape": 160,
+        "peakPayload": 193,
+        "counts": {
+          "verifier": 1152,
+          "replay": 0,
+          "ruleVisits": 44662,
+          "membership": 94702,
+          "rank": 1274,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 5541,
+          "checkpointWrite": 5699,
+          "tapeRead": 0,
+          "tapeWrite": 1152
+        }
+      },
+      "rr4_packed": {
+        "completed": [
+          1,
+          6,
+          27
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            0,
+            1,
+            1
+          ],
+          "1000": [
+            1,
+            5,
+            15
+          ]
+        },
+        "calls": 1152,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 1,
+        "shortSolved": 26,
+        "longRoots": 19,
+        "evictions": 265,
+        "peakPacked": 41,
+        "peakLive": 7,
+        "peakBack": 38,
+        "peakTape": 160,
+        "peakPayload": 193,
+        "counts": {
+          "verifier": 1152,
+          "replay": 0,
+          "ruleVisits": 44549,
+          "membership": 94386,
+          "rank": 322,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 1194,
+          "checkpointWrite": 1362,
+          "tapeRead": 0,
+          "tapeWrite": 1152
+        }
+      },
+      "adaptive_tape": {
+        "completed": [
+          18,
+          35,
+          49
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            2,
+            14,
+            18
+          ],
+          "1000": [
+            16,
+            31,
+            41
+          ]
+        },
+        "calls": 1152,
+        "replays": 0,
+        "started": 57,
+        "longSolved": 13,
+        "shortSolved": 36,
+        "longRoots": 19,
+        "evictions": 0,
+        "peakPacked": 7,
+        "peakLive": 7,
+        "peakBack": 0,
+        "peakTape": 160,
+        "peakPayload": 167,
+        "counts": {
+          "verifier": 1152,
+          "replay": 0,
+          "ruleVisits": 84680,
+          "membership": 177969,
+          "rank": 1480,
+          "feature": 10503,
+          "dot": 10503,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 1152
+        }
+      },
+      "adaptive_packed": {
+        "completed": [
+          18,
+          35,
+          49
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            2,
+            14,
+            18
+          ],
+          "1000": [
+            16,
+            31,
+            41
+          ]
+        },
+        "calls": 1152,
+        "replays": 0,
+        "started": 57,
+        "longSolved": 13,
+        "shortSolved": 36,
+        "longRoots": 19,
+        "evictions": 0,
+        "peakPacked": 7,
+        "peakLive": 7,
+        "peakBack": 0,
+        "peakTape": 160,
+        "peakPayload": 167,
+        "counts": {
+          "verifier": 1152,
+          "replay": 0,
+          "ruleVisits": 84680,
+          "membership": 177969,
+          "rank": 1480,
+          "feature": 10503,
+          "dot": 10503,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 1152
+        }
+      },
+      "full_static_block": {
+        "completed": [
+          26,
+          49,
+          64
+        ],
+        "weighted": {
+          "10": [
+            0,
+            0,
+            0
+          ],
+          "100": [
+            0,
+            16,
+            28
+          ],
+          "1000": [
+            22,
+            43,
+            59
+          ]
+        },
+        "calls": 988,
+        "replays": 0,
+        "started": 64,
+        "longSolved": 19,
+        "shortSolved": 45,
+        "longRoots": 19,
+        "evictions": 0,
+        "peakPacked": 7,
+        "peakLive": 7,
+        "peakBack": 0,
+        "peakTape": 150,
+        "peakPayload": 156,
+        "counts": {
+          "verifier": 988,
+          "replay": 0,
+          "ruleVisits": 50300,
+          "membership": 106699,
+          "rank": 512,
+          "feature": 0,
+          "dot": 0,
+          "checkpointRead": 0,
+          "checkpointWrite": 0,
+          "tapeRead": 0,
+          "tapeWrite": 988
+        }
+      }
+    }
+  }
+}
