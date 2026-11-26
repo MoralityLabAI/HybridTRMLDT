@@ -79,3 +79,59 @@ BM25 top-1 links a gold leaf for 0 of 134 items. It flags everything because it 
 leaf. The default packet holds a gold leaf for 58/58 clean, 51/53 decoy and 15/23 off-receipt
 items, at a mean of 1,235, 1,297 and 900 packet tokens. Packet tokens use the labelled estimate
 ceil(UTF-8 bytes / 4) unless `MCP03_TOKENIZER` names a tokenizer.
+
+### Inky at 16K (`MCP/results/receipt_goblin/inky_16k`)
+
+Inkling-2-Mini on the squid5080 engine (nvfp4, MTP on, RTX 5080 Laptop), run through `receipt-goblin`
+with a 16,384-token context limit, 2,048 output tokens per call, temperature 0 and at most one repair.
+`scripts/inky_16k.sh` ran all 134 items in each arm on 2026-11-26. The server sized its own context
+to 51,200 tokens (an explicit `--ctx 16384` exits when another process takes VRAM during the load). The
+largest provider input count for any item, summed over its calls, was 8,735 tokens, so every call fit
+in 16,384 with its output budget.
+
+| Arm | clean passed | decoy contradicted on a linked leaf | decoy flagged, any verdict | off_receipt contradicted on a linked leaf | off_receipt flagged |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `inky_packet`: values shown, 40 lexical + 8 neighbours | 58/58 | 42/53 | 52/53 | 13/23 | 23/23 |
+| `inky_blind`: values withheld, same packet | 52/58 | 47/53 | 52/53 | 14/23 | 23/23 |
+| `inky_packet_nonb`: values shown, no neighbours, 1,500 tokens | 49/58 | 25/53 | 51/53 | 12/23 | 23/23 |
+
+The other flags are `unsupported` (Inky answered `NONE`) and `unparsed`. Every `unparsed` row (8, 7
+and 5 per arm) is two empty answers: the reasoning used the whole 2,048-token budget on the first
+call and again on the repair.
+
+- Linking: with values shown, Inky linked a gold leaf for 57/58 clean, 42/53 decoy and 13/23
+  off-receipt items. Each decoy it contradicted was contradicted on its gold leaf. The packet held
+  a gold leaf for 51 of the 53 decoys, so 42 of those 51 were linked.
+- Off-receipt items: the packet held a gold leaf for 15 of 23, and Inky linked 13 of those 15. It
+  answered `NONE` for 9 items.
+- Passed decoy: one decoy passed in both shown-value arms. "BM25 ⟦26⟧ patches" was linked to
+  `submitted_instances = 26`; the write-up's original 14 is `completed_instances`.
+- Blind mode: withholding values cost 6 clean items and added 5 decoys contradicted on a linked
+  leaf. With values shown, the
+  decoy failures are mostly reasoning that ran out of budget (7 unparsed, against 4 when blind).
+- Neighbours: without them the packet holds a gold leaf for 30/53 decoys instead of 51/53, and decoys
+  contradicted on a linked leaf drop from 42 to 25.
+- Speed: the shown-value arm took 12 minutes for 134 items, 5.6 s of inference per item on average.
+  The mean provider input was 1.8K to 2.7K tokens per variant.
+
+### Through the goose CLI (`MCP/results/receipt_goblin/goose_cli_16k`)
+
+`scripts/goose_demo.py` runs claims through goose 1.53.0 itself: `goose run --no-profile` with the
+Receipt Goblin server as its only extension, the same Inky server, and `GOOSE_CONTEXT_LIMIT=16384`.
+Goose is told to call `claim_packet`, choose a leaf and call `certify`. The script reads the tool
+calls and the last certify result from goose's JSON transcript. It ran on 12 items, 4 per variant,
+sampled with seed 0.
+
+| | clean | decoy | off_receipt |
+| --- | ---: | ---: | ---: |
+| runs that called `claim_packet` then `certify` | 4/4 | 4/4 | 4/4 |
+| right verdict (passed / flagged) | 4/4 | 4/4 | 4/4 |
+| gold leaf linked | 3/4 | 3/4 | 3/4 |
+
+Two of the three runs without a gold leaf flagged with `NONE`. The third, a clean "109", linked the
+top-level `swebench_lite/summary.json :: instances = 109`; the gold annotation lists only the per-arm
+copies. A run took 5.7 to 8.9 s. Goose's token count for a whole run, its system prompt and tool
+schemas included, was 6.1K to 12.2K.
+
+Both runs need the squid5080 server; `scripts/with_squid.sh WORK -- COMMAND` queues it for the card,
+runs the command, and stops it afterwards. `inky_16k.sh` uses it when no server answers.

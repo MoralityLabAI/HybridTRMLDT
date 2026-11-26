@@ -1,0 +1,20 @@
+[2026-11-26 21:34:30] queueing squid5080 for a 15000M lease
+[vram] 15.9 GiB card: --mode nvfp4 (the fp8 default does not fit; pass --mode to override)
+[vram] 15.9 GiB card: embed table in pinned host RAM (--embed-device to keep it on the GPU)
+[weights] Embed table pinned in zero-copy host RAM (saved 0.86 GiB VRAM)
+[weights] Loaded mode=nvfp4 in 397.98s | VRAM=13.75 GiB (1 arena, 995 tensors) | MTP=on | Ablation=off
+[vram] Fitted to 1.22 GiB free: ctx 65536 -> 51200, kv fp8 -> q4
+[2026-11-26 21:58:48] server ready (started here: 1); running: bash -c bash MCP/receipt_goblin/scripts/inky_16k.sh C:/Users/patri/Documents/Codex/receipt-goblin-work/inky16k; PYTHONIOENCODING=utf-8 C:/Users/patri/AppData/Local/Programs/Python/Python312/python.exe MCP/receipt_goblin/scripts/goose_demo.py --out C:/Users/patri/Documents/Codex/receipt-goblin-work/goose16k
+[2026-11-26 21:58:49] server answers on 18090
+[2026-11-26 21:58:49] arm inky_packet --limit 6
+[2026-11-26 21:59:38] arm inky_packet exit 0 rows 6
+[2026-11-26 21:59:38] pilot: 1 of 6 without a certified verdict
+[2026-11-26 21:59:38] arm inky_packet 
+[2026-11-26 22:11:39] arm inky_packet exit 0 rows 134
+[2026-11-26 22:11:39] arm inky_blind --blind
+[2026-11-26 22:25:17] arm inky_blind exit 0 rows 134
+[2026-11-26 22:25:17] arm inky_packet_nonb --k-neighbours 0 --budget 1500
+[2026-11-26 22:37:17] arm inky_packet_nonb exit 0 rows 134
+[2026-11-26 22:37:17] done; summary in C:/Users/patri/Documents/Codex/receipt-goblin-work/inky16k/summary.json
+[2026-11-26 22:38:47] command exit 0
+[squid5080] stop signal sent

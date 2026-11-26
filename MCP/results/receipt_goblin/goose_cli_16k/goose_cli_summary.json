@@ -1,0 +1,37 @@
+{
+ "goose_cli": {
+  "clean": {
+   "n": 4,
+   "correct": 4,
+   "rate": 1.0,
+   "verdicts": {
+    "supported": 4
+   },
+   "linked_gold": 0.75,
+   "certified": 4
+  },
+  "decoy": {
+   "n": 4,
+   "correct": 4,
+   "rate": 1.0,
+   "verdicts": {
+    "contradicted": 3,
+    "unsupported": 1
+   },
+   "linked_gold": 0.75,
+   "certified": 4
+  },
+  "off_receipt": {
+   "n": 4,
+   "correct": 4,
+   "rate": 1.0,
+   "verdicts": {
+    "contradicted": 3,
+    "unsupported": 1
+   },
+   "linked_gold": 0.75,
+   "certified": 4
+  },
+  "balanced": 1.0
+ }
+}

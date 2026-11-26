@@ -1,0 +1,156 @@
+{
+ "inky_blind": {
+  "clean": {
+   "n": 58,
+   "correct": 52,
+   "rate": 0.8966,
+   "verdicts": {
+    "contradicted": 3,
+    "supported": 52,
+    "unparsed": 1,
+    "unsupported": 2
+   },
+   "linked_gold": 0.8793,
+   "packet_gold_recall": 1.0,
+   "packet_tokens_mean": 1162.0,
+   "provider_input_tokens_mean": 2099.2,
+   "provider_output_tokens_mean": 833.1,
+   "repairs": 6
+  },
+  "decoy": {
+   "n": 53,
+   "correct": 52,
+   "rate": 0.9811,
+   "verdicts": {
+    "contradicted": 47,
+    "supported": 1,
+    "unparsed": 4,
+    "unsupported": 1
+   },
+   "linked_gold": 0.8491,
+   "packet_gold_recall": 0.9623,
+   "packet_tokens_mean": 1216.8,
+   "provider_input_tokens_mean": 2299.8,
+   "provider_output_tokens_mean": 978.8,
+   "repairs": 8
+  },
+  "off_receipt": {
+   "n": 23,
+   "correct": 23,
+   "rate": 1.0,
+   "verdicts": {
+    "contradicted": 14,
+    "unparsed": 2,
+    "unsupported": 7
+   },
+   "linked_gold": 0.6087,
+   "packet_gold_recall": 0.6522,
+   "packet_tokens_mean": 843.3,
+   "provider_input_tokens_mean": 1653.6,
+   "provider_output_tokens_mean": 1073.3,
+   "repairs": 3
+  },
+  "balanced": 0.9592
+ },
+ "inky_packet": {
+  "clean": {
+   "n": 58,
+   "correct": 58,
+   "rate": 1.0,
+   "verdicts": {
+    "supported": 58
+   },
+   "linked_gold": 0.9828,
+   "packet_gold_recall": 1.0,
+   "packet_tokens_mean": 1235.2,
+   "provider_input_tokens_mean": 2114.7,
+   "provider_output_tokens_mean": 469.8,
+   "repairs": 1
+  },
+  "decoy": {
+   "n": 53,
+   "correct": 52,
+   "rate": 0.9811,
+   "verdicts": {
+    "contradicted": 42,
+    "supported": 1,
+    "unparsed": 7,
+    "unsupported": 3
+   },
+   "linked_gold": 0.7925,
+   "packet_gold_recall": 0.9623,
+   "packet_tokens_mean": 1296.7,
+   "provider_input_tokens_mean": 2658.3,
+   "provider_output_tokens_mean": 1284.5,
+   "repairs": 10
+  },
+  "off_receipt": {
+   "n": 23,
+   "correct": 23,
+   "rate": 1.0,
+   "verdicts": {
+    "contradicted": 13,
+    "unparsed": 1,
+    "unsupported": 9
+   },
+   "linked_gold": 0.5652,
+   "packet_gold_recall": 0.6522,
+   "packet_tokens_mean": 899.9,
+   "provider_input_tokens_mean": 1842.2,
+   "provider_output_tokens_mean": 1007.6,
+   "repairs": 3
+  },
+  "balanced": 0.9937
+ },
+ "inky_packet_nonb": {
+  "clean": {
+   "n": 58,
+   "correct": 49,
+   "rate": 0.8448,
+   "verdicts": {
+    "supported": 49,
+    "unsupported": 9
+   },
+   "linked_gold": 0.8276,
+   "packet_gold_recall": 0.8448,
+   "packet_tokens_mean": 943.3,
+   "provider_input_tokens_mean": 1771.5,
+   "provider_output_tokens_mean": 573.2,
+   "repairs": 2
+  },
+  "decoy": {
+   "n": 53,
+   "correct": 51,
+   "rate": 0.9623,
+   "verdicts": {
+    "contradicted": 25,
+    "supported": 2,
+    "unparsed": 4,
+    "unsupported": 22
+   },
+   "linked_gold": 0.4717,
+   "packet_gold_recall": 0.566,
+   "packet_tokens_mean": 970.5,
+   "provider_input_tokens_mean": 1969.7,
+   "provider_output_tokens_mean": 1021.2,
+   "repairs": 7
+  },
+  "off_receipt": {
+   "n": 23,
+   "correct": 23,
+   "rate": 1.0,
+   "verdicts": {
+    "contradicted": 12,
+    "unparsed": 1,
+    "unsupported": 10
+   },
+   "linked_gold": 0.5217,
+   "packet_gold_recall": 0.6087,
+   "packet_tokens_mean": 893.8,
+   "provider_input_tokens_mean": 1936.5,
+   "provider_output_tokens_mean": 1086.0,
+   "repairs": 4
+  },
+  "balanced": 0.9357
+ }
+}
