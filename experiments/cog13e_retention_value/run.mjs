@@ -1,0 +1,22 @@
+import {readFileSync,writeFileSync,mkdirSync} from "node:fs";
+import {join,resolve,dirname} from "node:path";
+import {fileURLToPath} from "node:url";
+import {createHash} from "node:crypto";
+import {gzipSync} from "node:zlib";
+import {suite} from "./core.mjs";
+import {pairedAnalysis} from "./paired.mjs";
+const out=process.argv[2];if(!out)throw Error("usage: node run.mjs NEW_OUTPUT_DIR");
+const dir=resolve(out),here=dirname(fileURLToPath(import.meta.url));
+mkdirSync(dir);const r=suite(true),paired=pairedAnalysis(r);
+const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+if(!equal(r.summary,JSON.parse(readFileSync(join(here,"results.json"),"utf8"))))throw Error("summary mismatch");
+if(!equal(paired,JSON.parse(readFileSync(join(here,"paired_results.json"),"utf8"))))throw Error("paired result mismatch");
+const hashes={};function emit(name,data){writeFileSync(join(dir,name),data,{flag:"wx"});hashes[name]=createHash("sha256").update(data).digest("hex");}
+const json=x=>JSON.stringify(x,null,2)+"\n",jsonl=x=>x.map(a=>JSON.stringify(a)).join("\n")+"\n";
+emit("summary.json",json(r.summary));emit("paired.json",json(paired));emit("registry.json",json(r.tasks));
+if(!r.trainingRows.every(x=>x.split==="train")||new Set(r.trainingRows.map(x=>x.root)).size!==64)throw Error("training custody");
+emit("retention_train.jsonl.gz",gzipSync(jsonl(r.trainingRows)));
+emit("train_receipts.json",json(r.trainReceipts));
+emit("replay.jsonl.gz",gzipSync(jsonl(r.runs)));
+writeFileSync(join(dir,"manifest.json"),json({schema:"cog13e.exports.v1",hashes,trainingRows:r.trainingRows.length,runCount:r.runs.length,evidence:"synthetic trace simulation; no native proof/CPU/RAM evidence"}),{flag:"wx"});
+console.log(JSON.stringify({audit:r.summary.audit,trainingRows:r.summary.trainingRows,manifest:hashes},null,2));
