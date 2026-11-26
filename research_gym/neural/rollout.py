@@ -222,6 +222,8 @@ def train_proposer(
     steps: int,
     seed: int,
     learning_rate: float,
+    mms_options: dict | None = None,
+    mms_receipt: dict | None = None,
 ) -> list[float]:
     if not examples:
         return []
@@ -241,27 +243,52 @@ def train_proposer(
         [SOUNDNESS_TYPES.index(value) for value in provenance_targets],
         dtype=torch.long,
     )
+    memory = None
+    original = model.recurrent
+    if mms_options and mms_options.get("mib",0):
+        if any(row.split != "train" for row in examples):
+            raise ValueError("MMS storyworld bank requires train-only examples")
+        from research_gym.neural.mms import ExposedGRUCell,MechanisticMemory
+        model.recurrent = ExposedGRUCell(original)
+        try:
+            memory = MechanisticMemory(model.recurrent.recurrent,
+                mib=mms_options["mib"],mode=mms_options.get("mode","bpd"),
+                rank=mms_options.get("rank",16),topk=mms_options.get("topk",4),
+                ratio=mms_options.get("ratio",.2),refresh=mms_options.get("refresh",128),
+                max_age=mms_options.get("max_age",32768),
+                map_file=mms_options.get("map_file",""),map_sha=mms_options.get("map_sha",""))
+        except BaseException:
+            model.recurrent = original
+            raise
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
     losses = []
     model.train()
     generator = random.Random(seed)
     batch_size = min(64, len(examples))
-    for _ in range(steps):
-        indices = generator.sample(range(len(examples)), batch_size)
-        optimizer.zero_grad()
-        output = model(features[indices])
-        loss = (
-            nn.functional.cross_entropy(output.action_logits, action_y[indices])
-            + nn.functional.cross_entropy(output.provenance_logits, provenance_y[indices])
-            + 0.15
-            * nn.functional.cross_entropy(
-                output.mode_logits,
-                torch.zeros(len(indices), dtype=torch.long),
-            )
-        )
-        loss.backward()
-        optimizer.step()
-        losses.append(float(loss.detach().item()))
+    try:
+        for step in range(steps):
+            indices = generator.sample(range(len(examples)), batch_size)
+            optimizer.zero_grad()
+            from contextlib import nullcontext
+            with (memory.capture(torch.tensor(indices),step,model.recurrence_steps//2,model.recurrence_steps)
+                  if memory else nullcontext()):
+                output = model(features[indices])
+                loss = (
+                    nn.functional.cross_entropy(output.action_logits, action_y[indices])
+                    + nn.functional.cross_entropy(output.provenance_logits, provenance_y[indices])
+                    + 0.15
+                    * nn.functional.cross_entropy(
+                        output.mode_logits,
+                        torch.zeros(len(indices), dtype=torch.long),
+                    )
+                )
+                loss.backward()
+            optimizer.step()
+            losses.append(float(loss.detach().item()))
+    finally:
+        model.recurrent = original
+    if memory is not None and mms_receipt is not None:
+        mms_receipt.update(memory.receipt())
     model.eval()
     return losses
 
