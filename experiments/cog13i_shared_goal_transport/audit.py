@@ -126,7 +126,7 @@ def factors_setup():
             'shared_rank4':8*(4*16+4*16+4*12+12*12+12+12+1),
             'shared_q4':8*(4*16+4*16+4*12+12*12+12+12+1+4*2),
             'exact_action_rank4':8*(4*16+12*16+4*12+12*12+12+12+1),
-            'exact_action_q4':8*(4*16+12*16+4*12+12*12+12*12+1+4*2)}
+            'exact_action_q4':8*(4*16+12*16+4*12+12*12+12+12+1+4*2)}
 
 
 def pack_shared(g, options, mode, factors, scales):
