@@ -79,7 +79,7 @@ async function portfolio(backend,arm,cases,limit){
  let next=0,tick=0,opens=0,evictions=0,pressureEvictions=0,attempted=0,replied=0,unknown=0,executed=0,restored=0,peakLive=0,reserve=128*1048576,stop="all_terminal",error=null;
  const spent=()=>backend.sample().cpu-start.cpu;
  const within=()=>spent()<limit.cpu&&backend.now()-wall0<limit.wallMs;
- const emit=(kind,data={})=>{const event={kind,...data,cgroup:backend.sample(),elapsedMs:backend.now()-wall0};events.push(event);backend.event?.(event);return event;};
+ const emit=(kind,data={})=>{const event=JSON.parse(JSON.stringify({kind,...data,cgroup:backend.sample(),elapsedMs:backend.now()-wall0}));events.push(event);backend.event?.(event);return event;};
  const close=async(s,reason)=>{
   live.delete(s.root);const r=await s.handle.close();
   if(reason==="slot"||reason==="before_open"||reason==="before_cert"||reason==="after_reply"){evictions++;if(reason!=="slot")pressureEvictions++;}
@@ -113,7 +113,7 @@ async function portfolio(backend,arm,cases,limit){
     try{
      const handle=await backend.open(r.c,arm.slots,session,within);
      const after=backend.sample();reserve=Math.max(reserve,Math.max(0,after.current-before.current),handle.peakDelta??0);
-     if(initial.has(i))check(equal(initial.get(i),handle.initial),"root goals changed on reopen");else initial.set(i,handle.initial);
+     if(initial.has(i)&&!equal(initial.get(i),handle.initial)){await handle.close();throw Error("root goals changed on reopen");}else initial.set(i,handle.initial);
      s={root:i,session,handle,id:0,cache:[],last:tick,startCPU:after.cpu-before.cpu,queryCPU:0,executed:0,recent:[]};live.set(i,s);peakLive=Math.max(peakLive,live.size);
      emit("opened",{root:i,session,initial:handle.initial,startCPU:s.startCPU,anon:handle.anon(),reserve});
     }catch(e){r.terminal=true;r.reason="startup_unknown";unknown++;emit("unknown",{root:i,session,stage:"open",error:String(e)});if(!within()){stop="budget_open";break;}continue;}
