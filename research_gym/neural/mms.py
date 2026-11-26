@@ -140,7 +140,7 @@ class MechanisticMemory:
         self.bank, self.v, self.u = None, None, None
         self.page_pool, self.site_name = None, None
         self.map_step, self.map_cosine = -1, None
-        self.admitted = self.updates = self.map_refreshes = 0
+        self.admitted = self.updates = self.map_refreshes = self.unused_captures = 0
         self.cpu_seconds = 0.
         self.native = hasattr(module, 'V') and hasattr(module, 'U')
         self.map_kind = 'native_live_bpd' if self.native else ('native_export_unverified_semantics' if map_file else 'svd_seed_proxy')
@@ -241,7 +241,7 @@ class MechanisticMemory:
         return out.to(gradient.dtype)
 
     @contextmanager
-    def capture(self, keys, step, visit, visits, *, extra_visits=0, key_stride=None):
+    def capture(self, keys, step, visit, visits, *, extra_visits=0, key_stride=None, allow_unused=False):
         if not 0 <= visit < visits or step < 0 or extra_visits < 0:
             raise ValueError('invalid visit/step')
         if next(self.module.parameters()).device.type != 'cpu':
@@ -278,17 +278,22 @@ class MechanisticMemory:
             yield
         finally:
             handle.remove()
+        if calls == visits + extra_visits and backward_calls == 0 and allow_unused:
+            self.unused_captures += 1
+            return
         if calls != visits + extra_visits or backward_calls != 1:
             raise ValueError(f'MMS expected {visits + extra_visits} site visits and one backward, got {calls}/{backward_calls}')
 
     def state_dict(self):
         return dict(bank=None if self.bank is None else self.bank.state_dict(), v=self.v, u=self.u,
                     map_step=self.map_step, map_cosine=self.map_cosine, admitted=self.admitted,
-                    updates=self.updates, map_refreshes=self.map_refreshes, cpu_seconds=self.cpu_seconds)
+                    updates=self.updates, map_refreshes=self.map_refreshes, cpu_seconds=self.cpu_seconds,
+                    unused_captures=self.unused_captures)
 
     def load_state_dict(self, state):
         for k in ('v','u','map_step','map_cosine','admitted','updates','map_refreshes','cpu_seconds'):
             setattr(self, k, state[k])
+        self.unused_captures = state.get('unused_captures', 0)
         if state['bank'] is not None:
             self.bank = GradientBank(self.mib, state['bank']['shape'])
             self.bank.load_state_dict(state['bank'])
@@ -297,6 +302,7 @@ class MechanisticMemory:
         return dict(mode=self.mode, map_kind=self.map_kind, map_cosine=self.map_cosine,
                     map_refreshes=self.map_refreshes, admitted=self.admitted,
                     sampled_rows=self.updates, extra_process_cpu_seconds=self.cpu_seconds,
+                    unused_captures=self.unused_captures,
                     bank=None if self.bank is None else self.bank.receipt())
 
 

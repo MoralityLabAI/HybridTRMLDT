@@ -28,23 +28,29 @@ class SpatialMemory:
             maps=maps)
         self.step=0
         self.unavailable_fallbacks=0
+        self.actual_selections=dict.fromkeys(modules,0)
 
     @contextmanager
-    def capture(self,ids,counts,extra=None):
+    def capture(self,ids,counts,extra=None,selected_visits=None,eligible=None):
         chosen=self.memory.select(self.step)
         name=chosen
-        if not counts.get(name,0):
-            name=next(n for n in self.memory.sites if counts.get(n,0))
+        available=[n for n in self.memory.sites if counts.get(n,0) and (eligible is None or n in eligible)]
+        if not available:
+            raise ValueError('no eligible MMS site')
+        if name not in available:
+            name=available[0]
             self.unavailable_fallbacks+=1
         for attr,wrapper in self.wrappers.items():setattr(self.model,attr,wrapper)
         try:
             visits=counts[name]
-            with self.memory.sites[name].capture(ids,self.step,visits//2,visits,
-                    extra_visits=(extra or {}).get(name,0),key_stride=128):
+            visit=(selected_visits or {}).get(name,visits//2)
+            self.actual_selections[name]+=1
+            with self.memory.sites[name].capture(ids,self.step,visit,visits,
+                    extra_visits=(extra or {}).get(name,0),key_stride=128,allow_unused=True):
                 yield
         finally:
             for attr,original in self.originals.items():setattr(self.model,attr,original)
         self.step+=1
 
     def receipt(self):
-        return dict(updates=self.step,unavailable_fallbacks=self.unavailable_fallbacks,**self.memory.receipt())
+        return dict(updates=self.step,unavailable_fallbacks=self.unavailable_fallbacks,actual_site_selections=self.actual_selections,**self.memory.receipt())

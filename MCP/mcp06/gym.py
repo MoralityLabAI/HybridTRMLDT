@@ -112,7 +112,11 @@ def train(w,offsets,seed,count,epochs,mms_options=None,mms_receipt=None):
     for _ in range(epochs):
         for idx in np.array_split(rng.permutation(count),math.ceil(count/32)):
             from contextlib import nullcontext
-            context=mms.capture(torch.from_numpy(idx),{'fast':16,'slow':4}) if mms else nullcontext()
+            active_visits=int(m[idx].any(dim=0).sum())
+            active_slow=(active_visits+2)//4
+            eligible={'fast','slow'} if active_slow else {'fast'}
+            selected={'fast':(active_visits-1)//2,'slow':max(0,(active_slow-1)//2)}
+            context=mms.capture(torch.from_numpy(idx),{'fast':16,'slow':4},selected_visits=selected,eligible=eligible) if mms else nullcontext()
             with context:
                 h,s=model.initial(len(idx)); loss=0.
                 for t in range(16):
