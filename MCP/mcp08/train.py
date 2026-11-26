@@ -459,6 +459,7 @@ def _train_epochs_08(
     rng: np.random.Generator,
     calibrate_weight: float = 1.0,
     empirical_unc_only: bool = False,
+    mms=None,
 ) -> float:
     n = len(tr.init_obs)
     t_init_obs = torch.from_numpy(tr.init_obs)
@@ -504,106 +505,117 @@ def _train_epochs_08(
             # `s_carry` flows WITH gradient into `allocate_compute_tier` at step k+1, then detaches
             # across chunk boundaries for 2.5x faster CPU throughput and crisp optimization!
             for chunk_start in (0, 2):
-                total_loss = torch.tensor(0.0)
-                denom = 0.0
-                s_chunk = s_carry.detach()
-
-                for k_step in (chunk_start, chunk_start + 1):
-                    idx = torch.from_numpy(c_split * chain_len + k_step)
-                    emp_m = t_emp[idx] if empirical_unc_only else torch.ones(c_bsz, dtype=torch.bool)
-                    denom += float(c_bsz)
-
-                    # 1. Explicit hierarchical compute allocation loss (reads persistent `s_chunk` WITH grad!)
-                    if model.cfg.use_unc_alloc and bool(emp_m.any()):
-                        tier_logits = model.allocate_compute_tier(s_chunk[emp_m], t_init_obs[idx][emp_m])
-                        total_loss = total_loss + 0.9 * F.cross_entropy(tier_logits, t_tier[idx][emp_m], reduction="sum")
-
-                    # Detach carry before GRU unroll to keep BPTT depth bounded at <= 17 steps
-                    state = model.initial_state(c_bsz, persist_s=s_chunk.detach())
-
-                    # 2. Initial router + initial uncertainty calibration loss
-                    r0_logits, _, u0_logit, state = model.step_recurrent(
-                        t_init_obs[idx], state, t=0, active_proj=None, failed_proj_mask=t_fpm[idx]
-                    )
-                    total_loss = total_loss + 1.5 * optimal_action_set_loss(r0_logits, t_init_opt[idx]).sum()
-                    u0_prob = torch.sigmoid(u0_logit)
-                    if bool(emp_m.any()):
-                        l_unc0 = (
-                            F.binary_cross_entropy_with_logits(u0_logit[emp_m], t_fail[idx][emp_m], reduction="sum")
-                            + 0.5 * F.mse_loss(u0_prob[emp_m], t_fail[idx][emp_m], reduction="sum")
+                from contextlib import nullcontext
+                context=nullcontext()
+                if mms is not None:
+                    from MCP.spatial_mms import valid_visits
+                    first=torch.from_numpy(c_split*chain_len+chunk_start)
+                    second=first+1
+                    a=valid_visits(t_svalid[first],horizon)
+                    b=valid_visits(t_svalid[second],horizon)
+                    context=mms.capture(first,{'fast_gru':1+a,'proj_gate':a},
+                                            {'fast_gru':1+b,'proj_gate':b})
+                with context:
+                    total_loss = torch.tensor(0.0)
+                    denom = 0.0
+                    s_chunk = s_carry.detach()
+    
+                    for k_step in (chunk_start, chunk_start + 1):
+                        idx = torch.from_numpy(c_split * chain_len + k_step)
+                        emp_m = t_emp[idx] if empirical_unc_only else torch.ones(c_bsz, dtype=torch.bool)
+                        denom += float(c_bsz)
+    
+                        # 1. Explicit hierarchical compute allocation loss (reads persistent `s_chunk` WITH grad!)
+                        if model.cfg.use_unc_alloc and bool(emp_m.any()):
+                            tier_logits = model.allocate_compute_tier(s_chunk[emp_m], t_init_obs[idx][emp_m])
+                            total_loss = total_loss + 0.9 * F.cross_entropy(tier_logits, t_tier[idx][emp_m], reduction="sum")
+    
+                        # Detach carry before GRU unroll to keep BPTT depth bounded at <= 17 steps
+                        state = model.initial_state(c_bsz, persist_s=s_chunk.detach())
+    
+                        # 2. Initial router + initial uncertainty calibration loss
+                        r0_logits, _, u0_logit, state = model.step_recurrent(
+                            t_init_obs[idx], state, t=0, active_proj=None, failed_proj_mask=t_fpm[idx]
                         )
-                        total_loss = total_loss + calibrate_weight * l_unc0
-
-                    last_u_prob = u0_prob
-                    last_state_h = state.h
-                    last_state_s = state.s
-
-                    for t in range(horizon):
-                        s_mask = t_svalid[idx, t]
-                        if not bool(s_mask.any()):
-                            break
-                        r_logits, stop_logit, u_logit, state = model.step_recurrent(
-                            t_step_obs[idx, t],
-                            state,
-                            t=t + 1,
-                            active_proj=t_act_proj[idx, t],
-                            failed_proj_mask=t_fpm[idx],
-                        )
-                        l_stop = F.binary_cross_entropy_with_logits(
-                            stop_logit[s_mask], t_stop[idx, t][s_mask], pos_weight=pos_weight, reduction="sum"
-                        )
-                        total_loss = total_loss + 1.0 * l_stop
-                        denom += float(s_mask.sum().item())
-
-                        u_mask = s_mask & emp_m
-                        if bool(u_mask.any()):
-                            u_p = torch.sigmoid(u_logit[u_mask])
-                            step_fail_tgt = torch.where(
-                                t_stop[idx, t][u_mask] > 0.5, torch.zeros_like(u_p), t_fail[idx][u_mask]
+                        total_loss = total_loss + 1.5 * optimal_action_set_loss(r0_logits, t_init_opt[idx]).sum()
+                        u0_prob = torch.sigmoid(u0_logit)
+                        if bool(emp_m.any()):
+                            l_unc0 = (
+                                F.binary_cross_entropy_with_logits(u0_logit[emp_m], t_fail[idx][emp_m], reduction="sum")
+                                + 0.5 * F.mse_loss(u0_prob[emp_m], t_fail[idx][emp_m], reduction="sum")
                             )
-                            l_unc_t = (
-                                F.binary_cross_entropy_with_logits(u_logit[u_mask], step_fail_tgt, reduction="sum")
-                                + 0.5 * F.mse_loss(u_p, step_fail_tgt, reduction="sum")
+                            total_loss = total_loss + calibrate_weight * l_unc0
+    
+                        last_u_prob = u0_prob
+                        last_state_h = state.h
+                        last_state_s = state.s
+    
+                        for t in range(horizon):
+                            s_mask = t_svalid[idx, t]
+                            if not bool(s_mask.any()):
+                                break
+                            r_logits, stop_logit, u_logit, state = model.step_recurrent(
+                                t_step_obs[idx, t],
+                                state,
+                                t=t + 1,
+                                active_proj=t_act_proj[idx, t],
+                                failed_proj_mask=t_fpm[idx],
                             )
-                            total_loss = total_loss + 0.35 * calibrate_weight * l_unc_t
-
-                        last_u_prob = torch.where(s_mask, torch.sigmoid(u_logit), last_u_prob)
-                        last_state_h = torch.where(s_mask.unsqueeze(-1), state.h, last_state_h)
-                        last_state_s = torch.where(s_mask.unsqueeze(-1), state.s, last_state_s)
-
-                        m_mask = t_mvalid[idx, t]
-                        if bool(m_mask.any()):
-                            total_loss = total_loss + 1.4 * optimal_action_set_loss(
-                                r_logits[m_mask], t_next_opt[idx, t][m_mask]
-                            ).sum()
-
-                            sub_st = type(state)(h=state.h[m_mask], s=state.s[m_mask], p_mem=state.p_mem[m_mask])
-                            s_logits, res_logits = model.predict_stride(
-                                sub_st,
-                                t_step_obs[idx, t][m_mask],
-                                t_stride_proj[idx, t][m_mask],
-                                t_cand_feats[idx, t][m_mask],
+                            l_stop = F.binary_cross_entropy_with_logits(
+                                stop_logit[s_mask], t_stop[idx, t][s_mask], pos_weight=pos_weight, reduction="sum"
                             )
-                            total_loss = (
-                                total_loss
-                                + optimal_action_set_loss(
-                                    s_logits, t_s_opt[idx, t][m_mask], legal_mask=t_s_legal[idx, t][m_mask]
+                            total_loss = total_loss + 1.0 * l_stop
+                            denom += float(s_mask.sum().item())
+    
+                            u_mask = s_mask & emp_m
+                            if bool(u_mask.any()):
+                                u_p = torch.sigmoid(u_logit[u_mask])
+                                step_fail_tgt = torch.where(
+                                    t_stop[idx, t][u_mask] > 0.5, torch.zeros_like(u_p), t_fail[idx][u_mask]
+                                )
+                                l_unc_t = (
+                                    F.binary_cross_entropy_with_logits(u_logit[u_mask], step_fail_tgt, reduction="sum")
+                                    + 0.5 * F.mse_loss(u_p, step_fail_tgt, reduction="sum")
+                                )
+                                total_loss = total_loss + 0.35 * calibrate_weight * l_unc_t
+    
+                            last_u_prob = torch.where(s_mask, torch.sigmoid(u_logit), last_u_prob)
+                            last_state_h = torch.where(s_mask.unsqueeze(-1), state.h, last_state_h)
+                            last_state_s = torch.where(s_mask.unsqueeze(-1), state.s, last_state_s)
+    
+                            m_mask = t_mvalid[idx, t]
+                            if bool(m_mask.any()):
+                                total_loss = total_loss + 1.4 * optimal_action_set_loss(
+                                    r_logits[m_mask], t_next_opt[idx, t][m_mask]
                                 ).sum()
-                                + 0.25 * optimal_action_set_loss(res_logits, t_r_opt[idx, t][m_mask]).sum()
-                            )
-
-                    # 3. Episode-end meta-action supervision ([proceed, retry, backtrack, halt])
-                    end_st = type(state)(h=last_state_h, s=last_state_s, p_mem=state.p_mem)
-                    meta_logits = model.predict_meta_action(end_st, last_u_prob.detach(), t_init_obs[idx, 34:42])
-                    total_loss = total_loss + 0.8 * F.cross_entropy(meta_logits, t_meta[idx], reduction="sum")
-
-                    # Carry persistent slow state into next lookup in the chain!
-                    s_chunk = last_state_s if model.cfg.persist_slow else torch.zeros(c_bsz, model.cfg.d_s)
-
-                s_carry = s_chunk.detach()
-                loss = total_loss / max(1.0, denom)
-                opt.zero_grad()
-                loss.backward()
+    
+                                sub_st = type(state)(h=state.h[m_mask], s=state.s[m_mask], p_mem=state.p_mem[m_mask])
+                                s_logits, res_logits = model.predict_stride(
+                                    sub_st,
+                                    t_step_obs[idx, t][m_mask],
+                                    t_stride_proj[idx, t][m_mask],
+                                    t_cand_feats[idx, t][m_mask],
+                                )
+                                total_loss = (
+                                    total_loss
+                                    + optimal_action_set_loss(
+                                        s_logits, t_s_opt[idx, t][m_mask], legal_mask=t_s_legal[idx, t][m_mask]
+                                    ).sum()
+                                    + 0.25 * optimal_action_set_loss(res_logits, t_r_opt[idx, t][m_mask]).sum()
+                                )
+    
+                        # 3. Episode-end meta-action supervision ([proceed, retry, backtrack, halt])
+                        end_st = type(state)(h=last_state_h, s=last_state_s, p_mem=state.p_mem)
+                        meta_logits = model.predict_meta_action(end_st, last_u_prob.detach(), t_init_obs[idx, 34:42])
+                        total_loss = total_loss + 0.8 * F.cross_entropy(meta_logits, t_meta[idx], reduction="sum")
+    
+                        # Carry persistent slow state into next lookup in the chain!
+                        s_chunk = last_state_s if model.cfg.persist_slow else torch.zeros(c_bsz, model.cfg.d_s)
+    
+                    s_carry = s_chunk.detach()
+                    loss = total_loss / max(1.0, denom)
+                    opt.zero_grad()
+                    loss.backward()
                 nn.utils.clip_grad_norm_(model.parameters(), 1.0)
                 opt.step()
                 ep_loss += float(loss.item())
@@ -720,6 +732,7 @@ def train_mcp08_controller(
     lr: float = 3.5e-3,
     horizon: int = 16,
     salt: int = 37,
+    mms_options=None,
 ) -> Tuple[MCP08RecursiveController, Dict[str, float]]:
     """Train MCP-08 ~54K controller exclusively on 16K physical memory."""
     if mem_16k.n != 16384:
@@ -730,6 +743,10 @@ def train_mcp08_controller(
 
     torch.manual_seed(seed)
     model = MCP08RecursiveController(cfg)
+    mms=None
+    if mms_options and mms_options.get('mib',0):
+        from MCP.spatial_mms import SpatialMemory
+        mms=SpatialMemory(model,mms_options)
     rng = np.random.default_rng(seed + 409)
 
     p1 = max(1, (epochs * 3) // 5)
@@ -737,7 +754,7 @@ def train_mcp08_controller(
 
     opt1 = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
     sch1 = torch.optim.lr_scheduler.CosineAnnealingLR(opt1, T_max=p1, eta_min=lr * 0.25)
-    last_loss = _train_epochs_08(model, opt1, sch1, tr_teacher, p1, batch_size, horizon, rng, calibrate_weight=0.5)
+    last_loss = _train_epochs_08(model, opt1, sch1, tr_teacher, p1, batch_size, horizon, rng, calibrate_weight=0.5,mms=mms)
 
     dagger_clean_rate = 0.0
     dagger_corr_rate = 0.0
@@ -760,7 +777,7 @@ def train_mcp08_controller(
         sch2 = torch.optim.lr_scheduler.CosineAnnealingLR(opt2, T_max=p2, eta_min=lr * 0.05)
         last_loss = _train_epochs_08(
             model, opt2, sch2, combined, p2, batch_size, horizon, rng,
-            calibrate_weight=1.4, empirical_unc_only=True,
+            calibrate_weight=1.4, empirical_unc_only=True,mms=mms,
         )
         # Phase 3: crisp post-convergence proper-scoring calibration strictly on 16K rollouts
         n_cal = min(512, max(128, dagger_roots // 2))
@@ -773,5 +790,6 @@ def train_mcp08_controller(
         "dagger_16k_c10_rate": dagger_corr_rate,
         "final_train_loss": last_loss,
         **cal_stats,
+        **({"mms":mms.receipt()} if mms is not None else {}),
         **model.parameter_summary(),
     }

@@ -667,6 +667,7 @@ def _train_epochs(
     batch_size: int,
     horizon: int,
     rng: np.random.Generator,
+    mms=None,
 ) -> float:
     n_samples = len(traces.init_obs)
     t_init_obs = torch.from_numpy(traces.init_obs)
@@ -698,78 +699,85 @@ def _train_epochs(
         for b_idx in np.array_split(perm, n_batches):
             idx = torch.from_numpy(b_idx)
             bsz = len(idx)
-            state = model.initial_state(bsz)
-            total_loss = torch.tensor(0.0)
-            denom = 0.0
-
-            init_r_logits, _, state = model.step_recurrent(t_init_obs[idx], state, t=0, active_proj=None)
-            if not is_fixed:
-                if supervision == "action_set":
-                    l_init = optimal_action_set_loss(init_r_logits, t_init_opt[idx]).sum()
-                else:
-                    l_init = F.cross_entropy(init_r_logits, t_init_best[idx], reduction="sum")
-                total_loss = total_loss + 1.5 * l_init
-                denom += float(bsz)
-
-            for t in range(horizon):
-                s_mask = t_svalid[idx, t]
-                if not bool(s_mask.any()):
-                    break
-                r_logits, stop_logit, state = model.step_recurrent(
-                    t_step_obs[idx, t],
-                    state,
-                    t=t + 1,
-                    active_proj=t_act_proj[idx, t],
-                )
-                l_stop = F.binary_cross_entropy_with_logits(
-                    stop_logit[s_mask], t_stop[idx, t][s_mask], pos_weight=pos_weight, reduction="sum"
-                )
-                total_loss = total_loss + 1.0 * l_stop
-                denom += float(s_mask.sum().item())
-
-                m_mask = t_mvalid[idx, t]
-                if bool(m_mask.any()):
-                    if (not is_fixed) and (not single_sel):
+            from contextlib import nullcontext
+            context=nullcontext()
+            if mms is not None:
+                from MCP.spatial_mms import valid_visits
+                n_visits=valid_visits(t_svalid[idx],horizon)
+                context=mms.capture(idx,{'fast_gru':1+n_visits,'proj_gate':n_visits})
+            with context:
+                state = model.initial_state(bsz)
+                total_loss = torch.tensor(0.0)
+                denom = 0.0
+    
+                init_r_logits, _, state = model.step_recurrent(t_init_obs[idx], state, t=0, active_proj=None)
+                if not is_fixed:
+                    if supervision == "action_set":
+                        l_init = optimal_action_set_loss(init_r_logits, t_init_opt[idx]).sum()
+                    else:
+                        l_init = F.cross_entropy(init_r_logits, t_init_best[idx], reduction="sum")
+                    total_loss = total_loss + 1.5 * l_init
+                    denom += float(bsz)
+    
+                for t in range(horizon):
+                    s_mask = t_svalid[idx, t]
+                    if not bool(s_mask.any()):
+                        break
+                    r_logits, stop_logit, state = model.step_recurrent(
+                        t_step_obs[idx, t],
+                        state,
+                        t=t + 1,
+                        active_proj=t_act_proj[idx, t],
+                    )
+                    l_stop = F.binary_cross_entropy_with_logits(
+                        stop_logit[s_mask], t_stop[idx, t][s_mask], pos_weight=pos_weight, reduction="sum"
+                    )
+                    total_loss = total_loss + 1.0 * l_stop
+                    denom += float(s_mask.sum().item())
+    
+                    m_mask = t_mvalid[idx, t]
+                    if bool(m_mask.any()):
+                        if (not is_fixed) and (not single_sel):
+                            if supervision == "action_set":
+                                l_rout = optimal_action_set_loss(
+                                    r_logits[m_mask], t_next_opt[idx, t][m_mask]
+                                ).sum()
+                            else:
+                                l_rout = F.cross_entropy(
+                                    r_logits[m_mask], t_next_best[idx, t][m_mask], reduction="sum"
+                                )
+                            total_loss = total_loss + 1.4 * l_rout
+    
+                        chosen_p = t_stride_proj[idx, t][m_mask]
+                        sub_state = type(state)(
+                            h=state.h[m_mask],
+                            s=state.s[m_mask],
+                            p_mem=state.p_mem[m_mask],
+                        )
+                        s_logits, res_logits = model.predict_stride(
+                            sub_state, t_step_obs[idx, t][m_mask], chosen_p, t_cand_feats[idx, t][m_mask]
+                        )
                         if supervision == "action_set":
-                            l_rout = optimal_action_set_loss(
-                                r_logits[m_mask], t_next_opt[idx, t][m_mask]
+                            l_stride = optimal_action_set_loss(
+                                s_logits,
+                                t_s_opt[idx, t][m_mask],
+                                legal_mask=t_s_legal[idx, t][m_mask],
+                            ).sum()
+                            l_res = optimal_action_set_loss(
+                                res_logits, t_r_opt[idx, t][m_mask]
                             ).sum()
                         else:
-                            l_rout = F.cross_entropy(
-                                r_logits[m_mask], t_next_best[idx, t][m_mask], reduction="sum"
+                            masked_s = s_logits.masked_fill(~t_s_legal[idx, t][m_mask], -1e9)
+                            l_stride = F.cross_entropy(
+                                masked_s, t_s_best[idx, t][m_mask], reduction="sum"
                             )
-                        total_loss = total_loss + 1.4 * l_rout
-
-                    chosen_p = t_stride_proj[idx, t][m_mask]
-                    sub_state = type(state)(
-                        h=state.h[m_mask],
-                        s=state.s[m_mask],
-                        p_mem=state.p_mem[m_mask],
-                    )
-                    s_logits, res_logits = model.predict_stride(
-                        sub_state, t_step_obs[idx, t][m_mask], chosen_p, t_cand_feats[idx, t][m_mask]
-                    )
-                    if supervision == "action_set":
-                        l_stride = optimal_action_set_loss(
-                            s_logits,
-                            t_s_opt[idx, t][m_mask],
-                            legal_mask=t_s_legal[idx, t][m_mask],
-                        ).sum()
-                        l_res = optimal_action_set_loss(
-                            res_logits, t_r_opt[idx, t][m_mask]
-                        ).sum()
-                    else:
-                        masked_s = s_logits.masked_fill(~t_s_legal[idx, t][m_mask], -1e9)
-                        l_stride = F.cross_entropy(
-                            masked_s, t_s_best[idx, t][m_mask], reduction="sum"
-                        )
-                        res_target = (~torch.from_numpy(FINE_MASK_NP)[t_s_best[idx, t][m_mask]]).long()
-                        l_res = F.cross_entropy(res_logits, res_target, reduction="sum")
-                    total_loss = total_loss + l_stride + 0.25 * l_res
-
-            loss = total_loss / max(1.0, denom)
-            opt.zero_grad()
-            loss.backward()
+                            res_target = (~torch.from_numpy(FINE_MASK_NP)[t_s_best[idx, t][m_mask]]).long()
+                            l_res = F.cross_entropy(res_logits, res_target, reduction="sum")
+                        total_loss = total_loss + l_stride + 0.25 * l_res
+    
+                loss = total_loss / max(1.0, denom)
+                opt.zero_grad()
+                loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             epoch_loss += float(loss.item())
@@ -792,6 +800,7 @@ def train_controller(
     cfg: Optional[ModelConfig] = None,
     mixture_weights: Optional[Dict[str, float]] = None,
     salt: int = 37,
+    mms_options=None,
 ) -> Tuple[AdaptiveGeometryController, Dict[str, float]]:
     """Train a controller exclusively on 16K memory with teacher traces + 16K DAgger aggregation."""
     if mem_16k.n != 16384:
@@ -819,6 +828,10 @@ def train_controller(
 
     torch.manual_seed(seed)
     model = AdaptiveGeometryController(model_cfg)
+    mms=None
+    if mms_options and mms_options.get('mib',0):
+        from MCP.spatial_mms import SpatialMemory
+        mms=SpatialMemory(model,mms_options)
     rng = np.random.default_rng(seed + 101)
 
     phase1_epochs = max(1, (epochs * 3) // 5)
@@ -828,7 +841,7 @@ def train_controller(
     sch1 = torch.optim.lr_scheduler.CosineAnnealingLR(opt1, T_max=phase1_epochs, eta_min=lr * 0.25)
     last_loss = _train_epochs(
         model, opt1, sch1, traces_teacher, is_fixed, single_sel, supervision,
-        phase1_epochs, batch_size, horizon, rng,
+        phase1_epochs, batch_size, horizon, rng,mms=mms,
     )
 
     dagger_rate = 0.0
@@ -850,7 +863,7 @@ def train_controller(
         sch2 = torch.optim.lr_scheduler.CosineAnnealingLR(opt2, T_max=phase2_epochs, eta_min=lr * 0.05)
         last_loss = _train_epochs(
             model, opt2, sch2, combined, is_fixed, single_sel, supervision,
-            phase2_epochs, batch_size, horizon, rng,
+            phase2_epochs, batch_size, horizon, rng,mms=mms,
         )
 
     model.eval()
@@ -860,4 +873,5 @@ def train_controller(
         "final_train_loss": last_loss,
         **model.parameter_summary(active_router=not is_fixed),
     }
+    if mms is not None: stats['mms']=mms.receipt()
     return model, stats
