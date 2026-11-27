@@ -25,8 +25,55 @@ jobs:
       - run: python -m research_gym.benchmarks.goblin_skill_factory.audit /tmp/gsf-smoke
       - run: python -m research_gym.benchmarks.goblin_skill_factory.gym --out /tmp/gsf-dev
       - run: python -m research_gym.benchmarks.goblin_skill_factory.audit /tmp/gsf-dev | tee /tmp/gsf-dev/audit.json
+      - name: Summarize GSF-01 paired development metrics
+        run: |
+          python - <<'PY'
+          import json, statistics as st
+          r = json.load(open('/tmp/gsf-dev/report.json'))
+          for family in sorted({x['family'] for x in r['cells']}):
+              for arm in sorted({x['arm'] for x in r['cells']}):
+                  xs = [x for x in r['cells'] if x['family']==family and x['arm']==arm]
+                  print(json.dumps(dict(family=family,arm=arm,dev=st.mean(x['dev']['raw_accuracy'] for x in xs),shift=st.mean(x['shift']['raw_accuracy'] for x in xs),shift_unsafe=st.mean(x['shift']['unsafe_rate'] for x in xs))))
+          for family in sorted({x['family'] for x in r['meta_repair']}):
+              for arm in ('refresh','rlt','damp'):
+                  xs=[c for x in r['meta_repair'] if x['family']==family for c in x['candidates'] if c['arm']==arm]
+                  print(json.dumps(dict(meta=family,arm=arm,dev=st.mean(x['dev']['raw_accuracy'] for x in xs),shift=st.mean(x['shift']['raw_accuracy'] for x in xs))))
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: gsf-01-development
           path: /tmp/gsf-dev/
+          retention-days: 7
+  molt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m unittest discover -s research_gym/benchmarks/molt_hybrid -p 'test_*.py' -v
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --smoke --out /tmp/molt-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --audit /tmp/molt-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --out /tmp/molt-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --audit /tmp/molt-dev | tee /tmp/molt-dev/audit.json
+      - name: Summarize GSF-02 results
+        run: |
+          python - <<'PY'
+          import json, statistics as st
+          r = json.load(open('/tmp/molt-dev/molt_report.json'))
+          for arm in sorted({x['arm'] for x in r['cells']}):
+              xs = [x for x in r['cells'] if x['arm']==arm]
+              for split in ('dev','shift'):
+                  print(json.dumps(dict(arm=arm,split=split,expected_regret=st.mean(x[split]['mean_expected_regret'] for x in xs),saved_nodes=sum(x[split]['saved_nodes'] for x in xs),cold_nodes=sum(x[split]['cold_nodes'] for x in xs),hits=sum(x[split]['hits'] for x in xs),stale=sum(x[split]['stale'] for x in xs),model_visits=sum(x[split]['model_visits'] for x in xs))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-02-molt-development
+          path: /tmp/molt-dev/
           retention-days: 7
