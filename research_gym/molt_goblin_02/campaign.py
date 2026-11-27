@@ -58,7 +58,15 @@ def _diff(cfg: dict) -> dict:
 def _atomic_write(path: Path, data) -> None:
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(json.dumps(data, indent=1), encoding="utf-8")
-    os.replace(tmp, path)
+    # Windows denies the rename while a reader or a sync client holds the target open.
+    for attempt in range(40):
+        try:
+            os.replace(tmp, path)
+            return
+        except PermissionError:
+            if attempt == 39:
+                raise
+            time.sleep(0.5)
 
 
 class Campaign:
