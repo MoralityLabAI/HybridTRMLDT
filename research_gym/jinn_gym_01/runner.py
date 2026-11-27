@@ -669,6 +669,12 @@ class Gym:
                 except (ValueError, OSError):
                     pass
         code = 0
+        if os.name == "nt" and not self.dry_run:
+            try:  # per-process idle-sleep block; released automatically when the process exits
+                import ctypes
+                ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | 0x00000001)
+            except Exception:
+                pass
         try:
             if self.state["phase"] == "A":
                 self.stage_a()
