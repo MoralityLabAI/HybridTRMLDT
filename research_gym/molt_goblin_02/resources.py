@@ -55,7 +55,8 @@ def _job_object_cap(limit_bytes: int) -> bool:
     if not k32.SetInformationJobObject(wintypes.HANDLE(job), 9, ctypes.byref(info), ctypes.sizeof(info)):
         return False
     k32.GetCurrentProcess.restype = wintypes.HANDLE
-    ok = bool(k32.AssignProcessToJobObject(wintypes.HANDLE(job), k32.GetCurrentProcess()))
+    k32.AssignProcessToJobObject.argtypes = (wintypes.HANDLE, wintypes.HANDLE)
+    ok = bool(k32.AssignProcessToJobObject(job, k32.GetCurrentProcess()))
     _STATE["job"] = job
     return ok
 

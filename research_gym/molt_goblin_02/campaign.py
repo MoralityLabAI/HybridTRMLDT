@@ -214,7 +214,7 @@ class Campaign:
 
     def _proposal_prompt(self) -> str:
         ctx = self._context()
-        hist = self._history_text(max(2000, 26000 - len(ctx)))
+        hist = self._history_text(max(2000, 22000 - len(ctx)))
         return (ctx + f"\nRECENT EXPERIMENTS (oldest first, includes failures):\n{hist}\n\n"
                 "TASK: First diagnose the most recent experiment in one or two lines and state how it revises your "
                 "hypothesis. Then propose the next experiment. JSON keys: "
@@ -287,7 +287,10 @@ class Campaign:
         rec = {"iteration": it, "kind": "proposal", "t": time.time(), "proposer": self.state["proposer"]}
         prop = None
         if self.inky:
-            reply = self.inky.ask(SYSTEM, self._proposal_prompt(), "proposal")
+            try:
+                reply = self.inky.ask(SYSTEM, self._proposal_prompt(), "proposal")
+            except ValueError as exc:   # context guard
+                reply = {"ok": False, "error_type": f"ContextGuard: {exc}"[:200], "http_status": None}
             rec["request"] = {k: reply.get(k) for k in ("ok", "seconds", "usage", "finish_reason", "error_type", "http_status")}
             if reply["ok"]:
                 rec["reply_text"] = reply["text"][-4000:]
@@ -352,7 +355,10 @@ class Campaign:
         return out
 
     def _adversarial(self, it: int) -> None:
-        reply = self.inky.ask(SYSTEM, self._adversarial_prompt(), "adversarial_task")
+        try:
+            reply = self.inky.ask(SYSTEM, self._adversarial_prompt(), "adversarial_task")
+        except ValueError as exc:
+            reply = {"ok": False, "error_type": f"ContextGuard: {exc}"[:200]}
         rec = {"iteration": it, "kind": "adversarial_task", "t": time.time(),
                "request": {k: reply.get(k) for k in ("ok", "seconds", "usage", "error_type", "http_status")}}
         if reply["ok"]:
