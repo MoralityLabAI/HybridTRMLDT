@@ -288,7 +288,11 @@ class Campaign:
         prop = None
         if self.inky:
             try:
-                reply = self.inky.ask(SYSTEM, self._proposal_prompt(), "proposal")
+                prompt = self._proposal_prompt()
+                reply = self.inky.ask(SYSTEM, prompt, "proposal")
+                if reply["ok"] and reply.get("finish_reason") == "length" and inky_mod.extract_json(reply["text"]) is None:
+                    rec["truncated_first_reply"] = {k: reply.get(k) for k in ("usage", "effort", "max_completion_tokens")}
+                    reply = self.inky.ask(SYSTEM, prompt, "proposal_retry_low_effort", effort="low")
             except ValueError as exc:   # context guard
                 reply = {"ok": False, "error_type": f"ContextGuard: {exc}"[:200], "http_status": None}
             rec["request"] = {k: reply.get(k) for k in ("ok", "seconds", "usage", "finish_reason", "error_type", "http_status")}
@@ -356,7 +360,10 @@ class Campaign:
 
     def _adversarial(self, it: int) -> None:
         try:
-            reply = self.inky.ask(SYSTEM, self._adversarial_prompt(), "adversarial_task")
+            prompt = self._adversarial_prompt()
+            reply = self.inky.ask(SYSTEM, prompt, "adversarial_task")
+            if reply["ok"] and reply.get("finish_reason") == "length" and inky_mod.extract_json(reply["text"]) is None:
+                reply = self.inky.ask(SYSTEM, prompt, "adversarial_task_retry_low_effort", effort="low")
         except ValueError as exc:
             reply = {"ok": False, "error_type": f"ContextGuard: {exc}"[:200]}
         rec = {"iteration": it, "kind": "adversarial_task", "t": time.time(),

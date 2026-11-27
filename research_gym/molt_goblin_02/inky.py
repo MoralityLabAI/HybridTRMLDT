@@ -50,7 +50,7 @@ def estimate_tokens(text: str) -> int:
 
 
 class Inky:
-    def __init__(self, context: int = DEFAULT_CONTEXT, max_completion: int = 3072, effort: str = "medium",
+    def __init__(self, context: int = DEFAULT_CONTEXT, max_completion: int = 4096, effort: str = "medium",
                  timeout: float = 240, transport=None, log_path: Path | None = None):
         if context > CONTEXT_CEILING:
             raise ValueError("context above 16k ceiling")
@@ -74,12 +74,14 @@ class Inky:
         with urllib.request.build_opener(_NoRedirect()).open(req, timeout=self.timeout) as res:
             return json.loads(res.read(4 * 1024 * 1024))
 
-    def ask(self, system: str, user: str, purpose: str) -> dict:
+    def ask(self, system: str, user: str, purpose: str, effort: str | None = None) -> dict:
         prompt_est = estimate_tokens(system) + estimate_tokens(user)
-        if prompt_est + self.max_completion > self.context:
-            raise ValueError(f"prompt estimate {prompt_est} + completion {self.max_completion} exceeds {self.context}")
+        # Completion budget adapts to what the context leaves, between 2,048 and max_completion.
+        budget = min(self.max_completion, self.context - prompt_est - 256)
+        if budget < 2048:
+            raise ValueError(f"prompt estimate {prompt_est} leaves {budget} completion tokens under {self.context}")
         payload = {"model": MODEL, "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
-                   "reasoning_effort": self.effort, "max_completion_tokens": self.max_completion,
+                   "reasoning_effort": effort or self.effort, "max_completion_tokens": budget,
                    "temperature": 0.7, "stream": False}
         err = None
         for attempt in range(len(RETRY_DELAYS) + 1):
@@ -93,6 +95,7 @@ class Inky:
                 ch = reply["choices"][0]
                 rec = {"ok": True, "purpose": purpose, "text": ch["message"].get("content") or "",
                        "finish_reason": ch.get("finish_reason"), "usage": u, "model": reply.get("model"),
+                       "effort": payload["reasoning_effort"], "max_completion_tokens": budget,
                        "seconds": round(time.monotonic() - t0, 2), "attempts": attempt + 1,
                        "prompt_estimate_tokens": prompt_est}
                 if rec["model"] and rec["model"] != MODEL:
