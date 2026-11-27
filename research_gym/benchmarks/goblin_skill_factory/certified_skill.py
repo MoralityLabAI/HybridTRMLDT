@@ -346,7 +346,7 @@ def run(out,width=32,steps=160,batch=32,train_n=256,eval_n=64,seeds=(137,163)):
                     entries.append(r)
                     g = r["grade"]
                     target_kind = ("correct_abstain" if not g["viable"] else
-                                   "verified_optimal" if g["executed"] == g["oracle"] else "repair_target")
+                                   "verified_optimal" if g["executed"] is not None and g["regret"] == 0. else "repair_target")
                     record = {"schema":SCHEMA+".rollout","split":"trace_train",
                               "root":p["root"],"seed":seed,"arm":arm,"identity":identity,
                               "public":p,"budget":3,"episode":r,"target_kind":target_kind,
@@ -410,7 +410,7 @@ def audit(out):
             raise ValueError("policy and certificate replay")
         g = replay["grade"]
         kind = ("correct_abstain" if not g["viable"] else
-                "verified_optimal" if g["executed"]==g["oracle"] else "repair_target")
+                "verified_optimal" if g["executed"] is not None and g["regret"] == 0. else "repair_target")
         if r["target_kind"]!=kind or r["repair_target"]!=g["oracle"]:
             raise ValueError("training target mismatch")
         counts[kind] += 1
