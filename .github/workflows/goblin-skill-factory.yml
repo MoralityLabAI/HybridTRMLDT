@@ -179,3 +179,34 @@ jobs:
           name: gsf-05-loop-clocks-development
           path: /tmp/clocks-dev/
           retention-days: 7
+  research-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --smoke --out /tmp/research-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --audit /tmp/research-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --out /tmp/research-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --audit /tmp/research-dev | tee /tmp/research-dev/audit.json
+      - name: Report matched research policy results
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/research-dev/research_report.json'))
+          for split,policies in r['summaries'].items():
+              for policy,m in policies.items():
+                  print(json.dumps(dict(split=split,policy=policy,**m),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-06-research-repair-development
+          path: /tmp/research-dev/
+          retention-days: 7
