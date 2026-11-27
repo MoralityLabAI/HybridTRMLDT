@@ -135,7 +135,15 @@ class Task:
                 else:
                     data=[L.world(split,seed,i) for i in range(count)]
                 target="final" if role in ("normal","stress") else role
-                self.add_lineage(target,[lineage(g,x["root"]) for x in data])
+                namespace="gsf01-world" if g=="GSF-01" else g
+                self.add_lineage(target,[lineage(namespace,x["root"]) for x in data])
+                if g=="GSF-01":
+                    self.add_lineage(target,[lineage("gsf01-rows",digest(x["rows"])) for x in data])
+                elif g=="GSF-02":
+                    self.add_lineage(target,[lineage("molt-world",digest({k:v for k,v in x.items()
+                                                                        if k not in ("root","split")})) for x in data])
+                else:
+                    self.add_lineage(target,[lineage("clock-graph",digest(x["maps"])) for x in data])
                 if role=="fit":
                     self.train=data
                 elif role=="cal":
@@ -192,6 +200,7 @@ class Task:
                                     train_n=TRAIN,eval_n=PANEL*2))
             for role,keys in (("fit",("fit",)),("cal",("cal","stress_cal")),("final",("eval","stress_eval"))):
                 self.add_lineage(role,[lineage("gsf01-world",c["root"]) for k in keys for c in self.native.sets[k]])
+                self.add_lineage(role,[lineage("gsf01-rows",digest(c["rows"])) for k in keys for c in self.native.sets[k]])
         elif g=="GSF-07":
             self.mcfg=dict(MCP.DEFAULT,width=WIDTH,steps=STEPS,batch=4,train_n=8,eval_n=8,
                            max_calls=32,prefilter_k=16,handoff_bytes=2048,seeds=[137])
@@ -199,7 +208,7 @@ class Task:
             self.add_lineage("fit",[lineage("mcp02",MCP.world("train",i)["group_id"]) for i in range(8)])
             # Fresh disjoint calibration group. Trace research uses train-name
             # pool only, and never evaluates on native dev/test worlds.
-            self.cal=[MCP.make_world("train",82715+self.index,i,64) for i in range(PANEL)]
+            self.cal=[MCP.make_world("train",(82735 if tr else 82715)+self.index,i,64) for i in range(PANEL)]
             if tr:
                 self.final=[[MCP.make_world("train",82725+self.index,i,size) for i in range(PANEL)]
                             for size in (64,128)]
@@ -215,14 +224,16 @@ class Task:
         g=self.gym
         p={"schema":SCHEMA,"root":self.root,"gym":g,"role":self.role,"task":DESCRIPTIONS[g],
            "choices":list(self.choices),"required_first":self.choices[0],
-           "limits":{"turns":MAX_TURNS,"fits":MAX_FITS,"updates":STEPS,"width":WIDTH,"batch":BATCH},
+           "limits":{"turns":MAX_TURNS,"experiments":MAX_FITS,"updates_per_new_fit":STEPS,"width":WIDTH,"batch":BATCH},
            "rule":"First run the required control. Choose up to two other choices. Select highest CAL quality among artifacts with unsafe count no greater than control. Break ties by lower inference_work, then lower train_work, then earliest artifact. Claim relative to CAL control: improved, equivalent, regressed."}
+        if g=="GSF-01":
+            p["family"]=G.FAMILIES[self.index%len(G.FAMILIES)]
         if g=="GSF-06":
             n=self.native.public()
             p["baseline"]={"regime":self.native.regime,"family":self.native.family,
                            "fit_failures":len(self.native.errors),"cal":n["baseline"]["cal"]}
         if g=="GSF-04":
-            p["limits"]["updates"]=160
+            p["limits"]["updates_per_new_fit"]=160
             p["limits"]["batch"]=32
         if g=="GSF-07":
             p["limits"]["batch"]=4
@@ -293,7 +304,7 @@ class Task:
         if g=="GSF-07":
             rows=[MCP.score_episode(w,MCP.LAYOUTS[1],choice,model,self.mcfg)[0] for w in ds]
             m=MCP.metrics(rows,choice)
-            return metric(m["acceptance"],0,m["candidate_cell_visits"],tool_calls=m.get("tool_calls",0),
+            return metric(m["acceptance"],0,m.get("tool_calls",0),candidate_cell_visits=m["candidate_cell_visits"],
                           evidence_recall=m["mean_evidence_recall"],accepted=m.get("accepted",0))
         if g=="GSF-08":
             net,arm,cache=model
@@ -464,7 +475,7 @@ def suite(out,per_gym=1):
                     if role=="trace_train":
                         f.write(json.dumps(rec,sort_keys=True,allow_nan=False)+"\n")
                     report["cells"].append({"role":role,"gym":gym,"index":i,"root":task.root,
-                                            "result":r,"receipt_hash":rec["receipt_hash"]})
+                                            "result":r,"receipt_hash":rec["receipt_hash"],"lineage":rec["lineage"]})
     report["trace_sha256"]=hashlib.sha256(traces.read_bytes()).hexdigest()
     (out/"bench_report.json").write_text(json.dumps(report,indent=2,allow_nan=False),encoding="utf-8")
     return report
@@ -478,13 +489,16 @@ def audit(out):
     if hashlib.sha256(traces.read_bytes()).hexdigest()!=report["trace_sha256"]:
         raise ValueError("trace hash mismatch")
     expected={(x["gym"],x["index"]):x for x in report["cells"] if x["role"]=="trace_train"}
+    held={k for c in report["cells"] if c["role"]=="development" for role in ("cal","final") for k in c["lineage"][role]}
     seen=set()
     for line in traces.read_text(encoding="utf-8").splitlines():
         r=json.loads(line)
         key=(r["gym"],r["index"])
         if key in seen or key not in expected or r["role"]!="trace_train" or r["training_ready"] is not False:
             raise ValueError("trace custody")
-        task=Task(*key[:1],"trace_train",key[1])
+        task=Task(key[0],"trace_train",key[1])
+        if held&(task.lineage["cal"]|task.lineage["final"]):
+            raise ValueError("held development lineage in trace")
         s=Session(task)
         result=reference(s)
         replay=record(task,s,result,"scripted_reference")
@@ -494,6 +508,17 @@ def audit(out):
     if seen!=set(expected) or len(seen)!=len(GYMS)*report["per_gym"]:
         raise ValueError("incomplete rollout coverage")
     return {"status":"audited_development_only","research_rollouts":len(seen)}
+
+
+def selftest():
+    t=Task("GSF-01","development",0)
+    s=Session(t)
+    assert not s.act({"action":"run_experiment","choice":"rlt"})["ok"]
+    assert s.act({"action":"run_experiment","choice":"direct"})["ok"]
+    assert not s.act({"action":"run_experiment","choice":"direct"})["ok"]
+    assert s.act({"action":"submit","artifact_id":"a1","claim":"equivalent"})["ok"]
+    assert s.finish()["score"]==0 and s.finish()["invalid"]==2
+    print("GB-SF-09 action-budget selftest passed")
 
 
 def interactive(gym,role,index,out):
@@ -529,10 +554,13 @@ def main():
     p.add_argument("--out",type=Path)
     p.add_argument("--audit",type=Path)
     p.add_argument("--per-gym",type=int,default=1)
+    p.add_argument("--selftest",action="store_true")
     p.add_argument("--session",nargs=3,metavar=("GYM","ROLE","INDEX"))
     a=p.parse_args()
     torch.set_num_threads(1)
-    if a.audit:
+    if a.selftest:
+        selftest()
+    elif a.audit:
         print(json.dumps(audit(a.audit),sort_keys=True))
     elif a.session and a.out:
         g,r,i=a.session
