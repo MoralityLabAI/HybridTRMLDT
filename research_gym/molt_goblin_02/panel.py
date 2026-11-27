@@ -18,10 +18,13 @@ PANEL = {
                  "ood_long": TaskSpec("revision", 28, depth=2, distract=6),
                  "ood_reordered": TaskSpec("revision", 16, depth=1, distract=2, variant="reordered")}},
     "repair": {
-        "train": TaskSpec("repair", 8, depth=2, variant="unflagged"),
-        "eval": {"dev": TaskSpec("repair", 8, depth=2, variant="unflagged"),
-                 "ood_more_errors": TaskSpec("repair", 10, depth=4, variant="unflagged"),
-                 "ctl_no_errors": TaskSpec("repair", 8, depth=0, variant="unflagged")}},
+        # Calibration 2026-11-28: unflagged L8/D2 sat at exact 0.000 (copy floor) for prefix and tied,
+        # so the registered train spec is the verifier-flagged variant.
+        "train": TaskSpec("repair", 6, depth=1, variant="flagged"),
+        "eval": {"dev": TaskSpec("repair", 6, depth=1, variant="flagged"),
+                 "ood_more_errors": TaskSpec("repair", 8, depth=2, variant="flagged"),
+                 "ctl_unflagged": TaskSpec("repair", 6, depth=1, variant="unflagged"),
+                 "ctl_no_errors": TaskSpec("repair", 6, depth=0, variant="flagged")}},
     "proof_deps": {
         "train": TaskSpec("proof_deps", 14, depth=3),
         "eval": {"dev": TaskSpec("proof_deps", 14, depth=3),

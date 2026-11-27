@@ -1,0 +1,173 @@
+﻿{
+  "status": "development_only",
+  "torch": "2.15.0+cpu",
+  "device": "cpu",
+  "threads": 2,
+  "results": [
+    {
+      "arm": "prefix_kv",
+      "seed": 31,
+      "params": 8807,
+      "train_tokens": 16384,
+      "train_block_visits": 256,
+      "train_elapsed_s": 5.3019467999984045,
+      "peak_cuda_allocated_bytes": null,
+      "evaluations": [
+        {
+          "length": 8,
+          "loops": 1,
+          "token_accuracy": 0.220703125,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.0024876999959815294,
+          "stabilization_max_abs": 7.152557373046875e-07
+        },
+        {
+          "length": 8,
+          "loops": 4,
+          "token_accuracy": 0.244140625,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.023212899977806956,
+          "stabilization_max_abs": 7.152557373046875e-07
+        },
+        {
+          "length": 8,
+          "loops": 8,
+          "token_accuracy": 0.244140625,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.04814660002011806,
+          "stabilization_max_abs": 7.152557373046875e-07
+        },
+        {
+          "length": 16,
+          "loops": 1,
+          "token_accuracy": 0.169921875,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.007070499996189028,
+          "stabilization_max_abs": 8.344650268554688e-07
+        },
+        {
+          "length": 16,
+          "loops": 4,
+          "token_accuracy": 0.1962890625,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.010288399993441999,
+          "stabilization_max_abs": 8.344650268554688e-07
+        },
+        {
+          "length": 16,
+          "loops": 16,
+          "token_accuracy": 0.1953125,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.1036405999911949,
+          "stabilization_max_abs": 8.344650268554688e-07
+        }
+      ]
+    },
+    {
+      "arm": "residual",
+      "seed": 31,
+      "params": 8807,
+      "train_tokens": 16384,
+      "train_block_visits": 256,
+      "train_elapsed_s": 2.428110899985768,
+      "peak_cuda_allocated_bytes": null,
+      "evaluations": [
+        {
+          "length": 8,
+          "loops": 1,
+          "token_accuracy": 0.220703125,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.003002899989951402
+        },
+        {
+          "length": 8,
+          "loops": 4,
+          "token_accuracy": 0.244140625,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.009114700020290911
+        },
+        {
+          "length": 8,
+          "loops": 8,
+          "token_accuracy": 0.2421875,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.014533799985656515
+        },
+        {
+          "length": 16,
+          "loops": 1,
+          "token_accuracy": 0.169921875,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.005451300006825477
+        },
+        {
+          "length": 16,
+          "loops": 4,
+          "token_accuracy": 0.1748046875,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.00977269999566488
+        },
+        {
+          "length": 16,
+          "loops": 16,
+          "token_accuracy": 0.1640625,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.06898940002429299
+        }
+      ]
+    },
+    {
+      "arm": "one_pass",
+      "seed": 31,
+      "params": 8807,
+      "train_tokens": 16384,
+      "train_block_visits": 64,
+      "train_elapsed_s": 0.9032078000018373,
+      "peak_cuda_allocated_bytes": null,
+      "evaluations": [
+        {
+          "length": 8,
+          "loops": 1,
+          "token_accuracy": 0.236328125,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.005478900013258681
+        },
+        {
+          "length": 8,
+          "loops": 4,
+          "token_accuracy": 0.236328125,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.002980099990963936
+        },
+        {
+          "length": 8,
+          "loops": 8,
+          "token_accuracy": 0.236328125,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.002695800008950755
+        },
+        {
+          "length": 16,
+          "loops": 1,
+          "token_accuracy": 0.201171875,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.004630500014172867
+        },
+        {
+          "length": 16,
+          "loops": 4,
+          "token_accuracy": 0.201171875,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.0063513999921269715
+        },
+        {
+          "length": 16,
+          "loops": 16,
+          "token_accuracy": 0.201171875,
+          "sequence_accuracy": 0.0,
+          "elapsed_s": 0.003050800005439669
+        }
+      ]
+    }
+  ]
+}
