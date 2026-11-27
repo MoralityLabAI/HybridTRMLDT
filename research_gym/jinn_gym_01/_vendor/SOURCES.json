@@ -1,0 +1,27 @@
+{
+  "ldt_experiment.py": {
+    "repo": "MoralityLabAI/jinn-or-beast-paper",
+    "commit": "01512c40be082ad88aa69594abca43a2b41908cc",
+    "path": "experiments/two_frame_metta_ldt_v1/src/ldt_experiment.py",
+    "sha256_lf": "295c8b9a91e5d8bf811e1868fda02f2416112e5e8d94ae1192d6061f8e72b2df",
+    "use": "parse_policy, score_policy (exact rubric), AdditiveCandidateHead, train_head, vectorize, LANES; copied verbatim"
+  },
+  "heads_v3.VetoHead": {
+    "repo": "MoralityLabAI/jinn-or-beast-paper",
+    "commit": "01512c40be082ad88aa69594abca43a2b41908cc",
+    "path": "experiments/ldt_heads_v3_critical_veto/src/heads_v3.py",
+    "sha256_lf": "090b4b8806f433f163c0eef2202a825ed112d190cb8dc0e9cc45c4da3a4ae1ec",
+    "use": "veto semantics re-implemented in heads.VetoedHead (critical tag present -> lane distribution [0, 0, 1]); not imported because heads_v3 hash-checks the full v2 tree on import"
+  },
+  "character_ldt_heads_v1": {
+    "repo": "MoralityLabAI/jinn-or-beast-paper",
+    "commit": "01512c40be082ad88aa69594abca43a2b41908cc",
+    "path": "experiments/character_ldt_heads_v1/src/common.py",
+    "use": "keep rule (head keeps an action unless its top lane is reject), every head sees every tag, boundary never trained, label-shuffled control; followed, not imported"
+  },
+  "in-repo": {
+    "research_gym/core/dual_ldt.py": "dbcef990b77b6fc516e71bb7f219ad8f17bb21b3c31fe0039b411b9db3760155",
+    "research_gym/core/cca_compositional.py": "6aa6591c37cb874d2ba1302b67e78e6f18abbfa881c7e0ab1d3206893a8662ab",
+    "base_commit": "433ad5e30123f5ee80ffd18fabe67357547a263d"
+  }
+}
