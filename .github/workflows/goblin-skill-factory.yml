@@ -210,3 +210,40 @@ jobs:
           name: gsf-06-research-repair-development
           path: /tmp/research-dev/
           retention-days: 7
+  mcp-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --smoke --out /tmp/mcp-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --audit /tmp/mcp-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --out /tmp/mcp-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --audit /tmp/mcp-dev | tee /tmp/mcp-dev/audit.json
+      - name: Summarize routing campaign
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/mcp-dev/mcp_report.json'))
+          for split in ('dev','shift'):
+              for arm in sorted({c['arm'] for c in r['cells']}):
+                  for layout in ('search','layered_ldt'):
+                      for budget in ('full','low'):
+                          ms=[(c[split] if budget=='full' else c['low_budget'][split])[layout] for c in r['cells'] if c['arm']==arm]
+                          n=sum(m['n'] for m in ms)
+                          accepted=sum(m.get('accepted',0) for m in ms)
+                          calls=sum(m.get('tool_calls',0) for m in ms)
+                          print(json.dumps(dict(split=split,arm=arm,layout=layout,budget=budget,n=n,accepted=accepted,acceptance=accepted/n,calls=calls,calls_per_accepted=calls/accepted if accepted else None,cell_visits=sum(m['candidate_cell_visits'] for m in ms),handoff_bytes=sum(m.get('handoff_bytes',0) for m in ms))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-07-mcp-geometry-development
+          path: /tmp/mcp-dev/
+          retention-days: 7
