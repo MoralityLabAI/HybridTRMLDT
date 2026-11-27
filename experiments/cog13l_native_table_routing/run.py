@@ -332,6 +332,9 @@ def matrix(args, adapter, roots, old, model, freq, out):
             r = None
             metrics = {}
             reason = "infrastructure"
+            host_start = time.process_time_ns()
+            wall_start = time.monotonic_ns()
+            child_start = resource.getrusage(resource.RUSAGE_CHILDREN)
             try:
                 r = jn.search(c, arm, model, freq, jn.Native(args.lean, args.cwd, folder))
                 dump(folder/"episode.json", r)
@@ -350,8 +353,21 @@ def matrix(args, adapter, roots, old, model, freq, out):
             except Exception as e:
                 errors.append({"root": c["id"], "arm": arm, "error": repr(e)})
                 dump(folder/"audit_error.json", errors[-1])
+                # Retain observed costs when an audit fails. Do not grant proof
+                # credit or treat a missing audit metric as zero work.
+                if r is not None:
+                    metrics["hostCpuNs"] = r["hostCpuNs"]
+                    metrics["nativeChildCpuNs"] = sum(p["cpuNs"] for p in r["processes"])
+                    metrics["wallNs"] = r["elapsedNs"]
+                else:
+                    end = resource.getrusage(resource.RUSAGE_CHILDREN)
+                    metrics["hostCpuNs"] = time.process_time_ns()-host_start
+                    metrics["wallNs"] = time.monotonic_ns()-wall_start
+                    metrics["nativeChildCpuNs"] = round(1e9*((end.ru_utime-child_start.ru_utime) +
+                                                             (end.ru_stime-child_start.ru_stime)))
+                reason = "evidence_error"
             rows.append({"root": c["id"], "split": c["split"], "family": c["family"], "arm": arm,
-                         "solved": bool(r and r["solved"] and metrics and not (folder/"audit_error.json").exists()),
+                         "solved": bool(r and r["solved"] and metrics and reason != "evidence_error"),
                          "reason": reason, "metrics": metrics})
             with (out/"rows.jsonl").open("a", encoding="utf-8") as f:
                 f.write(json.dumps(rows[-1], ensure_ascii=False)+"\n")
