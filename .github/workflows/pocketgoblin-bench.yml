@@ -1,0 +1,53 @@
+name: PocketGoblin Bench
+
+on:
+  pull_request:
+    paths:
+      - 'MCP/pocketgoblin_bench/**'
+      - 'MCP/test_pocketgoblin_bench.py'
+      - 'MCP/mcp02/**'
+      - '.github/workflows/pocketgoblin-bench.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'MCP/pocketgoblin_bench/**'
+      - 'MCP/test_pocketgoblin_bench.py'
+      - 'MCP/mcp02/**'
+      - '.github/workflows/pocketgoblin-bench.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      OMP_NUM_THREADS: '4'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test runner and CPU torch
+        run: |
+          python -m pip install pytest numpy==1.26.4
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -c 'import torch; print("torch", torch.__version__, "cuda", torch.cuda.is_available())'
+      - name: Benchmark tests (search space, isolation, budget, scoring, stdio, LLM runner)
+        run: python -m pytest -q MCP/test_pocketgoblin_bench.py
+      - name: Control and oracle calibration points (standard library only)
+        run: python -m MCP.pocketgoblin_bench controls --config MCP/pocketgoblin_bench/configs/smoke.json
+      - name: Scripted reference trainers over the stdio server
+        run: |
+          python -m MCP.pocketgoblin_bench reference --config MCP/pocketgoblin_bench/configs/smoke.json \
+            --transport stdio --threads 4 --out MCP/runs/pocketgoblin-ci
+      - name: Preserve episode receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pocketgoblin-bench-receipts
+          path: MCP/runs/pocketgoblin-ci
+          if-no-files-found: warn
+          retention-days: 14

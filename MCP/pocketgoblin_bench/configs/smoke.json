@@ -1,0 +1,10 @@
+{
+  "name": "pgb-smoke",
+  "world": {"catalog_size": 96, "arm": "layered_ldt", "layout": "PSCB"},
+  "worlds": {"train": 24, "dev": 6, "test": 12},
+  "seeds": {"train": 1101, "dev": 2202, "test": 3303},
+  "dataset": {"epsilons": [0.0, 0.3], "max_candidates": 12},
+  "limits": {"max_tool_calls": 40, "prefilter_k": 32, "handoff_budget_bytes": 2048},
+  "budget": {"units": 400, "max_fits": 6, "max_evals": 8},
+  "reference": {"random_search_seed": 5, "random_search_max_draws": 60}
+}
