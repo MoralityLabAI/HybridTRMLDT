@@ -65,9 +65,16 @@ def freeze(state_path: Path, out: Path, k: int = 3) -> dict:
         cfg = MoltConfig.from_dict(finalists[top]["config"])
         fam = "pointer_chase"
         target = count_params(MoltNet(cfg, FAMILIES[fam].vocab, FAMILIES[fam].n_out))
-        pm = param_matched(BASELINES["prefix"], target, fam)
-        arms["prefix_param_matched"] = {"config": pm.to_dict(), "kind": "parameter_matched_control",
+        pm = param_matched(BASELINES["prefix_all"], target, fam)
+        arms["prefix_all_param_matched"] = {"config": pm.to_dict(), "kind": "parameter_matched_control",
                                         "matched_to": top, "target_params": target}
+        # Visit-matched control: soft mixtures run every module each loop, so match module visits
+        # with a single tied block (loop forcing kept, as in the finalists' base).
+        visits = cfg.loops * (cfg.n_types if cfg.routing in ("mix", "hrm") else 1)
+        if visits > cfg.loops:
+            vm = BASELINES["prefix_all"].replace(loops=min(visits, 16))
+            arms["prefix_all_visit_matched"] = {"config": vm.to_dict(), "kind": "visit_matched_control",
+                                                "matched_to": top, "target_visits": visits}
     frozen = {"schema": "molt-goblin-02.freeze.v1", "frozen_at": time.time(), "campaign_state_sha256":
               hashlib.sha256(state_path.read_bytes()).hexdigest(), "arms": arms, "seeds": list(FINAL_SEEDS),
               "families": list(ALL), "root_base": HIDDEN_BASE}
@@ -80,14 +87,15 @@ def freeze(state_path: Path, out: Path, k: int = 3) -> dict:
     return frozen
 
 
-def run(out: Path, seeds, threads: int, deadline: float) -> None:
+def run(out: Path, seeds, threads: int, deadline: float, shard: tuple[int, int] = (0, 1)) -> None:
     torch.set_num_threads(threads)
     frozen = json.loads((out / "freeze.json").read_text(encoding="utf-8"))
-    runs_path = out / "final_runs.jsonl"
+    runs_path = out / (f"final_runs.shard{shard[0]}.jsonl" if shard[1] > 1 else "final_runs.jsonl")
     done = set()
-    if runs_path.exists():
-        for line in runs_path.read_text(encoding="utf-8").splitlines():
+    for p in out.glob("final_runs*.jsonl"):
+        for line in p.read_text(encoding="utf-8").splitlines():
             done.add(json.loads(line)["key"])
+    index = -1
     ck = out / "checkpoints"
     ck.mkdir(exist_ok=True)
     order = list(PANEL) + list(WITHHELD) + list(CONTROL)
@@ -95,7 +103,8 @@ def run(out: Path, seeds, threads: int, deadline: float) -> None:
         for family in order:
             for name, arm in frozen["arms"].items():
                 key = f"{name}|{family}|{seed}"
-                if key in done:
+                index += 1
+                if key in done or index % shard[1] != shard[0]:
                     continue
                 if time.time() > deadline:
                     return
@@ -130,12 +139,15 @@ def main():
     ap.add_argument("--seeds", type=int, nargs="+", default=list(FINAL_SEEDS[:3]))
     ap.add_argument("--threads", type=int, default=2)
     ap.add_argument("--hours", type=float, default=2.0)
+    ap.add_argument("--shard", type=str, default="0/1", help="i/n: run every n-th cell starting at i")
+    ap.add_argument("--ram-gib", type=float, default=3.0)
     a = ap.parse_args()
-    cap = resources.install_cap(3.0)
+    i, n = (int(v) for v in a.shard.split("/"))
+    cap = resources.install_cap(a.ram_gib)
     frozen = freeze(a.state, a.out, a.k)
-    (a.out / "resource_cap.json").write_text(json.dumps(cap, indent=1), encoding="utf-8")
+    (a.out / f"resource_cap.shard{i}.json").write_text(json.dumps(cap, indent=1), encoding="utf-8")
     print(json.dumps({"freeze_sha256": frozen["freeze_sha256"], "arms": list(frozen["arms"])}))
-    run(a.out, a.seeds, a.threads, time.time() + a.hours * 3600)
+    run(a.out, a.seeds, a.threads, time.time() + a.hours * 3600, shard=(i, n))
 
 
 if __name__ == "__main__":

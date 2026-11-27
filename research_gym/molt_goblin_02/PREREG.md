@@ -72,6 +72,15 @@ evaluated on hidden roots (`train.HIDDEN_BASE`, never used by the campaign) for:
 
 Seeds: 11, 23, 37 (FINAL_SEEDS[:3]); 256 hidden roots per evaluation.
 
+Amendment (2026-11-28, during discovery, before any freeze or hidden-root run): the
+campaign frontier moved to soft HRM routing over four typed modules, which evaluates
+every module on every loop. `finals.freeze` therefore also adds a visit-matched control,
+`prefix_all` with loops = module visits of the top finalist (capped at 16). The
+validation range for `loops` was raised to 16 for this arm; the discovery loop keeps
+its own limit of 6. Because every rung-2 candidate uses loop forcing (`loss=all`), the
+parameter-matched control is built from `prefix_all` (arm `prefix_all_param_matched`)
+so it differs from the top finalist in routing and width only.
+
 ## Measures
 
 Exact task success (primary); success per recurrent visit; success per train CPU-second;

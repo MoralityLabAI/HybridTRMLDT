@@ -70,7 +70,7 @@ class MoltConfig:
                 raise ValueError(msg)
         need(8 <= self.width <= 96 and self.width % self.heads == 0, "width 8..96 divisible by heads")
         need(1 <= self.heads <= 4, "heads 1..4")
-        need(1 <= self.loops <= 12, "loops 1..12")
+        need(1 <= self.loops <= MAX_LOOPS, f"loops 1..{MAX_LOOPS}")
         need(self.memory in MEMORY, f"memory in {MEMORY}")
         need(1 <= self.topk <= 64 and 1 <= self.rank <= self.width, "topk 1..64, rank 1..width")
         need(0 <= self.window <= 12, "window 0..12")
