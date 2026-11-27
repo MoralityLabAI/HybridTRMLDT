@@ -79,6 +79,8 @@ def source_manifest():
 def metric(quality,unsafe=0,work=0,**detail):
     if not math.isfinite(quality) or not 0<=quality<=1+1e-10 or unsafe<0 or work<0:
         raise ValueError("invalid measured metric")
+    # Stabilize diagnostic float reductions across Python hash seeds.
+    detail={k:round(v,10) if isinstance(v,float) else v for k,v in detail.items()}
     return {"quality":round(min(1.,quality),10),"unsafe":int(unsafe),"inference_work":int(work),**detail}
 
 
