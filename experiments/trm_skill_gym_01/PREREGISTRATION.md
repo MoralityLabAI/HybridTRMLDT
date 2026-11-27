@@ -51,7 +51,13 @@ promoting the best to 800 steps:
   schedule applied at the meta level: conservative early, full replacement at the terminal round.
 - `random_mutation`: 2 random legal fields change per proposal, with no LLM involved.
 
-H for each skill is the best rung-1 Inky configuration on that skill (or, failing that, the best Inky
+Search promotion: a rung-1 proposal replaces the incumbent if its held-out development exact is higher by
+more than 0.005, or within 0.005 with at least 10% fewer FLOPs per instance. Amendment at 02:35, about 10
+minutes into the search and before any frozen-evaluation data existed: the default TRM already scored
+0.97-1.0 on held-out repair and retrieval development cases, so accuracy alone could not separate
+proposals.
+
+H for each skill is the best rung-1 Inky configuration (by exact in 0.005 buckets, then fewest FLOPs) on that skill (or, failing that, the best Inky
 configuration on any skill, labelled as such).
 
 ## Primary outcomes (frozen evaluation, 512 fresh-root instances per pool)

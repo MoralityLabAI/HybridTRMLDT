@@ -203,8 +203,9 @@ number of in-loop verifier calls whose structured diagnostics are fed back (each
 ## Skill under test: {skill}, development family: {family}
 {skill_md}
 Training: {self.p['rung0_steps']} steps (racing rung 0), best proposal promoted to {self.p['rung1_steps']} steps, batch {TR.BATCH}.
-Metric: exact success on held-out development roots of family {family}. Also tracked: params, verifier calls,
-visits, FLOPs per instance.
+Metric: exact success on held-out development roots of family {family}. Promotion rule: a proposal replaces the
+incumbent if its exact is higher by more than {TIE}, or within {TIE} with at least 10% fewer FLOPs per instance
+(accuracy first, then inference cost). Also tracked: params, verifier calls, visits, FLOPs per instance.
 
 ## Incumbent architecture for {skill}
 {json.dumps(incumbent, sort_keys=True)}
@@ -329,7 +330,7 @@ modifications of the incumbent. Return ONLY one JSON object:
             r1 = self.measure(skill, family, top["config"], self.p["rung1_steps"])
             top["rung1"] = summ(r1)
             top["measured_dev_exact"] = top["rung1"].get("dev_exact")
-            if r1["status"] == "ok" and (top["measured_dev_exact"] or 0) > (summ(inc_res).get("dev_exact") or 0):
+            if r1["status"] == "ok" and beats(top["rung1"], summ(inc_res)):
                 top["decision"] = "promoted_to_incumbent"
                 state["incumbent"][arm][skill] = top["config"]
             else:
@@ -402,7 +403,7 @@ modifications of the incumbent. Return ONLY one JSON object:
             cands = [e for e in state["archive"] if e["arm"] in INKY_ARMS and e["skill"] == skill and e.get("rung1")
                      and e["rung1"].get("dev_exact") is not None]
             if cands:
-                b = max(cands, key=lambda e: e["rung1"]["dev_exact"])
+                b = max(cands, key=select_key)
                 out[skill] = {"config": b["config"], "source": f"{b['arm']} round {b['round']}", "dev_exact": b["rung1"]["dev_exact"]}
                 if best_any is None or b["rung1"]["dev_exact"] > best_any[1]:
                     best_any = (b["config"], b["rung1"]["dev_exact"], skill)
@@ -521,6 +522,26 @@ modifications of the incumbent. Return ONLY one JSON object:
             self.main_arms(frozen, seed)
         write_json(self.run / "inky_ledger.json", self.inky.ledger if self.inky else {})
         log(self.run, "campaign jobs finished; run `python -m research_gym.trm_skill_gym.report` to export")
+
+
+TIE = 0.005
+COST_CUT = 0.9
+
+
+def beats(new: Dict, inc: Dict) -> bool:
+    """Search promotion: higher exact by more than TIE, or exact within TIE and
+    at least 10% fewer FLOPs per instance (accuracy first, then inference cost)."""
+    a, b = new.get("dev_exact"), inc.get("dev_exact")
+    if a is None:
+        return False
+    if b is None or a > b + TIE:
+        return True
+    return abs(a - b) <= TIE and (new.get("flops_per_instance") or 0) < COST_CUT * (inc.get("flops_per_instance") or 0)
+
+
+def select_key(e: Dict):
+    r = e["rung1"]
+    return (round(r["dev_exact"] / TIE), -(r.get("flops_per_instance") or 0))
 
 
 def summ(res: Dict) -> Dict:
