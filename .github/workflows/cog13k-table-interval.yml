@@ -1,0 +1,47 @@
+name: COG-13K table interval receiver
+on:
+  pull_request:
+    paths:
+      - 'experiments/cog13k_table_interval_receiver/**'
+      - '.github/workflows/cog13k-table-interval.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Retrieve the two frozen native archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for entry in '15136527625 c.zip d99bc6a95d4ea31a132b408cd653644e9680a167fa87aca3b722522af0ab5aea' '15160808431 j.zip 624fd661c820796d0db786aab6ce585d575bc0524db25fdb0b76b2d3f86fba69'; do
+            read -r id name digest <<< "$entry"
+            curl --fail --location --retry 3 \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/MoralityLabAI/HybridTRMLDT/actions/artifacts/$id/zip" \
+              -o "$RUNNER_TEMP/$name"
+            echo "$digest  $RUNNER_TEMP/$name" | sha256sum --check
+          done
+      - name: Compile and replay matched CPU benchmark
+        run: |
+          set -euo pipefail
+          python experiments/cog13k_table_interval_receiver/benchmark.py "$RUNNER_TEMP/c.zip" "$RUNNER_TEMP/j.zip" "$RUNNER_TEMP/cog13k"
+          python experiments/cog13k_table_interval_receiver/verify.py "$RUNNER_TEMP/cog13k/result.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cog13k-table-interval-receipt
+          path: ${{ runner.temp }}/cog13k/result.json
+          if-no-files-found: warn
+          retention-days: 30
