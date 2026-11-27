@@ -7,6 +7,7 @@ dependencies = []
 
 [project.optional-dependencies]
 neural = ["torch>=2.1"]
+trm-skill-gym = ["torch>=2.1", "numpy>=1.26", "psutil>=5.9"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

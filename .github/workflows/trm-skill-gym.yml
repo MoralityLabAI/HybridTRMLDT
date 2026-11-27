@@ -1,0 +1,32 @@
+name: TRM-SKILL-GYM-01 skill factory
+permissions:
+  contents: read
+
+on:
+  push:
+    paths:
+      - 'research_gym/trm_skill_gym/**'
+      - 'tests/test_trm_skill_gym.py'
+      - '.github/workflows/trm-skill-gym.yml'
+  pull_request:
+    paths:
+      - 'research_gym/trm_skill_gym/**'
+      - 'tests/test_trm_skill_gym.py'
+      - '.github/workflows/trm-skill-gym.yml'
+  workflow_dispatch:
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install CPU dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install numpy psutil pytest
+      - name: Tasks, verifiers, certificates, DSL, module contract, Inky client, campaign smoke
+        run: python -m pytest -q tests/test_trm_skill_gym.py
