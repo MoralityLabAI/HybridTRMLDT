@@ -145,3 +145,37 @@ jobs:
           name: gsf-04-dual-ldt-public-development
           path: /tmp/persona-dev/
           retention-days: 7
+  clocks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --smoke --out /tmp/clocks-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --audit /tmp/clocks-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --out /tmp/clocks-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --audit /tmp/clocks-dev | tee /tmp/clocks-dev/audit.json
+      - name: Summarize loop schedule and adaptive exit results
+        run: |
+          python - <<'PY'
+          import json, statistics as st
+          r=json.load(open('/tmp/clocks-dev/clock_report.json'))
+          for arm in sorted({x['arm'] for x in r['cells']}):
+              xs=[x for x in r['cells'] if x['arm']==arm]
+              for split in ('dev','shift'):
+                  for policy in xs[0][split]:
+                      ms=[x[split][policy] for x in xs]
+                      print(json.dumps(dict(arm=arm,split=split,policy=policy,accuracy=st.mean(m['accuracy'] for m in ms),ticks=st.mean(m['mean_ticks'] for m in ms),chain=st.mean(m['families']['chain']['accuracy'] for m in ms),compose=st.mean(m['families']['compose']['accuracy'] for m in ms),node_visits=sum(m['node_visits'] for m in ms),exact_hops=sum(m['exact_hops'] for m in ms))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-05-loop-clocks-development
+          path: /tmp/clocks-dev/
+          retention-days: 7
