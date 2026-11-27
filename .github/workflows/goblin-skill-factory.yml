@@ -247,3 +247,38 @@ jobs:
           name: gsf-07-mcp-geometry-development
           path: /tmp/mcp-dev/
           retention-days: 7
+  certificate-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --smoke --out /tmp/cert-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --audit /tmp/cert-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --out /tmp/cert-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --audit /tmp/cert-dev | tee /tmp/cert-dev/audit.json
+      - name: Summarize paired certificate search and memory
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/cert-dev/certificate_report.json'))
+          for split in ('dev','shift','trace_train'):
+              for arm in sorted({c['arm'] for c in r['cells']}):
+                  for cache in ('cold','lru','forecast'):
+                      ms=[c[split] for c in r['cells'] if c['arm']==arm and c['cache']==cache]
+                      n=sum(m['queries'] for m in ms)
+                      work={k:sum(m['work'].get(k,0) for m in ms) for k in set().union(*(m['work'] for m in ms))}
+                      print(json.dumps(dict(split=split,arm=arm,cache=cache,n=n,regret=sum(m['mean_regret']*m['queries'] for m in ms)/n,optimal=sum(m.get('optimal_certificates',0) for m in ms),proven_empty=sum(m.get('proven_empty',0) for m in ms),missed=sum(m.get('missed_viable',0) for m in ms),unsafe=sum(m.get('unsafe',0) for m in ms),cold_issues=work.get('cold_issues',0),cache_hits=work.get('cache_hits',0),verdict_requests=work.get('verdict_requests',0),neural_visits=work.get('neural_cell_visits',0),witness_checks=work.get('witness_checks',0),peak_entries=max(m['peak_entries'] for m in ms)),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-08-certificate-search-development
+          path: /tmp/cert-dev/
+          retention-days: 7
