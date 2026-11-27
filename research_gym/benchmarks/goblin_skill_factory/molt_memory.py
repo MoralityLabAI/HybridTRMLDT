@@ -149,13 +149,25 @@ def outcome(public):
     return i, q
 
 
-def host_episode(public, mask, *, force_outcome=None, attempt_stale=False):
+def authorize_receipt(receipt, root, query, context, affected):
+    """Check the host-issued receipt's scope before reading its payload."""
+    if receipt is None:
+        return False, "missing"
+    if receipt["root"] != root or receipt["node"] != query:
+        return False, "identity"
+    if receipt["context"] != context or query in affected:
+        return False, "stale"
+    return True, "current"
+
+
+def host_episode(public, mask, *, force_outcome=None):
     if tuple(mask) not in MASKS:
         raise ValueError("invalid retention mask")
     bank = ScalarBank(MODULUS)
     first = bank.evaluate(tuple(public["inputs"]), tuple(map(tuple, public["parents"])), "epoch0")
     # Only the selected receipts are visible to the acting retention policy.
-    retained = {i: first.values[i] for i in mask}
+    retained = {i: {"root": public["root"], "node": i, "context": "epoch0",
+                    "value": first.values[i]} for i in mask}
     event_id, query = outcome(public) if force_outcome is None else force_outcome
     event = public["events"][event_id]
     xs, parents, context = apply_edit(public, event)
@@ -166,12 +178,13 @@ def host_episode(public, mask, *, force_outcome=None, attempt_stale=False):
     exact, cold_cost = cold_query(xs, parents, query)
     if exact != current.values[query]:
         raise AssertionError("independent query mismatch")
-    stale = query in retained and query in affected
-    hit = query in retained and not stale
     # Host binding, not coincidental value equality, authorizes reuse.
-    stale_rejected = attempt_stale and stale
+    hit, reason = authorize_receipt(retained.get(query), public["root"], query,
+                                    context, affected)
+    stale = reason == "stale"
+    stale_rejected = stale and not hit
     if hit:
-        answer, work, route = retained[query], 0, "reuse"
+        answer, work, route = retained[query]["value"], 0, "reuse"
     else:
         answer, work = cold_query(xs, parents, query)
         route = "recompute"
@@ -182,6 +195,7 @@ def host_episode(public, mask, *, force_outcome=None, attempt_stale=False):
     optimal = sum(vals[i] for i in best_mask(vals))
     return {"event": event_id, "query": query, "route": route, "answer": answer,
             "correct": True, "hit": hit, "stale": stale, "stale_rejected": stale_rejected,
+            "authorization": reason,
             "cold_nodes": cold_cost, "query_nodes": work, "saved_nodes": cold_cost-work,
             "receipt_lookups": 1, "retained_entries": CAPACITY,
             "host_initial_nodes": len(first.recomputed),
@@ -295,7 +309,7 @@ def evaluate(worlds, arm, model=None, trace=None, identity=None, seed=None):
             row = {"schema": SCHEMA+".rollout", "split": "trace_train", "root": w["root"],
                    "seed": seed, "index": index, "arm": arm, "identity": identity,
                    "public": w, "visits": visits, "receipt": receipt,
-                   "target_kind": "expected_optimal" if regrets >= 0 and
+                   "target_kind": "expected_optimal" if
                        Fraction(receipt["expected_regret"]) == 0 else "retention_repair",
                    "training_ready": False}
             row["receipt_hash"] = digest(row)
@@ -391,6 +405,12 @@ def audit(out):
 
 
 def selftest():
+    sample = {"root": "r", "node": 2, "context": "epoch0", "value": 3}
+    assert authorize_receipt(sample, "r", 2, "epoch0", set()) == (True, "current")
+    assert authorize_receipt(sample, "r2", 2, "epoch0", set()) == (False, "identity")
+    assert authorize_receipt(sample, "r", 3, "epoch0", set()) == (False, "identity")
+    assert authorize_receipt(sample, "r", 2, "epoch1", set()) == (False, "stale")
+    assert authorize_receipt(sample, "r", 2, "epoch0", {2}) == (False, "stale")
     for split in SPLITS:
         for i in range(12):
             w = world(split,137,i)
@@ -398,7 +418,7 @@ def selftest():
             optimal = policy(w,"exact_expected")
             for mask in MASKS:
                 for e,q in itertools.product(range(EVENT_COUNT),range(N)):
-                    r = host_episode(w,mask,force_outcome=(e,q),attempt_stale=True)
+                    r = host_episode(w,mask,force_outcome=(e,q))
                     assert r["correct"] and Fraction(r["expected_regret"]) >= 0
                     if r["stale"]:
                         assert r["stale_rejected"] and r["route"] == "recompute"
