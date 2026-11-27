@@ -81,6 +81,12 @@ its own limit of 6. Because every rung-2 candidate uses loop forcing (`loss=all`
 parameter-matched control is built from `prefix_all` (arm `prefix_all_param_matched`)
 so it differs from the top finalist in routing and width only.
 
+Amendment 2 (2026-11-28 07:08, before freeze and before any hidden-root run): the
+campaign was stopped 70 minutes before its deadline because proposals had saturated
+(five consecutive duplicates of tested configurations, iterations 57-61). The released
+time goes to finals: seeds 11, 23, 37, 41, 53 (all of `FINAL_SEEDS`) instead of three,
+run as three CPU worker processes with a 1 GiB incremental cap each (3 GiB total).
+
 ## Measures
 
 Exact task success (primary); success per recurrent visit; success per train CPU-second;
