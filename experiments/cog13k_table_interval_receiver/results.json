@@ -1,0 +1,279 @@
+{
+  "schema": "cog13k.table_interval.compact_receipt.v1",
+  "sourceArchives": {
+    "C": "d99bc6a95d4ea31a132b408cd653644e9680a167fa87aca3b722522af0ab5aea",
+    "J": "624fd661c820796d0db786aab6ce585d575bc0524db25fdb0b76b2d3f86fba69"
+  },
+  "setup": {
+    "tableBytes": 32784,
+    "tableSha256": "0af5f6f1ffb02dd43cf81ec3a8a29fa50fdc8f262ba97f88088e154ff2ac4757",
+    "cpuNs": 90861143,
+    "modelBytes": 5960
+  },
+  "tests": {
+    "endpointChecks": 1004,
+    "invalidEndpointRejected": true,
+    "malformedPacketsRejected": 4,
+    "unsupportedRangeRejected": true
+  },
+  "checkedTableIntervals": 2016,
+  "falseCertificates": 0,
+  "build": {
+    "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+    "sourceSha256": "1b0a746bd51e3769a18d371831575357a310d4317ed789699d93d7f09249b5d8",
+    "receiverBlob": "5e04e9509b2a0df2abb408c7db184ef8ccb1fbda",
+    "benchmarkBlob": "61da586faf6d080bda4ffcd36a6ee92dca67ff52",
+    "transportBlob": "75050c3c8e5ab08ef351ea738d788d4fe2f28aaa"
+  },
+  "fullLocalResultSha256": "e4ed73166ec5a29272df9cdf493afddd0fc8b9598dc586c40f2f65c41a17c9d3",
+  "scope": "archived reached menus; three CPU timing repetitions; no new Lean rollout",
+  "timingColumns": [
+    "senderNs",
+    "receiverNs",
+    "auditNs"
+  ],
+  "cohorts": {
+    "C": {
+      "menus": 449,
+      "median": {
+        "local_dense": {
+          "bytes": 449,
+          "senderNs": 375499442,
+          "receiverNs": 0,
+          "auditNs": 347654006,
+          "decisions": 449,
+          "refinements": 0,
+          "exactFallbacks": 0,
+          "abstentionsBeforeSend": 0
+        },
+        "shared_dense": {
+          "bytes": 30981,
+          "senderNs": 34136557,
+          "receiverNs": 334594519,
+          "auditNs": 331978613,
+          "decisions": 449,
+          "refinements": 0,
+          "exactFallbacks": 0,
+          "abstentionsBeforeSend": 0
+        },
+        "decimal_progressive": {
+          "bytes": 10212,
+          "senderNs": 176913212,
+          "receiverNs": 12130855896,
+          "auditNs": 350494542,
+          "decisions": 449,
+          "refinements": 27,
+          "exactFallbacks": 0,
+          "abstentionsBeforeSend": 0
+        },
+        "table_progressive": {
+          "bytes": 10212,
+          "senderNs": 86007392,
+          "receiverNs": 98901439,
+          "auditNs": 343117402,
+          "decisions": 449,
+          "refinements": 27,
+          "exactFallbacks": 0,
+          "abstentionsBeforeSend": 0
+        }
+      },
+      "rawTimingNs": {
+        "local_dense": [
+          [
+            364248397,
+            0,
+            327166350
+          ],
+          [
+            375499442,
+            0,
+            347654006
+          ],
+          [
+            406187066,
+            0,
+            367301722
+          ]
+        ],
+        "shared_dense": [
+          [
+            34136557,
+            334594519,
+            331978613
+          ],
+          [
+            32672689,
+            329192994,
+            327922288
+          ],
+          [
+            36119924,
+            339033129,
+            341872676
+          ]
+        ],
+        "decimal_progressive": [
+          [
+            179971275,
+            12217142954,
+            350494542
+          ],
+          [
+            172259412,
+            12130855896,
+            347597387
+          ],
+          [
+            176913212,
+            11996039329,
+            351072363
+          ]
+        ],
+        "table_progressive": [
+          [
+            86007392,
+            98901439,
+            343117402
+          ],
+          [
+            85666320,
+            96444274,
+            340719225
+          ],
+          [
+            91301087,
+            105189487,
+            356528367
+          ]
+        ]
+      },
+      "gate": {
+        "bytes": true,
+        "receiver5x": true,
+        "receiverSpeedup": 122.65601005057167,
+        "routingSpeedup": 66.56128342512748
+      }
+    },
+    "J": {
+      "menus": 189,
+      "median": {
+        "local_dense": {
+          "bytes": 189,
+          "senderNs": 158066080,
+          "receiverNs": 0,
+          "auditNs": 138197122,
+          "decisions": 189,
+          "refinements": 0,
+          "exactFallbacks": 0,
+          "abstentionsBeforeSend": 0
+        },
+        "shared_dense": {
+          "bytes": 13041,
+          "senderNs": 19976368,
+          "receiverNs": 141193423,
+          "auditNs": 143804256,
+          "decisions": 189,
+          "refinements": 0,
+          "exactFallbacks": 0,
+          "abstentionsBeforeSend": 0
+        },
+        "decimal_progressive": {
+          "bytes": 4172,
+          "senderNs": 80352397,
+          "receiverNs": 4836301125,
+          "auditNs": 143865241,
+          "decisions": 189,
+          "refinements": 7,
+          "exactFallbacks": 0,
+          "abstentionsBeforeSend": 0
+        },
+        "table_progressive": {
+          "bytes": 4172,
+          "senderNs": 40356536,
+          "receiverNs": 39312797,
+          "auditNs": 136181402,
+          "decisions": 189,
+          "refinements": 7,
+          "exactFallbacks": 0,
+          "abstentionsBeforeSend": 0
+        }
+      },
+      "rawTimingNs": {
+        "local_dense": [
+          [
+            158066080,
+            0,
+            138197122
+          ],
+          [
+            156926633,
+            0,
+            138371164
+          ],
+          [
+            158930763,
+            0,
+            138033705
+          ]
+        ],
+        "shared_dense": [
+          [
+            19976368,
+            141654375,
+            143804256
+          ],
+          [
+            18174613,
+            133569859,
+            133136481
+          ],
+          [
+            21748121,
+            141193423,
+            147303901
+          ]
+        ],
+        "decimal_progressive": [
+          [
+            80352397,
+            4934858943,
+            146074389
+          ],
+          [
+            76374864,
+            4794887559,
+            143865241
+          ],
+          [
+            82518325,
+            4836301125,
+            143656294
+          ]
+        ],
+        "table_progressive": [
+          [
+            40142875,
+            37650286,
+            135521110
+          ],
+          [
+            40356536,
+            39312797,
+            136181402
+          ],
+          [
+            42080129,
+            40077157,
+            138549117
+          ]
+        ]
+      },
+      "gate": {
+        "bytes": true,
+        "receiver5x": true,
+        "receiverSpeedup": 123.02103879812978,
+        "routingSpeedup": 61.71325071844144
+      }
+    }
+  }
+}
