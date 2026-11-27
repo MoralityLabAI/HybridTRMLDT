@@ -18,7 +18,7 @@ from torch import nn
 
 SCHEMA = "hybrid.gsf.v1"
 FAMILIES = ("repair", "retention", "persona")
-SPLITS = ("train", "cal", "dev", "shift")
+SPLITS = ("train", "cal", "dev", "shift", "trace_train")
 ARMS = ("direct", "residual", "refresh", "rlt", "damp")
 N = 4
 ABSTAIN = N
@@ -63,7 +63,7 @@ def case(family, split, seed, index):
 def permitted(family, row):
     cost, gain, authorized, current, verified, preference, scope, veto = row
     if family == "repair":
-        return bool(authorized and current and verified and not veto and gain > 0)
+        return bool(authorized and current and verified and not veto and gain > cost)
     if family == "retention":
         return bool(current and verified and scope and not veto)
     if family == "persona":
@@ -104,10 +104,14 @@ def dataset(family, split, seed, count):
     return [case(family, split, seed, i) for i in range(count)]
 
 
-def tensors(cases):
+def features(cases):
     x = torch.tensor([c["rows"] for c in cases], dtype=torch.float32)
     x[:, :, [0, 1, 5]] /= 9.0
-    return x.flatten(1), torch.tensor([oracle(c) for c in cases], dtype=torch.long)
+    return x.flatten(1)
+
+
+def tensors(cases):
+    return features(cases), torch.tensor([oracle(c) for c in cases], dtype=torch.long)
 
 
 class Skill(nn.Module):
@@ -150,9 +154,11 @@ def weight_hash(model):
     return digest({k: v.detach().cpu().tolist() for k, v in model.state_dict().items()})
 
 
-def fit(arm, width, seed, train, steps, batch):
+def fit(arm, width, seed, train, steps, batch, initial_state=None):
     torch.manual_seed(seed)
     model = Skill(width, arm)
+    if initial_state is not None:
+        model.load_state_dict(initial_state)
     initial = weight_hash(model)
     optimizer = torch.optim.AdamW(model.parameters(), lr=0.003)
     x, y = tensors(train)
@@ -177,7 +183,7 @@ def fit(arm, width, seed, train, steps, batch):
 @torch.no_grad()
 def rollout(model, c, threshold=None):
     # No oracle call in the proposal path. Stop only after confidence criterion.
-    x, _ = tensors([c])
+    x = features([c])
     encoded, h = model.start(x)
     total = 1 if model.arm == "direct" else PASSES
     visits = []
@@ -221,18 +227,20 @@ def calibrate(model, cal):
 
 
 def export_train(path, family, arm, seed, weights_hash, results):
-    # Development-only teacher training roots, never CAL/dev/shift.
+    # Dedicated rollout roots, disjoint from fitting/CAL/dev/shift.
     with path.open("a", encoding="utf-8") as f:
         for r in results:
-            if r["case"]["split"] != "train" or r["case"]["family"] != family:
+            if r["case"]["split"] != "trace_train" or r["case"]["family"] != family:
                 raise ValueError("invalid rollout export")
             c = r["case"]
             if grade(c, r["visits"][-1]["action"]) != r["receipt"]:
                 raise ValueError("receipt mismatch")
             record = {"schema": SCHEMA + ".rollout", "family": family, "root": c["root"],
-                      "split": "train", "arm": arm, "seed": seed,
+                      "split": "trace_train", "arm": arm, "seed": seed,
                       "weights_hash": weights_hash, "public": c,
                       "visits": r["visits"], "receipt": r["receipt"],
+                      "target_kind": "verified_success" if r["receipt"]["raw_correct"] else "failure_repair",
+                      "repair_target": r["receipt"]["gold"],
                       "training_ready": False}
             record["receipt_hash"] = digest(record)
             f.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\n")
@@ -249,11 +257,19 @@ def run(out, width=32, steps=100, batch=32, train_n=512, eval_n=128, seeds=(137,
     report = {"schema": SCHEMA, "status": "public_development_only",
               "config": {"width": width, "steps": steps, "batch": batch,
                          "train_n": train_n, "eval_n": eval_n, "seeds": list(seeds)},
-              "cells": []}
+              "cells": [], "meta_repair": []}
     for family in FAMILIES:
         for seed in seeds:
             sets = {s: dataset(family, s, seed, train_n if s == "train" else eval_n)
                     for s in SPLITS}
+            # Detect exact duplicate worlds across partitions. Roots are public.
+            seen = set()
+            for split, cs in sets.items():
+                world_hashes = {digest(c["rows"]) for c in cs}
+                if seen.intersection(world_hashes):
+                    raise RuntimeError(f"duplicate world across split: {split}")
+                seen.update(world_hashes)
+            refresh_weights = None
             for arm in ARMS:
                 model, fit_receipt = fit(arm, width, seed, sets["train"], steps, batch)
                 row = {"family": family, "seed": seed, "arm": arm, **fit_receipt,
@@ -264,9 +280,41 @@ def run(out, width=32, steps=100, batch=32, train_n=512, eval_n=128, seeds=(137,
                     row[split], _ = evaluate(model, sets[split])
                     if threshold is not None:
                         row[split + "_adaptive"], _ = evaluate(model, sets[split], threshold)
-                _, train_rows = evaluate(model, sets["train"])
-                export_train(traces, family, arm, seed, fit_receipt["weights_hash"], train_rows)
+                _, trace_rows = evaluate(model, sets["trace_train"])
+                export_train(traces, family, arm, seed, fit_receipt["weights_hash"], trace_rows)
+                if arm == "refresh":
+                    refresh_weights = {k: v.detach().clone() for k, v in model.state_dict().items()}
+                artifact = out / f"{family}-{seed}-{arm}.pt"
+                torch.save(model.state_dict(), artifact)
+                row["artifact"] = artifact.name
+                row["artifact_sha256"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
                 report["cells"].append(row)
+            # RLT meta-repair: common trained checkpoint, fresh optimizer in all arms,
+            # identical further updates and input refresh; no selection on dev/shift.
+            assert refresh_weights is not None
+            candidates = []
+            repair_steps = max(1, steps // 4)
+            for arm in ("refresh", "rlt", "damp"):
+                m, receipt = fit(arm, width, seed + 1000, sets["train"], repair_steps,
+                                 batch, initial_state=refresh_weights)
+                entry = {"arm": arm, **receipt}
+                for split in ("cal", "dev", "shift"):
+                    entry[split], _ = evaluate(m, sets[split])
+                artifact = out / f"{family}-{seed}-meta-{arm}.pt"
+                torch.save(m.state_dict(), artifact)
+                entry["artifact"] = artifact.name
+                entry["artifact_sha256"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+                _, trace_rows = evaluate(m, sets["trace_train"])
+                export_train(traces, family, "meta_" + arm, seed, receipt["weights_hash"], trace_rows)
+                candidates.append(entry)
+            initial_hashes = {c["initial_hash"] for c in candidates}
+            if len(initial_hashes) != 1:
+                raise RuntimeError("meta-repair initialization mismatch")
+            chosen = max(candidates, key=lambda c: (c["cal"]["raw_accuracy"],
+                         -c["cal"]["unsafe_rate"], c["arm"] == "refresh"))
+            report["meta_repair"].append({"family": family, "seed": seed,
+                                         "selected_by_cal": chosen["arm"],
+                                         "candidates": candidates})
     report["train_rollouts_sha256"] = hashlib.sha256(traces.read_bytes()).hexdigest()
     (out / "report.json").write_text(json.dumps(report, indent=2, allow_nan=False), encoding="utf-8")
     return report
