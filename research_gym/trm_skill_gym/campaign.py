@@ -37,6 +37,9 @@ PROFILE = {
     "proposals_per_round": 3,
     "search_eval": 512,
     "frozen_eval": 512,
+    "rung0_seconds": 360,         # wall-clock cap per racing measurement (equal-time racing for slow configs)
+    "rung1_seconds": 900,
+    "main_seconds": 1200,
     "search_fraction": 0.35,      # share of the wall-clock budget for the search phase
     "export_reserve_s": 900,
 }
@@ -138,7 +141,8 @@ class Campaign:
             res = {"status": "rejected_param_bound", "params": n_params}
         else:
             try:
-                model, info = TR.train_module(skill, cfg, steps, seed, self.train_pool(skill))
+                cap = self.p["rung0_seconds"] if steps <= self.p["rung0_steps"] else self.p["rung1_seconds"]
+                model, info = TR.train_module(skill, cfg, steps, seed, self.train_pool(skill), deadline=time.time() + cap)
                 ev = TR.evaluate(model, skill, cfg, self.search_pool(skill, family))
                 res = {"status": "ok", "params": n_params, "train": info, "dev": ev}
             except TR.RamCapExceeded as exc:
@@ -437,7 +441,8 @@ modifications of the incumbent. Return ONLY one JSON object:
                 res["certificate_violations"] = 0
             else:
                 model, info = TR.train_module(skill, cfg, steps, seed, self.train_pool(skill), shuffled=shuffled,
-                                              init_state=init_state, freeze_core=freeze_core)
+                                              init_state=init_state, freeze_core=freeze_core,
+                                              deadline=time.time() + self.p["main_seconds"])
                 res["params"] = model.n_params()
                 res["train"] = info
                 R = cfg["visits"]
@@ -527,7 +532,8 @@ def summ(res: Dict) -> Dict:
             "verifier_calls": d["verifier_calls_per_instance"], "visits": d["visits"],
             "flops_per_instance": d["flops_per_instance"], "ece": d.get("ece"),
             "adaptive_exact": d.get("adaptive_exact"), "adaptive_visits": d.get("adaptive_visits"),
-            "train_seconds": res["train"]["train_seconds"], "peak_rss_delta_bytes": res["train"]["peak_rss_delta_bytes"]}
+            "train_seconds": res["train"]["train_seconds"], "peak_rss_delta_bytes": res["train"]["peak_rss_delta_bytes"],
+            "steps_done": res["train"]["steps"], "stopped_early": res["train"].get("stopped")}
 
 
 def main():
