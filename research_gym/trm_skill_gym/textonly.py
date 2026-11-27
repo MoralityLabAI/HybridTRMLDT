@@ -21,9 +21,9 @@ SYSTEM = ("You execute an agent skill. Read the SKILL.md and the instance, reaso
           "the JSON object the skill's action schema asks for. Indices refer to candidate numbers.")
 
 
-def run(out: Path, per_skill: int) -> None:
+def run(out: Path, per_skill: int, max_completion_tokens: int = 6000) -> None:
     out.mkdir(parents=True, exist_ok=True)
-    client = InkyClient(max_completion_tokens=6000, reasoning_effort="medium")
+    client = InkyClient(max_completion_tokens=max_completion_tokens, reasoning_effort="medium")
     for skill in T.SKILLS:
         path = out / f"{skill}.jsonl"
         done = set()
@@ -68,8 +68,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--per-skill", type=int, default=16)
+    ap.add_argument("--max-completion-tokens", type=int, default=6000)
     a = ap.parse_args()
-    run(a.out, a.per_skill)
+    run(a.out, a.per_skill, a.max_completion_tokens)
 
 
 if __name__ == "__main__":

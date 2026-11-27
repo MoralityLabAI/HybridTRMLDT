@@ -158,10 +158,10 @@ def search_summary(state: Dict) -> Dict:
 
 
 @torch.no_grad()
-def paired_textonly(run: Path, main_jobs: List[Dict]) -> Dict:
+def paired_textonly(run: Path, main_jobs: List[Dict], sub: str = "text_only") -> Dict:
     out = {}
     for skill in T.SKILLS:
-        p = run / "text_only" / f"{skill}.jsonl"
+        p = run / sub / f"{skill}.jsonl"
         if not p.exists():
             continue
         recs = [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]
@@ -173,6 +173,7 @@ def paired_textonly(run: Path, main_jobs: List[Dict]) -> Dict:
         idx = [r["index"] for r in recs]
         row = {"n": len(recs), "text_only_exact": mean([r["exact"] for r in recs]),
                "text_only_parsed": mean([float(r["parsed"]) for r in recs]),
+               "text_only_truncated": mean([float(r.get("finish_reason") == "length") for r in recs]),
                "text_only_completion_tokens": mean([(r.get("usage") or {}).get("completion_tokens") for r in recs])}
         heur = M.episode(None, skill, batch, dict(dsl.defaults(), ldt_projection=False), heuristic=True)
         row["A_visit1_exact"] = mean(heur["exact"][0][idx].tolist())
@@ -368,12 +369,14 @@ def write_report(out: Path, main: Dict, dec: Dict, srch: Dict, txt: Dict, transf
     L.append("\n## Text-only instructions vs trained modules (same first instances of frozen dev)\n")
     L.append("Text-only = Inky Mini executing the SKILL.md with no module and no verifier call; compare with visit-1 "
              "(pre-verifier) exact of the existing skill A and of modules, and with their final exact.\n")
-    L.append("| skill | n | text-only | A visit1 | A final | D visit1 | D final | best module final |")
-    L.append("|---|---|---|---|---|---|---|---|")
+    L.append("| skill | n | text-only 6k cap (truncated) | text-only 10k cap (truncated) | A visit1 | A final | D visit1 | D final | best module final |")
+    L.append("|---|---|---|---|---|---|---|---|---|")
     for skill, r in txt.items():
         best = max([r.get(f"{a}_final_exact") or 0 for a in MODULE_ARMS] or [0])
-        L.append(f"| {skill} | {r['n']} | {f3(r['text_only_exact'])} | {f3(r['A_visit1_exact'])} | {f3(r['A_final_exact'])} | "
+        L.append(f"| {skill} | {r['n']} | {f3(r.get('text_only_exact'))} ({f3(r.get('text_only_truncated'))}) | "
+                 f"{f3(r.get('text_only_10k_exact'))} ({f3(r.get('text_only_10k_truncated'))}) | {f3(r['A_visit1_exact'])} | {f3(r['A_final_exact'])} | "
                  f"{f3(r.get('D_trm_direct_visit1_exact'))} | {f3(r.get('D_trm_direct_final_exact'))} | {f3(best)} |")
+    L.append("\nTruncated = the completion hit its token cap before emitting an answer (scored as a failure).")
     L.append("\n## Transfer (D architecture, seed 0, short target budget)\n")
     L.append("| source -> target | scratch | shared initialization | frozen latent module |")
     L.append("|---|---|---|---|")
@@ -387,7 +390,9 @@ def write_report(out: Path, main: Dict, dec: Dict, srch: Dict, txt: Dict, transf
     for a, s in srch.items():
         L.append(f"| {a} | {s['rounds']} | {s['proposals']} | {s['schema_rejected']} | {s['no_change']} | {s['trained']} | "
                  f"{s['promoted_to_incumbent']} | {f3(s['prediction_mae'])} | {f3(s['prediction_bias'])} |")
-    L.append("\nFrozen H architectures (selected on held-out development roots before the frozen evaluation):\n")
+    L.append("\nFrozen H architectures (selected on held-out development roots before the frozen evaluation). Selection "
+             "compared rung-1 exact across entries measured on either development family of a skill, so a configuration "
+             "tested on the easier family is favoured; this is a known limitation of the selection step.\n")
     for skill, h in frozen.get("architectures", {}).items():
         ch = dsl.diff(dsl.validate({"core": "trm"}), h["config"])
         L.append(f"- {skill}: source `{h['source']}`, dev {f3(h.get('dev_exact'))}, change vs D: `{json.dumps(ch, sort_keys=True)}`")
@@ -424,7 +429,7 @@ def main():
     receipts = rj(run / "receipts.json") if (run / "receipts.json").exists() else {}
     pareto = rj(run / "search" / "pareto.json") if (run / "search" / "pareto.json").exists() else []
     ledger = {}
-    for p in (run / "inky_ledger.json", run / "text_only" / "ledger.json"):
+    for p in (run / "inky_ledger.json", run / "text_only" / "ledger.json", run / "text_only_10k" / "ledger.json"):
         if p.exists():
             for k, v in rj(p).items():
                 ledger[k] = ledger.get(k, 0) + v
@@ -433,6 +438,12 @@ def main():
     dec = decisions(main_agg, ablations)
     srch = search_summary(state)
     txt = paired_textonly(run, main_jobs)
+    txt10 = paired_textonly(run, main_jobs, "text_only_10k")
+    for skill, r in txt10.items():
+        txt.setdefault(skill, dict(r))
+        txt[skill]["text_only_10k_exact"] = r["text_only_exact"]
+        txt[skill]["text_only_10k_truncated"] = r["text_only_truncated"]
+        txt[skill]["text_only_10k_n"] = r["n"]
     packages = export_packages(run, out, main_agg, dec, frozen, receipts)
     n_rec = goblinbench_records(run, out, state, frozen, dec, main_agg)
     summary = {"main": main_agg, "decisions": dec, "search": srch, "text_only": txt, "packages": packages,
