@@ -111,3 +111,37 @@ jobs:
           name: gsf-03-native-repair-development
           path: /tmp/repair-dev/
           retention-days: 7
+  persona:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona_private --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --smoke --out /tmp/persona-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --audit /tmp/persona-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --out /tmp/persona-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --audit /tmp/persona-dev | tee /tmp/persona-dev/audit.json
+      - name: Summarize Dual-LDT persona externalization
+        run: |
+          python - <<'PY'
+          import json, statistics as st
+          r=json.load(open('/tmp/persona-dev/persona_report.json'))
+          for arm in sorted({x['arm'] for x in r['cells']}):
+              xs=[x for x in r['cells'] if x['arm']==arm]
+              for split in ('dev','shift'):
+                  ms=[x[split] for x in xs]
+                  print(json.dumps(dict(arm=arm,split=split,regret=st.mean(m['mean_regret'] for m in ms),tv=st.mean(m['mean_tv'] for m in ms),lane_accuracy=st.mean(m['tag_classification']['lane_accuracy'] for m in ms),unsafe=sum(m.get('unsafe',0) for m in ms),stale_rejected=sum(m.get('stale_rejected',0) for m in ms),stale_tests=sum(m.get('stale_tests',0) for m in ms),optimal=sum(m.get('viable_optimal',0) for m in ms),viable=sum(m.get('viable',0) for m in ms))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-04-dual-ldt-public-development
+          path: /tmp/persona-dev/
+          retention-days: 7
