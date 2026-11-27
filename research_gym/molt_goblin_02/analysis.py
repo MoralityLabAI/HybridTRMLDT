@@ -146,10 +146,10 @@ def to_markdown(res: dict, freeze: dict | None = None) -> str:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--runs", type=Path, required=True)
+    ap.add_argument("--runs", type=Path, nargs="+", required=True)
     ap.add_argument("--out", type=Path, required=True)
     a = ap.parse_args()
-    res = analyse(load(a.runs))
+    res = analyse([r for p in a.runs for r in load(p)])
     a.out.mkdir(parents=True, exist_ok=True)
     (a.out / "analysis.json").write_text(json.dumps(res, indent=1), encoding="utf-8")
     (a.out / "analysis.md").write_text(to_markdown(res) + "\n", encoding="utf-8")
