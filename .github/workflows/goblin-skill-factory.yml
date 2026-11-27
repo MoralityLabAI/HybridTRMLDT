@@ -77,3 +77,37 @@ jobs:
           name: gsf-02-molt-development
           path: /tmp/molt-dev/
           retention-days: 7
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --smoke --out /tmp/repair-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --audit /tmp/repair-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --out /tmp/repair-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --audit /tmp/repair-dev | tee /tmp/repair-dev/audit.json
+      - name: Summarize native certified repair
+        run: |
+          python - <<'PY'
+          import json, statistics as st
+          r = json.load(open('/tmp/repair-dev/repair_report.json'))
+          for arm in sorted({x['arm'] for x in r['cells']}):
+              xs = [x for x in r['cells'] if x['arm']==arm]
+              for split in ('dev','shift'):
+                  for budget in ('1','3','5'):
+                      ms=[x[split][budget] for x in xs]
+                      print(json.dumps(dict(arm=arm,split=split,budget=budget,regret=st.mean(x['mean_regret'] for x in ms),utility=st.mean(x['mean_utility'] for x in ms),missed=sum(x['missed_viable'] for x in ms),repaired=sum(x['repaired'] for x in ms),unsafe=sum(x['unsafe'] for x in ms),viable=sum(x['viable'] for x in ms),nominations=sum(x['nominations'] for x in ms),cell_visits=sum(x['work'].get('cell_visits',0) for x in ms),issuer_checks=sum(x['work'].get('issuer_checks',0) for x in ms),prescan_checks=sum(x['work'].get('prescan_checks',0) for x in ms),elimination_checks=sum(x['work'].get('elimination_admissibility_checks',0) for x in ms))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-03-native-repair-development
+          path: /tmp/repair-dev/
+          retention-days: 7
