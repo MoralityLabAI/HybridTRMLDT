@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "finish_reason": "length",
+ "reasoning_chars": 14541,
+ "request_sha256": "3bedd720dbd5ea6251b865133ef44784a0edc2e842f75b1cc289a4b3eb65dbbe",
+ "response_model": "thinkingmachines/Inkling-2-Mini:peft:65536:free",
+ "seconds": 54.64100000000326,
+ "usage": {
+  "completion_tokens": 4000,
+  "prompt_tokens": 2824,
+  "prompt_tokens_details": {
+   "cached_tokens": 640
+  },
+  "total_tokens": 6824
+ }
+}

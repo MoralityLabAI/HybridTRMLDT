@@ -109,6 +109,7 @@ def train_module(skill: str, cfg: Dict, steps: int, seed: int, train_pool: Dict[
     g = torch.Generator().manual_seed(seed)
     n = train_pool["cand"].shape[0]
     label_perm = torch.randperm(n, generator=torch.Generator().manual_seed(seed + 17)) if shuffled else None
+    shuffle_gen = torch.Generator().manual_seed(seed + 29)
     t0 = time.time()
     losses = []
     stopped = None
@@ -119,9 +120,11 @@ def train_module(skill: str, cfg: Dict, steps: int, seed: int, train_pool: Dict[
             label = batch["label"]
             if shuffled:  # shuffled-supervision ablation: labels from other instances
                 label = train_pool["label"][label_perm[idx]] * batch["mask"]
-                if T.LABEL_KIND[skill] == "single":  # keep a valid one-hot target
+                if T.LABEL_KIND[skill] == "single":  # keep a valid one-hot target without using the true label
                     bad = label.sum(-1) == 0
-                    label[bad] = batch["label"][bad]
+                    if bad.any():
+                        noise = torch.rand(int(bad.sum()), T.N, generator=shuffle_gen) * batch["mask"][bad]
+                        label[bad] = torch.nn.functional.one_hot(noise.argmax(-1), T.N).float()
             model.train()
             out = M.episode(model, skill, batch, cfg)
             if shuffled:

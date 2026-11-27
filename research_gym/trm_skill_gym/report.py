@@ -93,6 +93,17 @@ def aggregate_main(jobs: List[Dict]) -> Dict:
     return out
 
 
+def chance_baseline(skill: str, n: int = 512) -> float:
+    """Best label-free predictor on frozen dev: most frequent answer slot (single-choice
+    skills) or the better of all-reject / all-select (multi-label skills)."""
+    b = T.make_batch(skill, T.FAMILIES[skill]["dev"], "frozen_eval", 0, n)
+    if T.LABEL_KIND[skill] == "single":
+        return float(b["label"].sum(0).max() / n)
+    zero = T.exact(skill, b, torch.zeros_like(b["label"])).mean().item()
+    one = T.exact(skill, b, b["mask"].clone()).mean().item()
+    return max(zero, one)
+
+
 def decisions(main: Dict, ablations: List[Dict]) -> Dict:
     dec = {}
     for skill, rows in main.items():
@@ -109,6 +120,18 @@ def decisions(main: Dict, ablations: List[Dict]) -> Dict:
             d["best_module_dev_exact"] = b["dev_exact"]
             d["baseline_max_dev_exact"] = max(base)
             d["promoted"] = bool(promote)
+        # secondary rule (reported separately, not the preregistered promotion): any trained module arm
+        # that beats the existing skill A by MARGIN on both frozen dev and the withheld family
+        trained = {a: rows[a] for a in ARMS[1:] if a in rows}
+        if trained and "A_existing_skill" in rows:
+            A = rows["A_existing_skill"]
+            ok = {a: r for a, r in trained.items() if r["dev_exact"] >= A["dev_exact"] + MARGIN
+                  and r["withheld_exact"] >= A["withheld_exact"] + MARGIN and r["certificate_violations"] == 0}
+            if ok:
+                d["secondary_beats_existing_skill_arm"] = max(ok, key=lambda a: ok[a]["dev_exact"] + ok[a]["withheld_exact"])
+                d["secondary_beats_existing_skill"] = True
+            else:
+                d["secondary_beats_existing_skill"] = False
         if all(a in rows for a in ("B_feedforward", "C_gru")):
             px = max(rows["B_feedforward"]["dev_exact"], rows["C_gru"]["dev_exact"])
             trm = max(rows.get(a, {}).get("dev_exact", -1) for a in ("D_trm_direct", "F_trm_rlt"))
@@ -123,7 +146,8 @@ def decisions(main: Dict, ablations: List[Dict]) -> Dict:
         if sh and "D_trm_direct" in rows:
             se = sh[0]["frozen_dev"]["exact"]
             d["shuffled_dev_exact"] = se
-            d["shuffled_near_chance"] = bool(se <= max(0.05, 0.5 * rows["D_trm_direct"]["dev_exact"]))
+            d["chance_baseline_dev_exact"] = chance_baseline(skill)
+            d["shuffled_near_chance"] = bool(se <= d["chance_baseline_dev_exact"] + 0.05)
         for name in ("D_latent_reset", "F_latent_reset"):
             ab = [j for j in ablations if j["skill"] == skill and j["arm"] == name and j.get("status") == "ok"]
             ref = "D_trm_direct" if name.startswith("D") else "F_trm_rlt"
@@ -133,7 +157,8 @@ def decisions(main: Dict, ablations: List[Dict]) -> Dict:
     n_h = sum(1 for d in dec.values() if d.get("H_minus_D") is not None and d["H_minus_D"] > 0)
     dec["_global"] = {"skills_where_H_beats_D": n_h, "inky_adds_value_rule_H_vs_D": n_h >= 4,
                       "skills_promoted": [s for s, d in dec.items() if d.get("promoted")],
-                      "skills_trm_beats_proxies": [s for s, d in dec.items() if d.get("trm_beats_proxies")]}
+                      "skills_trm_beats_proxies": [s for s, d in dec.items() if d.get("trm_beats_proxies")],
+                      "skills_module_beats_existing_skill_secondary": [s for s, d in dec.items() if d.get("secondary_beats_existing_skill")]}
     return dec
 
 
@@ -196,9 +221,14 @@ def paired_textonly(run: Path, main_jobs: List[Dict], sub: str = "text_only") ->
 def export_packages(run: Path, out: Path, main: Dict, dec: Dict, frozen: Dict, receipts: Dict) -> Dict:
     pk = {}
     for skill, d in dec.items():
-        if skill.startswith("_") or not d.get("promoted"):
+        if skill.startswith("_"):
             continue
-        arm = d["best_module_arm"]
+        if d.get("promoted"):
+            arm, basis = d["best_module_arm"], "preregistered_promotion"
+        elif d.get("secondary_beats_existing_skill"):
+            arm, basis = d["secondary_beats_existing_skill_arm"], "secondary_rule_beats_existing_skill_not_preregistered_promotion"
+        else:
+            continue
         row = main[skill][arm]
         ck = run / "checkpoints" / f"{skill}__{arm}__s0.pt"
         if not ck.exists():
@@ -207,7 +237,7 @@ def export_packages(run: Path, out: Path, main: Dict, dec: Dict, frozen: Dict, r
         dst.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ck, dst / "weights.pt")
         cfg = row["config"]
-        wj(dst / "module_config.json", {"skill": skill, "arm": arm, "implementation": row["implementation"],
+        wj(dst / "module_config.json", {"skill": skill, "arm": arm, "acceptance_basis": basis, "implementation": row["implementation"],
                                         "config": cfg, "config_id": dsl.config_id(cfg), "params": row["params"]})
         wj(dst / "observation_schema.json", {
             "candidates": T.N, "candidate_features": T.FC, "skill_feature_columns": T.FS, "feedback_columns": T.FB,
@@ -227,16 +257,18 @@ def export_packages(run: Path, out: Path, main: Dict, dec: Dict, frozen: Dict, r
   `module_config.json`, weights in `weights.pt`.
 - Protocol: {cfg['visits']} visits, {cfg['verifier_visits']} in-loop verifier call(s) plus the final receipt; halting at
   confidence >= 0.85 or predicted value of another recurrence <= 0.
+- Acceptance basis: `{basis}`.
 - Frozen evaluation (fresh roots, mean over seeds {row['seeds']}): dev exact {f3(row['dev_exact'])}, withheld-family exact
-  {f3(row['withheld_exact'])}; strongest baseline (A/B/C) {f3(d['baseline_max_dev_exact'])}.
+  {f3(row['withheld_exact'])}; existing skill A: dev {f3(main[skill]['A_existing_skill']['dev_exact'])}, withheld
+  {f3(main[skill]['A_existing_skill']['withheld_exact'])}; strongest of A/B/C on dev {f3(d['baseline_max_dev_exact'])}.
 """
         (dst / "SKILL.md").write_text(md, encoding="utf-8", newline="\n")
-        ev = {"skill": skill, "arm": arm, "metrics": {k: v for k, v in row.items() if k != "config"},
+        ev = {"skill": skill, "arm": arm, "acceptance_basis": basis, "metrics": {k: v for k, v in row.items() if k != "config"},
               "decision": d, "frozen_architectures_sha256": frozen.get("sha256"),
               "source_receipts": receipts, "weights_sha256": sha_file(dst / "weights.pt"),
               "module_config_sha256": sha_file(dst / "module_config.json")}
         wj(dst / "evaluation_receipts.json", ev)
-        pk[skill] = str(dst.relative_to(out))
+        pk[skill] = {"path": dst.relative_to(out).as_posix(), "arm": arm, "basis": basis}
     return pk
 
 
@@ -320,7 +352,10 @@ def write_report(out: Path, main: Dict, dec: Dict, srch: Dict, txt: Dict, transf
     L.append(f"- H (Inky-engineered) beats D in {g.get('skills_where_H_beats_D')} of 6 skills (rule: >= 4).")
     L.append(f"- Search promotions to incumbent: " + ", ".join(f"{a} {s['promoted_to_incumbent']}/{s['trained']} trained"
                                                              for a, s in srch.items()))
-    L.append(f"- Skill packages exported: {list(packages) or 'none'}; GoblinBench records: {n_records}.\n")
+    L.append(f"- Secondary (not preregistered promotion): a trained module beats the existing skill A by >= {MARGIN} on dev and "
+             f"withheld in: {g.get('skills_module_beats_existing_skill_secondary') or 'none'}")
+    exported = ", ".join("%s (%s)" % (k, v["arm"]) for k, v in packages.items()) or "none"
+    L.append(f"- Skill packages exported: {exported}; GoblinBench records: {n_records}.\n")
     L.append("## Frozen evaluation: exact success (mean over seeds; fresh roots)\n")
     L.append("| skill | " + " | ".join(a.split("_")[0] for a in ARMS) + " |")
     L.append("|---|" + "---|" * len(ARMS))
@@ -358,12 +393,16 @@ def write_report(out: Path, main: Dict, dec: Dict, srch: Dict, txt: Dict, transf
                 L.append(f"| {skill} | {a} | {f3(r['dev_exact_1visit'])} | {f3(r['dev_exact'])} | {f3(r['dev_exact_2R'])} | "
                          f"{f3(r['withheld_exact_1visit'])} | {f3(r['withheld_exact'])} | {f3(r['withheld_exact_2R'])} |")
     L.append("\n## Ablations (seed 0, frozen dev exact)\n")
-    L.append("| skill | D | D shuffled supervision | D latent reset | F | F latent reset |")
-    L.append("|---|---|---|---|---|---|")
+    L.append("Chance = best label-free predictor (most frequent answer slot, or all-reject/all-select). Shuffled runs keep the "
+             "in-episode verifier feedback, which can lift them slightly above chance without any label supervision. The "
+             "research and stopping shuffled runs were re-run after a label-fallback leak was fixed; superseded results are "
+             "kept in `run/ablation_superseded_label_fallback_leak/`.\n")
+    L.append("| skill | chance | D | D shuffled supervision | D latent reset | F | F latent reset |")
+    L.append("|---|---|---|---|---|---|---|")
     for skill in T.SKILLS:
         ab = {j["arm"]: j for j in ablations if j["skill"] == skill and j.get("status") == "ok"}
         r = main.get(skill, {})
-        L.append(f"| {skill} | {f3(r.get('D_trm_direct', {}).get('dev_exact'))} | {f3(ab.get('D_shuffled_supervision', {}).get('frozen_dev', {}).get('exact'))} | "
+        L.append(f"| {skill} | {f3(dec.get(skill, {}).get('chance_baseline_dev_exact'))} | {f3(r.get('D_trm_direct', {}).get('dev_exact'))} | {f3(ab.get('D_shuffled_supervision', {}).get('frozen_dev', {}).get('exact'))} | "
                  f"{f3(ab.get('D_latent_reset', {}).get('frozen_dev', {}).get('exact'))} | {f3(r.get('F_trm_rlt', {}).get('dev_exact'))} | "
                  f"{f3(ab.get('F_latent_reset', {}).get('frozen_dev', {}).get('exact'))} |")
     L.append("\n## Text-only instructions vs trained modules (same first instances of frozen dev)\n")

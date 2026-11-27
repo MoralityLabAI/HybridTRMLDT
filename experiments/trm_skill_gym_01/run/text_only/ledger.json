@@ -1,0 +1,7 @@
+{
+ "requests": 96,
+ "retries": 0,
+ "failures": 0,
+ "prompt_tokens": 129044,
+ "completion_tokens": 359437
+}

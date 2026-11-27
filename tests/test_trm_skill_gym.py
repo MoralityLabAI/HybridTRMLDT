@@ -246,3 +246,19 @@ def test_campaign_smoke_end_to_end(tmp_path):
                   "failure_diagnosis", "revised_architecture", "resource_summary", "final_promotion_decision",
                   "schema_version", "candidate_id"):
             assert k in rec
+
+
+def test_shuffled_supervision_never_falls_back_to_true_labels(monkeypatch):
+    pool = T.make_batch("stopping", T.FAMILIES["stopping"]["dev"], "train", 0, 256)
+    seen = []
+    real = M.episode_loss
+
+    def spy(skill, out, batch, cfg, label):
+        seen.append((batch["label"].clone(), label.clone(), batch["mask"].clone()))
+        return real(skill, out, batch, cfg, label)
+
+    monkeypatch.setattr(M, "episode_loss", spy)
+    TR.train_module("stopping", dsl.validate({"hidden": 16}), 20, 0, pool, shuffled=True)
+    agree = torch.cat([(t.argmax(-1) == l.argmax(-1)).float() for t, l, _ in seen]).mean()
+    assert all(torch.all((l * (1 - m)).sum(-1) == 0) and torch.all(l.sum(-1) == 1) for _, l, m in seen)
+    assert agree < 0.5

@@ -1,0 +1,11 @@
+{
+ "final_receipt_calls": 1,
+ "in_loop_calls": 1,
+ "ldt_certifier": null,
+ "module_never_issues_receipts": true,
+ "returns": {
+  "diag": "[N, 2] structured per-candidate diagnostics",
+  "ok": "bool receipt verdict"
+ },
+ "verifier": "research_gym.trm_skill_gym.tasks.verify(skill='stopping')"
+}

@@ -1,0 +1,22 @@
+{
+ "candidate_features": 24,
+ "candidates": 16,
+ "feedback_columns": 4,
+ "feedback_layout": [
+  "verified",
+  "ok",
+  "diag0",
+  "diag1"
+ ],
+ "global_features": 8,
+ "label_kind": "multi",
+ "ldt_certificate_column": 19,
+ "named_features": {
+  "0": "candidate_colour",
+  "1": "conflict_fraction",
+  "2": "degree_over_6",
+  "3": "has_conflict"
+ },
+ "relation": "rel[i][j]=1: nodes i and j are adjacent and must receive different colours",
+ "skill_feature_columns": 20
+}

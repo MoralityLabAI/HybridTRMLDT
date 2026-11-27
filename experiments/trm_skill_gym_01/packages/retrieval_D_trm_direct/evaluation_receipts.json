@@ -1,0 +1,87 @@
+{
+ "acceptance_basis": "secondary_rule_beats_existing_skill_not_preregistered_promotion",
+ "arm": "D_trm_direct",
+ "decision": {
+  "D_latent_reset_minus_D_trm_direct": 0.0,
+  "F_latent_reset_minus_F_trm_rlt": 0.0,
+  "H_minus_D": -0.0009765625,
+  "baseline_max_dev_exact": 1.0,
+  "best_module_arm": "D_trm_direct",
+  "best_module_dev_exact": 1.0,
+  "chance_baseline_dev_exact": 0.0,
+  "promoted": false,
+  "recurrence_gain_D": 0.005859375,
+  "recurrence_matters_D": false,
+  "secondary_beats_existing_skill": true,
+  "secondary_beats_existing_skill_arm": "D_trm_direct",
+  "shuffled_dev_exact": 0.0,
+  "shuffled_near_chance": true,
+  "trm_beats_proxies": false,
+  "trm_minus_best_proxy": 0.0
+ },
+ "frozen_architectures_sha256": "bd8316a3ff5a86e44cf58ee589c11a96e5b1ef8a26987a671f0dd492b0c5d6a5",
+ "metrics": {
+  "certificate_violations": 0,
+  "dev_adaptive_exact": 0.994140625,
+  "dev_adaptive_verifier_calls": 1.0,
+  "dev_adaptive_visits": 1.0,
+  "dev_ece": 0.0006812512874603271,
+  "dev_exact": 1.0,
+  "dev_exact_1visit": 0.994140625,
+  "dev_exact_2R": 0.9970703125,
+  "dev_exact_per_seed": [
+   1.0,
+   1.0
+  ],
+  "dev_exact_visit1_pre_verifier": 0.994140625,
+  "dev_repair_success": 1.0,
+  "flops_per_instance": 3346176.0,
+  "implementation": "native_trm_update",
+  "params": 11683,
+  "peak_rss_delta_mib": 192.623046875,
+  "seeds": [
+   0,
+   1
+  ],
+  "train_seconds": 31.349483370780945,
+  "verifier_calls": 2.0,
+  "withheld_exact": 0.8564453125,
+  "withheld_exact_1visit": 0.6015625,
+  "withheld_exact_2R": 0.865234375,
+  "withheld_repair_success": 0.8564453125
+ },
+ "module_config_sha256": "cbd510009c8ec0e25d2129953fb31ec3b8d786675a35953c98f3e63b152b7944",
+ "skill": "retrieval",
+ "source_receipts": {
+  "preregistration_sha256_lf": "4f9a77f484e95233097ef281698f092ba5af96b302410db72b9bd817b1a62c4c",
+  "profile": {
+   "export_reserve_s": 900,
+   "frozen_eval": 512,
+   "main_seeds": [
+    0,
+    1
+   ],
+   "main_steps": 800,
+   "proposals_per_round": 3,
+   "rung0_steps": 300,
+   "rung1_steps": 800,
+   "search_eval": 512,
+   "search_fraction": 0.35,
+   "search_rounds_per_arm": 12,
+   "transfer_steps": 300
+  },
+  "source_sha256_lf": {
+   "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "campaign.py": "f2f2c483176fc654cc8e7712d64d1f5b48ba8b13ddef72f75e1e8233ce6ef35e",
+   "dsl.py": "72bf157cb97f841b47420e8f2e8ce7f75f6d6ae4aac217010c4ebd0ef93ce18e",
+   "inky.py": "8cf7d57e5e8c79437bd5c9451b35e5f32cd1666c7169cf5fbcbc3953e5683aaa",
+   "modules.py": "98af7914cc27b6ff413537c45214020923d878aaab419d30a12de9c5f48d1b23",
+   "skill_templates.py": "83ee2d7ae89534ca8d4e5947b767b767d887eec0f03da162dd4021d8b7cc4738",
+   "tasks.py": "89d98c64e5e512075de43b309af90e122f78fe9bb9af534f1a791a8272c3cffc",
+   "train.py": "862dc9c423aa4e0bb5eabf44fe10043a3518079f31c60613826555e7528614bc"
+  },
+  "started": 1795803759.0386763,
+  "torch": "2.15.0+cpu"
+ },
+ "weights_sha256": "f60ff527d4443394170c7783cbb9d706efc44d7d16b0aaa15cd173d7372e9f51"
+}

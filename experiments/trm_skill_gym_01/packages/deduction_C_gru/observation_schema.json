@@ -1,0 +1,22 @@
+{
+ "candidate_features": 24,
+ "candidates": 16,
+ "feedback_columns": 4,
+ "feedback_layout": [
+  "verified",
+  "ok",
+  "diag0",
+  "diag1"
+ ],
+ "global_features": 8,
+ "label_kind": "multi",
+ "ldt_certificate_column": 19,
+ "named_features": {
+  "0": "prior_score",
+  "1": "n_dominators_over_3",
+  "2": "n_dominated_over_3",
+  "3": "undominated"
+ },
+ "relation": "rel[i][j]=1: candidate j dominates candidate i",
+ "skill_feature_columns": 20
+}
