@@ -186,6 +186,10 @@ class Task:
             if seen&worlds:
                 raise ValueError("duplicate semantic world across roles")
             seen.update(worlds)
+        for cs in self.sets.values():
+            for c in cs:
+                if G.oracle(c)!=independent_grade(c,G.ABSTAIN)["gold"]:
+                    raise AssertionError("fit target / independent grader mismatch")
         self.base,self.base_receipt=fit(self.root,cfg,self.sets["fit"],"control",regime=regime)
         self.base_state=clone_state(self.base)
         actions=predictions(self.base,self.sets["fit"])
@@ -202,9 +206,14 @@ class Task:
     def public(self):
         return {"schema":SCHEMA,"root":self.root,"family":self.family,"baseline_regime":self.regime,
                 "skill_contract":{"fields":list(G.FIELDS),"action_count":G.N,"abstain":G.ABSTAIN,
-                                  "hard_gate":"host checks permitted candidates; invalid becomes abstain"},
+                                  "repair":"positive net gain, authorized, current, verified, no veto; rank by net gain, gain, lower cost",
+                                  "retention":"current, verified, scope match, no veto; rank by gain, lower cost",
+                                  "persona":"authorized, scope match, no veto; rank by preference, lower cost",
+                                  "ties":"earliest candidate; abstain if no permitted action",
+                                  "hard_gate":"host checks permitted candidates; invalid becomes abstain",
+                                  "metric":"mean of viable accuracy and no-viable abstention accuracy, then mean across normal/stress panels"},
                 "baseline":{"artifact_id":"a0","fit":self.base_receipt,"cal":self.base_cal,
-                            "fit_failure_count":len(self.errors),
+                            "fit_failure_count":len(self.errors),"fit_root_count":len(self.sets["fit"]),
                             "fit_failure_scan_cell_visits":len(self.sets["fit"])*G.PASSES},
                 "budget":{"max_turns":MAX_TURNS,"max_experiments":MAX_EXPERIMENTS,
                           "updates_per_experiment":self.cfg["repair_steps"],
@@ -331,7 +340,7 @@ class Session:
                       eval_quality_delta=float(Fraction(selected_eval["quality_exact"])-Fraction(control_eval["quality_exact"])),
                       eval_unsafe_delta=selected_eval["unsafe"]-control_eval["unsafe"])
         result["score"]=(selected_eval["quality"] if result["claim_correct"] and result["eval_guard"]
-                         and self.invalid==0 else 0.)
+                         and result["cal_selection_correct"] and self.invalid==0 else 0.)
         return result
 
 
@@ -358,7 +367,7 @@ def reference(session,policy):
         late=sum(cal[s]["pass_correct"][-1] for s in ("normal","stress"))
         if late<early:
             arms=("rlt","damp")
-        elif initial["baseline_regime"]!="uniform" or initial["baseline"]["fit_failure_count"]>initial["baseline"]["fit"]["exposure"]["examples"]/4:
+        elif initial["baseline_regime"]!="uniform" or initial["baseline"]["fit_failure_count"]>initial["baseline"]["fit_root_count"]/2:
             arms=("failure_replay","final_only")
         else:
             arms=("residual","final_only")
@@ -404,8 +413,9 @@ def run(out,cfg=None,roots_per_stratum=2):
     report={"schema":SCHEMA,"status":"public_development_only","config":cfg,
             "roots_per_stratum":roots_per_stratum,"summaries":{},"baseline_roots":[]}
     trace_path=out/"research_rollouts.jsonl"
+    dev_path=out/"dev_results.jsonl"
     grouped={(split,policy):[] for split in META_SPLITS for policy in POLICIES}
-    with trace_path.open("w",encoding="utf-8") as trace:
+    with trace_path.open("w",encoding="utf-8") as trace, dev_path.open("w",encoding="utf-8") as dev:
         for split in META_SPLITS:
             for family in G.FAMILIES:
                 for regime in REGIMES:
@@ -420,9 +430,14 @@ def run(out,cfg=None,roots_per_stratum=2):
                             if split=="trace_train":
                                 trace.write(json.dumps(record(task,session,policy,result),
                                                        sort_keys=True,allow_nan=False)+"\n")
+                            else:
+                                dev.write(json.dumps({"root":task.root,"family":family,"regime":regime,
+                                                      "index":i,"policy":policy,"result":result},
+                                                     sort_keys=True,allow_nan=False)+"\n")
     for (split,policy),rows in grouped.items():
         report["summaries"].setdefault(split,{})[policy]=summary(rows)
     report["trace_sha256"]=hashlib.sha256(trace_path.read_bytes()).hexdigest()
+    report["dev_sha256"]=hashlib.sha256(dev_path.read_bytes()).hexdigest()
     (out/"research_report.json").write_text(json.dumps(report,indent=2,allow_nan=False),encoding="utf-8")
     return report
 
@@ -439,6 +454,23 @@ def audit(out):
     path=out/"research_rollouts.jsonl"
     if hashlib.sha256(path.read_bytes()).hexdigest()!=report["trace_sha256"]:
         raise ValueError("trace inventory mismatch")
+    dev_path=out/"dev_results.jsonl"
+    if hashlib.sha256(dev_path.read_bytes()).hexdigest()!=report["dev_sha256"]:
+        raise ValueError("dev inventory mismatch")
+    dev_seen=set()
+    dev_results={p:[] for p in POLICIES}
+    for line in dev_path.read_text(encoding="utf-8").splitlines():
+        d=json.loads(line)
+        f,g,i,p=d["family"],d["regime"],d["index"],d["policy"]
+        key=(f,g,i,p)
+        if (f not in G.FAMILIES or g not in REGIMES or type(i) is not int or not 0<=i<n
+                or p not in POLICIES or key in dev_seen or d["root"]!=root_id(f,g,"dev",i)):
+            raise ValueError("dev custody mismatch")
+        dev_seen.add(key)
+        dev_results[p].append(d["result"])
+    if len(dev_seen)!=len(G.FAMILIES)*len(REGIMES)*n*len(POLICIES) or any(
+            summary(rows)!=report["summaries"]["dev"][p] for p,rows in dev_results.items()):
+        raise ValueError("dev summary mismatch")
     seen=set()
     tasks={}
     results={p:[] for p in POLICIES}
@@ -500,6 +532,8 @@ def interactive(family,regime,index,out):
     """Public JSONL session; final evaluator receipt written to separate file."""
     import sys
     torch.set_num_threads(1)
+    if out.exists() or out.with_suffix(".pt").exists():
+        raise ValueError("private receipt and artifact paths must be new")
     task=Task(family,regime,"dev",index,DEFAULT)
     session=Session(task)
     print(json.dumps({"public":task.public(),"observation":session.observe()}),flush=True)
@@ -507,14 +541,26 @@ def interactive(family,regime,index,out):
         line=sys.stdin.readline(65537)
         if not line:
             break
+        def reject_constant(value):
+            raise ValueError("nonfinite JSON")
         try:
-            action=json.loads(line) if len(line)<=65536 else None
-        except (ValueError,RecursionError):
+            action=json.loads(line,parse_constant=reject_constant) if len(line)<=65536 else None
+            # Also reject overflowed exponents and excessive nesting.
+            digest(action)
+        except (ValueError,OverflowError,RecursionError):
             action=None
         print(json.dumps(session.act(action),allow_nan=False),flush=True)
     if not session.done:
         session.done=True
     result=session.finish()
+    if session.submission is not None:
+        selected=session.artifacts[session.submission["artifact_id"]]
+        artifact=out.with_suffix(".pt")
+        with artifact.open("xb") as f:
+            torch.save(selected["model"].state_dict(),f)
+        result["selected_artifact"]={"file":artifact.name,"sha256":hashlib.sha256(artifact.read_bytes()).hexdigest(),
+                                     "runtime_arm":selected["fit"]["runtime_arm"],
+                                     "weights_hash":selected["fit"]["weights_hash"]}
     with out.open("x",encoding="utf-8") as f:
         json.dump(record(task,session,"external",result),f,indent=2,allow_nan=False)
 
