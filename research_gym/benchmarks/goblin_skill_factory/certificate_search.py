@@ -60,20 +60,23 @@ def contexts(state,split):
     return [M.context(sc,state,k) for sc in M.SCENARIOS for k in horizons]
 
 
-def transition_weights(current,split):
-    # Public Markov forecast, with different persistence on shift.
-    return [((3 if split=="shift" else 8) if i==current else 1) for i in range(4)]
+def transition_weights(current,split,anchor,tick):
+    # Public request forecast, with a persistent hot context and occasional
+    # predictable phase changes. The actual next query is sampled separately.
+    hot=(anchor+tick//2)%4 if split=="shift" else anchor
+    return [1+(3 if i==current else 0)+(5 if split=="shift" else 8)*(i==hot) for i in range(4)]
 
 
 def trajectory(state,split):
     root=S.state_root(state)
     rng=random.Random(int(digest([SCHEMA,root,split,"query_path"]),16))
+    anchor=rng.randrange(4)
     first=rng.randrange(4)
     path=[first]
-    for _ in range(QUERIES-1):
-        path.append(rng.choices(range(4),weights=transition_weights(path[-1],split),k=1)[0])
+    for tick in range(QUERIES-1):
+        path.append(rng.choices(range(4),weights=transition_weights(path[-1],split,anchor,tick),k=1)[0])
     return {"schema":SCHEMA,"root":root,"split":split,"state":list(M.st(state)),
-            "contexts":contexts(state,split),"query_ids":path}
+            "anchor":anchor,"contexts":contexts(state,split),"query_ids":path}
 
 
 def packet(ctx):
@@ -132,8 +135,8 @@ class Host:
         self.forecast={}
         self.pending={}
 
-    def set_forecast(self,ctxs,current,split):
-        self.forecast={bind(c):w for c,w in zip(ctxs,transition_weights(current,split),strict=True)}
+    def set_forecast(self,ctxs,weights):
+        self.forecast={bind(c):w for c,w in zip(ctxs,weights,strict=True)}
 
     def bounds(self,ctx):
         out={}
@@ -235,7 +238,8 @@ def episode(public,arm,cache,model=None):
     steps=[]
     for q,idx in enumerate(public["query_ids"]):
         ctx=public["contexts"][idx]
-        host.set_forecast(public["contexts"],idx,public["split"])
+        weights=transition_weights(idx,public["split"],public["anchor"],q)
+        host.set_forecast(public["contexts"],weights)
         order,scores,visits=order_for(ctx,arm,model)
         host.work["neural_cell_visits"]+=visits
         begin=len(host.events)
@@ -266,7 +270,7 @@ def episode(public,arm,cache,model=None):
             if old.upper is not None and new.upper is not None and new.upper>old.upper+1e-12:
                 raise AssertionError("upper bound increased")
         steps.append({"query":q,"context_id":idx,"context":ctx,
-                      "public_observation":{"context":ctx,"forecast_weights":transition_weights(idx,public["split"])},
+                      "public_observation":{"context":ctx,"forecast_contexts":public["contexts"],"forecast_weights":weights},
                       "order":order,"scores":scores,"bounds":{a:asdict(b) for a,b in bounds.items()},
                       "result":asdict(result),"memory_events":host.events[begin:],
                       "grade":{"viable":bool(safe),"oracle":best,"oracle_value":optimum,
@@ -289,7 +293,7 @@ def metrics(rows):
     work=Counter()
     regret=0.
     for row in rows:
-        work.update(row["work"])
+        work.update({k:v for k,v in row["work"].items() if k!="peak_entries"})
         for q in row["queries"]:
             g=q["grade"]
             c["queries"]+=1
@@ -319,7 +323,8 @@ def trace_record(public,seed,arm,cache,identity,r):
     row={"schema":SCHEMA+".rollout","split":"trace_train","root":public["root"],
          "seed":seed,"arm":arm,"cache":cache,"identity":identity,"state":public["state"],
          "realized_query_ids":public["query_ids"],"queries":r["queries"],"work":r["work"],
-         "target_kind":"verified_search" if all(q["grade"]["regret"]<=1e-12 for q in r["queries"])
+         "target_kind":"verified_search" if all(q["grade"]["regret"]<=1e-12 and
+                       q["result"]["status"] in ("epsilon_optimal","proven_empty") for q in r["queries"])
                        else "certificate_search_repair","training_ready":False}
     row["receipt_hash"]=digest(row)
     return row
