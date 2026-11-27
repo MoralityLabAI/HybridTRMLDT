@@ -327,6 +327,22 @@ def run(out,steps=300,batch=64,train_n=512,eval_n=128,seeds=(137,163)):
     return report
 
 
+def replay_equal(left,right):
+    # Native conditional normalization iterates a frozenset. Across processes
+    # floating sums may differ by an ulp; identity, actions, and all categorical
+    # fields must still match exactly.
+    if type(left) is not type(right):
+        return False
+    if isinstance(left,float):
+        return math.isfinite(left) and math.isfinite(right) and math.isclose(
+            left,right,rel_tol=1e-12,abs_tol=1e-12)
+    if isinstance(left,dict):
+        return left.keys()==right.keys() and all(replay_equal(left[k],right[k]) for k in left)
+    if isinstance(left,list):
+        return len(left)==len(right) and all(replay_equal(a,b) for a,b in zip(left,right))
+    return left==right
+
+
 def audit(out):
     report=json.loads((out/"persona_report.json").read_text(encoding="utf-8"))
     cfg=report["config"]
@@ -373,7 +389,7 @@ def audit(out):
             if any(tag_partition(t)!="trace_train" for t in e["possible_tags"]):
                 raise ValueError("semantic partition leak")
         replay=episode(p,heads[key])
-        if replay!=row["phases"]:
+        if not replay_equal(replay,row["phases"]):
             raise ValueError("policy/receipt replay mismatch")
         kind="verified_optimal" if all(x["optimal"] for x in replay) else "persona_repair"
         if row["target_kind"]!=kind:
@@ -386,6 +402,9 @@ def audit(out):
 
 
 def selftest():
+    assert replay_equal({"p":0.1+0.2,"action":"a0"},{"p":0.3,"action":"a0"})
+    assert not replay_equal({"p":0.4,"action":"a0"},{"p":0.3,"action":"a0"})
+    assert not replay_equal({"p":0.3,"action":"a1"},{"p":0.3,"action":"a0"})
     pool=tag_pool("trace_train")
     for i in range(64):
         p=menu("trace_train",i,pool)
