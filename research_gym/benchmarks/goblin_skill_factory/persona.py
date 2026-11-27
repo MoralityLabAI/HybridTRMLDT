@@ -46,7 +46,9 @@ def tag_partition(tags):
 
 def tag_pool(split):
     size = 5 if split == "shift" else 4
-    return [tuple(c) for c in itertools.combinations(TAGS,size) if tag_partition(c)==split]
+    pool=[tuple(c) for c in itertools.combinations(TAGS,size) if tag_partition(c)==split]
+    rng_for([SCHEMA,"tag_pool_order",split]).shuffle(pool)
+    return pool
 
 
 def teacher(frame):
@@ -292,6 +294,8 @@ def run(out,steps=300,batch=64,train_n=512,eval_n=128,seeds=(137,163)):
     torch.set_num_threads(1)
     out.mkdir(parents=True,exist_ok=False)
     pools={s:tag_pool(s) for s in SPLITS}
+    if train_n>len(pools["train"]):
+        raise ValueError("requested more distinct training tags than available")
     train=pools["train"][:train_n]
     menus={s:[menu(s,i,pools[s]) for i in range(eval_n)] for s in SPLITS if s!="train"}
     cfg={"steps":steps,"batch":batch,"train_n":train_n,"eval_n":eval_n,"seeds":list(seeds)}
