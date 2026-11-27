@@ -1,0 +1,32 @@
+name: Goblin Skill Factory CPU
+on:
+  pull_request:
+    paths:
+      - 'research_gym/benchmarks/goblin_skill_factory/**'
+      - '.github/workflows/goblin-skill-factory.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.gym --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.gym --smoke --out /tmp/gsf-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.audit /tmp/gsf-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.gym --out /tmp/gsf-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.audit /tmp/gsf-dev | tee /tmp/gsf-dev/audit.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-01-development
+          path: /tmp/gsf-dev/
+          retention-days: 7
