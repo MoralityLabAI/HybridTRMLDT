@@ -70,6 +70,12 @@ def write_json_atomic(path: Path, obj) -> None:
         json.dump(obj, f, indent=1, ensure_ascii=False, default=str)
         f.flush()
         os.fsync(f.fileno())
+    for attempt in range(20):  # Windows indexers and sync clients can hold the target briefly
+        try:
+            os.replace(tmp, path)
+            return
+        except PermissionError:
+            time.sleep(0.25 * (attempt + 1))
     os.replace(tmp, path)
 
 
