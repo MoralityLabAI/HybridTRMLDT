@@ -282,3 +282,54 @@ jobs:
           name: gsf-08-certificate-search-development
           path: /tmp/cert-dev/
           retention-days: 7
+  goblinbench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.goblinbench --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.goblinbench --out /tmp/bench-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.goblinbench --audit /tmp/bench-dev | tee /tmp/bench-dev/audit.json
+      - name: Report public reference results
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/bench-dev/bench_report.json'))
+          for c in r['cells']:
+              print(json.dumps(dict(gym=c['gym'],role=c['role'],score=c['result']['score'],delta=c['result'].get('final_delta'),fits=c['result']['fits'],claim_correct=c['result']['claim_correct'],final_guard=c['result']['final_guard']),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-09-bench-development
+          path: /tmp/bench-dev/
+          retention-days: 7
+  staged-intake:
+    needs: [cpu, molt, repair, persona, clocks, research-repair, mcp-geometry, certificate-search, goblinbench]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gsf-*-development
+          path: /tmp/gsf-artifacts
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.intake --artifacts /tmp/gsf-artifacts --out /tmp/gsf-intake
+      - uses: actions/upload-artifact@v4
+        with:
+          name: goblinbench-staged-intake
+          path: /tmp/gsf-intake/
+          retention-days: 14
