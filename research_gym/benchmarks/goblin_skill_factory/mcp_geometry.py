@@ -62,6 +62,22 @@ def world(split,index):
     return make_world(native,seed,index,128 if split=="shift" else 64)
 
 
+def source_manifest():
+    root=Path(__file__).resolve().parents[3]
+    paths=("MCP/mcp02/agent.py","MCP/mcp02/env.py","MCP/mcp02/world.py",
+           "MCP/mcp02/textutil.py","research_gym/core/hybrid.py",
+           "research_gym/benchmarks/goblin_skill_factory/mcp_geometry.py")
+    return {p:hashlib.sha256((root/p).read_bytes()).hexdigest() for p in paths}
+
+
+def root_inventory(cfg):
+    inv={s:[world(s,i)["group_id"] for i in range(cfg["train_n"] if s=="train" else cfg["eval_n"])] for s in SPLITS}
+    all_roots=[x for v in inv.values() for x in v]
+    if len(all_roots)!=len(set(all_roots)):
+        raise ValueError("overlapping world groups")
+    return {s:digest(v) for s,v in inv.items()}
+
+
 def features(obs):
     """Only public need records and candidate metadata/text enter the model."""
     cs=obs["candidates"]
@@ -263,6 +279,9 @@ def score_episode(case,layout,arm,model,cfg,trace=False):
 def metrics(rows,arm):
     n=len(rows)
     c=Counter()
+    failures=Counter()
+    by_family={}
+    depth=1 if arm=="direct" else PASSES if arm in LEARNED else 0
     for r in rows:
         c["accepted"]+=r["accepted"]
         c["answer_correct"]+=r["grade"]["answer_correct"]
@@ -278,12 +297,25 @@ def metrics(rows,arm):
         c["epoch_rolls"]+=r["rolled"]
         c["revalidations"]+=r["composer"]["revalidations"]
         c["refine_calls"]+=r["compute"]["refine_calls"]
-    depth=1 if arm=="direct" else PASSES if arm in LEARNED else 0
+        if depth:
+            pairs=sum(d["n"]**2 for d in r["decisions"] if d["kind"]=="decide")
+            c["graph_preparation_pairs"]+=pairs
+            c["candidate_message_pairs"]+=pairs*depth
+        if r["failure"]:
+            failures[r["failure"]]+=1
+        failures.update(r["grade"]["reasons"])
+        f=by_family.setdefault(r["family"],Counter())
+        f["n"]+=1
+        f["accepted"]+=r["accepted"]
+        f["tool_calls"]+=r["tool_calls"]
+        f["rolled"]+=r["rolled"]
+        f["revalidations"]+=r["composer"]["revalidations"]
     return {"n":n,**{k:int(v) for k,v in c.items()},
             "acceptance":c["accepted"]/n,
             "mean_evidence_recall":sum(r["grade"]["evidence_recall"] for r in rows)/n,
             "tool_calls_per_accepted":c["tool_calls"]/c["accepted"] if c["accepted"] else None,
-            "candidate_cell_visits":c["candidates_scored"]*depth}
+            "candidate_cell_visits":c["candidates_scored"]*depth,
+            "families":{k:dict(v) for k,v in by_family.items()},"failure_reasons":dict(failures)}
 
 
 def trace_record(split,index,case,seed,arm,layout,identity,result,observations):
@@ -305,7 +337,8 @@ def run(out,cfg=None):
     out.mkdir(parents=True,exist_ok=False)
     examples,counts=train_data(cfg)
     report={"schema":SCHEMA,"status":"public_development_only","config":cfg,
-            "training":counts,"training_positive_observations":len(examples),"cells":[]}
+            "training":counts,"training_positive_observations":len(examples),
+            "source_manifest":source_manifest(),"root_hashes":root_inventory(cfg),"cells":[]}
     trace_path=out/"mcp_rollouts.jsonl.gz"
     with gzip.open(trace_path,"wt",encoding="utf-8") as trace:
         for seed in cfg["seeds"]:
@@ -331,6 +364,14 @@ def run(out,cfg=None):
                                 rec=trace_record(split,i,case,seed,arm,layout,identity,r,obs)
                                 trace.write(json.dumps(rec,sort_keys=True,allow_nan=False)+"\n")
                         row[split][layout[0]]=metrics(rows,arm)
+                low_cfg=dict(cfg,max_calls=max(4,cfg["max_calls"]//2))
+                row["low_budget"]={}
+                for split in ("dev","shift"):
+                    row["low_budget"][split]={}
+                    for layout in LAYOUTS:
+                        rows=[score_episode(world(split,i),layout,arm,model,low_cfg)[0]
+                              for i in range(cfg["eval_n"])]
+                        row["low_budget"][split][layout[0]]=metrics(rows,arm)
                 report["cells"].append(row)
     report["trace_sha256"]=hashlib.sha256(trace_path.read_bytes()).hexdigest()
     (out/"mcp_report.json").write_text(json.dumps(report,indent=2,allow_nan=False),encoding="utf-8")
@@ -342,6 +383,8 @@ def audit(out):
     report=json.loads((out/"mcp_report.json").read_text(encoding="utf-8"))
     cfg=report["config"]
     validate(cfg)
+    if report["source_manifest"]!=source_manifest() or report["root_hashes"]!=root_inventory(cfg):
+        raise ValueError("source or root manifest mismatch")
     cells={(c["seed"],c["arm"]):c for c in report["cells"]}
     if len(cells)!=len(report["cells"]) or set(cells)!=set(itertools.product(cfg["seeds"],ARMS)):
         raise ValueError("cell coverage mismatch")
