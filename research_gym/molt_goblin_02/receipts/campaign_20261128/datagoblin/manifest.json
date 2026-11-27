@@ -1,0 +1,11 @@
+{
+ "schema_version": "datagoblin.molt_architecture_trajectory.v1",
+ "rows": 75,
+ "root": "molt-goblin-02:73d00507c3af",
+ "sha256": "96bad21e51bb9c68375899437dc4043631ad6ae38fd4e45f9092a51cd63843e4",
+ "kinds": {
+  "adversarial_task_proposal": 11,
+  "final_decision": 1,
+  "architecture_trajectory": 63
+ }
+}

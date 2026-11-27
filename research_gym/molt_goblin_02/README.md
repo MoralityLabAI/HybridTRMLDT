@@ -24,6 +24,8 @@ and gradient parity against a vendored copy of `pilot.py`).
 | `analysis.py` | Paired seed-level comparisons, root bootstrap, Pareto frontier |
 | `export.py` | DataGoblin-compatible trajectory records |
 | `stage_a.py` | Stage A reproduction summary |
+| `calibrate.py` | Competence calibration of panel specs |
+| `report.py` | Hypothesis, architecture and adversarial-task archives from a campaign state |
 | `reference_pilot.py` | Verbatim MOLT-GOBLIN-01 `pilot.py` for parity tests |
 
 ## Commands
@@ -34,7 +36,7 @@ python -m research_gym.molt_goblin_02.calibrate --panel --steps 300 --arms prefi
 # credential via TINKER_API_KEY or TINKER_API_KEY_FILE (path to a file holding the key)
 python -m research_gym.molt_goblin_02.campaign --out <run> --hours 5.5 --threads 2
 python -m research_gym.molt_goblin_02.finals --state <run>/state.json --out <finals> --hours 2
-python -m research_gym.molt_goblin_02.analysis --runs <finals>/final_runs.jsonl --out <finals>
+python -m research_gym.molt_goblin_02.analysis --runs <finals>/final_runs*.jsonl --out <finals>
 python -m research_gym.molt_goblin_02.export --state <run>/state.json --out <run>/datagoblin \
     --analysis <finals>/analysis.json --freeze <finals>/freeze.json
 ```

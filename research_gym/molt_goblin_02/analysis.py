@@ -144,16 +144,87 @@ def to_markdown(res: dict, freeze: dict | None = None) -> str:
     return "\n".join(lines)
 
 
+def contrast_markdown(res: dict, arms: list[str]) -> str:
+    fams = res["families"]
+    lines = [f"| arm − `{res['reference']}` | " + " | ".join(fams) + " |", "|---|" + "---|" * len(fams)]
+    for arm in arms:
+        cells = []
+        for f in fams:
+            v = res["paired_vs_reference"].get(f"{arm}|{f}")
+            if v is None:
+                cells.append("—")
+            else:
+                ci = v["ci95"]
+                cells.append(f"{v['mean']:+.3f} [{ci[0]:+.3f}, {ci[1]:+.3f}]" if ci else f"{v['mean']:+.3f}")
+        lines.append(f"| {arm} | " + " | ".join(cells) + " |")
+    return "\n".join(lines)
+
+
+def mechanistic_markdown(res: dict, arms: list[str], families: list[str]) -> str:
+    t = res["table"]
+    out = ["Memory interventions on the in-distribution readout (exact; clean in first column):", "",
+           "| arm | family | clean | reset_history | shuffle_history | stale_swap | noise | halt-eval exact (visits) | hard-route exact |",
+           "|---|---|---:|---:|---:|---:|---:|---|---:|"]
+    for arm in arms:
+        for f in families:
+            r = t.get(f"{arm}|{f}")
+            if not r:
+                continue
+            iv = r["interventions"]
+            h = f"{r['halt_exact']:.3f} ({r['halt_visits']:.2f})" if "halt_exact" in r else "—"
+            out.append(f"| {arm} | {f} | {r['exact']:.3f} | {iv.get('reset_history', float('nan')):.3f} | "
+                       f"{iv.get('shuffle_history', float('nan')):.3f} | {iv.get('stale_swap', float('nan')):.3f} | "
+                       f"{iv.get('noise', float('nan')):.3f} | {h} | {iv.get('hard_route', float('nan')):.3f} |")
+    out += ["", "Recurrence use, routing and extrapolation (means over seeds):", "",
+            "| arm | family | exact by loop | fixes / breaks / redundant (per 256) | success per visit | routing entropy | routing–loop MI | halt Brier / ECE | OOD exact | OOD at 2× loops |",
+            "|---|---|---|---|---:|---:|---:|---|---|---|"]
+    for arm in arms:
+        for f in families:
+            r = t.get(f"{arm}|{f}")
+            if not r:
+                continue
+            ood = ", ".join(f"{k}={v:.3f}" for k, v in r["ood"].items() if "@deep" not in k)
+            deep = ", ".join(f"{k[5:]}={v:.3f}" for k, v in r["interventions"].items() if k.startswith("deep_"))
+            hb = f"{r['halt_brier']:.3f} / {r.get('halt_ece', float('nan')):.3f}" if "halt_brier" in r else "—"
+            re_ = f"{r['routing_entropy']:.3f}" if "routing_entropy" in r else "—"
+            mi = f"{r['routing_loop_mi']:.3f}" if "routing_loop_mi" in r else "—"
+            out.append(f"| {arm} | {f} | {', '.join(f'{x:.2f}' for x in r['exact_by_loop'])} | "
+                       f"{r['loop_fixes']:.0f} / {r['loop_breaks']:.0f} / {r['redundant_after_correct']:.0f} | "
+                       f"{r['success_per_visit']:.3f} | {re_} | {mi} | {hb} | {ood} | {deep} |")
+    out += ["", "BPD-style loop-update subspace interventions (seed 11 checkpoint; fit and evaluation on disjoint hidden roots):", "",
+            "| arm | family | clean | rank | explained var | top-k | random-k | complement |", "|---|---|---:|---:|---:|---:|---:|---:|"]
+    for arm in arms:
+        for f in families:
+            r = t.get(f"{arm}|{f}")
+            if not r or "subspace" not in r:
+                continue
+            s = r["subspace"]
+            for row in s["ranks"]:
+                out.append(f"| {arm} | {f} | {s['clean']:.3f} | {row['rank']} | {row['explained_var']:.3f} | {row['top_k']:.3f} | "
+                           f"{row['random_k']:.3f} | {row['complement']:.3f} |")
+    return "\n".join(out)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--runs", type=Path, nargs="+", required=True)
     ap.add_argument("--out", type=Path, required=True)
     a = ap.parse_args()
-    res = analyse([r for p in a.runs for r in load(p)])
+    runs = [r for p in a.runs for r in load(p)]
+    res = analyse(runs)
     a.out.mkdir(parents=True, exist_ok=True)
     (a.out / "analysis.json").write_text(json.dumps(res, indent=1), encoding="utf-8")
-    (a.out / "analysis.md").write_text(to_markdown(res) + "\n", encoding="utf-8")
-    print(to_markdown(res))
+    md = [to_markdown(res)]
+    finalists = sorted(x for x in res["arms"] if x.startswith("f"))
+    for ref in ("prefix_all_visit_matched", "prefix_all_param_matched", "prefix_all"):
+        if ref in res["arms"]:
+            sub = analyse(runs, reference=ref)
+            (a.out / f"analysis_vs_{ref}.json").write_text(json.dumps(sub["paired_vs_reference"], indent=1), encoding="utf-8")
+            md += ["", f"Paired difference vs `{ref}` (seed-level mean [t 95% CI], 5 seeds):", "", contrast_markdown(sub, finalists)]
+    key = finalists + ["prefix", "prefix_all", "prefix_all_visit_matched", "prefix_all_param_matched"]
+    md += ["", mechanistic_markdown(res, key, ["pointer_chase", "revision", "repair", "proof_deps", "bounded_walk"])]
+    (a.out / "analysis.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+    print("\n".join(md[1:]))
 
 
 if __name__ == "__main__":

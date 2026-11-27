@@ -1,0 +1,9 @@
+{
+ "baseline_rss_bytes": 211763200,
+ "baseline_private_bytes": 830873600,
+ "incremental_cap_bytes": 1073741824,
+ "process_limit_bytes": 1904615424,
+ "windows_job_object": true,
+ "rss_watchdog": true,
+ "cuda_visible_devices": "-1"
+}
