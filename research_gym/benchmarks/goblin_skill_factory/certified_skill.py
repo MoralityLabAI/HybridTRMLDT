@@ -42,6 +42,31 @@ def digest(obj):
                                      allow_nan=False).encode()).hexdigest()
 
 
+def first_replay_difference(actual, expected):
+    """Report the first canonical JSON mismatch without changing replay rules."""
+    def compare(a, b, path):
+        if isinstance(a, dict) and isinstance(b, dict):
+            if set(a) != set(b):
+                return f"{path}: keys {sorted(set(a) ^ set(b))!r}"
+            for key in sorted(a):
+                delta = compare(a[key], b[key], f"{path}.{key}")
+                if delta is not None:
+                    return delta
+        elif isinstance(a, list) and isinstance(b, list):
+            if len(a) != len(b):
+                return f"{path}: length {len(a)} != {len(b)}"
+            for i, (x, y) in enumerate(zip(a, b)):
+                delta = compare(x, y, f"{path}[{i}]")
+                if delta is not None:
+                    return delta
+        elif json.dumps(a, sort_keys=True, allow_nan=False) != json.dumps(b, sort_keys=True, allow_nan=False):
+            return f"{path}: replay={a!r}, recorded={b!r}"
+        return None
+    # JSON round-trip normalizes tuple/list representation just as digest does.
+    return compare(json.loads(json.dumps(actual, allow_nan=False)),
+                   json.loads(json.dumps(expected, allow_nan=False)), "$")
+
+
 def state_root(state):
     # Group every scenario, horizon, seed, mask and alternate policy together.
     return digest([SCHEMA, M.ENV_DIGEST, list(M.st(state))])
@@ -407,7 +432,9 @@ def audit(out):
         seen.add(identity)
         replay = episode(p,r["arm"],models.get(key),3)
         if digest(replay)!=digest(r["episode"]):
-            raise ValueError("policy and certificate replay")
+            delta = first_replay_difference(replay, r["episode"])
+            raise ValueError(f"policy and certificate replay: arm={r['arm']} seed={r['seed']} "
+                             f"root={r['root']} {delta}")
         g = replay["grade"]
         kind = ("correct_abstain" if not g["viable"] else
                 "verified_optimal" if g["executed"] is not None and g["regret"] == 0. else "repair_target")
@@ -421,6 +448,10 @@ def audit(out):
 
 
 def selftest():
+    assert first_replay_difference({"a": (1, 2)}, {"a": [1, 2]}) is None
+    assert first_replay_difference({"visits": [{"scores": [0.1]}]},
+                                   {"visits": [{"scores": [0.2]}]}).startswith("$.visits[0].scores[0]")
+    assert first_replay_difference({"certificate": "x"}, {"certificate": "y"}).startswith("$.certificate")
     parts = partitions(32,8)
     assert sum(map(len,parts.values()))==len({state_root(s) for ss in parts.values() for s in ss})
     packets = cases(parts["train"],"train")
