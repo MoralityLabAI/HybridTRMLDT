@@ -140,7 +140,7 @@ def evaluate_policy(model,adapters,descriptor,worlds,refs):
                     serialized_block_calls=work["serialized_block_calls"],
                     total_block_token_visits=work["verify_block_token_visits"]+work["draft_block_token_visits"],
                     controller_calls=work["controller_calls"],controller_dense_MACs=work["controller_dense_MACs"],
-                    actions=dict(actions),work=dict(work),reference_work=reference_ledger(worlds))
+                    actions=dict(actions),decode_work=dict(work),reference_work=reference_ledger(worlds))
 
 
 def public_metrics(m):
