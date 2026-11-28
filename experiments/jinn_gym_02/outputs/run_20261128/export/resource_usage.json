@@ -1,0 +1,26 @@
+{
+ "calls": {
+  "total": 1156,
+  "by_purpose": {
+   "decision_neutral": 840,
+   "mutation_patch": 128,
+   "selfmodel_elicit": 8,
+   "route_inky": 180
+  },
+  "finish_length": 8,
+  "empty_text": 3,
+  "prompt_tokens": 743826,
+  "completion_tokens": 683248
+ },
+ "cpu_seconds": {
+  "build": 2436.745713710785,
+  "mutate": 4313.484561443329,
+  "recomb": 38.02092528343201,
+  "router": 189.7682180404663,
+  "heldout": 2186.2126417160034,
+  "compact": 66.48620581626892
+ },
+ "ram_peak_increment_bytes": 301023232,
+ "runtime_hours": 3.231299332645204,
+ "paid_spend_usd": 0.0
+}

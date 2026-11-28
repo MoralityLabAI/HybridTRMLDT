@@ -1,0 +1,186 @@
+{
+ "constructivist": {
+  "raw": "{\"lean_proof\": {\"success\": 0.45, \"failure\": 0.35, \"abstain\": 0.20, \"compute\": 2}, \"python_repair\": {\"success\": 0.60, \"failure\": 0.25, \"abstain\": 0.15, \"compute\": 2}, \"design_sim\": {\"success\": 0.40, \"failure\": 0.35, \"abstain\": 0.25, \"compute\": 2}}",
+  "parsed": {
+   "lean_proof": {
+    "success": 0.45,
+    "failure": 0.35,
+    "abstain": 0.2,
+    "compute": 2
+   },
+   "python_repair": {
+    "success": 0.6,
+    "failure": 0.25,
+    "abstain": 0.15,
+    "compute": 2
+   },
+   "design_sim": {
+    "success": 0.4,
+    "failure": 0.35,
+    "abstain": 0.25,
+    "compute": 2
+   }
+  }
+ },
+ "skeptic": {
+  "raw": "{\"lean_proof\": {\"success\": 0.45, \"failure\": 0.35, \"abstain\": 0.20, \"compute\": 2}, \"python_repair\": {\"success\": 0.50, \"failure\": 0.30, \"abstain\": 0.20, \"compute\": 2}, \"design_sim\": {\"success\": 0.40, \"failure\": 0.35, \"abstain\": 0.25, \"compute\": 2}}",
+  "parsed": {
+   "lean_proof": {
+    "success": 0.45,
+    "failure": 0.35,
+    "abstain": 0.2,
+    "compute": 2
+   },
+   "python_repair": {
+    "success": 0.5,
+    "failure": 0.3,
+    "abstain": 0.2,
+    "compute": 2
+   },
+   "design_sim": {
+    "success": 0.4,
+    "failure": 0.35,
+    "abstain": 0.25,
+    "compute": 2
+   }
+  }
+ },
+ "experimentalist": {
+  "raw": "{\"lean_proof\": {\"success\": 0.45, \"failure\": 0.35, \"abstain\": 0.20, \"compute\": 2.0}, \"python_repair\": {\"success\": 0.55, \"failure\": 0.30, \"abstain\": 0.15, \"compute\": 1.8}, \"design_sim\": {\"success\": 0.40, \"failure\": 0.40, \"abstain\": 0.20, \"compute\": 2.2}}",
+  "parsed": {
+   "lean_proof": {
+    "success": 0.45,
+    "failure": 0.35,
+    "abstain": 0.2,
+    "compute": 2.0
+   },
+   "python_repair": {
+    "success": 0.55,
+    "failure": 0.3,
+    "abstain": 0.15,
+    "compute": 1.8
+   },
+   "design_sim": {
+    "success": 0.4,
+    "failure": 0.4,
+    "abstain": 0.2,
+    "compute": 2.2
+   }
+  }
+ },
+ "formalist": {
+  "raw": "{\"lean_proof\": {\"success\": 0.55, \"failure\": 0.25, \"abstain\": 0.20, \"compute\": 2}, \"python_repair\": {\"success\": 0.60, \"failure\": 0.25, \"abstain\": 0.15, \"compute\": 2}, \"design_sim\": {\"success\": 0.45, \"failure\": 0.30, \"abstain\": 0.25, \"compute\": 2}}",
+  "parsed": {
+   "lean_proof": {
+    "success": 0.55,
+    "failure": 0.25,
+    "abstain": 0.2,
+    "compute": 2
+   },
+   "python_repair": {
+    "success": 0.6,
+    "failure": 0.25,
+    "abstain": 0.15,
+    "compute": 2
+   },
+   "design_sim": {
+    "success": 0.45,
+    "failure": 0.3,
+    "abstain": 0.25,
+    "compute": 2
+   }
+  }
+ },
+ "compressionist": {
+  "raw": "{\"lean_proof\": {\"success\": 0.45, \"failure\": 0.35, \"abstain\": 0.20, \"compute\": 2.0}, \"python_repair\": {\"success\": 0.60, \"failure\": 0.25, \"abstain\": 0.15, \"compute\": 1.5}, \"design_sim\": {\"success\": 0.40, \"failure\": 0.35, \"abstain\": 0.25, \"compute\": 2.0}}",
+  "parsed": {
+   "lean_proof": {
+    "success": 0.45,
+    "failure": 0.35,
+    "abstain": 0.2,
+    "compute": 2.0
+   },
+   "python_repair": {
+    "success": 0.6,
+    "failure": 0.25,
+    "abstain": 0.15,
+    "compute": 1.5
+   },
+   "design_sim": {
+    "success": 0.4,
+    "failure": 0.35,
+    "abstain": 0.25,
+    "compute": 2.0
+   }
+  }
+ },
+ "mechanistic_interpreter": {
+  "raw": "{\"lean_proof\": {\"success\": 0.55, \"failure\": 0.25, \"abstain\": 0.20, \"compute\": 2}, \"python_repair\": {\"success\": 0.60, \"failure\": 0.20, \"abstain\": 0.20, \"compute\": 2}, \"design_sim\": {\"success\": 0.55, \"failure\": 0.25, \"abstain\": 0.20, \"compute\": 2}}",
+  "parsed": {
+   "lean_proof": {
+    "success": 0.55,
+    "failure": 0.25,
+    "abstain": 0.2,
+    "compute": 2
+   },
+   "python_repair": {
+    "success": 0.6,
+    "failure": 0.2,
+    "abstain": 0.2,
+    "compute": 2
+   },
+   "design_sim": {
+    "success": 0.55,
+    "failure": 0.25,
+    "abstain": 0.2,
+    "compute": 2
+   }
+  }
+ },
+ "research_strategist": {
+  "raw": "{\"lean_proof\": {\"success\": 0.42, \"failure\": 0.38, \"abstain\": 0.20, \"compute\": 2.0}, \"python_repair\": {\"success\": 0.58, \"failure\": 0.28, \"abstain\": 0.14, \"compute\": 1.6}, \"design_sim\": {\"success\": 0.48, \"failure\": 0.34, \"abstain\": 0.18, \"compute\": 2.1}}",
+  "parsed": {
+   "lean_proof": {
+    "success": 0.42,
+    "failure": 0.38,
+    "abstain": 0.2,
+    "compute": 2.0
+   },
+   "python_repair": {
+    "success": 0.58,
+    "failure": 0.28,
+    "abstain": 0.14,
+    "compute": 1.6
+   },
+   "design_sim": {
+    "success": 0.48,
+    "failure": 0.34,
+    "abstain": 0.18,
+    "compute": 2.1
+   }
+  }
+ },
+ "repair_specialist": {
+  "raw": "{\"lean_proof\": {\"success\": 0.45, \"failure\": 0.35, \"abstain\": 0.20, \"compute\": 2}, \"python_repair\": {\"success\": 0.65, \"failure\": 0.20, \"abstain\": 0.15, \"compute\": 1.5}, \"design_sim\": {\"success\": 0.40, \"failure\": 0.35, \"abstain\": 0.25, \"compute\": 2}}",
+  "parsed": {
+   "lean_proof": {
+    "success": 0.45,
+    "failure": 0.35,
+    "abstain": 0.2,
+    "compute": 2
+   },
+   "python_repair": {
+    "success": 0.65,
+    "failure": 0.2,
+    "abstain": 0.15,
+    "compute": 1.5
+   },
+   "design_sim": {
+    "success": 0.4,
+    "failure": 0.35,
+    "abstain": 0.25,
+    "compute": 2
+   }
+  }
+ }
+}

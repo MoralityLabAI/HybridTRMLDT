@@ -1,0 +1,359 @@
+{
+ "population": {
+  "n": 488,
+  "dim": 108,
+  "singular_values": [
+   20.369814126387542,
+   17.229699163363023,
+   14.182341049009757,
+   12.128414197492944,
+   10.64031002695788,
+   9.939809372020186,
+   7.000205614938523,
+   6.046870238459487,
+   5.719606598797861,
+   4.778961665318505,
+   4.430818850077561,
+   3.8435533939392763,
+   3.667065249926816,
+   3.4306451293440223,
+   3.3637760059842887,
+   3.2721543031803377,
+   3.223231992592535,
+   3.1091099986905837,
+   3.014039922906072,
+   2.9663670262308246
+  ],
+  "explained": [
+   0.2377767222173,
+   0.40789484938263487,
+   0.523158150471587,
+   0.6074534278401458,
+   0.6723323711909113,
+   0.7289499527927951,
+   0.757031226136199,
+   0.7779847225395987,
+   0.7967315387132994,
+   0.8098192075523356,
+   0.8210694839688264,
+   0.829535148231579,
+   0.8372412098800983,
+   0.8439856638727441,
+   0.8504697584453211,
+   0.8566054391931486,
+   0.8625590211137137,
+   0.8680984804490981,
+   0.8733043490827987,
+   0.878346838246715
+  ],
+  "effective_rank": 16.72412239904548,
+  "participation_ratio": 8.629273791290718
+ },
+ "principal_angles_deg": {
+  "constructivist|skeptic": [
+   75.8364789314854,
+   83.8714373820395,
+   87.39075550523174
+  ],
+  "constructivist|experimentalist": [
+   62.13933427661796,
+   70.28192986100154,
+   86.51592406056713
+  ],
+  "constructivist|formalist": [
+   69.19833580392198,
+   79.12573857552536,
+   83.19587269430704
+  ],
+  "constructivist|compressionist": [
+   79.56275079538852,
+   82.22708034018768,
+   83.67541638330503
+  ],
+  "constructivist|mechanistic_interpreter": [
+   51.532693659598436,
+   63.18423480400487,
+   85.72070261998044
+  ],
+  "constructivist|research_strategist": [
+   65.98585822545401,
+   81.67397530806822,
+   85.68377159399213
+  ],
+  "constructivist|repair_specialist": [
+   54.85420437059527,
+   77.56657904112505,
+   84.85040055127726
+  ],
+  "skeptic|experimentalist": [
+   69.31932835182062,
+   79.81328425577567,
+   86.62348370903437
+  ],
+  "skeptic|formalist": [
+   62.87801840266788,
+   80.68888396812574,
+   87.07894274925802
+  ],
+  "skeptic|compressionist": [
+   75.27471310685736,
+   77.27681141050924,
+   82.51247671247415
+  ],
+  "skeptic|mechanistic_interpreter": [
+   76.59917657949295,
+   86.1145886285467,
+   87.67024388562841
+  ],
+  "skeptic|research_strategist": [
+   61.946863696692034,
+   71.42334371455203,
+   88.60167923096662
+  ],
+  "skeptic|repair_specialist": [
+   70.15423268570954,
+   86.10678872735329,
+   89.69950109774574
+  ],
+  "experimentalist|formalist": [
+   48.39583401136875,
+   74.00815696732057,
+   89.32505377140097
+  ],
+  "experimentalist|compressionist": [
+   70.80514545926236,
+   80.99509554230919,
+   83.66295730060278
+  ],
+  "experimentalist|mechanistic_interpreter": [
+   33.582748758837795,
+   59.907361683895616,
+   88.93069844943867
+  ],
+  "experimentalist|research_strategist": [
+   58.59299284842906,
+   74.18601615198374,
+   85.65659087295202
+  ],
+  "experimentalist|repair_specialist": [
+   71.31873358520501,
+   79.01210482586534,
+   86.0810584280727
+  ],
+  "formalist|compressionist": [
+   65.86721380371073,
+   75.20542780578057,
+   87.2939264209556
+  ],
+  "formalist|mechanistic_interpreter": [
+   42.913647822024515,
+   88.12526194803489,
+   89.90710887501265
+  ],
+  "formalist|research_strategist": [
+   40.98358372013737,
+   84.47857819027412,
+   88.54999077355008
+  ],
+  "formalist|repair_specialist": [
+   65.40580901310834,
+   79.63835164732032,
+   89.17049004388807
+  ],
+  "compressionist|mechanistic_interpreter": [
+   65.15684872529248,
+   77.44399827280554,
+   83.29964744189911
+  ],
+  "compressionist|research_strategist": [
+   69.89890416507593,
+   77.4840808536273,
+   88.84442939459846
+  ],
+  "compressionist|repair_specialist": [
+   59.320159635034244,
+   62.8090531465641,
+   85.4801935736253
+  ],
+  "mechanistic_interpreter|research_strategist": [
+   57.98361649482915,
+   68.88618326582079,
+   84.78809261119628
+  ],
+  "mechanistic_interpreter|repair_specialist": [
+   71.82417720913443,
+   75.90704259423096,
+   87.04884380209322
+  ],
+  "research_strategist|repair_specialist": [
+   64.60943841936512,
+   73.55723768182479,
+   86.12017804356725
+  ]
+ },
+ "per_persona_effective_rank": {
+  "constructivist": 26.27852065277863,
+  "skeptic": 16.935397835430173,
+  "experimentalist": 28.844596092731674,
+  "formalist": 31.314490254330078,
+  "compressionist": 33.78337674470865,
+  "mechanistic_interpreter": 23.056096751633696,
+  "research_strategist": 30.38992119383488,
+  "repair_specialist": 13.279448347754325
+ },
+ "low_rank": [
+  {
+   "rank": 1,
+   "behavioral_agreement": 0.8430555555555554,
+   "min_agreement": 0.7277777777777777,
+   "fidelity_retention": 0.6729964417714686,
+   "utility_retention": 1.0396774596303613,
+   "per_persona_agreement": {
+    "constructivist": 0.8055555555555556,
+    "skeptic": 0.7277777777777777,
+    "experimentalist": 0.7611111111111111,
+    "formalist": 0.9166666666666666,
+    "compressionist": 0.8722222222222222,
+    "mechanistic_interpreter": 0.8555555555555555,
+    "research_strategist": 0.9722222222222222,
+    "repair_specialist": 0.8333333333333334
+   }
+  },
+  {
+   "rank": 2,
+   "behavioral_agreement": 0.8513888888888889,
+   "min_agreement": 0.7888888888888889,
+   "fidelity_retention": 0.7528331372472645,
+   "utility_retention": 1.0183603536697612,
+   "per_persona_agreement": {
+    "constructivist": 0.8055555555555556,
+    "skeptic": 0.7888888888888889,
+    "experimentalist": 0.8166666666666667,
+    "formalist": 0.8888888888888888,
+    "compressionist": 0.8833333333333333,
+    "mechanistic_interpreter": 0.8166666666666667,
+    "research_strategist": 0.9777777777777777,
+    "repair_specialist": 0.8333333333333334
+   }
+  },
+  {
+   "rank": 3,
+   "behavioral_agreement": 0.89375,
+   "min_agreement": 0.85,
+   "fidelity_retention": 0.8177499808540035,
+   "utility_retention": 1.0183434742549793,
+   "per_persona_agreement": {
+    "constructivist": 0.9277777777777778,
+    "skeptic": 0.8888888888888888,
+    "experimentalist": 0.8722222222222222,
+    "formalist": 0.8833333333333333,
+    "compressionist": 0.8833333333333333,
+    "mechanistic_interpreter": 0.85,
+    "research_strategist": 0.9833333333333333,
+    "repair_specialist": 0.8611111111111112
+   }
+  },
+  {
+   "rank": 4,
+   "behavioral_agreement": 0.9,
+   "min_agreement": 0.8555555555555555,
+   "fidelity_retention": 0.844831655185763,
+   "utility_retention": 1.017352348877554,
+   "per_persona_agreement": {
+    "constructivist": 0.9388888888888889,
+    "skeptic": 0.9222222222222223,
+    "experimentalist": 0.8722222222222222,
+    "formalist": 0.8833333333333333,
+    "compressionist": 0.8833333333333333,
+    "mechanistic_interpreter": 0.8555555555555555,
+    "research_strategist": 0.9888888888888889,
+    "repair_specialist": 0.8555555555555555
+   }
+  },
+  {
+   "rank": 6,
+   "behavioral_agreement": 0.9256944444444445,
+   "min_agreement": 0.8666666666666667,
+   "fidelity_retention": 0.9187258509401806,
+   "utility_retention": 1.0095343250010032,
+   "per_persona_agreement": {
+    "constructivist": 0.9166666666666666,
+    "skeptic": 0.9444444444444444,
+    "experimentalist": 0.8833333333333333,
+    "formalist": 0.9555555555555556,
+    "compressionist": 0.8666666666666667,
+    "mechanistic_interpreter": 0.9,
+    "research_strategist": 1.0,
+    "repair_specialist": 0.9388888888888889
+   }
+  },
+  {
+   "rank": 8,
+   "behavioral_agreement": 0.94375,
+   "min_agreement": 0.8666666666666667,
+   "fidelity_retention": 0.9456327262264828,
+   "utility_retention": 1.005901646353361,
+   "per_persona_agreement": {
+    "constructivist": 0.9611111111111111,
+    "skeptic": 0.9444444444444444,
+    "experimentalist": 0.9222222222222223,
+    "formalist": 0.9555555555555556,
+    "compressionist": 0.8666666666666667,
+    "mechanistic_interpreter": 0.9277777777777778,
+    "research_strategist": 1.0,
+    "repair_specialist": 0.9722222222222222
+   }
+  },
+  {
+   "rank": 12,
+   "behavioral_agreement": 0.9569444444444444,
+   "min_agreement": 0.9222222222222223,
+   "fidelity_retention": 0.9376986733068294,
+   "utility_retention": 1.0028781673003193,
+   "per_persona_agreement": {
+    "constructivist": 0.9777777777777777,
+    "skeptic": 0.9444444444444444,
+    "experimentalist": 0.9222222222222223,
+    "formalist": 0.9555555555555556,
+    "compressionist": 0.9388888888888889,
+    "mechanistic_interpreter": 0.9444444444444444,
+    "research_strategist": 0.9944444444444445,
+    "repair_specialist": 0.9777777777777777
+   }
+  },
+  {
+   "rank": 16,
+   "behavioral_agreement": 0.9708333333333333,
+   "min_agreement": 0.9277777777777778,
+   "fidelity_retention": 0.961214786209888,
+   "utility_retention": 1.0028264648713086,
+   "per_persona_agreement": {
+    "constructivist": 0.9944444444444445,
+    "skeptic": 0.9388888888888889,
+    "experimentalist": 0.9277777777777778,
+    "formalist": 0.9833333333333333,
+    "compressionist": 0.9944444444444445,
+    "mechanistic_interpreter": 0.95,
+    "research_strategist": 1.0,
+    "repair_specialist": 0.9777777777777777
+   }
+  },
+  {
+   "rank": 24,
+   "behavioral_agreement": 0.9833333333333334,
+   "min_agreement": 0.9666666666666667,
+   "fidelity_retention": 0.9864724543739846,
+   "utility_retention": 1.0018110647312364,
+   "per_persona_agreement": {
+    "constructivist": 0.9944444444444445,
+    "skeptic": 0.9722222222222222,
+    "experimentalist": 0.9944444444444445,
+    "formalist": 0.9833333333333333,
+    "compressionist": 0.9888888888888889,
+    "mechanistic_interpreter": 0.9666666666666667,
+    "research_strategist": 0.9833333333333333,
+    "repair_specialist": 0.9833333333333333
+   }
+  }
+ ]
+}

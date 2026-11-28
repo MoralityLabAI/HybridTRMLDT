@@ -1,0 +1,262 @@
+{
+ "persona": "mechanistic_interpreter",
+ "summary": "Prioritizes causal mechanism tests over broad description. Prefers controlled interventions, ablations and matched comparisons, and commits only after checks.",
+ "preference_features": [
+  {
+   "name": "intervention_first",
+   "weight": 10.0,
+   "positive_tags": [
+    "causal_intervention",
+    "ablation",
+    "stress_test_assumption",
+    "counterexample_search",
+    "controlled_comparison"
+   ],
+   "negative_tags": [
+    "broad_survey",
+    "information_gain_estimate"
+   ]
+  },
+  {
+   "name": "matched_controls",
+   "weight": 8,
+   "positive_tags": [
+    "decisive_experiment"
+   ],
+   "negative_tags": [
+    "high_cost"
+   ]
+  },
+  {
+   "name": "verification_before_commit",
+   "weight": 8.0,
+   "positive_tags": [
+    "certificate_check",
+    "formal_proof"
+   ],
+   "negative_tags": [
+    "scope_expansion"
+   ]
+  },
+  {
+   "name": "bounded_repair_over_guess",
+   "weight": 6,
+   "positive_tags": [
+    "failure_diagnosis",
+    "bounded_repair"
+   ],
+   "negative_tags": [
+    "irreversible_commit"
+   ]
+  },
+  {
+   "name": "cheap_scoped_work",
+   "weight": 4,
+   "positive_tags": [
+    "low_cost"
+   ],
+   "negative_tags": [
+    "budget_allocation",
+    "reduce_compute"
+   ]
+  }
+ ],
+ "critical_tags": [
+  "heuristic_guess",
+  "unverified_claim"
+ ],
+ "action_ranking": [
+  "causal_intervention",
+  "ablation",
+  "controlled_comparison",
+  "counterexample_search",
+  "stress_test_assumption",
+  "decisive_experiment",
+  "certificate_check",
+  "failure_diagnosis",
+  "bounded_repair"
+ ],
+ "lattice": {
+  "states": [
+   "orient",
+   "hypothesize",
+   "construct",
+   "test",
+   "verify",
+   "diagnose",
+   "repair",
+   "abstain",
+   "commit"
+  ],
+  "initial": "orient",
+  "transitions": [
+   [
+    "orient",
+    "hypothesize"
+   ],
+   [
+    "orient",
+    "abstain"
+   ],
+   [
+    "hypothesize",
+    "construct"
+   ],
+   [
+    "hypothesize",
+    "test"
+   ],
+   [
+    "construct",
+    "test"
+   ],
+   [
+    "test",
+    "verify"
+   ],
+   [
+    "test",
+    "diagnose"
+   ],
+   [
+    "test",
+    "abstain"
+   ],
+   [
+    "verify",
+    "commit"
+   ],
+   [
+    "verify",
+    "abstain"
+   ],
+   [
+    "diagnose",
+    "repair"
+   ],
+   [
+    "repair",
+    "test"
+   ],
+   [
+    "repair",
+    "abstain"
+   ],
+   [
+    "abstain",
+    "orient"
+   ],
+   [
+    "diagnose",
+    "test"
+   ],
+   [
+    "orient",
+    "test"
+   ],
+   [
+    "test",
+    "test"
+   ]
+  ]
+ },
+ "evidence_requirements": {
+  "min_evidence_items": 1,
+  "abstain_on_missing_inputs": true,
+  "require_failure_log_for_repair": true
+ },
+ "abstention": {
+  "min_train_score": 0.15,
+  "abstain_if_no_ranked_action": false
+ },
+ "repair_rules": [
+  {
+   "diagnostic": "missed_signature",
+   "patch": "add_positive_tag",
+   "target": "controlled_comparison",
+   "max_step": 0.3
+  },
+  {
+   "diagnostic": "suboptimal_utility",
+   "patch": "raise_weight",
+   "target": "intervention_first",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "overconfident",
+   "patch": "raise_abstain_threshold",
+   "target": "abstain_pending_evidence",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "underconfident",
+   "patch": "lower_abstain_threshold",
+   "target": "verification_before_commit",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "wrong_abstain",
+   "patch": "lower_abstain_threshold",
+   "target": "intervention_first",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "missed_abstain",
+   "patch": "raise_abstain_threshold",
+   "target": "verification_before_commit",
+   "max_step": 0.2
+  }
+ ],
+ "ambiguity_behavior": [
+  {
+   "situation": "mechanism or intervention target is underspecified",
+   "expected_action": "abstain_pending_evidence and request_information"
+  },
+  {
+   "situation": "evidence is missing but a cheap matched test is available",
+   "expected_action": "controlled_comparison before commit"
+  },
+  {
+   "situation": "task scope could expand beyond mechanism",
+   "expected_action": "stay scoped; avoid scope_expansion"
+  },
+  {
+   "situation": "failure log is unavailable for repair",
+   "expected_action": "abstain_pending_evidence rather than bounded_repair"
+  }
+ ],
+ "predictions": [
+  {
+   "id": "signature_rate",
+   "statement": "At least half of held-out tasks show a causal-intervention signature",
+   "metric": "signature_rate",
+   "comparator": ">=",
+   "threshold": 0.6,
+   "domain": "all"
+  },
+  {
+   "id": "intervention_rate",
+   "statement": "Intervention-like actions dominate non-intervention actions",
+   "metric": "intervention_rate",
+   "comparator": ">=",
+   "threshold": 0.55,
+   "domain": "all"
+  },
+  {
+   "id": "high_cost_rate",
+   "statement": "High-cost actions remain below half",
+   "metric": "high_cost_rate",
+   "comparator": "<=",
+   "threshold": 0.4,
+   "domain": "all"
+  },
+  {
+   "id": "abstain_rate",
+   "statement": "Abstention stays modest when a ranked intervention exists",
+   "metric": "abstain_rate",
+   "comparator": "<=",
+   "threshold": 0.35,
+   "domain": "all"
+  }
+ ]
+}

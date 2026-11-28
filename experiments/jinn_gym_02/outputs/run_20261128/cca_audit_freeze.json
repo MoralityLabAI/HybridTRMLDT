@@ -1,0 +1,21 @@
+{
+ "heldout_tasks": 180,
+ "audit": {
+  "actions_checked": 1347,
+  "unauthorized_executions": 0,
+  "noncommuting_or_escaping_compositions": 0,
+  "snapshot_digest_changes": 0,
+  "passed": true
+ },
+ "forced_boundary_lover": {
+  "actions_checked": 1347,
+  "unauthorized_executions": 0,
+  "noncommuting_or_escaping_compositions": 0,
+  "snapshot_digest_changes": 0,
+  "passed": true
+ },
+ "validator_rejects_forced": true,
+ "host_code_hash_start": "57935ce3ddbb4ae2307c104fcb18b0cc6991beff0bba911937a932b96acf6f79",
+ "host_code_hash_freeze": "57935ce3ddbb4ae2307c104fcb18b0cc6991beff0bba911937a932b96acf6f79",
+ "host_code_unchanged": true
+}

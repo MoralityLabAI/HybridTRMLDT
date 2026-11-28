@@ -1,0 +1,2242 @@
+{
+ "constructivist": [
+  {
+   "hash": "44189552b0731d7d397c4cc9d236ad4919fcf546a4a797041dbb9417c3d812fd",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.375,
+    "n_sig": 16,
+    "utility": 0.6804577051879792,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.00972127351565455,
+    "brier": 0.3091385948542123,
+    "cost": 1.6222222222222222,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "e9837714ba5c051af0826c48109199011487008aa204bc9936b68f9df52c5182",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.375,
+    "n_sig": 16,
+    "utility": 0.6355776046542863,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.054601374049347506,
+    "brier": 0.3742834161109693,
+    "cost": 1.511111111111111,
+    "abstain_f1": 0.7000000000000001,
+    "abstain_rate": 0.2,
+    "n": 45
+   }
+  },
+  {
+   "hash": "a172f97f68391d08980c5094a52c16b21d6231718d308ec46f1245829be0bf55",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.375,
+    "n_sig": 16,
+    "utility": 0.6662616267566067,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.023917351947027043,
+    "brier": 0.29094756233280583,
+    "cost": 1.6666666666666667,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "ed8982db0e81a3359f0ac7fb7db506ade0364a90cbadb27086edf345c4438b33",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.375,
+    "n_sig": 16,
+    "utility": 0.671171629588002,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.019007349115631733,
+    "brier": 0.336738629501698,
+    "cost": 1.5555555555555556,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "3635a59d367c6d84e93791f3c78b16f1c20b2ed311f6c4b1e2dca00d5639dc05",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.375,
+    "n_sig": 16,
+    "utility": 0.6685170912335152,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.021661887470118546,
+    "brier": 0.30755689972188527,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "bf70b1c19229ee12018e7c5034dbb498f3fde669352f740cd2c7dcba0bc64115",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.1875,
+    "n_sig": 16,
+    "utility": 0.6923558466882321,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.002176867984598374,
+    "brier": 0.291388403663583,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "87c776c420ff2ef980469e9f06ef5e18e164b92e10cec2c83556bef7a3f2838b",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.375,
+    "n_sig": 16,
+    "utility": 0.6675688162990904,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.022610162404543388,
+    "brier": 0.2938081091739079,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "f15a60da955aed0e2074b440f0279d129b411c24f37c08137fc8fbda9912895f",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.375,
+    "n_sig": 16,
+    "utility": 0.6474777076426641,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.04270127106096966,
+    "brier": 0.330911742971402,
+    "cost": 1.6,
+    "abstain_f1": 0.7368421052631579,
+    "abstain_rate": 0.17777777777777778,
+    "n": 45
+   }
+  },
+  {
+   "hash": "8b92d3ee8fb6b1811fa651e329769c4c593d1de0918c2dac9d59a5f3e1ba038d",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.375,
+    "n_sig": 16,
+    "utility": 0.621183146837441,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.06899583186619274,
+    "brier": 0.41574042923279986,
+    "cost": 1.4222222222222223,
+    "abstain_f1": 0.5925925925925926,
+    "abstain_rate": 0.35555555555555557,
+    "n": 45
+   }
+  },
+  {
+   "hash": "5ba005c08a93640370bb879867bb45beceb37962306e6c4f118e116abdd33b86",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.375,
+    "n_sig": 16,
+    "utility": 0.4820701371891373,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.20810884151449643,
+    "brier": 0.6469890991250138,
+    "cost": 1.1777777777777778,
+    "abstain_f1": 0.4,
+    "abstain_rate": 0.6444444444444445,
+    "n": 45
+   }
+  },
+  {
+   "hash": "e4f37caa3bf6179d36b53666beb5b105b90e2390a0561f753bdf986e3c1bd48c",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.375,
+    "n_sig": 16,
+    "utility": 0.6289961350019119,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.06118284370172189,
+    "brier": 0.3437291663720727,
+    "cost": 1.5333333333333334,
+    "abstain_f1": 0.631578947368421,
+    "abstain_rate": 0.17777777777777778,
+    "n": 45
+   }
+  }
+ ],
+ "skeptic": [
+  {
+   "hash": "8ec422290807b0e67f2c7e73152e5faa7b856cc938881629b71343d8b03231e2",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.6086956521739131,
+    "n_sig": 23,
+    "utility": 0.6743474623845571,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.015831516319076644,
+    "brier": 0.4155740505142205,
+    "cost": 1.6222222222222222,
+    "abstain_f1": 0.6428571428571428,
+    "abstain_rate": 0.37777777777777777,
+    "n": 45
+   }
+  },
+  {
+   "hash": "720f5c3ce80a09550ee16a048a67454ca79aecc69932fb8bdaf22eef60785aac",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.6086956521739131,
+    "n_sig": 23,
+    "utility": 0.7185918560484553,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.028412877344821563,
+    "brier": 0.3384447970312121,
+    "cost": 1.8,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "04f772f9754a751f1f5494e6af9226ce4f00398994523b31015ed55f2e015822",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.4782608695652174,
+    "n_sig": 23,
+    "utility": 0.6462232700432489,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.043955708660384896,
+    "brier": 0.41700641361135815,
+    "cost": 1.5777777777777777,
+    "abstain_f1": 0.6428571428571428,
+    "abstain_rate": 0.37777777777777777,
+    "n": 45
+   }
+  },
+  {
+   "hash": "20c0aacb4d578ff42bef11b9a916b9ee6f12cf455661d63d5a85e0e23da1b0c6",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.5217391304347826,
+    "n_sig": 23,
+    "utility": 0.6889638702542038,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.001215108449429958,
+    "brier": 0.34412088907504124,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "3c3781542efbb2383fda0348754db227ab331656ece7c1548f243f23a12d882b",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.30434782608695654,
+    "n_sig": 23,
+    "utility": 0.5453619979079829,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.14481698079565086,
+    "brier": 0.5843408583709457,
+    "cost": 1.1555555555555554,
+    "abstain_f1": 0.5238095238095238,
+    "abstain_rate": 0.6888888888888889,
+    "n": 45
+   }
+  },
+  {
+   "hash": "decf0b1836ea79b87f146e402588e616a5fe8d365bc0877cd8615bf3d1088599",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.21739130434782608,
+    "n_sig": 23,
+    "utility": 0.5810465435289264,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.10913243517470739,
+    "brier": 0.4939377792038436,
+    "cost": 1.3555555555555556,
+    "abstain_f1": 0.5882352941176471,
+    "abstain_rate": 0.5111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9bcaf76643a766486874bf5ea2d3de0e55b66c269c638a080f3eaf6f6814a8a8",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.6521739130434783,
+    "n_sig": 23,
+    "utility": 0.6553977717284506,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.034781206975183165,
+    "brier": 0.3283652567206768,
+    "cost": 1.6,
+    "abstain_f1": 0.7272727272727273,
+    "abstain_rate": 0.24444444444444444,
+    "n": 45
+   }
+  },
+  {
+   "hash": "2852c12cd5ff0296a6a267619396c3b9801451801ce4f701a4aaf8516fba5d7c",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.5217391304347826,
+    "n_sig": 23,
+    "utility": 0.6881935226388612,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.0019854560647725172,
+    "brier": 0.32962301520850673,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.7272727272727273,
+    "abstain_rate": 0.24444444444444444,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9fd32f9136950abcb52907d2772134dabd88edae42d34db815e73308f0a28c61",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.17391304347826086,
+    "n_sig": 23,
+    "utility": 0.5138613912900581,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.17631758741357562,
+    "brier": 0.6432885580608586,
+    "cost": 1.0444444444444445,
+    "abstain_f1": 0.4782608695652174,
+    "abstain_rate": 0.7777777777777778,
+    "n": 45
+   }
+  },
+  {
+   "hash": "cf26dd6cb6fe9b87dc4d3f7b211e15ea9a240f2942d00a5782423cd697ed7e82",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.6521739130434783,
+    "n_sig": 23,
+    "utility": 0.6380117111364437,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.052167267567190034,
+    "brier": 0.36825578466541453,
+    "cost": 1.5333333333333334,
+    "abstain_f1": 0.6086956521739131,
+    "abstain_rate": 0.26666666666666666,
+    "n": 45
+   }
+  },
+  {
+   "hash": "bc4245787d0cc52a3b6ddfb1300dc0e2ebd827a2bc9fd05fe729c9f7cc5ebb87",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.6521739130434783,
+    "n_sig": 23,
+    "utility": 0.6814261360877109,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.008752842615922907,
+    "brier": 0.28116505442969214,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "5c44d9cf464eec95b743be4780e93f4187e8cee50784b20a804fc6014a25d140",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.4782608695652174,
+    "n_sig": 23,
+    "utility": 0.5179650054403944,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.1722139732632394,
+    "brier": 0.6681676529105521,
+    "cost": 1.3333333333333333,
+    "abstain_f1": 0.4090909090909091,
+    "abstain_rate": 0.7333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "c4bd36d76a742b1074ffa920c5040c7770f6268b4dede839fbf50becbf503e00",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.6086956521739131,
+    "n_sig": 23,
+    "utility": 0.6482555264990917,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.04192345220454208,
+    "brier": 0.4207843289755348,
+    "cost": 1.5777777777777777,
+    "abstain_f1": 0.6428571428571428,
+    "abstain_rate": 0.37777777777777777,
+    "n": 45
+   }
+  },
+  {
+   "hash": "40a554024b26e16488be3eae3606c386c31ac38b7ce77eee37ff6af33283c6b7:9437d1a66dfa3e9b",
+   "source": "recomb:params:formalist",
+   "panel": {
+    "fidelity": 0.5652173913043478,
+    "n_sig": 23,
+    "utility": 0.7029569819349025,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.012778003231268764,
+    "brier": 0.30698942787860783,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "40a554024b26e16488be3eae3606c386c31ac38b7ce77eee37ff6af33283c6b7:3770a015134800ca",
+   "source": "recomb:params:experimentalist",
+   "panel": {
+    "fidelity": 0.6521739130434783,
+    "n_sig": 23,
+    "utility": 0.7102599557963925,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.02008097709275869,
+    "brier": 0.3127224608966616,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  }
+ ],
+ "experimentalist": [
+  {
+   "hash": "0823024e532915c856e5f78257a6b39550e44afae30a283f3c55bf704afb2ed5",
+   "source": "mutation:abstention",
+   "panel": {
+    "fidelity": 0.15789473684210525,
+    "n_sig": 19,
+    "utility": 0.7069490155743869,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.01677003687075318,
+    "brier": 0.2754579148788362,
+    "cost": 1.7555555555555555,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "49c6f59afb3826b00896e6ddbeef6a701a2d092a79a6307ad13c2d5aac0d33e3",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.15789473684210525,
+    "n_sig": 19,
+    "utility": 0.6901483689955491,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -3.0609708084661236e-05,
+    "brier": 0.25901101044522196,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "b5c57fce369dc8198774ab91946ec771b57365184b231a51f13edcfc066cf11b",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.10526315789473684,
+    "n_sig": 19,
+    "utility": 0.6928527088247531,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.0026737301211193776,
+    "brier": 0.2606742958656353,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "ab8910276cd38f3a86e4813b4f4664e646784328313e16a7ca5c4a53189cf828",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.21052631578947367,
+    "n_sig": 19,
+    "utility": 0.680225188237237,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.009953790466396772,
+    "brier": 0.23591322719540123,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "312aab75424da7c45d611c10128d5b296c48fa559b43c81ee6d29fb218b17c55",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.21052631578947367,
+    "n_sig": 19,
+    "utility": 0.7042770579024292,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.014098079198795466,
+    "brier": 0.2553748480908726,
+    "cost": 1.7555555555555555,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "56b8eca401315ae9bbdefd1b55e39bede42c7426d4edc98e4f68afe9a608766a",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.10526315789473684,
+    "n_sig": 19,
+    "utility": 0.6764029733750176,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.013776005328616114,
+    "brier": 0.2508211081081811,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "ef6689ea262be9ba2af8e363c1958685139d70c061a85d779773c58d5b9cbbae",
+   "source": "mutation:abstention",
+   "panel": {
+    "fidelity": 0.3684210526315789,
+    "n_sig": 19,
+    "utility": 0.6834890513664815,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.006689927337152235,
+    "brier": 0.2575762293069478,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "ffeaeb6d5dbba34415b0fa8fbf58d34daff1f3f2aea023383c39f1d6b13c9c53",
+   "source": "mutation:abstention",
+   "panel": {
+    "fidelity": 0.10526315789473684,
+    "n_sig": 19,
+    "utility": 0.6355261628961064,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.054652815807527344,
+    "brier": 0.2478080415652635,
+    "cost": 1.6222222222222222,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "12e52eddf836fb9669e3602b345f1be245ced32ba70d8d7dc587ad5cd60e2b09",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.10526315789473684,
+    "n_sig": 19,
+    "utility": 0.5168550332100773,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.17332394549355645,
+    "brier": 0.547177718834055,
+    "cost": 1.2,
+    "abstain_f1": 0.5238095238095238,
+    "abstain_rate": 0.6888888888888889,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9e49b4619f78d93ad38130237f9980c01150a7aca386c4348498b83552de3fce",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.15789473684210525,
+    "n_sig": 19,
+    "utility": 0.6870942696713139,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.0030847090323198323,
+    "brier": 0.2446782108995237,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "d27e006988bfdc7c50d4767ab844bdc4a6b6dd78bb8cf32523366c4a6f7db5ca",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.05263157894736842,
+    "n_sig": 19,
+    "utility": 0.7055842474449129,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.015405268741279121,
+    "brier": 0.2654573864762148,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "220b05aa53a06219cca185c365b7bf2e996bf0a2205404797c9377dd1eaae118",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.10526315789473684,
+    "n_sig": 19,
+    "utility": 0.6969267828988273,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.006747804195193496,
+    "brier": 0.2587595130514648,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "f93962edf125d02f927518ceec472020d918ac651e1b90d2e9010cff7cd4e58f",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.10526315789473684,
+    "n_sig": 19,
+    "utility": 0.6904103734224221,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.00023139471878830253,
+    "brier": 0.24512074959833421,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "dd291da08adf7a4d0209d98eba44a02cf2349b1365b4c5e142c5d719cd84a3bf",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.2631578947368421,
+    "n_sig": 19,
+    "utility": 0.7042770579024292,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.014098079198795466,
+    "brier": 0.24274913381747298,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "a98fb2f500e278d1808416f1150e9e2728364bc6d4598c7b4521f10afee5648e",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.10526315789473684,
+    "n_sig": 19,
+    "utility": 0.7172846665059717,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.027105687802337908,
+    "brier": 0.27913346018479973,
+    "cost": 1.8,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "6d38c14c46370e15413b6ea43d2693734d8fa2b48418f9a915092f28cbe326ee",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.15789473684210525,
+    "n_sig": 19,
+    "utility": 0.6887482358472914,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.0014307428563423708,
+    "brier": 0.28931258210742694,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.7200000000000001,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "40a73e36a7ff5e0580c754035ae04f65435da9e18e67e6ae8135186e460b7ea4",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.3684210526315789,
+    "n_sig": 19,
+    "utility": 0.6954535284906646,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.005274549787030791,
+    "brier": 0.25517906450047,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "51d47a377fd21fbe18e6e74559fa6f353b8a2ce0df2ee9ce1b6ee0a24322a4c9",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.10526315789473684,
+    "n_sig": 19,
+    "utility": 0.7067320462534872,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.016553067549853417,
+    "brier": 0.2617472334275231,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "24364ae2049e958be802f50aceb9ae0227589cb901c0dfaf794bfb66ab15dfb7",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.15789473684210525,
+    "n_sig": 19,
+    "utility": 0.711096247582847,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.02091726887921319,
+    "brier": 0.28133839209585726,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "bc8991264726328b2d713bbf88e5c00476a65fa1c11c8af7960e118915db0446",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.15789473684210525,
+    "n_sig": 19,
+    "utility": 0.7049851364717358,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.014806157768102013,
+    "brier": 0.26623752886478347,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "195674426078fbd2f734f2fecec60b0c2964c33409ff092db1cfe488e1ab0106",
+   "source": "recomb:feature:constructivist",
+   "panel": {
+    "fidelity": 0.15789473684210525,
+    "n_sig": 19,
+    "utility": 0.6452701578099642,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.04490882089366954,
+    "brier": 0.2816420590088327,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "4d89601dea75281fdeebc2ab89df9b44a694b32c8d4135f254a82acd0a0aa939",
+   "source": "recomb:feature:skeptic",
+   "panel": {
+    "fidelity": 0.3157894736842105,
+    "n_sig": 19,
+    "utility": 0.6542024675744944,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.035976511129139355,
+    "brier": 0.2447658689645626,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "40a73e36a7ff5e0580c754035ae04f65435da9e18e67e6ae8135186e460b7ea4:53d044d29ec7bff5",
+   "source": "recomb:params:skeptic",
+   "panel": {
+    "fidelity": 0.2631578947368421,
+    "n_sig": 19,
+    "utility": 0.7061512063863618,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.01597222768272799,
+    "brier": 0.2940752582330648,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  }
+ ],
+ "formalist": [
+  {
+   "hash": "1d1bb8e0a69b785de4c8fbeb9ea8cfe1343d17adb977fcd1096fca02acabe635",
+   "source": "mutation:abstention",
+   "panel": {
+    "fidelity": 0.7777777777777778,
+    "n_sig": 36,
+    "utility": 0.5585528684759516,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.1316261102276821,
+    "brier": 0.42612967432570475,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.4,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "6b7252685e43dc5de409c47701f891ab12d9d1e224924e1d6b8d9dceda38f036",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.4444444444444444,
+    "n_sig": 36,
+    "utility": 0.5206234256553453,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.1695555530482885,
+    "brier": 0.5524633277675965,
+    "cost": 1.4444444444444444,
+    "abstain_f1": 0.5000000000000001,
+    "abstain_rate": 0.6444444444444445,
+    "n": 45
+   }
+  },
+  {
+   "hash": "c6af48978e12826cced397d461f0df7ccba7ced479d163282460c009d2a144ac",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.75,
+    "n_sig": 36,
+    "utility": 0.6676624172914237,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.022516561412210034,
+    "brier": 0.3314431953606262,
+    "cost": 1.7555555555555555,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9a6894cdb0b17941fa6a1b79da2a5f67e339560eb50d58bb125505dd45cedac2",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.7777777777777778,
+    "n_sig": 36,
+    "utility": 0.6387695465327937,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.05140943217084004,
+    "brier": 0.35038880962183855,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "c6cbfd10a0d8bc44c347aa153f033888c8cbdac3227bdc66ed5d1a13b859e35b",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.6388888888888888,
+    "n_sig": 36,
+    "utility": 0.6847547560652955,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.005424222638338305,
+    "brier": 0.3114943356824369,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "761b0da2787336f041a7d6673252f0dd0c0ece760056542df279308377de58f3",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.6944444444444444,
+    "n_sig": 36,
+    "utility": 0.6766521537261141,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.01352682497751967,
+    "brier": 0.33846854561285183,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "84d6966083a652786f87d6e6c1d541a5e467d767a83a9e3d58e32925a6d6701d",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.6666666666666666,
+    "n_sig": 36,
+    "utility": 0.7061009578770585,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.01592197917342475,
+    "brier": 0.3543376082742402,
+    "cost": 1.8444444444444446,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "3c73cc9eaa9179619f77872f2cb1de92faac8360e7343144f772c3ed8761e12d",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.6944444444444444,
+    "n_sig": 36,
+    "utility": 0.6763933555378772,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.0137856231657566,
+    "brier": 0.32489538611760765,
+    "cost": 1.8222222222222222,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "587ad0b612e3d1a62c92674abcfc1951de67fd2612e777c6febde589a25a2843",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.6944444444444444,
+    "n_sig": 36,
+    "utility": 0.6845804900408011,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.005598488662832635,
+    "brier": 0.33344681112011876,
+    "cost": 1.8444444444444446,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "fc0bcaea7def58368aebfc2c87773427d174377474110225d582151c0186c73f",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.6944444444444444,
+    "n_sig": 36,
+    "utility": 0.6465676215623715,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.0436113571412623,
+    "brier": 0.3061362685562519,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "99b7c465ee2b47d4a918028c5e9eafdfd1f0d991f42c51567045fa7dc6fd8551",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.6944444444444444,
+    "n_sig": 36,
+    "utility": 0.5751350029788758,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.115043975724758,
+    "brier": 0.41567197615604107,
+    "cost": 1.6222222222222222,
+    "abstain_f1": 0.4615384615384615,
+    "abstain_rate": 0.3333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "90fe2ba5880ad69ca039c570918bb7bbe768d1e4525810f779b970711b20fcf6",
+   "source": "mutation:abstention",
+   "panel": {
+    "fidelity": 0.75,
+    "n_sig": 36,
+    "utility": 0.5752195351426184,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.1149594435610154,
+    "brier": 0.4380627591209253,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.4615384615384615,
+    "abstain_rate": 0.3333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "8340d068f8781ad37cab7c95cd99bde146b1c4922c8c36c563d5827b2b2e03cb",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.6388888888888888,
+    "n_sig": 36,
+    "utility": 0.6751745091517152,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.015004469551918587,
+    "brier": 0.3087782253089341,
+    "cost": 1.8,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "232ac2066dbc483793fec8e8a84b8d29e6a1822cd9f8290bcf92cc7987899eae",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.75,
+    "n_sig": 36,
+    "utility": 0.6681726215623714,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.02200635714126231,
+    "brier": 0.3169473067823584,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "ec8fdbc43e9fa7617b5b73afca3df3ee8918f3251bd0d03d8e4a584882370e54",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.5277777777777778,
+    "n_sig": 36,
+    "utility": 0.6920881511270238,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.0019091724233900598,
+    "brier": 0.31705051423368824,
+    "cost": 1.8444444444444446,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "f28cc8660dc887c6f4764f14e9fe479b9d52c83563f8e2c3e3a35131c18760fd",
+   "source": "mutation:abstention",
+   "panel": {
+    "fidelity": 0.7222222222222222,
+    "n_sig": 36,
+    "utility": 0.6815059548957048,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.008673023807929003,
+    "brier": 0.3218509363024988,
+    "cost": 1.7555555555555555,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "1ff730654edc539308ee93feb9ea704a13f7839b1772ddbfb5f0bf3cc3d81452",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.6666666666666666,
+    "n_sig": 36,
+    "utility": 0.6680880893986287,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.022090889305005024,
+    "brier": 0.30869023266276674,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "4b8763eff93ef507b1d323d3b01354531d072d2d5437e6f3c18b0a7054aca0dc",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.7222222222222222,
+    "n_sig": 36,
+    "utility": 0.5728118499765883,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.11736712872704547,
+    "brier": 0.3620580678639333,
+    "cost": 1.6222222222222222,
+    "abstain_f1": 0.5454545454545454,
+    "abstain_rate": 0.24444444444444444,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9c6257f2a2f82d5418c6251b5182b8bcf310b73720576bffe2a2ec5cf1b1f865",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.8055555555555556,
+    "n_sig": 36,
+    "utility": 0.6515059548957047,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.03867302380792903,
+    "brier": 0.32342097302530665,
+    "cost": 1.8,
+    "abstain_f1": 0.625,
+    "abstain_rate": 0.1111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9981621a109457bff6ceb093b3e50ce4b0ce3b3c1071401d5893f7d2630bba62",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.6388888888888888,
+    "n_sig": 36,
+    "utility": 0.6109989844795123,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.07917999422412147,
+    "brier": 0.3768997955063744,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.6086956521739131,
+    "abstain_rate": 0.26666666666666666,
+    "n": 45
+   }
+  },
+  {
+   "hash": "e15ff24467a2a9cdc0cae317120ef356f086c6e3d137c145232940f3cb43344e",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.2777777777777778,
+    "n_sig": 36,
+    "utility": 0.5669227660408894,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.12325621266274434,
+    "brier": 0.4782257257832427,
+    "cost": 1.3777777777777778,
+    "abstain_f1": 0.5882352941176471,
+    "abstain_rate": 0.5111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "e0c68463d6943d2e3cb95c79ec9baf8775c9e16e75fc1834a0313db3178522b3",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.6388888888888888,
+    "n_sig": 36,
+    "utility": 0.6493455451173671,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.040833433586266676,
+    "brier": 0.30230075493642566,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.625,
+    "abstain_rate": 0.1111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "6a234d5b0349af7cdf9a20a1d798e2458dc5b6d4cb0f5a04690c346cb4313087",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.7222222222222222,
+    "n_sig": 36,
+    "utility": 0.6672343499574331,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.022944628746200624,
+    "brier": 0.3160316458921199,
+    "cost": 1.8444444444444446,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "f9c14b0b09a40ec6eb9150b782a27d4e6a7bbe8f5c56650ed9a95f203f6aa3b2",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.7777777777777778,
+    "n_sig": 36,
+    "utility": 0.6433188203927808,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.046860158310852995,
+    "brier": 0.33978509715175215,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.625,
+    "abstain_rate": 0.1111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9a581d1c3587c153d465844f50ca1b9f3998638a30f3fe21b6db79197d86669f",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.5,
+    "n_sig": 36,
+    "utility": 0.6933953406695075,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.0032163619658737153,
+    "brier": 0.35355234729967366,
+    "cost": 1.8222222222222222,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "481e95d7ccdc49ddb685c3b0218617791cf72686d25b6dfe2e48cc289626083b",
+   "source": "recomb:feature:compressionist",
+   "panel": {
+    "fidelity": 0.6944444444444444,
+    "n_sig": 36,
+    "utility": 0.6896930893986288,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.00048588930500492733,
+    "brier": 0.3321784159810176,
+    "cost": 1.8,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "f4211add832be882b1e5c02b5b3349f643ad1398cdf922a2802fc0f893e20330:0aa5a76847af24bd",
+   "source": "recomb:params:compressionist",
+   "panel": {
+    "fidelity": 0.7222222222222222,
+    "n_sig": 36,
+    "utility": 0.6599854870594475,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.030193491644186277,
+    "brier": 0.3262427858261387,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "da5ab9cf59d2907eab465af14313775033d4d3393050f990e63b624f79ff4c52",
+   "source": "recomb:feature:skeptic",
+   "panel": {
+    "fidelity": 0.7777777777777778,
+    "n_sig": 36,
+    "utility": 0.650995750624757,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.03918322807887675,
+    "brier": 0.31548353588363753,
+    "cost": 1.7555555555555555,
+    "abstain_f1": 0.625,
+    "abstain_rate": 0.1111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "8566c2ef65d53b177ec136f552fa11289a4c8a15378fb60a67353150c255d43e",
+   "source": "recomb:ranking:skeptic",
+   "panel": {
+    "fidelity": 0.7777777777777778,
+    "n_sig": 36,
+    "utility": 0.6515059548957047,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.03867302380792903,
+    "brier": 0.3196982912043167,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.625,
+    "abstain_rate": 0.1111111111111111,
+    "n": 45
+   }
+  }
+ ],
+ "compressionist": [
+  {
+   "hash": "9e8152581acb899cbd66e6c7a1fe16feb31aa1e44c17bc02f760493a5f18f69e",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.1724137931034483,
+    "n_sig": 29,
+    "utility": 0.6724053791593918,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.017773599544241958,
+    "brier": 0.3711408389371478,
+    "cost": 1.6222222222222222,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "a901b1fc176d7031bdf131bb817713ea9f4e3e0771ee84c2b7407aff1b6f30f6",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.3103448275862069,
+    "n_sig": 29,
+    "utility": 0.6459026398618899,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.04427633884174387,
+    "brier": 0.35984529962493506,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "d82d564e1a432edf645fb6b99aab609839f1659871d2a64eb2b2f8d30d050fe4",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.034482758620689655,
+    "n_sig": 29,
+    "utility": 0.5969992863176161,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.09317969238601764,
+    "brier": 0.5255835232877877,
+    "cost": 1.4444444444444444,
+    "abstain_f1": 0.5882352941176471,
+    "abstain_rate": 0.5111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "8c49417e6b5c60f8497a24918448049514e0832b46210d1410da4b664113497f",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.2413793103448276,
+    "n_sig": 29,
+    "utility": 0.6050579137306894,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.08512106497294436,
+    "brier": 0.43357766868709535,
+    "cost": 1.5777777777777777,
+    "abstain_f1": 0.5714285714285713,
+    "abstain_rate": 0.2222222222222222,
+    "n": 45
+   }
+  },
+  {
+   "hash": "c1cd60d13edfdf93e78b25f8bb363d466fa7ea5d2f4f73e669f5406b693cd0d6",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.2413793103448276,
+    "n_sig": 29,
+    "utility": 0.6464890799978279,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.04368989870580586,
+    "brier": 0.31431286763575483,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "0184b4f2126aa4217b90972cdf1d001c7d1c7db2577b96d9b7696cae88aa96f1",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.20689655172413793,
+    "n_sig": 29,
+    "utility": 0.6050579137306894,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.08512106497294436,
+    "brier": 0.4169156116844039,
+    "cost": 1.5777777777777777,
+    "abstain_f1": 0.5714285714285713,
+    "abstain_rate": 0.2222222222222222,
+    "n": 45
+   }
+  },
+  {
+   "hash": "03f5b3405f12fed44307195391fbda3e758cda07082f89adfa539523b21bb1c0",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.20689655172413793,
+    "n_sig": 29,
+    "utility": 0.6652156402004228,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.024963338503210974,
+    "brier": 0.3494877665088798,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "af81f370e7ea06151b97e07736fc35d04cf87ae0f04adda9eccd53b71efed730",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.2413793103448276,
+    "n_sig": 29,
+    "utility": 0.6466602529119759,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.04351872579165783,
+    "brier": 0.33504575716340895,
+    "cost": 1.6666666666666667,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "221ac77b71e444202ac86e530a6edf53b4eb0c7d5f5aed0149adcf2517bcc7b7",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.2413793103448276,
+    "n_sig": 29,
+    "utility": 0.6555927038923681,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.03458627481126564,
+    "brier": 0.3788043780121758,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "c8b0b9a13b228ffab96b40cfa07eac8e0b5cea989dbfc2740620891ffa280942",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.20689655172413793,
+    "n_sig": 29,
+    "utility": 0.6443825033423983,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.045796475361235434,
+    "brier": 0.38890879263149103,
+    "cost": 1.6222222222222222,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9e3f004edeceaaf23ac442f7188d54f3b45c21d114d8e4261d0b0ea77a2b4fed",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.20689655172413793,
+    "n_sig": 29,
+    "utility": 0.6408595993172047,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.04931937938642905,
+    "brier": 0.3106381727205512,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "a8584520a380bbc7a506f7cbf84a7ba43388b0adbd9b7e64e1b985380aee35b7",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.20689655172413793,
+    "n_sig": 29,
+    "utility": 0.6054034862043214,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.08477549249931238,
+    "brier": 0.4209051427663793,
+    "cost": 1.6,
+    "abstain_f1": 0.5714285714285713,
+    "abstain_rate": 0.2222222222222222,
+    "n": 45
+   }
+  },
+  {
+   "hash": "90f02d6f410fffaa26b7a53e5cd68805b91769c8e56e31ecb43f6d5b574c1709",
+   "source": "recomb:feature:mechanistic_interpreter",
+   "panel": {
+    "fidelity": 0.2413793103448276,
+    "n_sig": 29,
+    "utility": 0.6031447556294888,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.08703422307414499,
+    "brier": 0.35893056716808996,
+    "cost": 1.5555555555555556,
+    "abstain_f1": 0.5454545454545454,
+    "abstain_rate": 0.24444444444444444,
+    "n": 45
+   }
+  },
+  {
+   "hash": "5b94bc79ca08862f86327cc601efb3bc963bfb8b78193dbdf66e980cafea9a01:54ed3c4fa8a30358",
+   "source": "recomb:params:mechanistic_interpreter",
+   "panel": {
+    "fidelity": 0.20689655172413793,
+    "n_sig": 29,
+    "utility": 0.6723964930077783,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.0177824856958555,
+    "brier": 0.3434000725043468,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "c3df49f944c162150aab7abf3096a48a6213807cf160055213603c7dbb565c2b",
+   "source": "recomb:feature:formalist",
+   "panel": {
+    "fidelity": 0.1724137931034483,
+    "n_sig": 29,
+    "utility": 0.5664027762468817,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.12377620245675203,
+    "brier": 0.4186551344221432,
+    "cost": 1.4,
+    "abstain_f1": 0.5185185185185185,
+    "abstain_rate": 0.35555555555555557,
+    "n": 45
+   }
+  }
+ ],
+ "mechanistic_interpreter": [
+  {
+   "hash": "520251a08cb28529ee3090cc9dd863fbcd93f4a1d890af656891ce6f8f94d85a",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 20,
+    "utility": 0.5646722745230784,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.12550670418055532,
+    "brier": 0.48519479098282736,
+    "cost": 1.3555555555555556,
+    "abstain_f1": 0.5882352941176471,
+    "abstain_rate": 0.5111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "efee55f5a7d257955620ee56a391f7716d95527b19917b336b1e5255916066d8",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 20,
+    "utility": 0.7214489989055982,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.031270020201964455,
+    "brier": 0.3081447094129458,
+    "cost": 1.7555555555555555,
+    "abstain_f1": 0.7368421052631579,
+    "abstain_rate": 0.17777777777777778,
+    "n": 45
+   }
+  },
+  {
+   "hash": "0fe7c30bdbf7bc0a8d3a804ba2999730233a8e47a351f2903c339a00b0c182fd",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.1,
+    "n_sig": 20,
+    "utility": 0.6230243904985843,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.06715458820504949,
+    "brier": 0.43635551602845096,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.5806451612903226,
+    "abstain_rate": 0.4444444444444444,
+    "n": 45
+   }
+  },
+  {
+   "hash": "791da625b7436ceec8cbbe99c5665e920162605cc73e2a6bb05d0d18f6d95696",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.05,
+    "n_sig": 20,
+    "utility": 0.7111735553948606,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.02099457669122684,
+    "brier": 0.3144600100400457,
+    "cost": 1.8,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "f4abef4173438f33cf3c6512b4413bbdc75eb9999846aac47625159336e0a3ae",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.1,
+    "n_sig": 20,
+    "utility": 0.6964688883587503,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.0062899096551165545,
+    "brier": 0.3010603659309105,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "544188da60e17183706f20cb13865ad1dfcd1c02310c1d92b0bc9d6b94c81946",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.1,
+    "n_sig": 20,
+    "utility": 0.7049851364717358,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.014806157768102013,
+    "brier": 0.3013937122636183,
+    "cost": 1.7555555555555555,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "8520ad478632ac842dcea8a2f0bc0a9df9df1122962c4091f9c04196c1237f78",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.2,
+    "n_sig": 20,
+    "utility": 0.6910595316336041,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.0008805529299703574,
+    "brier": 0.31172250828383824,
+    "cost": 1.8222222222222222,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "7dc9a354f5379c5e73dbd611e259289fed2eaaa08e665c87dde5ee6bff2708a5",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.15,
+    "n_sig": 20,
+    "utility": 0.7067320462534872,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.016553067549853417,
+    "brier": 0.308522022310729,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "a6dda334b67080bdb028114aa80f21c87c03db5ac6603a1a52014f1315b83271",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.05,
+    "n_sig": 20,
+    "utility": 0.6277723715623548,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.06240660714127899,
+    "brier": 0.4214472749374306,
+    "cost": 1.6666666666666667,
+    "abstain_f1": 0.5806451612903226,
+    "abstain_rate": 0.4444444444444444,
+    "n": 45
+   }
+  },
+  {
+   "hash": "fb7cd59154c3dd855521aba536e7dbb7b2d0e604f816e1a9f99273398bcd0c7e",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 20,
+    "utility": 0.7185918560484553,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.028412877344821563,
+    "brier": 0.30031814195752937,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "a774722bac048aad34d30e55cf467e0fdd16468f788c333656eb925aca05cdf6",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.15,
+    "n_sig": 20,
+    "utility": 0.6903577772476392,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.00017879854400548734,
+    "brier": 0.2998776738044392,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "568f8a2748ea3227f26609234160eb47cdd34c1763cfad335bca38588b43dca8",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 20,
+    "utility": 0.7017558444508338,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.011576865747200071,
+    "brier": 0.3509758025858843,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.7200000000000001,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "99e064d887cefd60e2bcc02962a121a6f743ae269993672016b3f451f499bcba",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.05,
+    "n_sig": 20,
+    "utility": 0.6792704643338747,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.010908514369759037,
+    "brier": 0.35508356170260197,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.7200000000000001,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "bdbceb40a1cd6eac132f3687ed1fe553bf82cb351a22112978e9b93e582b2325",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.2,
+    "n_sig": 20,
+    "utility": 0.6794371423270044,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.010741836376629399,
+    "brier": 0.29345970533453897,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7368421052631579,
+    "abstain_rate": 0.17777777777777778,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9686dd0ccebb87b5d444ddfd0dbc0947232d3c9421b518335024c95a77438289",
+   "source": "mutation:abstention",
+   "panel": {
+    "fidelity": 0.05,
+    "n_sig": 20,
+    "utility": 0.7124807449373443,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.022301766233710496,
+    "brier": 0.316343610504707,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "e9009b6caf6856ee9aec11717334662e2a5e14a054541b8e4095256f65974f64",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 20,
+    "utility": 0.538819945490779,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.1513590332128547,
+    "brier": 0.5645496179267323,
+    "cost": 1.2444444444444445,
+    "abstain_f1": 0.5238095238095238,
+    "abstain_rate": 0.6888888888888889,
+    "n": 45
+   }
+  },
+  {
+   "hash": "6ae886587ce9388fa48f1ebfd568897b9bb2d0e0b72530dbec5e9f70b32bd906",
+   "source": "recomb:feature:compressionist",
+   "panel": {
+    "fidelity": 0.1,
+    "n_sig": 20,
+    "utility": 0.7017096972449883,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.011530718541354568,
+    "brier": 0.3014692604163904,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  }
+ ],
+ "research_strategist": [
+  {
+   "hash": "62cf9c160d5b14bc7ca8ad1f81ba6ce923f5bb85fa5d62db172df02a36ad7d4f",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 21,
+    "utility": 0.6358991665088911,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.05427981219474265,
+    "brier": 0.4003342315986399,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.6923076923076923,
+    "abstain_rate": 0.3333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "2ab90048ac03a687f272b53d316a68d7272c42bf3df43307c722f18e20c56236",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 21,
+    "utility": 0.6623090086198121,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.027869970083821638,
+    "brier": 0.40054803617285356,
+    "cost": 1.6,
+    "abstain_f1": 0.6923076923076923,
+    "abstain_rate": 0.3333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "e9c5a500d07e096bd815ecfa4df47ad164257628d9bae7f2ca39b264af3b5103",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 21,
+    "utility": 0.6704212684146257,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.01975771028900808,
+    "brier": 0.28032260572723383,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9c732d501c2685c72df1fa58176b697e369325c6935b49ffd54786a6a13d32bc",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 21,
+    "utility": 0.66317240551664,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.027006573186993732,
+    "brier": 0.29980930685929913,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "c41f7a1d189a6e3613e29c4a451c5cd679835317ac042878992ecf5464eba9f5",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.09523809523809523,
+    "n_sig": 21,
+    "utility": 0.675886371966735,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.014292606736898805,
+    "brier": 0.29929166893981624,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "cfde63e45654ee4d128134f5a27d812c91519eb22248f9893fb44e6fdeadf493",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 21,
+    "utility": 0.6870879350812924,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.0030910436223413607,
+    "brier": 0.28580746082246866,
+    "cost": 1.7777777777777777,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "844a5f7b989362bd73e12dbccfa93c86412d854943ae14a6994492aa6edfdb26",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 21,
+    "utility": 0.615087235359358,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.07509174334427571,
+    "brier": 0.5041016175915022,
+    "cost": 1.4222222222222223,
+    "abstain_f1": 0.5714285714285715,
+    "abstain_rate": 0.5333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "c7c3161ec58cdb54c9c8a357fbd6bef220d58fe86ecf7fa96e57d25912b3d17e",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 21,
+    "utility": 0.662189949376289,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.027989029327344706,
+    "brier": 0.3181996341340676,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.6666666666666665,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9c415a192eeb7e56f65a47b8ef7816969639cd4fd2d55fe5cb582f717e6cb895",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 21,
+    "utility": 0.5892336780318504,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.10094530067178331,
+    "brier": 0.4655972706358085,
+    "cost": 1.3777777777777778,
+    "abstain_f1": 0.5882352941176471,
+    "abstain_rate": 0.5111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "de6313fded3a91d26f56bc7be00b97cff2cb730893d375e155c8eb180544267d",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 21,
+    "utility": 0.6798390721833066,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.010339906520327125,
+    "brier": 0.3207681358017946,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "28a57426ff6c9ded46be2934ae01f9995fc553f699bbcd21776c7105cfdf2c96",
+   "source": "recomb:feature:repair_specialist",
+   "panel": {
+    "fidelity": 0.047619047619047616,
+    "n_sig": 21,
+    "utility": 0.6655460633577198,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.02463291534591394,
+    "brier": 0.29860421458722164,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7058823529411764,
+    "abstain_rate": 0.13333333333333333,
+    "n": 45
+   }
+  },
+  {
+   "hash": "85feb494985923854dd6ee47bdac3120ec9cf97179acab73a548c76ee936a65b",
+   "source": "recomb:ranking:repair_specialist",
+   "panel": {
+    "fidelity": 0.09523809523809523,
+    "n_sig": 21,
+    "utility": 0.6925530386334017,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.0023740599297679132,
+    "brier": 0.33664143835251775,
+    "cost": 1.7333333333333334,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  }
+ ],
+ "repair_specialist": [
+  {
+   "hash": "8138e0e7a91267060b3fbc32f085e84734b78468e11b67255e929eca92ade3f1",
+   "source": "root",
+   "panel": {
+    "fidelity": 0.9545454545454546,
+    "n_sig": 22,
+    "utility": 0.642767802130085,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.04741117657354876,
+    "brier": 0.3805891665867703,
+    "cost": 1.7555555555555555,
+    "abstain_f1": 0.64,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "c9fde75616584de960d38658a8b4a4f98e925b368ee33f6fa1e3533021d2ea1a",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.8181818181818182,
+    "n_sig": 22,
+    "utility": 0.6985985682500531,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.008419589546419304,
+    "brier": 0.31076611931063325,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "725742ebf2297747f34848019569a7099df0c0f83f960d12e0c2fd130cd18f4c",
+   "source": "mutation:heuristic",
+   "panel": {
+    "fidelity": 0.7727272727272727,
+    "n_sig": 22,
+    "utility": 0.6497983414413261,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.04038063726230767,
+    "brier": 0.3907975480149481,
+    "cost": 1.6666666666666667,
+    "abstain_f1": 0.64,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "d84eae46a2a98085a74e1c21deef8aa0c3dda11ecfd8306521f56ec63bbf45b2",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.7272727272727273,
+    "n_sig": 22,
+    "utility": 0.6583724470187415,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.031806531684892225,
+    "brier": 0.3833654161856792,
+    "cost": 1.6222222222222222,
+    "abstain_f1": 0.64,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "ad3f5b20323f3a50692762f1889b198efd8cf18216a885ee17ce564ea4b41cd5",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.7727272727272727,
+    "n_sig": 22,
+    "utility": 0.6368519791824843,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.0533269995211495,
+    "brier": 0.38424177840127227,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.64,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "dca138d6a735351dca0d2b93fdbea42d3cbd7efd3766482f0df2c3e7aa7bd0ad",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.7272727272727273,
+    "n_sig": 22,
+    "utility": 0.6593785883549064,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.03080039034872739,
+    "brier": 0.3722917061932864,
+    "cost": 1.6444444444444444,
+    "abstain_f1": 0.64,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "c59593a23807497a5b31311308ab0343ffc76fe64acab04c5ff13cd19f900798",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.8181818181818182,
+    "n_sig": 22,
+    "utility": 0.6401369213967526,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.05004205730688116,
+    "brier": 0.38876125224954033,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.64,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "393ce908deae745eb8af93c917e53206063c750ddacbd8b841c8f72e13ef948f",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.8181818181818182,
+    "n_sig": 22,
+    "utility": 0.6584403167499681,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.0317386619536657,
+    "brier": 0.39060001727845195,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.64,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "525c587fefcc67a9967662cbf6d8a4237fa79b3ca5930c33cee62ec87ada4da4",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.8636363636363636,
+    "n_sig": 22,
+    "utility": 0.666627451252892,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.023551527450741738,
+    "brier": 0.3870135599440509,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.64,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "8894b5e1385ac0d55db276b9b8d6ede97a62e15adf9ff7bbf43b7cf80c011023",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.8636363636363636,
+    "n_sig": 22,
+    "utility": 0.6717210673194222,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.0184579113842116,
+    "brier": 0.3185067009835808,
+    "cost": 1.7555555555555555,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "9a3087a2ba0f51173671098cc12a53de1a9fff6471a627caaf1cf02febd84c36",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.7272727272727273,
+    "n_sig": 22,
+    "utility": 0.5892336780318504,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.10094530067178331,
+    "brier": 0.47786290319023966,
+    "cost": 1.3777777777777778,
+    "abstain_f1": 0.5882352941176471,
+    "abstain_rate": 0.5111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "6bf815897ed567fcc1a21c1f4c087a12398e4f27ff652d8d6b0c01aa9807c4e6",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.8181818181818182,
+    "n_sig": 22,
+    "utility": 0.6574341754138032,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.03274480328983054,
+    "brier": 0.39794768869352537,
+    "cost": 1.6666666666666667,
+    "abstain_f1": 0.64,
+    "abstain_rate": 0.3111111111111111,
+    "n": 45
+   }
+  },
+  {
+   "hash": "8e3931eeaec93cb8e3289822a79888b32acda5c26c92ae4c6858582381571bbb",
+   "source": "mutation:random",
+   "panel": {
+    "fidelity": 0.0,
+    "n_sig": 22,
+    "utility": 0.39952710905610345,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.2906518696475303,
+    "brier": 0.7555555555555555,
+    "cost": 1.0,
+    "abstain_f1": 0.39285714285714285,
+    "abstain_rate": 1.0,
+    "n": 45
+   }
+  },
+  {
+   "hash": "0e34e3a95b3b037501f7d4242355f6e7a4edca9609e4605b2a14da011982d10c",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.7727272727272727,
+    "n_sig": 22,
+    "utility": 0.6909627342775759,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.0007837555739421687,
+    "brier": 0.298656945412046,
+    "cost": 1.711111111111111,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "56eb8f36a2f24efc02ec3595e21de3172b235369386caec11ef0372d9db4254f",
+   "source": "mutation:learned",
+   "panel": {
+    "fidelity": 0.7727272727272727,
+    "n_sig": 22,
+    "utility": 0.6917035027231625,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.001524524019528739,
+    "brier": 0.30635375880542404,
+    "cost": 1.6888888888888889,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "e371ab8282b47d5f91aed8bb6d338af04c643a1603ba2b356aafea3cf4eaae82",
+   "source": "mutation:inky",
+   "panel": {
+    "fidelity": 0.7272727272727273,
+    "n_sig": 22,
+    "utility": 0.7012837496367428,
+    "utility_neutral": 0.6901789787036338,
+    "gap": 0.01110477093310902,
+    "brier": 0.29969539282695623,
+    "cost": 1.6666666666666667,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  },
+  {
+   "hash": "d051d30f1ae17c90f479f12882eaa9b1d4de7719c510e230e544011b235df9ea:1b909515ceb7666f",
+   "source": "recomb:params:research_strategist",
+   "panel": {
+    "fidelity": 0.9545454545454546,
+    "n_sig": 22,
+    "utility": 0.6898440245390448,
+    "utility_neutral": 0.6901789787036338,
+    "gap": -0.000334954164588952,
+    "brier": 0.3218043596735831,
+    "cost": 1.8444444444444446,
+    "abstain_f1": 0.7777777777777778,
+    "abstain_rate": 0.15555555555555556,
+    "n": 45
+   }
+  }
+ ]
+}

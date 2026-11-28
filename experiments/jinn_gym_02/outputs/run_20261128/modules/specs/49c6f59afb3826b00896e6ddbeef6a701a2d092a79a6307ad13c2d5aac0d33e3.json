@@ -1,0 +1,246 @@
+{
+ "persona": "experimentalist",
+ "summary": "Chooses decisive, controlled tests that can settle the question. Prefers matched comparisons and interventions over broad survey or unverified claims.",
+ "preference_features": [
+  {
+   "name": "decisive_focus",
+   "weight": 10.0,
+   "positive_tags": [
+    "decisive_experiment",
+    "controlled_comparison",
+    "causal_intervention"
+   ],
+   "negative_tags": [
+    "broad_survey",
+    "budget_allocation",
+    "information_gain_estimate"
+   ]
+  },
+  {
+   "name": "rigor",
+   "weight": 7,
+   "positive_tags": [
+    "certificate_check",
+    "formal_proof",
+    "replicate_prior"
+   ],
+   "negative_tags": [
+    "request_information"
+   ]
+  },
+  {
+   "name": "falsifiability",
+   "weight": 10.0,
+   "positive_tags": [
+    "counterexample_search",
+    "ablation"
+   ],
+   "negative_tags": [
+    "build_example",
+    "compress_description"
+   ]
+  },
+  {
+   "name": "bounded_repair",
+   "weight": 6,
+   "positive_tags": [
+    "bounded_repair",
+    "failure_diagnosis"
+   ],
+   "negative_tags": [
+    "scope_expansion",
+    "irreversible_commit"
+   ]
+  },
+  {
+   "name": "cost_sensitivity",
+   "weight": 2.0,
+   "positive_tags": [
+    "low_cost"
+   ],
+   "negative_tags": [
+    "high_cost",
+    "stress_test_assumption"
+   ]
+  }
+ ],
+ "critical_tags": [
+  "heuristic_guess",
+  "unverified_claim"
+ ],
+ "action_ranking": [
+  "decisive_experiment",
+  "controlled_comparison",
+  "causal_intervention",
+  "ablation",
+  "stress_test_assumption",
+  "counterexample_search",
+  "certificate_check",
+  "replicate_prior",
+  "failure_diagnosis",
+  "bounded_repair"
+ ],
+ "lattice": {
+  "states": [
+   "orient",
+   "hypothesize",
+   "construct",
+   "test",
+   "verify",
+   "diagnose",
+   "repair",
+   "abstain",
+   "commit"
+  ],
+  "initial": "orient",
+  "transitions": [
+   [
+    "orient",
+    "test"
+   ],
+   [
+    "orient",
+    "abstain"
+   ],
+   [
+    "test",
+    "verify"
+   ],
+   [
+    "test",
+    "diagnose"
+   ],
+   [
+    "test",
+    "abstain"
+   ],
+   [
+    "verify",
+    "commit"
+   ],
+   [
+    "diagnose",
+    "repair"
+   ],
+   [
+    "repair",
+    "test"
+   ],
+   [
+    "repair",
+    "abstain"
+   ],
+   [
+    "orient",
+    "construct"
+   ],
+   [
+    "diagnose",
+    "commit"
+   ],
+   [
+    "diagnose",
+    "test"
+   ],
+   [
+    "diagnose",
+    "construct"
+   ]
+  ]
+ },
+ "evidence_requirements": {
+  "min_evidence_items": 1,
+  "abstain_on_missing_inputs": true,
+  "require_failure_log_for_repair": true
+ },
+ "abstention": {
+  "min_train_score": 0.05,
+  "abstain_if_no_ranked_action": false
+ },
+ "repair_rules": [
+  {
+   "diagnostic": "missed_signature",
+   "patch": "raise_weight",
+   "target": "decisive_focus",
+   "max_step": 0.3
+  },
+  {
+   "diagnostic": "suboptimal_utility",
+   "patch": "raise_weight",
+   "target": "falsifiability",
+   "max_step": 0.3
+  },
+  {
+   "diagnostic": "overconfident",
+   "patch": "raise_abstain_threshold",
+   "target": "abstention",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "underconfident",
+   "patch": "lower_abstain_threshold",
+   "target": "abstention",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "vetoed_best",
+   "patch": "remove_critical_tag",
+   "target": "unverified_claim",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "lattice_blocked_best",
+   "patch": "add_transition",
+   "target": "test",
+   "max_step": 0.3
+  }
+ ],
+ "ambiguity_behavior": [
+  {
+   "situation": "question ambiguous but a decisive test is still possible",
+   "expected_action": "test the sharpest falsifiable sub-question"
+  },
+  {
+   "situation": "missing required input prevents a matched comparison",
+   "expected_action": "abstain"
+  },
+  {
+   "situation": "two options both plausible and costly",
+   "expected_action": "choose cheaper decisive test and request missing evidence if needed"
+  }
+ ],
+ "predictions": [
+  {
+   "id": "sig_rate",
+   "statement": "decisive test tags are selected on most held-out tasks",
+   "metric": "signature_rate",
+   "comparator": ">=",
+   "threshold": 0.6,
+   "domain": "all"
+  },
+  {
+   "id": "intervention_rate",
+   "statement": "test-phase interventions are used more than orient-only survey",
+   "metric": "intervention_rate",
+   "comparator": ">=",
+   "threshold": 0.5,
+   "domain": "all"
+  },
+  {
+   "id": "high_cost",
+   "statement": "expensive actions remain a minority of choices",
+   "metric": "high_cost_rate",
+   "comparator": "<=",
+   "threshold": 0.4,
+   "domain": "all"
+  },
+  {
+   "id": "abstain_rate",
+   "statement": "abstention stays limited when a ranked decisive action exists",
+   "metric": "abstain_rate",
+   "comparator": "<=",
+   "threshold": 0.35,
+   "domain": "all"
+  }
+ ]
+}

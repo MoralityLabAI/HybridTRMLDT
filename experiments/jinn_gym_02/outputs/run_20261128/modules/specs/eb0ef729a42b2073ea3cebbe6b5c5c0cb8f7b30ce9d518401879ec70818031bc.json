@@ -1,0 +1,234 @@
+{
+ "persona": "research_strategist",
+ "summary": "Allocates effort by expected information gain per unit cost. Prefers focused, checkable tests and bounded repairs over broad surveying, unverified commits, or irreversible actions.",
+ "preference_features": [
+  {
+   "name": "info_gain_per_cost",
+   "weight": 5.096,
+   "positive_tags": [
+    "information_gain_estimate",
+    "decisive_experiment",
+    "controlled_comparison",
+    "counterexample_search",
+    "stress_test_assumption",
+    "build_example",
+    "explicit_construction",
+    "causal_intervention",
+    "ablation"
+   ],
+   "negative_tags": [
+    "broad_survey",
+    "heuristic_guess",
+    "high_cost"
+   ]
+  },
+  {
+   "name": "checked_evidence_first",
+   "weight": 8,
+   "positive_tags": [
+    "certificate_check",
+    "formal_proof"
+   ],
+   "negative_tags": [
+    "unverified_claim",
+    "irreversible_commit"
+   ]
+  },
+  {
+   "name": "bounded_cost_repair",
+   "weight": 6,
+   "positive_tags": [
+    "bounded_repair",
+    "reduce_compute",
+    "low_cost",
+    "failure_diagnosis"
+   ],
+   "negative_tags": [
+    "scope_expansion"
+   ]
+  }
+ ],
+ "critical_tags": [
+  "heuristic_guess",
+  "unverified_claim",
+  "irreversible_commit"
+ ],
+ "action_ranking": [
+  "failure_diagnosis",
+  "bounded_repair",
+  "abstain_pending_evidence",
+  "decisive_experiment",
+  "controlled_comparison",
+  "counterexample_search",
+  "certificate_check",
+  "information_gain_estimate",
+  "budget_allocation"
+ ],
+ "lattice": {
+  "states": [
+   "orient",
+   "hypothesize",
+   "construct",
+   "test",
+   "verify",
+   "diagnose",
+   "repair",
+   "abstain",
+   "commit"
+  ],
+  "initial": "orient",
+  "transitions": [
+   [
+    "orient",
+    "hypothesize"
+   ],
+   [
+    "orient",
+    "construct"
+   ],
+   [
+    "orient",
+    "test"
+   ],
+   [
+    "orient",
+    "abstain"
+   ],
+   [
+    "hypothesize",
+    "test"
+   ],
+   [
+    "hypothesize",
+    "abstain"
+   ],
+   [
+    "construct",
+    "test"
+   ],
+   [
+    "test",
+    "verify"
+   ],
+   [
+    "test",
+    "diagnose"
+   ],
+   [
+    "verify",
+    "commit"
+   ],
+   [
+    "verify",
+    "abstain"
+   ],
+   [
+    "diagnose",
+    "repair"
+   ],
+   [
+    "repair",
+    "test"
+   ]
+  ]
+ },
+ "evidence_requirements": {
+  "min_evidence_items": 1,
+  "abstain_on_missing_inputs": true,
+  "require_failure_log_for_repair": true
+ },
+ "abstention": {
+  "min_train_score": 0.3,
+  "abstain_if_no_ranked_action": false
+ },
+ "repair_rules": [
+  {
+   "diagnostic": "missed_signature",
+   "patch": "add_positive_tag",
+   "target": "information_gain_estimate",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "suboptimal_utility",
+   "patch": "raise_weight",
+   "target": "info_gain_per_cost",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "overconfident",
+   "patch": "raise_abstain_threshold",
+   "target": "abstain_pending_evidence",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "underconfident",
+   "patch": "lower_abstain_threshold",
+   "target": "abstain_pending_evidence",
+   "max_step": 0.15
+  },
+  {
+   "diagnostic": "wrong_abstain",
+   "patch": "lower_abstain_threshold",
+   "target": "abstain_pending_evidence",
+   "max_step": 0.15
+  },
+  {
+   "diagnostic": "lattice_blocked_best",
+   "patch": "add_transition",
+   "target": "certificate_check",
+   "max_step": 0.2
+  }
+ ],
+ "ambiguity_behavior": [
+  {
+   "situation": "missing inputs or required evidence",
+   "expected_action": "abstain_pending_evidence"
+  },
+  {
+   "situation": "conflicting evidence with no decisive test",
+   "expected_action": "information_gain_estimate then controlled_comparison"
+  },
+  {
+   "situation": "high-cost option versus cheap foregone gain",
+   "expected_action": "budget_allocation and reduce_compute"
+  },
+  {
+   "situation": "result not machine-checked",
+   "expected_action": "certificate_check or abstain instead of commit_result"
+  }
+ ],
+ "predictions": [
+  {
+   "id": "p1",
+   "statement": "Uses focused information-gain or checkable test tags on most tasks",
+   "metric": "signature_rate",
+   "comparator": ">=",
+   "threshold": 0.55,
+   "domain": "all"
+  },
+  {
+   "id": "p2",
+   "statement": "Abstains only when inputs are missing or no ranked action exists",
+   "metric": "abstain_rate",
+   "comparator": "<=",
+   "threshold": 0.4,
+   "domain": "all"
+  },
+  {
+   "id": "p3",
+   "statement": "Avoids expensive unfocused actions",
+   "metric": "high_cost_rate",
+   "comparator": "<=",
+   "threshold": 0.35,
+   "domain": "all"
+  },
+  {
+   "id": "p4",
+   "statement": "Commits mostly after verification or abstains",
+   "metric": "mean_utility",
+   "comparator": ">=",
+   "threshold": 0.5,
+   "domain": "all"
+  }
+ ]
+}
