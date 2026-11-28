@@ -98,6 +98,27 @@ Native audits validate the stated synthetic host contracts, not real-world
 policy safety. Source IDs/semantic hashes are conservative grouping keys;
 they are not a proof that all semantic variants have been discovered.
 
+
+### Cross-worker numeric replay
+
+The first nine-job reference campaign at `3d2db385` passed every producer
+audit, including the unified reference bench, but the separate intake worker
+failed GSF-03's byte-exact policy/certificate replay after artifact download.
+The source and audit workers both used PyTorch 2.15.0+cpu; the original
+error did not identify the differing field. No consolidated artifact was
+admitted from that run.
+
+The corrected workflow pins Python 3.11.18 and Torch 2.15.0+cpu, fixes Python
+hash ordering and the portable ATen/MKL/oneDNN CPU profile, and records the
+profile on every job. Intake reruns each source's original audit entry point
+in a fresh bounded subprocess. GSF-03 reports the first canonical JSON
+difference if replay fails again. Explicit Bash pipefail ensures an audit
+error cannot be hidden by tee. Artifact hashes, weight hashes, action and
+certificate receipts, and replay acceptance criteria remain unchanged.
+This is a new numeric execution profile: compare its reported model outcomes
+separately from the previous campaign. Cross-hardware bitwise determinism is
+a test target, not assumed; a mismatch still blocks staging.
+
 ## Distill research form
 
 Use the actual public task and CAL receipts, with a separate response form:
