@@ -26,6 +26,7 @@ ACTIONS=(("serial","serial",0),)+tuple(
     (mode,arm,k) for mode in MODES
     for arm,ks in (("single",(1,2,4)),("plain2",(2,4)),("cycle_rlt4",(4,)))
     for k in ks
+)
 POLICIES=("serial","fixed_first4","cal_fixed","heuristic","imitation","cost_regression","oracle_hindsight")
 LEARNED=("imitation","cost_regression")
 PANELS=("cal","dev","shift","trace_train")
