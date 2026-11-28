@@ -174,7 +174,9 @@ def check_predictions(spec: Mapping, rows: Sequence[Mapping]) -> list[dict]:
         val = s.get(key) if rs else None
         held = None if val is None else (val >= p["threshold"] if p["comparator"] == ">=" else val <= p["threshold"])
         out.append({"id": p["id"], "metric": p["metric"], "comparator": p["comparator"], "threshold": p["threshold"],
-                    "domain": p["domain"], "observed": val, "n": len(rs), "held": held, "statement": p["statement"]})
+                    "domain": p["domain"], "observed": val,
+                    "n": s.get("n_signature_available", 0) if p["metric"] == "signature_rate" else len(rs),
+                    "held": held, "statement": p["statement"]})
     return out
 
 

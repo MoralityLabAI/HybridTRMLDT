@@ -138,6 +138,10 @@ class Gym:
         if self.state_path.exists():
             self.state = json.loads(self.state_path.read_text(encoding="utf-8"))
             self.state["resumes"] = self.state.get("resumes", 0) + 1
+            self.state["stop_reason"] = None  # a resumed run reports its own ending
+            for k, v in (self.state.get("usage") or {}).items():  # usage is cumulative across resumes
+                if hasattr(client.usage, k):
+                    setattr(client.usage, k, v)
         else:
             now = time.time()
             self.state = {"schema": "jinn-gym-01.state.v1", "started_at": now, "deadline": now + hours * 3600,

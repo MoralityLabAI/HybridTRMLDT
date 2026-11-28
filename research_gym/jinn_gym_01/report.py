@@ -64,7 +64,12 @@ def build_report(out: Path) -> dict:
            "runtime_hours": ((state.get("ended_at") or 0) - (state.get("started_at") or 0)) / 3600,
            "usage": state.get("usage"), "ram_peak_increment_bytes": state.get("ram_peak_increment_bytes"),
            "resumes": state.get("resumes")}
-    per = defaultdict(lambda: {"attempts": 0, "valid": False, "errors": Counter()})
+    resp = _read(out / "responses.jsonl")
+    res["calls_from_responses"] = {"total": len(resp),
+                                   "by_purpose": dict(Counter(r.get("purpose") for r in resp)),
+                                   "finish_length": sum(r.get("finish_reason") == "length" for r in resp),
+                                   "empty_text": sum(not (r.get("text") or "").strip() for r in resp)}
+    per =defaultdict(lambda: {"attempts": 0, "valid": False, "errors": Counter()})
     for r in a_att:
         d = per[r["persona"]]
         d["attempts"] += 1
@@ -120,7 +125,11 @@ def render_md(res: dict) -> str:
          f"Model: `{res.get('model')}`. Phase reached: {res.get('phase_reached')}. Stop reason: {res.get('stop_reason')}. "
          f"Runtime: {_f(res.get('runtime_hours'), 2)} h.", ""]
     u = res.get("usage") or {}
-    L.append(f"Inky requests: {u.get('requests')} ok, {u.get('failed_requests')} failed attempts, "
+    cr = res.get("calls_from_responses") or {}
+    L.append(f"Successful Inky calls recorded in responses.jsonl (all processes): {cr.get('total')} "
+             f"(by purpose {cr.get('by_purpose')}); {cr.get('finish_length')} ended at the completion cap, "
+             f"{cr.get('empty_text')} with empty text.")
+    L.append(f"Client usage counters (last process only for this run): {u.get('requests')} ok, {u.get('failed_requests')} failed attempts, "
              f"{u.get('rate_limited')} rate-limited; prompt tokens {u.get('prompt_tokens')}, completion tokens "
              f"{u.get('completion_tokens')}; paid spend ${u.get('paid_spend_usd')}. Peak process-tree RAM increment: "
              f"{_f((res.get('ram_peak_increment_bytes') or 0) / 2**20, 1)} MiB.")

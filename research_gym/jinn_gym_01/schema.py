@@ -434,6 +434,11 @@ def schema_prompt_block() -> str:
         '  "ambiguity_behavior": up to 4 objects {"situation": text, "expected_action": text}\n'
         f'  "predictions": 2-4 objects {{"id": short id, "statement": text, "metric": one of {list(METRICS)}, '
         '"comparator": ">=" or "<=", "threshold": number in [0,1], "domain": "all" or a task domain}\n'
+        "Metric definitions: signature_rate = share of tasks, among those offering one, where the executed "
+        "action shows this persona's signature behavior; abstain_rate = share of tasks where it abstains; "
+        "mean_utility = mean verified utility (0-1) of executed actions; high_cost_rate = share of executed "
+        "actions tagged high_cost; intervention_rate = share of tasks where the host had to repair an "
+        "unauthorized proposal (not the persona's use of causal interventions).\n"
         f"Task domains: {list(DOMAINS)}. Phases: {list(PHASES)}.\n"
         "Never use these host-boundary tags positively: " + ", ".join(BOUNDARY_TAGS) + ".\n"
         "Do not include any key about authorization, permission, approval or the host boundary: "
