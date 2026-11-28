@@ -36,3 +36,17 @@ python -m research_gym.trm_skill_gym_v2.race --out experiments/trm_skill_gym_02/
 # Small CI-only fixture
 python -m research_gym.trm_skill_gym_v2.race --out /tmp/skill02-race --skills deduction --seeds 10 --steps 2 --count 8 --train-count 64 --max-archive 1
 ```
+
+## SKILL-02B/F continuation protocol
+
+Freeze this revision before examining new pilot outcomes.
+
+- Latent intervention: use checkpoint F (RLT), both original checkpoint seeds, repair/curation/research/stopping. Fit an orthogonal eigenbasis from failure-minus-success trace-normalized second moments of recurrent latent state around z0 on fit roots 1,900,000+. Calibrate individual component interventions on disjoint roots 2,000,000+; fix top quartile. Evaluate on 2,100,000+ plus original withheld family. Controls: keep, full reset, coordinate-selected rank match, top-energy PCA, four seeded Haar rank-matched projectors in CI. Every method uses the same test roots. Report removal energy per instance and paired root bootstrap per family; no seed-level CI claim. No norm-matched claim, and the representation is state space.
+- Weight control: one physically tied output matrix (net_z.layers.0.b), exact full SVD shared across invocations, pass-indexed fit-mean input centering, preserve residual/bias. Select top quartile singular components by independent calibration interventions. Controls: largest singular components, rank-matched random component sets, keep and single-invocation versus all-invocation edits. Report removed write energy and reconstruction error. Inspired by BPD's physical-matrix sharing and per-pass mean ablation; does not reproduce its trained factors, trajectory reconstruction objective, sphere normalization or adversary.
+- Student: use original 108 archive proposals with whole-skill holdout research/stopping, fixed ridge alpha 10, pre-measurement config/changes/incumbent score only. Separate rung0/rung1 labels, no imputation, compare training mean and incumbent. Report MAE, bias, RMSE and within-round pair accuracy when measurable. This is a scalar prediction pilot, not sequence-model instruction distillation.
+- Fresh training CI pilot: two independent seeds (10,11), retrieval and deduction, fixed baselines plus up to three distinct archived finalists each, 120 steps, 512 training examples, 64 roots per stratum. This tests execution and hard graph adaptation at modest exposure. All four-seed 800-step production-scale claims remain untested. Source training and test tasks share generator families by design.
+- Inference cost excludes host work for the model-FLOP gate, and the state/weight intervention work is additional. No promotion based on a single pilot.
+
+```sh
+python -m research_gym.trm_skill_gym_v2.advanced --out experiments/trm_skill_gym_02/advanced --count 128 --nulls 8
+```
