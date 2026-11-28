@@ -1,0 +1,2 @@
+﻿{"family": "local_map3", "arm": "A_single", "spec": "local_map3:L12:D0:X0:clean", "exact": 0.015625, "token_acc": 0.6627604166666666, "exact_by_loop": [0.0, 0.01171875, 0.01953125, 0.015625], "ood": {"ood_long": 0.0}, "train_cpu_s": 19.09375, "wall_s": 31.801772117614746}
+{"family": "local_map3", "arm": "B_hrm", "spec": "local_map3:L12:D0:X0:clean", "exact": 0.05078125, "token_acc": 0.7965494791666666, "exact_by_loop": [0.0, 0.03125, 0.08203125, 0.05078125], "ood": {"ood_long": 0.0}, "train_cpu_s": 64.515625, "wall_s": 156.3258740901947}
