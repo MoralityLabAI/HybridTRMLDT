@@ -1,0 +1,57 @@
+{
+ "config": {
+  "aggregation": "relation+mean",
+  "core": "trm",
+  "cycles": 1,
+  "feedback": "direct",
+  "grad_cycles": 1,
+  "hidden": 130,
+  "latent_reset": false,
+  "latent_steps": 5,
+  "ldt_projection": false,
+  "lr": 0.002,
+  "mixer_layers": 1,
+  "norm": "layer",
+  "residual": "add",
+  "state_partition": "shared",
+  "supervision": "deep",
+  "update_schedule": "latent_then_answer",
+  "verifier_visits": 1,
+  "visits": 3,
+  "weight_decay": 0.01
+ },
+ "config_id": "a5457e96ce87",
+ "dev": {
+  "adaptive_exact": 0.837890625,
+  "adaptive_verifier_calls": 1.00390625,
+  "adaptive_visits": 1.0390625,
+  "ece": 0.11621278466191143,
+  "eval_seconds": 1.0547516345977783,
+  "exact": 0.845703125,
+  "exact_by_visit": [
+   0.837890625,
+   0.845703125,
+   0.845703125
+  ],
+  "flops_per_instance": 100155120.0,
+  "mean_confidence": 0.9591212272644043,
+  "n": 512,
+  "repair_success": 0.845703125,
+  "verifier_calls_per_instance": 2.0,
+  "visits": 3
+ },
+ "family": "horizon4",
+ "implementation": "native_trm_update",
+ "params": 174853,
+ "skill": "stopping",
+ "status": "ok",
+ "steps": 300,
+ "train": {
+  "examples_seen": 9600,
+  "final_loss": 0.5436726808547974,
+  "peak_rss_delta_bytes": 275501056,
+  "steps": 300,
+  "stopped": null,
+  "train_seconds": 64.39948296546936
+ }
+}

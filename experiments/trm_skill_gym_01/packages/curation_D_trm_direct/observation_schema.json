@@ -1,0 +1,27 @@
+{
+ "candidate_features": 24,
+ "candidates": 16,
+ "feedback_columns": 4,
+ "feedback_layout": [
+  "verified",
+  "ok",
+  "diag0",
+  "diag1"
+ ],
+ "global_features": 8,
+ "label_kind": "multi",
+ "ldt_certificate_column": 19,
+ "named_features": {
+  "0": "x0",
+  "1": "x1",
+  "2": "x2",
+  "3": "x3",
+  "4": "x4",
+  "5": "x5",
+  "6": "label",
+  "7": "position",
+  "8": "identical_earlier_twin"
+ },
+ "relation": "rel[i][j]=similarity weight between examples i and j (1.0 = identical)",
+ "skill_feature_columns": 20
+}

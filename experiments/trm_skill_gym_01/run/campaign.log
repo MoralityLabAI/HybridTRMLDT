@@ -1,0 +1,207 @@
+[2026-11-28 02:22:40] campaign start; inky=on; remaining 8.00 h
+[2026-11-28 02:23:50] search meta_direct round 0: repair/tree_region incumbent dev=0.9688
+[2026-11-28 02:26:46]   meta_direct round 0: rung1_not_better_than_incumbent:0.9688, raced_out_rung0:0.5176, raced_out_rung0:0.498
+[2026-11-28 02:26:46] search meta_rlt round 0: repair/tree_region incumbent dev=0.9688
+[2026-11-28 02:28:49]   meta_rlt round 0: raced_out_rung0:0.6543, raced_out_rung0:0.6758, rung1_not_better_than_incumbent:0.9551
+[2026-11-28 02:28:49] search random_mutation round 0: repair/tree_region incumbent dev=0.9688
+[2026-11-28 02:31:20] campaign start; inky=on; remaining 7.86 h
+[2026-11-28 02:32:57] search meta_direct round 1: retrieval/layered_shallow incumbent dev=1.0
+[2026-11-28 02:35:41] campaign start; inky=on; remaining 7.78 h
+[2026-11-28 02:35:41] search meta_direct round 1: retrieval/layered_shallow incumbent dev=1.0
+[2026-11-28 02:38:43]   meta_direct round 1: promoted_to_incumbent:1.0, raced_out_rung0:0.9902, rejected_no_change:None
+[2026-11-28 02:38:43] search meta_rlt round 1: retrieval/layered_shallow incumbent dev=1.0
+[2026-11-28 02:43:03]   meta_rlt round 1: raced_out_rung0:0.9941, raced_out_rung0:0.9785, rung1_not_better_than_incumbent:1.0
+[2026-11-28 02:43:03] search random_mutation round 0: repair/tree_region incumbent dev=0.9688
+[2026-11-28 02:45:04]   random_mutation round 0: promoted_to_incumbent:0.998, raced_out_rung0:0.5859, rejected_no_change:None
+[2026-11-28 02:45:32] search meta_direct round 2: deduction/kernel_h4 incumbent dev=1.0
+[2026-11-28 02:46:41]   meta_direct round 2: promoted_to_incumbent:1.0, raced_out_rung0:0.998, raced_out_rung0:0.998
+[2026-11-28 02:46:41] search meta_rlt round 2: deduction/kernel_h4 incumbent dev=1.0
+[2026-11-28 02:47:34]   meta_rlt round 2: promoted_to_incumbent:1.0, raced_out_rung0:1.0, raced_out_rung0:0.9961
+[2026-11-28 02:47:34] search random_mutation round 1: retrieval/layered_shallow incumbent dev=1.0
+[2026-11-28 02:48:27]   random_mutation round 1: rejected_no_change:None, rejected_no_change:None, rung1_not_better_than_incumbent:1.0
+[2026-11-28 02:49:11] search meta_direct round 3: research/uniform_prior incumbent dev=0.7559
+[2026-11-28 02:51:00]   meta_direct round 3: raced_out_rung0:0.6875, raced_out_rung0:0.627, promoted_to_incumbent:0.7676
+[2026-11-28 02:51:00] search meta_rlt round 3: research/uniform_prior incumbent dev=0.7559
+[2026-11-28 02:52:22]   meta_rlt round 3: raced_out_rung0:0.6074, raced_out_rung0:0.6504, promoted_to_incumbent:0.791
+[2026-11-28 02:52:22] search random_mutation round 2: deduction/kernel_h4 incumbent dev=1.0
+[2026-11-28 02:53:55]   random_mutation round 2: rung1_not_better_than_incumbent:1.0, raced_out_rung0:1.0, raced_out_rung0:0.9004
+[2026-11-28 02:54:54] search meta_direct round 4: curation/clusters3 incumbent dev=0.8184
+[2026-11-28 02:56:55]   meta_direct round 4: raced_out_rung0:0.6602, rung1_not_better_than_incumbent:0.8203, raced_out_rung0:0.6406
+[2026-11-28 02:56:55] search meta_rlt round 4: curation/clusters3 incumbent dev=0.8184
+[2026-11-28 02:58:37]   meta_rlt round 4: raced_out_rung0:0.6602, promoted_to_incumbent:0.8281, raced_out_rung0:0.6367
+[2026-11-28 02:58:37] search random_mutation round 3: research/uniform_prior incumbent dev=0.7559
+[2026-11-28 02:59:24]   random_mutation round 3: raced_out_rung0:0.2246, raced_out_rung0:0.2246, rung1_not_better_than_incumbent:0.7598
+[2026-11-28 02:59:47] search meta_direct round 5: stopping/horizon2 incumbent dev=0.9102
+[2026-11-28 03:01:04]   meta_direct round 5: raced_out_rung0:0.8457, promoted_to_incumbent:0.9277, raced_out_rung0:0.8496
+[2026-11-28 03:01:04] search meta_rlt round 5: stopping/horizon2 incumbent dev=0.9102
+[2026-11-28 03:02:11]   meta_rlt round 5: raced_out_rung0:0.8516, raced_out_rung0:0.832, rung1_not_better_than_incumbent:0.8984
+[2026-11-28 03:02:11] search random_mutation round 4: curation/clusters3 incumbent dev=0.8184
+[2026-11-28 03:03:38]   random_mutation round 4: rung1_not_better_than_incumbent:0.8125, raced_out_rung0:0.0898, raced_out_rung0:0.0898
+[2026-11-28 03:04:04] search meta_direct round 6: repair/cycle_region incumbent dev=0.7695
+[2026-11-28 03:05:04]   meta_direct round 6: promoted_to_incumbent:0.7871, raced_out_rung0:0.5156, raced_out_rung0:0.4707
+[2026-11-28 03:05:04] search meta_rlt round 6: repair/cycle_region incumbent dev=0.7695
+[2026-11-28 03:06:15]   meta_rlt round 6: raced_out_rung0:0.4707, raced_out_rung0:0.5078, rung1_not_better_than_incumbent:0.7695
+[2026-11-28 03:06:15] search random_mutation round 5: stopping/horizon2 incumbent dev=0.9102
+[2026-11-28 03:07:38]   random_mutation round 5: promoted_to_incumbent:0.9375, raced_out_rung0:0.8457, raced_out_rung0:0.6719
+[2026-11-28 03:07:53] search meta_direct round 7: retrieval/layered_wide incumbent dev=0.9961
+[2026-11-28 03:08:49]   meta_direct round 7: raced_out_rung0:0.9453, rung1_not_better_than_incumbent:1.0, raced_out_rung0:0.9805
+[2026-11-28 03:09:08] search meta_rlt round 7: retrieval/layered_wide incumbent dev=0.9961
+[2026-11-28 03:10:18]   meta_rlt round 7: raced_out_rung0:0.9785, raced_out_rung0:0.9688, rung1_not_better_than_incumbent:0.9961
+[2026-11-28 03:11:14] search random_mutation round 6: repair/cycle_region incumbent dev=0.9336
+[2026-11-28 03:13:34]   random_mutation round 6: raced_out_rung0:0.7246, promoted_to_incumbent:0.9512, raced_out_rung0:0.3887
+[2026-11-28 03:13:48] search meta_direct round 8: deduction/kernel_h5 incumbent dev=1.0
+[2026-11-28 03:14:22]   meta_direct round 8: raced_out_rung0:0.8789, promoted_to_incumbent:1.0, rejected_param_bound:None
+[2026-11-28 03:14:22] search meta_rlt round 8: deduction/kernel_h5 incumbent dev=1.0
+[2026-11-28 03:15:06]   meta_rlt round 8: raced_out_rung0:0.9629, promoted_to_incumbent:1.0, raced_out_rung0:0.8789
+[2026-11-28 03:15:06] search random_mutation round 7: retrieval/layered_wide incumbent dev=0.9961
+[2026-11-28 03:17:23]   random_mutation round 7: raced_out_rung0:0.7266, raced_out_rung0:0.9922, rung1_not_better_than_incumbent:1.0
+[2026-11-28 03:17:47] search meta_direct round 9: research/peaked_prior incumbent dev=0.5898
+[2026-11-28 03:19:42]   meta_direct round 9: promoted_to_incumbent:0.5859, raced_out_rung0:0.4023, raced_out_rung0:0.4551
+[2026-11-28 03:19:57] search meta_rlt round 9: research/peaked_prior incumbent dev=0.6055
+[2026-11-28 03:20:55]   meta_rlt round 9: raced_out_rung0:0.4121, rejected_no_change:None, promoted_to_incumbent:0.7051
+[2026-11-28 03:21:15] search random_mutation round 8: deduction/kernel_h5 incumbent dev=1.0
+[2026-11-28 03:22:37]   random_mutation round 8: rung1_not_better_than_incumbent:1.0, raced_out_rung0:1.0, raced_out_rung0:0.9863
+[2026-11-28 03:23:06] search meta_direct round 10: curation/clusters4_dups incumbent dev=0.7461
+[2026-11-28 03:24:22]   meta_direct round 10: rung1_not_better_than_incumbent:0.7441, raced_out_rung0:0.627, raced_out_rung0:0.2383
+[2026-11-28 03:24:52] search meta_rlt round 10: curation/clusters4_dups incumbent dev=0.7559
+[2026-11-28 03:26:31]   meta_rlt round 10: raced_out_rung0:0.7031, raced_out_rung0:0.2383, promoted_to_incumbent:0.7754
+[2026-11-28 03:26:49] search random_mutation round 9: research/peaked_prior incumbent dev=0.5977
+[2026-11-28 03:27:18]   random_mutation round 9: raced_out_rung0:0.3887, promoted_to_incumbent:0.6406, raced_out_rung0:0.3281
+[2026-11-28 03:27:32] search meta_direct round 11: stopping/horizon4 incumbent dev=0.873
+[2026-11-28 03:28:29]   meta_direct round 11: rung1_not_better_than_incumbent:0.873, raced_out_rung0:0.8105, raced_out_rung0:0.7793
+[2026-11-28 03:28:49] search meta_rlt round 11: stopping/horizon4 incumbent dev=0.9004
+[2026-11-28 03:30:26]   meta_rlt round 11: rung1_not_better_than_incumbent:0.9023, raced_out_rung0:0.8164, raced_out_rung0:0.8145
+[2026-11-28 03:30:26] search random_mutation round 10: curation/clusters4_dups incumbent dev=0.7461
+[2026-11-28 03:31:32]   random_mutation round 10: raced_out_rung0:0.6211, rejected_no_change:None, promoted_to_incumbent:0.7891
+[2026-11-28 03:32:12] search random_mutation round 11: stopping/horizon4 incumbent dev=0.8984
+[2026-11-28 03:37:04]   random_mutation round 11: rung1_not_better_than_incumbent:0.9023, raced_out_rung0:0.8066, raced_out_rung0:0.8438
+[2026-11-28 03:37:51] frozen architectures sha256=bd8316a3ff5a86e4
+[2026-11-28 03:37:52] main repair__A_existing_skill__s0: ok dev=0.267578125 withheld=0.263671875 (0s)
+[2026-11-28 03:38:10] main repair__B_feedforward__s0: ok dev=0.783203125 withheld=0.47265625 (18s)
+[2026-11-28 03:38:45] main repair__C_gru__s0: ok dev=0.939453125 withheld=0.73046875 (35s)
+[2026-11-28 03:39:09] main repair__D_trm_direct__s0: ok dev=0.8515625 withheld=0.537109375 (24s)
+[2026-11-28 03:39:33] main repair__E_trm_matched_damping__s0: ok dev=0.890625 withheld=0.603515625 (24s)
+[2026-11-28 03:39:55] main repair__F_trm_rlt__s0: ok dev=0.90234375 withheld=0.603515625 (22s)
+[2026-11-28 03:40:17] main repair__G_trm_ldt__s0: ok dev=0.8515625 withheld=0.537109375 (22s)
+[2026-11-28 03:40:42] main repair__H_inky_engineered__s0: ok dev=0.8515625 withheld=0.537109375 (25s)
+[2026-11-28 03:40:43] main retrieval__A_existing_skill__s0: ok dev=0.4140625 withheld=0.1875 (0s)
+[2026-11-28 03:41:02] main retrieval__B_feedforward__s0: ok dev=1.0 withheld=0.8359375 (19s)
+[2026-11-28 03:41:38] main retrieval__C_gru__s0: ok dev=0.998046875 withheld=0.85546875 (36s)
+[2026-11-28 03:42:04] main retrieval__D_trm_direct__s0: ok dev=1.0 withheld=0.90234375 (26s)
+[2026-11-28 03:42:32] main retrieval__E_trm_matched_damping__s0: ok dev=1.0 withheld=0.796875 (28s)
+[2026-11-28 03:42:55] main retrieval__F_trm_rlt__s0: ok dev=1.0 withheld=0.8125 (23s)
+[2026-11-28 03:43:21] main retrieval__G_trm_ldt__s0: ok dev=0.998046875 withheld=0.677734375 (26s)
+[2026-11-28 03:43:39] main retrieval__H_inky_engineered__s0: ok dev=1.0 withheld=0.837890625 (17s)
+[2026-11-28 03:43:39] main deduction__A_existing_skill__s0: ok dev=0.107421875 withheld=0.013671875 (0s)
+[2026-11-28 03:44:00] main deduction__B_feedforward__s0: ok dev=0.998046875 withheld=0.486328125 (21s)
+[2026-11-28 03:44:37] main deduction__C_gru__s0: ok dev=1.0 withheld=0.96875 (38s)
+[2026-11-28 03:45:03] main deduction__D_trm_direct__s0: ok dev=1.0 withheld=0.95703125 (26s)
+[2026-11-28 03:45:34] main deduction__E_trm_matched_damping__s0: ok dev=1.0 withheld=0.958984375 (31s)
+[2026-11-28 03:46:02] main deduction__F_trm_rlt__s0: ok dev=1.0 withheld=0.96484375 (28s)
+[2026-11-28 03:46:30] main deduction__G_trm_ldt__s0: ok dev=0.998046875 withheld=0.69921875 (27s)
+[2026-11-28 03:46:39] main deduction__H_inky_engineered__s0: ok dev=1.0 withheld=0.416015625 (10s)
+[2026-11-28 03:46:40] main research__A_existing_skill__s0: ok dev=0.828125 withheld=0.8125 (0s)
+[2026-11-28 03:47:01] main research__B_feedforward__s0: ok dev=0.7578125 withheld=0.63671875 (21s)
+[2026-11-28 03:47:43] main research__C_gru__s0: ok dev=0.802734375 withheld=0.73828125 (42s)
+[2026-11-28 03:48:13] main research__D_trm_direct__s0: ok dev=0.666015625 withheld=0.572265625 (30s)
+[2026-11-28 03:48:44] main research__E_trm_matched_damping__s0: ok dev=0.615234375 withheld=0.53515625 (31s)
+[2026-11-28 03:49:15] main research__F_trm_rlt__s0: ok dev=0.60546875 withheld=0.552734375 (30s)
+[2026-11-28 03:49:45] main research__G_trm_ldt__s0: ok dev=0.666015625 withheld=0.572265625 (30s)
+[2026-11-28 03:50:06] main research__H_inky_engineered__s0: ok dev=0.677734375 withheld=0.62109375 (21s)
+[2026-11-28 03:50:06] main curation__A_existing_skill__s0: ok dev=0.40625 withheld=0.283203125 (0s)
+[2026-11-28 03:50:28] main curation__B_feedforward__s0: ok dev=0.771484375 withheld=0.6171875 (22s)
+[2026-11-28 03:51:12] main curation__C_gru__s0: ok dev=0.79296875 withheld=0.591796875 (44s)
+[2026-11-28 03:51:42] main curation__D_trm_direct__s0: ok dev=0.736328125 withheld=0.626953125 (30s)
+[2026-11-28 03:52:12] main curation__E_trm_matched_damping__s0: ok dev=0.744140625 withheld=0.587890625 (30s)
+[2026-11-28 03:52:42] main curation__F_trm_rlt__s0: ok dev=0.73828125 withheld=0.59375 (30s)
+[2026-11-28 03:53:13] main curation__G_trm_ldt__s0: ok dev=0.7265625 withheld=0.55078125 (31s)
+[2026-11-28 03:54:01] main curation__H_inky_engineered__s0: ok dev=0.77734375 withheld=0.609375 (47s)
+[2026-11-28 03:54:01] main stopping__A_existing_skill__s0: ok dev=0.80078125 withheld=0.712890625 (0s)
+[2026-11-28 03:54:25] main stopping__B_feedforward__s0: ok dev=0.974609375 withheld=0.9609375 (24s)
+[2026-11-28 03:55:09] main stopping__C_gru__s0: ok dev=0.990234375 withheld=0.982421875 (44s)
+[2026-11-28 03:55:37] main stopping__D_trm_direct__s0: ok dev=0.927734375 withheld=0.8828125 (28s)
+[2026-11-28 03:56:04] main stopping__E_trm_matched_damping__s0: ok dev=0.884765625 withheld=0.875 (27s)
+[2026-11-28 03:56:34] main stopping__F_trm_rlt__s0: ok dev=0.89453125 withheld=0.84375 (30s)
+[2026-11-28 03:57:04] main stopping__G_trm_ldt__s0: ok dev=0.927734375 withheld=0.8828125 (30s)
+[2026-11-28 03:57:25] main stopping__H_inky_engineered__s0: ok dev=0.919921875 withheld=0.859375 (22s)
+[2026-11-28 03:57:52] ablation repair__D_shuffled_supervision__s0: ok dev=0.0 withheld=0.0 (27s)
+[2026-11-28 03:58:20] ablation repair__D_latent_reset__s0: ok dev=0.892578125 withheld=0.626953125 (28s)
+[2026-11-28 03:58:47] ablation repair__F_latent_reset__s0: ok dev=0.908203125 withheld=0.671875 (27s)
+[2026-11-28 03:59:15] ablation retrieval__D_shuffled_supervision__s0: ok dev=0.0 withheld=0.0 (28s)
+[2026-11-28 03:59:45] ablation retrieval__D_latent_reset__s0: ok dev=1.0 withheld=0.96875 (30s)
+[2026-11-28 04:00:13] ablation retrieval__F_latent_reset__s0: ok dev=1.0 withheld=0.916015625 (28s)
+[2026-11-28 04:00:39] ablation deduction__D_shuffled_supervision__s0: ok dev=0.00390625 withheld=0.0 (26s)
+[2026-11-28 04:01:04] ablation deduction__D_latent_reset__s0: ok dev=1.0 withheld=0.955078125 (25s)
+[2026-11-28 04:01:30] ablation deduction__F_latent_reset__s0: ok dev=1.0 withheld=0.947265625 (26s)
+[2026-11-28 04:01:57] ablation research__D_shuffled_supervision__s0: ok dev=0.24609375 withheld=0.244140625 (27s)
+[2026-11-28 04:02:25] ablation research__D_latent_reset__s0: ok dev=0.75 withheld=0.640625 (28s)
+[2026-11-28 04:03:53] ablation research__F_latent_reset__s0: ok dev=0.7578125 withheld=0.703125 (88s)
+[2026-11-28 04:05:22] ablation curation__D_shuffled_supervision__s0: ok dev=0.041015625 withheld=0.005859375 (89s)
+[2026-11-28 04:06:24] ablation curation__D_latent_reset__s0: ok dev=0.779296875 withheld=0.646484375 (62s)
+[2026-11-28 04:07:09] ablation curation__F_latent_reset__s0: ok dev=0.7734375 withheld=0.640625 (45s)
+[2026-11-28 04:07:30] ablation stopping__D_shuffled_supervision__s0: ok dev=0.53125 withheld=0.58984375 (22s)
+[2026-11-28 04:07:50] ablation stopping__D_latent_reset__s0: ok dev=0.927734375 withheld=0.88671875 (20s)
+[2026-11-28 04:08:10] ablation stopping__F_latent_reset__s0: ok dev=0.9609375 withheld=0.888671875 (20s)
+[2026-11-28 04:08:18] transfer retrieval__from_deduction__scratch__s0: ok dev=0.998046875 withheld=0.9453125 (7s)
+[2026-11-28 04:08:25] transfer retrieval__from_deduction__shared_init__s0: ok dev=0.951171875 withheld=0.8671875 (7s)
+[2026-11-28 04:08:31] transfer retrieval__from_deduction__frozen_core__s0: ok dev=0.041015625 withheld=0.013671875 (6s)
+[2026-11-28 04:08:38] transfer repair__from_retrieval__scratch__s0: ok dev=0.591796875 withheld=0.3359375 (7s)
+[2026-11-28 04:08:46] transfer repair__from_retrieval__shared_init__s0: ok dev=0.296875 withheld=0.21484375 (7s)
+[2026-11-28 04:08:52] transfer repair__from_retrieval__frozen_core__s0: ok dev=0.0 withheld=0.0 (7s)
+[2026-11-28 04:09:01] transfer research__from_stopping__scratch__s0: ok dev=0.517578125 withheld=0.484375 (9s)
+[2026-11-28 04:09:14] transfer research__from_stopping__shared_init__s0: ok dev=0.28125 withheld=0.25390625 (12s)
+[2026-11-28 04:09:22] transfer research__from_stopping__frozen_core__s0: ok dev=0.248046875 withheld=0.259765625 (8s)
+[2026-11-28 04:09:22] main repair__A_existing_skill__s1: ok dev=0.267578125 withheld=0.263671875 (0s)
+[2026-11-28 04:09:45] main repair__B_feedforward__s1: ok dev=0.794921875 withheld=0.474609375 (23s)
+[2026-11-28 04:10:35] main repair__C_gru__s1: ok dev=0.943359375 withheld=0.736328125 (50s)
+[2026-11-28 04:11:03] main repair__D_trm_direct__s1: ok dev=0.875 withheld=0.53515625 (28s)
+[2026-11-28 04:11:28] main repair__E_trm_matched_damping__s1: ok dev=0.890625 withheld=0.60546875 (25s)
+[2026-11-28 04:11:51] main repair__F_trm_rlt__s1: ok dev=0.892578125 withheld=0.638671875 (23s)
+[2026-11-28 04:12:23] main repair__G_trm_ldt__s1: ok dev=0.875 withheld=0.53515625 (31s)
+[2026-11-28 04:12:58] main repair__H_inky_engineered__s1: ok dev=0.875 withheld=0.53515625 (36s)
+[2026-11-28 04:12:58] main retrieval__A_existing_skill__s1: ok dev=0.4140625 withheld=0.1875 (0s)
+[2026-11-28 04:13:29] main retrieval__B_feedforward__s1: ok dev=1.0 withheld=0.845703125 (30s)
+[2026-11-28 04:14:17] main retrieval__C_gru__s1: ok dev=1.0 withheld=0.81640625 (49s)
+[2026-11-28 04:14:56] main retrieval__D_trm_direct__s1: ok dev=1.0 withheld=0.810546875 (38s)
+[2026-11-28 04:15:35] main retrieval__E_trm_matched_damping__s1: ok dev=1.0 withheld=0.78515625 (40s)
+[2026-11-28 04:16:18] main retrieval__F_trm_rlt__s1: ok dev=1.0 withheld=0.755859375 (42s)
+[2026-11-28 04:16:53] main retrieval__G_trm_ldt__s1: ok dev=0.998046875 withheld=0.62890625 (35s)
+[2026-11-28 04:17:11] main retrieval__H_inky_engineered__s1: ok dev=0.998046875 withheld=0.75 (18s)
+[2026-11-28 04:17:11] main deduction__A_existing_skill__s1: ok dev=0.107421875 withheld=0.013671875 (0s)
+[2026-11-28 04:17:30] main deduction__B_feedforward__s1: ok dev=0.998046875 withheld=0.572265625 (19s)
+[2026-11-28 04:18:07] main deduction__C_gru__s1: ok dev=1.0 withheld=0.998046875 (37s)
+[2026-11-28 04:18:29] main deduction__D_trm_direct__s1: ok dev=1.0 withheld=0.921875 (22s)
+[2026-11-28 04:19:08] main deduction__E_trm_matched_damping__s1: ok dev=1.0 withheld=0.900390625 (39s)
+[2026-11-28 04:19:48] main deduction__F_trm_rlt__s1: ok dev=1.0 withheld=0.900390625 (40s)
+[2026-11-28 04:20:30] main deduction__G_trm_ldt__s1: ok dev=1.0 withheld=0.55859375 (42s)
+[2026-11-28 04:20:45] main deduction__H_inky_engineered__s1: ok dev=0.99609375 withheld=0.453125 (15s)
+[2026-11-28 04:20:45] main research__A_existing_skill__s1: ok dev=0.828125 withheld=0.8125 (0s)
+[2026-11-28 04:21:15] main research__B_feedforward__s1: ok dev=0.720703125 withheld=0.662109375 (30s)
+[2026-11-28 04:22:03] main research__C_gru__s1: ok dev=0.80078125 withheld=0.515625 (48s)
+[2026-11-28 04:22:29] main research__D_trm_direct__s1: ok dev=0.640625 withheld=0.560546875 (25s)
+[2026-11-28 04:22:53] main research__E_trm_matched_damping__s1: ok dev=0.5859375 withheld=0.5234375 (24s)
+[2026-11-28 04:23:18] main research__F_trm_rlt__s1: ok dev=0.572265625 withheld=0.515625 (25s)
+[2026-11-28 04:23:52] main research__G_trm_ldt__s1: ok dev=0.640625 withheld=0.560546875 (34s)
+[2026-11-28 04:24:12] main research__H_inky_engineered__s1: ok dev=0.658203125 withheld=0.59375 (20s)
+[2026-11-28 04:24:12] main curation__A_existing_skill__s1: ok dev=0.40625 withheld=0.283203125 (0s)
+[2026-11-28 04:24:33] main curation__B_feedforward__s1: ok dev=0.7421875 withheld=0.59765625 (21s)
+[2026-11-28 04:25:13] main curation__C_gru__s1: ok dev=0.724609375 withheld=0.576171875 (40s)
+[2026-11-28 04:25:35] main curation__D_trm_direct__s1: ok dev=0.7578125 withheld=0.66015625 (22s)
+[2026-11-28 04:25:59] main curation__E_trm_matched_damping__s1: ok dev=0.7265625 withheld=0.595703125 (24s)
+[2026-11-28 04:26:35] main curation__F_trm_rlt__s1: ok dev=0.724609375 withheld=0.58984375 (37s)
+[2026-11-28 04:27:08] main curation__G_trm_ldt__s1: ok dev=0.74609375 withheld=0.572265625 (33s)
+[2026-11-28 04:27:48] main curation__H_inky_engineered__s1: ok dev=0.779296875 withheld=0.603515625 (40s)
+[2026-11-28 04:27:48] main stopping__A_existing_skill__s1: ok dev=0.80078125 withheld=0.712890625 (0s)
+[2026-11-28 04:28:07] main stopping__B_feedforward__s1: ok dev=0.98046875 withheld=0.955078125 (19s)
+[2026-11-28 04:28:46] main stopping__C_gru__s1: ok dev=0.98828125 withheld=0.982421875 (39s)
+[2026-11-28 04:29:25] main stopping__D_trm_direct__s1: ok dev=0.912109375 withheld=0.853515625 (39s)
+[2026-11-28 04:29:56] main stopping__E_trm_matched_damping__s1: ok dev=0.89453125 withheld=0.830078125 (31s)
+[2026-11-28 04:30:21] main stopping__F_trm_rlt__s1: ok dev=0.876953125 withheld=0.828125 (25s)
+[2026-11-28 04:30:59] main stopping__G_trm_ldt__s1: ok dev=0.912109375 withheld=0.853515625 (37s)
+[2026-11-28 04:31:20] main stopping__H_inky_engineered__s1: ok dev=0.904296875 withheld=0.861328125 (21s)
+[2026-11-28 04:31:20] campaign jobs finished; run `python -m research_gym.trm_skill_gym.report` to export
+[2026-11-28 04:33:27] campaign start; inky=on; remaining 5.82 h
+[2026-11-28 04:33:27] frozen architectures sha256=bd8316a3ff5a86e4
+[2026-11-28 04:34:05] ablation research__D_shuffled_supervision__s0: ok dev=0.193359375 withheld=0.203125 (38s)
+[2026-11-28 04:34:44] ablation stopping__D_shuffled_supervision__s0: ok dev=0.53125 withheld=0.58984375 (38s)
+[2026-11-28 04:34:44] campaign jobs finished; run `python -m research_gym.trm_skill_gym.report` to export

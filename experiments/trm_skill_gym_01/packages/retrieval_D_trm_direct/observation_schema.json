@@ -1,0 +1,22 @@
+{
+ "candidate_features": 24,
+ "candidates": 16,
+ "feedback_columns": 4,
+ "feedback_layout": [
+  "verified",
+  "ok",
+  "diag0",
+  "diag1"
+ ],
+ "global_features": 8,
+ "label_kind": "multi",
+ "ldt_certificate_column": 19,
+ "named_features": {
+  "0": "is_query",
+  "1": "lexical_overlap_with_query",
+  "10": "out_degree_over_4",
+  "11": "in_degree_over_4"
+ },
+ "relation": "rel[i][j]=1: item i directly depends on item j",
+ "skill_feature_columns": 20
+}

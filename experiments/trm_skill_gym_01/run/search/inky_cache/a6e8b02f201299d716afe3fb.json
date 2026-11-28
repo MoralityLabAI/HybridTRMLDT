@@ -1,0 +1,16 @@
+{
+ "content": "{\"diagnosis\":\"The recent arm evidence is consistent: simple direct-feedback TRM updates are robust, while aggressive depth/feedback changes fail. ldt_projection=true only reached 0.9688 vs a 0.978 prediction and was not better than incumbent; cycles=2 with rlt feedback collapsed to 0.5176; latent_steps=3 with verifier_visits=2 and visits=4 collapsed to 0.498. For retrieval, the incumbent is already at dev_exact=1.0 with exact_by_visit=[1.0,1.0,1.0], params=11683, verifier_calls=2.0, visits=3, so the safest gains are efficiency/calibration, not added recurrence depth.\",\"proposals\":[{\"config\":{\"hidden\":48},\"rationale\":\"Capacity margin without changing the recurrence structure: hidden 48 raises block width by 1.5x, roughly (48/32)^2=2.25x in width-dependent MLP/mixer terms, keeping params far below 250k while preserving the current 2-latent-step TRM and direct feedback. Expected exact success to remain at the ceiling rather than improve further.\",\"predicted_dev_exact\":1.0,\"falsification\":\"Refuted if measured dev_exact drops below 0.98 or params exceed 250000.\"},{\"config\":{\"verifier_visits\":0,\"visits\":2},\"rationale\":\"exact_by_visit is already [1.0,1.0,1.0], so extra visits carry no measured exact-success signal; removing one in-loop verifier call and one visit cuts verifier calls from about 2.0 toward 1.0 and reduces recurrence work by about (2 visits x 2 latent steps)/(3 visits x 2 latent steps)=0.67x, i.e. ~2.24M FLOPs/instance from ~3.35M. Risk is losing the missing-frontier repair path.\",\"predicted_dev_exact\":0.9,\"falsification\":\"Refuted if measured dev_exact falls below 0.95; if it stays at 1.0 with lower verifier calls, the proposal is validated.\"},{\"config\":{\"lr\":0.001,\"weight_decay\":0.02},\"rationale\":\"Lower LR halves the update step (0.002->0.001) and doubles decay (0.01->0.02), reducing overfit risk on the 300-step racing rung while retaining the proven incumbent topology; expected to preserve exact success and improve calibration/ece rather than change the task solution.\",\"predicted_dev_exact\":1.0,\"falsification\":\"Refuted if measured dev_exact drops below 0.98 or ece increases materially versus the incumbent ece of about 0.00048.\"}]}",
+ "finish_reason": "stop",
+ "reasoning_chars": 5769,
+ "request_sha256": "a6e8b02f201299d716afe3fb37843449244bd0c5b2676d59513756b8858e38c5",
+ "response_model": "thinkingmachines/Inkling-2-Mini:peft:65536:free",
+ "seconds": 20.60899999999674,
+ "usage": {
+  "completion_tokens": 2271,
+  "prompt_tokens": 1977,
+  "prompt_tokens_details": {
+   "cached_tokens": 640
+  },
+  "total_tokens": 4248
+ }
+}

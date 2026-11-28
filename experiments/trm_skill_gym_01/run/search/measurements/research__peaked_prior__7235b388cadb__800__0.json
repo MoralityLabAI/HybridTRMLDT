@@ -1,0 +1,57 @@
+{
+ "config": {
+  "aggregation": "relation+mean",
+  "core": "trm",
+  "cycles": 1,
+  "feedback": "direct",
+  "grad_cycles": 1,
+  "hidden": 32,
+  "latent_reset": false,
+  "latent_steps": 2,
+  "ldt_projection": false,
+  "lr": 0.002,
+  "mixer_layers": 1,
+  "norm": "layer",
+  "residual": "add",
+  "state_partition": "shared",
+  "supervision": "deep",
+  "update_schedule": "latent_then_answer",
+  "verifier_visits": 2,
+  "visits": 3,
+  "weight_decay": 0.01
+ },
+ "config_id": "7235b388cadb",
+ "dev": {
+  "adaptive_exact": 0.5703125,
+  "adaptive_verifier_calls": 2.34375,
+  "adaptive_visits": 2.34375,
+  "ece": 0.045563835570646916,
+  "eval_seconds": 0.09028744697570801,
+  "exact": 0.58984375,
+  "exact_by_visit": [
+   0.494140625,
+   0.572265625,
+   0.58984375
+  ],
+  "flops_per_instance": 3346176.0,
+  "mean_confidence": 0.5473452210426331,
+  "n": 512,
+  "repair_success": 0.58984375,
+  "verifier_calls_per_instance": 3.0,
+  "visits": 3
+ },
+ "family": "peaked_prior",
+ "implementation": "native_trm_update",
+ "params": 11683,
+ "skill": "research",
+ "status": "ok",
+ "steps": 800,
+ "train": {
+  "examples_seen": 25600,
+  "final_loss": 1.0306410849094392,
+  "peak_rss_delta_bytes": 196907008,
+  "steps": 800,
+  "stopped": null,
+  "train_seconds": 23.56834864616394
+ }
+}

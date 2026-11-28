@@ -1,0 +1,57 @@
+{
+ "config": {
+  "aggregation": "relation+mean",
+  "core": "trm",
+  "cycles": 1,
+  "feedback": "direct",
+  "grad_cycles": 1,
+  "hidden": 32,
+  "latent_reset": false,
+  "latent_steps": 2,
+  "ldt_projection": true,
+  "lr": 0.002,
+  "mixer_layers": 1,
+  "norm": "layer",
+  "residual": "add",
+  "state_partition": "shared",
+  "supervision": "deep",
+  "update_schedule": "latent_then_answer",
+  "verifier_visits": 1,
+  "visits": 3,
+  "weight_decay": 0.01
+ },
+ "config_id": "97e319125309",
+ "dev": {
+  "adaptive_exact": 0.23828125,
+  "adaptive_verifier_calls": 1.15625,
+  "adaptive_visits": 1.458984375,
+  "ece": 0.12184001819696277,
+  "eval_seconds": 0.10724306106567383,
+  "exact": 0.23828125,
+  "exact_by_visit": [
+   0.23828125,
+   0.23828125,
+   0.23828125
+  ],
+  "flops_per_instance": 3346176.0,
+  "mean_confidence": 0.3536507785320282,
+  "n": 512,
+  "repair_success": 0.23828125,
+  "verifier_calls_per_instance": 2.0,
+  "visits": 3
+ },
+ "family": "clusters4_dups",
+ "implementation": "native_trm_update",
+ "params": 11683,
+ "skill": "curation",
+ "status": "ok",
+ "steps": 300,
+ "train": {
+  "examples_seen": 9600,
+  "final_loss": 0.5721824526786804,
+  "peak_rss_delta_bytes": 200101888,
+  "steps": 300,
+  "stopped": null,
+  "train_seconds": 9.62763524055481
+ }
+}

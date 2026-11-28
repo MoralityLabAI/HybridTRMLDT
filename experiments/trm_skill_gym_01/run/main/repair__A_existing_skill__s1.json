@@ -1,0 +1,69 @@
+{
+ "arm": "A_existing_skill",
+ "certificate_violations": 0,
+ "config": {
+  "aggregation": "relation+mean",
+  "core": "heuristic",
+  "cycles": 1,
+  "feedback": "direct",
+  "grad_cycles": 1,
+  "hidden": 32,
+  "latent_reset": false,
+  "latent_steps": 2,
+  "ldt_projection": false,
+  "lr": 0.002,
+  "mixer_layers": 1,
+  "norm": "layer",
+  "residual": "add",
+  "state_partition": "shared",
+  "supervision": "deep",
+  "update_schedule": "latent_then_answer",
+  "verifier_visits": 1,
+  "visits": 3,
+  "weight_decay": 0.01
+ },
+ "freeze_core": false,
+ "frozen_dev": {
+  "eval_seconds": 0.009554862976074219,
+  "exact": 0.267578125,
+  "exact_by_visit": [
+   0.1015625,
+   0.1015625,
+   0.267578125
+  ],
+  "flops_per_instance": 0.0,
+  "n": 512,
+  "repair_success": 0.267578125,
+  "verifier_calls_per_instance": 2.0,
+  "visits": 3
+ },
+ "frozen_withheld": {
+  "eval_seconds": 0.008056402206420898,
+  "exact": 0.263671875,
+  "exact_by_visit": [
+   0.064453125,
+   0.064453125,
+   0.263671875
+  ],
+  "flops_per_instance": 0.0,
+  "n": 512,
+  "repair_success": 0.263671875,
+  "verifier_calls_per_instance": 2.0,
+  "visits": 3
+ },
+ "implementation": "heuristic_existing_skill",
+ "kind": "main",
+ "params": 0,
+ "seed": 1,
+ "shuffled_supervision": false,
+ "skill": "repair",
+ "status": "ok",
+ "steps": 800,
+ "train": {
+  "examples_seen": 0,
+  "peak_rss_delta_bytes": 0,
+  "steps": 0,
+  "train_seconds": 0.0
+ },
+ "wall_seconds": 0.017611265182495117
+}

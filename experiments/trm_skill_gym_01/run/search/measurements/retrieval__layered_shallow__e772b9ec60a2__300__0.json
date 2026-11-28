@@ -1,0 +1,57 @@
+{
+ "config": {
+  "aggregation": "relation+mean",
+  "core": "trm",
+  "cycles": 1,
+  "feedback": "direct",
+  "grad_cycles": 1,
+  "hidden": 32,
+  "latent_reset": false,
+  "latent_steps": 2,
+  "ldt_projection": false,
+  "lr": 0.002,
+  "mixer_layers": 1,
+  "norm": "layer",
+  "residual": "add",
+  "state_partition": "shared",
+  "supervision": "final",
+  "update_schedule": "latent_then_answer",
+  "verifier_visits": 1,
+  "visits": 3,
+  "weight_decay": 0.01
+ },
+ "config_id": "e772b9ec60a2",
+ "dev": {
+  "adaptive_exact": 0.955078125,
+  "adaptive_verifier_calls": 1.619140625,
+  "adaptive_visits": 2.619140625,
+  "ece": 0.0434630784438923,
+  "eval_seconds": 0.16320443153381348,
+  "exact": 0.9609375,
+  "exact_by_visit": [
+   0.76953125,
+   0.916015625,
+   0.9609375
+  ],
+  "flops_per_instance": 3346176.0,
+  "mean_confidence": 0.9174744486808777,
+  "n": 512,
+  "repair_success": 0.9609375,
+  "verifier_calls_per_instance": 2.0,
+  "visits": 3
+ },
+ "family": "layered_shallow",
+ "implementation": "native_trm_update",
+ "params": 11683,
+ "skill": "retrieval",
+ "status": "ok",
+ "steps": 300,
+ "train": {
+  "examples_seen": 9600,
+  "final_loss": 0.27489412724971773,
+  "peak_rss_delta_bytes": 87691264,
+  "steps": 300,
+  "stopped": null,
+  "train_seconds": 12.795989036560059
+ }
+}

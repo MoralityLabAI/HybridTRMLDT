@@ -1,0 +1,16 @@
+{
+ "content": "{\"diagnosis\": \"Recent arms show the dominant failure mode is the in-loop verifier feedback channel and over-deep recurrence, not the aggregation core. Research arm: verifier_visits 1 collapsed from predicted 0.64 to measured 0.4023 (feedback noise injected into a small 16-candidate set); repair arm: visits 2 collapsed from predicted 0.79 to measured 0.4707. Latent_steps 1 promoted in research (0.64->0.5859, best of its arm) and helped deduction, but hurt retrieval (0.995->0.9453). The clearest promotion was deduction with visits 1 + verifier_visits 0 (0.99->1.0). Also, predictions across arms ran systematically high (e.g., predicted 0.9975/0.9965, measured 1.0/0.9805; predicted 0.79, measured 0.4707), so conservative deltas are warranted. For curation specifically (similarity-weighted neighbour vote + identical-twin flagging), the relation+mean aggregation and deep supervision are doing the work; recurrence depth and verifier feedback are the risky parts.\", \"proposals\": [{\"config\": {\"verifier_visits\": 0}, \"rationale\": \"Removing the in-loop verifier call eliminates the feedback injection that collapsed research (0.64->0.4023) and repair (0.79->0.4707). The host verifier still runs for the receipt; only the in-loop structured diagnostics are dropped. Expected: less feedback noise on a 16-candidate relation vote, small param/FLOP reduction, exact likely to rise toward the deduction-promoted pattern.\", \"predicted_dev_exact\": 0.79, \"falsification\": \"measured dev_exact <= 0.7461 (incumbent), or adaptive_visits/FLOPs not reduced\"}, {\"config\": {\"latent_steps\": 1}, \"rationale\": \"With only 16 candidates and 24 typed features, the 2-step latent recurrence (z<-net(x+y+z) twice per visit) adds depth with diminishing return and risks overfitting the small training set. The research arm promoted latent_steps 1 (0.5859) and deduction measured 0.8789 with it. Reducing latent_steps 2->1 cuts per-visit FLOPs by roughly 1/3 of the latent block while keeping the answer step and relation+mean aggregation intact.\", \"predicted_dev_exact\": 0.78, \"falsification\": \"measured dev_exact <= 0.7461, or exact_by_visit shows the first-visit gain lost\"}, {\"config\": {\"ldt_projection\": true}, \"rationale\": \"ldt_projection clamps certified candidate scores with sound host certificates, which directly targets the curation objective of flagging inconsistent/duplicate examples: certified (correctly flagged) candidates cannot be pushed below threshold by noisy recurrence. Retrieval measured 1.0 with this on (over-predicted 0.9975). Keeps params at 11683 and visits/verifier_visits unchanged.\", \"predicted_dev_exact\": 0.80, \"falsification\": \"measured dev_exact <= 0.7461, or receipt/verifier diagnostics show certificate clamping is not engaging (no score movement)\"}]}",
+ "finish_reason": "stop",
+ "reasoning_chars": 4566,
+ "request_sha256": "5bd0267057514f08b68a587a04678dfc2ceb1358879f03f7677674de910ae2ac",
+ "response_model": "thinkingmachines/Inkling-2-Mini:peft:65536:free",
+ "seconds": 25.453000000008615,
+ "usage": {
+  "completion_tokens": 2135,
+  "prompt_tokens": 2748,
+  "prompt_tokens_details": {
+   "cached_tokens": 640
+  },
+  "total_tokens": 4883
+ }
+}

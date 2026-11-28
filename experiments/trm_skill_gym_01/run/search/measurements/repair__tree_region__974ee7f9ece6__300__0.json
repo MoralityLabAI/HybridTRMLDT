@@ -1,0 +1,57 @@
+{
+ "config": {
+  "aggregation": "relation+mean",
+  "core": "gru",
+  "cycles": 2,
+  "feedback": "direct",
+  "grad_cycles": 1,
+  "hidden": 32,
+  "latent_reset": false,
+  "latent_steps": 2,
+  "ldt_projection": false,
+  "lr": 0.002,
+  "mixer_layers": 1,
+  "norm": "layer",
+  "residual": "add",
+  "state_partition": "shared",
+  "supervision": "deep",
+  "update_schedule": "latent_then_answer",
+  "verifier_visits": 1,
+  "visits": 3,
+  "weight_decay": 0.01
+ },
+ "config_id": "974ee7f9ece6",
+ "dev": {
+  "adaptive_exact": 0.953125,
+  "adaptive_verifier_calls": 1.05078125,
+  "adaptive_visits": 1.26171875,
+  "ece": 0.05285348754841834,
+  "eval_seconds": 0.36069250106811523,
+  "exact": 0.9765625,
+  "exact_by_visit": [
+   0.921875,
+   0.970703125,
+   0.9765625
+  ],
+  "flops_per_instance": 10129152.0,
+  "mean_confidence": 0.9322988390922546,
+  "n": 512,
+  "repair_success": 0.9765625,
+  "verifier_calls_per_instance": 2.0,
+  "visits": 3
+ },
+ "family": "tree_region",
+ "implementation": "recurrent_proxy_gru",
+ "params": 17987,
+ "skill": "repair",
+ "status": "ok",
+ "steps": 300,
+ "train": {
+  "examples_seen": 9600,
+  "final_loss": 0.24226614609360694,
+  "peak_rss_delta_bytes": 44417024,
+  "steps": 300,
+  "stopped": null,
+  "train_seconds": 30.893896102905273
+ }
+}

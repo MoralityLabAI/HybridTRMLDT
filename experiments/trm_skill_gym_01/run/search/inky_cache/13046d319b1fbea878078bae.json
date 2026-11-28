@@ -1,0 +1,16 @@
+{
+ "content": "{\"diagnosis\": \"The only changes that promote reliably are latent_steps:+1 (stopping 0.9277 promoted, repair 0.7871 promoted, research 0.5859 promoted) and a minimal-visit/zero-verifier configuration (deduction visits:1, verifier_visits:0 -> 1.0 promoted). Everything that adds verifier_visits (esp. +2: curation 0.8203 not better, stopping 0.8496 raced, repair 0.5156 raced, research 0.4023 raced) or adds visits (+2: curation 0.6602, stopping 0.8457, repair 0.4707 raced out; +4 stopping 0.873 not better) is harmful or neutral. feedback variants (matched_damping 0.6406, rlt 0.7793), ldt_projection (curation 0.2383 raced; retrieval 1.0 but not better than incumbent), weight_decay 0.03 (0.9805 raced), and hidden-dimension changes (16 rejected_param_bound; 48 -> 0.4551 raced) all underperform their predictions. Retrieval and deduction latent_steps:1 raced out despite high predictions (0.9453/0.8789), so latent_steps:1 is not universal - it helps stopping/repair/research but not retrieval/deduction/curation. Net: keep visits low, verifier_visits at/near 0, keep latent_steps modest (+1), avoid feedback/ldt/hidden/weight_decay perturbations and avoid verifier-visit escalation.\", \"next_experiment\": {\"skill\": \"stopping\", \"config\": {\"latent_steps\": 1, \"verifier_visits\": 0, \"visits\": 1}, \"rationale\": \"Stopping's sole promotion came from latent_steps:1 (measured 0.9277, promoted) while every visits/verifier_visits increase raced out or failed to beat incumbent (visits:2 0.8457, verifier_visits:2 0.8496, visits:4 0.873 not better). Combining the latent_steps:1 lever with the deduction-winning minimal-visit/zero-verifier pattern tests whether removing verifier visits preserves the promotion instead of racing out, using the only skill where latent_steps:1 already beat its prediction.\"}}",
+ "finish_reason": "stop",
+ "reasoning_chars": 8210,
+ "request_sha256": "13046d319b1fbea878078bae192b14c504f30877272da94b4e28e7bcca8e28fb",
+ "response_model": "thinkingmachines/Inkling-2-Mini:peft:65536:free",
+ "seconds": 26.40600000001723,
+ "usage": {
+  "completion_tokens": 3226,
+  "prompt_tokens": 1912,
+  "prompt_tokens_details": {
+   "cached_tokens": 0
+  },
+  "total_tokens": 5138
+ }
+}

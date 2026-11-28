@@ -1,0 +1,16 @@
+{
+ "content": "{\"diagnosis\":\"Hidden capacity is the most reliable lever: deduction hidden=24 hit 1.0 and promoted, curation hidden=48 promoted (0.7754 vs 0.79 pred), stopping hidden=48 reached 0.9023 but was not better than incumbent. Narrow non-hidden wins also exist: curation mixer_layers=2 promoted (0.8281) and research state_partition=split promoted (0.7051 vs 0.66). Visit/verifier/cycle-heavy knobs and latent-step/ldt/feedback-rlt variants mostly hurt or lost the race: repair visits=2 0.4707, curation visits=2 0.6602, research latent_steps=3 0.4121, curation ldt_projection 0.2383, deduction latent_steps=1 0.8789, stopping verifier_visits=2 0.8164, curation feedback=rlt 0.6367. Hidden is not universal: repair hidden=24 fell to 0.5078 and retrieval hidden=24 raced out, so it must be paired with skill-specific validation rather than applied blindly.\",\"next_experiment\":{\"skill\":\"stopping\",\"config\":{\"hidden\":48,\"state_partition\":\"split\"},\"rationale\":\"Stopping hidden=48 is the best stopping result (0.9023, only rung1_not_better), and state_partition=split is the one clean non-hidden promotion (research, 0.7051). Combining them tests whether an orthogonal partitioning change can push stopping past the incumbent while avoiding the failed visit/verifier/cycle/latent/ldt knobs; if it fails, stop hidden-width scaling for stopping and fall back to mixer_layers-style narrow changes.\"}}",
+ "finish_reason": "stop",
+ "reasoning_chars": 8842,
+ "request_sha256": "b4d7be854c173810db908be61984f35841285b8c7d810e3326c89648ff152468",
+ "response_model": "thinkingmachines/Inkling-2-Mini:peft:65536:free",
+ "seconds": 21.0,
+ "usage": {
+  "completion_tokens": 2794,
+  "prompt_tokens": 1906,
+  "prompt_tokens_details": {
+   "cached_tokens": 0
+  },
+  "total_tokens": 4700
+ }
+}

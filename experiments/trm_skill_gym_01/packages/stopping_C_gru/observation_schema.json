@@ -1,0 +1,29 @@
+{
+ "candidate_features": 24,
+ "candidates": 16,
+ "feedback_columns": 4,
+ "feedback_layout": [
+  "verified",
+  "ok",
+  "diag0",
+  "diag1"
+ ],
+ "global_features": 8,
+ "label_kind": "single",
+ "ldt_certificate_column": 19,
+ "named_features": {
+  "0": "is_stop",
+  "1": "is_reason",
+  "2": "is_retrieve",
+  "3": "is_verify",
+  "4": "cost",
+  "5": "gain",
+  "6": "confidence",
+  "7": "budget_over_6",
+  "8": "reason_decay",
+  "9": "confidence_after_rejection",
+  "10": "already_retrieved"
+ },
+ "relation": "unused",
+ "skill_feature_columns": 20
+}
