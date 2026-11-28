@@ -1,0 +1,33 @@
+name: TRM-SKILL-GYM-02 diagnostics
+permissions:
+  contents: read
+on:
+  push:
+    paths:
+      - 'research_gym/trm_skill_gym_v2/**'
+      - 'tests/test_trm_skill_gym_v2.py'
+      - '.github/workflows/trm-skill-gym-v2.yml'
+  pull_request:
+    paths:
+      - 'research_gym/trm_skill_gym_v2/**'
+      - 'tests/test_trm_skill_gym_v2.py'
+      - '.github/workflows/trm-skill-gym-v2.yml'
+  workflow_dispatch:
+jobs:
+  cpu-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install numpy psutil pytest
+      - run: python -m pytest -q tests/test_trm_skill_gym_v2.py
+      - run: python -m research_gym.trm_skill_gym_v2.runner --out /tmp/skill02 --count 16 --seeds 0 --research-worlds 32 --shuffle-steps 8
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skill02-diagnostics
+          path: /tmp/skill02/
