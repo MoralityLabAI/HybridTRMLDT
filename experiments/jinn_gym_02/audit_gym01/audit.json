@@ -1,0 +1,1072 @@
+{
+ "run": "experiments\\jinn_gym_01\\outputs\\run_20261128",
+ "tasks": {
+  "n": 61,
+  "digest_mismatches": 0
+ },
+ "module_rebuild": {
+  "max_abs_head_diff": 0.0,
+  "all_rubrics_equal": true,
+  "per_module": {
+   "constructivist:frozen": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "constructivist:initial": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "skeptic:frozen": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "skeptic:initial": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "experimentalist:frozen": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "experimentalist:initial": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "formalist:frozen": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "formalist:initial": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "compressionist:frozen": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "compressionist:initial": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "mechanistic_interpreter:frozen": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "mechanistic_interpreter:initial": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "research_strategist:frozen": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "research_strategist:initial": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "repair_specialist:frozen": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   },
+   "repair_specialist:initial": {
+    "max_abs_head_diff": 0.0,
+    "rubric_equal_except_version_line": true
+   }
+  }
+ },
+ "recompute": {
+  "rows_recomputed": 4392,
+  "rows_stored": 4392,
+  "agree_by_arm": {
+   "A": 488,
+   "B": 488,
+   "E": 488,
+   "F": 488,
+   "C": 488,
+   "D": 488,
+   "G": 488,
+   "C0": 488,
+   "D0": 488
+  },
+  "disagree_by_arm": {},
+  "missing_responses": {}
+ },
+ "metrics_independent": {
+  "A": {
+   "n": 488,
+   "fidelity": 0.2074688796680498,
+   "normalized_utility": 0.7987782486458767,
+   "abstain_rate": 0.2786885245901639,
+   "abstain_f1": 0.9032258064516129
+  },
+  "B": {
+   "n": 488,
+   "fidelity": 0.24896265560165975,
+   "normalized_utility": 0.7870104501923421,
+   "abstain_rate": 0.2540983606557377,
+   "abstain_f1": 0.9322033898305084
+  },
+  "C": {
+   "n": 488,
+   "fidelity": 0.4315352697095436,
+   "normalized_utility": 0.747916151850866,
+   "abstain_rate": 0.30327868852459017,
+   "abstain_f1": 0.8615384615384616
+  },
+  "C0": {
+   "n": 488,
+   "fidelity": 0.24481327800829875,
+   "normalized_utility": 0.5539102192201811,
+   "abstain_rate": 0.6577868852459017,
+   "abstain_f1": 0.5173210161662818
+  },
+  "D": {
+   "n": 488,
+   "fidelity": 0.44813278008298757,
+   "normalized_utility": 0.7695926028882057,
+   "abstain_rate": 0.26229508196721313,
+   "abstain_f1": 0.9333333333333333
+  },
+  "D0": {
+   "n": 488,
+   "fidelity": 0.21161825726141079,
+   "normalized_utility": 0.5662404646220367,
+   "abstain_rate": 0.6516393442622951,
+   "abstain_f1": 0.5209302325581395
+  },
+  "E": {
+   "n": 488,
+   "fidelity": 0.43983402489626555,
+   "normalized_utility": 0.7642706171360748,
+   "abstain_rate": 0.26434426229508196,
+   "abstain_f1": 0.9294605809128631
+  },
+  "F": {
+   "n": 488,
+   "fidelity": 0.43568464730290457,
+   "normalized_utility": 0.7542563240593642,
+   "abstain_rate": 0.26229508196721313,
+   "abstain_f1": 0.9333333333333333
+  },
+  "G": {
+   "n": 488,
+   "fidelity": 0.12033195020746888,
+   "normalized_utility": 0.7695926028882059,
+   "abstain_rate": 0.26229508196721313,
+   "abstain_f1": 0.9333333333333333
+  }
+ },
+ "metrics_stored": {
+  "A": {
+   "fidelity": 0.2074688796680498,
+   "normalized_utility": 0.7987782486458768,
+   "abstain_rate": 0.2786885245901639,
+   "abstain_f1": 0.9032258064516129
+  },
+  "B": {
+   "fidelity": 0.24896265560165975,
+   "normalized_utility": 0.7870104501923421,
+   "abstain_rate": 0.2540983606557377,
+   "abstain_f1": 0.9322033898305085
+  },
+  "C": {
+   "fidelity": 0.4315352697095436,
+   "normalized_utility": 0.747916151850866,
+   "abstain_rate": 0.30327868852459017,
+   "abstain_f1": 0.8615384615384616
+  },
+  "C0": {
+   "fidelity": 0.24481327800829875,
+   "normalized_utility": 0.5539102192201811,
+   "abstain_rate": 0.6577868852459017,
+   "abstain_f1": 0.5173210161662817
+  },
+  "D": {
+   "fidelity": 0.44813278008298757,
+   "normalized_utility": 0.7695926028882057,
+   "abstain_rate": 0.26229508196721313,
+   "abstain_f1": 0.9333333333333333
+  },
+  "D0": {
+   "fidelity": 0.21161825726141079,
+   "normalized_utility": 0.5662404646220366,
+   "abstain_rate": 0.6516393442622951,
+   "abstain_f1": 0.5209302325581395
+  },
+  "E": {
+   "fidelity": 0.43983402489626555,
+   "normalized_utility": 0.7642706171360748,
+   "abstain_rate": 0.26434426229508196,
+   "abstain_f1": 0.9294605809128631
+  },
+  "F": {
+   "fidelity": 0.43568464730290457,
+   "normalized_utility": 0.7542563240593642,
+   "abstain_rate": 0.26229508196721313,
+   "abstain_f1": 0.9333333333333333
+  },
+  "G": {
+   "fidelity": 0.12033195020746888,
+   "normalized_utility": 0.7695926028882057,
+   "abstain_rate": 0.26229508196721313,
+   "abstain_f1": 0.9333333333333333
+  }
+ },
+ "contrasts_independent": [
+  {
+   "a": "D",
+   "b": "A",
+   "metric": "fidelity",
+   "level": "root",
+   "diff": 0.24066390041493776,
+   "ci95": [
+    0.18421052631578946,
+    0.30085765193957875
+   ],
+   "n_cells": 241,
+   "n_clusters": 61
+  },
+  {
+   "a": "D",
+   "b": "A",
+   "metric": "fidelity",
+   "level": "domain",
+   "diff": 0.24066390041493776,
+   "ci95": [
+    0.164,
+    0.3112033195020747
+   ],
+   "n_cells": 241,
+   "n_clusters": 6
+  },
+  {
+   "a": "D",
+   "b": "A",
+   "metric": "utility",
+   "level": "root",
+   "diff": -0.029185645757670905,
+   "ci95": [
+    -0.07602413253189237,
+    0.015284189988164608
+   ],
+   "n_cells": 488,
+   "n_clusters": 61
+  },
+  {
+   "a": "D",
+   "b": "A",
+   "metric": "utility",
+   "level": "domain",
+   "diff": -0.02918564575767091,
+   "ci95": [
+    -0.07340851383184469,
+    0.009537242405879666
+   ],
+   "n_cells": 488,
+   "n_clusters": 6
+  },
+  {
+   "a": "D",
+   "b": "B",
+   "metric": "fidelity",
+   "level": "root",
+   "diff": 0.1991701244813278,
+   "ci95": [
+    0.1397329135777394,
+    0.2616033755274262
+   ],
+   "n_cells": 241,
+   "n_clusters": 61
+  },
+  {
+   "a": "D",
+   "b": "B",
+   "metric": "fidelity",
+   "level": "domain",
+   "diff": 0.1991701244813278,
+   "ci95": [
+    0.1100378787878788,
+    0.28125956632653065
+   ],
+   "n_cells": 241,
+   "n_clusters": 6
+  },
+  {
+   "a": "D",
+   "b": "C",
+   "metric": "fidelity",
+   "level": "root",
+   "diff": 0.016597510373443983,
+   "ci95": [
+    -0.0163265306122449,
+    0.04938271604938271
+   ],
+   "n_cells": 241,
+   "n_clusters": 61
+  },
+  {
+   "a": "D",
+   "b": "C",
+   "metric": "fidelity",
+   "level": "domain",
+   "diff": 0.016597510373443983,
+   "ci95": [
+    -0.01171875,
+    0.0423728813559322
+   ],
+   "n_cells": 241,
+   "n_clusters": 6
+  },
+  {
+   "a": "D",
+   "b": "G",
+   "metric": "fidelity",
+   "level": "root",
+   "diff": 0.3278008298755187,
+   "ci95": [
+    0.25209997222029307,
+    0.4065040650406504
+   ],
+   "n_cells": 241,
+   "n_clusters": 61
+  },
+  {
+   "a": "D",
+   "b": "G",
+   "metric": "fidelity",
+   "level": "domain",
+   "diff": 0.3278008298755187,
+   "ci95": [
+    0.17872340425531916,
+    0.484375
+   ],
+   "n_cells": 241,
+   "n_clusters": 6
+  },
+  {
+   "a": "D",
+   "b": "D0",
+   "metric": "fidelity",
+   "level": "root",
+   "diff": 0.23651452282157676,
+   "ci95": [
+    0.1764641098730241,
+    0.2987551867219917
+   ],
+   "n_cells": 241,
+   "n_clusters": 61
+  },
+  {
+   "a": "D",
+   "b": "D0",
+   "metric": "fidelity",
+   "level": "domain",
+   "diff": 0.23651452282157676,
+   "ci95": [
+    0.13114754098360656,
+    0.3445378151260504
+   ],
+   "n_cells": 241,
+   "n_clusters": 6
+  },
+  {
+   "a": "D",
+   "b": "D0",
+   "metric": "utility",
+   "level": "root",
+   "diff": 0.20335213826616913,
+   "ci95": [
+    0.12701837827511442,
+    0.28576182646677156
+   ],
+   "n_cells": 488,
+   "n_clusters": 61
+  },
+  {
+   "a": "D",
+   "b": "D0",
+   "metric": "utility",
+   "level": "domain",
+   "diff": 0.20335213826616927,
+   "ci95": [
+    0.05267260101045043,
+    0.3508578427056953
+   ],
+   "n_cells": 488,
+   "n_clusters": 6
+  },
+  {
+   "a": "F",
+   "b": "D",
+   "metric": "utility",
+   "level": "root",
+   "diff": -0.015336278828841728,
+   "ci95": [
+    -0.04168498311479462,
+    0.004040730769944328
+   ],
+   "n_cells": 488,
+   "n_clusters": 61
+  },
+  {
+   "a": "F",
+   "b": "D",
+   "metric": "utility",
+   "level": "domain",
+   "diff": -0.015336278828841728,
+   "ci95": [
+    -0.030092024125567295,
+    -0.005109608205724773
+   ],
+   "n_cells": 488,
+   "n_clusters": 6
+  },
+  {
+   "a": "E",
+   "b": "D",
+   "metric": "fidelity",
+   "level": "root",
+   "diff": -0.008298755186721992,
+   "ci95": [
+    -0.037815126050420166,
+    0.020161290322580645
+   ],
+   "n_cells": 241,
+   "n_clusters": 61
+  },
+  {
+   "a": "E",
+   "b": "D",
+   "metric": "fidelity",
+   "level": "domain",
+   "diff": -0.008298755186721992,
+   "ci95": [
+    -0.02109704641350211,
+    0.008771929824561403
+   ],
+   "n_cells": 241,
+   "n_clusters": 6
+  },
+  {
+   "a": "C",
+   "b": "C0",
+   "metric": "utility",
+   "level": "root",
+   "diff": 0.1940059326306849,
+   "ci95": [
+    0.12236962876502816,
+    0.27084457050867966
+   ],
+   "n_cells": 488,
+   "n_clusters": 61
+  },
+  {
+   "a": "C",
+   "b": "C0",
+   "metric": "utility",
+   "level": "domain",
+   "diff": 0.194005932630685,
+   "ci95": [
+    0.048505979771515766,
+    0.3358902898781229
+   ],
+   "n_cells": 488,
+   "n_clusters": 6
+  }
+ ],
+ "lineage": {
+  "accepted": 73,
+  "rejected": 392,
+  "ops": {
+   "set_evidence": 8,
+   "set_abstain_threshold": 40,
+   "add_tag": 20,
+   "set_weight": 31,
+   "add_transition": 26,
+   "set_abstain_if_no_ranked_action": 7,
+   "remove_tag": 1,
+   "set_ranking": 3
+  },
+  "revision_kinds": {
+   "abstention": 13,
+   "abstention+preference": 19,
+   "abstention+lattice+preference": 6,
+   "abstention+lattice": 11,
+   "lattice+preference": 6,
+   "preference": 15,
+   "lattice": 3
+  },
+  "first_abstention_revision_iteration": {
+   "constructivist": 0,
+   "research_strategist": 3,
+   "mechanistic_interpreter": 6,
+   "formalist": 9,
+   "compressionist": 16,
+   "experimentalist": 31,
+   "skeptic": 43,
+   "repair_specialist": 191
+  },
+  "nodes": 473
+ },
+ "abstention_decomposition": {
+  "arms": {
+   "D0": {
+    "n": 488,
+    "fidelity": 0.21161825726141079,
+    "normalized_utility": 0.5662404646220367,
+    "abstain_rate": 0.6516393442622951,
+    "abstain_f1": 0.5209302325581395
+   },
+   "D0+abst": {
+    "n": 488,
+    "fidelity": 0.3112033195020747,
+    "normalized_utility": 0.7875245772991286,
+    "abstain_rate": 0.26229508196721313,
+    "abstain_f1": 0.9333333333333333
+   },
+   "D-abst": {
+    "n": 488,
+    "fidelity": 0.29045643153526973,
+    "normalized_utility": 0.5596500105692255,
+    "abstain_rate": 0.6352459016393442,
+    "abstain_f1": 0.5308056872037915
+   },
+   "D": {
+    "n": 488,
+    "fidelity": 0.44813278008298757,
+    "normalized_utility": 0.7695926028882057,
+    "abstain_rate": 0.26229508196721313,
+    "abstain_f1": 0.9333333333333333
+   }
+  },
+  "fidelity": {
+   "total": 0.23651452282157678,
+   "abstention": 0.12863070539419086,
+   "rest": 0.10788381742738593,
+   "abstention_share": 0.5438596491228069
+  },
+  "normalized_utility": {
+   "total": 0.20335213826616905,
+   "abstention": 0.2156133524980361,
+   "rest": -0.012261214231867046,
+   "abstention_share": 1.060295477276065
+  },
+  "abstain_f1": {
+   "total": 0.4124031007751938,
+   "abstention": 0.40746537345236783,
+   "rest": 0.004937727322825991,
+   "abstention_share": 0.9880269393863805
+  },
+  "contrasts": [
+   {
+    "a": "D0+abst",
+    "b": "D0",
+    "metric": "utility",
+    "diff": 0.22128411267709192,
+    "ci95": [
+     0.14588478861968132,
+     0.3038194634401302
+    ],
+    "n_cells": 488,
+    "n_clusters": 61
+   },
+   {
+    "a": "D0+abst",
+    "b": "D0",
+    "metric": "fidelity",
+    "diff": 0.0995850622406639,
+    "ci95": [
+     0.046218487394957986,
+     0.16017316017316016
+    ],
+    "n_cells": 241,
+    "n_clusters": 61
+   },
+   {
+    "a": "D",
+    "b": "D0+abst",
+    "metric": "fidelity",
+    "diff": 0.13692946058091288,
+    "ci95": [
+     0.08509736747205193,
+     0.18992648472035367
+    ],
+    "n_cells": 241,
+    "n_clusters": 61
+   },
+   {
+    "a": "D",
+    "b": "D0+abst",
+    "metric": "utility",
+    "diff": -0.01793197441092277,
+    "ci95": [
+     -0.038141722454263706,
+     5.00552657378037e-05
+    ],
+    "n_cells": 488,
+    "n_clusters": 61
+   }
+  ]
+ },
+ "winners_curse": {
+  "n": 73,
+  "mean_selection_delta_J": 0.07886930324796561,
+  "mean_heldout_delta_J": 0.024883407498527684,
+  "share_heldout_positive": 0.6575342465753424,
+  "share_heldout_negative": 0.2876712328767123,
+  "pearson_r": 0.5635226040275056,
+  "items": [
+   {
+    "persona": "constructivist",
+    "iteration": 0,
+    "selection_delta_J": 0.07562799043062199,
+    "heldout_delta_J": 0.16386741638722685
+   },
+   {
+    "persona": "research_strategist",
+    "iteration": 3,
+    "selection_delta_J": 0.04171695314235285,
+    "heldout_delta_J": 0.0
+   },
+   {
+    "persona": "mechanistic_interpreter",
+    "iteration": 6,
+    "selection_delta_J": 0.06761745242908612,
+    "heldout_delta_J": 0.014836524590163935
+   },
+   {
+    "persona": "formalist",
+    "iteration": 9,
+    "selection_delta_J": 0.09632221630024762,
+    "heldout_delta_J": 0.029062557235821518
+   },
+   {
+    "persona": "compressionist",
+    "iteration": 16,
+    "selection_delta_J": 0.026957765730270894,
+    "heldout_delta_J": 0.005718752859399823
+   },
+   {
+    "persona": "experimentalist",
+    "iteration": 31,
+    "selection_delta_J": 0.045543715173484906,
+    "heldout_delta_J": 0.11702630840231104
+   },
+   {
+    "persona": "formalist",
+    "iteration": 40,
+    "selection_delta_J": 0.08202754814491109,
+    "heldout_delta_J": 0.16630548974353948
+   },
+   {
+    "persona": "skeptic",
+    "iteration": 43,
+    "selection_delta_J": 0.11851297559647228,
+    "heldout_delta_J": 0.055232101785355425
+   },
+   {
+    "persona": "skeptic",
+    "iteration": 58,
+    "selection_delta_J": 0.08151340998122653,
+    "heldout_delta_J": 0.036870016737977074
+   },
+   {
+    "persona": "constructivist",
+    "iteration": 59,
+    "selection_delta_J": 0.10101686507936514,
+    "heldout_delta_J": 0.06545801648260657
+   },
+   {
+    "persona": "experimentalist",
+    "iteration": 60,
+    "selection_delta_J": 0.17092470760233908,
+    "heldout_delta_J": 0.17511351313921103
+   },
+   {
+    "persona": "skeptic",
+    "iteration": 67,
+    "selection_delta_J": 0.30247542784264303,
+    "heldout_delta_J": 0.13488305083512342
+   },
+   {
+    "persona": "compressionist",
+    "iteration": 68,
+    "selection_delta_J": 0.02682149554728641,
+    "heldout_delta_J": -0.020147629016408763
+   },
+   {
+    "persona": "research_strategist",
+    "iteration": 72,
+    "selection_delta_J": 0.07729198505413665,
+    "heldout_delta_J": 0.020489822974753547
+   },
+   {
+    "persona": "compressionist",
+    "iteration": 78,
+    "selection_delta_J": 0.1643000106928354,
+    "heldout_delta_J": 0.12677322275632702
+   },
+   {
+    "persona": "research_strategist",
+    "iteration": 82,
+    "selection_delta_J": 0.17411721939613534,
+    "heldout_delta_J": 0.07720492831282177
+   },
+   {
+    "persona": "mechanistic_interpreter",
+    "iteration": 88,
+    "selection_delta_J": 0.14997120388557672,
+    "heldout_delta_J": 0.089907554640132
+   },
+   {
+    "persona": "research_strategist",
+    "iteration": 91,
+    "selection_delta_J": 0.08101007551376704,
+    "heldout_delta_J": 0.024198543710338916
+   },
+   {
+    "persona": "compressionist",
+    "iteration": 101,
+    "selection_delta_J": 0.040913666668970505,
+    "heldout_delta_J": -0.002608047690014881
+   },
+   {
+    "persona": "constructivist",
+    "iteration": 111,
+    "selection_delta_J": 0.03384027775079723,
+    "heldout_delta_J": 0.035483586526209976
+   },
+   {
+    "persona": "skeptic",
+    "iteration": 127,
+    "selection_delta_J": 0.054830330981421316,
+    "heldout_delta_J": 0.020539552594543764
+   },
+   {
+    "persona": "constructivist",
+    "iteration": 129,
+    "selection_delta_J": 0.0712092459089042,
+    "heldout_delta_J": 0.014929057080840136
+   },
+   {
+    "persona": "experimentalist",
+    "iteration": 132,
+    "selection_delta_J": 0.09754494787536627,
+    "heldout_delta_J": -0.21348990511628035
+   },
+   {
+    "persona": "research_strategist",
+    "iteration": 134,
+    "selection_delta_J": 0.0535696246937345,
+    "heldout_delta_J": 0.0
+   },
+   {
+    "persona": "constructivist",
+    "iteration": 141,
+    "selection_delta_J": 0.12173330910660418,
+    "heldout_delta_J": 0.002601400924982955
+   },
+   {
+    "persona": "experimentalist",
+    "iteration": 142,
+    "selection_delta_J": 0.26929141335202667,
+    "heldout_delta_J": 0.3562647331826208
+   },
+   {
+    "persona": "constructivist",
+    "iteration": 148,
+    "selection_delta_J": 0.022015498632539265,
+    "heldout_delta_J": -0.06018460932319836
+   },
+   {
+    "persona": "formalist",
+    "iteration": 169,
+    "selection_delta_J": 0.020310579403131912,
+    "heldout_delta_J": -0.003514947423285286
+   },
+   {
+    "persona": "formalist",
+    "iteration": 184,
+    "selection_delta_J": 0.10174998468066931,
+    "heldout_delta_J": 0.013066538090646063
+   },
+   {
+    "persona": "skeptic",
+    "iteration": 187,
+    "selection_delta_J": 0.1179633867276888,
+    "heldout_delta_J": 0.03291267424637412
+   },
+   {
+    "persona": "repair_specialist",
+    "iteration": 191,
+    "selection_delta_J": 0.12758207337315713,
+    "heldout_delta_J": 0.09219914054514744
+   },
+   {
+    "persona": "experimentalist",
+    "iteration": 197,
+    "selection_delta_J": 0.11907450437386313,
+    "heldout_delta_J": 0.05520389051843755
+   },
+   {
+    "persona": "mechanistic_interpreter",
+    "iteration": 199,
+    "selection_delta_J": 0.07491179450646479,
+    "heldout_delta_J": 0.01623318582295108
+   },
+   {
+    "persona": "formalist",
+    "iteration": 215,
+    "selection_delta_J": 0.09087789575001426,
+    "heldout_delta_J": 0.15346960042273827
+   },
+   {
+    "persona": "research_strategist",
+    "iteration": 217,
+    "selection_delta_J": 0.025387142748632407,
+    "heldout_delta_J": -0.05929434223558544
+   },
+   {
+    "persona": "compressionist",
+    "iteration": 221,
+    "selection_delta_J": 0.06745338328985173,
+    "heldout_delta_J": -0.0036071911343795726
+   },
+   {
+    "persona": "constructivist",
+    "iteration": 222,
+    "selection_delta_J": 0.11108982284053859,
+    "heldout_delta_J": 0.0
+   },
+   {
+    "persona": "mechanistic_interpreter",
+    "iteration": 223,
+    "selection_delta_J": 0.04102556879118535,
+    "heldout_delta_J": 0.01598964934402669
+   },
+   {
+    "persona": "compressionist",
+    "iteration": 226,
+    "selection_delta_J": 0.03464781746031753,
+    "heldout_delta_J": -0.02056223051582301
+   },
+   {
+    "persona": "formalist",
+    "iteration": 231,
+    "selection_delta_J": 0.07498129749240134,
+    "heldout_delta_J": 0.0
+   },
+   {
+    "persona": "formalist",
+    "iteration": 232,
+    "selection_delta_J": 0.10143373775247444,
+    "heldout_delta_J": 0.006940567426280353
+   },
+   {
+    "persona": "compressionist",
+    "iteration": 236,
+    "selection_delta_J": 0.03213479719578016,
+    "heldout_delta_J": 0.020512921984064736
+   },
+   {
+    "persona": "compressionist",
+    "iteration": 242,
+    "selection_delta_J": 0.11211595718162443,
+    "heldout_delta_J": 0.002728846713452082
+   },
+   {
+    "persona": "formalist",
+    "iteration": 251,
+    "selection_delta_J": 0.09008970329008525,
+    "heldout_delta_J": 0.019883410053434858
+   },
+   {
+    "persona": "compressionist",
+    "iteration": 252,
+    "selection_delta_J": 0.03063475427419604,
+    "heldout_delta_J": 0.04172461781135567
+   },
+   {
+    "persona": "skeptic",
+    "iteration": 270,
+    "selection_delta_J": 0.10382990758549815,
+    "heldout_delta_J": -0.011518820252916617
+   },
+   {
+    "persona": "formalist",
+    "iteration": 274,
+    "selection_delta_J": 0.04940520220899591,
+    "heldout_delta_J": -0.033551929170916095
+   },
+   {
+    "persona": "mechanistic_interpreter",
+    "iteration": 282,
+    "selection_delta_J": 0.06296501123112275,
+    "heldout_delta_J": 0.0073911696258164294
+   },
+   {
+    "persona": "research_strategist",
+    "iteration": 283,
+    "selection_delta_J": 0.08915311619447658,
+    "heldout_delta_J": 0.017700613592541603
+   },
+   {
+    "persona": "constructivist",
+    "iteration": 295,
+    "selection_delta_J": 0.025611805531455367,
+    "heldout_delta_J": -0.004064573892164081
+   },
+   {
+    "persona": "formalist",
+    "iteration": 299,
+    "selection_delta_J": 0.03730678475804816,
+    "heldout_delta_J": 0.004364594974391123
+   },
+   {
+    "persona": "formalist",
+    "iteration": 317,
+    "selection_delta_J": 0.049635676660643724,
+    "heldout_delta_J": -0.019502534794866522
+   },
+   {
+    "persona": "research_strategist",
+    "iteration": 318,
+    "selection_delta_J": 0.08479895968536394,
+    "heldout_delta_J": 0.050568972963929315
+   },
+   {
+    "persona": "formalist",
+    "iteration": 322,
+    "selection_delta_J": 0.05615862573099406,
+    "heldout_delta_J": 0.015137939820475399
+   },
+   {
+    "persona": "repair_specialist",
+    "iteration": 329,
+    "selection_delta_J": 0.04647908993692351,
+    "heldout_delta_J": -0.014632151953061445
+   },
+   {
+    "persona": "mechanistic_interpreter",
+    "iteration": 331,
+    "selection_delta_J": 0.026566065778315107,
+    "heldout_delta_J": -0.028116427545903377
+   },
+   {
+    "persona": "formalist",
+    "iteration": 332,
+    "selection_delta_J": 0.026231962845622125,
+    "heldout_delta_J": 0.045237966830155796
+   },
+   {
+    "persona": "repair_specialist",
+    "iteration": 336,
+    "selection_delta_J": 0.026562500000000044,
+    "heldout_delta_J": 0.002329594477998298
+   },
+   {
+    "persona": "research_strategist",
+    "iteration": 339,
+    "selection_delta_J": 0.02815094659372086,
+    "heldout_delta_J": -0.03663688813452215
+   },
+   {
+    "persona": "experimentalist",
+    "iteration": 352,
+    "selection_delta_J": 0.02309782608695654,
+    "heldout_delta_J": -0.2128559254661727
+   },
+   {
+    "persona": "research_strategist",
+    "iteration": 370,
+    "selection_delta_J": 0.08542658608577208,
+    "heldout_delta_J": 0.020230493696424046
+   },
+   {
+    "persona": "skeptic",
+    "iteration": 371,
+    "selection_delta_J": 0.02307990261929882,
+    "heldout_delta_J": 0.00991709468719093
+   },
+   {
+    "persona": "mechanistic_interpreter",
+    "iteration": 375,
+    "selection_delta_J": 0.09822798136623301,
+    "heldout_delta_J": 0.04629897433470309
+   },
+   {
+    "persona": "experimentalist",
+    "iteration": 382,
+    "selection_delta_J": 0.0700229445187166,
+    "heldout_delta_J": 0.14629388482077565
+   },
+   {
+    "persona": "experimentalist",
+    "iteration": 400,
+    "selection_delta_J": 0.026106925490378075,
+    "heldout_delta_J": -0.01147304660627313
+   },
+   {
+    "persona": "constructivist",
+    "iteration": 405,
+    "selection_delta_J": 0.15321180555555558,
+    "heldout_delta_J": -0.004448738383942774
+   },
+   {
+    "persona": "skeptic",
+    "iteration": 407,
+    "selection_delta_J": 0.034944845310383665,
+    "heldout_delta_J": -0.024812444463625072
+   },
+   {
+    "persona": "mechanistic_interpreter",
+    "iteration": 417,
+    "selection_delta_J": 0.05615355726999316,
+    "heldout_delta_J": -0.0006098914619996343
+   },
+   {
+    "persona": "skeptic",
+    "iteration": 420,
+    "selection_delta_J": 0.0860928362573099,
+    "heldout_delta_J": -0.02223738069537684
+   },
+   {
+    "persona": "mechanistic_interpreter",
+    "iteration": 435,
+    "selection_delta_J": 0.08696761394908836,
+    "heldout_delta_J": 0.0006098914619996343
+   },
+   {
+    "persona": "skeptic",
+    "iteration": 436,
+    "selection_delta_J": 0.16443261875637394,
+    "heldout_delta_J": 0.023107740573726
+   },
+   {
+    "persona": "formalist",
+    "iteration": 440,
+    "selection_delta_J": 0.047314221973940196,
+    "heldout_delta_J": 0.00033335753395025147
+   },
+   {
+    "persona": "constructivist",
+    "iteration": 443,
+    "selection_delta_J": 0.06734228347510884,
+    "heldout_delta_J": 0.03120491939394343
+   }
+  ]
+ },
+ "boundary": {
+  "audit": {
+   "actions_checked": 457,
+   "unauthorized_executions": 0,
+   "noncommuting_or_escaping_compositions": 0,
+   "snapshot_digest_changes": 0,
+   "passed": true
+  },
+  "host_code_hash_now": "57935ce3ddbb4ae2307c104fcb18b0cc6991beff0bba911937a932b96acf6f79",
+  "host_code_hash_registered": "57935ce3ddbb4ae2307c104fcb18b0cc6991beff0bba911937a932b96acf6f79",
+  "host_code_unchanged": true,
+  "unauthorized_executions_recomputed": 0
+ }
+}
