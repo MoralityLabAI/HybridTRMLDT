@@ -21,7 +21,7 @@ import torch
 
 from research_gym.molt_goblin_02 import inky as inky_mod
 
-from .resources3 import install_tree_guard, peak_tree_rss
+from .resources3 import install_tree_guard, lower_priority, peak_tree_rss
 
 from .arms import ARMS, BASE, PANEL, PRINCIPAL, RUNGS, TEACHER
 from .factory3 import Config, describe_grammar, logical_visits
@@ -75,6 +75,7 @@ def _r(x, nd=4):
 def _job(payload):
     """One training cell; top-level so spawned workers can run it. Returns (record, mech or None)."""
     cfg_d, family, seed, adv, want_mech, cache_teacher, teacher_d, threads, panels = payload
+    lower_priority()
     torch.set_num_threads(threads)
     cfg = Config.from_dict(cfg_d)
     panel = {"train": panels[family]["train"], "eval": dict(panels[family]["eval"])}
@@ -477,8 +478,9 @@ def main():
     ap.add_argument("--max-iterations", type=int, default=10_000)
     ap.add_argument("--no-inky", action="store_true")
     ap.add_argument("--ram-gib", type=float, default=3.0, help="hard total for the driver and all workers")
-    ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--workers", type=int, default=1)
     a = ap.parse_args()
+    lower_priority()
     if a.hours > 6.0:
         ap.error("campaign budget is capped at 6 hours")
     a.out.mkdir(parents=True, exist_ok=True)

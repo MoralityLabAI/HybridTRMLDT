@@ -16,6 +16,15 @@ GIB = 1 << 30
 _KEEP: dict = {}
 
 
+def lower_priority() -> None:
+    """Run below normal priority so interactive work on the machine takes precedence."""
+    try:
+        p = psutil.Process()
+        p.nice(psutil.BELOW_NORMAL_PRIORITY_CLASS if sys.platform == "win32" else 10)
+    except (psutil.Error, AttributeError):
+        pass
+
+
 def tree_rss() -> int:
     me = psutil.Process()
     total = me.memory_info().rss

@@ -81,8 +81,9 @@ canonical configurations; it never sees data, labels or hidden roots. Duplicates
 rejected by canonical digest before training. Successive halving: rung 0 = seed 11,
 rung 1 = 11, 23, rung 2 = 11, 23, 37. Promotion score = quality − 0.03·log2(inference
 visits / 4), with quality = mean over development families of (exact − A) + 0.5·(OOD − A OOD).
-Inky's task variants are used only after `verify_spec`. Training runs execute in 3 worker
-processes inside the 3 GiB job.
+Inky's task variants are used only after `verify_spec`. Training runs execute in one process
+with 2 torch threads at below-normal priority. The operator asked to reduce CPU use at
+12:20, so the planned 3 workers were cut to 1 before any campaign run completed.
 
 ## Freeze and finals
 
