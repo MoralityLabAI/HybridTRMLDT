@@ -84,6 +84,25 @@
   ]
  },
  {
+  "name": "S8_shuffle_audit",
+  "module": "research_gym.trm_skill_gym_v2.runner",
+  "hours": 0.4,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/audit_runner",
+   "--count",
+   "128",
+   "--seeds",
+   "0",
+   "--research-worlds",
+   "64",
+   "--shuffle-steps",
+   "300",
+   "--hours",
+   "0.4"
+  ]
+ },
+ {
   "name": "S7_inky_measure",
   "module": "research_gym.trm_skill_gym_v3.inky_lab",
   "hours": 0.4,

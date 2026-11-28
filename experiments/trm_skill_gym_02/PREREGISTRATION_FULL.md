@@ -187,3 +187,12 @@ A skill ships as `accepted` only if its source stage passed its gate. Otherwise 
     2048 training instances from 6,200,000+ and scores exact on 256 development roots from 6,100,000+.
   - Arms whose evidence does not exist at generation time record `evidence_unavailable`.
   - Descriptive only.
+
+### Addendum S8 (2026-11-28 12:05 MPST)
+
+- **Shuffled-supervision audit (S8).** `trm_skill_gym_v2.runner --count 128 --seeds 0
+  --research-worlds 64 --shuffle-steps 300`. This is the corrected GYM-01 shuffle: true vs shuffled
+  supervision × verifier feedback 0/1 on research and stopping, distinct roots.
+- **Leak criterion:** shuffled supervision with feedback 0 must stay within 0.05 of the
+  calibration-majority-slot accuracy. Feedback-1 results are reported separately, because the
+  in-episode verifier can lift a run above chance without label supervision.

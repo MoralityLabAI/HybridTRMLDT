@@ -175,7 +175,8 @@ SKILLS = ("repair", "curation", "research", "retrieval")
 
 def propose(out: Path, rounds: int, campaign_root: Path) -> None:
     path = out / "proposals.jsonl"
-    seen = done_keys(path, lambda r: (r["arm"], r["skill"], r["round"]))
+    # rows that only recorded missing evidence are retried on a later invocation
+    seen = done_keys(path, lambda r: (r["arm"], r["skill"], r["round"]) if r.get("status") != "evidence_unavailable" else None)
     client = InkyClient(max_completion_tokens=3000, reasoning_effort="low", max_retries=3)
     base = dsl.validate({"core": "trm"})
     rng = np.random.default_rng(20261128)
@@ -224,6 +225,10 @@ def measure(out: Path, steps: int, count: int) -> None:
     path = out / "measured.jsonl"
     seen = done_keys(path, lambda r: (r["arm"], r["skill"], r["round"]))
     rows = [json.loads(l) for l in (out / "proposals.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    latest = {}
+    for r in rows:  # a retried arm supersedes its earlier evidence_unavailable row
+        latest[(r["arm"], r["skill"], r["round"])] = r
+    rows = list(latest.values())
     base = dsl.validate({"core": "trm"})
     cache: Dict[str, Dict] = {}
     for r in rows:
