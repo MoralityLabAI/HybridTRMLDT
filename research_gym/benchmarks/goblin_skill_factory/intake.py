@@ -12,6 +12,8 @@ import gzip
 import hashlib
 import json
 from pathlib import Path
+import subprocess
+import sys
 
 import torch
 
@@ -213,6 +215,30 @@ class Groups:
             self.parent[r]=roots[0]
 
 
+def replay_source(gym, path, auditor):
+    """Use the same fresh-process audit entry point as the source CI job."""
+    module = auditor.__module__
+    args = [sys.executable, "-m", module]
+    if gym == "GSF-01":
+        args.append(str(path.resolve()))
+    else:
+        args.extend(("--audit", str(path.resolve())))
+    print(f"Auditing {gym} in isolated process", flush=True)
+    result = subprocess.run(args, cwd=Path(__file__).resolve().parents[3],
+                            capture_output=True, text=True, timeout=300, check=False)
+    if result.returncode:
+        raise ValueError(f"{gym} native replay failed (exit {result.returncode}): "
+                         f"{result.stderr[-6000:]}")
+    try:
+        actual = json.loads(result.stdout.strip())
+    except (ValueError, TypeError) as error:
+        raise ValueError(f"{gym} native replay did not return a JSON receipt") from error
+    if not isinstance(actual, dict):
+        raise ValueError(f"{gym} malformed native audit receipt")
+    print(f"{gym} audit receipt: {json.dumps(actual, sort_keys=True)}", flush=True)
+    return actual
+
+
 def stage(root,out):
     torch.set_num_threads(1)
     reports={}
@@ -221,7 +247,7 @@ def stage(root,out):
     for gym,(name,rep,trace,n,auditor) in SOURCES.items():
         path=root/name
         reports[gym]=json.loads((path/rep).read_text(encoding="utf-8"))
-        actual=auditor(path)
+        actual=replay_source(gym,path,auditor)
         expected=json.loads((path/"audit.json").read_text(encoding="utf-8"))
         if actual!=expected or actual.get("status")!="audited_development_only" or actual.get("rollouts",actual.get("research_rollouts"))!=n:
             raise ValueError(f"native audit or expected count mismatch: {gym}")
