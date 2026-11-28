@@ -13,3 +13,9 @@
 2. **CI artifacts.** The GYM-02 diagnostic artifacts could not be downloaded: anonymous artifact
    download returns HTTP 401, and token use is reserved. The same CI commands were re-run locally into
    `experiments/trm_skill_gym_02/ci_replay_local/`.
+3. **14:58 MPST, stage reorder.** The CPU reduction made it unlikely that every stage would fit before
+   the 19:49 deadline. The pending stages were reordered to S6 distillation and S5 router (cheap), then
+   S2 BPD, S4 research, S8 shuffle audit and S7 Inky measurement. No stage parameters changed.
+4. **Race coverage.** The 3.0 h calibration cap froze five skills; stopping did not start and is
+   unfinished. The two research archive configurations were cut by the deadline and are excluded as
+   incomplete.

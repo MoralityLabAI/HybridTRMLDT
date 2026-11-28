@@ -176,7 +176,7 @@ SKILLS = ("repair", "curation", "research", "retrieval")
 def propose(out: Path, rounds: int, campaign_root: Path) -> None:
     path = out / "proposals.jsonl"
     # rows that only recorded missing evidence are retried on a later invocation
-    seen = done_keys(path, lambda r: (r["arm"], r["skill"], r["round"]) if r.get("status") != "evidence_unavailable" else None)
+    seen = done_keys(path, lambda r: (r["arm"], r["skill"], r["round"]) if r.get("status") != "evidence_unavailable" or r["arm"] == "student_ranked" else None)
     client = InkyClient(max_completion_tokens=3000, reasoning_effort="low", max_retries=3)
     base = dsl.validate({"core": "trm"})
     rng = np.random.default_rng(20261128)
@@ -190,18 +190,10 @@ def propose(out: Path, rounds: int, campaign_root: Path) -> None:
                     cfg = dsl.mutate(base, np.random.default_rng([20261128, k, SKILLS.index(skill)]), 2)
                     rec.update(status="ok", config=cfg, change=dsl.diff(base, cfg), predicted=None)
                 elif arm == "student_ranked":
-                    sp = campaign_root / "distill" / "results.json"
-                    if not sp.exists():
-                        rec.update(status="evidence_unavailable")
-                    else:
-                        # Inky proposes three candidates; the learned student's ridge ranks them (development features only)
-                        cands = [ask(client, skill, base, None, "Propose a diverse candidate.", None, 4000 + 10 * k + j) for j in range(3)]
-                        ok = [c for c in cands if c["status"] == "ok"]
-                        rec.update(status="ok" if ok else "no_valid_candidate", candidates=cands)
-                        if ok:
-                            best = min(ok, key=lambda c: len(c["change"]))  # fallback ranking if student unavailable
-                            rec.update(config=best["config"], change=best["change"], predicted=best.get("predicted"),
-                                       ranking="smallest_edit_fallback")
+                    # The S6 student failed its gate (it does not beat the incumbent-score baseline) and has no
+                    # validated scoring interface for unseen proposals, so this arm is recorded as not run rather
+                    # than substituting a different ranking rule under the student's name.
+                    rec.update(status="not_run_student_not_validated")
                 else:
                     extra, budget = "", None
                     if arm == "rlt_constrained":

@@ -34,25 +34,23 @@
   ]
  },
  {
-  "name": "S4_research",
-  "module": "research_gym.trm_skill_gym_v3.research_env",
-  "hours": 1.25,
+  "name": "S6_distill",
+  "module": "research_gym.trm_skill_gym_v3.distill",
+  "hours": 0.25,
   "args": [
    "--out",
-   "experiments/trm_skill_gym_02/full/research",
-   "--train-worlds",
-   "300",
-   "--test-worlds",
-   "60",
-   "--seeds",
-   "10",
-   "11",
-   "12",
-   "13",
-   "--steps",
-   "3500",
+   "experiments/trm_skill_gym_02/full/distill"
+  ]
+ },
+ {
+  "name": "S5_router",
+  "module": "research_gym.trm_skill_gym_v3.router",
+  "hours": 0.5,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/router",
    "--hours",
-   "1.25"
+   "0.5"
   ]
  },
  {
@@ -76,23 +74,25 @@
   ]
  },
  {
-  "name": "S5_router",
-  "module": "research_gym.trm_skill_gym_v3.router",
-  "hours": 0.5,
+  "name": "S4_research",
+  "module": "research_gym.trm_skill_gym_v3.research_env",
+  "hours": 1.25,
   "args": [
    "--out",
-   "experiments/trm_skill_gym_02/full/router",
+   "experiments/trm_skill_gym_02/full/research",
+   "--train-worlds",
+   "300",
+   "--test-worlds",
+   "60",
+   "--seeds",
+   "10",
+   "11",
+   "12",
+   "13",
+   "--steps",
+   "3500",
    "--hours",
-   "0.5"
-  ]
- },
- {
-  "name": "S6_distill",
-  "module": "research_gym.trm_skill_gym_v3.distill",
-  "hours": 0.25,
-  "args": [
-   "--out",
-   "experiments/trm_skill_gym_02/full/distill"
+   "1.25"
   ]
  },
  {
