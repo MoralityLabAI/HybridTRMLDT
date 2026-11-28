@@ -1,0 +1,10 @@
+[
+ {"name": "S1_race", "module": "research_gym.trm_skill_gym_v3.race", "hours": 3.0,
+  "args": ["--out", "experiments/trm_skill_gym_02/full/race", "--hours", "3.0"]},
+ {"name": "S3_hybrid", "module": "research_gym.trm_skill_gym_v3.hybrid", "hours": 0.75,
+  "args": ["--out", "experiments/trm_skill_gym_02/full/hybrid", "--hours", "0.75"]},
+ {"name": "S4_research", "module": "research_gym.trm_skill_gym_v3.research_env", "hours": 1.25,
+  "args": ["--out", "experiments/trm_skill_gym_02/full/research", "--train-worlds", "300", "--test-worlds", "60", "--seeds", "10", "11", "12", "13", "--steps", "3500", "--hours", "1.25"]},
+ {"name": "S2_bpd", "module": "research_gym.trm_skill_gym_v3.bpd_skill", "hours": 1.25,
+  "args": ["--out", "experiments/trm_skill_gym_02/full/bpd", "--skills", "repair", "curation", "research", "--seeds", "0", "1", "--steps", "800", "--hours", "1.25"]}
+]
