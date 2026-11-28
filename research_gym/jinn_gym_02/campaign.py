@@ -387,6 +387,8 @@ class Campaign:
             "EXAMPLES:\n" + "\n".join(canonical(x) for x in examples[:3]),
             "CURRENT SPECIFICATION:\n" + canonical(spec),
             f"Allowed operations (at most {MAX_PATCH_OPS}):\n" + ops_doc,
+            "NUMERIC BOUNDS (a patch outside them is rejected): feature weight in (0, 10]; abstention threshold in [0, 0.95]; "
+            "min_evidence_items an integer 0-5; at most 10 features; each tag in at most one feature.",
             "Allowed tags: " + ", ".join(PERSONA_TAGS) + ". Host-boundary tags (" + ", ".join(BOUNDARY_TAGS)
             + ") may never be scored positively, and authorization is not part of the persona.",
             'Return only JSON: {"ops": [...], "rationale": "at most 30 words"}.'])
@@ -396,6 +398,7 @@ class Campaign:
         panel, recomb, batches = self.sel_lists()
         end = self.state["started_at"] + self.cfg["mutation_end_fraction"] * self.state["hours"] * 3600
         self.state["mutation_rounds_available"] = len(batches)
+        self.drop_partial_round()
         selector = E.LearnedSelector()
         for m in read_jsonl(self.out / "mutations.jsonl"):
             if m.get("features") is not None:
@@ -425,7 +428,7 @@ class Campaign:
                     if arm == "inky":
                         ex = [{"domain": x["domain"], "executed_tags": x["executed_tags"], "utility": round(x["utility"], 3),
                                "best": round(x["best_utility"], 3), "codes": E.task_codes(x)} for x in rows if E.task_codes(x)][:3]
-                        futs[p] = self.worker.submit(f"patch02|r{r}|{p}|{h}", self.patch_prompt(p, mod["spec"], diag, ex),
+                        futs[p] = self.worker.submit(f"patch02v2|r{r}|{p}|{h}", self.patch_prompt(p, mod["spec"], diag, ex),
                                                      self.cfg["patch_max_tokens"], "mutation_patch", self.cfg["patch_temperature"], 0)
             for p in PERSONAS:
                 for arm in E.ARMS:
@@ -454,6 +457,29 @@ class Campaign:
             self.timed("mutate", t0)
             self.save()
         self.state["phase"] = "RECOMB"
+        self.save()
+
+    def drop_partial_round(self):
+        """A stop inside a round leaves partial records and lineage updates. Move that round's records to
+        mutations_aborted.jsonl and rebuild every lineage from the completed rounds' accepted children."""
+        r = self.state["round"]
+        allm = read_jsonl(self.out / "mutations.jsonl")
+        partial = [m for m in allm if m["round"] >= r]
+        if partial:
+            for m in partial:
+                append_jsonl(self.out / "mutations_aborted.jsonl", m)
+            tmp = self.out / "mutations.jsonl.tmp"
+            with tmp.open("w", encoding="utf-8", newline="\n") as f:
+                for m in allm:
+                    if m["round"] < r:
+                        f.write(json.dumps(m, ensure_ascii=False, default=str) + "\n")
+            os.replace(tmp, self.out / "mutations.jsonl")
+        lin = {p: {a: self.state["roots"][p] for a in E.ARMS} for p in PERSONAS}
+        for m in sorted(read_jsonl(self.out / "mutations.jsonl"), key=lambda m: m["round"]):
+            if m["accepted"]:
+                lin[m["persona"]][m["arm"]] = m["child"]
+        self.state["lineages"] = lin
+        self.state["aborted_round_records"] = self.state.get("aborted_round_records", 0) + len(partial)
         self.save()
 
     def evaluate_candidate(self, r, p, arm, mod, prow, diag, ops, rule, text, batch, bp, panel, panel_priors, selector, archived):
