@@ -41,15 +41,14 @@ def strict_selected(text, valid, single=False):
 def graph_certificate(skill, parents, query=None, rounds=1):
     """Public graph only. +1 in, -1 out, 0 unknown. One synchronous round at a time.
 
-    Retrieval uses directed reachability from query, including a conservative upper
-    bound from reverse-free weak connectivity. Deduction assumes an acyclic graph.
+    Retrieval uses directed reachability from query; unreachable nodes are certified
+    only after the reached set stabilizes. Deduction assumes an acyclic graph.
     No labels, aux tensors, or verifier outcomes are accepted.
     Returns the certificate and a count of edge examinations (host work).
     """
     n = len(parents)
     if rounds < 0 or any(j < 0 or j >= n for ps in parents for j in ps):
         raise ValueError("bad graph/rounds")
-    edges = sum(map(len, parents))
     work = 0
     if skill == "retrieval":
         if query is None or not 0 <= query < n:

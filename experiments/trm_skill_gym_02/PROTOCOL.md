@@ -27,3 +27,12 @@ python -m research_gym.trm_skill_gym_v2.runner --out experiments/trm_skill_gym_0
 ```
 
 Outputs: results.json, distill.jsonl. The replay deliberately uses model checkpoints already committed in GYM-01; no new architecture training claim. Certificate checks are exhaustive for small DAGs (up to five nodes), supplemented by fresh graph instances. The research utility is synthetic and is not a measure of open-ended research ability.
+
+## Archived-finalist re-race (added executable)
+The separate race module trains every distinct valid archived final-rung configuration and fixed A/B/C/D controls from scratch, by default at 800 steps across seeds 10, 11, 12 and 13. Shared training includes graph chain depths 2/4/6/8. All candidates see identical calibration strata. A per-job wall cap and deadline apply; incomplete candidates are explicitly excluded, and a missing baseline stops the freeze. Select within the direct TRM model-FLOP ceiling and two-receipt limit. Freeze before test metrics; compare with the strongest eligible fixed baseline selected on calibration. Bootstrap paired root outcomes averaged across seeds and separately report seed deltas. This does not estimate uncertainty across architecture-training seeds. This is an archived finalist re-race, not a new live Inky search. Training time is measured, not equalized; matched gradient steps are the exposure control. No hard RSS kill beyond the inherited incremental guard. Inspect incomplete counts before interpreting.
+
+```sh
+python -m research_gym.trm_skill_gym_v2.race --out experiments/trm_skill_gym_02/race --hours 8
+# Small CI-only fixture
+python -m research_gym.trm_skill_gym_v2.race --out /tmp/skill02-race --skills deduction --seeds 10 --steps 2 --count 8 --train-count 64 --max-archive 1
+```

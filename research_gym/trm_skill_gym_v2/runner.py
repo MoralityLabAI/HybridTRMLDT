@@ -268,6 +268,7 @@ def leakage_control(count, steps):
 
 def live_inky(n):
     rows=[]
+    client=InkyClient(max_completion_tokens=2048,reasoning_effort="low",max_retries=0)
     # Same fresh public instances for both prompts. Equal cap and reasoning effort.
     for skill in ("research","stopping"):
         for i in range(n):
@@ -280,7 +281,6 @@ def live_inky(n):
                         "Read the skill and reason carefully. Return only the JSON object.")
                 user=(S.TEMPLATES[skill]["objective"]+"\n"+S.TEMPLATES[skill]["action"]+
                       "\n"+payload if variant=="compact" else S.render(skill)+"\n"+payload)
-                client=InkyClient(max_completion_tokens=2048,reasoning_effort="low",max_retries=0)
                 rec={"skill":skill,"root":1_700_000+i,"variant":variant}
                 try:
                     r=client.chat(system,user,temperature=0,seed=7)
