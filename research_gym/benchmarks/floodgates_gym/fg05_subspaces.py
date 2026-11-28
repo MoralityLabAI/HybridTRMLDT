@@ -100,6 +100,12 @@ def leading(cov):
 def discover(model, seed, mode, data, worlds):
     seq, caches, teacher_work = data
     before = G.weight_hash(model)
+    if any(p.requires_grad for p in model.parameters()):
+        raise ValueError("discovery requires a frozen target")
+    # fit_target freezes parameters after the optimizer step, but their
+    # last training gradients are still attached. Clear these old buffers
+    # before the probe so the postcondition detects new gradients only.
+    model.zero_grad(set_to_none=True)
     torch.manual_seed(seed+700)
     probe = G.DraftAdapter(RANK)
     sums = {site: torch.zeros(G.WIDTH,G.WIDTH,dtype=torch.float64) for site in SITES}
