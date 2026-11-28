@@ -152,8 +152,8 @@ class Campaign:
         if not todo:
             return
         payloads = [self._payload(*k) for k in todo]
-        results = list(self.pool.map(_job, payloads)) if self.pool else [_job(p) for p in payloads]
-        for (cid, family, seed, steps), (r, mech) in zip(todo, results):
+        results = self.pool.map(_job, payloads) if self.pool else (_job(p) for p in payloads)
+        for (cid, family, seed, steps), (r, mech) in zip(todo, results):   # checkpoint each cell as it lands
             self._record(cid, family, seed, steps, r, mech)
 
     def _run(self, cid, family, seed, steps):

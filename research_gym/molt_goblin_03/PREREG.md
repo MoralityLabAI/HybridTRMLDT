@@ -88,8 +88,13 @@ with 2 torch threads at below-normal priority. The operator asked to reduce CPU 
 ## Freeze and finals
 
 `finals3.freeze` writes `freeze.json` with its SHA-256 before any hidden run. Seeds: 11, 23,
-37, 41, 53, 67, 79, 97 (eight paired training seeds; with 256 paired roots each). Cells are
-ordered seed-major, so a deadline-truncated run stays balanced across arms. Specialization
+37, 41, 53, 67, 79, 97 (eight paired training seeds; with 256 paired roots each). Finals run
+as one below-normal-priority process, as the operator requested. Tier 1 runs first for
+all eight seeds: arms A, B, C, D, E, F, H, I, K, the Inky finalists and any K_win/teacher,
+on the four principal families plus research_plan. Tier 2 then runs everything else (G, J,
+A_cpu, the loop-forcing factorial, proof_deps, local_map3, cumsum3). Both tiers are
+seed-major, so a deadline-truncated run stays balanced across arms within a tier, and the
+seed count actually completed is reported per contrast. Specialization
 measurements, including gradient similarity, are taken on seeds 11 and 23 for mixture arms
 on the principal families and proof_deps. Task-conditional routing comes from one model
 per arm and seed (B, H, I; seeds 11, 23, 37), trained jointly on the four principal

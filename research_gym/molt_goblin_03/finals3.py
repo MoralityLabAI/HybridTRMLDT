@@ -87,12 +87,22 @@ def freeze(state_path: Path, out: Path, k: int = 2) -> dict:
     return frozen
 
 
+TIER1_ARMS = ("A_single", "B_hrm", "C_mix", "D_tied", "E_param", "F_visit", "H_sparse_st", "I_anneal", "K_distill")
+TIER1_FAMILIES = PRINCIPAL + ("research_plan",)
+
+
 def _order(arms: dict) -> list[str]:
     teachers = {v["teacher"] for v in arms.values() if v.get("teacher")}
     return [n for n in arms if n in teachers] + [n for n in arms if n not in teachers]
 
 
+def _tier1(name: str, arm: dict) -> bool:
+    return name in TIER1_ARMS or arm["kind"] in ("inky_finalist", "student_of_winning_mixture", "winning_mixture_teacher")
+
+
 def run(out: Path, seeds, threads: int, deadline: float, shard=(0, 1), mech_seeds=(11, 23)):
+    from .resources3 import lower_priority
+    lower_priority()
     torch.set_num_threads(threads)
     frozen = json.loads((out / "freeze.json").read_text(encoding="utf-8"))
     arms = frozen["arms"]
@@ -101,8 +111,11 @@ def run(out: Path, seeds, threads: int, deadline: float, shard=(0, 1), mech_seed
     ck = out / "checkpoints"
     ck.mkdir(exist_ok=True)
     idx = -1
-    for seed in seeds:
-        for family in ALL:
+    # Tier 1 (core arms x principal + finals-only families, all seeds) first, then everything else.
+    passes = [(True, [f for f in ALL if f in TIER1_FAMILIES]), (False, list(ALL))]
+    for tier1_pass, fam_list in passes:
+      for seed in seeds:
+        for family in fam_list:
             # A family's cells stay in one shard so teachers precede their students.
             idx += 1
             if idx % shard[1] != shard[0]:
@@ -110,6 +123,9 @@ def run(out: Path, seeds, threads: int, deadline: float, shard=(0, 1), mech_seed
             for name in _order(arms):
                 arm = arms[name]
                 if arm.get("families") and family not in arm["families"]:
+                    continue
+                in_tier1 = _tier1(name, arm) and family in TIER1_FAMILIES
+                if tier1_pass != in_tier1:
                     continue
                 key = f"{name}|{family}|{seed}"
                 if key in done:
@@ -166,7 +182,7 @@ def main():
     ap.add_argument("--seeds", type=int, nargs="+", default=list(SEEDS_FINAL))
     ap.add_argument("--threads", type=int, default=2)
     ap.add_argument("--hours", type=float, default=4.0)
-    ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--workers", type=int, default=1)
     ap.add_argument("--ram-gib", type=float, default=3.0, help="hard total for the driver and all workers")
     ap.add_argument("--freeze-only", action="store_true")
     a = ap.parse_args()

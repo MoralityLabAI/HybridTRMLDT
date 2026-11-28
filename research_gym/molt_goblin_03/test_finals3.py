@@ -23,6 +23,7 @@ def test_freeze_finals_analysis_export(tmp_path, monkeypatch):
     monkeypatch.setattr(finals3, "ALL", {"proof_resolve": panel, "cumsum3": {"train": TaskSpec("cumsum3", 5), "eval": {"dev": TaskSpec("cumsum3", 5)}}})
     monkeypatch.setattr(finals3, "PRINCIPAL", ("proof_resolve",))
     monkeypatch.setattr(finals3, "MECH_FAMILIES", ("proof_resolve",))
+    monkeypatch.setattr(finals3, "TIER1_FAMILIES", ("proof_resolve",))
     out = tmp_path / "finals"
     fr = finals3.freeze(run / "state.json", out)
     assert "A_cpu" in fr["arms"] and fr["arms"]["K_distill"]["teacher"] == "B_hrm"
@@ -31,6 +32,11 @@ def test_freeze_finals_analysis_export(tmp_path, monkeypatch):
     rows = [json.loads(l) for l in (out / "final_runs.jsonl").read_text().splitlines()]
     keys = [r["key"] for r in rows]
     assert keys.index("B_hrm|proof_resolve|11") < keys.index("K_distill|proof_resolve|11")
+    # tier 1 (core arms on tier-1 families, every seed) completes before any tier-2 cell
+    t1 = [i for i, k in enumerate(keys)
+          if finals3._tier1(k.split("|")[0], fr["arms"][k.split("|")[0]]) and k.split("|")[1] in finals3.TIER1_FAMILIES]
+    t2 = [i for i in range(len(keys)) if i not in t1]
+    assert t1 and t2 and max(t1) < min(t2)
     assert not any(k.startswith("A_single_last|cumsum3") for k in keys)
     assert any(r.get("mech") for r in rows if r["arm"] == "B_hrm")
     assert list((out / "checkpoints").glob("*__s11.pt"))
