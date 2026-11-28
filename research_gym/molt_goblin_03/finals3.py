@@ -174,6 +174,14 @@ def run_multitask(out: Path, arms_for_mt=("B_hrm", "H_sparse_st", "I_anneal"), s
             print(json.dumps({"key": key, "mi": r.get("family_module_mi_nats")}), flush=True)
 
 
+def _shard_entry(out: Path, seeds, threads: int, deadline: float, shard, multitask_first: bool):
+    from .resources3 import lower_priority
+    lower_priority()
+    if multitask_first:
+        run_multitask(out, threads=threads)
+    run(out, seeds, threads, deadline, shard=shard)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--state", type=Path, required=True)
@@ -186,6 +194,8 @@ def main():
     ap.add_argument("--ram-gib", type=float, default=3.0, help="hard total for the driver and all workers")
     ap.add_argument("--freeze-only", action="store_true")
     a = ap.parse_args()
+    from .resources3 import lower_priority
+    lower_priority()
     a.out.mkdir(parents=True, exist_ok=True)
     cap = install_tree_guard(a.ram_gib, receipt_path=a.out / "ram_breach.json")
     frozen = freeze(a.state, a.out, a.k)
@@ -196,13 +206,12 @@ def main():
     import multiprocessing as mp
     ctx = mp.get_context("spawn")
     deadline = time.time() + a.hours * 3600
-    procs = [ctx.Process(target=run, args=(a.out, a.seeds, a.threads, deadline, (i, a.workers))) for i in range(a.workers)]
+    procs = [ctx.Process(target=_shard_entry, args=(a.out, a.seeds, a.threads, deadline, (i, a.workers), i == 0))
+             for i in range(a.workers)]
     for p in procs:
         p.start()
     for p in procs:
         p.join()
-    if time.time() < deadline:
-        run_multitask(a.out, threads=a.threads)
     (a.out / "resource_peak.json").write_text(json.dumps({"peak_tree_rss_bytes": peak_tree_rss()}), encoding="utf-8")
 
 
