@@ -1,0 +1,428 @@
+name: Goblin Skill Factory CPU
+on:
+  pull_request:
+    paths:
+      - 'research_gym/benchmarks/goblin_skill_factory/**'
+      - '.github/workflows/goblin-skill-factory.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+# Cross-runner exact refits require a common numeric execution profile.
+# The preceding campaign used unpinned hardware-dispatched kernels.
+env:
+  PYTHONHASHSEED: '0'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  ATEN_CPU_CAPABILITY: 'default'
+  MKL_CBWR: 'COMPATIBLE'
+  ONEDNN_MAX_CPU_ISA: 'SSE41'
+defaults:
+  run:
+    shell: bash
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.gym --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.gym --smoke --out /tmp/gsf-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.audit /tmp/gsf-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.gym --out /tmp/gsf-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.audit /tmp/gsf-dev | tee /tmp/gsf-dev/audit.json
+      - name: Summarize GSF-01 paired development metrics
+        run: |
+          python - <<'PY'
+          import json, statistics as st
+          r = json.load(open('/tmp/gsf-dev/report.json'))
+          for family in sorted({x['family'] for x in r['cells']}):
+              for arm in sorted({x['arm'] for x in r['cells']}):
+                  xs = [x for x in r['cells'] if x['family']==family and x['arm']==arm]
+                  print(json.dumps(dict(family=family,arm=arm,dev=st.mean(x['dev']['raw_accuracy'] for x in xs),shift=st.mean(x['shift']['raw_accuracy'] for x in xs),shift_unsafe=st.mean(x['shift']['unsafe_rate'] for x in xs))))
+          for family in sorted({x['family'] for x in r['meta_repair']}):
+              for arm in ('refresh','rlt','damp'):
+                  xs=[c for x in r['meta_repair'] if x['family']==family for c in x['candidates'] if c['arm']==arm]
+                  print(json.dumps(dict(meta=family,arm=arm,dev=st.mean(x['dev']['raw_accuracy'] for x in xs),shift=st.mean(x['shift']['raw_accuracy'] for x in xs))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-01-development
+          path: /tmp/gsf-dev/
+          retention-days: 7
+  molt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
+      - run: python -m unittest discover -s research_gym/benchmarks/molt_hybrid -p 'test_*.py' -v
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --smoke --out /tmp/molt-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --audit /tmp/molt-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --out /tmp/molt-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --audit /tmp/molt-dev | tee /tmp/molt-dev/audit.json
+      - name: Summarize GSF-02 results
+        run: |
+          python - <<'PY'
+          import json, statistics as st
+          r = json.load(open('/tmp/molt-dev/molt_report.json'))
+          for arm in sorted({x['arm'] for x in r['cells']}):
+              xs = [x for x in r['cells'] if x['arm']==arm]
+              for split in ('dev','shift'):
+                  print(json.dumps(dict(arm=arm,split=split,expected_regret=st.mean(x[split]['mean_expected_regret'] for x in xs),saved_nodes=sum(x[split]['saved_nodes'] for x in xs),cold_nodes=sum(x[split]['cold_nodes'] for x in xs),hits=sum(x[split]['hits'] for x in xs),stale=sum(x[split]['stale'] for x in xs),model_visits=sum(x[split]['model_visits'] for x in xs))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-02-molt-development
+          path: /tmp/molt-dev/
+          retention-days: 7
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --smoke --out /tmp/repair-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --audit /tmp/repair-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --out /tmp/repair-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --audit /tmp/repair-dev | tee /tmp/repair-dev/audit.json
+      - name: Summarize native certified repair
+        run: |
+          python - <<'PY'
+          import json, statistics as st
+          r = json.load(open('/tmp/repair-dev/repair_report.json'))
+          for arm in sorted({x['arm'] for x in r['cells']}):
+              xs = [x for x in r['cells'] if x['arm']==arm]
+              for split in ('dev','shift'):
+                  for budget in ('1','3','5'):
+                      ms=[x[split][budget] for x in xs]
+                      print(json.dumps(dict(arm=arm,split=split,budget=budget,regret=st.mean(x['mean_regret'] for x in ms),utility=st.mean(x['mean_utility'] for x in ms),missed=sum(x['missed_viable'] for x in ms),repaired=sum(x['repaired'] for x in ms),unsafe=sum(x['unsafe'] for x in ms),viable=sum(x['viable'] for x in ms),nominations=sum(x['nominations'] for x in ms),cell_visits=sum(x['work'].get('cell_visits',0) for x in ms),issuer_checks=sum(x['work'].get('issuer_checks',0) for x in ms),prescan_checks=sum(x['work'].get('prescan_checks',0) for x in ms),elimination_checks=sum(x['work'].get('elimination_admissibility_checks',0) for x in ms))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-03-native-repair-development
+          path: /tmp/repair-dev/
+          retention-days: 7
+  persona:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona_private --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --smoke --out /tmp/persona-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --audit /tmp/persona-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --out /tmp/persona-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --audit /tmp/persona-dev | tee /tmp/persona-dev/audit.json
+      - name: Summarize Dual-LDT persona externalization
+        run: |
+          python - <<'PY'
+          import json, statistics as st
+          r=json.load(open('/tmp/persona-dev/persona_report.json'))
+          for arm in sorted({x['arm'] for x in r['cells']}):
+              xs=[x for x in r['cells'] if x['arm']==arm]
+              for split in ('dev','shift'):
+                  ms=[x[split] for x in xs]
+                  print(json.dumps(dict(arm=arm,split=split,regret=st.mean(m['mean_regret'] for m in ms),tv=st.mean(m['mean_tv'] for m in ms),lane_accuracy=st.mean(m['tag_classification']['lane_accuracy'] for m in ms),unsafe=sum(m.get('unsafe',0) for m in ms),stale_rejected=sum(m.get('stale_rejected',0) for m in ms),stale_tests=sum(m.get('stale_tests',0) for m in ms),optimal=sum(m.get('viable_optimal',0) for m in ms),viable=sum(m.get('viable',0) for m in ms))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-04-dual-ldt-public-development
+          path: /tmp/persona-dev/
+          retention-days: 7
+  clocks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --smoke --out /tmp/clocks-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --audit /tmp/clocks-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --out /tmp/clocks-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --audit /tmp/clocks-dev | tee /tmp/clocks-dev/audit.json
+      - name: Summarize loop schedule and adaptive exit results
+        run: |
+          python - <<'PY'
+          import json, statistics as st
+          r=json.load(open('/tmp/clocks-dev/clock_report.json'))
+          for arm in sorted({x['arm'] for x in r['cells']}):
+              xs=[x for x in r['cells'] if x['arm']==arm]
+              for split in ('dev','shift'):
+                  for policy in xs[0][split]:
+                      ms=[x[split][policy] for x in xs]
+                      print(json.dumps(dict(arm=arm,split=split,policy=policy,accuracy=st.mean(m['accuracy'] for m in ms),ticks=st.mean(m['mean_ticks'] for m in ms),chain=st.mean(m['families']['chain']['accuracy'] for m in ms),compose=st.mean(m['families']['compose']['accuracy'] for m in ms),node_visits=sum(m['node_visits'] for m in ms),exact_hops=sum(m['exact_hops'] for m in ms))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-05-loop-clocks-development
+          path: /tmp/clocks-dev/
+          retention-days: 7
+  research-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --smoke --out /tmp/research-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --audit /tmp/research-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --out /tmp/research-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --audit /tmp/research-dev | tee /tmp/research-dev/audit.json
+      - name: Report matched research policy results
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/research-dev/research_report.json'))
+          for split,policies in r['summaries'].items():
+              for policy,m in policies.items():
+                  print(json.dumps(dict(split=split,policy=policy,**m),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-06-research-repair-development
+          path: /tmp/research-dev/
+          retention-days: 7
+  mcp-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --smoke --out /tmp/mcp-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --audit /tmp/mcp-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --out /tmp/mcp-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --audit /tmp/mcp-dev | tee /tmp/mcp-dev/audit.json
+      - name: Summarize routing campaign
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/mcp-dev/mcp_report.json'))
+          for split in ('dev','shift'):
+              for arm in sorted({c['arm'] for c in r['cells']}):
+                  for layout in ('search','layered_ldt'):
+                      for budget in ('full','low'):
+                          ms=[(c[split] if budget=='full' else c['low_budget'][split])[layout] for c in r['cells'] if c['arm']==arm]
+                          n=sum(m['n'] for m in ms)
+                          accepted=sum(m.get('accepted',0) for m in ms)
+                          calls=sum(m.get('tool_calls',0) for m in ms)
+                          print(json.dumps(dict(split=split,arm=arm,layout=layout,budget=budget,n=n,accepted=accepted,acceptance=accepted/n,calls=calls,calls_per_accepted=calls/accepted if accepted else None,cell_visits=sum(m['candidate_cell_visits'] for m in ms),handoff_bytes=sum(m.get('handoff_bytes',0) for m in ms))))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-07-mcp-geometry-development
+          path: /tmp/mcp-dev/
+          retention-days: 7
+  certificate-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --smoke --out /tmp/cert-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --audit /tmp/cert-smoke
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --out /tmp/cert-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --audit /tmp/cert-dev | tee /tmp/cert-dev/audit.json
+      - name: Summarize paired certificate search and memory
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/cert-dev/certificate_report.json'))
+          for split in ('dev','shift','trace_train'):
+              for arm in sorted({c['arm'] for c in r['cells']}):
+                  for cache in ('cold','lru','forecast'):
+                      ms=[c[split] for c in r['cells'] if c['arm']==arm and c['cache']==cache]
+                      n=sum(m['queries'] for m in ms)
+                      work={k:sum(m['work'].get(k,0) for m in ms) for k in set().union(*(m['work'] for m in ms))}
+                      print(json.dumps(dict(split=split,arm=arm,cache=cache,n=n,regret=sum(m['mean_regret']*m['queries'] for m in ms)/n,optimal=sum(m.get('optimal_certificates',0) for m in ms),proven_empty=sum(m.get('proven_empty',0) for m in ms),missed=sum(m.get('missed_viable',0) for m in ms),unsafe=sum(m.get('unsafe',0) for m in ms),cold_issues=work.get('cold_issues',0),cache_hits=work.get('cache_hits',0),verdict_requests=work.get('verdict_requests',0),neural_visits=work.get('neural_cell_visits',0),witness_checks=work.get('witness_checks',0),peak_entries=max(m['peak_entries'] for m in ms)),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-08-certificate-search-development
+          path: /tmp/cert-dev/
+          retention-days: 7
+  goblinbench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.goblinbench --selftest
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.goblinbench --out /tmp/bench-dev
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.goblinbench --audit /tmp/bench-dev | tee /tmp/bench-dev/audit.json
+      - name: Report public reference results
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/bench-dev/bench_report.json'))
+          for c in r['cells']:
+              print(json.dumps(dict(gym=c['gym'],role=c['role'],score=c['result']['score'],delta=c['result'].get('final_delta'),fits=c['result']['fits'],claim_correct=c['result']['claim_correct'],final_guard=c['result']['final_guard']),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-09-bench-development
+          path: /tmp/bench-dev/
+          retention-days: 7
+  staged-intake:
+    needs: [cpu, molt, repair, persona, clocks, research-repair, mcp-geometry, certificate-search, goblinbench]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gsf-*-development
+          path: /tmp/gsf-artifacts
+      - run: python -m research_gym.benchmarks.goblin_skill_factory.intake --artifacts /tmp/gsf-artifacts --out /tmp/gsf-intake
+      - uses: actions/upload-artifact@v4
+        with:
+          name: goblinbench-staged-intake
+          path: /tmp/gsf-intake/
+          retention-days: 14
