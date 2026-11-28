@@ -109,7 +109,12 @@ def resources(campaign: Path) -> Dict:
             race_sup.append(s.get("peak_tree_rss_bytes", 0))
     sup_cal = campaign / "race" / "supervision_cal.json"
     cal = json.loads(sup_cal.read_text(encoding="utf-8")) if sup_cal.exists() else {}
-    worst = max([v.get("peak_tree_rss_bytes", 0) for v in cal.values()] + race_sup + [0])
+    # the per-config supervisor peaks are also logged in race.log ("peak=<MiB>MiB"); the test-only
+    # invocation rewrites supervision_cal.json, so the log is the complete record
+    import re
+    log = campaign / "race" / "race.log"
+    logged = [int(m) * 2**20 for m in re.findall(r"peak=(\d+)MiB", log.read_text(encoding="utf-8"))] if log.exists() else []
+    worst = max([v.get("peak_tree_rss_bytes", 0) for v in cal.values()] + race_sup + logged + [0])
     return {"stage_peak_tree_rss_bytes": peaks, "race_job_peak_tree_rss_max_bytes": worst,
             "limit_bytes": 3 * 1024**3, "all_below_limit": all((p or 0) < 3 * 1024**3 for p in list(peaks.values()) + [worst]),
             "stage_status": {k: v.get("status") for k, v in q["stages"].items()}}

@@ -1,0 +1,54 @@
+{
+ "complete_jobs": [
+  "baselines",
+  "ff_s10",
+  "ff_s11",
+  "ff_s12",
+  "gru_s10",
+  "gru_s11",
+  "gru_s12",
+  "rlt_s10",
+  "rlt_s11",
+  "trm_s10",
+  "trm_s11"
+ ],
+ "incomplete_jobs": [
+  "ff_s13",
+  "gru_s13",
+  "rlt_s12",
+  "rlt_s13",
+  "trm_s12",
+  "trm_s13"
+ ],
+ "planner_status": {
+  "dev_screen_gate_h4": {
+   "tractable": 60,
+   "total": 60,
+   "status": [
+    "exact"
+   ]
+  },
+  "dev_confounded_h5": {
+   "tractable": 60,
+   "total": 60,
+   "status": [
+    "exact"
+   ]
+  },
+  "withheld_deep_chain_h5": {
+   "tractable": 60,
+   "total": 60,
+   "status": [
+    "exact"
+   ]
+  },
+  "surprise_h4": {
+   "tractable": 60,
+   "total": 60,
+   "status": [
+    "exact"
+   ]
+  }
+ },
+ "wall_seconds": 4500.7
+}

@@ -1,0 +1,1111 @@
+{
+ "inputs": {
+  "arm": "F_trm_rlt",
+  "bpd_commit": "ab93e4da986beef87897f8d1244c7fe7564b5bde",
+  "bpd_commit_expected": "ab93e4da986beef87897f8d1244c7fe7564b5bde",
+  "bpd_root": "C:/Users/patri/OneDrive/Documents/GitHub/BPD",
+  "checkpoint": "experiments/trm_skill_gym_01/run/checkpoints/repair__F_trm_rlt__s1.pt",
+  "checkpoint_sha256": "939a0ab6bbfddba2e8712f66e7e10755a4e94db143cda40802c6803469df6c9c",
+  "counts": {
+   "calibration": 96,
+   "fit": 96,
+   "test": 128
+  },
+  "hyperparameters": {
+   "active_frac": 0.5,
+   "adv_inner_steps": 2,
+   "base_seed": 7000,
+   "batch": 32,
+   "c_mult": 1.5,
+   "cal_count": 96,
+   "ci_d_model": 64,
+   "classify_batch": 48,
+   "classify_comps": 24,
+   "classify_rotations": 2,
+   "coeff_adv": 0.5,
+   "coeff_faith": 10000.0,
+   "coeff_stoch": 0.5,
+   "depths": [
+    1,
+    2,
+    4
+   ],
+   "fit_count": 96,
+   "log_every": 25,
+   "lr": 0.002,
+   "n_draw": 8,
+   "n_random": 5,
+   "steps": 800,
+   "test_count": 128,
+   "warmup": 100
+  },
+  "model_config": {
+   "aggregation": "relation+mean",
+   "core": "trm",
+   "cycles": 1,
+   "feedback": "rlt",
+   "grad_cycles": 1,
+   "hidden": 32,
+   "latent_reset": false,
+   "latent_steps": 2,
+   "ldt_projection": false,
+   "lr": 0.002,
+   "mixer_layers": 1,
+   "norm": "layer",
+   "residual": "add",
+   "state_partition": "shared",
+   "supervision": "deep",
+   "update_schedule": "latent_then_answer",
+   "verifier_visits": 1,
+   "visits": 3,
+   "weight_decay": 0.01
+  },
+  "roots": {
+   "calibration": [
+    2400000,
+    2500000
+   ],
+   "fit": [
+    2300000,
+    2400000
+   ],
+   "test": [
+    2500000,
+    2600000
+   ]
+  },
+  "seed": 1,
+  "skill": "repair"
+ },
+ "kind": "trm_skill_gym_v3_bpd_receipt",
+ "outputs": {
+  "factors_file_sha256": "b94dd54b943b9755e59b21016bbb4e888ff9a5875c07f64e7259333e0a909791",
+  "factors_tensor_sha256": "e1c436e17356431a2971a518a9b289a80472073c34cdd231fbb2547a8e2020e6",
+  "importance_sha256": "674b0c57d42d970f401a97e79cc1b3ac3f17aad0938cea7eeda7523e18a421ae",
+  "result_sha256": "4f2c9e2b55862bb45fdd69308ff4a2a46e308394415bd36d0cc6d5aa25a53f11"
+ },
+ "replay_samples": [
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 0.0,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "latent",
+   "name": "A",
+   "passes": null,
+   "spec": null,
+   "visits": 3
+  },
+  {
+   "acc_sha256": "5eb7e7b6b71cc526e7ea0412a495f45cbb0bbbe6730cf2663a037777e714c905",
+   "basis_key": "B",
+   "energy": 4762.1804606119795,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.625,
+    "dense_large_region": 0.453125,
+    "tree_region": 0.8046875
+   },
+   "method": "latent",
+   "name": "B",
+   "passes": null,
+   "spec": null,
+   "visits": 3
+  },
+  {
+   "acc_sha256": "161215a5bccf705ddbeadbd79b1c3b3f9cd57762528e268bebbdf37dd615fcca",
+   "basis_key": "C",
+   "energy": 968.6057637532552,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.7109375,
+    "dense_large_region": 0.6328125,
+    "tree_region": 0.9453125
+   },
+   "method": "latent",
+   "name": "C",
+   "passes": null,
+   "spec": null,
+   "visits": 3
+  },
+  {
+   "acc_sha256": "46f71bdd5bfc2bceac300c7de804cb17f96468c8ad8646570f0d3431a4822025",
+   "basis_key": "D",
+   "energy": 496.28717041015625,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.7265625,
+    "dense_large_region": 0.5703125,
+    "tree_region": 0.9765625
+   },
+   "method": "latent",
+   "name": "D",
+   "passes": null,
+   "spec": null,
+   "visits": 3
+  },
+  {
+   "acc_sha256": "097761cb4ce5205212387b7a94f6bce47cd583d69f0eaf8674b37bac75082318",
+   "basis_key": null,
+   "energy": 6635.094824026029,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.640625,
+    "tree_region": 1.0
+   },
+   "method": "svd",
+   "name": "E",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     11,
+     13,
+     14,
+     15,
+     16,
+     24,
+     33,
+     35,
+     41,
+     44,
+     51,
+     55,
+     58
+    ],
+    "net_z.layers.0.b": [
+     10,
+     11,
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "da082b7a64c96702fca8910105fb231b2d38e4ec2fbb724f864eb48346a95a91",
+   "basis_key": null,
+   "energy": 285.33284584184486,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.7734375,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "F",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "b69f4804d115c494e73dfe52cf422907dd3651b950ce59d84852b8d82c775a72",
+   "basis_key": null,
+   "energy": 355.727197414885,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.7734375,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "H",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     17
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "d34d146299dbed994187f6e8c0d40cf72912fc6dae5ee0c2e0331355348407f3",
+   "basis_key": null,
+   "energy": 233.43328742372492,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_rank_0",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     23
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "d34d146299dbed994187f6e8c0d40cf72912fc6dae5ee0c2e0331355348407f3",
+   "basis_key": null,
+   "energy": 233.43328742372492,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_energy_0",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     23
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 35.59204241478195,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_rank_1",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     58
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "1326b9b8ac715e837afe2b9864c05357696b124d3c7262b993f44ae036acb1ca",
+   "basis_key": null,
+   "energy": 202.26770117568472,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_energy_1",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     21
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "da082b7a64c96702fca8910105fb231b2d38e4ec2fbb724f864eb48346a95a91",
+   "basis_key": null,
+   "energy": 285.33284584184486,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.7734375,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_rank_2",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "da082b7a64c96702fca8910105fb231b2d38e4ec2fbb724f864eb48346a95a91",
+   "basis_key": null,
+   "energy": 285.33284584184486,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.7734375,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_energy_2",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 16.001128133696813,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_rank_3",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     60
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 136.146472648407,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_energy_3",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     37
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "a512529aeb6f5338bb8a809d4e3649e6f5963632ff96aed239300d87499d1796",
+   "basis_key": null,
+   "energy": 152.15115980866054,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_rank_4",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     28
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "a512529aeb6f5338bb8a809d4e3649e6f5963632ff96aed239300d87499d1796",
+   "basis_key": null,
+   "energy": 152.15115980866054,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_energy_4",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     28
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 0.0409406969944636,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "F_pass0",
+   "passes": [
+    0
+   ],
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 1.1397323608398438,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "F_pass1",
+   "passes": [
+    1
+   ],
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 4.325482368469238,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "F_pass2",
+   "passes": [
+    2
+   ],
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 6.337179342905681,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "F_pass3",
+   "passes": [
+    3
+   ],
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 16.091176350911457,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "F_pass4",
+   "passes": [
+    4
+   ],
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 32.726475397745766,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "F_pass5",
+   "passes": [
+    5
+   ],
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 41.95747502644857,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "F_pass6",
+   "passes": [
+    6
+   ],
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 68.00892766316731,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "F_pass7",
+   "passes": [
+    7
+   ],
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "43eb7bfaeb97a55b3c1fbb7f2c69f2cf5e68c9d3f0503308af471f2282ddbcf5",
+   "basis_key": null,
+   "energy": 100.27786254882812,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.765625,
+    "dense_large_region": 0.65625,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "F_pass8",
+   "passes": [
+    8
+   ],
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 3
+  },
+  {
+   "acc_sha256": "28f2a1c4ce0b8cda35d9e268bbd8fedab5cf35c22a66bfcb5c66a8cb7735f8ca",
+   "basis_key": null,
+   "energy": 0.0,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.7265625,
+    "dense_large_region": 0.59375,
+    "tree_region": 0.9921875
+   },
+   "method": "latent",
+   "name": "A@2x",
+   "passes": null,
+   "spec": null,
+   "visits": 6
+  },
+  {
+   "acc_sha256": "4dcdd59e51f17c69bc173ac17caef01c47d765cb2615c452efb4ec901be87cbf",
+   "basis_key": "B",
+   "energy": 11947.978556315104,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.2734375,
+    "dense_large_region": 0.1015625,
+    "tree_region": 0.5078125
+   },
+   "method": "latent",
+   "name": "B@2x",
+   "passes": null,
+   "spec": null,
+   "visits": 6
+  },
+  {
+   "acc_sha256": "fd228ff4f8118717ab56e530d5b1a70d148206f469b4782fed07c20084b8b40f",
+   "basis_key": "C",
+   "energy": 1327.5722834269206,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.71875,
+    "dense_large_region": 0.5859375,
+    "tree_region": 0.9609375
+   },
+   "method": "latent",
+   "name": "C@2x",
+   "passes": null,
+   "spec": null,
+   "visits": 6
+  },
+  {
+   "acc_sha256": "ab0b5888104170c99b57111443eb8ad66670b60d91d1ad56bcd47bf8bcc4183c",
+   "basis_key": "D",
+   "energy": 2214.730555216471,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.609375,
+    "dense_large_region": 0.4609375,
+    "tree_region": 0.90625
+   },
+   "method": "latent",
+   "name": "D@2x",
+   "passes": null,
+   "spec": null,
+   "visits": 6
+  },
+  {
+   "acc_sha256": "b701e50c0e0f740b6092c6aa8f350cd23788d8e473d120d299fdec6729a8fdea",
+   "basis_key": null,
+   "energy": 46858.80802999934,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.734375,
+    "dense_large_region": 0.59375,
+    "tree_region": 0.9921875
+   },
+   "method": "svd",
+   "name": "E@2x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     11,
+     13,
+     14,
+     15,
+     16,
+     24,
+     33,
+     35,
+     41,
+     44,
+     51,
+     55,
+     58
+    ],
+    "net_z.layers.0.b": [
+     10,
+     11,
+     15
+    ]
+   },
+   "visits": 6
+  },
+  {
+   "acc_sha256": "89f8355c35957bdf164e202757554f5ca80678fc4e3034e57abd964674a53574",
+   "basis_key": null,
+   "energy": 2842.3922719905772,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.734375,
+    "dense_large_region": 0.59375,
+    "tree_region": 0.9921875
+   },
+   "method": "bpd",
+   "name": "F@2x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 6
+  },
+  {
+   "acc_sha256": "7b7d62d730ebc7be82dd4e0c729ac8414ced28448c7c0de35b8ef76c98ae1b82",
+   "basis_key": null,
+   "energy": 2816.7241755388677,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.7265625,
+    "dense_large_region": 0.578125,
+    "tree_region": 0.9921875
+   },
+   "method": "bpd",
+   "name": "H@2x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     17
+    ]
+   },
+   "visits": 6
+  },
+  {
+   "acc_sha256": "347e2533e0c806f0b104e91fd81fa630f14197aa565fba0414810fb1f7169e66",
+   "basis_key": null,
+   "energy": 1459.701259098326,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.7265625,
+    "dense_large_region": 0.578125,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_energy_0@2x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     23
+    ]
+   },
+   "visits": 6
+  },
+  {
+   "acc_sha256": "a90ed4a396fe39208913f2aa6c19e0403eeaf09a3daab6bbbb46a2f8bd6a23a7",
+   "basis_key": null,
+   "energy": 1397.9713181126863,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.7265625,
+    "dense_large_region": 0.59375,
+    "tree_region": 1.0
+   },
+   "method": "bpd",
+   "name": "G_energy_1@2x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     21
+    ]
+   },
+   "visits": 6
+  },
+  {
+   "acc_sha256": "89f8355c35957bdf164e202757554f5ca80678fc4e3034e57abd964674a53574",
+   "basis_key": null,
+   "energy": 2842.3922719905772,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.734375,
+    "dense_large_region": 0.59375,
+    "tree_region": 0.9921875
+   },
+   "method": "bpd",
+   "name": "G_energy_2@2x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 6
+  },
+  {
+   "acc_sha256": "4b4580b3a6c74a65c7549c0b2a9bb0c9281725783ace27ef134aad1b04a96e1c",
+   "basis_key": null,
+   "energy": 1075.5684487378846,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.734375,
+    "dense_large_region": 0.5703125,
+    "tree_region": 0.9921875
+   },
+   "method": "bpd",
+   "name": "G_energy_3@2x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     37
+    ]
+   },
+   "visits": 6
+  },
+  {
+   "acc_sha256": "8fe97d1e049d933522ea7f53256b88300c437d03bc170ce741d64dcecd2f3832",
+   "basis_key": null,
+   "energy": 1296.3031506196905,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.7265625,
+    "dense_large_region": 0.5859375,
+    "tree_region": 0.9921875
+   },
+   "method": "bpd",
+   "name": "G_energy_4@2x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     28
+    ]
+   },
+   "visits": 6
+  },
+  {
+   "acc_sha256": "9814955378b3623289c1a5592f4c1574835b0a3480e94eb1135ff4f812a9a9ac",
+   "basis_key": null,
+   "energy": 0.0,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.46875,
+    "dense_large_region": 0.2734375,
+    "tree_region": 0.875
+   },
+   "method": "latent",
+   "name": "A@4x",
+   "passes": null,
+   "spec": null,
+   "visits": 12
+  },
+  {
+   "acc_sha256": "215d06ee1ae52235a3a590602ca353311be3539a1ceaca756204204727c07d7d",
+   "basis_key": "B",
+   "energy": 26033.827189127605,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.1875,
+    "dense_large_region": 0.09375,
+    "tree_region": 0.1796875
+   },
+   "method": "latent",
+   "name": "B@4x",
+   "passes": null,
+   "spec": null,
+   "visits": 12
+  },
+  {
+   "acc_sha256": "362be25c2f7fe2093c73bb0fc8943deed8efeba5a0515b23c1ced3dbcad7ffd0",
+   "basis_key": "C",
+   "energy": 1937.2440821329753,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.6953125,
+    "dense_large_region": 0.5546875,
+    "tree_region": 0.9765625
+   },
+   "method": "latent",
+   "name": "C@4x",
+   "passes": null,
+   "spec": null,
+   "visits": 12
+  },
+  {
+   "acc_sha256": "5ab782032119d73f940189379d9d11cee4bec8888a494322662b20c3ab188671",
+   "basis_key": "D",
+   "energy": 6370.740142822266,
+   "energy_kind": "latent_squared_norm",
+   "exact": {
+    "cycle_region": 0.3984375,
+    "dense_large_region": 0.3203125,
+    "tree_region": 0.6875
+   },
+   "method": "latent",
+   "name": "D@4x",
+   "passes": null,
+   "spec": null,
+   "visits": 12
+  },
+  {
+   "acc_sha256": "b1c6fbabd3e45686e720613c8cc546c8d7dc0e6a6502440d44c6cf9466ecbe4a",
+   "basis_key": null,
+   "energy": 304945.7574192981,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.515625,
+    "dense_large_region": 0.3515625,
+    "tree_region": 0.8046875
+   },
+   "method": "svd",
+   "name": "E@4x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     11,
+     13,
+     14,
+     15,
+     16,
+     24,
+     33,
+     35,
+     41,
+     44,
+     51,
+     55,
+     58
+    ],
+    "net_z.layers.0.b": [
+     10,
+     11,
+     15
+    ]
+   },
+   "visits": 12
+  },
+  {
+   "acc_sha256": "30249fa5c245b4bda8c462b5c2adba660b013f18a5fa6982e0c8ec84de913e3a",
+   "basis_key": null,
+   "energy": 22605.591375107568,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.453125,
+    "dense_large_region": 0.234375,
+    "tree_region": 0.84375
+   },
+   "method": "bpd",
+   "name": "F@4x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 12
+  },
+  {
+   "acc_sha256": "619d6e427e09ef8e714f0f00250ada18f5cc94bebda9922e2e5953e34405f975",
+   "basis_key": null,
+   "energy": 19554.662167634815,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.484375,
+    "dense_large_region": 0.2734375,
+    "tree_region": 0.84375
+   },
+   "method": "bpd",
+   "name": "H@4x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     17
+    ]
+   },
+   "visits": 12
+  },
+  {
+   "acc_sha256": "53cbd5bed67611ad6851eadd51ef243e2be5025d22a05005fbeb0633de04468b",
+   "basis_key": null,
+   "energy": 8261.982708098367,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.4765625,
+    "dense_large_region": 0.28125,
+    "tree_region": 0.8671875
+   },
+   "method": "bpd",
+   "name": "G_energy_0@4x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     23
+    ]
+   },
+   "visits": 12
+  },
+  {
+   "acc_sha256": "aeb35e94c1d88ca2f1186d37ab308f0a62b69573e51ab785aa26f684fb52c05a",
+   "basis_key": null,
+   "energy": 9234.791487720484,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.46875,
+    "dense_large_region": 0.2578125,
+    "tree_region": 0.8671875
+   },
+   "method": "bpd",
+   "name": "G_energy_1@4x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     21
+    ]
+   },
+   "visits": 12
+  },
+  {
+   "acc_sha256": "30249fa5c245b4bda8c462b5c2adba660b013f18a5fa6982e0c8ec84de913e3a",
+   "basis_key": null,
+   "energy": 22605.591375107568,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.453125,
+    "dense_large_region": 0.234375,
+    "tree_region": 0.84375
+   },
+   "method": "bpd",
+   "name": "G_energy_2@4x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     15
+    ]
+   },
+   "visits": 12
+  },
+  {
+   "acc_sha256": "4894d111e8a617cd417de86c568b927df3c5dea057251b0b68223373ae9a63e6",
+   "basis_key": null,
+   "energy": 7426.123771782343,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.4921875,
+    "dense_large_region": 0.28125,
+    "tree_region": 0.859375
+   },
+   "method": "bpd",
+   "name": "G_energy_3@4x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     37
+    ]
+   },
+   "visits": 12
+  },
+  {
+   "acc_sha256": "03fbad42d934a2b753119f49da3186c69e232ff2bbba799bc3335507e3e622d6",
+   "basis_key": null,
+   "energy": 10361.620710497722,
+   "energy_kind": "pre_norm_write_squared_norm",
+   "exact": {
+    "cycle_region": 0.4765625,
+    "dense_large_region": 0.265625,
+    "tree_region": 0.859375
+   },
+   "method": "bpd",
+   "name": "G_energy_4@4x",
+   "passes": null,
+   "spec": {
+    "net_z.layers.0.a": [
+     28
+    ]
+   },
+   "visits": 12
+  }
+ ],
+ "version": 1
+}

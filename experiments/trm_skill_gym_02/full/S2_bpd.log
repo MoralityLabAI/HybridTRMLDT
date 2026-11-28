@@ -1,0 +1,14 @@
+{
+ "complete": false,
+ "jobs": [
+  "curation__F_trm_rlt__s0",
+  "repair__F_trm_rlt__s0",
+  "repair__F_trm_rlt__s1"
+ ],
+ "incomplete": {
+  "curation__F_trm_rlt__s1": "deadline during BPD training at step 754",
+  "research__F_trm_rlt__s0": "deadline reached before job start",
+  "research__F_trm_rlt__s1": "deadline reached before job start"
+ },
+ "bpd_commit": "ab93e4da986beef87897f8d1244c7fe7564b5bde"
+}

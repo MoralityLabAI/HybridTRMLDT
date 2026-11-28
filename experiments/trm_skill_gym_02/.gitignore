@@ -1,0 +1,4 @@
+# regenerable planner cache (128 MB) and atomic-write temporaries
+full/research/plans.pkl
+*.tmp
+full/research/train_data.pt

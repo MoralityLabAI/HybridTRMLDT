@@ -1,0 +1,181 @@
+{
+ "count": 256,
+ "items": [
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\A_existing_skill__s10.pt",
+   "name": "A_existing_skill",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\A_existing_skill__s10.json",
+   "seed": 10
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\B_feedforward__s10.pt",
+   "name": "B_feedforward",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\B_feedforward__s10.json",
+   "seed": 10
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\B_feedforward__s11.pt",
+   "name": "B_feedforward",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\B_feedforward__s11.json",
+   "seed": 11
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\B_feedforward__s12.pt",
+   "name": "B_feedforward",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\B_feedforward__s12.json",
+   "seed": 12
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\B_feedforward__s13.pt",
+   "name": "B_feedforward",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\B_feedforward__s13.json",
+   "seed": 13
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\C_gru__s10.pt",
+   "name": "C_gru",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\C_gru__s10.json",
+   "seed": 10
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\C_gru__s11.pt",
+   "name": "C_gru",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\C_gru__s11.json",
+   "seed": 11
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\C_gru__s12.pt",
+   "name": "C_gru",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\C_gru__s12.json",
+   "seed": 12
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\C_gru__s13.pt",
+   "name": "C_gru",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\C_gru__s13.json",
+   "seed": 13
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\D_trm_direct__s10.pt",
+   "name": "D_trm_direct",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\D_trm_direct__s10.json",
+   "seed": 10
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\D_trm_direct__s11.pt",
+   "name": "D_trm_direct",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\D_trm_direct__s11.json",
+   "seed": 11
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\D_trm_direct__s12.pt",
+   "name": "D_trm_direct",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\D_trm_direct__s12.json",
+   "seed": 12
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\D_trm_direct__s13.pt",
+   "name": "D_trm_direct",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\D_trm_direct__s13.json",
+   "seed": 13
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\E_trm_matched_damping__s10.pt",
+   "name": "E_trm_matched_damping",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\E_trm_matched_damping__s10.json",
+   "seed": 10
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\E_trm_matched_damping__s11.pt",
+   "name": "E_trm_matched_damping",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\E_trm_matched_damping__s11.json",
+   "seed": 11
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\E_trm_matched_damping__s12.pt",
+   "name": "E_trm_matched_damping",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\E_trm_matched_damping__s12.json",
+   "seed": 12
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\E_trm_matched_damping__s13.pt",
+   "name": "E_trm_matched_damping",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\E_trm_matched_damping__s13.json",
+   "seed": 13
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\F_trm_rlt__s10.pt",
+   "name": "F_trm_rlt",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\F_trm_rlt__s10.json",
+   "seed": 10
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\F_trm_rlt__s11.pt",
+   "name": "F_trm_rlt",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\F_trm_rlt__s11.json",
+   "seed": 11
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\F_trm_rlt__s12.pt",
+   "name": "F_trm_rlt",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\F_trm_rlt__s12.json",
+   "seed": 12
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\F_trm_rlt__s13.pt",
+   "name": "F_trm_rlt",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\F_trm_rlt__s13.json",
+   "seed": 13
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\archive_9c06574dbfeb__s10.pt",
+   "name": "archive_9c06574dbfeb",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\archive_9c06574dbfeb__s10.json",
+   "seed": 10
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\archive_9c06574dbfeb__s11.pt",
+   "name": "archive_9c06574dbfeb",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\archive_9c06574dbfeb__s11.json",
+   "seed": 11
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\archive_9c06574dbfeb__s12.pt",
+   "name": "archive_9c06574dbfeb",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\archive_9c06574dbfeb__s12.json",
+   "seed": 12
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\archive_9c06574dbfeb__s13.pt",
+   "name": "archive_9c06574dbfeb",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\archive_9c06574dbfeb__s13.json",
+   "seed": 13
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\archive_3bb535d47495__s10.pt",
+   "name": "archive_3bb535d47495",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\archive_3bb535d47495__s10.json",
+   "seed": 10
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\archive_3bb535d47495__s11.pt",
+   "name": "archive_3bb535d47495",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\archive_3bb535d47495__s11.json",
+   "seed": 11
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\archive_3bb535d47495__s12.pt",
+   "name": "archive_3bb535d47495",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\archive_3bb535d47495__s12.json",
+   "seed": 12
+  },
+  {
+   "checkpoint": "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\archive_3bb535d47495__s13.pt",
+   "name": "archive_3bb535d47495",
+   "out": "experiments\\trm_skill_gym_02\\full\\race\\test\\retrieval\\archive_3bb535d47495__s13.json",
+   "seed": 13
+  }
+ ],
+ "skill": "retrieval",
+ "stage": "test"
+}

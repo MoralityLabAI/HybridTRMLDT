@@ -1,0 +1,49 @@
+[2026-11-28 11:50:48] retrieval A_existing_skill: ok worst-cal=0.000 peak=211MiB wall=29s
+[2026-11-28 11:54:43] retrieval B_feedforward: ok, ok, ok, ok worst-cal=0.742 peak=309MiB wall=234s
+[2026-11-28 12:02:30] retrieval C_gru: ok, ok, ok, ok worst-cal=0.984 peak=316MiB wall=467s
+[2026-11-28 12:07:27] retrieval D_trm_direct: ok, ok, ok, ok worst-cal=0.094 peak=311MiB wall=297s
+[2026-11-28 12:17:13] retrieval E_trm_matched_damping: ok, ok, ok, ok worst-cal=0.961 peak=310MiB wall=585s
+[2026-11-28 12:31:35] retrieval F_trm_rlt: ok, ok, ok, ok worst-cal=0.961 peak=310MiB wall=862s
+[2026-11-28 12:41:31] retrieval archive_9c06574dbfeb: ok, ok, ok, ok worst-cal=0.648 peak=308MiB wall=596s
+[2026-11-28 12:45:24] retrieval archive_3bb535d47495: ok, ok, ok, ok worst-cal=0.938 peak=310MiB wall=232s
+[2026-11-28 12:45:24] FROZEN retrieval: selected=archive_3bb535d47495 baseline=B_feedforward incomplete=[]
+[2026-11-28 12:45:42] deduction A_existing_skill: ok worst-cal=0.000 peak=211MiB wall=18s
+[2026-11-28 12:50:13] deduction B_feedforward: ok, ok, ok, ok worst-cal=0.391 peak=307MiB wall=271s
+[2026-11-28 12:59:13] deduction C_gru: ok, ok, ok, ok worst-cal=0.992 peak=314MiB wall=540s
+[2026-11-28 13:07:37] deduction D_trm_direct: ok, ok, ok, ok worst-cal=0.961 peak=311MiB wall=504s
+[2026-11-28 13:13:50] deduction E_trm_matched_damping: ok, ok, ok, ok worst-cal=0.992 peak=311MiB wall=372s
+[2026-11-28 13:19:26] deduction F_trm_rlt: ok, ok, ok, ok worst-cal=0.992 peak=311MiB wall=336s
+[2026-11-28 13:23:43] deduction archive_9c06574dbfeb: ok, ok, ok, ok worst-cal=0.906 peak=309MiB wall=257s
+[2026-11-28 13:26:09] deduction archive_e33539b240d1: ok, ok, ok, ok worst-cal=0.023 peak=308MiB wall=146s
+[2026-11-28 13:26:09] FROZEN deduction: selected=E_trm_matched_damping baseline=B_feedforward incomplete=[]
+[2026-11-28 13:27:14] repair A_existing_skill: ok worst-cal=0.219 peak=207MiB wall=65s
+[2026-11-28 13:30:49] repair B_feedforward: ok, ok, ok, ok worst-cal=0.711 peak=304MiB wall=214s
+[2026-11-28 13:35:59] repair C_gru: ok, ok, ok, ok worst-cal=0.867 peak=310MiB wall=310s
+[2026-11-28 13:42:09] repair D_trm_direct: ok, ok, ok, ok worst-cal=0.789 peak=306MiB wall=370s
+[2026-11-28 13:48:19] repair E_trm_matched_damping: ok, ok, ok, ok worst-cal=0.805 peak=306MiB wall=370s
+[2026-11-28 13:54:13] repair F_trm_rlt: ok, ok, ok, ok worst-cal=0.781 peak=306MiB wall=354s
+[2026-11-28 13:58:09] repair archive_97e319125309: ok, ok, ok, ok worst-cal=0.789 peak=307MiB wall=235s
+[2026-11-28 14:00:50] repair archive_215d6f99188b: ok, ok, ok, ok worst-cal=0.688 peak=305MiB wall=161s
+[2026-11-28 14:00:50] FROZEN repair: selected=E_trm_matched_damping baseline=B_feedforward incomplete=[]
+[2026-11-28 14:01:15] curation A_existing_skill: ok worst-cal=0.375 peak=207MiB wall=25s
+[2026-11-28 14:05:06] curation B_feedforward: ok, ok, ok, ok worst-cal=0.781 peak=305MiB wall=231s
+[2026-11-28 14:11:59] curation C_gru: ok, ok, ok, ok worst-cal=0.766 peak=312MiB wall=413s
+[2026-11-28 14:16:14] curation D_trm_direct: ok, ok, ok, ok worst-cal=0.758 peak=307MiB wall=254s
+[2026-11-28 14:20:42] curation E_trm_matched_damping: ok, ok, ok, ok worst-cal=0.688 peak=308MiB wall=268s
+[2026-11-28 14:25:08] curation F_trm_rlt: ok, ok, ok, ok worst-cal=0.727 peak=307MiB wall=267s
+[2026-11-28 14:28:49] curation archive_7235b388cadb: ok, ok, ok, ok worst-cal=0.742 peak=306MiB wall=221s
+[2026-11-28 14:32:20] curation archive_05263dca2576: ok, ok, ok, ok worst-cal=0.750 peak=307MiB wall=211s
+[2026-11-28 14:32:20] FROZEN curation: selected=B_feedforward baseline=B_feedforward incomplete=[]
+[2026-11-28 14:32:47] research A_existing_skill: ok worst-cal=0.812 peak=207MiB wall=26s
+[2026-11-28 14:35:57] research B_feedforward: ok, ok, ok, ok worst-cal=0.562 peak=305MiB wall=190s
+[2026-11-28 14:41:04] research C_gru: ok, ok, ok, ok worst-cal=0.695 peak=312MiB wall=307s
+[2026-11-28 14:44:47] research D_trm_direct: ok, ok, ok, ok worst-cal=0.516 peak=307MiB wall=222s
+[2026-11-28 14:48:10] research E_trm_matched_damping: ok, ok, ok, ok worst-cal=0.477 peak=307MiB wall=203s
+[2026-11-28 14:51:06] research F_trm_rlt: ok, ok, ok, ok worst-cal=0.492 peak=307MiB wall=176s
+[2026-11-28 14:51:06] FROZEN research: selected=A_existing_skill baseline=A_existing_skill incomplete=['archive_7235b388cadb', 'archive_d184aa5387a5']
+[2026-11-28 14:51:06] stopping: missing fixed baseline(s) ['A_existing_skill', 'B_feedforward', 'C_gru', 'D_trm_direct', 'E_trm_matched_damping', 'F_trm_rlt']; not frozen
+[2026-11-28 14:51:51] TEST curation: selected B_feedforward worst 0.585 vs baseline B_feedforward 0.585
+[2026-11-28 14:52:50] TEST deduction: selected E_trm_matched_damping worst 0.889 vs baseline B_feedforward 0.046
+[2026-11-28 14:53:15] TEST repair: selected E_trm_matched_damping worst 0.640 vs baseline B_feedforward 0.473
+[2026-11-28 14:53:41] TEST research: selected A_existing_skill worst 0.809 vs baseline A_existing_skill 0.809
+[2026-11-28 14:57:02] TEST retrieval: selected archive_3bb535d47495 worst 0.603 vs baseline B_feedforward 0.600

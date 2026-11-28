@@ -1,0 +1,44 @@
+retrieval A_existing_skill: ok worst-cal=0.000 peak=211MiB wall=29s
+retrieval B_feedforward: ok, ok, ok, ok worst-cal=0.742 peak=309MiB wall=234s
+retrieval C_gru: ok, ok, ok, ok worst-cal=0.984 peak=316MiB wall=467s
+retrieval D_trm_direct: ok, ok, ok, ok worst-cal=0.094 peak=311MiB wall=297s
+retrieval E_trm_matched_damping: ok, ok, ok, ok worst-cal=0.961 peak=310MiB wall=585s
+retrieval F_trm_rlt: ok, ok, ok, ok worst-cal=0.961 peak=310MiB wall=862s
+retrieval archive_9c06574dbfeb: ok, ok, ok, ok worst-cal=0.648 peak=308MiB wall=596s
+retrieval archive_3bb535d47495: ok, ok, ok, ok worst-cal=0.938 peak=310MiB wall=232s
+FROZEN retrieval: selected=archive_3bb535d47495 baseline=B_feedforward incomplete=[]
+deduction A_existing_skill: ok worst-cal=0.000 peak=211MiB wall=18s
+deduction B_feedforward: ok, ok, ok, ok worst-cal=0.391 peak=307MiB wall=271s
+deduction C_gru: ok, ok, ok, ok worst-cal=0.992 peak=314MiB wall=540s
+deduction D_trm_direct: ok, ok, ok, ok worst-cal=0.961 peak=311MiB wall=504s
+deduction E_trm_matched_damping: ok, ok, ok, ok worst-cal=0.992 peak=311MiB wall=372s
+deduction F_trm_rlt: ok, ok, ok, ok worst-cal=0.992 peak=311MiB wall=336s
+deduction archive_9c06574dbfeb: ok, ok, ok, ok worst-cal=0.906 peak=309MiB wall=257s
+deduction archive_e33539b240d1: ok, ok, ok, ok worst-cal=0.023 peak=308MiB wall=146s
+FROZEN deduction: selected=E_trm_matched_damping baseline=B_feedforward incomplete=[]
+repair A_existing_skill: ok worst-cal=0.219 peak=207MiB wall=65s
+repair B_feedforward: ok, ok, ok, ok worst-cal=0.711 peak=304MiB wall=214s
+repair C_gru: ok, ok, ok, ok worst-cal=0.867 peak=310MiB wall=310s
+repair D_trm_direct: ok, ok, ok, ok worst-cal=0.789 peak=306MiB wall=370s
+repair E_trm_matched_damping: ok, ok, ok, ok worst-cal=0.805 peak=306MiB wall=370s
+repair F_trm_rlt: ok, ok, ok, ok worst-cal=0.781 peak=306MiB wall=354s
+repair archive_97e319125309: ok, ok, ok, ok worst-cal=0.789 peak=307MiB wall=235s
+repair archive_215d6f99188b: ok, ok, ok, ok worst-cal=0.688 peak=305MiB wall=161s
+FROZEN repair: selected=E_trm_matched_damping baseline=B_feedforward incomplete=[]
+curation A_existing_skill: ok worst-cal=0.375 peak=207MiB wall=25s
+curation B_feedforward: ok, ok, ok, ok worst-cal=0.781 peak=305MiB wall=231s
+curation C_gru: ok, ok, ok, ok worst-cal=0.766 peak=312MiB wall=413s
+curation D_trm_direct: ok, ok, ok, ok worst-cal=0.758 peak=307MiB wall=254s
+curation E_trm_matched_damping: ok, ok, ok, ok worst-cal=0.688 peak=308MiB wall=268s
+curation F_trm_rlt: ok, ok, ok, ok worst-cal=0.727 peak=307MiB wall=267s
+curation archive_7235b388cadb: ok, ok, ok, ok worst-cal=0.742 peak=306MiB wall=221s
+curation archive_05263dca2576: ok, ok, ok, ok worst-cal=0.750 peak=307MiB wall=211s
+FROZEN curation: selected=B_feedforward baseline=B_feedforward incomplete=[]
+research A_existing_skill: ok worst-cal=0.812 peak=207MiB wall=26s
+research B_feedforward: ok, ok, ok, ok worst-cal=0.562 peak=305MiB wall=190s
+research C_gru: ok, ok, ok, ok worst-cal=0.695 peak=312MiB wall=307s
+research D_trm_direct: ok, ok, ok, ok worst-cal=0.516 peak=307MiB wall=222s
+research E_trm_matched_damping: ok, ok, ok, ok worst-cal=0.477 peak=307MiB wall=203s
+research F_trm_rlt: ok, ok, ok, ok worst-cal=0.492 peak=307MiB wall=176s
+FROZEN research: selected=A_existing_skill baseline=A_existing_skill incomplete=['archive_7235b388cadb', 'archive_d184aa5387a5']
+stopping: missing fixed baseline(s) ['A_existing_skill', 'B_feedforward', 'C_gru', 'D_trm_direct', 'E_trm_matched_damping', 'F_trm_rlt']; not frozen

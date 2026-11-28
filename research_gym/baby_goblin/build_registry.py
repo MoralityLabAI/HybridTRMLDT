@@ -43,6 +43,15 @@ def build(campaign: Path) -> Dict:
         promoted = (r.get("status") == "ok" and r.get("selected") != r.get("baseline")
                     and r.get("macro_selected", 0) - r.get("macro_baseline", 0) >= 0.02
                     and r.get("worst_stratum_selected", 0) >= r.get("worst_stratum_baseline", 0) - 0.02)
+        if promoted:
+            sel = r["selected"]
+            cfg_impl = {"B_feedforward": "feedforward", "C_gru": "recurrent_proxy_gru"}.get(sel, "native_trm_update")
+            specs.append(SkillSpec(name=f"{skill}_learned_race", skill=skill, kind="learned", implementation=cfg_impl,
+                                   status="accepted", recurrent_state=cfg_impl != "feedforward",
+                                   checkpoint=f"{campaign.as_posix()}/race/jobs/{skill}/{sel}__s10.pt",
+                                   evidence=(f"S1 race gate passed: {sel} vs {r['baseline']}, test macro "
+                                             f"{r['macro_selected']:.3f} vs {r['macro_baseline']:.3f}, worst stratum "
+                                             f"{r['worst_stratum_selected']:.3f} vs {r['worst_stratum_baseline']:.3f} (4 seeds; seed 10 shipped)")))
         specs.append(SkillSpec(name=f"{skill}_learned", skill=skill, kind="learned", implementation=impl,
                                status="experimental", recurrent_state=True,
                                checkpoint=f"experiments/trm_skill_gym_01/packages/{pkg}/weights.pt",
@@ -66,8 +75,13 @@ def build(campaign: Path) -> Dict:
         specs.append(SkillSpec(name=f"{skill}_symbolic", skill=skill, kind="symbolic", implementation="exact_solver",
                                status="accepted", evidence="exact on complete observations (tests/test_baby_goblin.py); "
                                "on noisy graphs it is the thresholded-graph solver and is not exact"))
+        rr = (race.get("results") or {}).get(skill) or {}
+        won = rr.get("status") == "ok" and rr.get("selected") == "A_existing_skill"
         specs.append(SkillSpec(name=f"{skill}_heuristic", skill=skill, kind="heuristic", implementation="existing_skill_procedure",
-                               status="accepted", evidence="GYM-01 arm A reference procedure"))
+                               status="accepted" if won else "experimental",
+                               evidence=("S1 race selected the existing procedure over every trained candidate on calibration and it "
+                                         f"was retained on test (macro {rr.get('macro_selected', float('nan')):.3f})") if won else
+                               "GYM-01 arm A reference procedure; dominated by trained modules or not raced"))
     specs.append(SkillSpec(name="research_inky", skill="research", kind="llm_fallback", implementation="inkling-2-mini-free",
                            status="experimental", evidence="GYM-01/GYM-02 text-only arms truncate on numeric skills"))
     return {"skills": [asdict(s) for s in specs], "source": str(campaign)}

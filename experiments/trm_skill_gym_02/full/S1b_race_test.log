@@ -1,0 +1,5 @@
+TEST curation: selected B_feedforward worst 0.585 vs baseline B_feedforward 0.585
+TEST deduction: selected E_trm_matched_damping worst 0.889 vs baseline B_feedforward 0.046
+TEST repair: selected E_trm_matched_damping worst 0.640 vs baseline B_feedforward 0.473
+TEST research: selected A_existing_skill worst 0.809 vs baseline A_existing_skill 0.809
+TEST retrieval: selected archive_3bb535d47495 worst 0.603 vs baseline B_feedforward 0.600

@@ -131,7 +131,13 @@ def evidence(kind: str, root: Path) -> Optional[str]:
             if not p.exists():
                 return None
             r = json.loads(p.read_text(encoding="utf-8"))
-            return "BPD causal evidence (calibration): " + json.dumps(r.get("summary", r), default=float)[:1500]
+            rows = []
+            for key, job in (r.get("jobs") or {}).items():
+                rows.append(f"{key}: selected_components={job.get('selected', {}).get('F') if isinstance(job.get('selected'), dict) else job.get('selection_F')} "
+                            f"roles={job.get('role_counts')}")
+            return ("BPD causal evidence (calibration-side only): learned shared factors on the recurrent mixer; components "
+                    "selected for removal on calibration roots; component roles from BPD transient/sustaining analysis: "
+                    + "; ".join(rows)[:1200])
     except (OSError, KeyError, ValueError):
         return None
     return None

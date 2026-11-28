@@ -1,0 +1,125 @@
+{
+ "credential_scan": {
+  "files_scanned": 777,
+  "hits": []
+ },
+ "leakage": {
+  "flagged": {
+   "retrieval/layered_deep": {
+    "1": 0.369
+   },
+   "retrieval/layered_shallow": {
+    "1": 0.348
+   },
+   "retrieval/layered_wide": {
+    "1": 0.384
+   }
+  },
+  "hintfree_and_topology_strata_flagged": {},
+  "positive_control_original_families": {
+   "deduction/kernel_h4": {},
+   "deduction/kernel_h5": {},
+   "retrieval/layered_shallow": {
+    "1": 0.348
+   },
+   "retrieval/layered_wide": {
+    "1": 0.384
+   }
+  },
+  "strata_checked": 40,
+  "threshold_abs_r": 0.3
+ },
+ "overlap": {
+  "root_ranges": {
+   "hybrid": [
+    5000000,
+    5100000,
+    5200000
+   ],
+   "race": [
+    4000000,
+    4100000,
+    4200000
+   ],
+   "router": [
+    7100000,
+    7200000
+   ]
+  },
+  "train_test_content_collisions": {
+   "deduction": 0,
+   "repair": 0,
+   "retrieval": 0
+  }
+ },
+ "receipt_replay_race": {
+  "all_match": true,
+  "replayed": 10,
+  "rows": {
+   "curation/A_existing_skill/s10/clusters3": true,
+   "curation/archive_05263dca2576/s10/clusters3": true,
+   "deduction/A_existing_skill/s10/branching": true,
+   "deduction/archive_9c06574dbfeb/s10/branching": true,
+   "repair/A_existing_skill/s10/cycle_region": true,
+   "repair/archive_215d6f99188b/s10/cycle_region": true,
+   "research/A_existing_skill/s10/peaked_prior": true,
+   "research/B_feedforward/s10/peaked_prior": true,
+   "retrieval/A_existing_skill/s10/branching": true,
+   "retrieval/archive_3bb535d47495/s10/branching": true
+  }
+ },
+ "resources": {
+  "all_below_limit": true,
+  "limit_bytes": 3221225472,
+  "race_job_peak_tree_rss_max_bytes": 331350016,
+  "stage_peak_tree_rss_bytes": {
+   "S1_race": 553828352,
+   "S1b_race_test": 476807168,
+   "S2_bpd": 633155584,
+   "S3_hybrid": 580427776,
+   "S4_research": 1550757888,
+   "S5_router": 224714752,
+   "S6_distill": 298336256,
+   "S7_inky_measure": 386756608,
+   "S8_shuffle_audit": 315744256
+  },
+  "stage_status": {
+   "S1_race": "ok",
+   "S1b_race_test": "ok",
+   "S2_bpd": "ok",
+   "S3_hybrid": "ok",
+   "S4_research": "ok",
+   "S5_router": "ok",
+   "S6_distill": "ok",
+   "S7_inky_measure": "wall_killed",
+   "S8_shuffle_audit": "ok"
+  }
+ },
+ "selection_timing": {
+  "curation": {
+   "first_test_file": 1795848694.589817,
+   "frozen_at": 1795847540.9381096,
+   "ok": true
+  },
+  "deduction": {
+   "first_test_file": 1795848724.981949,
+   "frozen_at": 1795843569.7236772,
+   "ok": true
+  },
+  "repair": {
+   "first_test_file": 1795848782.9376745,
+   "frozen_at": 1795845650.747319,
+   "ok": true
+  },
+  "research": {
+   "first_test_file": 1795848809.735862,
+   "frozen_at": 1795848666.723082,
+   "ok": true
+  },
+  "retrieval": {
+   "first_test_file": 1795848836.6114104,
+   "frozen_at": 1795841124.0669541,
+   "ok": true
+  }
+ }
+}

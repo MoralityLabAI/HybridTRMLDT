@@ -1,0 +1,42 @@
+{
+ "config": {
+  "aggregation": "relation+mean",
+  "core": "trm",
+  "cycles": 1,
+  "feedback": "rlt",
+  "grad_cycles": 1,
+  "hidden": 32,
+  "latent_reset": false,
+  "latent_steps": 2,
+  "ldt_projection": false,
+  "lr": 0.002,
+  "mixer_layers": 1,
+  "norm": "layer",
+  "residual": "add",
+  "state_partition": "shared",
+  "supervision": "deep",
+  "update_schedule": "latent_then_answer",
+  "verifier_visits": 1,
+  "visits": 3,
+  "weight_decay": 0.01
+ },
+ "count": 128,
+ "job_seconds": 900,
+ "name": "F_trm_rlt",
+ "outs": [
+  "experiments\\trm_skill_gym_02\\full\\race\\jobs\\curation\\F_trm_rlt__s10.json",
+  "experiments\\trm_skill_gym_02\\full\\race\\jobs\\curation\\F_trm_rlt__s11.json",
+  "experiments\\trm_skill_gym_02\\full\\race\\jobs\\curation\\F_trm_rlt__s12.json",
+  "experiments\\trm_skill_gym_02\\full\\race\\jobs\\curation\\F_trm_rlt__s13.json"
+ ],
+ "seeds": [
+  10,
+  11,
+  12,
+  13
+ ],
+ "skill": "curation",
+ "stage": "cal",
+ "steps": 800,
+ "train_count": 4096
+}

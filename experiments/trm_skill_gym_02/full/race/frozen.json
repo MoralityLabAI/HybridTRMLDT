@@ -1,0 +1,1362 @@
+{
+ "curation": {
+  "baseline": "B_feedforward",
+  "calibration": {
+   "A_existing_skill": {
+    "clusters3": {
+     "calls": 2,
+     "exact": 0.5078125,
+     "flops": 0.0
+    },
+    "clusters4_dups": {
+     "calls": 2,
+     "exact": 0.375,
+     "flops": 0.0
+    }
+   },
+   "B_feedforward": {
+    "clusters3": {
+     "calls": 2,
+     "exact": 0.890625,
+     "flops": 1156464.0
+    },
+    "clusters4_dups": {
+     "calls": 2,
+     "exact": 0.796875,
+     "flops": 1156464.0
+    }
+   },
+   "C_gru": {
+    "clusters3": {
+     "calls": 2,
+     "exact": 0.84375,
+     "flops": 3437616.0
+    },
+    "clusters4_dups": {
+     "calls": 2,
+     "exact": 0.7734375,
+     "flops": 3437616.0
+    }
+   },
+   "D_trm_direct": {
+    "clusters3": {
+     "calls": 2,
+     "exact": 0.853515625,
+     "flops": 3346176.0
+    },
+    "clusters4_dups": {
+     "calls": 2,
+     "exact": 0.763671875,
+     "flops": 3346176.0
+    }
+   },
+   "E_trm_matched_damping": {
+    "clusters3": {
+     "calls": 2,
+     "exact": 0.83984375,
+     "flops": 3346176.0
+    },
+    "clusters4_dups": {
+     "calls": 2,
+     "exact": 0.732421875,
+     "flops": 3346176.0
+    }
+   },
+   "F_trm_rlt": {
+    "clusters3": {
+     "calls": 2,
+     "exact": 0.84375,
+     "flops": 3346176.0
+    },
+    "clusters4_dups": {
+     "calls": 2,
+     "exact": 0.7578125,
+     "flops": 3346176.0
+    }
+   },
+   "archive_05263dca2576": {
+    "clusters3": {
+     "calls": 1,
+     "exact": 0.857421875,
+     "flops": 3346176.0
+    },
+    "clusters4_dups": {
+     "calls": 1,
+     "exact": 0.767578125,
+     "flops": 3346176.0
+    }
+   },
+   "archive_7235b388cadb": {
+    "clusters3": {
+     "calls": 3,
+     "exact": 0.859375,
+     "flops": 3346176.0
+    },
+    "clusters4_dups": {
+     "calls": 3,
+     "exact": 0.7734375,
+     "flops": 3346176.0
+    }
+   }
+  },
+  "cap_model_flops": 3346176.0,
+  "eligible": [
+   "A_existing_skill",
+   "B_feedforward",
+   "D_trm_direct",
+   "E_trm_matched_damping",
+   "F_trm_rlt",
+   "archive_05263dca2576"
+  ],
+  "frozen_at": 1795847540.9381096,
+  "incomplete": {},
+  "rank": {
+   "A_existing_skill": [
+    0.375,
+    0.44140625,
+    -0.0
+   ],
+   "B_feedforward": [
+    0.796875,
+    0.84375,
+    -1156464.0
+   ],
+   "D_trm_direct": [
+    0.763671875,
+    0.80859375,
+    -3346176.0
+   ],
+   "E_trm_matched_damping": [
+    0.732421875,
+    0.7861328125,
+    -3346176.0
+   ],
+   "F_trm_rlt": [
+    0.7578125,
+    0.80078125,
+    -3346176.0
+   ],
+   "archive_05263dca2576": [
+    0.767578125,
+    0.8125,
+    -3346176.0
+   ]
+  },
+  "selected": "B_feedforward"
+ },
+ "deduction": {
+  "baseline": "B_feedforward",
+  "calibration": {
+   "A_existing_skill": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.0,
+     "flops": 0.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 0.328125,
+     "flops": 0.0
+    },
+    "kernel_h4": {
+     "calls": 2,
+     "exact": 0.140625,
+     "flops": 0.0
+    },
+    "kernel_h4_hintfree": {
+     "calls": 2,
+     "exact": 0.1171875,
+     "flops": 0.0
+    },
+    "kernel_h5": {
+     "calls": 2,
+     "exact": 0.078125,
+     "flops": 0.0
+    },
+    "kernel_h5_hintfree": {
+     "calls": 2,
+     "exact": 0.0625,
+     "flops": 0.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 0.0,
+     "flops": 0.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 0.0,
+     "flops": 0.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 0.0,
+     "flops": 0.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 0.015625,
+     "flops": 0.0
+    }
+   },
+   "B_feedforward": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.865234375,
+     "flops": 1156464.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 1156464.0
+    },
+    "kernel_h4": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 1156464.0
+    },
+    "kernel_h4_hintfree": {
+     "calls": 2,
+     "exact": 0.9921875,
+     "flops": 1156464.0
+    },
+    "kernel_h5": {
+     "calls": 2,
+     "exact": 0.990234375,
+     "flops": 1156464.0
+    },
+    "kernel_h5_hintfree": {
+     "calls": 2,
+     "exact": 0.9609375,
+     "flops": 1156464.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 0.697265625,
+     "flops": 1156464.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 0.84765625,
+     "flops": 1156464.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 0.994140625,
+     "flops": 1156464.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 0.828125,
+     "flops": 1156464.0
+    }
+   },
+   "C_gru": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 3437616.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 3437616.0
+    },
+    "kernel_h4": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "kernel_h4_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "kernel_h5": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "kernel_h5_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    }
+   },
+   "D_trm_direct": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.99609375,
+     "flops": 3346176.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "kernel_h4": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "kernel_h4_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "kernel_h5": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "kernel_h5_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 0.982421875,
+     "flops": 3346176.0
+    }
+   },
+   "E_trm_matched_damping": {
+    "branching": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "kernel_h4": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "kernel_h4_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "kernel_h5": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 3346176.0
+    },
+    "kernel_h5_hintfree": {
+     "calls": 2,
+     "exact": 0.99609375,
+     "flops": 3346176.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    }
+   },
+   "F_trm_rlt": {
+    "branching": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "kernel_h4": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "kernel_h4_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "kernel_h5": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 3346176.0
+    },
+    "kernel_h5_hintfree": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 3346176.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 0.99609375,
+     "flops": 3346176.0
+    }
+   },
+   "archive_9c06574dbfeb": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.953125,
+     "flops": 2230784.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "kernel_h4": {
+     "calls": 2,
+     "exact": 0.99609375,
+     "flops": 2230784.0
+    },
+    "kernel_h4_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "kernel_h5": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 2230784.0
+    },
+    "kernel_h5_hintfree": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 2230784.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 0.966796875,
+     "flops": 2230784.0
+    }
+   },
+   "archive_e33539b240d1": {
+    "branching": {
+     "calls": 1,
+     "exact": 0.54296875,
+     "flops": 1115392.0
+    },
+    "distractors": {
+     "calls": 1,
+     "exact": 1.0,
+     "flops": 1115392.0
+    },
+    "kernel_h4": {
+     "calls": 1,
+     "exact": 0.9921875,
+     "flops": 1115392.0
+    },
+    "kernel_h4_hintfree": {
+     "calls": 1,
+     "exact": 0.998046875,
+     "flops": 1115392.0
+    },
+    "kernel_h5": {
+     "calls": 1,
+     "exact": 0.994140625,
+     "flops": 1115392.0
+    },
+    "kernel_h5_hintfree": {
+     "calls": 1,
+     "exact": 0.95703125,
+     "flops": 1115392.0
+    },
+    "long_chain_10": {
+     "calls": 1,
+     "exact": 0.1015625,
+     "flops": 1115392.0
+    },
+    "long_chain_6": {
+     "calls": 1,
+     "exact": 0.869140625,
+     "flops": 1115392.0
+    },
+    "misleading": {
+     "calls": 1,
+     "exact": 0.3984375,
+     "flops": 1115392.0
+    },
+    "shared_subdeps": {
+     "calls": 1,
+     "exact": 0.640625,
+     "flops": 1115392.0
+    }
+   }
+  },
+  "cap_model_flops": 3346176.0,
+  "eligible": [
+   "A_existing_skill",
+   "B_feedforward",
+   "D_trm_direct",
+   "E_trm_matched_damping",
+   "F_trm_rlt",
+   "archive_9c06574dbfeb",
+   "archive_e33539b240d1"
+  ],
+  "frozen_at": 1795843569.7236772,
+  "incomplete": {},
+  "rank": {
+   "A_existing_skill": [
+    0.0,
+    0.07421875,
+    -0.0
+   ],
+   "B_feedforward": [
+    0.697265625,
+    0.9173828125,
+    -1156464.0
+   ],
+   "D_trm_direct": [
+    0.982421875,
+    0.9978515625,
+    -3346176.0
+   ],
+   "E_trm_matched_damping": [
+    0.99609375,
+    0.9994140625,
+    -3346176.0
+   ],
+   "F_trm_rlt": [
+    0.99609375,
+    0.99921875,
+    -3346176.0
+   ],
+   "archive_9c06574dbfeb": [
+    0.953125,
+    0.9912109375,
+    -2230784.0
+   ],
+   "archive_e33539b240d1": [
+    0.1015625,
+    0.7494140625,
+    -1115392.0
+   ]
+  },
+  "selected": "E_trm_matched_damping"
+ },
+ "repair": {
+  "baseline": "B_feedforward",
+  "calibration": {
+   "A_existing_skill": {
+    "cycle_region": {
+     "calls": 2,
+     "exact": 0.28125,
+     "flops": 0.0
+    },
+    "tree_region": {
+     "calls": 2,
+     "exact": 0.21875,
+     "flops": 0.0
+    }
+   },
+   "B_feedforward": {
+    "cycle_region": {
+     "calls": 2,
+     "exact": 0.7265625,
+     "flops": 1156464.0
+    },
+    "tree_region": {
+     "calls": 2,
+     "exact": 0.89453125,
+     "flops": 1156464.0
+    }
+   },
+   "C_gru": {
+    "cycle_region": {
+     "calls": 2,
+     "exact": 0.8828125,
+     "flops": 3437616.0
+    },
+    "tree_region": {
+     "calls": 2,
+     "exact": 0.9921875,
+     "flops": 3437616.0
+    }
+   },
+   "D_trm_direct": {
+    "cycle_region": {
+     "calls": 2,
+     "exact": 0.802734375,
+     "flops": 3346176.0
+    },
+    "tree_region": {
+     "calls": 2,
+     "exact": 0.96484375,
+     "flops": 3346176.0
+    }
+   },
+   "E_trm_matched_damping": {
+    "cycle_region": {
+     "calls": 2,
+     "exact": 0.8203125,
+     "flops": 3346176.0
+    },
+    "tree_region": {
+     "calls": 2,
+     "exact": 0.96484375,
+     "flops": 3346176.0
+    }
+   },
+   "F_trm_rlt": {
+    "cycle_region": {
+     "calls": 2,
+     "exact": 0.81640625,
+     "flops": 3346176.0
+    },
+    "tree_region": {
+     "calls": 2,
+     "exact": 0.98046875,
+     "flops": 3346176.0
+    }
+   },
+   "archive_215d6f99188b": {
+    "cycle_region": {
+     "calls": 2,
+     "exact": 0.7421875,
+     "flops": 2264832.0
+    },
+    "tree_region": {
+     "calls": 2,
+     "exact": 0.9453125,
+     "flops": 2264832.0
+    }
+   },
+   "archive_97e319125309": {
+    "cycle_region": {
+     "calls": 2,
+     "exact": 0.802734375,
+     "flops": 3346176.0
+    },
+    "tree_region": {
+     "calls": 2,
+     "exact": 0.96484375,
+     "flops": 3346176.0
+    }
+   }
+  },
+  "cap_model_flops": 3346176.0,
+  "eligible": [
+   "A_existing_skill",
+   "B_feedforward",
+   "D_trm_direct",
+   "E_trm_matched_damping",
+   "F_trm_rlt",
+   "archive_97e319125309",
+   "archive_215d6f99188b"
+  ],
+  "frozen_at": 1795845650.747319,
+  "incomplete": {},
+  "rank": {
+   "A_existing_skill": [
+    0.21875,
+    0.25,
+    -0.0
+   ],
+   "B_feedforward": [
+    0.7265625,
+    0.810546875,
+    -1156464.0
+   ],
+   "D_trm_direct": [
+    0.802734375,
+    0.8837890625,
+    -3346176.0
+   ],
+   "E_trm_matched_damping": [
+    0.8203125,
+    0.892578125,
+    -3346176.0
+   ],
+   "F_trm_rlt": [
+    0.81640625,
+    0.8984375,
+    -3346176.0
+   ],
+   "archive_215d6f99188b": [
+    0.7421875,
+    0.84375,
+    -2264832.0
+   ],
+   "archive_97e319125309": [
+    0.802734375,
+    0.8837890625,
+    -3346176.0
+   ]
+  },
+  "selected": "E_trm_matched_damping"
+ },
+ "research": {
+  "baseline": "A_existing_skill",
+  "calibration": {
+   "A_existing_skill": {
+    "peaked_prior": {
+     "calls": 2,
+     "exact": 0.8984375,
+     "flops": 0.0
+    },
+    "uniform_prior": {
+     "calls": 2,
+     "exact": 0.8125,
+     "flops": 0.0
+    }
+   },
+   "B_feedforward": {
+    "peaked_prior": {
+     "calls": 2,
+     "exact": 0.61328125,
+     "flops": 1156464.0
+    },
+    "uniform_prior": {
+     "calls": 2,
+     "exact": 0.828125,
+     "flops": 1156464.0
+    }
+   },
+   "C_gru": {
+    "peaked_prior": {
+     "calls": 2,
+     "exact": 0.720703125,
+     "flops": 3437616.0
+    },
+    "uniform_prior": {
+     "calls": 2,
+     "exact": 0.88671875,
+     "flops": 3437616.0
+    }
+   },
+   "D_trm_direct": {
+    "peaked_prior": {
+     "calls": 2,
+     "exact": 0.55859375,
+     "flops": 3346176.0
+    },
+    "uniform_prior": {
+     "calls": 2,
+     "exact": 0.73828125,
+     "flops": 3346176.0
+    }
+   },
+   "E_trm_matched_damping": {
+    "peaked_prior": {
+     "calls": 2,
+     "exact": 0.521484375,
+     "flops": 3346176.0
+    },
+    "uniform_prior": {
+     "calls": 2,
+     "exact": 0.701171875,
+     "flops": 3346176.0
+    }
+   },
+   "F_trm_rlt": {
+    "peaked_prior": {
+     "calls": 2,
+     "exact": 0.517578125,
+     "flops": 3346176.0
+    },
+    "uniform_prior": {
+     "calls": 2,
+     "exact": 0.6953125,
+     "flops": 3346176.0
+    }
+   }
+  },
+  "cap_model_flops": 3346176.0,
+  "eligible": [
+   "A_existing_skill",
+   "B_feedforward",
+   "D_trm_direct",
+   "E_trm_matched_damping",
+   "F_trm_rlt"
+  ],
+  "frozen_at": 1795848666.723082,
+  "incomplete": {
+   "archive_7235b388cadb": [
+    "deadline_not_run"
+   ],
+   "archive_d184aa5387a5": [
+    "deadline_not_run"
+   ]
+  },
+  "rank": {
+   "A_existing_skill": [
+    0.8125,
+    0.85546875,
+    -0.0
+   ],
+   "B_feedforward": [
+    0.61328125,
+    0.720703125,
+    -1156464.0
+   ],
+   "D_trm_direct": [
+    0.55859375,
+    0.6484375,
+    -3346176.0
+   ],
+   "E_trm_matched_damping": [
+    0.521484375,
+    0.611328125,
+    -3346176.0
+   ],
+   "F_trm_rlt": [
+    0.517578125,
+    0.6064453125,
+    -3346176.0
+   ]
+  },
+  "selected": "A_existing_skill"
+ },
+ "retrieval": {
+  "baseline": "B_feedforward",
+  "calibration": {
+   "A_existing_skill": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.0,
+     "flops": 0.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 0.765625,
+     "flops": 0.0
+    },
+    "layered_shallow": {
+     "calls": 2,
+     "exact": 0.4296875,
+     "flops": 0.0
+    },
+    "layered_shallow_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 0.0
+    },
+    "layered_wide": {
+     "calls": 2,
+     "exact": 0.375,
+     "flops": 0.0
+    },
+    "layered_wide_hintfree": {
+     "calls": 2,
+     "exact": 0.3671875,
+     "flops": 0.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 0.0,
+     "flops": 0.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 0.0,
+     "flops": 0.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 0.0,
+     "flops": 0.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 0.6875,
+     "flops": 0.0
+    }
+   },
+   "B_feedforward": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.98828125,
+     "flops": 1156464.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 0.994140625,
+     "flops": 1156464.0
+    },
+    "layered_shallow": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 1156464.0
+    },
+    "layered_shallow_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 1156464.0
+    },
+    "layered_wide": {
+     "calls": 2,
+     "exact": 0.966796875,
+     "flops": 1156464.0
+    },
+    "layered_wide_hintfree": {
+     "calls": 2,
+     "exact": 0.97265625,
+     "flops": 1156464.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 0.818359375,
+     "flops": 1156464.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 0.96484375,
+     "flops": 1156464.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 1156464.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 0.986328125,
+     "flops": 1156464.0
+    }
+   },
+   "C_gru": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.99609375,
+     "flops": 3437616.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "layered_shallow": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "layered_shallow_hintfree": {
+     "calls": 2,
+     "exact": 0.994140625,
+     "flops": 3437616.0
+    },
+    "layered_wide": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 3437616.0
+    },
+    "layered_wide_hintfree": {
+     "calls": 2,
+     "exact": 0.994140625,
+     "flops": 3437616.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 3437616.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3437616.0
+    }
+   },
+   "D_trm_direct": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.99609375,
+     "flops": 3346176.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "layered_shallow": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "layered_shallow_hintfree": {
+     "calls": 2,
+     "exact": 0.984375,
+     "flops": 3346176.0
+    },
+    "layered_wide": {
+     "calls": 2,
+     "exact": 0.982421875,
+     "flops": 3346176.0
+    },
+    "layered_wide_hintfree": {
+     "calls": 2,
+     "exact": 0.96875,
+     "flops": 3346176.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 0.734375,
+     "flops": 3346176.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 0.6015625,
+     "flops": 3346176.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    }
+   },
+   "E_trm_matched_damping": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.986328125,
+     "flops": 3346176.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "layered_shallow": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "layered_shallow_hintfree": {
+     "calls": 2,
+     "exact": 0.99609375,
+     "flops": 3346176.0
+    },
+    "layered_wide": {
+     "calls": 2,
+     "exact": 0.986328125,
+     "flops": 3346176.0
+    },
+    "layered_wide_hintfree": {
+     "calls": 2,
+     "exact": 0.9765625,
+     "flops": 3346176.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 0.99609375,
+     "flops": 3346176.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 0.990234375,
+     "flops": 3346176.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    }
+   },
+   "F_trm_rlt": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.986328125,
+     "flops": 3346176.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "layered_shallow": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "layered_shallow_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "layered_wide": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 3346176.0
+    },
+    "layered_wide_hintfree": {
+     "calls": 2,
+     "exact": 0.97265625,
+     "flops": 3346176.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 0.9921875,
+     "flops": 3346176.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 3346176.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 3346176.0
+    }
+   },
+   "archive_3bb535d47495": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.98046875,
+     "flops": 2230784.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "layered_shallow": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "layered_shallow_hintfree": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "layered_wide": {
+     "calls": 2,
+     "exact": 0.98828125,
+     "flops": 2230784.0
+    },
+    "layered_wide_hintfree": {
+     "calls": 2,
+     "exact": 0.990234375,
+     "flops": 2230784.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    }
+   },
+   "archive_9c06574dbfeb": {
+    "branching": {
+     "calls": 2,
+     "exact": 0.931640625,
+     "flops": 2230784.0
+    },
+    "distractors": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "layered_shallow": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "layered_shallow_hintfree": {
+     "calls": 2,
+     "exact": 0.98046875,
+     "flops": 2230784.0
+    },
+    "layered_wide": {
+     "calls": 2,
+     "exact": 0.994140625,
+     "flops": 2230784.0
+    },
+    "layered_wide_hintfree": {
+     "calls": 2,
+     "exact": 0.970703125,
+     "flops": 2230784.0
+    },
+    "long_chain_10": {
+     "calls": 2,
+     "exact": 0.779296875,
+     "flops": 2230784.0
+    },
+    "long_chain_6": {
+     "calls": 2,
+     "exact": 0.94921875,
+     "flops": 2230784.0
+    },
+    "misleading": {
+     "calls": 2,
+     "exact": 1.0,
+     "flops": 2230784.0
+    },
+    "shared_subdeps": {
+     "calls": 2,
+     "exact": 0.998046875,
+     "flops": 2230784.0
+    }
+   }
+  },
+  "cap_model_flops": 3346176.0,
+  "eligible": [
+   "A_existing_skill",
+   "B_feedforward",
+   "D_trm_direct",
+   "E_trm_matched_damping",
+   "F_trm_rlt",
+   "archive_9c06574dbfeb",
+   "archive_3bb535d47495"
+  ],
+  "frozen_at": 1795841124.0669541,
+  "incomplete": {},
+  "rank": {
+   "A_existing_skill": [
+    0.0,
+    0.3625,
+    -0.0
+   ],
+   "B_feedforward": [
+    0.818359375,
+    0.969140625,
+    -1156464.0
+   ],
+   "D_trm_direct": [
+    0.6015625,
+    0.9267578125,
+    -3346176.0
+   ],
+   "E_trm_matched_damping": [
+    0.9765625,
+    0.9931640625,
+    -3346176.0
+   ],
+   "F_trm_rlt": [
+    0.97265625,
+    0.9947265625,
+    -3346176.0
+   ],
+   "archive_3bb535d47495": [
+    0.98046875,
+    0.9958984375,
+    -2230784.0
+   ],
+   "archive_9c06574dbfeb": [
+    0.779296875,
+    0.9603515625,
+    -2230784.0
+   ]
+  },
+  "selected": "archive_3bb535d47495"
+ }
+}

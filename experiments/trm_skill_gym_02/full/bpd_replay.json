@@ -1,0 +1,10 @@
+{
+ "repair__F_trm_rlt__s0": {
+  "ok": true,
+  "detail": "{'replayed': ['A', 'E', 'F', 'F_pass1', 'F_pass6', 'G_energy_3@2x'], 'n_rows': 50}"
+ },
+ "curation__F_trm_rlt__s0": {
+  "ok": true,
+  "detail": "{'replayed': ['A', 'E', 'F', 'F_pass1', 'F_pass6', 'G_energy_3@2x'], 'n_rows': 50}"
+ }
+}

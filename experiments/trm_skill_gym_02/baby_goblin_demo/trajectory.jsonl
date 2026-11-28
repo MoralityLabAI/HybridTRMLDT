@@ -1,0 +1,17 @@
+{"cpu_s": 0.0, "expert": "retrieval_certificate", "flops": 0, "host_ops": 15, "kind": "certificate", "run_id": "baby-goblin-demo-7300000", "skill": "retrieval", "status": "accepted", "step": 0, "ts": "2026-11-28T18:44:25", "uncertainty": 0.2}
+{"cpu_s": 0.0, "expert": "retrieval_symbolic", "flops": 0, "host_ops": 28, "kind": "symbolic", "run_id": "baby-goblin-demo-7300000", "skill": "retrieval", "status": "accepted", "step": 1, "ts": "2026-11-28T18:44:25", "uncertainty": 0.5}
+{"cpu_s": 0.015625, "expert": "retrieval_learned", "flops": 3346176, "host_ops": 0, "kind": "learned", "run_id": "baby-goblin-demo-7300000", "skill": "retrieval", "status": "experimental", "step": 2, "ts": "2026-11-28T18:44:25", "uncertainty": 0.0007411837577819824}
+{"event": "terminate_confident", "expert": "retrieval_learned", "run_id": "baby-goblin-demo-7300000", "skill": "retrieval", "step": 3, "ts": "2026-11-28T18:44:25"}
+{"event": "verifier_receipt", "ok": false, "run_id": "baby-goblin-demo-7300000", "skill": "retrieval", "step": 4, "ts": "2026-11-28T18:44:25"}
+{"cpu_s": 0.0, "expert": "deduction_certificate", "flops": 0, "host_ops": 4, "kind": "certificate", "run_id": "baby-goblin-demo-7300000", "skill": "deduction", "status": "accepted", "step": 5, "ts": "2026-11-28T18:44:25", "uncertainty": 0.0}
+{"event": "terminate_confident", "expert": "deduction_certificate", "run_id": "baby-goblin-demo-7300000", "skill": "deduction", "step": 6, "ts": "2026-11-28T18:44:25"}
+{"event": "verifier_receipt", "ok": false, "run_id": "baby-goblin-demo-7300000", "skill": "deduction", "step": 7, "ts": "2026-11-28T18:44:25"}
+{"cpu_s": 0.0, "expert": "repair_symbolic", "flops": 0, "host_ops": 18, "kind": "symbolic", "run_id": "baby-goblin-demo-7300000", "skill": "repair", "status": "accepted", "step": 8, "ts": "2026-11-28T18:44:25", "uncertainty": 0.0}
+{"event": "terminate_confident", "expert": "repair_symbolic", "run_id": "baby-goblin-demo-7300000", "skill": "repair", "step": 9, "ts": "2026-11-28T18:44:25"}
+{"event": "verifier_receipt", "ok": true, "run_id": "baby-goblin-demo-7300000", "skill": "repair", "step": 10, "ts": "2026-11-28T18:44:25"}
+{"cpu_s": 0.0, "expert": "stopping_symbolic", "flops": 0, "host_ops": 4, "kind": "symbolic", "run_id": "baby-goblin-demo-7300000", "skill": "stopping", "status": "accepted", "step": 11, "ts": "2026-11-28T18:44:25", "uncertainty": 0.0}
+{"event": "terminate_confident", "expert": "stopping_symbolic", "run_id": "baby-goblin-demo-7300000", "skill": "stopping", "step": 12, "ts": "2026-11-28T18:44:25"}
+{"event": "verifier_receipt", "ok": true, "run_id": "baby-goblin-demo-7300000", "skill": "stopping", "step": 13, "ts": "2026-11-28T18:44:25"}
+{"cpu_s": 0.0, "expert": "research_symbolic", "flops": 0, "host_ops": 96, "kind": "symbolic", "run_id": "baby-goblin-demo-7300000", "skill": "research", "status": "accepted", "step": 14, "ts": "2026-11-28T18:44:25", "uncertainty": 0.0}
+{"event": "terminate_confident", "expert": "research_symbolic", "run_id": "baby-goblin-demo-7300000", "skill": "research", "step": 15, "ts": "2026-11-28T18:44:25"}
+{"event": "verifier_receipt", "ok": true, "run_id": "baby-goblin-demo-7300000", "skill": "research", "step": 16, "ts": "2026-11-28T18:44:25"}
