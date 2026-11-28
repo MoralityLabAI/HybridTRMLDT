@@ -25,10 +25,11 @@ jobs:
       - run: |
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
           python -m pip install numpy psutil pytest
-      - run: python -m pytest -q tests/test_trm_skill_gym_v2.py tests/test_trm_skill_gym_v2_advanced.py
+      - run: python -m pytest -q tests/test_trm_skill_gym_v2.py tests/test_trm_skill_gym_v2_advanced.py tests/test_trm_skill_gym_v2_hybrid.py
       - run: python -m research_gym.trm_skill_gym_v2.runner --out /tmp/skill02 --count 16 --seeds 0 --research-worlds 32 --shuffle-steps 8
       - run: python -m research_gym.trm_skill_gym_v2.race --out /tmp/skill02/race --skills deduction --seeds 10 --steps 2 --count 8 --train-count 64 --max-archive 1
       - run: python -m research_gym.trm_skill_gym_v2.advanced --out /tmp/skill02/advanced --count 64 --nulls 4
+      - run: python -m research_gym.trm_skill_gym_v2.hybrid --out /tmp/skill02/hybrid --count 128
       - uses: actions/upload-artifact@v4
         with:
           name: skill02-diagnostics

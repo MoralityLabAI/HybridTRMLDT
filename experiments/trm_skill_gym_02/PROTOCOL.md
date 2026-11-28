@@ -50,3 +50,10 @@ Freeze this revision before examining new pilot outcomes.
 ```sh
 python -m research_gym.trm_skill_gym_v2.advanced --out experiments/trm_skill_gym_02/advanced --count 128 --nulls 8
 ```
+
+## SKILL-02D actual bypass pilot
+Fresh graph roots 2,200,000+, 128 per original and chain stratum including depth 14, both original D checkpoints. Compare neural-only with bounded public certificate rounds 1/2/4/8/16 followed by constrained neural prediction on unresolved instances only. Fully certified instances bypass the model. Equal no-feedback inference mode (original checkpoints were trained with verifier feedback; report this distribution change). Grade after inference, no target/aux fields accepted by neural forward. Compare an exact linear-work reachability/topological kernel baseline (the deduction solver rejects cycles); record actual neural instances, model FLOPs, symbolic edge examinations, certificate coverage and violations, process CPU time excluding grading. Edge counts exclude graph extraction, which is included in CPU time. This is a practical composition baseline, not learned projection or evidence of a neural speed advantage.
+
+```sh
+python -m research_gym.trm_skill_gym_v2.hybrid --out experiments/trm_skill_gym_02/hybrid --count 128
+```
