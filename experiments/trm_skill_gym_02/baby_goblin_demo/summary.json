@@ -1,0 +1,28 @@
+{
+ "root": 7300000,
+ "stages": {
+  "retrieval": {
+   "verified": false,
+   "uncertainty": 0.0007411837577819824
+  },
+  "deduction": {
+   "verified": false,
+   "uncertainty": 0.0
+  },
+  "repair": {
+   "verified": true,
+   "uncertainty": 0.0
+  },
+  "stopping": {
+   "verified": true,
+   "uncertainty": 0.0
+  },
+  "research": {
+   "verified": true,
+   "uncertainty": 0.0
+  }
+ },
+ "all_verified": false,
+ "trajectory_sha256": "a793178e8dd97275c7ff81f34e79bf6ceb28eda077a3135f30d955d4eb53ba48",
+ "steps": 17
+}

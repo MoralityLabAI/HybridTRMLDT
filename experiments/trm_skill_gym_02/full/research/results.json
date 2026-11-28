@@ -1,0 +1,4156 @@
+{
+ "complete_jobs": [
+  "baselines",
+  "ff_s10",
+  "ff_s11",
+  "ff_s12",
+  "gru_s10",
+  "gru_s11",
+  "gru_s12",
+  "rlt_s10",
+  "rlt_s11",
+  "trm_s10",
+  "trm_s11"
+ ],
+ "incomplete_jobs": [
+  "ff_s13",
+  "gru_s13",
+  "rlt_s12",
+  "rlt_s13",
+  "trm_s12",
+  "trm_s13"
+ ],
+ "note_incomplete": "incomplete jobs are excluded from every comparison",
+ "args": {
+  "out": "experiments/trm_skill_gym_02/full/research",
+  "train_worlds": 300,
+  "test_worlds": 60,
+  "cal_worlds": 37,
+  "seeds": [
+   10,
+   11,
+   12,
+   13
+  ],
+  "steps": 3500,
+  "hidden": 32,
+  "states_per_world": 40,
+  "max_states": 60000,
+  "hours": 1.25,
+  "smoke": false
+ },
+ "root_ranges": {
+  "train": [
+   3000000,
+   3100000
+  ],
+  "calibration": [
+   3100000,
+   3200000
+  ],
+  "test": [
+   3200000,
+   3300000
+  ]
+ },
+ "families": {
+  "screen_gate_h4": {
+   "H": 4,
+   "K": 2,
+   "conf": 0.9,
+   "budget": 4.0,
+   "max_abandon": 1,
+   "chain": 1,
+   "def_cost": 1.8,
+   "surprise": false
+  },
+  "confounded_h5": {
+   "H": 5,
+   "K": 2,
+   "conf": 1.5,
+   "budget": 4.5,
+   "max_abandon": 1,
+   "chain": 1,
+   "def_cost": 1.8,
+   "surprise": false
+  },
+  "deep_chain_h5": {
+   "H": 5,
+   "K": 3,
+   "conf": 1.8,
+   "budget": 5.0,
+   "max_abandon": 2,
+   "chain": 2,
+   "def_cost": 2.0,
+   "surprise": false
+  },
+  "surprise_h4": {
+   "H": 4,
+   "K": 2,
+   "conf": 0.9,
+   "budget": 4.0,
+   "max_abandon": 1,
+   "chain": 1,
+   "def_cost": 1.8,
+   "surprise": true
+  }
+ },
+ "groups": {
+  "dev_screen_gate_h4": "screen_gate_h4",
+  "dev_confounded_h5": "confounded_h5",
+  "withheld_deep_chain_h5": "deep_chain_h5",
+  "surprise_h4": "surprise_h4"
+ },
+ "train_families": [
+  "screen_gate_h4",
+  "confounded_h5"
+ ],
+ "reward": {
+  "correct": 10.0,
+  "false": -8.0,
+  "abstain": 1.5,
+  "carry_per_alive_hypothesis": 0.08
+ },
+ "model_configs": {
+  "ff": {
+   "cfg": {
+    "core": "ff",
+    "hidden": 32,
+    "latent_steps": 2,
+    "cycles": 1,
+    "grad_cycles": 1,
+    "visits": 1,
+    "state_partition": "shared",
+    "update_schedule": "latent_then_answer",
+    "residual": "add",
+    "feedback": "direct",
+    "aggregation": "relation+mean",
+    "mixer_layers": 1,
+    "norm": "layer",
+    "supervision": "deep",
+    "ldt_projection": false,
+    "verifier_visits": 0,
+    "latent_reset": false,
+    "lr": 0.002,
+    "weight_decay": 0.01
+   },
+   "n_params": 11619,
+   "implementation": "feedforward"
+  },
+  "gru": {
+   "cfg": {
+    "core": "gru",
+    "hidden": 26,
+    "latent_steps": 2,
+    "cycles": 1,
+    "grad_cycles": 1,
+    "visits": 3,
+    "state_partition": "shared",
+    "update_schedule": "latent_then_answer",
+    "residual": "add",
+    "feedback": "direct",
+    "aggregation": "relation+mean",
+    "mixer_layers": 1,
+    "norm": "layer",
+    "supervision": "deep",
+    "ldt_projection": false,
+    "verifier_visits": 0,
+    "latent_reset": false,
+    "lr": 0.002,
+    "weight_decay": 0.01
+   },
+   "n_params": 12119,
+   "implementation": "recurrent_proxy_gru"
+  },
+  "trm": {
+   "cfg": {
+    "core": "trm",
+    "hidden": 32,
+    "latent_steps": 2,
+    "cycles": 1,
+    "grad_cycles": 1,
+    "visits": 3,
+    "state_partition": "shared",
+    "update_schedule": "latent_then_answer",
+    "residual": "add",
+    "feedback": "direct",
+    "aggregation": "relation+mean",
+    "mixer_layers": 1,
+    "norm": "layer",
+    "supervision": "deep",
+    "ldt_projection": false,
+    "verifier_visits": 0,
+    "latent_reset": false,
+    "lr": 0.002,
+    "weight_decay": 0.01
+   },
+   "n_params": 11683,
+   "implementation": "native_trm_update"
+  },
+  "rlt": {
+   "cfg": {
+    "core": "trm",
+    "hidden": 32,
+    "latent_steps": 2,
+    "cycles": 1,
+    "grad_cycles": 1,
+    "visits": 3,
+    "state_partition": "shared",
+    "update_schedule": "latent_then_answer",
+    "residual": "add",
+    "feedback": "rlt",
+    "aggregation": "relation+mean",
+    "mixer_layers": 1,
+    "norm": "layer",
+    "supervision": "deep",
+    "ldt_projection": false,
+    "verifier_visits": 0,
+    "latent_reset": false,
+    "lr": 0.002,
+    "weight_decay": 0.01
+   },
+   "n_params": 11683,
+   "implementation": "native_trm_update+rlt_feedback"
+  }
+ },
+ "planner_status": {
+  "dev_screen_gate_h4": {
+   "tractable": 60,
+   "total": 60,
+   "status": [
+    "exact"
+   ]
+  },
+  "dev_confounded_h5": {
+   "tractable": 60,
+   "total": 60,
+   "status": [
+    "exact"
+   ]
+  },
+  "withheld_deep_chain_h5": {
+   "tractable": 60,
+   "total": 60,
+   "status": [
+    "exact"
+   ]
+  },
+  "surprise_h4": {
+   "tractable": 60,
+   "total": 60,
+   "status": [
+    "exact"
+   ]
+  }
+ },
+ "source_sha256_research_env_py": "2e2ef615b3efe534cd2a41488a77587f5aeefc6fdf447607d5a55320da87468f",
+ "train_cpu_seconds_per_job": {
+  "ff_s10": 45.875,
+  "ff_s11": 42.9375,
+  "ff_s12": 74.234375,
+  "gru_s10": 320.421875,
+  "gru_s11": 328.34375,
+  "gru_s12": 625.390625,
+  "rlt_s10": 226.5625,
+  "rlt_s11": 526.078125,
+  "trm_s10": 222.21875,
+  "trm_s11": 254.453125
+ },
+ "steps_completed_per_job": {
+  "ff_s10": 3500,
+  "ff_s11": 3500,
+  "ff_s12": 3500,
+  "gru_s10": 3500,
+  "gru_s11": 3500,
+  "gru_s12": 3500,
+  "rlt_s10": 3500,
+  "rlt_s11": 3500,
+  "trm_s10": 3500,
+  "trm_s11": 3500
+ },
+ "wall_seconds": 4500.656226396561,
+ "aggregate": {
+  "baselines": {
+   "exact_planner": {
+    "dev_screen_gate_h4": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 2.9136666666666664,
+      "expected_utility": 3.9038269569504966,
+      "evidence_experiments": 2.8666666666666667,
+      "evidence_bits": 0.7440870689139807,
+      "research_cost": 2.0696666666666665,
+      "false_conclusion_rate": 0.2,
+      "completed_objective_rate": 0.6333333333333333,
+      "abstain_rate": 0.16666666666666666,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.1,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.10447077145735399,
+      "ece_conf": null,
+      "regret_expected_vs_vstar": -0.35455948909417223,
+      "contradiction_rate": 0.43333333333333335,
+      "post_contradiction_return": 1.4053846153846155,
+      "post_contradiction_regret": 2.518637375420456
+     },
+     "first_action": null
+    },
+    "dev_confounded_h5": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 1.9711666666666672,
+      "expected_utility": 1.856465379710311,
+      "evidence_experiments": 2.566666666666667,
+      "evidence_bits": 0.5166385054260112,
+      "research_cost": 1.9621666666666662,
+      "false_conclusion_rate": 0.11666666666666667,
+      "completed_objective_rate": 0.4166666666666667,
+      "abstain_rate": 0.4666666666666667,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.11666666666666667,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.10747154296982238,
+      "ece_conf": null,
+      "regret_expected_vs_vstar": 0.3610636692141888,
+      "contradiction_rate": 0.5333333333333333,
+      "post_contradiction_return": 3.7150000000000003,
+      "post_contradiction_regret": -0.7000298435395251
+     },
+     "first_action": null
+    },
+    "withheld_deep_chain_h5": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 1.7683333333333335,
+      "expected_utility": 1.9255144912487085,
+      "evidence_experiments": 1.4166666666666667,
+      "evidence_bits": 0.29373716342036454,
+      "research_cost": 1.0816666666666666,
+      "false_conclusion_rate": 0.06666666666666667,
+      "completed_objective_rate": 0.23333333333333334,
+      "abstain_rate": 0.7,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.3333333333333333,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.1375352617384597,
+      "ece_conf": null,
+      "regret_expected_vs_vstar": -0.0443522713855884,
+      "contradiction_rate": 0.3333333333333333,
+      "post_contradiction_return": 3.246,
+      "post_contradiction_regret": -0.808525313602386
+     },
+     "first_action": null
+    },
+    "surprise_h4": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 1.6450000000000002,
+      "expected_utility": 2.473076610623896,
+      "evidence_experiments": 3.4,
+      "evidence_bits": 0.7824415151970153,
+      "research_cost": 2.505,
+      "false_conclusion_rate": 0.18333333333333332,
+      "completed_objective_rate": 0.5166666666666667,
+      "abstain_rate": 0.3,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.21666666666666667,
+      "cpu_s_per_episode": 0.0005208333333333333,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.09034190133947394,
+      "ece_conf": null,
+      "regret_expected_vs_vstar": 0.3772240061440294,
+      "contradiction_rate": 0.9833333333333333,
+      "post_contradiction_return": 2.9247457627118645,
+      "post_contradiction_regret": 0.23644643570395632
+     },
+     "first_action": null
+    }
+   },
+   "greedy_eig_per_cost": {
+    "dev_screen_gate_h4": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 0.683,
+      "expected_utility": 0.7649277140456289,
+      "evidence_experiments": 2.683333333333333,
+      "evidence_bits": 0.4668853303625532,
+      "research_cost": 3.3086666666666664,
+      "false_conclusion_rate": 0.2,
+      "completed_objective_rate": 0.5166666666666667,
+      "abstain_rate": 0.2833333333333333,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.00078125,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.20636847919686302,
+      "ece_conf": null,
+      "contradiction_rate": 0.5166666666666667,
+      "post_contradiction_return": 0.5722580645161294,
+      "post_contradiction_regret": 2.1694928143030947,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": 0.683,
+       "expected_utility": 0.7649277140456289,
+       "evidence_experiments": 2.683333333333333,
+       "evidence_bits": 0.4668853303625532,
+       "research_cost": 3.3086666666666664,
+       "false_conclusion_rate": 0.2,
+       "completed_objective_rate": 0.5166666666666667,
+       "abstain_rate": 0.2833333333333333,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.00078125,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.20636847919686302,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 2.2306666666666666,
+       "regret_expected_vs_vstar": 2.7843397538106958,
+       "contradiction_rate": 0.5166666666666667,
+       "post_contradiction_return": 0.5722580645161294,
+       "post_contradiction_regret": 2.1694928143030947
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 2.443333333333334,
+      "expected_utility": 2.918350789354968,
+      "evidence_experiments": 3.0166666666666666,
+      "evidence_bits": 0.6441270767031058,
+      "research_cost": 2.4149999999999996,
+      "false_conclusion_rate": 0.18333333333333332,
+      "completed_objective_rate": 0.6,
+      "abstain_rate": 0.21666666666666667,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.13333333333333333,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.12742449927094662,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 0.47033333333333344,
+      "regret_expected_vs_vstar": 0.6309166785013562,
+      "contradiction_rate": 0.4666666666666667,
+      "post_contradiction_return": 1.0550000000000004,
+      "post_contradiction_regret": 2.1085485240491075,
+      "first_action_q_regret": 0.7247895068987996,
+      "first_action_top1_optimal": 0.0
+     }
+    },
+    "dev_confounded_h5": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": -1.2608333333333335,
+      "expected_utility": -1.3690418658845167,
+      "evidence_experiments": 3.0,
+      "evidence_bits": 0.25488402041633496,
+      "research_cost": 3.7775000000000007,
+      "false_conclusion_rate": 0.11666666666666667,
+      "completed_objective_rate": 0.25,
+      "abstain_rate": 0.6333333333333333,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.10240465569236079,
+      "ece_conf": null,
+      "contradiction_rate": 0.6666666666666666,
+      "post_contradiction_return": 0.1612499999999999,
+      "post_contradiction_regret": 1.8987831318274548,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": -1.2608333333333335,
+       "expected_utility": -1.3690418658845167,
+       "evidence_experiments": 3.0,
+       "evidence_bits": 0.25488402041633496,
+       "research_cost": 3.7775000000000007,
+       "false_conclusion_rate": 0.11666666666666667,
+       "completed_objective_rate": 0.25,
+       "abstain_rate": 0.6333333333333333,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.00026041666666666666,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.10240465569236079,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 3.2320000000000007,
+       "regret_expected_vs_vstar": 3.586570914809016,
+       "contradiction_rate": 0.6666666666666666,
+       "post_contradiction_return": 0.1612499999999999,
+       "post_contradiction_regret": 1.8987831318274548
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 0.8990000000000001,
+      "expected_utility": 0.8253353627729374,
+      "evidence_experiments": 2.3833333333333333,
+      "evidence_bits": 0.3007688889882812,
+      "research_cost": 2.0593333333333335,
+      "false_conclusion_rate": 0.1,
+      "completed_objective_rate": 0.2833333333333333,
+      "abstain_rate": 0.6166666666666667,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.16666666666666666,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.08450296486660945,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 1.072166666666667,
+      "regret_expected_vs_vstar": 1.3921936861515631,
+      "contradiction_rate": 0.65,
+      "post_contradiction_return": 2.225897435897436,
+      "post_contradiction_regret": -0.05752602064773932,
+      "first_action_q_regret": 0.8238847691263641,
+      "first_action_top1_optimal": 0.0
+     }
+    },
+    "withheld_deep_chain_h5": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 1.1383333333333334,
+      "expected_utility": 0.7837139769749571,
+      "evidence_experiments": 1.0833333333333333,
+      "evidence_bits": 0.057422456674762784,
+      "research_cost": 0.9116666666666665,
+      "false_conclusion_rate": 0.016666666666666666,
+      "completed_objective_rate": 0.08333333333333333,
+      "abstain_rate": 0.9,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.1970107535324312,
+      "ece_conf": null,
+      "contradiction_rate": 0.25,
+      "post_contradiction_return": 1.4533333333333331,
+      "post_contradiction_regret": 0.0508440612008861,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": 1.1383333333333334,
+       "expected_utility": 0.7837139769749571,
+       "evidence_experiments": 1.0833333333333333,
+       "evidence_bits": 0.057422456674762784,
+       "research_cost": 0.9116666666666665,
+       "false_conclusion_rate": 0.016666666666666666,
+       "completed_objective_rate": 0.08333333333333333,
+       "abstain_rate": 0.9,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.00026041666666666666,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.1970107535324312,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 0.6300000000000001,
+       "regret_expected_vs_vstar": 1.097448242888163,
+       "contradiction_rate": 0.25,
+       "post_contradiction_return": 1.4533333333333331,
+       "post_contradiction_regret": 0.0508440612008861
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 0.8309999999999997,
+      "expected_utility": 1.1487715649512296,
+      "evidence_experiments": 1.5333333333333334,
+      "evidence_bits": 0.19664477168824754,
+      "research_cost": 1.3106666666666664,
+      "false_conclusion_rate": 0.06666666666666667,
+      "completed_objective_rate": 0.15,
+      "abstain_rate": 0.7833333333333333,
+      "abandon_rate": 0.9333333333333333,
+      "abandoned_truth_rate": 0.36666666666666664,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.20814491014978886,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 0.9373333333333334,
+      "regret_expected_vs_vstar": 0.7323906549118906,
+      "contradiction_rate": 0.3333333333333333,
+      "post_contradiction_return": 1.831,
+      "post_contradiction_regret": -0.0008493709637942715,
+      "first_action_q_regret": 0.8155826838440442,
+      "first_action_top1_optimal": 0.05
+     }
+    },
+    "surprise_h4": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": -1.2156666666666665,
+      "expected_utility": -0.7061940455906394,
+      "evidence_experiments": 2.95,
+      "evidence_bits": 0.4033596278648562,
+      "research_cost": 3.5239999999999996,
+      "false_conclusion_rate": 0.18333333333333332,
+      "completed_objective_rate": 0.3,
+      "abstain_rate": 0.5166666666666667,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.00078125,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.08812721256231423,
+      "ece_conf": null,
+      "contradiction_rate": 1.0,
+      "post_contradiction_return": -0.4956666666666662,
+      "post_contradiction_regret": 2.6761811626366074,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": -1.2156666666666665,
+       "expected_utility": -0.7061940455906394,
+       "evidence_experiments": 2.95,
+       "evidence_bits": 0.4033596278648562,
+       "research_cost": 3.5239999999999996,
+       "false_conclusion_rate": 0.18333333333333332,
+       "completed_objective_rate": 0.3,
+       "abstain_rate": 0.5166666666666667,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.00078125,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.08812721256231423,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 2.860666666666667,
+       "regret_expected_vs_vstar": 3.5564946623585643,
+       "contradiction_rate": 1.0,
+       "post_contradiction_return": -0.4956666666666662,
+       "post_contradiction_regret": 2.6761811626366074
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 0.7701666666666669,
+      "expected_utility": 1.9864327637214167,
+      "evidence_experiments": 3.183333333333333,
+      "evidence_bits": 0.6756687225791033,
+      "research_cost": 2.5298333333333334,
+      "false_conclusion_rate": 0.18333333333333332,
+      "completed_objective_rate": 0.4166666666666667,
+      "abstain_rate": 0.4,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.26666666666666666,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.1791445370480529,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 0.8748333333333334,
+      "regret_expected_vs_vstar": 0.8638678530465083,
+      "contradiction_rate": 1.0,
+      "post_contradiction_return": 1.490166666666667,
+      "post_contradiction_regret": 0.6903478293032744,
+      "first_action_q_regret": 0.7765442213520264,
+      "first_action_top1_optimal": 0.0
+     }
+    }
+   },
+   "variance_heuristic": {
+    "dev_screen_gate_h4": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 2.4883333333333337,
+      "expected_utility": 2.00084200004952,
+      "evidence_experiments": 0.75,
+      "evidence_bits": 0.14961439895580453,
+      "research_cost": 0.7033333333333334,
+      "false_conclusion_rate": 0.15,
+      "completed_objective_rate": 0.36666666666666664,
+      "abstain_rate": 0.48333333333333334,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.0005208333333333333,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.1427682284482095,
+      "ece_conf": null,
+      "contradiction_rate": 0.23333333333333334,
+      "post_contradiction_return": -1.0357142857142854,
+      "post_contradiction_regret": 4.176204091471993,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": 2.4883333333333337,
+       "expected_utility": 2.00084200004952,
+       "evidence_experiments": 0.75,
+       "evidence_bits": 0.14961439895580453,
+       "research_cost": 0.7033333333333334,
+       "false_conclusion_rate": 0.15,
+       "completed_objective_rate": 0.36666666666666664,
+       "abstain_rate": 0.48333333333333334,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.0005208333333333333,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.1427682284482095,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 0.4253333333333337,
+       "regret_expected_vs_vstar": 1.5484254678068048,
+       "contradiction_rate": 0.23333333333333334,
+       "post_contradiction_return": -1.0357142857142854,
+       "post_contradiction_regret": 4.176204091471993
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 1.8548333333333338,
+      "expected_utility": 2.328916780380001,
+      "evidence_experiments": 1.6833333333333333,
+      "evidence_bits": 0.3276418032377837,
+      "research_cost": 1.3201666666666665,
+      "false_conclusion_rate": 0.16666666666666666,
+      "completed_objective_rate": 0.38333333333333336,
+      "abstain_rate": 0.45,
+      "abandon_rate": 0.5333333333333333,
+      "abandoned_truth_rate": 0.08333333333333333,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.18371410713578593,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 1.0588333333333333,
+      "regret_expected_vs_vstar": 1.2203506874763235,
+      "contradiction_rate": 0.26666666666666666,
+      "post_contradiction_return": -0.8518749999999996,
+      "post_contradiction_regret": 3.8582797728197273,
+      "first_action_q_regret": 1.0380746698712162,
+      "first_action_top1_optimal": 0.06666666666666667
+     }
+    },
+    "dev_confounded_h5": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 1.1666666666666667,
+      "expected_utility": 1.5252204524255177,
+      "evidence_experiments": 0.0,
+      "evidence_bits": -1.4802973661668754e-17,
+      "research_cost": 0.0,
+      "false_conclusion_rate": 0.05,
+      "completed_objective_rate": 0.016666666666666666,
+      "abstain_rate": 0.9333333333333333,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.29879482146570924,
+      "ece_conf": null,
+      "contradiction_rate": 0.0,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": 1.1666666666666667,
+       "expected_utility": 1.5252204524255177,
+       "evidence_experiments": 0.0,
+       "evidence_bits": -1.4802973661668754e-17,
+       "research_cost": 0.0,
+       "false_conclusion_rate": 0.05,
+       "completed_objective_rate": 0.016666666666666666,
+       "abstain_rate": 0.9333333333333333,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.0,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.29879482146570924,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 0.8045000000000002,
+       "regret_expected_vs_vstar": 0.6923085964989824,
+       "contradiction_rate": 0.0
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 1.1666666666666667,
+      "expected_utility": 1.5252204524255177,
+      "evidence_experiments": 0.0,
+      "evidence_bits": -1.4802973661668754e-17,
+      "research_cost": 0.0,
+      "false_conclusion_rate": 0.05,
+      "completed_objective_rate": 0.016666666666666666,
+      "abstain_rate": 0.9333333333333333,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.29879482146570924,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 0.8045000000000002,
+      "regret_expected_vs_vstar": 0.6923085964989824,
+      "contradiction_rate": 0.0,
+      "first_action_q_regret": 0.6923085964989824,
+      "first_action_top1_optimal": 0.2
+     }
+    },
+    "withheld_deep_chain_h5": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 1.4666666666666666,
+      "expected_utility": 1.5608320193729683,
+      "evidence_experiments": 0.0,
+      "evidence_bits": 1.4802973661668754e-17,
+      "research_cost": 0.0,
+      "false_conclusion_rate": 0.03333333333333333,
+      "completed_objective_rate": 0.03333333333333333,
+      "abstain_rate": 0.9333333333333333,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.25864637322375605,
+      "ece_conf": null,
+      "contradiction_rate": 0.0,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": 1.4666666666666666,
+       "expected_utility": 1.5608320193729683,
+       "evidence_experiments": 0.0,
+       "evidence_bits": 1.4802973661668754e-17,
+       "research_cost": 0.0,
+       "false_conclusion_rate": 0.03333333333333333,
+       "completed_objective_rate": 0.03333333333333333,
+       "abstain_rate": 0.9333333333333333,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.0,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.25864637322375605,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 0.30166666666666675,
+       "regret_expected_vs_vstar": 0.32033020049015165,
+       "contradiction_rate": 0.0
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 1.4666666666666666,
+      "expected_utility": 1.5608320193729683,
+      "evidence_experiments": 0.0,
+      "evidence_bits": 1.4802973661668754e-17,
+      "research_cost": 0.0,
+      "false_conclusion_rate": 0.03333333333333333,
+      "completed_objective_rate": 0.03333333333333333,
+      "abstain_rate": 0.9333333333333333,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.25864637322375605,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 0.30166666666666675,
+      "regret_expected_vs_vstar": 0.32033020049015165,
+      "contradiction_rate": 0.0,
+      "first_action_q_regret": 0.32033020049015165,
+      "first_action_top1_optimal": 0.5666666666666667
+     }
+    },
+    "surprise_h4": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 1.1773333333333331,
+      "expected_utility": 0.8387781702042472,
+      "evidence_experiments": 1.3833333333333333,
+      "evidence_bits": 0.16059259164520762,
+      "research_cost": 1.4393333333333336,
+      "false_conclusion_rate": 0.016666666666666666,
+      "completed_objective_rate": 0.15,
+      "abstain_rate": 0.8333333333333334,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.1128517210430287,
+      "ece_conf": null,
+      "contradiction_rate": 0.75,
+      "post_contradiction_return": 1.8528888888888888,
+      "post_contradiction_regret": 0.22916308513853834,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": 1.1773333333333331,
+       "expected_utility": 0.8387781702042472,
+       "evidence_experiments": 1.3833333333333333,
+       "evidence_bits": 0.16059259164520762,
+       "research_cost": 1.4393333333333336,
+       "false_conclusion_rate": 0.016666666666666666,
+       "completed_objective_rate": 0.15,
+       "abstain_rate": 0.8333333333333334,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.0,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.1128517210430287,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 0.46766666666666673,
+       "regret_expected_vs_vstar": 2.0115224465636783,
+       "contradiction_rate": 0.75,
+       "post_contradiction_return": 1.8528888888888888,
+       "post_contradiction_regret": 0.22916308513853834
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 1.3990000000000005,
+      "expected_utility": 2.367482763196087,
+      "evidence_experiments": 2.283333333333333,
+      "evidence_bits": 0.5597844146573233,
+      "research_cost": 1.8093333333333335,
+      "false_conclusion_rate": 0.13333333333333333,
+      "completed_objective_rate": 0.35,
+      "abstain_rate": 0.5166666666666667,
+      "abandon_rate": 0.75,
+      "abandoned_truth_rate": 0.21666666666666667,
+      "cpu_s_per_episode": 0.0005208333333333333,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.16953160823579166,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 0.24599999999999997,
+      "regret_expected_vs_vstar": 0.4828178535718378,
+      "contradiction_rate": 0.75,
+      "post_contradiction_return": 2.152222222222223,
+      "post_contradiction_regret": -0.010567061467841773,
+      "first_action_q_regret": 0.9024571598525524,
+      "first_action_top1_optimal": 0.016666666666666666
+     }
+    }
+   },
+   "reuse_first": {
+    "dev_screen_gate_h4": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 2.2898333333333336,
+      "expected_utility": 2.9033395181568333,
+      "evidence_experiments": 3.8833333333333333,
+      "evidence_bits": 0.850113355807526,
+      "research_cost": 3.1185,
+      "false_conclusion_rate": 0.2,
+      "completed_objective_rate": 0.6833333333333333,
+      "abstain_rate": 0.11666666666666667,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.00078125,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.07322265169368702,
+      "ece_conf": null,
+      "contradiction_rate": 0.5,
+      "post_contradiction_return": 1.1963333333333332,
+      "post_contradiction_regret": 2.6361215755331058,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": 2.2898333333333336,
+       "expected_utility": 2.9033395181568333,
+       "evidence_experiments": 3.8833333333333333,
+       "evidence_bits": 0.850113355807526,
+       "research_cost": 3.1185,
+       "false_conclusion_rate": 0.2,
+       "completed_objective_rate": 0.6833333333333333,
+       "abstain_rate": 0.11666666666666667,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.00078125,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.07322265169368702,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 0.623833333333333,
+       "regret_expected_vs_vstar": 0.645927949699491,
+       "contradiction_rate": 0.5,
+       "post_contradiction_return": 1.1963333333333332,
+       "post_contradiction_regret": 2.6361215755331058
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 2.6620000000000004,
+      "expected_utility": 3.656573714702712,
+      "evidence_experiments": 3.1333333333333333,
+      "evidence_bits": 0.7594074572794767,
+      "research_cost": 2.3213333333333335,
+      "false_conclusion_rate": 0.2,
+      "completed_objective_rate": 0.6333333333333333,
+      "abstain_rate": 0.16666666666666666,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.13333333333333333,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.11414447665352455,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 0.2516666666666667,
+      "regret_expected_vs_vstar": -0.10730624684638795,
+      "contradiction_rate": 0.5,
+      "post_contradiction_return": 1.208,
+      "post_contradiction_regret": 2.645207933083529,
+      "first_action_q_regret": 0.06925256806481737,
+      "first_action_top1_optimal": 0.21666666666666667
+     }
+    },
+    "dev_confounded_h5": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 1.4933333333333338,
+      "expected_utility": 0.7342652399816184,
+      "evidence_experiments": 3.9833333333333334,
+      "evidence_bits": 0.7321391578184969,
+      "research_cost": 3.5733333333333333,
+      "false_conclusion_rate": 0.11666666666666667,
+      "completed_objective_rate": 0.55,
+      "abstain_rate": 0.3333333333333333,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.09635944134852001,
+      "ece_conf": null,
+      "contradiction_rate": 0.7166666666666667,
+      "post_contradiction_return": 3.627906976744186,
+      "post_contradiction_regret": -0.5577306519487646,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": 1.4933333333333338,
+       "expected_utility": 0.7342652399816184,
+       "evidence_experiments": 3.9833333333333334,
+       "evidence_bits": 0.7321391578184969,
+       "research_cost": 3.5733333333333333,
+       "false_conclusion_rate": 0.11666666666666667,
+       "completed_objective_rate": 0.55,
+       "abstain_rate": 0.3333333333333333,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.00026041666666666666,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.09635944134852001,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 0.4778333333333334,
+       "regret_expected_vs_vstar": 1.4832638089428818,
+       "contradiction_rate": 0.7166666666666667,
+       "post_contradiction_return": 3.627906976744186,
+       "post_contradiction_regret": -0.5577306519487646
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 1.7931666666666666,
+      "expected_utility": 1.6959179113457294,
+      "evidence_experiments": 3.05,
+      "evidence_bits": 0.594743798676768,
+      "research_cost": 2.406833333333333,
+      "false_conclusion_rate": 0.13333333333333333,
+      "completed_objective_rate": 0.4666666666666667,
+      "abstain_rate": 0.4,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.11666666666666667,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.08617703000874652,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 0.17800000000000002,
+      "regret_expected_vs_vstar": 0.5216111375787704,
+      "contradiction_rate": 0.65,
+      "post_contradiction_return": 3.33923076923077,
+      "post_contradiction_regret": -0.4875699459749156,
+      "first_action_q_regret": 0.16142636979409417,
+      "first_action_top1_optimal": 0.0
+     }
+    },
+    "withheld_deep_chain_h5": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": -0.5083333333333334,
+      "expected_utility": 0.29989994839882056,
+      "evidence_experiments": 4.0,
+      "evidence_bits": 0.7198895977473068,
+      "research_cost": 3.949999999999999,
+      "false_conclusion_rate": 0.18333333333333332,
+      "completed_objective_rate": 0.43333333333333335,
+      "abstain_rate": 0.38333333333333336,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.0005208333333333333,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.12828155911178685,
+      "ece_conf": null,
+      "contradiction_rate": 0.6,
+      "post_contradiction_return": 1.619444444444445,
+      "post_contradiction_regret": 0.6917749297051636,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": -0.5083333333333334,
+       "expected_utility": 0.29989994839882056,
+       "evidence_experiments": 4.0,
+       "evidence_bits": 0.7198895977473068,
+       "research_cost": 3.949999999999999,
+       "false_conclusion_rate": 0.18333333333333332,
+       "completed_objective_rate": 0.43333333333333335,
+       "abstain_rate": 0.38333333333333336,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.0005208333333333333,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.12828155911178685,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 2.276666666666666,
+       "regret_expected_vs_vstar": 1.5812622714642997,
+       "contradiction_rate": 0.6,
+       "post_contradiction_return": 1.619444444444445,
+       "post_contradiction_regret": 0.6917749297051636
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 1.922166666666667,
+      "expected_utility": 1.7365969887921742,
+      "evidence_experiments": 2.466666666666667,
+      "evidence_bits": 0.459523260746976,
+      "research_cost": 1.902833333333333,
+      "false_conclusion_rate": 0.08333333333333333,
+      "completed_objective_rate": 0.36666666666666664,
+      "abstain_rate": 0.55,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.21666666666666667,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.12311603970902475,
+      "ece_conf": null,
+      "regret_realized_vs_planner": -0.15383333333333352,
+      "regret_expected_vs_vstar": 0.14456523107094554,
+      "contradiction_rate": 0.48333333333333334,
+      "post_contradiction_return": 3.4613793103448276,
+      "post_contradiction_regret": -1.2157488938402539,
+      "first_action_q_regret": 0.4680228615898193,
+      "first_action_top1_optimal": 0.0
+     }
+    },
+    "surprise_h4": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": 1.5783333333333338,
+      "expected_utility": 2.454561287167379,
+      "evidence_experiments": 4.0,
+      "evidence_bits": 0.9546917697295998,
+      "research_cost": 3.2800000000000002,
+      "false_conclusion_rate": 0.18333333333333332,
+      "completed_objective_rate": 0.6,
+      "abstain_rate": 0.21666666666666667,
+      "abandon_rate": 0.0,
+      "abandoned_truth_rate": 0.0,
+      "cpu_s_per_episode": 0.0010416666666666667,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.08140558992545363,
+      "ece_conf": null,
+      "contradiction_rate": 1.0,
+      "post_contradiction_return": 2.8855,
+      "post_contradiction_regret": 0.3082319213788327,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": 1.5783333333333338,
+       "expected_utility": 2.454561287167379,
+       "evidence_experiments": 4.0,
+       "evidence_bits": 0.9546917697295998,
+       "research_cost": 3.2800000000000002,
+       "false_conclusion_rate": 0.18333333333333332,
+       "completed_objective_rate": 0.6,
+       "abstain_rate": 0.21666666666666667,
+       "abandon_rate": 0.0,
+       "abandoned_truth_rate": 0.0,
+       "cpu_s_per_episode": 0.0010416666666666667,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.08140558992545363,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 0.06666666666666615,
+       "regret_expected_vs_vstar": 0.39573932960054553,
+       "contradiction_rate": 1.0,
+       "post_contradiction_return": 2.8855,
+       "post_contradiction_regret": 0.3082319213788327
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 1.7083333333333333,
+      "expected_utility": 2.4059722426970978,
+      "evidence_experiments": 3.433333333333333,
+      "evidence_bits": 0.7857944386733213,
+      "research_cost": 2.5833333333333335,
+      "false_conclusion_rate": 0.18333333333333332,
+      "completed_objective_rate": 0.5333333333333333,
+      "abstain_rate": 0.2833333333333333,
+      "abandon_rate": 1.0,
+      "abandoned_truth_rate": 0.2,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.07490462613649337,
+      "ece_conf": null,
+      "regret_realized_vs_planner": -0.06333333333333337,
+      "regret_expected_vs_vstar": 0.44432837407082765,
+      "contradiction_rate": 0.9833333333333333,
+      "post_contradiction_return": 3.05271186440678,
+      "post_contradiction_regret": 0.12464741057482959,
+      "first_action_q_regret": 0.040475917338985465,
+      "first_action_top1_optimal": 0.48333333333333334
+     }
+    }
+   },
+   "random_valid": {
+    "dev_screen_gate_h4": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": -2.7861666666666665,
+      "expected_utility": -2.42537917031042,
+      "evidence_experiments": 0.45,
+      "evidence_bits": 0.06196739844420602,
+      "research_cost": 0.31949999999999995,
+      "false_conclusion_rate": 0.5666666666666667,
+      "completed_objective_rate": 0.16666666666666666,
+      "abstain_rate": 0.26666666666666666,
+      "abandon_rate": 0.3333333333333333,
+      "abandoned_truth_rate": 0.11666666666666667,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.12451366659348305,
+      "ece_conf": null,
+      "contradiction_rate": 0.11666666666666667,
+      "post_contradiction_return": -8.308571428571428,
+      "post_contradiction_regret": 11.366812671994792,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": -2.7861666666666665,
+       "expected_utility": -2.42537917031042,
+       "evidence_experiments": 0.45,
+       "evidence_bits": 0.06196739844420602,
+       "research_cost": 0.31949999999999995,
+       "false_conclusion_rate": 0.5666666666666667,
+       "completed_objective_rate": 0.16666666666666666,
+       "abstain_rate": 0.26666666666666666,
+       "abandon_rate": 0.3333333333333333,
+       "abandoned_truth_rate": 0.11666666666666667,
+       "cpu_s_per_episode": 0.00026041666666666666,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.12451366659348305,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 5.699833333333333,
+       "regret_expected_vs_vstar": 5.974646638166743,
+       "contradiction_rate": 0.11666666666666667,
+       "post_contradiction_return": -8.308571428571428,
+       "post_contradiction_regret": 11.366812671994792
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": 1.0021666666666667,
+      "expected_utility": 0.8423488428054376,
+      "evidence_experiments": 1.5333333333333334,
+      "evidence_bits": 0.3717646862197163,
+      "research_cost": 1.1394999999999997,
+      "false_conclusion_rate": 0.35,
+      "completed_objective_rate": 0.4666666666666667,
+      "abstain_rate": 0.18333333333333332,
+      "abandon_rate": 0.55,
+      "abandoned_truth_rate": 0.06666666666666667,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.17965827024708872,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 1.9115000000000002,
+      "regret_expected_vs_vstar": 2.706918625050887,
+      "contradiction_rate": 0.23333333333333334,
+      "post_contradiction_return": 3.0949999999999998,
+      "post_contradiction_regret": 0.29119783874021427,
+      "first_action_q_regret": 2.9310605204880216,
+      "first_action_top1_optimal": 0.1
+     }
+    },
+    "dev_confounded_h5": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": -2.793,
+      "expected_utility": -3.1909276875123087,
+      "evidence_experiments": 0.36666666666666664,
+      "evidence_bits": 0.0172597004836608,
+      "research_cost": 0.30966666666666665,
+      "false_conclusion_rate": 0.5833333333333334,
+      "completed_objective_rate": 0.18333333333333332,
+      "abstain_rate": 0.23333333333333334,
+      "abandon_rate": 0.48333333333333334,
+      "abandoned_truth_rate": 0.18333333333333332,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.15962767257252625,
+      "ece_conf": null,
+      "contradiction_rate": 0.03333333333333333,
+      "post_contradiction_return": -8.594999999999999,
+      "post_contradiction_regret": 10.891816304426182,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": -2.793,
+       "expected_utility": -3.1909276875123087,
+       "evidence_experiments": 0.36666666666666664,
+       "evidence_bits": 0.0172597004836608,
+       "research_cost": 0.30966666666666665,
+       "false_conclusion_rate": 0.5833333333333334,
+       "completed_objective_rate": 0.18333333333333332,
+       "abstain_rate": 0.23333333333333334,
+       "abandon_rate": 0.48333333333333334,
+       "abandoned_truth_rate": 0.18333333333333332,
+       "cpu_s_per_episode": 0.0,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.15962767257252625,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 4.764166666666668,
+       "regret_expected_vs_vstar": 5.408456736436808,
+       "contradiction_rate": 0.03333333333333333,
+       "post_contradiction_return": -8.594999999999999,
+       "post_contradiction_regret": 10.891816304426182
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": -1.1438333333333333,
+      "expected_utility": -0.7705055575452795,
+      "evidence_experiments": 1.1166666666666667,
+      "evidence_bits": 0.19883902623396082,
+      "research_cost": 0.8438333333333333,
+      "false_conclusion_rate": 0.38333333333333336,
+      "completed_objective_rate": 0.21666666666666667,
+      "abstain_rate": 0.4,
+      "abandon_rate": 0.5166666666666667,
+      "abandoned_truth_rate": 0.03333333333333333,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.15702127961909618,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 3.1149999999999998,
+      "regret_expected_vs_vstar": 2.98803460646978,
+      "contradiction_rate": 0.23333333333333334,
+      "post_contradiction_return": 3.2364285714285717,
+      "post_contradiction_regret": -0.5148310477873222,
+      "first_action_q_regret": 2.839512065209507,
+      "first_action_top1_optimal": 0.16666666666666666
+     }
+    },
+    "withheld_deep_chain_h5": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": -3.0555,
+      "expected_utility": -3.278725207610634,
+      "evidence_experiments": 0.38333333333333336,
+      "evidence_bits": 0.0030998991806619174,
+      "research_cost": 0.25549999999999995,
+      "false_conclusion_rate": 0.6166666666666667,
+      "completed_objective_rate": 0.18333333333333332,
+      "abstain_rate": 0.2,
+      "abandon_rate": 0.48333333333333334,
+      "abandoned_truth_rate": 0.13333333333333333,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.06025737608371085,
+      "ece_conf": null,
+      "contradiction_rate": 0.08333333333333333,
+      "post_contradiction_return": -0.8,
+      "post_contradiction_regret": 2.3,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": -3.0555,
+       "expected_utility": -3.278725207610634,
+       "evidence_experiments": 0.38333333333333336,
+       "evidence_bits": 0.0030998991806619174,
+       "research_cost": 0.25549999999999995,
+       "false_conclusion_rate": 0.6166666666666667,
+       "completed_objective_rate": 0.18333333333333332,
+       "abstain_rate": 0.2,
+       "abandon_rate": 0.48333333333333334,
+       "abandoned_truth_rate": 0.13333333333333333,
+       "cpu_s_per_episode": 0.0,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.06025737608371085,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 4.823833333333332,
+       "regret_expected_vs_vstar": 5.159887427473754,
+       "contradiction_rate": 0.08333333333333333,
+       "post_contradiction_return": -0.8,
+       "post_contradiction_regret": 2.3
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": -0.7035000000000001,
+      "expected_utility": -0.41154525780005474,
+      "evidence_experiments": 0.7666666666666667,
+      "evidence_bits": 0.13790794332120376,
+      "research_cost": 0.6451666666666667,
+      "false_conclusion_rate": 0.2833333333333333,
+      "completed_objective_rate": 0.13333333333333333,
+      "abstain_rate": 0.5833333333333334,
+      "abandon_rate": 0.65,
+      "abandoned_truth_rate": 0.25,
+      "cpu_s_per_episode": 0.00026041666666666666,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.1035467413064309,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 2.471833333333333,
+      "regret_expected_vs_vstar": 2.2927074776631744,
+      "contradiction_rate": 0.18333333333333332,
+      "post_contradiction_return": 2.224545454545455,
+      "post_contradiction_regret": 0.33959814843749375,
+      "first_action_q_regret": 2.2535052573668315,
+      "first_action_top1_optimal": 0.45
+     }
+    },
+    "surprise_h4": {
+     "rollout": {
+      "n_worlds": 60,
+      "utility": -2.5236666666666663,
+      "expected_utility": -2.405510569540287,
+      "evidence_experiments": 0.6833333333333333,
+      "evidence_bits": 0.0362933096045383,
+      "research_cost": 0.5486666666666667,
+      "false_conclusion_rate": 0.5,
+      "completed_objective_rate": 0.15,
+      "abstain_rate": 0.35,
+      "abandon_rate": 0.43333333333333335,
+      "abandoned_truth_rate": 0.18333333333333332,
+      "cpu_s_per_episode": 0.0,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.13502401605001746,
+      "ece_conf": null,
+      "contradiction_rate": 0.31666666666666665,
+      "post_contradiction_return": -0.3642105263157893,
+      "post_contradiction_regret": 2.653110158551093,
+      "tractable_subset": {
+       "n_worlds": 60,
+       "utility": -2.5236666666666663,
+       "expected_utility": -2.405510569540287,
+       "evidence_experiments": 0.6833333333333333,
+       "evidence_bits": 0.0362933096045383,
+       "research_cost": 0.5486666666666667,
+       "false_conclusion_rate": 0.5,
+       "completed_objective_rate": 0.15,
+       "abstain_rate": 0.35,
+       "abandon_rate": 0.43333333333333335,
+       "abandoned_truth_rate": 0.18333333333333332,
+       "cpu_s_per_episode": 0.0,
+       "flops_per_episode": 0.0,
+       "ece_posterior": 0.13502401605001746,
+       "ece_conf": null,
+       "regret_realized_vs_planner": 4.168666666666666,
+       "regret_expected_vs_vstar": 5.255811186308212,
+       "contradiction_rate": 0.31666666666666665,
+       "post_contradiction_return": -0.3642105263157893,
+       "post_contradiction_regret": 2.653110158551093
+      }
+     },
+     "first_action": {
+      "n_worlds": 60,
+      "utility": -0.8240000000000001,
+      "expected_utility": -0.3211671258037457,
+      "evidence_experiments": 1.5166666666666666,
+      "evidence_bits": 0.29908301698384776,
+      "research_cost": 1.1073333333333335,
+      "false_conclusion_rate": 0.36666666666666664,
+      "completed_objective_rate": 0.26666666666666666,
+      "abstain_rate": 0.36666666666666664,
+      "abandon_rate": 0.5333333333333333,
+      "abandoned_truth_rate": 0.11666666666666667,
+      "cpu_s_per_episode": 0.0005208333333333333,
+      "flops_per_episode": 0.0,
+      "ece_posterior": 0.18408922986106538,
+      "ece_conf": null,
+      "regret_realized_vs_planner": 2.4690000000000003,
+      "regret_expected_vs_vstar": 3.171467742571671,
+      "contradiction_rate": 0.45,
+      "post_contradiction_return": 2.254444444444445,
+      "post_contradiction_regret": 0.4352925908688652,
+      "first_action_q_regret": 2.7767021686748787,
+      "first_action_top1_optimal": 0.21666666666666667
+     }
+    }
+   }
+  },
+  "learned": {
+   "ff": {
+    "n_seeds": 3,
+    "n_params": 11619,
+    "implementation": "feedforward",
+    "dev_screen_gate_h4": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 2.8353888888888883,
+       "sd": 0.42173193024438416
+      },
+      "expected_utility": {
+       "mean": 3.431636987182838,
+       "sd": 0.07910512674283936
+      },
+      "evidence_experiments": {
+       "mean": 3.1611111111111114,
+       "sd": 0.10570165328022474
+      },
+      "evidence_bits": {
+       "mean": 0.726387518071177,
+       "sd": 0.017646327926615194
+      },
+      "research_cost": {
+       "mean": 2.1590555555555553,
+       "sd": 0.11141533351926919
+      },
+      "false_conclusion_rate": {
+       "mean": 0.18888888888888888,
+       "sd": 0.03424674446093876
+      },
+      "completed_objective_rate": {
+       "mean": 0.6222222222222222,
+       "sd": 0.007856742013183834
+      },
+      "abstain_rate": {
+       "mean": 0.18888888888888888,
+       "sd": 0.03424674446093876
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.07222222222222223,
+       "sd": 0.00785674201318386
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.01189236111111111,
+       "sd": 0.0048362459295778195
+      },
+      "flops_per_episode": {
+       "mean": 2036037.6888888888,
+       "sd": 41698.879412435526
+      },
+      "ece_posterior": {
+       "mean": 0.08050348754506792,
+       "sd": 0.02555869675973417
+      },
+      "ece_conf": {
+       "mean": 0.05339651301734729,
+       "sd": 0.01755614239234472
+      },
+      "contradiction_rate": {
+       "mean": 0.4388888888888889,
+       "sd": 0.00785674201318386
+      },
+      "post_contradiction_return": {
+       "mean": 0.9942070275403608,
+       "sd": 0.4460470911864072
+      },
+      "post_contradiction_regret": {
+       "mean": 2.813981552747032,
+       "sd": 0.5571404416226693
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 2.9465555555555554,
+       "sd": 0.0917042683821542
+      },
+      "expected_utility": {
+       "mean": 3.857494494669361,
+       "sd": 0.03265209137767991
+      },
+      "evidence_experiments": {
+       "mean": 2.7944444444444443,
+       "sd": 0.02078698548207754
+      },
+      "evidence_bits": {
+       "mean": 0.7230949271090075,
+       "sd": 0.008972099395189422
+      },
+      "research_cost": {
+       "mean": 2.000666666666666,
+       "sd": 0.03504996433664399
+      },
+      "false_conclusion_rate": {
+       "mean": 0.18888888888888888,
+       "sd": 0.015713484026367734
+      },
+      "completed_objective_rate": {
+       "mean": 0.6166666666666667,
+       "sd": 0.01360827634879543
+      },
+      "abstain_rate": {
+       "mean": 0.19444444444444442,
+       "sd": 0.02832788618662659
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.06666666666666667,
+       "sd": 0.0
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.0031249999999999997,
+       "sd": 0.0002126293179499288
+      },
+      "flops_per_episode": {
+       "mean": 394496.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.11229566423332167,
+       "sd": 0.002306899307259601
+      },
+      "ece_conf": {
+       "mean": 0.09691558678944907,
+       "sd": 0.0485269455885203
+      },
+      "regret_realized_vs_planner": {
+       "mean": -0.03288888888888892,
+       "sd": 0.09170426838215426
+      },
+      "regret_expected_vs_vstar": {
+       "mean": -0.30822702681303676,
+       "sd": 0.03265209137768009
+      },
+      "contradiction_rate": {
+       "mean": 0.43333333333333335,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 1.408846153846154,
+       "sd": 0.20315946263559248
+      },
+      "post_contradiction_regret": {
+       "mean": 2.364198053537455,
+       "sd": 0.2588030706633212
+      },
+      "first_action_q_regret": {
+       "mean": 0.06651584991268293,
+       "sd": 0.01611873616071701
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.6722222222222222,
+       "sd": 0.05152010275275391
+      }
+     }
+    },
+    "dev_confounded_h5": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.7134444444444448,
+       "sd": 0.11732649390840712
+      },
+      "expected_utility": {
+       "mean": 1.720166971293458,
+       "sd": 0.0562252889607874
+      },
+      "evidence_experiments": {
+       "mean": 3.077777777777778,
+       "sd": 0.10030816714037666
+      },
+      "evidence_bits": {
+       "mean": 0.5938021091636915,
+       "sd": 0.011228351701812238
+      },
+      "research_cost": {
+       "mean": 2.292111111111111,
+       "sd": 0.06800562794430166
+      },
+      "false_conclusion_rate": {
+       "mean": 0.13888888888888887,
+       "sd": 0.00785674201318386
+      },
+      "completed_objective_rate": {
+       "mean": 0.45,
+       "sd": 0.01360827634879543
+      },
+      "abstain_rate": {
+       "mean": 0.41111111111111115,
+       "sd": 0.00785674201318386
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.10555555555555556,
+       "sd": 0.00785674201318386
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.012499999999999999,
+       "sd": 0.0037797814335203545
+      },
+      "flops_per_episode": {
+       "mean": 2003163.022222222,
+       "sd": 39571.170704209995
+      },
+      "ece_posterior": {
+       "mean": 0.06832063107719814,
+       "sd": 0.022355011616451034
+      },
+      "ece_conf": {
+       "mean": 0.03986853474570875,
+       "sd": 0.0026722384149443215
+      },
+      "contradiction_rate": {
+       "mean": 0.6666666666666666,
+       "sd": 0.03600411499115479
+      },
+      "post_contradiction_return": {
+       "mean": 3.2497121007647323,
+       "sd": 0.21150593056561545
+      },
+      "post_contradiction_regret": {
+       "mean": -0.39768921258375434,
+       "sd": 0.23378945081666525
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.7517222222222226,
+       "sd": 0.07471257682480557
+      },
+      "expected_utility": {
+       "mean": 1.7856111204638416,
+       "sd": 0.016245441796765746
+      },
+      "evidence_experiments": {
+       "mean": 2.2611111111111115,
+       "sd": 0.08642416214502237
+      },
+      "evidence_bits": {
+       "mean": 0.43962116624961306,
+       "sd": 0.021234733357572668
+      },
+      "research_cost": {
+       "mean": 1.7204999999999997,
+       "sd": 0.07283199846221422
+      },
+      "false_conclusion_rate": {
+       "mean": 0.10555555555555556,
+       "sd": 0.00785674201318386
+      },
+      "completed_objective_rate": {
+       "mean": 0.3499999999999999,
+       "sd": 0.01360827634879543
+      },
+      "abstain_rate": {
+       "mean": 0.5444444444444445,
+       "sd": 0.02078698548207743
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.10555555555555556,
+       "sd": 0.00785674201318386
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.002777777777777778,
+       "sd": 0.0013670152559048282
+      },
+      "flops_per_episode": {
+       "mean": 394496.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.1426908558446697,
+       "sd": 0.015341912541116182
+      },
+      "ece_conf": {
+       "mean": 0.06687311795022753,
+       "sd": 0.035131277492579806
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.21944444444444453,
+       "sd": 0.07471257682480553
+      },
+      "regret_expected_vs_vstar": {
+       "mean": 0.43191792846065824,
+       "sd": 0.016245441796765694
+      },
+      "contradiction_rate": {
+       "mean": 0.4833333333333334,
+       "sd": 0.023570226039551608
+      },
+      "post_contradiction_return": {
+       "mean": 3.6926536098310296,
+       "sd": 0.14977124137490744
+      },
+      "post_contradiction_regret": {
+       "mean": -0.7409919178645042,
+       "sd": 0.2157548107031175
+      },
+      "first_action_q_regret": {
+       "mean": 0.06645094273249812,
+       "sd": 0.016456521183025867
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.7666666666666666,
+       "sd": 0.01360827634879543
+      }
+     }
+    },
+    "withheld_deep_chain_h5": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.1050555555555557,
+       "sd": 0.10177501815763858
+      },
+      "expected_utility": {
+       "mean": 1.2173905039499215,
+       "sd": 0.08785811269793603
+      },
+      "evidence_experiments": {
+       "mean": 2.6333333333333333,
+       "sd": 0.049065338146265645
+      },
+      "evidence_bits": {
+       "mean": 0.35472218434045105,
+       "sd": 0.012980595962555996
+      },
+      "research_cost": {
+       "mean": 1.772722222222222,
+       "sd": 0.04728564368564119
+      },
+      "false_conclusion_rate": {
+       "mean": 0.13333333333333333,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.3111111111111111,
+       "sd": 0.01571348402636772
+      },
+      "abstain_rate": {
+       "mean": 0.5555555555555556,
+       "sd": 0.01571348402636772
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.15,
+       "sd": 0.036004114991154766
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.011979166666666666,
+       "sd": 0.005733111015957767
+      },
+      "flops_per_episode": {
+       "mean": 2206985.955555556,
+       "sd": 8200.382624737564
+      },
+      "ece_posterior": {
+       "mean": 0.1919151631089162,
+       "sd": 0.011467613596724742
+      },
+      "ece_conf": {
+       "mean": 0.17950214485930194,
+       "sd": 0.0515794485317838
+      },
+      "contradiction_rate": {
+       "mean": 0.5333333333333333,
+       "sd": 0.023570226039551608
+      },
+      "post_contradiction_return": {
+       "mean": 1.9466262626262625,
+       "sd": 0.08075010041143914
+      },
+      "post_contradiction_regret": {
+       "mean": 0.17962441450685182,
+       "sd": 0.07645082063694757
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.756722222222222,
+       "sd": 0.027891434146802882
+      },
+      "expected_utility": {
+       "mean": 1.9236111934550097,
+       "sd": 0.021026973519567418
+      },
+      "evidence_experiments": {
+       "mean": 1.3111111111111111,
+       "sd": 0.03928371006591927
+      },
+      "evidence_bits": {
+       "mean": 0.27125730910593393,
+       "sd": 0.013875224397046434
+      },
+      "research_cost": {
+       "mean": 0.9988333333333332,
+       "sd": 0.038890872965260066
+      },
+      "false_conclusion_rate": {
+       "mean": 0.06666666666666667,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.22222222222222224,
+       "sd": 0.00785674201318386
+      },
+      "abstain_rate": {
+       "mean": 0.7111111111111111,
+       "sd": 0.007856742013183886
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.31666666666666665,
+       "sd": 0.02721655269759086
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.0022569444444444447,
+       "sd": 0.00044262322166604024
+      },
+      "flops_per_episode": {
+       "mean": 394496.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.14483229422181357,
+       "sd": 0.005159781151518025
+      },
+      "ece_conf": {
+       "mean": 0.10684955451223584,
+       "sd": 0.01059864395196949
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.011611111111111109,
+       "sd": 0.02789143414680271
+      },
+      "regret_expected_vs_vstar": {
+       "mean": -0.04244897359188965,
+       "sd": 0.021026973519567362
+      },
+      "contradiction_rate": {
+       "mean": 0.3055555555555556,
+       "sd": 0.00785674201318386
+      },
+      "post_contradiction_return": {
+       "mean": 3.2307797270955163,
+       "sd": 0.07574174975867623
+      },
+      "post_contradiction_regret": {
+       "mean": -0.7504286501774553,
+       "sd": 0.07117074109361929
+      },
+      "first_action_q_regret": {
+       "mean": 0.007839437925521739,
+       "sd": 0.0016493115192885714
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.9277777777777777,
+       "sd": 0.01571348402636772
+      }
+     }
+    },
+    "surprise_h4": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.424722222222222,
+       "sd": 0.41489557662883436
+      },
+      "expected_utility": {
+       "mean": 1.8499907682813952,
+       "sd": 0.15123097900595375
+      },
+      "evidence_experiments": {
+       "mean": 3.3555555555555556,
+       "sd": 0.10030816714037659
+      },
+      "evidence_bits": {
+       "mean": 0.6945608410181222,
+       "sd": 0.04302946615208858
+      },
+      "research_cost": {
+       "mean": 2.3975000000000004,
+       "sd": 0.14228863466755023
+      },
+      "false_conclusion_rate": {
+       "mean": 0.13333333333333333,
+       "sd": 0.02357022603955158
+      },
+      "completed_objective_rate": {
+       "mean": 0.4222222222222222,
+       "sd": 0.06431020501550126
+      },
+      "abstain_rate": {
+       "mean": 0.4444444444444445,
+       "sd": 0.0749485420179558
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.26111111111111107,
+       "sd": 0.07494854201795577
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.010677083333333332,
+       "sd": 0.003682847818679934
+      },
+      "flops_per_episode": {
+       "mean": 2112745.244444445,
+       "sd": 39571.17070421007
+      },
+      "ece_posterior": {
+       "mean": 0.10308434855128516,
+       "sd": 0.027525819163365516
+      },
+      "ece_conf": {
+       "mean": 0.09128154274847167,
+       "sd": 0.011631979254715756
+      },
+      "contradiction_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 2.7319999999999998,
+       "sd": 0.44658011184589985
+      },
+      "post_contradiction_regret": {
+       "mean": 0.11749165688047541,
+       "sd": 0.3344740564863932
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.5843333333333334,
+       "sd": 0.23321524789741296
+      },
+      "expected_utility": {
+       "mean": 2.0691362412579775,
+       "sd": 0.27277086493761005
+      },
+      "evidence_experiments": {
+       "mean": 3.272222222222222,
+       "sd": 0.14677605348469885
+      },
+      "evidence_bits": {
+       "mean": 0.7221874263509981,
+       "sd": 0.055098523923626054
+      },
+      "research_cost": {
+       "mean": 2.374,
+       "sd": 0.19223466562164773
+      },
+      "false_conclusion_rate": {
+       "mean": 0.13888888888888887,
+       "sd": 0.039283710065919304
+      },
+      "completed_objective_rate": {
+       "mean": 0.4444444444444445,
+       "sd": 0.08314794192830982
+      },
+      "abstain_rate": {
+       "mean": 0.4166666666666667,
+       "sd": 0.12095300587265137
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.2722222222222222,
+       "sd": 0.05499719409228702
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.00234375,
+       "sd": 0.0007666459085354034
+      },
+      "flops_per_episode": {
+       "mean": 394496.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.08401416420081721,
+       "sd": 0.020931570595469986
+      },
+      "ece_conf": {
+       "mean": 0.29897087150149876,
+       "sd": 0.05790712241923678
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.06066666666666657,
+       "sd": 0.23321524789741316
+      },
+      "regret_expected_vs_vstar": {
+       "mean": 0.7811643755099477,
+       "sd": 0.27277086493761005
+      },
+      "contradiction_rate": {
+       "mean": 0.9777777777777777,
+       "sd": 0.007856742013183834
+      },
+      "post_contradiction_return": {
+       "mean": 2.862724527566725,
+       "sd": 0.27956906432217304
+      },
+      "post_contradiction_regret": {
+       "mean": 0.08251034869212195,
+       "sd": 0.17412751805514265
+      },
+      "first_action_q_regret": {
+       "mean": 0.14324554055631591,
+       "sd": 0.07292009337520647
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.4055555555555556,
+       "sd": 0.047790695928014604
+      }
+     }
+    }
+   },
+   "gru": {
+    "n_seeds": 3,
+    "n_params": 12119,
+    "implementation": "recurrent_proxy_gru",
+    "dev_screen_gate_h4": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 3.074277777777778,
+       "sd": 0.10428640525489255
+      },
+      "expected_utility": {
+       "mean": 3.419356040365983,
+       "sd": 0.06710265976325344
+      },
+      "evidence_experiments": {
+       "mean": 3.0555555555555554,
+       "sd": 0.12196943555611192
+      },
+      "evidence_bits": {
+       "mean": 0.7068768485834763,
+       "sd": 0.017186153075869837
+      },
+      "research_cost": {
+       "mean": 2.084055555555555,
+       "sd": 0.11538063684182341
+      },
+      "false_conclusion_rate": {
+       "mean": 0.16666666666666666,
+       "sd": 0.01360827634879543
+      },
+      "completed_objective_rate": {
+       "mean": 0.6166666666666667,
+       "sd": 0.01360827634879543
+      },
+      "abstain_rate": {
+       "mean": 0.21666666666666667,
+       "sd": 0.027216552697590872
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.09444444444444444,
+       "sd": 0.007856742013183867
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.0453125,
+       "sd": 0.016659883602340043
+      },
+      "flops_per_episode": {
+       "mean": 17379058.666666668,
+       "sd": 419284.08317865874
+      },
+      "ece_posterior": {
+       "mean": 0.10335484187062105,
+       "sd": 0.04460200903154744
+      },
+      "ece_conf": {
+       "mean": 0.05890618066689712,
+       "sd": 0.02108131462121768
+      },
+      "contradiction_rate": {
+       "mean": 0.4444444444444445,
+       "sd": 0.01571348402636772
+      },
+      "post_contradiction_return": {
+       "mean": 2.049789377289377,
+       "sd": 0.1532717894556211
+      },
+      "post_contradiction_regret": {
+       "mean": 1.7083534460591654,
+       "sd": 0.13901795042235182
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 2.82,
+       "sd": 0.05305081421513626
+      },
+      "expected_utility": {
+       "mean": 3.801156325216567,
+       "sd": 0.035412760049295534
+      },
+      "evidence_experiments": {
+       "mean": 2.788888888888889,
+       "sd": 0.007856742013183832
+      },
+      "evidence_bits": {
+       "mean": 0.7157715977406406,
+       "sd": 0.007697023017700615
+      },
+      "research_cost": {
+       "mean": 1.985555555555555,
+       "sd": 0.01843925629843869
+      },
+      "false_conclusion_rate": {
+       "mean": 0.18888888888888888,
+       "sd": 0.007856742013183872
+      },
+      "completed_objective_rate": {
+       "mean": 0.6,
+       "sd": 0.01360827634879543
+      },
+      "abstain_rate": {
+       "mean": 0.2111111111111111,
+       "sd": 0.020786985482077462
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.09444444444444444,
+       "sd": 0.007856742013183867
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.008506944444444444,
+       "sd": 0.0032200064220471196
+      },
+      "flops_per_episode": {
+       "mean": 3437616.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.11975076675305056,
+       "sd": 0.003831419966423692
+      },
+      "ece_conf": {
+       "mean": 0.17608041150702372,
+       "sd": 0.07828048832366484
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.09366666666666663,
+       "sd": 0.053050814215136126
+      },
+      "regret_expected_vs_vstar": {
+       "mean": -0.25188885736024264,
+       "sd": 0.03541276004929551
+      },
+      "contradiction_rate": {
+       "mean": 0.43333333333333335,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 1.1003846153846155,
+       "sd": 0.11686275434481765
+      },
+      "post_contradiction_regret": {
+       "mean": 2.594851810441013,
+       "sd": 0.07559506953495768
+      },
+      "first_action_q_regret": {
+       "mean": 0.0701182354591207,
+       "sd": 0.007685868026490875
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.6333333333333333,
+       "sd": 0.03600411499115479
+      }
+     }
+    },
+    "dev_confounded_h5": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.4380555555555556,
+       "sd": 0.21906224100035765
+      },
+      "expected_utility": {
+       "mean": 1.6267473067239682,
+       "sd": 0.10340151760492917
+      },
+      "evidence_experiments": {
+       "mean": 3.0611111111111113,
+       "sd": 0.10393492741038729
+      },
+      "evidence_bits": {
+       "mean": 0.5794434054671644,
+       "sd": 0.03117566776809129
+      },
+      "research_cost": {
+       "mean": 2.2674999999999996,
+       "sd": 0.07057082074583458
+      },
+      "false_conclusion_rate": {
+       "mean": 0.15555555555555556,
+       "sd": 0.028327886186626575
+      },
+      "completed_objective_rate": {
+       "mean": 0.43333333333333335,
+       "sd": 0.01360827634879543
+      },
+      "abstain_rate": {
+       "mean": 0.41111111111111115,
+       "sd": 0.0392837100659193
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.12222222222222223,
+       "sd": 0.00785674201318386
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.044270833333333336,
+       "sd": 0.02155121651900593
+      },
+      "flops_per_episode": {
+       "mean": 17398156.53333333,
+       "sd": 357288.36942478584
+      },
+      "ece_posterior": {
+       "mean": 0.06625650311472535,
+       "sd": 0.007135227520695856
+      },
+      "ece_conf": {
+       "mean": 0.04954773784630778,
+       "sd": 0.0008527565385101758
+      },
+      "contradiction_rate": {
+       "mean": 0.6833333333333335,
+       "sd": 0.02721655269759086
+      },
+      "post_contradiction_return": {
+       "mean": 2.921267410348522,
+       "sd": 0.26746429859071363
+      },
+      "post_contradiction_regret": {
+       "mean": -0.14117280307952482,
+       "sd": 0.3045006662694947
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.7538333333333338,
+       "sd": 0.08579270883291244
+      },
+      "expected_utility": {
+       "mean": 1.807860446989615,
+       "sd": 0.02765318424871112
+      },
+      "evidence_experiments": {
+       "mean": 2.327777777777778,
+       "sd": 0.11083298524033337
+      },
+      "evidence_bits": {
+       "mean": 0.4558137588063455,
+       "sd": 0.02202523033576615
+      },
+      "research_cost": {
+       "mean": 1.760055555555555,
+       "sd": 0.08970572603769843
+      },
+      "false_conclusion_rate": {
+       "mean": 0.11111111111111112,
+       "sd": 0.00785674201318386
+      },
+      "completed_objective_rate": {
+       "mean": 0.3611111111111111,
+       "sd": 0.015713484026367745
+      },
+      "abstain_rate": {
+       "mean": 0.5277777777777778,
+       "sd": 0.020786985482077466
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.12222222222222223,
+       "sd": 0.00785674201318386
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.009375,
+       "sd": 0.004300161832118346
+      },
+      "flops_per_episode": {
+       "mean": 3437616.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.12562352162753235,
+       "sd": 0.011051089315913106
+      },
+      "ece_conf": {
+       "mean": 0.1018889551361402,
+       "sd": 0.021279337415104415
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.21733333333333335,
+       "sd": 0.0857927088329124
+      },
+      "regret_expected_vs_vstar": {
+       "mean": 0.4096686019348852,
+       "sd": 0.027653184248711077
+      },
+      "contradiction_rate": {
+       "mean": 0.48888888888888893,
+       "sd": 0.020786985482077473
+      },
+      "post_contradiction_return": {
+       "mean": 3.5318572223105034,
+       "sd": 0.087698285833466
+      },
+      "post_contradiction_regret": {
+       "mean": -0.6082247156228416,
+       "sd": 0.13573044525414055
+      },
+      "first_action_q_regret": {
+       "mean": 0.05663333628077635,
+       "sd": 0.009188327366979557
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.7777777777777778,
+       "sd": 0.007856742013183834
+      }
+     }
+    },
+    "withheld_deep_chain_h5": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.0254444444444444,
+       "sd": 0.13235203711464005
+      },
+      "expected_utility": {
+       "mean": 1.2447722674204464,
+       "sd": 0.1313195072897083
+      },
+      "evidence_experiments": {
+       "mean": 2.8111111111111113,
+       "sd": 0.248079039575179
+      },
+      "evidence_bits": {
+       "mean": 0.40132276382462856,
+       "sd": 0.059905446653659405
+      },
+      "research_cost": {
+       "mean": 1.9106666666666665,
+       "sd": 0.28410965540842886
+      },
+      "false_conclusion_rate": {
+       "mean": 0.12222222222222223,
+       "sd": 0.01571348402636772
+      },
+      "completed_objective_rate": {
+       "mean": 0.3055555555555555,
+       "sd": 0.02078698548207745
+      },
+      "abstain_rate": {
+       "mean": 0.5722222222222222,
+       "sd": 0.007856742013183886
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.20555555555555557,
+       "sd": 0.020786985482077455
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.052256944444444446,
+       "sd": 0.022759615472380403
+      },
+      "flops_per_episode": {
+       "mean": 19976368.53333333,
+       "sd": 852800.4757082689
+      },
+      "ece_posterior": {
+       "mean": 0.17054905990392635,
+       "sd": 0.00710652308778895
+      },
+      "ece_conf": {
+       "mean": 0.10918049100745279,
+       "sd": 0.03888387406450383
+      },
+      "contradiction_rate": {
+       "mean": 0.5111111111111112,
+       "sd": 0.007856742013183886
+      },
+      "post_contradiction_return": {
+       "mean": 1.923462365591398,
+       "sd": 0.26782240186533707
+      },
+      "post_contradiction_regret": {
+       "mean": 0.22695607735456927,
+       "sd": 0.2211681149806326
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.757888888888889,
+       "sd": 0.036277309848947475
+      },
+      "expected_utility": {
+       "mean": 1.9199239534629704,
+       "sd": 0.029835847429503206
+      },
+      "evidence_experiments": {
+       "mean": 1.3722222222222225,
+       "sd": 0.03424674446093882
+      },
+      "evidence_bits": {
+       "mean": 0.2829734568950088,
+       "sd": 0.013253181996075825
+      },
+      "research_cost": {
+       "mean": 1.0448888888888888,
+       "sd": 0.03426917774341651
+      },
+      "false_conclusion_rate": {
+       "mean": 0.06666666666666667,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.22777777777777777,
+       "sd": 0.00785674201318386
+      },
+      "abstain_rate": {
+       "mean": 0.7055555555555554,
+       "sd": 0.007856742013183886
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.3,
+       "sd": 0.02357022603955158
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.008940972222222222,
+       "sd": 0.004195502074164781
+      },
+      "flops_per_episode": {
+       "mean": 3437616.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.14118377798013662,
+       "sd": 0.005159781151518025
+      },
+      "ece_conf": {
+       "mean": 0.14665157778395546,
+       "sd": 0.02674752103596464
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.010444444444444444,
+       "sd": 0.036277309848947496
+      },
+      "regret_expected_vs_vstar": {
+       "mean": -0.03876173359985014,
+       "sd": 0.02983584742950323
+      },
+      "contradiction_rate": {
+       "mean": 0.3222222222222222,
+       "sd": 0.00785674201318386
+      },
+      "post_contradiction_return": {
+       "mean": 3.224280701754386,
+       "sd": 0.1027861663784037
+      },
+      "post_contradiction_regret": {
+       "mean": -0.7742867945262909,
+       "sd": 0.08040987716492123
+      },
+      "first_action_q_regret": {
+       "mean": 0.004400280442466077,
+       "sd": 0.0018860236276238426
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.9500000000000001,
+       "sd": 0.023570226039551605
+      }
+     }
+    },
+    "surprise_h4": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.5152777777777777,
+       "sd": 0.4122093663763538
+      },
+      "expected_utility": {
+       "mean": 1.979534293073285,
+       "sd": 0.2158626570299551
+      },
+      "evidence_experiments": {
+       "mean": 3.3777777777777778,
+       "sd": 0.1588927738452788
+      },
+      "evidence_bits": {
+       "mean": 0.7315784111667551,
+       "sd": 0.060386939543713956
+      },
+      "research_cost": {
+       "mean": 2.3958333333333335,
+       "sd": 0.21654103195126453
+      },
+      "false_conclusion_rate": {
+       "mean": 0.13888888888888887,
+       "sd": 0.028327886186626575
+      },
+      "completed_objective_rate": {
+       "mean": 0.4388888888888889,
+       "sd": 0.07494854201795578
+      },
+      "abstain_rate": {
+       "mean": 0.4222222222222222,
+       "sd": 0.08748897637790902
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.24444444444444444,
+       "sd": 0.08314794192830981
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.048003472222222225,
+       "sd": 0.021394708015233552
+      },
+      "flops_per_episode": {
+       "mean": 18486734.933333334,
+       "sd": 546212.3416549122
+      },
+      "ece_posterior": {
+       "mean": 0.08170425630562829,
+       "sd": 0.04008475212092827
+      },
+      "ece_conf": {
+       "mean": 0.06154597012857718,
+       "sd": 0.01770601114131137
+      },
+      "contradiction_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 2.7884444444444445,
+       "sd": 0.4516306737059591
+      },
+      "post_contradiction_regret": {
+       "mean": 0.03917650947324766,
+       "sd": 0.2781913597497965
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.5752777777777778,
+       "sd": 0.406801761106692
+      },
+      "expected_utility": {
+       "mean": 2.109065114650084,
+       "sd": 0.2273348094681959
+      },
+      "evidence_experiments": {
+       "mean": 3.1888888888888887,
+       "sd": 0.16405358955814886
+      },
+      "evidence_bits": {
+       "mean": 0.7000396651741037,
+       "sd": 0.05816146250801731
+      },
+      "research_cost": {
+       "mean": 2.283055555555555,
+       "sd": 0.19766152950666355
+      },
+      "false_conclusion_rate": {
+       "mean": 0.14444444444444446,
+       "sd": 0.01571348402636772
+      },
+      "completed_objective_rate": {
+       "mean": 0.4388888888888889,
+       "sd": 0.08202679477907446
+      },
+      "abstain_rate": {
+       "mean": 0.4166666666666667,
+       "sd": 0.09525793444156803
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.28333333333333327,
+       "sd": 0.062360956446232345
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.010416666666666666,
+       "sd": 0.0055283622666981455
+      },
+      "flops_per_episode": {
+       "mean": 3437616.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.11555551529890963,
+       "sd": 0.04060556686142348
+      },
+      "ece_conf": {
+       "mean": 0.20176411552561657,
+       "sd": 0.06165121654403224
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.06972222222222219,
+       "sd": 0.4068017611066921
+      },
+      "regret_expected_vs_vstar": {
+       "mean": 0.7412355021178411,
+       "sd": 0.22733480946819584
+      },
+      "contradiction_rate": {
+       "mean": 0.9555555555555556,
+       "sd": 0.020786985482077427
+      },
+      "post_contradiction_return": {
+       "mean": 2.8167281374339805,
+       "sd": 0.4758312537381208
+      },
+      "post_contradiction_regret": {
+       "mean": 0.12530818623835427,
+       "sd": 0.3405865838119566
+      },
+      "first_action_q_regret": {
+       "mean": 0.1972265083716863,
+       "sd": 0.11129186855911877
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.3833333333333333,
+       "sd": 0.08498365855987976
+      }
+     }
+    }
+   },
+   "trm": {
+    "n_seeds": 2,
+    "n_params": 11683,
+    "implementation": "native_trm_update",
+    "dev_screen_gate_h4": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 2.972833333333333,
+       "sd": 0.2691666666666668
+      },
+      "expected_utility": {
+       "mean": 3.430118387840335,
+       "sd": 0.031089428234764016
+      },
+      "evidence_experiments": {
+       "mean": 3.1833333333333336,
+       "sd": 0.13333333333333353
+      },
+      "evidence_bits": {
+       "mean": 0.7304691854843954,
+       "sd": 0.02450387991489278
+      },
+      "research_cost": {
+       "mean": 2.168833333333333,
+       "sd": 0.11083333333333378
+      },
+      "false_conclusion_rate": {
+       "mean": 0.18333333333333335,
+       "sd": 0.016666666666666677
+      },
+      "completed_objective_rate": {
+       "mean": 0.6333333333333333,
+       "sd": 0.0
+      },
+      "abstain_rate": {
+       "mean": 0.18333333333333335,
+       "sd": 0.016666666666666677
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.08333333333333334,
+       "sd": 0.01666666666666667
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.029296875,
+       "sd": 0.004036458333333333
+      },
+      "flops_per_episode": {
+       "mean": 17344345.6,
+       "sd": 446156.7999999989
+      },
+      "ece_posterior": {
+       "mean": 0.09607926681037068,
+       "sd": 0.015113993241015887
+      },
+      "ece_conf": {
+       "mean": 0.064480786956205,
+       "sd": 0.03829220920036193
+      },
+      "contradiction_rate": {
+       "mean": 0.44166666666666665,
+       "sd": 0.008333333333333331
+      },
+      "post_contradiction_return": {
+       "mean": 1.7419444444444443,
+       "sd": 0.3169444444444445
+      },
+      "post_contradiction_regret": {
+       "mean": 2.128898767133206,
+       "sd": 0.40181729592230064
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 3.0624166666666666,
+       "sd": 0.07541666666666669
+      },
+      "expected_utility": {
+       "mean": 3.892418609510828,
+       "sd": 0.03849549728933166
+      },
+      "evidence_experiments": {
+       "mean": 2.8,
+       "sd": 0.0
+      },
+      "evidence_bits": {
+       "mean": 0.730768638555542,
+       "sd": 0.0005055301502988607
+      },
+      "research_cost": {
+       "mean": 2.0084166666666663,
+       "sd": 0.004583333333333162
+      },
+      "false_conclusion_rate": {
+       "mean": 0.18333333333333332,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.625,
+       "sd": 0.008333333333333304
+      },
+      "abstain_rate": {
+       "mean": 0.19166666666666665,
+       "sd": 0.008333333333333345
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.08333333333333333,
+       "sd": 0.0
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.005989583333333333,
+       "sd": 0.0005208333333333337
+      },
+      "flops_per_episode": {
+       "mean": 3346176.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.10642556083839447,
+       "sd": 0.003634708144542524
+      },
+      "ece_conf": {
+       "mean": 0.07557905415693918,
+       "sd": 0.04513018727302551
+      },
+      "regret_realized_vs_planner": {
+       "mean": -0.14875000000000005,
+       "sd": 0.07541666666666665
+      },
+      "regret_expected_vs_vstar": {
+       "mean": -0.3431511416545041,
+       "sd": 0.038495497289331604
+      },
+      "contradiction_rate": {
+       "mean": 0.43333333333333335,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 1.6726923076923077,
+       "sd": 0.19115384615384612
+      },
+      "post_contradiction_regret": {
+       "mean": 2.1068583197561526,
+       "sd": 0.1679189614375055
+      },
+      "first_action_q_regret": {
+       "mean": 0.06737072135108356,
+       "sd": 0.002424442537102639
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.675,
+       "sd": 0.024999999999999967
+      }
+     }
+    },
+    "dev_confounded_h5": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.3776666666666673,
+       "sd": 0.0025000000000000577
+      },
+      "expected_utility": {
+       "mean": 1.5654326862346903,
+       "sd": 0.06532567373035969
+      },
+      "evidence_experiments": {
+       "mean": 3.2416666666666667,
+       "sd": 0.20833333333333348
+      },
+      "evidence_bits": {
+       "mean": 0.6140275493416175,
+       "sd": 0.0565670662074369
+      },
+      "research_cost": {
+       "mean": 2.434833333333333,
+       "sd": 0.21499999999999986
+      },
+      "false_conclusion_rate": {
+       "mean": 0.16666666666666666,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.45833333333333337,
+       "sd": 0.024999999999999994
+      },
+      "abstain_rate": {
+       "mean": 0.375,
+       "sd": 0.025000000000000022
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.10833333333333334,
+       "sd": 0.008333333333333331
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.02734375,
+       "sd": 0.002083333333333333
+      },
+      "flops_per_episode": {
+       "mean": 17539539.2,
+       "sd": 697120.0
+      },
+      "ece_posterior": {
+       "mean": 0.06744709943169798,
+       "sd": 0.02024974749687093
+      },
+      "ece_conf": {
+       "mean": 0.05334895003208197,
+       "sd": 0.02146434135282209
+      },
+      "contradiction_rate": {
+       "mean": 0.7,
+       "sd": 0.033333333333333326
+      },
+      "post_contradiction_return": {
+       "mean": 2.8168409090909092,
+       "sd": 0.34884090909090926
+      },
+      "post_contradiction_regret": {
+       "mean": 0.1257667316225999,
+       "sd": 0.4414287686286378
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.9393333333333338,
+       "sd": 0.0708333333333333
+      },
+      "expected_utility": {
+       "mean": 1.8469517924079377,
+       "sd": 0.019883773992896647
+      },
+      "evidence_experiments": {
+       "mean": 2.3666666666666667,
+       "sd": 0.0
+      },
+      "evidence_bits": {
+       "mean": 0.4734567595941023,
+       "sd": 0.0023086784772433644
+      },
+      "research_cost": {
+       "mean": 1.7981666666666665,
+       "sd": 1.5700924586837752e-16
+      },
+      "false_conclusion_rate": {
+       "mean": 0.1,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.375,
+       "sd": 0.00833333333333336
+      },
+      "abstain_rate": {
+       "mean": 0.525,
+       "sd": 0.008333333333333304
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.10833333333333334,
+       "sd": 0.008333333333333331
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.00625,
+       "sd": 0.0007812500000000003
+      },
+      "flops_per_episode": {
+       "mean": 3346176.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.13167916594862206,
+       "sd": 0.003648851982238993
+      },
+      "ece_conf": {
+       "mean": 0.04992195566495261,
+       "sd": 0.024541565775871244
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.031833333333333366,
+       "sd": 0.07083333333333333
+      },
+      "regret_expected_vs_vstar": {
+       "mean": 0.37057725651656176,
+       "sd": 0.019883773992896592
+      },
+      "contradiction_rate": {
+       "mean": 0.5,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 3.8525,
+       "sd": 0.1511666666666669
+      },
+      "post_contradiction_regret": {
+       "mean": -0.7878355460602103,
+       "sd": 0.12653646675882912
+      },
+      "first_action_q_regret": {
+       "mean": 0.04770875658654462,
+       "sd": 0.0002053829913034426
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.775,
+       "sd": 0.008333333333333304
+      }
+     }
+    },
+    "withheld_deep_chain_h5": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 0.9223333333333334,
+       "sd": 0.15783333333333333
+      },
+      "expected_utility": {
+       "mean": 1.38421648368633,
+       "sd": 0.013667261634697447
+      },
+      "evidence_experiments": {
+       "mean": 2.8666666666666667,
+       "sd": 0.16666666666666652
+      },
+      "evidence_bits": {
+       "mean": 0.4521423201411129,
+       "sd": 0.04304610314384569
+      },
+      "research_cost": {
+       "mean": 2.002666666666667,
+       "sd": 0.12549999999999983
+      },
+      "false_conclusion_rate": {
+       "mean": 0.13333333333333333,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.31666666666666665,
+       "sd": 0.033333333333333326
+      },
+      "abstain_rate": {
+       "mean": 0.55,
+       "sd": 0.033333333333333326
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.2,
+       "sd": 0.0
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.029947916666666664,
+       "sd": 0.002083333333333331
+      },
+      "flops_per_episode": {
+       "mean": 19630899.2,
+       "sd": 557696.0
+      },
+      "ece_posterior": {
+       "mean": 0.1735132181683665,
+       "sd": 0.03835173186002319
+      },
+      "ece_conf": {
+       "mean": 0.128732955271676,
+       "sd": 0.015184491200692207
+      },
+      "contradiction_rate": {
+       "mean": 0.5166666666666667,
+       "sd": 0.033333333333333354
+      },
+      "post_contradiction_return": {
+       "mean": 1.977638453500523,
+       "sd": 0.16660397074190203
+      },
+      "post_contradiction_regret": {
+       "mean": 0.12418725296866366,
+       "sd": 0.17469403282758839
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.7526666666666668,
+       "sd": 0.01566666666666683
+      },
+      "expected_utility": {
+       "mean": 1.917128684570101,
+       "sd": 0.008385806678607444
+      },
+      "evidence_experiments": {
+       "mean": 1.35,
+       "sd": 0.06666666666666665
+      },
+      "evidence_bits": {
+       "mean": 0.27759160363233093,
+       "sd": 0.016145559788033587
+      },
+      "research_cost": {
+       "mean": 1.0265,
+       "sd": 0.05516666666666664
+      },
+      "false_conclusion_rate": {
+       "mean": 0.06666666666666667,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.225,
+       "sd": 0.008333333333333331
+      },
+      "abstain_rate": {
+       "mean": 0.7083333333333333,
+       "sd": 0.00833333333333336
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.3,
+       "sd": 0.0
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.005729166666666667,
+       "sd": 0.0005208333333333337
+      },
+      "flops_per_episode": {
+       "mean": 3346176.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.1430080361009751,
+       "sd": 0.005472774362515392
+      },
+      "ece_conf": {
+       "mean": 0.14722693065802253,
+       "sd": 0.009593464930852252
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.015666666666666666,
+       "sd": 0.015666666666666666
+      },
+      "regret_expected_vs_vstar": {
+       "mean": -0.035966464706981005,
+       "sd": 0.008385806678607399
+      },
+      "contradiction_rate": {
+       "mean": 0.31666666666666665,
+       "sd": 0.016666666666666663
+      },
+      "post_contradiction_return": {
+       "mean": 3.211611111111111,
+       "sd": 0.034388888888889024
+      },
+      "post_contradiction_regret": {
+       "mean": -0.7543143250652355,
+       "sd": 0.054210988537150506
+      },
+      "first_action_q_regret": {
+       "mean": 0.005650956303827809,
+       "sd": 0.0027549277402963476
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.9333333333333333,
+       "sd": 0.0
+      }
+     }
+    },
+    "surprise_h4": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.4348333333333334,
+       "sd": 0.3251666666666666
+      },
+      "expected_utility": {
+       "mean": 1.777378999885396,
+       "sd": 0.12937289877226543
+      },
+      "evidence_experiments": {
+       "mean": 3.3499999999999996,
+       "sd": 0.050000000000000044
+      },
+      "evidence_bits": {
+       "mean": 0.7080004264584769,
+       "sd": 0.02096249942002537
+      },
+      "research_cost": {
+       "mean": 2.3485000000000005,
+       "sd": 0.09150000000000014
+      },
+      "false_conclusion_rate": {
+       "mean": 0.125,
+       "sd": 0.008333333333333331
+      },
+      "completed_objective_rate": {
+       "mean": 0.4083333333333333,
+       "sd": 0.05833333333333335
+      },
+      "abstain_rate": {
+       "mean": 0.4666666666666667,
+       "sd": 0.06666666666666665
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.26666666666666666,
+       "sd": 0.09999999999999999
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.03125,
+       "sd": 0.004427083333333333
+      },
+      "flops_per_episode": {
+       "mean": 17902041.6,
+       "sd": 167308.79999999888
+      },
+      "ece_posterior": {
+       "mean": 0.10963901929889547,
+       "sd": 0.05260415480203798
+      },
+      "ece_conf": {
+       "mean": 0.10667873925952236,
+       "sd": 0.05558284374347467
+      },
+      "contradiction_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 2.6846666666666668,
+       "sd": 0.33250000000000024
+      },
+      "post_contradiction_regret": {
+       "mean": 0.012757620360561314,
+       "sd": 0.24937690935904172
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.5238333333333336,
+       "sd": 0.4638333333333333
+      },
+      "expected_utility": {
+       "mean": 2.0287575761658907,
+       "sd": 0.17276563996257532
+      },
+      "evidence_experiments": {
+       "mean": 3.166666666666667,
+       "sd": 0.08333333333333326
+      },
+      "evidence_bits": {
+       "mean": 0.6947240048030949,
+       "sd": 0.03098793417630802
+      },
+      "research_cost": {
+       "mean": 2.2511666666666663,
+       "sd": 0.10283333333333355
+      },
+      "false_conclusion_rate": {
+       "mean": 0.13333333333333333,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.41666666666666663,
+       "sd": 0.06666666666666668
+      },
+      "abstain_rate": {
+       "mean": 0.45000000000000007,
+       "sd": 0.06666666666666668
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.30000000000000004,
+       "sd": 0.08333333333333334
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.006640625000000001,
+       "sd": 0.0006510416666666665
+      },
+      "flops_per_episode": {
+       "mean": 3346176.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.10064465704859338,
+       "sd": 0.046741439745744295
+      },
+      "ece_conf": {
+       "mean": 0.2910954599579175,
+       "sd": 0.05886761496464413
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.12116666666666656,
+       "sd": 0.4638333333333332
+      },
+      "regret_expected_vs_vstar": {
+       "mean": 0.8215430406020342,
+       "sd": 0.17276563996257532
+      },
+      "contradiction_rate": {
+       "mean": 0.9583333333333333,
+       "sd": 0.00833333333333336
+      },
+      "post_contradiction_return": {
+       "mean": 2.752763157894737,
+       "sd": 0.522236842105263
+      },
+      "post_contradiction_regret": {
+       "mean": 0.10101053385606779,
+       "sd": 0.41124085841627595
+      },
+      "first_action_q_regret": {
+       "mean": 0.19866242073555493,
+       "sd": 0.05638547669402291
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.4,
+       "sd": 0.05000000000000002
+      }
+     }
+    }
+   },
+   "rlt": {
+    "n_seeds": 2,
+    "n_params": 11683,
+    "implementation": "native_trm_update+rlt_feedback",
+    "dev_screen_gate_h4": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 2.815,
+       "sd": 0.34250000000000025
+      },
+      "expected_utility": {
+       "mean": 3.4175362056691307,
+       "sd": 0.15283742604106076
+      },
+      "evidence_experiments": {
+       "mean": 3.1666666666666665,
+       "sd": 0.016666666666666607
+      },
+      "evidence_bits": {
+       "mean": 0.7316903303745231,
+       "sd": 0.00749650111034128
+      },
+      "research_cost": {
+       "mean": 2.168333333333333,
+       "sd": 0.042500000000000204
+      },
+      "false_conclusion_rate": {
+       "mean": 0.2,
+       "sd": 0.016666666666666677
+      },
+      "completed_objective_rate": {
+       "mean": 0.6333333333333333,
+       "sd": 0.016666666666666663
+      },
+      "abstain_rate": {
+       "mean": 0.16666666666666666,
+       "sd": 0.0
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.1,
+       "sd": 0.01666666666666667
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.043229166666666666,
+       "sd": 0.018229166666666664
+      },
+      "flops_per_episode": {
+       "mean": 17288576.0,
+       "sd": 55769.60000000149
+      },
+      "ece_posterior": {
+       "mean": 0.08130869109016463,
+       "sd": 0.028495439114959987
+      },
+      "ece_conf": {
+       "mean": 0.07407362692452793,
+       "sd": 0.02108442586490874
+      },
+      "contradiction_rate": {
+       "mean": 0.44166666666666665,
+       "sd": 0.008333333333333331
+      },
+      "post_contradiction_return": {
+       "mean": 1.0043304843304843,
+       "sd": 0.4395156695156695
+      },
+      "post_contradiction_regret": {
+       "mean": 2.8627010309532075,
+       "sd": 0.3503577309037378
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 3.0829999999999997,
+       "sd": 0.277333333333333
+      },
+      "expected_utility": {
+       "mean": 3.8718746926056253,
+       "sd": 0.0020449943402300885
+      },
+      "evidence_experiments": {
+       "mean": 2.7750000000000004,
+       "sd": 0.05833333333333335
+      },
+      "evidence_bits": {
+       "mean": 0.7230129934496969,
+       "sd": 0.01538784073383298
+      },
+      "research_cost": {
+       "mean": 1.9878333333333331,
+       "sd": 0.04816666666666658
+      },
+      "false_conclusion_rate": {
+       "mean": 0.18333333333333335,
+       "sd": 0.016666666666666677
+      },
+      "completed_objective_rate": {
+       "mean": 0.625,
+       "sd": 0.008333333333333304
+      },
+      "abstain_rate": {
+       "mean": 0.19166666666666665,
+       "sd": 0.008333333333333345
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.08333333333333333,
+       "sd": 0.0
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.00859375,
+       "sd": 0.0036458333333333334
+      },
+      "flops_per_episode": {
+       "mean": 3346176.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.11613679840715607,
+       "sd": 0.005373254750121931
+      },
+      "ece_conf": {
+       "mean": 0.08797417432069779,
+       "sd": 0.027795735498269365
+      },
+      "regret_realized_vs_planner": {
+       "mean": -0.16933333333333342,
+       "sd": 0.27733333333333343
+      },
+      "regret_expected_vs_vstar": {
+       "mean": -0.32260722474930137,
+       "sd": 0.0020449943402303383
+      },
+      "contradiction_rate": {
+       "mean": 0.43333333333333335,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 1.6726923076923077,
+       "sd": 0.5753846153846154
+      },
+      "post_contradiction_regret": {
+       "mean": 2.0752278028668627,
+       "sd": 0.6455267569979695
+      },
+      "first_action_q_regret": {
+       "mean": 0.07642822978959639,
+       "sd": 0.029523406624890572
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.7,
+       "sd": 0.08333333333333331
+      }
+     }
+    },
+    "dev_confounded_h5": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.5917500000000002,
+       "sd": 0.14408333333333323
+      },
+      "expected_utility": {
+       "mean": 1.5627649303675963,
+       "sd": 0.07010943482974319
+      },
+      "evidence_experiments": {
+       "mean": 2.8916666666666666,
+       "sd": 0.02499999999999991
+      },
+      "evidence_bits": {
+       "mean": 0.5378993798612641,
+       "sd": 0.012370922505254067
+      },
+      "research_cost": {
+       "mean": 2.1749166666666664,
+       "sd": 0.00591666666666657
+      },
+      "false_conclusion_rate": {
+       "mean": 0.14166666666666666,
+       "sd": 0.008333333333333331
+      },
+      "completed_objective_rate": {
+       "mean": 0.42500000000000004,
+       "sd": 0.008333333333333331
+      },
+      "abstain_rate": {
+       "mean": 0.43333333333333335,
+       "sd": 0.0
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.13333333333333333,
+       "sd": 0.0
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.03372395833333333,
+       "sd": 0.012630208333333334
+      },
+      "flops_per_episode": {
+       "mean": 16368377.6,
+       "sd": 83654.40000000037
+      },
+      "ece_posterior": {
+       "mean": 0.06476145299039054,
+       "sd": 0.020392750075749873
+      },
+      "ece_conf": {
+       "mean": 0.06881860070482386,
+       "sd": 0.018927592646987092
+      },
+      "contradiction_rate": {
+       "mean": 0.5833333333333334,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 3.3934285714285717,
+       "sd": 0.03114285714285714
+      },
+      "post_contradiction_regret": {
+       "mean": -0.6058028831303991,
+       "sd": 0.019412010235199118
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.5995000000000004,
+       "sd": 0.043500000000000094
+      },
+      "expected_utility": {
+       "mean": 1.7826848818554408,
+       "sd": 0.007449559340436673
+      },
+      "evidence_experiments": {
+       "mean": 2.2333333333333334,
+       "sd": 0.033333333333333215
+      },
+      "evidence_bits": {
+       "mean": 0.4345821244051111,
+       "sd": 0.0071051439902905245
+      },
+      "research_cost": {
+       "mean": 1.696333333333333,
+       "sd": 0.02733333333333332
+      },
+      "false_conclusion_rate": {
+       "mean": 0.11666666666666667,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.3416666666666667,
+       "sd": 0.008333333333333331
+      },
+      "abstain_rate": {
+       "mean": 0.5416666666666667,
+       "sd": 0.00833333333333336
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.13333333333333333,
+       "sd": 0.0
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.0078125,
+       "sd": 0.0013020833333333335
+      },
+      "flops_per_episode": {
+       "mean": 3346176.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.12566404867326914,
+       "sd": 0.003890903277508656
+      },
+      "ece_conf": {
+       "mean": 0.07602511694033946,
+       "sd": 0.00693009346723554
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.3716666666666667,
+       "sd": 0.04350000000000004
+      },
+      "regret_expected_vs_vstar": {
+       "mean": 0.43484416706905904,
+       "sd": 0.007449559340436673
+      },
+      "contradiction_rate": {
+       "mean": 0.475,
+       "sd": 0.008333333333333331
+      },
+      "post_contradiction_return": {
+       "mean": 3.3264839901477834,
+       "sd": 0.09041256157635447
+      },
+      "post_contradiction_regret": {
+       "mean": -0.46500732540153905,
+       "sd": 0.08053908028462736
+      },
+      "first_action_q_regret": {
+       "mean": 0.06505987088763668,
+       "sd": 0.0033193422769328823
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.7833333333333333,
+       "sd": 0.0
+      }
+     }
+    },
+    "withheld_deep_chain_h5": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 0.9872500000000002,
+       "sd": 0.13541666666666669
+      },
+      "expected_utility": {
+       "mean": 1.3520791630325322,
+       "sd": 0.04937842842811291
+      },
+      "evidence_experiments": {
+       "mean": 2.725,
+       "sd": 0.2250000000000001
+      },
+      "evidence_bits": {
+       "mean": 0.40682984930786337,
+       "sd": 0.041604406823192414
+      },
+      "research_cost": {
+       "mean": 1.8669166666666666,
+       "sd": 0.2187499999999999
+      },
+      "false_conclusion_rate": {
+       "mean": 0.13333333333333333,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.30833333333333335,
+       "sd": 0.04166666666666666
+      },
+      "abstain_rate": {
+       "mean": 0.5583333333333333,
+       "sd": 0.04166666666666663
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.23333333333333334,
+       "sd": 0.016666666666666663
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.040625,
+       "sd": 0.013802083333333335
+      },
+      "flops_per_episode": {
+       "mean": 19156857.6,
+       "sd": 752889.5999999996
+      },
+      "ece_posterior": {
+       "mean": 0.20444147957569925,
+       "sd": 0.00775285651792855
+      },
+      "ece_conf": {
+       "mean": 0.10110581282716927,
+       "sd": 0.0024493528104538656
+      },
+      "contradiction_rate": {
+       "mean": 0.5,
+       "sd": 0.01666666666666669
+      },
+      "post_contradiction_return": {
+       "mean": 1.651701890989989,
+       "sd": 0.30894327030033364
+      },
+      "post_contradiction_regret": {
+       "mean": 0.4919965810139943,
+       "sd": 0.24578192588270317
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.7369999999999999,
+       "sd": 0.0
+      },
+      "expected_utility": {
+       "mean": 1.9087428778914937,
+       "sd": 0.0
+      },
+      "evidence_experiments": {
+       "mean": 1.2833333333333334,
+       "sd": 0.0
+      },
+      "evidence_bits": {
+       "mean": 0.26144604384429737,
+       "sd": 0.0
+      },
+      "research_cost": {
+       "mean": 0.9713333333333333,
+       "sd": 0.0
+      },
+      "false_conclusion_rate": {
+       "mean": 0.06666666666666667,
+       "sd": 0.0
+      },
+      "completed_objective_rate": {
+       "mean": 0.21666666666666667,
+       "sd": 0.0
+      },
+      "abstain_rate": {
+       "mean": 0.7166666666666667,
+       "sd": 0.0
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.3333333333333333,
+       "sd": 0.016666666666666663
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.007942708333333333,
+       "sd": 0.0035156249999999997
+      },
+      "flops_per_episode": {
+       "mean": 3346176.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.1484808104634905,
+       "sd": 0.0
+      },
+      "ece_conf": {
+       "mean": 0.1435897613565127,
+       "sd": 0.05480142980813979
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.03133333333333333,
+       "sd": 0.0
+      },
+      "regret_expected_vs_vstar": {
+       "mean": -0.027580658028373603,
+       "sd": 0.0
+      },
+      "contradiction_rate": {
+       "mean": 0.3,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 3.177222222222222,
+       "sd": 0.0
+      },
+      "post_contradiction_regret": {
+       "mean": -0.700103336528085,
+       "sd": 0.0
+      },
+      "first_action_q_regret": {
+       "mean": 0.00839664780466844,
+       "sd": 9.236239455715813e-06
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.9416666666666667,
+       "sd": 0.008333333333333304
+      }
+     }
+    },
+    "surprise_h4": {
+     "rollout": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.0934166666666665,
+       "sd": 0.27724999999999994
+      },
+      "expected_utility": {
+       "mean": 1.7588669951603186,
+       "sd": 0.12640589829188364
+      },
+      "evidence_experiments": {
+       "mean": 3.283333333333333,
+       "sd": 0.03333333333333344
+      },
+      "evidence_bits": {
+       "mean": 0.6861313874862129,
+       "sd": 0.022993842222641617
+      },
+      "research_cost": {
+       "mean": 2.3190833333333334,
+       "sd": 0.08525000000000005
+      },
+      "false_conclusion_rate": {
+       "mean": 0.14166666666666666,
+       "sd": 0.008333333333333331
+      },
+      "completed_objective_rate": {
+       "mean": 0.3833333333333333,
+       "sd": 0.033333333333333354
+      },
+      "abstain_rate": {
+       "mean": 0.475,
+       "sd": 0.024999999999999994
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.31666666666666665,
+       "sd": 0.033333333333333326
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.037890625,
+       "sd": 0.014453125
+      },
+      "flops_per_episode": {
+       "mean": 17678963.2,
+       "sd": 111539.19999999925
+      },
+      "ece_posterior": {
+       "mean": 0.10081900429480915,
+       "sd": 0.012681439309900927
+      },
+      "ece_conf": {
+       "mean": 0.11877403876529603,
+       "sd": 0.034274696475114066
+      },
+      "contradiction_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 2.3514999999999997,
+       "sd": 0.2669999999999997
+      },
+      "post_contradiction_regret": {
+       "mean": 0.3017999328667219,
+       "sd": 0.16234107400397568
+      }
+     },
+     "first_action": {
+      "n_worlds": {
+       "mean": 60.0,
+       "sd": 0.0
+      },
+      "utility": {
+       "mean": 1.326666666666667,
+       "sd": 0.1386666666666666
+      },
+      "expected_utility": {
+       "mean": 1.915118281205666,
+       "sd": 0.1327792320604585
+      },
+      "evidence_experiments": {
+       "mean": 3.1916666666666664,
+       "sd": 0.04166666666666674
+      },
+      "evidence_bits": {
+       "mean": 0.6763725412965086,
+       "sd": 0.02273781763304694
+      },
+      "research_cost": {
+       "mean": 2.244166666666666,
+       "sd": 0.06550000000000011
+      },
+      "false_conclusion_rate": {
+       "mean": 0.125,
+       "sd": 0.008333333333333331
+      },
+      "completed_objective_rate": {
+       "mean": 0.3833333333333333,
+       "sd": 0.033333333333333354
+      },
+      "abstain_rate": {
+       "mean": 0.4916666666666667,
+       "sd": 0.04166666666666666
+      },
+      "abandon_rate": {
+       "mean": 1.0,
+       "sd": 0.0
+      },
+      "abandoned_truth_rate": {
+       "mean": 0.3416666666666667,
+       "sd": 0.024999999999999994
+      },
+      "cpu_s_per_episode": {
+       "mean": 0.007942708333333333,
+       "sd": 0.0029947916666666664
+      },
+      "flops_per_episode": {
+       "mean": 3346176.0,
+       "sd": 0.0
+      },
+      "ece_posterior": {
+       "mean": 0.12160163719056775,
+       "sd": 0.007041952696650075
+      },
+      "ece_conf": {
+       "mean": 0.303277925401926,
+       "sd": 0.10444935783743861
+      },
+      "regret_realized_vs_planner": {
+       "mean": 0.31833333333333325,
+       "sd": 0.1386666666666667
+      },
+      "regret_expected_vs_vstar": {
+       "mean": 0.9351823355622589,
+       "sd": 0.1327792320604585
+      },
+      "contradiction_rate": {
+       "mean": 0.9833333333333333,
+       "sd": 0.0
+      },
+      "post_contradiction_return": {
+       "mean": 2.530169491525424,
+       "sd": 0.16203389830508463
+      },
+      "post_contradiction_regret": {
+       "mean": 0.29177756774375774,
+       "sd": 0.0577068954610869
+      },
+      "first_action_q_regret": {
+       "mean": 0.20725127514206898,
+       "sd": 0.048790156742727034
+      },
+      "first_action_top1_optimal": {
+       "mean": 0.375,
+       "sd": 0.025000000000000022
+      }
+     }
+    }
+   }
+  },
+  "surprise_revision": {
+   "paired_over_seeds": {
+    "post_contradiction_return": {
+     "rlt_minus_trm_mean": -0.3331666666666666,
+     "se": 0.5994999999999998,
+     "n_seeds": 2
+    },
+    "post_contradiction_regret": {
+     "rlt_minus_trm_mean": 0.2890423125061606,
+     "se": 0.4117179833630174,
+     "n_seeds": 2
+    },
+    "utility": {
+     "rlt_minus_trm_mean": -0.34141666666666687,
+     "se": 0.6024166666666666,
+     "n_seeds": 2
+    }
+   },
+   "rlt_revises_better": false
+  }
+ }
+}

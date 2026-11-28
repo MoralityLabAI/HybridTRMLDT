@@ -1,0 +1,127 @@
+[
+ {
+  "name": "S1_race",
+  "module": "research_gym.trm_skill_gym_v3.race",
+  "hours": 3.0,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/race",
+   "--hours",
+   "3.0"
+  ]
+ },
+ {
+  "name": "S1b_race_test",
+  "module": "research_gym.trm_skill_gym_v3.race",
+  "hours": 0.75,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/race",
+   "--test-only",
+   "--hours",
+   "3.0"
+  ]
+ },
+ {
+  "name": "S3_hybrid",
+  "module": "research_gym.trm_skill_gym_v3.hybrid",
+  "hours": 0.75,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/hybrid",
+   "--hours",
+   "0.75"
+  ]
+ },
+ {
+  "name": "S6_distill",
+  "module": "research_gym.trm_skill_gym_v3.distill",
+  "hours": 0.25,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/distill"
+  ]
+ },
+ {
+  "name": "S5_router",
+  "module": "research_gym.trm_skill_gym_v3.router",
+  "hours": 0.5,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/router",
+   "--hours",
+   "0.5"
+  ]
+ },
+ {
+  "name": "S2_bpd",
+  "module": "research_gym.trm_skill_gym_v3.bpd_skill",
+  "hours": 1.25,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/bpd",
+   "--skills",
+   "repair",
+   "curation",
+   "research",
+   "--seeds",
+   "0",
+   "1",
+   "--steps",
+   "800",
+   "--hours",
+   "1.25"
+  ]
+ },
+ {
+  "name": "S4_research",
+  "module": "research_gym.trm_skill_gym_v3.research_env",
+  "hours": 1.25,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/research",
+   "--train-worlds",
+   "300",
+   "--test-worlds",
+   "60",
+   "--seeds",
+   "10",
+   "11",
+   "12",
+   "13",
+   "--steps",
+   "3500",
+   "--hours",
+   "1.25"
+  ]
+ },
+ {
+  "name": "S8_shuffle_audit",
+  "module": "research_gym.trm_skill_gym_v2.runner",
+  "hours": 0.4,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/audit_runner",
+   "--count",
+   "128",
+   "--seeds",
+   "0",
+   "--research-worlds",
+   "64",
+   "--shuffle-steps",
+   "300",
+   "--hours",
+   "0.4"
+  ]
+ },
+ {
+  "name": "S7_inky_measure",
+  "module": "research_gym.trm_skill_gym_v3.inky_lab",
+  "hours": 0.4,
+  "args": [
+   "measure",
+   "--out",
+   "experiments/trm_skill_gym_02/full/inky_lab"
+  ]
+ }
+]

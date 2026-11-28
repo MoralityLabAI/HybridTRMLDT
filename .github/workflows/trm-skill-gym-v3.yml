@@ -1,0 +1,40 @@
+name: TRM-SKILL-GYM-02 full campaign modules
+permissions:
+  contents: read
+on:
+  push:
+    paths:
+      - 'research_gym/trm_skill_gym_v3/**'
+      - 'research_gym/baby_goblin/**'
+      - 'tests/test_trm_skill_gym_v3*.py'
+      - 'tests/test_baby_goblin.py'
+      - '.github/workflows/trm-skill-gym-v3.yml'
+  pull_request:
+    paths:
+      - 'research_gym/trm_skill_gym_v3/**'
+      - 'research_gym/baby_goblin/**'
+      - 'tests/test_trm_skill_gym_v3*.py'
+      - 'tests/test_baby_goblin.py'
+      - '.github/workflows/trm-skill-gym-v3.yml'
+  workflow_dispatch:
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: MoralityLabAI/BPD
+          ref: ab93e4da986beef87897f8d1244c7fe7564b5bde
+          path: BPD
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install numpy psutil pytest
+      - name: v3 modules and Baby Goblin package
+        env:
+          BPD_ROOT: ${{ github.workspace }}/BPD
+        run: python -m pytest -q tests/test_trm_skill_gym_v3_core.py tests/test_trm_skill_gym_v3_research.py tests/test_trm_skill_gym_v3_bpd.py tests/test_trm_skill_gym_v3_distill.py tests/test_baby_goblin.py

@@ -1,0 +1,42 @@
+{
+ "config": {
+  "aggregation": "relation+mean",
+  "core": "trm",
+  "cycles": 1,
+  "feedback": "direct",
+  "grad_cycles": 1,
+  "hidden": 32,
+  "latent_reset": false,
+  "latent_steps": 2,
+  "ldt_projection": false,
+  "lr": 0.002,
+  "mixer_layers": 1,
+  "norm": "layer",
+  "residual": "add",
+  "state_partition": "shared",
+  "supervision": "deep",
+  "update_schedule": "latent_then_answer",
+  "verifier_visits": 1,
+  "visits": 3,
+  "weight_decay": 0.01
+ },
+ "count": 128,
+ "job_seconds": 900,
+ "name": "D_trm_direct",
+ "outs": [
+  "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\D_trm_direct__s10.json",
+  "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\D_trm_direct__s11.json",
+  "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\D_trm_direct__s12.json",
+  "experiments\\trm_skill_gym_02\\full\\race\\jobs\\retrieval\\D_trm_direct__s13.json"
+ ],
+ "seeds": [
+  10,
+  11,
+  12,
+  13
+ ],
+ "skill": "retrieval",
+ "stage": "cal",
+ "steps": 800,
+ "train_count": 4096
+}

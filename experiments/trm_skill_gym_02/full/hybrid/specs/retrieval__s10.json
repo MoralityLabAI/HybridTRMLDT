@@ -1,0 +1,9 @@
+{
+ "count": 128,
+ "out": "experiments\\trm_skill_gym_02\\full\\hybrid\\jobs\\retrieval__s10.json",
+ "seed": 10,
+ "skill": "retrieval",
+ "steps": 800,
+ "test_count": 256,
+ "train_count": 4096
+}

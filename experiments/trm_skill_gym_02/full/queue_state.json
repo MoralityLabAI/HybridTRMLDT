@@ -1,0 +1,104 @@
+{
+ "stages": {
+  "S1_race": {
+   "available_at_start": 10668220416,
+   "limit_bytes": 3221225472,
+   "peak_tree_rss_bytes": 553828352,
+   "returncode": 0,
+   "started": 1795837790.6663334,
+   "status": "ok",
+   "tree_cpu_s_observed": 7669.9375,
+   "waited_s": 0.0015096664428710938,
+   "wall_s": 10878.459730625153
+  },
+  "S1b_race_test": {
+   "available_at_start": 13180514304,
+   "limit_bytes": 3221225472,
+   "peak_tree_rss_bytes": 476807168,
+   "returncode": 0,
+   "started": 1795848669.1735785,
+   "status": "ok",
+   "tree_cpu_s_observed": 297.15625,
+   "waited_s": 0.0009949207305908203,
+   "wall_s": 357.56277108192444
+  },
+  "S2_bpd": {
+   "available_at_start": 10110136320,
+   "limit_bytes": 3221225472,
+   "peak_tree_rss_bytes": 633155584,
+   "returncode": 0,
+   "started": 1795850443.8432267,
+   "status": "ok",
+   "tree_cpu_s_observed": 2909.65625,
+   "waited_s": 0.0020186901092529297,
+   "wall_s": 4540.234710693359
+  },
+  "S3_hybrid": {
+   "available_at_start": 11723714560,
+   "limit_bytes": 3221225472,
+   "peak_tree_rss_bytes": 580427776,
+   "returncode": 0,
+   "started": 1795849026.8001814,
+   "status": "ok",
+   "tree_cpu_s_observed": 1015.25,
+   "waited_s": 0.0030531883239746094,
+   "wall_s": 1082.3001654148102
+  },
+  "S4_research": {
+   "available_at_start": 13513326592,
+   "limit_bytes": 3221225472,
+   "peak_tree_rss_bytes": 1550757888,
+   "returncode": 0,
+   "started": 1795854984.1217651,
+   "status": "ok",
+   "tree_cpu_s_observed": 3236.125,
+   "waited_s": 0.0025212764739990234,
+   "wall_s": 4527.8142948150635
+  },
+  "S5_router": {
+   "available_at_start": 10257592320,
+   "limit_bytes": 3221225472,
+   "peak_tree_rss_bytes": 224714752,
+   "returncode": 0,
+   "started": 1795850186.8536408,
+   "status": "ok",
+   "tree_cpu_s_observed": 158.28125,
+   "waited_s": 0.0009996891021728516,
+   "wall_s": 256.95351672172546
+  },
+  "S6_distill": {
+   "available_at_start": 10699333632,
+   "limit_bytes": 3221225472,
+   "peak_tree_rss_bytes": 298336256,
+   "returncode": 0,
+   "started": 1795850109.1125093,
+   "status": "ok",
+   "tree_cpu_s_observed": 55.21875,
+   "waited_s": 0.0010111331939697266,
+   "wall_s": 77.72739601135254
+  },
+  "S7_inky_measure": {
+   "available_at_start": 13044940800,
+   "limit_bytes": 3221225472,
+   "peak_tree_rss_bytes": 386756608,
+   "returncode": 15,
+   "started": 1795860232.1450515,
+   "status": "wall_killed",
+   "tree_cpu_s_observed": 1536.03125,
+   "waited_s": 0.0015017986297607422,
+   "wall_s": 2340.498030900955
+  },
+  "S8_shuffle_audit": {
+   "available_at_start": 14272167936,
+   "limit_bytes": 3221225472,
+   "peak_tree_rss_bytes": 315744256,
+   "returncode": 0,
+   "started": 1795859512.0017674,
+   "status": "ok",
+   "tree_cpu_s_observed": 371.859375,
+   "waited_s": 0.00455927848815918,
+   "wall_s": 720.1273474693298
+  }
+ },
+ "t_start": 1795837790.6599662
+}

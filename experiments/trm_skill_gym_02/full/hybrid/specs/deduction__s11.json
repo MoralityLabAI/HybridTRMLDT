@@ -1,0 +1,9 @@
+{
+ "count": 128,
+ "out": "experiments\\trm_skill_gym_02\\full\\hybrid\\jobs\\deduction__s11.json",
+ "seed": 11,
+ "skill": "deduction",
+ "steps": 800,
+ "test_count": 256,
+ "train_count": 4096
+}

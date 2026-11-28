@@ -1,0 +1,722 @@
+[
+ {
+  "name": "skill_repair_learned_race",
+  "description": "repair via learned/native_trm_update (accepted). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_repair_learned",
+  "description": "repair via learned/recurrent_proxy_gru (experimental). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_retrieval_learned",
+  "description": "retrieval via learned/native_trm_update (experimental). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_deduction_learned_race",
+  "description": "deduction via learned/native_trm_update (accepted). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_deduction_learned",
+  "description": "deduction via learned/recurrent_proxy_gru (experimental). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_curation_learned",
+  "description": "curation via learned/native_trm_update (experimental). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_stopping_learned",
+  "description": "stopping via learned/recurrent_proxy_gru (experimental). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_retrieval_certificate",
+  "description": "retrieval via certificate/three_valued_certificate (accepted). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_deduction_certificate",
+  "description": "deduction via certificate/three_valued_certificate (accepted). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_retrieval_symbolic",
+  "description": "retrieval via symbolic/exact_solver (accepted). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_retrieval_heuristic",
+  "description": "retrieval via heuristic/existing_skill_procedure (experimental). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_deduction_symbolic",
+  "description": "deduction via symbolic/exact_solver (accepted). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_deduction_heuristic",
+  "description": "deduction via heuristic/existing_skill_procedure (experimental). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_repair_symbolic",
+  "description": "repair via symbolic/exact_solver (accepted). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_repair_heuristic",
+  "description": "repair via heuristic/existing_skill_procedure (experimental). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_stopping_symbolic",
+  "description": "stopping via symbolic/exact_solver (accepted). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_stopping_heuristic",
+  "description": "stopping via heuristic/existing_skill_procedure (experimental). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_research_symbolic",
+  "description": "research via symbolic/exact_solver (accepted). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_research_heuristic",
+  "description": "research via heuristic/existing_skill_procedure (accepted). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "skill_research_inky",
+  "description": "research via llm_fallback/inkling-2-mini-free (experimental). Action schema {\"selected\": [slot indices]}; verifier research_gym.trm_skill_gym.tasks.verify.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "cand": {
+     "type": "array",
+     "description": "[16, 24] candidate features"
+    },
+    "rel": {
+     "type": "array",
+     "description": "[16, 16] relation"
+    },
+    "glob": {
+     "type": "array",
+     "description": "[8] global features"
+    },
+    "mask": {
+     "type": "array",
+     "description": "[16] valid slots"
+    },
+    "budget_flops": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "cand",
+    "rel",
+    "glob",
+    "mask"
+   ],
+   "additionalProperties": false
+  }
+ }
+]

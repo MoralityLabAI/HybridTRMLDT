@@ -1,0 +1,26 @@
+{
+  "complete": true,
+  "replay_rows": 6,
+  "distill_counts": {
+    "train": 72,
+    "test": 36
+  },
+  "research": {
+    "one_step_eig": {
+      "mean_two_step_value": 0.41161449255499527,
+      "mean_regret": 0.004316852100647941
+    },
+    "learned": {
+      "mean_two_step_value": 0.40791430954029195,
+      "mean_regret": 0.008017035115351206
+    },
+    "oracle": {
+      "mean_two_step_value": 0.4159313446556432,
+      "mean_regret": 0.0
+    },
+    "variance": {
+      "mean_two_step_value": 0.4118862836521129,
+      "mean_regret": 0.004045061003530337
+    }
+  }
+}
