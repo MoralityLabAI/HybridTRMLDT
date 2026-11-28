@@ -35,6 +35,37 @@ def child_probe(n):
     return {"in_job": bool(inside.value), "alloc": alloc}
 
 
+GUARD = r"""
+import multiprocessing as mp, sys, time
+sys.path.insert(0, ROOT)
+from research_gym.molt_goblin_03 import resources3 as R
+from research_gym.molt_goblin_03.test_resources3 import hog
+if __name__ == "__main__":
+    R.install_tree_guard(0.4, per_process_commit_gib=2.0, receipt_path=sys.argv[1], interval_s=0.1)
+    p = mp.get_context("spawn").Process(target=hog, args=(int(0.6 * 2 ** 30),))
+    p.start(); p.join(30)
+    print("survived")
+"""
+
+
+def hog(n):
+    import time
+    b = bytearray(n)
+    b[::4096] = b"\x01" * len(b[::4096])      # touch pages so they are resident
+    time.sleep(20)
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="Windows")
+def test_tree_guard_kills_tree_over_resident_budget(tmp_path):
+    root = str(pathlib.Path(__file__).resolve().parents[2])
+    script = tmp_path / "guard.py"
+    script.write_text(GUARD.replace("ROOT", repr(root)))
+    receipt = tmp_path / "breach.json"
+    out = subprocess.run([sys.executable, str(script), str(receipt)], capture_output=True, text=True, timeout=120)
+    assert out.returncode == 97 and "survived" not in out.stdout
+    assert json.loads(receipt.read_text())["breach_tree_rss_bytes"] > 0.4 * 2 ** 30
+
+
 @pytest.mark.skipif(sys.platform != "win32", reason="Windows Job Object")
 def test_job_cap_covers_child_workers(tmp_path):
     root = str(pathlib.Path(__file__).resolve().parents[2])

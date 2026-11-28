@@ -21,7 +21,7 @@ import torch
 
 from research_gym.molt_goblin_02 import inky as inky_mod
 
-from .resources3 import install_job_cap
+from .resources3 import install_tree_guard, peak_tree_rss
 
 from .arms import ARMS, BASE, PANEL, PRINCIPAL, RUNGS, TEACHER
 from .factory3 import Config, describe_grammar, logical_visits
@@ -124,6 +124,7 @@ class Campaign:
         self._save()
 
     def _save(self):
+        self.state["peak_tree_rss_bytes"] = max(self.state.get("peak_tree_rss_bytes") or 0, peak_tree_rss() or 0)
         _atomic_write(self.state_path, self.state)
 
     def _archive(self, cfg: Config, origin: dict) -> str:
@@ -480,8 +481,8 @@ def main():
     a = ap.parse_args()
     if a.hours > 6.0:
         ap.error("campaign budget is capped at 6 hours")
-    cap = install_job_cap(a.ram_gib)
     a.out.mkdir(parents=True, exist_ok=True)
+    cap = install_tree_guard(a.ram_gib, receipt_path=a.out / "ram_breach.json")
     (a.out / "resource_cap.json").write_text(json.dumps(cap, indent=1), encoding="utf-8")
     Campaign(a.out, a.hours, a.threads, not a.no_inky, a.max_iterations, workers=a.workers).run()
 

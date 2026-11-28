@@ -16,7 +16,7 @@ from pathlib import Path
 
 import torch
 
-from .resources3 import install_job_cap, peak_job_bytes
+from .resources3 import install_tree_guard, peak_tree_rss
 from .arms import ALL, ARMS, PRINCIPAL, SEEDS_FINAL, TEACHER, resolved_arms
 from .factory3 import Config
 from .mech import gradient_similarity, multitask_routing, specialization
@@ -170,7 +170,8 @@ def main():
     ap.add_argument("--ram-gib", type=float, default=3.0, help="hard total for the driver and all workers")
     ap.add_argument("--freeze-only", action="store_true")
     a = ap.parse_args()
-    cap = install_job_cap(a.ram_gib)
+    a.out.mkdir(parents=True, exist_ok=True)
+    cap = install_tree_guard(a.ram_gib, receipt_path=a.out / "ram_breach.json")
     frozen = freeze(a.state, a.out, a.k)
     (a.out / "resource_cap.json").write_text(json.dumps(cap, indent=1), encoding="utf-8")
     print(json.dumps({"freeze_sha256": frozen["freeze_sha256"], "arms": list(frozen["arms"])}), flush=True)
@@ -186,8 +187,7 @@ def main():
         p.join()
     if time.time() < deadline:
         run_multitask(a.out, threads=a.threads)
-    peak = peak_job_bytes()
-    (a.out / "resource_peak.json").write_text(json.dumps({"peak_job_memory_bytes": peak}), encoding="utf-8")
+    (a.out / "resource_peak.json").write_text(json.dumps({"peak_tree_rss_bytes": peak_tree_rss()}), encoding="utf-8")
 
 
 if __name__ == "__main__":

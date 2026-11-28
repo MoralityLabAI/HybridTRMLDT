@@ -1,8 +1,13 @@
 # MOLT-GOBLIN-03 preregistration
 
 Registered 2026-11-28, before the discovery campaign. Builds on MOLT-GOBLIN-02 at `adf4e17`.
-Status: development study. CPU only, hard 3 GiB total RAM for each driver and its workers
-(Windows job-wide memory limit), free Inkling-2-Mini only, campaign ≤ 6 h.
+Status: development study. CPU only, free Inkling-2-Mini only, campaign ≤ 6 h. RAM: hard
+3 GiB of resident memory summed over each driver and its worker processes. A watchdog
+samples every 0.25 s and terminates the whole tree on breach, writing `ram_breach.json`.
+A Windows Job Object also caps each process at 1.5 GiB of committed memory. A job-wide
+commit limit was tried first and dropped: torch commits ~0.8 GiB of address space per
+process on import while staying ~0.2 GiB resident, so four processes exceeded 3 GiB of
+commit at ~1.3 GiB of RAM.
 
 ## Question
 
