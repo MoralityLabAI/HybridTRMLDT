@@ -30,6 +30,39 @@ def load(paths) -> list[dict]:
     return rows
 
 
+def correct_v1(rows, multitask: bool = False):
+    """Exact repair of routing statistics written by metrics version 1.
+
+    Version 1 normalised by the number of scored positions while summing over all R loops,
+    so usage, entropy and hard usage were R times too large, the per-loop MI was shifted by
+    -log R, and the multitask family/module MI was R times too large.
+    """
+    import math
+    for r in rows:
+        if multitask:
+            if r.get("metrics_version", 1) >= 2:
+                continue
+            R = 4
+            if "family_module_mi_nats" in r:
+                r["family_module_mi_nats"] /= R
+            for f in r["families"].values():
+                for k in ("router_usage", "hard_usage"):
+                    if k in f:
+                        f[k] = [x / R for x in f[k]]
+            r["metrics_version"] = "1-corrected"
+            continue
+        for ev in r.get("evals", {}).values():
+            if "routing_entropy" not in ev or ev.get("metrics_version", 1) >= 2:
+                continue
+            R = len(ev["exact_by_loop"])
+            ev["routing_entropy"] /= R
+            ev["routing_loop_mi"] += math.log(R)
+            ev["type_usage"] = [x / R for x in ev["type_usage"]]
+            ev["hard_usage"] = [x / R for x in ev["hard_usage"]]
+            ev["metrics_version"] = "1-corrected"
+    return rows
+
+
 def index(runs):
     by = defaultdict(dict)
     for r in runs:
@@ -82,9 +115,14 @@ def table(by, arms, fams):
                    "exact_by_loop": [stats.mean(x) for x in zip(*(e["dev"]["exact_by_loop"] for e in ev))],
                    "params": rs[0]["params"], "visits": rs[0]["logical_visits"],
                    "flops": stats.mean(r["cost"]["flops_per_example"] for r in rs),
-                   "flops_hard": stats.mean(r["cost"]["dispatch_hard"]["flops_per_example"] for r in rs) if "dispatch_hard" in rs[0]["cost"] else None,
+                   # hard-dispatch cost is the inference path only for natively sparse routings
+                   "flops_hard": stats.mean(r["cost"]["dispatch_hard"]["flops_per_example"] for r in rs)
+                   if "dispatch_hard" in rs[0]["cost"] and rs[0]["config"]["routing"] in ("sparse_st", "anneal") else None,
                    "latency_ms": stats.median(r["cost"]["latency_ms_per_batch"] for r in rs),
-                   "latency_hard_ms": stats.median(r["cost"]["dispatch_hard"]["latency_ms_per_batch"] for r in rs) if "dispatch_hard" in rs[0]["cost"] else None,
+                   "latency_hard_ms": stats.median(r["cost"]["dispatch_hard"]["latency_ms_per_batch"] for r in rs)
+                   if "dispatch_hard" in rs[0]["cost"] and rs[0]["config"]["routing"] in ("sparse_st", "anneal") else None,
+                   "flops_dispatch_measured": stats.mean(r["cost"]["dispatch_hard"]["flops_per_example"] for r in rs)
+                   if "dispatch_hard" in rs[0]["cost"] else None,
                    "train_cpu_s": stats.mean(r["train_cpu_s"] for r in rs),
                    "peak_rss_mb": max(r["peak_rss_bytes"] for r in rs) / 2 ** 20,
                    "rss_increment_mb": max(r["rss_increment_bytes"] for r in rs) / 2 ** 20,
@@ -199,8 +237,8 @@ def main():
     ap.add_argument("--multitask", type=Path)
     ap.add_argument("--out", type=Path, required=True)
     a = ap.parse_args()
-    mt = load([a.multitask]) if a.multitask and a.multitask.exists() else None
-    res = analyse(load(a.runs), mt)
+    mt = correct_v1(load([a.multitask]), multitask=True) if a.multitask and a.multitask.exists() else None
+    res = analyse(correct_v1(load(a.runs)), mt)
     a.out.mkdir(parents=True, exist_ok=True)
     (a.out / "analysis.json").write_text(json.dumps(res, indent=1), encoding="utf-8")
     md = markdown(res)

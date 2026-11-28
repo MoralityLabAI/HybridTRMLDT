@@ -33,3 +33,13 @@ def test_multitask_routing():
               "cumsum3": {"train": TaskSpec("cumsum3", 6), "eval": {"dev": TaskSpec("cumsum3", 6)}}}
     r = multitask_routing(Config(routing="hrm", n_types=4, width=16, loops=2, steps=16), panels, 1, 8, 7, n_eval=32)
     assert set(r["families"]) == set(panels) and 0 <= r["family_module_mi_nats"] <= r["max_mi_nats"] + 1e-6
+    for f in r["families"].values():
+        assert abs(sum(f["router_usage"]) - 1) < 1e-5 and abs(sum(f["hard_usage"]) - 1) < 1e-5
+
+
+def test_routing_usage_normalised():
+    from .train3 import evaluate
+    net = Net(Config(routing="hrm", n_types=4, width=16, loops=3), 64, 2)
+    r = evaluate(net, TaskSpec("proof_resolve", 8, depth=2), 32, 5)
+    assert abs(sum(r["type_usage"]) - 1) < 1e-5 and abs(sum(r["hard_usage"]) - 1) < 1e-5
+    assert 0 <= r["routing_entropy"] <= 1.3863 + 1e-6 and r["routing_loop_mi"] >= -1e-6

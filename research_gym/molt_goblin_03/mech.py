@@ -149,7 +149,7 @@ def multitask_routing(cfg: Config, panels: dict, seed: int, steps_per_family: in
             ok = (out["logits"][-1].argmax(-1).eq(y) | ~b.mask).all(1).float().mean().item()
             if out["route_p"]:
                 p = torch.stack(out["route_p"])                     # (R,B,T,K)
-                mm = b.mask[None, :, :, None].float()
+                mm = b.mask[None, :, :, None].float().expand(p.shape[0], -1, -1, 1)
                 pu = ((p * mm).sum((0, 1, 2)) / mm.sum((0, 1, 2)))
                 hard = F.one_hot(torch.stack(out["route_w"]).argmax(-1), cfg.n_types).float()
                 hu = (hard * mm).sum((0, 1, 2)) / mm.sum((0, 1, 2))
@@ -157,7 +157,7 @@ def multitask_routing(cfg: Config, panels: dict, seed: int, steps_per_family: in
                 per[f] = {"exact": ok, "router_usage": pu.tolist(), "hard_usage": hu.tolist()}
             else:
                 per[f] = {"exact": ok}
-    res = {"families": per}
+    res = {"families": per, "metrics_version": 2}
     if usage:
         U = torch.stack(usage)                                   # (F,K), equal family weights
         pk = U.mean(0)

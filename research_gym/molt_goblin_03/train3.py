@@ -120,9 +120,10 @@ def evaluate(model: Net, spec: TaskSpec, n: int, seed: int, **kw) -> dict:
     if out["route_w"]:
         w = torch.stack(out["route_w"])                 # (R,B,T,K) applied weights
         p = torch.stack(out["route_p"])                 # router probabilities
-        m = batch.mask[None, :, :, None].float()
+        m = batch.mask[None, :, :, None].float().expand(p.shape[0], -1, -1, 1)
         pk = (p * m).sum((0, 1, 2)) / m.sum((0, 1, 2))
         pkr = (p * m).sum((1, 2)) / m.sum((1, 2))
+        res["metrics_version"] = 2      # version 1 normalised over positions but summed over loops
         res["routing_entropy"] = float((-(p.clamp_min(1e-9).log() * p).sum(-1) * m[..., 0]).sum() / m.sum())
         res["routing_loop_mi"] = float((pkr * (pkr.clamp_min(1e-9).log() - pk.clamp_min(1e-9).log())).sum(-1).mean())
         res["type_usage"] = pk.tolist()
