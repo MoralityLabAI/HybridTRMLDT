@@ -162,3 +162,28 @@ A skill ships as `accepted` only if its source stage passed its gate. Otherwise 
     calibration prefix in {1, 2, 4, 8, 16, 24}. H uses permuted importance.
   - G: rank- and energy-matched random sets, best of 8 draws on calibration. This makes G a stronger
     control than a single random draw.
+
+### Addendum S5/S6/S7 (2026-11-28 12:20 MPST, before these stages launch; no router, distillation or Inky-lab result had been observed beyond a 12-episode router smoke run on scratch roots)
+
+- **Router (S5), `router.py`.**
+  - Episodes: noisy retrieval, then deduction over the retrieved set (typed handoff; the label is the
+    kernel over the true set), then repair, stopping and research.
+  - Utility: 0.2 per correct stage plus a 0.2 all-correct bonus, minus 1e-8/FLOP, 1e-5/host op,
+    0.01/verifier call and 0.05/Inky call.
+  - Experts: symbolic, cert, neural (GYM-01 packages and the research B checkpoint), heuristic.
+  - Calibration: 192 episodes from 7,100,000+, used for the ridge predictors, tau in
+    {0.05, 0.2, 0.4} and the latent adapter. Test: 384 episodes from 7,200,000+.
+  - The S5 gate compares `learned` and `confidence_gated` against `fixed_neural`, which is the
+    learned-skill dispatch registered as "fixed dispatch". `fixed_symbolic` is reported as the strong
+    symbolic baseline.
+  - Latent transfer (`fixed_neural+latent_transfer`) vs isolated typed handoff is reported
+    descriptively.
+  - The Inky fallback expert is not part of S5 (cost and latency); it is reported as unfinished.
+- **Distillation (S6), `distill.py`.** CLI defaults; gate as registered.
+- **Inky lab (S7), `inky_lab.py`.**
+  - Arms: direct, rlt_constrained, random_mutation, coverage_informed, failed_research_informed,
+    bpd_informed and student_ranked, on skills repair, curation, research and retrieval, for 2 rounds.
+  - Proposals are generated against the D incumbent. Measurement trains 300 steps on seed 0 with
+    2048 training instances from 6,200,000+ and scores exact on 256 development roots from 6,100,000+.
+  - Arms whose evidence does not exist at generation time record `evidence_unavailable`.
+  - Descriptive only.
