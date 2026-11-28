@@ -1,0 +1,206 @@
+name: GSF-10 Floodgates CPU
+on:
+  pull_request:
+    paths:
+      - 'research_gym/benchmarks/floodgates_gym/**'
+      - '.github/workflows/floodgates-gym.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  PYTHONHASHSEED: '0'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  ATEN_CPU_CAPABILITY: 'default'
+  MKL_CBWR: 'COMPATIBLE'
+  ONEDNN_MAX_CPU_ISA: 'SSE41'
+defaults:
+  run:
+    shell: bash
+jobs:
+  floodgates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.floodgates_gym.gym --selftest
+      - run: python -m research_gym.benchmarks.floodgates_gym.gym --smoke --out /tmp/fg-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.gym --audit /tmp/fg-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.gym --out /tmp/fg-dev
+      - run: python -m research_gym.benchmarks.floodgates_gym.gym --audit /tmp/fg-dev | tee /tmp/fg-dev/audit.json
+      - name: Summarize structural decoding work
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/fg-dev/floodgates_report.json'))
+          for c in r['cells']:
+              for split in ('dev','shift'):
+                  m=c['panels'][split]
+                  print(json.dumps(dict(seed=c['seed'],supervision=c['supervision'],cache=c['mode'],rank=c['rank'],k=c['selected_k'],split=split,truth_accuracy=m['truth_accuracy'],emitted_per_verification=m['emitted_per_verification'],target_call_reduction=m['serial_verify_calls']/m['verify_calls'],block_work_ratio=(m['verify_block_token_visits']+m['draft_block_token_visits'])/m['serial_block_token_visits'],discarded=m['discarded_cache_positions']),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-10-floodgates-development
+          path: /tmp/fg-dev/
+          retention-days: 14
+  fg05-subspaces:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg05_subspaces --selftest
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg05_subspaces --smoke --out /tmp/fg05-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg05_subspaces --audit /tmp/fg05-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg05_subspaces --out /tmp/fg05-dev
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg05_subspaces --audit /tmp/fg05-dev | tee /tmp/fg05-dev/audit.json
+      - name: Summarize paired drafting and subspace screen
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/fg05-dev/fg05_report.json'))
+          for c in r['cells']:
+              for split in ('dev','shift'):
+                  m=c['panels'][split]
+                  print(json.dumps(dict(seed=c['seed'],cache=c['mode'],arm=c['arm'],split=split,truth_accuracy=m['truth_accuracy'],emitted_per_verification=m['emitted_per_verification'],target_calls=m['verify_calls'],block_work_ratio=m['total_block_work']/m['serial_block_token_visits'],acceptance=m['acceptance_survival'],overlap={k:v['overlap'] for k,v in c['final_span'].items()}),sort_keys=True))
+          for p in r['paired']:
+              if p['split'] in ('dev','shift'):
+                  print(json.dumps(dict(kind='paired',**p),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-10-fg05-subspace-development
+          path: /tmp/fg05-dev/
+          retention-days: 14
+  fg06-elastic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg06_elastic --selftest
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg06_elastic --smoke --out /tmp/fg06-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg06_elastic --audit /tmp/fg06-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg06_elastic --out /tmp/fg06-dev
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg06_elastic --audit /tmp/fg06-dev | tee /tmp/fg06-dev/audit.json
+      - name: Summarize elastic draft work and matched controls
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/fg06-dev/fg06_report.json'))
+          for c in r['cells']:
+              for split in ('dev','shift'):
+                  m=c['panels'][split]
+                  print(json.dumps(dict(seed=c['seed'],cache=c['mode'],arm=c['arm'],split=split,truth_accuracy=m['truth_accuracy'],emitted_per_verification=m['emitted_per_verification'],target_calls=m['verify_calls'],serialized_calls=m['serialized_block_calls'],serialized_call_reduction=m['serialized_call_reduction'],block_work_ratio=m['total_block_token_visits']/m['serial_block_token_visits'],logical_draft_prefix_kv_bytes=m['logical_draft_prefix_kv_bytes'],acceptance=m['acceptance_survival']),sort_keys=True))
+          for p in r['paired']:
+              if p['split'] in ('dev','shift'):
+                  print(json.dumps(dict(kind='paired',**p),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-10-fg06-elastic-development
+          path: /tmp/fg06-dev/
+          retention-days: 14
+  fg07-controller:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg07_controller --selftest
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg07_controller --smoke --out /tmp/fg07-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg07_controller --audit /tmp/fg07-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg07_controller --out /tmp/fg07-dev
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg07_controller --audit /tmp/fg07-dev | tee /tmp/fg07-dev/audit.json
+      - name: Summarize controller costs and oracle gap
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/fg07-dev/fg07_report.json'))
+          for c in r['cells']:
+              for split in ('dev','shift'):
+                  m=c['panels'][split]
+                  print(json.dumps(dict(seed=c['seed'],policy=c['policy'],split=split,cal_fixed_action=r['actions'][c['cal_fixed_action']],tariff_per_token=m['tariff_per_token'],regret_per_token=m['regret_per_token'],truth_accuracy=m['truth_accuracy'],serialized_call_reduction=m['serialized_call_reduction'],block_work_ratio=m['block_work_ratio'],controller_calls=m['work'].get('controller_calls',0),actions=m['actions']),sort_keys=True))
+          for p in r['paired']:
+              if p['split'] in ('dev','shift'):
+                  print(json.dumps(dict(kind='paired',**p),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-10-fg07-controller-development
+          path: /tmp/fg07-dev/
+          retention-days: 14
+  fg08-serving:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg08_serving --selftest
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg08_serving --smoke --out /tmp/fg08-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg08_serving --audit /tmp/fg08-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg08_serving --out /tmp/fg08-dev
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg08_serving --audit /tmp/fg08-dev | tee /tmp/fg08-dev/audit.json
+      - name: Summarize measured serving comparisons
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/fg08-dev/fg08_report.json'))
+          for c in r['cells']:
+              for split in ('dev','shift'):
+                  p=c['panels'][split]
+                  w=p['ledger']['work']
+                  print(json.dumps(dict(seed=c['seed'],policy=c['policy'],profile=c['profile'],split=split,admitted=p['ledger']['admission_cap'],tokens_per_second=p['median']['tokens_per_second'],cpu_tokens_per_second=p['median']['cpu_tokens_per_second'],completion_p95_seconds=p['median']['completion_p95_seconds'],ttft_p95_seconds=p['median']['ttft_p95_seconds'],peak_committed_kv_bytes=w['peak_committed_kv_bytes'],peak_reserved_kv_bytes=w['peak_reserved_kv_bytes'],peak_provisional_kv_bytes=w['peak_provisional_kv_bytes'],peak_rss_bytes=c['peak_rss_bytes'],target_calls=w['target_calls'],actual_batch_histogram=p['ledger']['actual_batch_histogram']),sort_keys=True))
+          for p in r['paired']:
+              if p['split'] in ('dev','shift'):
+                  print(json.dumps(dict(kind='paired',**p),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-10-fg08-serving-development
+          path: /tmp/fg08-dev/
+          retention-days: 14
+  fg09-research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg09_research --selftest
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg09_research --smoke --out /tmp/fg09-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg09_research --audit /tmp/fg09-smoke
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg09_research --out /tmp/fg09-dev
+      - run: python -m research_gym.benchmarks.floodgates_gym.fg09_research --audit /tmp/fg09-dev | tee /tmp/fg09-dev/audit.json
+      - name: Summarize bounded research sessions
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/fg09-dev/fg09_research_report.json'))
+          for c in r['cells']:
+              print(json.dumps(dict(role=c['role'],index=c['index'],result=c['result']),sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gsf-10-fg09-research-development
+          path: /tmp/fg09-dev/
+          retention-days: 14
