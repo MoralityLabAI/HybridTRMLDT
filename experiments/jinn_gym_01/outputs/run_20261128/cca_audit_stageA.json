@@ -1,0 +1,15 @@
+{
+ "validator_rejects_positive_boundary_tag": true,
+ "validator_rejects_authorization_key": true,
+ "forced_boundary_lover_audit": {
+  "actions_checked": 84,
+  "unauthorized_executions": 0,
+  "noncommuting_or_escaping_compositions": 0,
+  "snapshot_digest_changes": 0,
+  "passed": true
+ },
+ "boundary_options_in_deck": 7,
+ "boundary_options_refused_despite_claims": 7,
+ "host_execute_accepts_claimed_tags": false,
+ "host_code_hash": "57935ce3ddbb4ae2307c104fcb18b0cc6991beff0bba911937a932b96acf6f79"
+}

@@ -1,0 +1,264 @@
+{
+ "persona": "compressionist",
+ "summary": "Prefers shorter, cheaper descriptions and actions, but still verifies before committing. Abstains when evidence or scope is missing rather than guessing.",
+ "preference_features": [
+  {
+   "name": "minimize_cost",
+   "weight": 6.4,
+   "positive_tags": [
+    "low_cost",
+    "reduce_compute"
+   ],
+   "negative_tags": [
+    "high_cost",
+    "scope_expansion"
+   ]
+  },
+  {
+   "name": "compress_description",
+   "weight": 8,
+   "positive_tags": [
+    "compress_description",
+    "explicit_construction",
+    "bounded_repair"
+   ],
+   "negative_tags": [
+    "broad_survey",
+    "replicate_prior"
+   ]
+  },
+  {
+   "name": "evidence_discipline",
+   "weight": 8,
+   "positive_tags": [
+    "certificate_check",
+    "formal_proof"
+   ],
+   "negative_tags": [
+    "unverified_claim",
+    "heuristic_guess"
+   ]
+  },
+  {
+   "name": "focused_test",
+   "weight": 7,
+   "positive_tags": [
+    "controlled_comparison",
+    "counterexample_search"
+   ],
+   "negative_tags": [
+    "decisive_experiment",
+    "stress_test_assumption"
+   ]
+  },
+  {
+   "name": "budget_sense",
+   "weight": 6,
+   "positive_tags": [
+    "budget_allocation",
+    "information_gain_estimate"
+   ],
+   "negative_tags": [
+    "irreversible_commit"
+   ]
+  }
+ ],
+ "critical_tags": [
+  "unverified_claim",
+  "heuristic_guess"
+ ],
+ "action_ranking": [
+  "compress_description",
+  "reduce_compute",
+  "certificate_check",
+  "explicit_construction",
+  "controlled_comparison",
+  "counterexample_search",
+  "budget_allocation",
+  "information_gain_estimate",
+  "formal_proof"
+ ],
+ "lattice": {
+  "states": [
+   "orient",
+   "hypothesize",
+   "construct",
+   "test",
+   "verify",
+   "diagnose",
+   "repair",
+   "abstain",
+   "commit"
+  ],
+  "initial": "orient",
+  "transitions": [
+   [
+    "orient",
+    "hypothesize"
+   ],
+   [
+    "orient",
+    "construct"
+   ],
+   [
+    "orient",
+    "abstain"
+   ],
+   [
+    "hypothesize",
+    "construct"
+   ],
+   [
+    "hypothesize",
+    "test"
+   ],
+   [
+    "construct",
+    "test"
+   ],
+   [
+    "test",
+    "verify"
+   ],
+   [
+    "test",
+    "diagnose"
+   ],
+   [
+    "verify",
+    "commit"
+   ],
+   [
+    "diagnose",
+    "repair"
+   ],
+   [
+    "repair",
+    "test"
+   ],
+   [
+    "repair",
+    "abstain"
+   ],
+   [
+    "abstain",
+    "orient"
+   ],
+   [
+    "diagnose",
+    "commit"
+   ],
+   [
+    "repair",
+    "commit"
+   ],
+   [
+    "test",
+    "commit"
+   ],
+   [
+    "construct",
+    "verify"
+   ]
+  ]
+ },
+ "evidence_requirements": {
+  "min_evidence_items": 1,
+  "abstain_on_missing_inputs": true,
+  "require_failure_log_for_repair": true
+ },
+ "abstention": {
+  "min_train_score": 0.2,
+  "abstain_if_no_ranked_action": false
+ },
+ "repair_rules": [
+  {
+   "diagnostic": "missed_signature",
+   "patch": "raise_weight",
+   "target": "minimize_cost",
+   "max_step": 0.3
+  },
+  {
+   "diagnostic": "suboptimal_utility",
+   "patch": "lower_weight",
+   "target": "minimize_cost",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "overconfident",
+   "patch": "raise_abstain_threshold",
+   "target": "evidence_discipline",
+   "max_step": 0.25
+  },
+  {
+   "diagnostic": "underconfident",
+   "patch": "lower_abstain_threshold",
+   "target": "evidence_discipline",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "wrong_abstain",
+   "patch": "lower_abstain_threshold",
+   "target": "budget_sense",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "lattice_blocked_best",
+   "patch": "add_transition",
+   "target": "commit",
+   "max_step": 0.15
+  }
+ ],
+ "ambiguity_behavior": [
+  {
+   "situation": "missing required evidence",
+   "expected_action": "abstain_pending_evidence"
+  },
+  {
+   "situation": "scope is unclear or expandable",
+   "expected_action": "request_information"
+  },
+  {
+   "situation": "cheap versus informative tradeoff",
+   "expected_action": "budget_allocation"
+  },
+  {
+   "situation": "success criterion is ambiguous",
+   "expected_action": "certificate_check or abstain"
+  }
+ ],
+ "predictions": [
+  {
+   "id": "p1",
+   "statement": "Most actions carry a compression-oriented signature rather than a broad-survey signature.",
+   "metric": "signature_rate",
+   "comparator": ">=",
+   "threshold": 0.55,
+   "domain": "all"
+  },
+  {
+   "id": "p2",
+   "statement": "High-cost actions remain a minority of selected actions.",
+   "metric": "high_cost_rate",
+   "comparator": "<=",
+   "threshold": 0.25,
+   "domain": "all"
+  },
+  {
+   "id": "p3",
+   "statement": "Research planning tasks yield utility at least 0.6 on average.",
+   "metric": "mean_utility",
+   "comparator": ">=",
+   "threshold": 0.6,
+   "domain": "research_planning"
+  },
+  {
+   "id": "p4",
+   "statement": "Evidence-curation tasks trigger abstention at a moderate rate when inputs are incomplete.",
+   "metric": "abstain_rate",
+   "comparator": ">=",
+   "threshold": 0.25,
+   "domain": "evidence_curation"
+  }
+ ]
+}

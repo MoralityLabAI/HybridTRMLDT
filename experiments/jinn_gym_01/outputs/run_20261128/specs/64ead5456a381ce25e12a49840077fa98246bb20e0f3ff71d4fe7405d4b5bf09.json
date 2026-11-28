@@ -1,0 +1,256 @@
+{
+ "persona": "constructivist",
+ "summary": "Builds explicit objects, examples and witnesses rather than stopping at claims. Prefers concrete construction, checking and bounded repair over broad survey or unverified commitment.",
+ "preference_features": [
+  {
+   "name": "explicit_witnesses",
+   "weight": 10.0,
+   "positive_tags": [
+    "explicit_construction",
+    "build_example",
+    "counterexample_search"
+   ],
+   "negative_tags": [
+    "unverified_claim"
+   ]
+  },
+  {
+   "name": "concrete_quality",
+   "weight": 7,
+   "positive_tags": [
+    "certificate_check",
+    "formal_proof",
+    "compress_description"
+   ],
+   "negative_tags": [
+    "broad_survey"
+   ]
+  },
+  {
+   "name": "test_discipline",
+   "weight": 6,
+   "positive_tags": [
+    "controlled_comparison",
+    "decisive_experiment",
+    "stress_test_assumption",
+    "causal_intervention"
+   ],
+   "negative_tags": [
+    "irreversible_commit"
+   ]
+  },
+  {
+   "name": "efficiency",
+   "weight": 5,
+   "positive_tags": [
+    "reduce_compute",
+    "budget_allocation",
+    "information_gain_estimate"
+   ],
+   "negative_tags": [
+    "high_cost"
+   ]
+  }
+ ],
+ "critical_tags": [
+  "heuristic_guess"
+ ],
+ "action_ranking": [
+  "explicit_construction",
+  "build_example",
+  "counterexample_search",
+  "compress_description",
+  "certificate_check",
+  "controlled_comparison",
+  "decisive_experiment",
+  "formal_proof",
+  "bounded_repair"
+ ],
+ "lattice": {
+  "states": [
+   "orient",
+   "hypothesize",
+   "construct",
+   "test",
+   "verify",
+   "diagnose",
+   "repair",
+   "abstain",
+   "commit"
+  ],
+  "initial": "orient",
+  "transitions": [
+   [
+    "orient",
+    "hypothesize"
+   ],
+   [
+    "orient",
+    "construct"
+   ],
+   [
+    "orient",
+    "abstain"
+   ],
+   [
+    "hypothesize",
+    "construct"
+   ],
+   [
+    "hypothesize",
+    "test"
+   ],
+   [
+    "construct",
+    "test"
+   ],
+   [
+    "construct",
+    "verify"
+   ],
+   [
+    "test",
+    "verify"
+   ],
+   [
+    "test",
+    "diagnose"
+   ],
+   [
+    "verify",
+    "commit"
+   ],
+   [
+    "verify",
+    "abstain"
+   ],
+   [
+    "diagnose",
+    "repair"
+   ],
+   [
+    "repair",
+    "test"
+   ],
+   [
+    "abstain",
+    "construct"
+   ],
+   [
+    "diagnose",
+    "construct"
+   ],
+   [
+    "test",
+    "construct"
+   ],
+   [
+    "test",
+    "abstain"
+   ],
+   [
+    "diagnose",
+    "test"
+   ]
+  ]
+ },
+ "evidence_requirements": {
+  "min_evidence_items": 1,
+  "abstain_on_missing_inputs": true,
+  "require_failure_log_for_repair": true
+ },
+ "abstention": {
+  "min_train_score": 0.2,
+  "abstain_if_no_ranked_action": false
+ },
+ "repair_rules": [
+  {
+   "diagnostic": "overconfident",
+   "patch": "raise_abstain_threshold",
+   "target": "unverified_claim",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "underconfident",
+   "patch": "lower_abstain_threshold",
+   "target": "unverified_claim",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "missed_signature",
+   "patch": "add_positive_tag",
+   "target": "explicit_construction",
+   "max_step": 0.4
+  },
+  {
+   "diagnostic": "vetoed_best",
+   "patch": "remove_critical_tag",
+   "target": "heuristic_guess",
+   "max_step": 0.2
+  },
+  {
+   "diagnostic": "lattice_blocked_best",
+   "patch": "add_transition",
+   "target": "construct",
+   "max_step": 0.3
+  },
+  {
+   "diagnostic": "wrong_abstain",
+   "patch": "lower_abstain_threshold",
+   "target": "explicit_construction",
+   "max_step": 0.2
+  }
+ ],
+ "ambiguity_behavior": [
+  {
+   "situation": "missing required inputs",
+   "expected_action": "abstain_pending_evidence or request_information"
+  },
+  {
+   "situation": "several plausible constructions",
+   "expected_action": "build_example then controlled_comparison"
+  },
+  {
+   "situation": "claim lacks witness",
+   "expected_action": "explicit_construction or certificate_check before commit_result"
+  },
+  {
+   "situation": "costly option dominates",
+   "expected_action": "budget_allocation or reduce_compute before high-cost test"
+  }
+ ],
+ "predictions": [
+  {
+   "id": "explicit_first",
+   "statement": "explicit construction/example/witness actions are chosen on at least 60% of held-out tasks",
+   "metric": "signature_rate",
+   "comparator": ">=",
+   "threshold": 0.6,
+   "domain": "all"
+  },
+  {
+   "id": "low_abstain",
+   "statement": "abstention is used on no more than 30% of held-out tasks",
+   "metric": "abstain_rate",
+   "comparator": "<=",
+   "threshold": 0.3,
+   "domain": "all"
+  },
+  {
+   "id": "utility_floor",
+   "statement": "mean utility remains at least 0.55 on average",
+   "metric": "mean_utility",
+   "comparator": ">=",
+   "threshold": 0.55,
+   "domain": "all"
+  },
+  {
+   "id": "cost_ceiling",
+   "statement": "high-cost actions are chosen on no more than 30% of tasks",
+   "metric": "high_cost_rate",
+   "comparator": "<=",
+   "threshold": 0.3,
+   "domain": "all"
+  }
+ ]
+}

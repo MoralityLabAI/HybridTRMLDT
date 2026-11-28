@@ -1,0 +1,676 @@
+{
+ "schema": "jinn-gym-01.state.v1",
+ "started_at": 1795804097.4055285,
+ "deadline": 1795832897.4055285,
+ "hours": 8.0,
+ "phase": "REPORT",
+ "personas": {
+  "constructivist": {
+   "attempts": 1,
+   "generation": 10,
+   "accepted": 10,
+   "rejected": 48,
+   "status": "accepted",
+   "current": "1934040ced9374c244a7b2a4ab80052033f3be8728141e3b2b07d6418fde52d6",
+   "initial": "0769e9b6bfd4ad3625bac2f29c4b9c10f23fae78773c24cda59500dc38381164"
+  },
+  "skeptic": {
+   "attempts": 1,
+   "generation": 10,
+   "accepted": 10,
+   "rejected": 48,
+   "status": "accepted",
+   "current": "ea25a2c3328e0b40ce02d4e2895b9b72b7702de3301df04737ba411b4d6afcf9",
+   "initial": "8fbaa3d7645a2da669965bb8d2d4debd1eab0b8a4537500e3a69810719ba6076"
+  },
+  "experimentalist": {
+   "attempts": 1,
+   "generation": 8,
+   "accepted": 8,
+   "rejected": 50,
+   "status": "accepted",
+   "current": "f9b30bf9766616270fd7d33da2e69dfc435a71b011e1c99dc97fa8525ff17069",
+   "initial": "b82026b85f885dd844f92ef9341e125274f3e4fd824ea987a482aaf850a44996"
+  },
+  "formalist": {
+   "attempts": 1,
+   "generation": 14,
+   "accepted": 14,
+   "rejected": 44,
+   "status": "accepted",
+   "current": "8482a12f8ddef2dfa70b0c3b8396c5872030e2cdd3ddd4dfa9c5cafe17b594d1",
+   "initial": "ece65c6497edacdf6af088dfdd7db506fbc1c4c6302dc1a1000597efc8e05cfb"
+  },
+  "compressionist": {
+   "attempts": 1,
+   "generation": 9,
+   "accepted": 9,
+   "rejected": 50,
+   "status": "accepted",
+   "current": "7da72fbd8b5a096f078fff22b048ee55c4048bba4c3f5b7db00bad489cf0dbad",
+   "initial": "5598988bb50d73647d0ba64257eb9d18bfb440b60f5a0092be529cf868b6a29e"
+  },
+  "mechanistic_interpreter": {
+   "attempts": 1,
+   "generation": 9,
+   "accepted": 9,
+   "rejected": 49,
+   "status": "accepted",
+   "current": "de18798a199811932bdd1147e735f10182510bc4660e4c1d9c5378456bbf496e",
+   "initial": "359f638694e6d2d17ec58fc437c9269399fe7d69f45ccb0abeb3a18079feb301"
+  },
+  "research_strategist": {
+   "attempts": 2,
+   "generation": 10,
+   "accepted": 10,
+   "rejected": 48,
+   "status": "accepted",
+   "current": "7b64bc430b9e1962559af8b6db24f16ccb19679a9baab54ed99af38585041c62",
+   "initial": "e06c7a793b49c0d1b123e8576672acb348977a2241ac6859c382bb35cec26ce8"
+  },
+  "repair_specialist": {
+   "attempts": 2,
+   "generation": 3,
+   "accepted": 3,
+   "rejected": 55,
+   "status": "accepted",
+   "current": "8138e0e7a91267060b3fbc32f085e84734b78468e11b67255e929eca92ade3f1",
+   "initial": "69d774e2f4dc26d6a01d04860f4c8e238b184048a7ebd1c8c385a536269787fa"
+  }
+ },
+ "stage_b_done": [
+  "counterexample-f0-devpanel-0000",
+  "lean_tactic-f0-devpanel-0000",
+  "research_planning-f0-devpanel-0000",
+  "experimental_design-f0-devpanel-0000",
+  "storyworld_routing-f0-devpanel-0000",
+  "evidence_curation-f0-devpanel-0000",
+  "counterexample-f0-devpanel-0001",
+  "lean_tactic-f0-devpanel-0001",
+  "research_planning-f0-devpanel-0001",
+  "experimental_design-f0-devpanel-0001",
+  "storyworld_routing-f0-devpanel-0001",
+  "evidence_curation-f0-devpanel-0001",
+  "counterexample-f0-devpanel-0002",
+  "lean_tactic-f0-devpanel-0002",
+  "research_planning-f0-devpanel-0002",
+  "experimental_design-f0-devpanel-0002",
+  "storyworld_routing-f0-devpanel-0002",
+  "evidence_curation-f0-devpanel-0002"
+ ],
+ "c_iteration": 465,
+ "c_compositions": 46,
+ "pointers": {
+  "constructivist": 784,
+  "research_strategist": 800,
+  "repair_specialist": 800,
+  "mechanistic_interpreter": 784,
+  "formalist": 848,
+  "compose": 752,
+  "compressionist": 864,
+  "skeptic": 816,
+  "experimentalist": 752
+ },
+ "final_done": [
+  "counterexample-f1-heldout-0000",
+  "lean_tactic-f1-heldout-0000",
+  "research_planning-f1-heldout-0000",
+  "experimental_design-f1-heldout-0000",
+  "storyworld_routing-f1-heldout-0000",
+  "evidence_curation-f1-heldout-0000",
+  "counterexample-f1-heldout-0001",
+  "lean_tactic-f1-heldout-0001",
+  "research_planning-f1-heldout-0001",
+  "experimental_design-f1-heldout-0001",
+  "storyworld_routing-f1-heldout-0001",
+  "evidence_curation-f1-heldout-0001",
+  "counterexample-f1-heldout-0002",
+  "lean_tactic-f1-heldout-0002",
+  "research_planning-f1-heldout-0002",
+  "experimental_design-f1-heldout-0002",
+  "storyworld_routing-f1-heldout-0002",
+  "evidence_curation-f1-heldout-0002",
+  "counterexample-f1-heldout-0003",
+  "lean_tactic-f1-heldout-0003",
+  "research_planning-f1-heldout-0003",
+  "experimental_design-f1-heldout-0003",
+  "storyworld_routing-f1-heldout-0003",
+  "evidence_curation-f1-heldout-0003",
+  "counterexample-f1-heldout-0004",
+  "lean_tactic-f1-heldout-0004",
+  "research_planning-f1-heldout-0004",
+  "experimental_design-f1-heldout-0004",
+  "storyworld_routing-f1-heldout-0004",
+  "evidence_curation-f1-heldout-0004",
+  "counterexample-f1-heldout-0005",
+  "lean_tactic-f1-heldout-0005",
+  "research_planning-f1-heldout-0005",
+  "experimental_design-f1-heldout-0005",
+  "storyworld_routing-f1-heldout-0005",
+  "evidence_curation-f1-heldout-0005",
+  "counterexample-f1-heldout-0006",
+  "lean_tactic-f1-heldout-0006",
+  "research_planning-f1-heldout-0006",
+  "experimental_design-f1-heldout-0006",
+  "storyworld_routing-f1-heldout-0006",
+  "evidence_curation-f1-heldout-0006",
+  "counterexample-f1-heldout-0007",
+  "lean_tactic-f1-heldout-0007",
+  "research_planning-f1-heldout-0007",
+  "experimental_design-f1-heldout-0007",
+  "storyworld_routing-f1-heldout-0007",
+  "evidence_curation-f1-heldout-0007",
+  "counterexample-f1-heldout-0008",
+  "lean_tactic-f1-heldout-0008",
+  "research_planning-f1-heldout-0008",
+  "experimental_design-f1-heldout-0008",
+  "storyworld_routing-f1-heldout-0008",
+  "evidence_curation-f1-heldout-0008",
+  "counterexample-f1-heldout-0009",
+  "lean_tactic-f1-heldout-0009",
+  "research_planning-f1-heldout-0009",
+  "experimental_design-f1-heldout-0009",
+  "storyworld_routing-f1-heldout-0009",
+  "evidence_curation-f1-heldout-0009",
+  "counterexample-f1-heldout-0010"
+ ],
+ "memory": {
+  "constructivist": [
+   {
+    "domain": "evidence_curation",
+    "action_text": "Stress-test the claim by searching the excerpts for one that contradicts it.",
+    "utility": 0.577724,
+    "best": 0.858121
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Construct a structured witness: plug in n = 11 and factor the value by hand.",
+    "utility": 0.92,
+    "best": 0.95
+   },
+   {
+    "domain": "lean_tactic",
+    "action_text": "Run `omega`.",
+    "utility": 0.05,
+    "best": 0.55
+   },
+   {
+    "domain": "research_planning",
+    "action_text": "Intervene on the curation filter and observe which mechanism responds.",
+    "utility": 0.183827,
+    "best": 0.231747
+   },
+   {
+    "domain": "experimental_design",
+    "action_text": "Simulate the analysis on synthetic data to find failure modes before spending budget.",
+    "utility": 0.25,
+    "best": 0.25
+   },
+   {
+    "domain": "storyworld_routing",
+    "action_text": "Test the single riskiest road first.",
+    "utility": 0.5,
+    "best": 0.5
+   },
+   {
+    "domain": "evidence_curation",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   }
+  ],
+  "skeptic": [
+   {
+    "domain": "evidence_curation",
+    "action_text": "Stress-test the claim by searching the excerpts for one that contradicts it.",
+    "utility": 0.577724,
+    "best": 0.858121
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Sieve every n below 33 and test all values, logging the first failure.",
+    "utility": 0.8,
+    "best": 0.95
+   },
+   {
+    "domain": "lean_tactic",
+    "action_text": "Run `omega`.",
+    "utility": 0.05,
+    "best": 0.55
+   },
+   {
+    "domain": "research_planning",
+    "action_text": "Run the decisive A/B comparison of H1 against the rest.",
+    "utility": 0.059998,
+    "best": 0.231747
+   },
+   {
+    "domain": "experimental_design",
+    "action_text": "Simulate the analysis on synthetic data to find failure modes before spending budget.",
+    "utility": 0.25,
+    "best": 0.25
+   },
+   {
+    "domain": "storyworld_routing",
+    "action_text": "Test the single riskiest road first.",
+    "utility": 0.5,
+    "best": 0.5
+   },
+   {
+    "domain": "evidence_curation",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   }
+  ],
+  "experimentalist": [
+   {
+    "domain": "evidence_curation",
+    "action_text": "Drop each excerpt in turn and remove the one whose removal most changes the readout.",
+    "utility": 0.700576,
+    "best": 0.858121
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Sieve every n below 33 and test all values, logging the first failure.",
+    "utility": 0.8,
+    "best": 0.95
+   },
+   {
+    "domain": "lean_tactic",
+    "action_text": "Run `omega`.",
+    "utility": 0.05,
+    "best": 0.55
+   },
+   {
+    "domain": "research_planning",
+    "action_text": "Intervene on the curation filter and observe which mechanism responds.",
+    "utility": 0.183827,
+    "best": 0.231747
+   },
+   {
+    "domain": "experimental_design",
+    "action_text": "Ablate the intervention's key component to test its mechanism.",
+    "utility": 0.092514,
+    "best": 0.25
+   },
+   {
+    "domain": "storyworld_routing",
+    "action_text": "Diagnose where the previous party failed and reroute around that road only.",
+    "utility": 0.3,
+    "best": 0.5
+   },
+   {
+    "domain": "evidence_curation",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   }
+  ],
+  "formalist": [
+   {
+    "domain": "evidence_curation",
+    "action_text": "Diagnose the failed pass and remove only the duplicated source.",
+    "utility": 0.858121,
+    "best": 0.858121
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Construct a structured witness: plug in n = 11 and factor the value by hand.",
+    "utility": 0.92,
+    "best": 0.95
+   },
+   {
+    "domain": "lean_tactic",
+    "action_text": "Run `omega`.",
+    "utility": 0.05,
+    "best": 0.55
+   },
+   {
+    "domain": "research_planning",
+    "action_text": "Intervene on the curation filter and observe which mechanism responds.",
+    "utility": 0.183827,
+    "best": 0.231747
+   },
+   {
+    "domain": "experimental_design",
+    "action_text": "Write a formal derivation of the estimator's unbiasedness before running anything.",
+    "utility": 0.2,
+    "best": 0.25
+   },
+   {
+    "domain": "storyworld_routing",
+    "action_text": "Diagnose where the previous party failed and reroute around that road only.",
+    "utility": 0.3,
+    "best": 0.5
+   },
+   {
+    "domain": "evidence_curation",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   }
+  ],
+  "compressionist": [
+   {
+    "domain": "evidence_curation",
+    "action_text": "Diagnose the failed pass and remove only the duplicated source.",
+    "utility": 0.858121,
+    "best": 0.858121
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Construct a structured witness: plug in n = 11 and factor the value by hand.",
+    "utility": 0.92,
+    "best": 0.95
+   },
+   {
+    "domain": "lean_tactic",
+    "action_text": "Run `ring` to normalize both sides.",
+    "utility": 0.05,
+    "best": 0.55
+   },
+   {
+    "domain": "research_planning",
+    "action_text": "Fit the smallest model consistent with the existing data.",
+    "utility": 0.14,
+    "best": 0.231747
+   },
+   {
+    "domain": "experimental_design",
+    "action_text": "Write a formal derivation of the estimator's unbiasedness before running anything.",
+    "utility": 0.2,
+    "best": 0.25
+   },
+   {
+    "domain": "storyworld_routing",
+    "action_text": "Diagnose where the previous party failed and reroute around that road only.",
+    "utility": 0.3,
+    "best": 0.5
+   },
+   {
+    "domain": "evidence_curation",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   }
+  ],
+  "mechanistic_interpreter": [
+   {
+    "domain": "evidence_curation",
+    "action_text": "Stress-test the claim by searching the excerpts for one that contradicts it.",
+    "utility": 0.577724,
+    "best": 0.858121
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Evaluate 2n^2 + 11 for n = 0..19 and test each value for primality.",
+    "utility": 0.95,
+    "best": 0.95
+   },
+   {
+    "domain": "lean_tactic",
+    "action_text": "Run `omega`.",
+    "utility": 0.05,
+    "best": 0.55
+   },
+   {
+    "domain": "research_planning",
+    "action_text": "Run the decisive A/B comparison of H1 against the rest.",
+    "utility": 0.059998,
+    "best": 0.231747
+   },
+   {
+    "domain": "experimental_design",
+    "action_text": "Ablate the intervention's key component to test its mechanism.",
+    "utility": 0.092514,
+    "best": 0.25
+   },
+   {
+    "domain": "storyworld_routing",
+    "action_text": "Diagnose where the previous party failed and reroute around that road only.",
+    "utility": 0.3,
+    "best": 0.5
+   },
+   {
+    "domain": "evidence_curation",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   }
+  ],
+  "research_strategist": [
+   {
+    "domain": "evidence_curation",
+    "action_text": "Diagnose the failed pass and remove only the duplicated source.",
+    "utility": 0.858121,
+    "best": 0.858121
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Construct a structured witness: plug in n = 11 and factor the value by hand.",
+    "utility": 0.92,
+    "best": 0.95
+   },
+   {
+    "domain": "lean_tactic",
+    "action_text": "Run `simp`.",
+    "utility": 0.05,
+    "best": 0.55
+   },
+   {
+    "domain": "research_planning",
+    "action_text": "Intervene on the curation filter and observe which mechanism responds.",
+    "utility": 0.183827,
+    "best": 0.231747
+   },
+   {
+    "domain": "experimental_design",
+    "action_text": "Simulate the analysis on synthetic data to find failure modes before spending budget.",
+    "utility": 0.25,
+    "best": 0.25
+   },
+   {
+    "domain": "storyworld_routing",
+    "action_text": "Diagnose where the previous party failed and reroute around that road only.",
+    "utility": 0.3,
+    "best": 0.5
+   },
+   {
+    "domain": "evidence_curation",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   }
+  ],
+  "repair_specialist": [
+   {
+    "domain": "evidence_curation",
+    "action_text": "Diagnose the failed pass and remove only the duplicated source.",
+    "utility": 0.858121,
+    "best": 0.858121
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Construct a structured witness: plug in n = 11 and factor the value by hand.",
+    "utility": 0.92,
+    "best": 0.95
+   },
+   {
+    "domain": "lean_tactic",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.12,
+    "best": 0.55
+   },
+   {
+    "domain": "research_planning",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.12,
+    "best": 0.231747
+   },
+   {
+    "domain": "experimental_design",
+    "action_text": "Simulate the analysis on synthetic data to find failure modes before spending budget.",
+    "utility": 0.25,
+    "best": 0.25
+   },
+   {
+    "domain": "storyworld_routing",
+    "action_text": "Diagnose where the previous party failed and reroute around that road only.",
+    "utility": 0.3,
+    "best": 0.5
+   },
+   {
+    "domain": "evidence_curation",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   },
+   {
+    "domain": "counterexample",
+    "action_text": "Abstain and request the missing information before acting.",
+    "utility": 0.5,
+    "best": 0.5
+   }
+  ]
+ },
+ "recent_rejections": {
+  "constructivist": [
+   "[{\"op\": \"set_weight\", \"feature\": \"explicit_witnesses\", \"weight\": 14}, {\"op\": \"add_transition\", \"from\": \"orient\", \"to\": \"test\"}] -> invalid_patch: feature 0 weight must be a number in (0, 10]",
+   "[{\"op\": \"add_transition\", \"from\": \"orient\", \"to\": \"test\"}, {\"op\": \"set_abstain_threshold\", \"value\": 0.5}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_abstain_threshold\", \"value\": 0.5}, {\"op\": \"add_tag\", \"feature\": \"concrete_quality\", \"tag\": \"explicit_construction\", \"sign\": \"+\"}] -> not_better_on_fresh_cases"
+  ],
+  "skeptic": [
+   "[{\"op\": \"add_tag\", \"feature\": \"counterexample_drive\", \"tag\": \"failure_diagnosis\", \"sign\": \"+\"}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_weight\", \"feature\": \"counterexample_drive\", \"weight\": 13.0}, {\"op\": \"add_transition\", \"from\": \"diagnose\", \"to\": \"verify\"}] -> invalid_patch: feature 0 weight must be a number in (0, 10]",
+   "[{\"op\": \"set_weight\", \"feature\": \"verification_rigor\", \"weight\": 10.0}] -> not_better_on_fresh_cases"
+  ],
+  "experimentalist": [
+   "[{\"op\": \"set_weight\", \"feature\": \"decisive_focus\", \"weight\": 9.3}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_weight\", \"feature\": \"falsifiability\", \"weight\": 10.3}, {\"op\": \"set_abstain_threshold\", \"value\": 0.15}] -> invalid_patch: feature 2 weight must be a number in (0, 10]",
+   "[{\"op\": \"set_abstain_threshold\", \"value\": 0.1}, {\"op\": \"add_transition\", \"from\": \"construct\", \"to\": \"test\"}] -> not_better_on_fresh_cases"
+  ],
+  "formalist": [
+   "[{\"op\": \"set_weight\", \"feature\": \"proof_discipline\", \"weight\": 9.0}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_abstain_threshold\", \"value\": 0.03}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"add_transition\", \"from\": \"diagnose\", \"to\": \"abstain\"}] -> not_better_on_fresh_cases"
+  ],
+  "compressionist": [
+   "[{\"op\": \"set_weight\", \"feature\": \"minimize_cost\", \"weight\": 6.4}, {\"op\": \"set_abstain_threshold\", \"value\": 0.3}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_weight\", \"feature\": \"minimize_cost\", \"weight\": 6.4}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_weight\", \"feature\": \"minimize_cost\", \"weight\": 5.9}, {\"op\": \"set_abstain_threshold\", \"value\": 0.3}, {\"op\": \"add_transition\", \"from\": \"hypothesize\", -> not_better_on_fresh_cases"
+  ],
+  "mechanistic_interpreter": [
+   "[{\"op\": \"set_abstain_threshold\", \"value\": 0.3}, {\"op\": \"add_transition\", \"from\": \"diagnose\", \"to\": \"verify\"}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_abstain_if_no_ranked_action\", \"value\": true}, {\"op\": \"set_abstain_threshold\", \"value\": 0.3}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_abstain_threshold\", \"value\": 0.3}] -> not_better_on_fresh_cases"
+  ],
+  "research_strategist": [
+   "[{\"op\": \"add_tag\", \"feature\": \"info_gain_per_cost\", \"tag\": \"information_gain_estimate\", \"sign\": \"+\"}, {\"op\": \"add_transition\", \"from\": \"diagnose\", \"to\": \"abstai -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_weight\", \"feature\": \"info_gain_per_cost\", \"weight\": 12.0}, {\"op\": \"set_abstain_threshold\", \"value\": 0.4}] -> invalid_patch: feature 0 weight must be a number in (0, 10]",
+   "[{\"op\": \"set_abstain_if_no_ranked_action\", \"value\": true}] -> not_better_on_fresh_cases"
+  ],
+  "repair_specialist": [
+   "[{\"op\": \"add_transition\", \"from\": \"orient\", \"to\": \"test\"}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_abstain_threshold\", \"value\": 0.15}, {\"op\": \"add_transition\", \"from\": \"test\", \"to\": \"commit\"}] -> not_better_on_fresh_cases",
+   "[{\"op\": \"set_weight\", \"feature\": \"bounded_intervention\", \"weight\": 7.3}, {\"op\": \"add_tag\", \"feature\": \"evidence_discipline\", \"tag\": \"information_gain_estimate\", -> not_better_on_fresh_cases"
+  ]
+ },
+ "frozen": {
+  "constructivist": "1934040ced9374c244a7b2a4ab80052033f3be8728141e3b2b07d6418fde52d6",
+  "skeptic": "ea25a2c3328e0b40ce02d4e2895b9b72b7702de3301df04737ba411b4d6afcf9",
+  "experimentalist": "f9b30bf9766616270fd7d33da2e69dfc435a71b011e1c99dc97fa8525ff17069",
+  "formalist": "8482a12f8ddef2dfa70b0c3b8396c5872030e2cdd3ddd4dfa9c5cafe17b594d1",
+  "compressionist": "7da72fbd8b5a096f078fff22b048ee55c4048bba4c3f5b7db00bad489cf0dbad",
+  "mechanistic_interpreter": "de18798a199811932bdd1147e735f10182510bc4660e4c1d9c5378456bbf496e",
+  "research_strategist": "7b64bc430b9e1962559af8b6db24f16ccb19679a9baab54ed99af38585041c62",
+  "repair_specialist": "8138e0e7a91267060b3fbc32f085e84734b78468e11b67255e929eca92ade3f1"
+ },
+ "initial": {},
+ "host_code_hash_start": "57935ce3ddbb4ae2307c104fcb18b0cc6991beff0bba911937a932b96acf6f79",
+ "dry_run": false,
+ "resumes": 1,
+ "seconds_per_call": 8.350505251312828,
+ "final_tasks": 61,
+ "stop_reason": "stop_file",
+ "usage": {
+  "requests": 2666,
+  "failed_requests": 0,
+  "rate_limited": 0,
+  "backoff_seconds": 0.0,
+  "prompt_tokens": 2267925,
+  "completion_tokens": 1572447,
+  "reasoning_tokens": 0,
+  "seconds": 21462.646999999997,
+  "paid_spend_usd": 0.0,
+  "by_purpose": {
+   "decision_neutral": {
+    "requests": 860,
+    "prompt_tokens": 311194,
+    "completion_tokens": 463173
+   },
+   "decision_card": {
+    "requests": 903,
+    "prompt_tokens": 557281,
+    "completion_tokens": 425633
+   },
+   "stageC_patch": {
+    "requests": 415,
+    "prompt_tokens": 1068039,
+    "completion_tokens": 434280
+   },
+   "decision_memory": {
+    "requests": 488,
+    "prompt_tokens": 331411,
+    "completion_tokens": 249361
+   }
+  }
+ },
+ "ram_peak_increment_bytes": 15736832,
+ "c_end_planned": 1795822217.4055285,
+ "c_last_compose": 460,
+ "ended_at": 1795830716.3732133,
+ "frozen_at": 1795822323.5641265
+}
