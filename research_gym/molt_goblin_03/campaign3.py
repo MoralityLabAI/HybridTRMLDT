@@ -148,7 +148,7 @@ class Campaign:
 
     def _ensure(self, keys):
         """Train every missing (cid, family, seed, steps) cell, in parallel workers when available."""
-        todo = [k for k in dict.fromkeys(keys) if k not in self.state["cache"]]
+        todo = [k for k in dict.fromkeys(keys) if "|".join(map(str, k)) not in self.state["cache"]]
         if not todo:
             return
         payloads = [self._payload(*k) for k in todo]

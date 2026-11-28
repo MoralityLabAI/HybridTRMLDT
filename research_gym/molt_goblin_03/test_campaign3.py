@@ -53,6 +53,11 @@ def test_campaign3_loop(tmp_path, monkeypatch):
     assert st["mech"], "mechanistic summary for typed arms"
     assert any(p["to"] >= 1 for p in st["promotions"])
     assert list((tmp_path / "teachers").glob("*.pt")), "B run cached as the distillation teacher"
+    # cached cells are never retrained
+    calls = []
+    monkeypatch.setattr(C, "_job", lambda p: calls.append(p) or ({"status": "error"}, None))
+    camp._ensure([tuple(k.split("|")[:2]) + (int(k.split("|")[2]), int(k.split("|")[3])) for k in st["cache"]])
+    assert calls == []
     prompt = camp._proposal_prompt()
     assert "ALREADY TESTED" in prompt and "load_balance" in prompt
     assert "research_plan" not in prompt
