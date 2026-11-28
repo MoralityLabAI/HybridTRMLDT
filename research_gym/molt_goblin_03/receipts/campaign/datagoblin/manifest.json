@@ -1,0 +1,11 @@
+{
+ "schema_version": "datagoblin.research_distillation.v1",
+ "rows": 24,
+ "root": "molt-goblin-03:36fea8faf2e7",
+ "sha256": "980ac2b546415a0d92ea8ae5ee77baea407f3016b8d509d112127ccbf4052867",
+ "kinds": {
+  "adversarial_task": 3,
+  "final_evidence": 1,
+  "hypothesis_cycle": 20
+ }
+}

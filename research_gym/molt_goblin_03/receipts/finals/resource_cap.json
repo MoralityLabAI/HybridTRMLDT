@@ -1,0 +1,10 @@
+{
+ "job_memory_limit_bytes": 1610612736,
+ "windows_job_object": true,
+ "scope": "each process in the job",
+ "baseline_rss_bytes": 214241280,
+ "cuda_visible_devices": "-1",
+ "tree_rss_limit_bytes": 3221225472,
+ "tree_rss_watchdog_interval_s": 0.25,
+ "per_process_commit_limit_bytes": 1610612736
+}
