@@ -7,6 +7,19 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+# Cross-runner exact refits require a common numeric execution profile.
+# The preceding campaign used unpinned hardware-dispatched kernels.
+env:
+  PYTHONHASHSEED: '0'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  ATEN_CPU_CAPABILITY: 'default'
+  MKL_CBWR: 'COMPATIBLE'
+  ONEDNN_MAX_CPU_ISA: 'SSE41'
+defaults:
+  run:
+    shell: bash
 jobs:
   cpu:
     runs-on: ubuntu-latest
@@ -18,8 +31,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
       - run: python -m research_gym.benchmarks.goblin_skill_factory.gym --selftest
       - run: python -m research_gym.benchmarks.goblin_skill_factory.gym --smoke --out /tmp/gsf-smoke
       - run: python -m research_gym.benchmarks.goblin_skill_factory.audit /tmp/gsf-smoke
@@ -54,8 +75,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
       - run: python -m unittest discover -s research_gym/benchmarks/molt_hybrid -p 'test_*.py' -v
       - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --selftest
       - run: python -m research_gym.benchmarks.goblin_skill_factory.molt_memory --smoke --out /tmp/molt-smoke
@@ -87,8 +116,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
       - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --selftest
       - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --smoke --out /tmp/repair-smoke
       - run: python -m research_gym.benchmarks.goblin_skill_factory.certified_skill --audit /tmp/repair-smoke
@@ -121,8 +158,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
       - run: python -m research_gym.benchmarks.goblin_skill_factory.persona_private --selftest
       - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --selftest
       - run: python -m research_gym.benchmarks.goblin_skill_factory.persona --smoke --out /tmp/persona-smoke
@@ -155,8 +200,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
       - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --selftest
       - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --smoke --out /tmp/clocks-smoke
       - run: python -m research_gym.benchmarks.goblin_skill_factory.loop_clocks --audit /tmp/clocks-smoke
@@ -189,8 +242,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
       - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --selftest
       - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --smoke --out /tmp/research-smoke
       - run: python -m research_gym.benchmarks.goblin_skill_factory.research_repair --audit /tmp/research-smoke
@@ -220,8 +281,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
       - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --selftest
       - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --smoke --out /tmp/mcp-smoke
       - run: python -m research_gym.benchmarks.goblin_skill_factory.mcp_geometry --audit /tmp/mcp-smoke
@@ -257,8 +326,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
       - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --selftest
       - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --smoke --out /tmp/cert-smoke
       - run: python -m research_gym.benchmarks.goblin_skill_factory.certificate_search --audit /tmp/cert-smoke
@@ -292,8 +369,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
       - run: python -m research_gym.benchmarks.goblin_skill_factory.goblinbench --selftest
       - run: python -m research_gym.benchmarks.goblin_skill_factory.goblinbench --out /tmp/bench-dev
       - run: python -m research_gym.benchmarks.goblin_skill_factory.goblinbench --audit /tmp/bench-dev | tee /tmp/bench-dev/audit.json
@@ -321,8 +406,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python-version: '3.11.18'
+      - run: python -m pip install 'torch==2.15.0+cpu' --index-url https://download.pytorch.org/whl/cpu
+      - name: Record numeric replay profile
+        run: |
+          python - <<'PY'
+          import os, platform, torch
+          torch.set_num_threads(1)
+          print("python", platform.python_version(), "torch", torch.__version__, "cpu_capability", torch.backends.cpu.get_cpu_capability())
+          print({k: os.environ.get(k) for k in ("PYTHONHASHSEED", "ATEN_CPU_CAPABILITY", "MKL_CBWR", "ONEDNN_MAX_CPU_ISA", "OMP_NUM_THREADS", "MKL_NUM_THREADS")})
+          PY
       - uses: actions/download-artifact@v4
         with:
           pattern: gsf-*-development
