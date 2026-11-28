@@ -196,3 +196,12 @@ A skill ships as `accepted` only if its source stage passed its gate. Otherwise 
 - **Leak criterion:** shuffled supervision with feedback 0 must stay within 0.05 of the
   calibration-majority-slot accuracy. Feedback-1 results are reported separately, because the
   in-episode verifier can lift a run above chance without label supervision.
+
+### Addendum S1b (2026-11-28 12:50 MPST, procedural; no held-out data exists yet)
+
+- The race's held-out phase shared the calibration deadline. If calibration used the full cap, no
+  frozen skill would ever be tested.
+- Fix: a separate queued stage `S1b_race_test` (`race.py --test-only`) runs straight after S1. It only
+  evaluates skills already written to `frozen.json`, on the preregistered test strata, and the
+  calibration deadline does not apply to it.
+- Selection, strata, roots and contrasts are unchanged.

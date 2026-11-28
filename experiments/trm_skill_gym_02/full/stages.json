@@ -11,6 +11,18 @@
   ]
  },
  {
+  "name": "S1b_race_test",
+  "module": "research_gym.trm_skill_gym_v3.race",
+  "hours": 0.75,
+  "args": [
+   "--out",
+   "experiments/trm_skill_gym_02/full/race",
+   "--test-only",
+   "--hours",
+   "3.0"
+  ]
+ },
+ {
   "name": "S3_hybrid",
   "module": "research_gym.trm_skill_gym_v3.hybrid",
   "hours": 0.75,

@@ -215,6 +215,8 @@ def main(argv=None):
     p.add_argument("--hours", type=float, default=3.0)
     p.add_argument("--job-seconds", type=float, default=900)
     p.add_argument("--mem-limit-gib", type=float, default=3.0)
+    p.add_argument("--test-only", action="store_true",
+                   help="evaluate already-frozen skills on the test strata; the calibration deadline does not apply")
     a = p.parse_args(argv)
     if a.worker:
         return worker(a.worker)
@@ -230,7 +232,7 @@ def main(argv=None):
     archive_bytes = (SOURCE / "search" / "archive.jsonl").read_bytes()
     archive = [json.loads(l) for l in archive_bytes.splitlines() if l.strip()]
     configs = {s: roster(archive, s, a.max_archive) for s in a.skills}
-    profile = {k: (str(v) if isinstance(v, Path) else v) for k, v in vars(a).items() if k not in ("worker", "out", "hours")}
+    profile = {k: (str(v) if isinstance(v, Path) else v) for k, v in vars(a).items() if k not in ("worker", "out", "hours", "test_only")}
     profile.update(archive_sha256=hashlib.sha256(archive_bytes).hexdigest(), configs=configs,
                    roots={"train": TRAIN_ROOT, "cal": CAL_ROOT, "test": TEST_ROOT},
                    strata={s: {"cal": G.strata(s, "cal"), "test": G.strata(s, "test")} for s in a.skills},
@@ -264,7 +266,7 @@ def main(argv=None):
     frozen = json.loads(frozen_path.read_text(encoding="utf-8")) if frozen_path.exists() else {}
     supervision = {}
     for skill in a.skills:
-        if skill in frozen:
+        if skill in frozen or a.test_only:
             continue
         metrics, incomplete = {}, {}
         for name, cfg in configs[skill].items():
@@ -312,7 +314,7 @@ def main(argv=None):
                   "out": str(a.out / "test" / skill / f"{n}__s{s}.json")} for n in names for s in seeds_for(n)]
         sup = None
         if not all(Path(i["out"]).exists() for i in items):
-            if time.time() > deadline:
+            if time.time() > deadline and not a.test_only:
                 held[skill] = {"status": "deadline_test_not_run"}
                 continue
             sup = supervise({"skill": skill, "stage": "test", "count": a.test_count, "items": items}, f"test__{skill}", 1)
