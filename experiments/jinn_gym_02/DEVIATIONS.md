@@ -18,3 +18,7 @@ Changes:
   * held-out: python_repair-f1-held02-0004, 0011, 0013, 0025, 0029, 0039, 0045, 0046, 0054
 
 No selection, evaluation or held-out decision had run when this happened: the phase was BUILD. The cached neutral Inky responses for those tasks stay valid, because the task text is deterministic and does not depend on verifier outcomes. The deadline (launch + 8 h) is unchanged, and `manifest.json` keeps the launch configuration and code hashes.
+
+## D1a: CPU cap at the user's request (build workers 2 to 1, single-threaded BLAS and torch)
+
+Before the resume, `python_build_workers` was set to 1 and the router's `torch.set_num_threads` to 1, and the campaign was relaunched with `OMP_NUM_THREADS`, `OPENBLAS_NUM_THREADS` and `MKL_NUM_THREADS` set to 1. Peak use is about three cores: the main thread, one Python verifier subprocess and one Lean subprocess. This slows BUILD and ROUTER but changes no verifier outcome, selection rule or metric.
