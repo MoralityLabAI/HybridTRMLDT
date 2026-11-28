@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 
 LEAN_TIMEOUT = 90
-PY_TIMEOUT = 10
+PY_TIMEOUT = 60  # D1: 10 s timed out correct code under build load
 
 
 def sha(text: str) -> str:
@@ -117,6 +117,14 @@ print(json.dumps({"passed": passed, "total": len(spec["cases"]), "first_fail": f
 
 
 def run_python(name: str, code: str, cases: list) -> dict:
+    """Run once; a timeout is retried once so machine load cannot fail correct code."""
+    r = _run_python_once(name, code, cases)
+    if r["timed_out"]:
+        r = {**_run_python_once(name, code, cases), "retried_after_timeout": True}
+    return r
+
+
+def _run_python_once(name: str, code: str, cases: list) -> dict:
     payload = json.dumps({"name": name, "code": code, "cases": cases})
     t0 = time.monotonic()
     try:

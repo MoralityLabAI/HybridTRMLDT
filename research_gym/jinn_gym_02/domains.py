@@ -379,8 +379,15 @@ def _expected(name: str, code: str, inputs: list) -> list:
     import sys
     prog = ("import json,sys\nspec=json.loads(sys.stdin.read())\nns={}\nexec(spec['code'],ns)\n"
             "print(json.dumps([ns[spec['name']](*a) for a in spec['inputs']]))\n")
-    p = subprocess.run([sys.executable, "-I", "-c", prog], input=json.dumps({"name": name, "code": code, "inputs": inputs}),
-                       capture_output=True, text=True, encoding="utf-8", timeout=V.PY_TIMEOUT)
+    payload = json.dumps({"name": name, "code": code, "inputs": inputs})
+    for attempt in range(2):  # the reference oracle is retried once if machine load times it out
+        try:
+            p = subprocess.run([sys.executable, "-I", "-c", prog], input=payload, capture_output=True, text=True,
+                               encoding="utf-8", timeout=V.PY_TIMEOUT)
+            break
+        except subprocess.TimeoutExpired:
+            if attempt:
+                raise
     return json.loads(p.stdout.strip().splitlines()[-1])
 
 

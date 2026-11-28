@@ -52,7 +52,7 @@ CFG = {
     "mutation_end_fraction": 0.62, "report_margin_s": 900,
     "decision_max_tokens": 1200, "patch_max_tokens": 2500, "aux_max_tokens": 1200,
     "decision_temperature": 0.0, "patch_temperature": 0.8, "reasoning_effort": "low", "context_limit": 12_288,
-    "ram_cap_bytes": 2 * 1024 ** 3, "python_build_workers": 4, "rerun_check_fraction": 0.05,
+    "ram_cap_bytes": 2 * 1024 ** 3, "python_build_workers": 1, "rerun_check_fraction": 0.05,
     "trm_hidden": 64, "trm_steps": 4, "trm_epochs": 400, "seed": 20261128,
 }
 SMALL = {"dev_per_domain": 3, "sel_per_domain": 26, "held_per_domain": 6, "panel_per_domain": 3,
@@ -647,7 +647,7 @@ class Campaign:
         Xd, Ud, _ = self.option_matrix(dev, dp, fm)
         res = {"options": names, "n_train": len(sel), "n_val": len(dev)}
         import torch
-        torch.set_num_threads(2)
+        torch.set_num_threads(1)
         for steps in (self.cfg["trm_steps"], 1):
             m = R.TRMRouter(Xs.shape[1], Us.shape[1], self.cfg["trm_hidden"], steps, seed=self.cfg["seed"])
             info = m.fit(Xs, Us, Xd, Ud, epochs=self.cfg["trm_epochs"])
